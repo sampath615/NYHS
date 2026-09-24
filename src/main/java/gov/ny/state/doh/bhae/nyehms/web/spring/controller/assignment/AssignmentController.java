@@ -1309,56 +1309,6 @@ public class AssignmentController {
 		return "assignment/AssignmentsSearchCriteria";
 	}
 	
-	private byte[] parseAssignmentsByRegionByStatus(List<Map<String, String>> assignmentsList, String documentType, String regionName, String assignmentStatusDisplayName){
-		
-		StringBuilder htmlContent = new StringBuilder("<html><body><div style='margin:0px auto'><div style='margin-top:100px;' ><span>"+documentType+" "+assignmentStatusDisplayName+" "+regionName+"</span></div><table><thead style='font-size:12px;'><tr><th >STATENO</th>");
-		
-		
-		
-		boolean isRegionAvailable = false;
-		boolean isAssignmentStatusAvailable = false;
-		
-		if(CommonUtil.isNotNullAndEmpty(regionName)){
-			isRegionAvailable = true;
-		}
-		
-		if(!isRegionAvailable){
-			htmlContent.append("<th>Region</th>");
-		}
-		
-		
-		if(CommonUtil.isNullOrEmpty(assignmentStatusDisplayName)){
-			isAssignmentStatusAvailable = true;
-		}
-		
-		if(!isAssignmentStatusAvailable){
-			htmlContent.append("<th>Assignment Status</th>");
-		}
-		
-		
-		
-		
-		htmlContent.append("<th>Worker Name</th></tr></thead><tbody>");
-		if(assignmentsList != null && assignmentsList.size() > 0){
-			for (Map<String, String> assignment : assignmentsList) {
-				htmlContent.append("<tr><td style='width:150px'>").append(assignment.get("STATENO")).append("</td>");
-				
-				if(!isRegionAvailable){
-					htmlContent.append("<td style='width:200px'>").append(assignment.get("REGION_DESCRIPTION")).append("</td>");
-				}
-				
-				if(!isAssignmentStatusAvailable){
-					htmlContent.append("<td style='width:505px'>").append(assignment.get("ASSIGNMENT_STATUS")).append("</td>");
-				}
-				htmlContent.append("<td style='width:250px'>").append(assignment.get("WORKER_NAME")).append("</td></tr>");
-			}
-		}else{
-			htmlContent.append("<tr><td style='width:250px'>No Assignment data available.</td></tr>");
-		}
-		htmlContent.append("</tbody></table></div>");
-		
-		return htmlContent.toString().getBytes();
-	}
 	
 	
 	@RequestMapping(value="/getAssignmentsClosureStatusReport")	

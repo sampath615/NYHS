@@ -411,30 +411,6 @@ public class QuartzSchedulerTransactionHelper {
 	
 	
 	
-	/**
-	 * This method is used to load the Quality stage match results data to
-	 * STD table and RAW_DOCUMENT_MATCH_RESULTS table
-	 * If one action is failed will rollback the other transaction.
-	 * 
-	 * @param documentMatchData
-	 * @return
-	 */
-	@Transactional
-	private int storeDocumentMatchDataToStandardAndMatchResultsTable(
-			Map<String, Object> documentMatchData)
-	{
-		int transactionResult = 0;
-		//Storing the Quality stage match results data to STD tables
-		int resultCount = manualQuartzJobService.storeDocumentMatchResultsToStandardTable(documentMatchData);
-		if(resultCount > 0){
-			List<Map<String, String>> documentQualityStageData = (List<Map<String, String>>)documentMatchData.get("documentQualityStageData");
-			if(documentQualityStageData.size() > 0){
-				//Storing the Quality stage match results data to MATCH_RESULTS table
-				transactionResult = manualQuartzJobService.storeDocumentMatchResults(documentQualityStageData);
-			}
-		}
-		return transactionResult;
-	}
 
 	/**
 	 * Takes the List of ECLRS Value Objects from vAllH or vAllS and tries 
@@ -977,68 +953,6 @@ public class QuartzSchedulerTransactionHelper {
 		return null;
 	}
 	
-	/**
-	 * 
-	 * @param multiStepDocumentsForPFI
-	 * @param retainDocumentId
-	 * @param errors
-	 * @param geeniusRecordsCount
-	 * @param recordType
-	 * @param documentCategory
-	 * @param pfi
-	 * @param successComments
-	 */
-	@Transactional
-	public void processMultiStepDocumentsToGether(
-			List<EcrlsLabDocVO> multiStepDocumentsForPFI,
-			int retainDocumentId,
-			List<String> errors,
-			int geeniusRecordsCount,
-			String recordType,
-			String documentCategory,
-			String pfi,
-			StringBuilder successComments)
-	{
-		List<Integer> multiStepDocumentIds = new ArrayList<Integer>();
-		for (EcrlsLabDocVO _ecrlsLabDocVO : multiStepDocumentsForPFI) {
-			multiStepDocumentIds.add(_ecrlsLabDocVO.getDOCUMENT_ID());
-		}
-		int multiStepDocumentsSizeForPFI = multiStepDocumentIds.size();
-		EcrlsLabDocVO ecrlsLabDocVO = manualQuartzJobService.getUpdatedMultiProcessDocument(multiStepDocumentsForPFI, retainDocumentId, errors, geeniusRecordsCount, pfi);
-		if(ecrlsLabDocVO != null){
-			ecrlsLabDocVO.setCURRENT_PROCESS_STATUS(CommonConstants.RAW_NEW_RECORD_PROCESS_STATUS);
-			boolean  newDocumentCreateStatus = manualQuartzJobService.createNewDocAndWriteRawEcrlsData(recordType, ecrlsLabDocVO);
-			if(!newDocumentCreateStatus){
-				throw new DataRetrievalFailureException("Unable to create new multi step document for PFI :  "+pfi);
-			}
-			int updatedDocumentsCount = 0;
-			if(geeniusRecordsCount > 0){
-				updatedDocumentsCount = manualQuartzJobService.associateParentDocumentForMultiStepDocuments(multiStepDocumentIds, ecrlsLabDocVO.getDOCUMENT_ID(), "Y");
-				if(updatedDocumentsCount != multiStepDocumentsSizeForPFI){
-					 throw new DataRetrievalFailureException("Unable to associate the parent documents Id for Geenius document created. PFI :  "+pfi);
-				 }
-			}else{
-				updatedDocumentsCount = manualQuartzJobService.associateParentDocumentForMultiStepDocuments(multiStepDocumentIds, ecrlsLabDocVO.getDOCUMENT_ID(), "N");
-				if(updatedDocumentsCount != multiStepDocumentsSizeForPFI){
-					 throw new DataRetrievalFailureException("Unable to associate the parent documents Id for multi process documents. PFI :  "+pfi);
-				}
-			}
-			if(geeniusRecordsCount > 0){
-				updatedDocumentsCount = labDocumentService.updateStatusCodeForHivDocuments(multiStepDocumentIds, CommonConstants.RAW_UNIQUE_RECORD_PROCESS_STATUS);
-				if(updatedDocumentsCount != multiStepDocumentsSizeForPFI){
-					 throw new DataRetrievalFailureException("Unable to update status(to move it to Standard) for the Geenius documents Ids("+multiStepDocumentIds+"). PFI :  "+pfi);
-				}
-			}else{
-				updatedDocumentsCount = labDocumentService.updateStatusCodeForHivDocuments(multiStepDocumentIds, CommonConstants.RAW_RECORD_MULTISTEP_DELETED_PROCESS_STATUS);
-				if(updatedDocumentsCount != multiStepDocumentsSizeForPFI){
-					 throw new DataRetrievalFailureException("Unable to delete the multi step documents Ids("+multiStepDocumentIds+") for multi process documents. PFI :  "+pfi);
-				}
-			}
-			 successComments.append("Successfully created new ").append(documentCategory).append(" document(PFI :").append(pfi).append(") : ").append(ecrlsLabDocVO.getDOCUMENT_ID()).append("\n");
-		}else{
-			
-		}
-	}
 
 	/**
 	 * This method is used to Standardize the unstandardized Raw provider addresses

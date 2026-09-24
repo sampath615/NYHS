@@ -5603,34 +5603,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 		
 	}
 
-	private void populateCountyValue(String _county, String _state, String _city, String _zip,
-			Map<String, Object> documentMatchResults, String countyVariableName, String stateVarialbeName, String cityVarialbeName) {
-
-		if ((CommonUtil.isNullOrEmpty(_county) || CommonUtil.isNullOrEmpty(_state) || CommonUtil.isNullOrEmpty(_city))
-				&& CommonUtil.isNotNullAndEmpty(_zip)) {
-
-			Map<String, String> zipCodeValues = commonService.getCountyNameByZip(_zip);
-
-			if (zipCodeValues != null) {
-				_county = zipCodeValues.get("COUNTY_FIPS_CD");
-				_state = zipCodeValues.get("STATE_CD");
-				_city = zipCodeValues.get("CITY");
-			}
-		}
-
-		if (CommonUtil.isNullOrEmpty(_state)) {
-			_county = "999";
-		} else if (!"NY".equals(_state)) {
-			_county = "998";
-		}else if(CommonUtil.isNullOrEmpty(_county)) {
-			_county = "999";
-		}
-
-		documentMatchResults.put(countyVariableName, _county);
-		documentMatchResults.put(stateVarialbeName, _state);
-		documentMatchResults.put(cityVarialbeName, _city);
-
-	}
 	
 	// STD_STD_table
 	@Override

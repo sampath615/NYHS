@@ -34,8 +34,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.AhiAlertTrackingVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
@@ -237,54 +235,7 @@ public class DocumentTransactionHelper {
 		return resultCount;
 	}
 
-	@Transactional
-	private void checkAndAddFacilityAddress(String facilityName, String facilityAddress, String facilityCity, String facilityPhone, String facilityPlus4, String facilityState, String facilityZip, String facilityCounty, BindingResult result, 
-			UserObject userObject){
-		RawSubFacilityVO rawSubFacilityVO =  new RawSubFacilityVO();
-		
-		rawSubFacilityVO.setFacilityName(facilityName);
-		rawSubFacilityVO.setAddress(facilityAddress);
-		rawSubFacilityVO.setCity(facilityCity);
-		rawSubFacilityVO.setPhone(facilityPhone);
-		rawSubFacilityVO.setPlus4(facilityPlus4);
-		rawSubFacilityVO.setState(facilityState);
-		rawSubFacilityVO.setZipcode(facilityZip);
-		rawSubFacilityVO.setCountyFips(facilityCounty);
-		
-		
-		int resultCount = facilityService.checkRawFacilityExistance(rawSubFacilityVO);
-		
-		if(resultCount == 0){
-			rawSubFacilityVO.setSubFacilityId(-9999);
-			facilityService.createRawFacility(rawSubFacilityVO, result, userObject);
-		}
-		
-	}
 	
-	@Transactional
-	private void checkAndSubProviderAddress(String providerAddress,String providerCity,String providerState,String providerZip, String providerCounty, String providerPhone, String provPlus4, String provFirstName, String provMName, String provLName, String provSuffix, BindingResult result, 
-			UserObject userObject){
-		SubProviderAndAddressVO  subProviderAndAddressVO = new SubProviderAndAddressVO();
-		
-		subProviderAndAddressVO.setAddress(providerAddress);
-		subProviderAndAddressVO.setCity(providerCity);
-		subProviderAndAddressVO.setState(providerState);
-		subProviderAndAddressVO.setCountyFips(providerCounty);
-		subProviderAndAddressVO.setZipcode(providerZip);
-		subProviderAndAddressVO.setPhone(providerPhone);
-		subProviderAndAddressVO.setProviderFname(provFirstName);
-		subProviderAndAddressVO.setProviderLname(provLName);
-		subProviderAndAddressVO.setProviderMname(provMName);
-		subProviderAndAddressVO.setProviderSuffix(provSuffix);
-		subProviderAndAddressVO.setPlus4(provPlus4);
-		
-		int resultCount = providerService.checkRawProviderAddressExistance(subProviderAndAddressVO);
-		
-		if(resultCount == 0){
-			subProviderAndAddressVO.setSubProviderAddressId(-9999);
-			providerService.createRawProviderAddress(subProviderAndAddressVO, result, userObject);
-		}
-	}
 	
 
 	public Map<String, Object> getStatenoDetailsOfDocument(int docId, UserObject userObject)
