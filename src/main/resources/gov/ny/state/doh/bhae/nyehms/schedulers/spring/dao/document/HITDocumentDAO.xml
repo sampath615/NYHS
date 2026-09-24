@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HITDocumentDAO">
+
+	<select id="getMaxUphnTranxInId" resultType="int">
+		<![CDATA[
+			select max(UPHN_TRANX_IN_ID) from UPHN_TRANX_IN
+		]]>
+	</select>
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<select id="getMaxUphnTranxInIdCheckedFromLog" parameterType="String"
+		resultType="int">
+		<![CDATA[
+			SELECT MAX(MAX_UTII_CHECKED) from HIT_LOAD_LOG where DOC_TYPE = #{recordType} 
+		]]>
+	</select>
+
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<insert id="insertHitLoadLog"
+		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO">
+		<selectKey keyProperty="logID" resultType="int" order="BEFORE">
+			select hit_load_log_seq.NEXTVAL from dual
+		</selectKey>
+      <![CDATA[
+        insert into hit_load_log (
+          LOG_ID, DOC_TYPE, MIN_UTII_CHECKED, MIN_UTII_RETRIEVED,
+          MAX_UTII_RETRIEVED, MAX_UTII_CHECKED,
+          NO_OF_FAILED_DOCS, NO_OF_RETRIEVED_DOCS, NO_OF_SUCCESSFUL_DOCS,
+          CREATE_DATE, CREATE_ID)
+        values (
+          #{logID, jdbcType=INTEGER},
+          #{docType, jdbcType=VARCHAR},
+          #{minUtiiChecked, jdbcType=INTEGER},
+          #{minUtiiRetrieved, jdbcType=INTEGER},
+          #{maxUtiiRetrieved, jdbcType=INTEGER},
+          #{maxUtiiChecked, jdbcType=INTEGER},
+          #{noOfFailedDocs, jdbcType=INTEGER},
+          #{noOfRetrievedDocs, jdbcType=INTEGER},
+          #{noOfSuccessfulDocs, jdbcType=INTEGER},
+          #{createDate, jdbcType=TIMESTAMP},
+          #{createId, jdbcType=VARCHAR}
+        )
+       ]]>
+	</insert>
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<update id="updateHitLoadLogAfterOneRow"
+		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO">
+           <![CDATA[
+           update HIT_LOAD_LOG 
+             set MIN_UTII_RETRIEVED = #{minUtiiRetrieved, jdbcType=INTEGER},
+             MAX_UTII_RETRIEVED = #{maxUtiiRetrieved, jdbcType=INTEGER},
+             MAX_UTII_CHECKED = #{maxUtiiChecked, jdbcType=INTEGER},
+             NO_OF_RETRIEVED_DOCS = #{noOfRetrievedDocs, jdbcType=INTEGER}
+           where log_id = #{logID, jdbcType=INTEGER}
+           
+           ]]>
+	</update>
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<!-- <update id="updateHitLoadLogAfterZeroRows" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO"> 
+		<![CDATA[ update HIT_LOAD_LOG (NO_OF_FAILED_DOCS, NO_OF_RETRIEVED_DOCS, NO_OF_SUCCESSFUL_DOCS) 
+		values ( 0, 0, 0) ]]> </update> -->
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<update id="updateHitLoadLogAfterAllRows"
+		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO">
+           <![CDATA[
+           update HIT_LOAD_LOG 
+             set NO_OF_FAILED_DOCS = #{noOfFailedDocs, jdbcType=INTEGER},
+             NO_OF_RETRIEVED_DOCS = #{noOfRetrievedDocs, jdbcType=INTEGER},
+             NO_OF_SUCCESSFUL_DOCS = #{noOfSuccessfulDocs, jdbcType=INTEGER}
+           where log_id = #{logID, jdbcType=INTEGER}
+           ]]>
+	</update>
+
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+
+	<insert id="insertHitError"
+		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitErrorVO">
+      <![CDATA[
+        insert into hit_error (
+          HIT_ERROR_ID, UPHN_TRANX_IN_ID, PAYLOAD_CLEARTEXT, ERROR_MESSAGE, CREATE_DATETIME, RECORD_TYPE, REPRISE_FLAG, COMMENTS)
+        values (
+          HIT_ERROR_SEQ.nextval,
+          #{uphnTRANXINID, jdbcType=INTEGER},
+          #{payloadCLEARTEXT, jdbcType=VARCHAR},
+          #{errorMESSAGE, jdbcType=VARCHAR},
+          #{createDATETIME, jdbcType=DATE},
+          #{recordType, jdbcType=VARCHAR},
+		  #{repriseFlag, jdbcType=VARCHAR},							   
+          #{comments, jdbcType=VARCHAR})
+       ]]>
+	</insert>
+
+
+	<insert id="insertCodedRace" parameterType="java.util.Map">
+		insert into CODED_HIT_RACE_DESC(RACE_VALUE, CREATE_DATE)
+		<foreach collection="raceCodeErrorsList" item="raceCode"
+			index="index" separator=" Union all ">
+			select #{raceCode},trunc(SYSDATE) from dual
+		</foreach>
+	</insert>
+	
+	<select id="checkIfRaceExists"	parameterType="String"	resultType="int">
+		select count(*) from CODED_HIT_RACE_DESC where RACE_VALUE = #{str}
+	</select>
+
+
+	<select id="getRaceCodes"
+		resultType="java.util.Map">
+		SELECT DISTINCT RACE_VALUE, RACE , ETHNICITY
+		FROM
+		CODED_HIT_RACE_DESC order by RACE_VALUE
+	</select>
+
+	<select id="insertHitMessageCount">
+	<![CDATA[
+		INSERT INTO hit_message_counts
+					(
+					     hit_id
+					   , type
+					   , received_date
+					   , total
+					   , distinct_count
+					   , duplicates
+					   , max_uphn_tranx_in_id
+					)
+					WITH hit_data AS
+					(
+						select 'CCD' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'CCD')
+						and topic = 'DEERPROD'
+						and trunc(receivedtime) > (select MAX(RECEIVED_DATE) from hit_message_counts where TYPE = 'CCD')  and trunc(receivedtime) <= SYSDATE - 1
+						group by trunc(receivedtime)
+						
+					union
+					
+						select 'HL7' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'HL7')
+						and topic = 'DEERHL7PROD'
+						and payloadname like '%.txt'
+						and trunc(receivedtime) > (select MAX(RECEIVED_DATE) from hit_message_counts where TYPE = 'HL7')  and trunc(receivedtime) <= SYSDATE - 1 
+						group by trunc(receivedtime)
+						
+					union
+					
+						select 'EXP' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'EXP')
+						and topic = 'DEERHL7PROD'
+						and trunc(receivedtime) > (select MAX(RECEIVED_DATE) from hit_message_counts where TYPE = 'EXP')  and trunc(receivedtime) <= SYSDATE - 1
+						and payloadname like '%.csv'
+						group by trunc(receivedtime)
+					
+						order by receivedday, type
+					)
+					SELECT hit_message_count_seq.nextval hit_id, a.type, a.receivedday, a.tot, a.dist, a.dupes, a.max_uphn_tranx_in_id
+					FROM hit_data a
+
+	]]>
+	</select>
+
+	<select id="getCountsForTodayMail" resultType="java.util.Map">
+	<![CDATA[
+				WITH hits_recd AS
+                (
+                        SELECT a.*, ROW_NUMBER() OVER (PARTITION BY a.type ORDER BY a.received_date DESC) rn
+                        FROM hit_message_counts a
+                        --WHERE a.received_date < trunc(sysdate)
+                 ),
+                 distinct_type AS
+                 (
+                       SELECT 1 slno, 'HL7' type 
+                       FROM dual
+                       UNION
+                       SELECT 2 slno, 'CCD' type 
+                       FROM dual
+                       UNION
+                       SELECT 3 slno, 'EXP' type 
+                       FROM dual
+                  )
+                       SELECT b.type "TYPE", 
+                              a.received_date "LAST_RECEIVED", 
+                              a.total "TOTAL", 
+                              a.distinct_count "DISTINCT"
+                        , CASE
+                         WHEN a.type = 'HL7' AND a.received_date = TRUNC(sysdate) - 1 THEN 'Y'  
+                         ELSE 'N'
+                         END hl7_recd_yn
+                        , CASE
+                         WHEN a.type = 'CCD' AND a.received_date BETWEEN Trunc(next_day(sysdate,'MONDAY') - 7) 
+                         AND Trunc(next_day(sysdate,'MONDAY') - 1) 
+                         THEN 'Y'
+                         WHEN a.type = 'CCD' AND Trim(Upper(to_char(sysdate, 'DAY'))) = 'MONDAY'
+                         THEN 'Y'
+                         ELSE 'N'
+                         END ccd_recd_yn
+                         , CASE
+                         WHEN a.type = 'EXP' AND Trunc(sysdate) <= Trunc(sysdate,'MM') + 14
+                         THEN 'Y'
+                         WHEN a.type = 'EXP' AND a.received_date BETWEEN Trunc(sysdate,'MM') AND Trunc(sysdate,'MM') + 14
+                         THEN 'Y'
+                         WHEN (a.type = 'EXP' AND Trim(Upper(to_char(a.received_date, 'MONTH'))) = Trim(Upper(to_char(SYSDATE, 'MONTH'))))
+                         THEN 'Y'
+                         ELSE 'N'
+                         END exp_recd_yn
+                         FROM hits_recd a RIGHT OUTER JOIN distinct_type b
+                         ON ( a.type = b.type AND rn = 1 )
+                         ORDER BY slno
+
+    ]]>
+	</select>
+
+	<select id="getCountsForHITLiveEvent" resultType="java.util.Map">
+	<![CDATA[
+	select 'CCD' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'CCD')
+						and topic = 'DEERPROD'
+						and trunc(receivedtime) = trunc(SYSDATE)
+						group by trunc(receivedtime)
+						
+					union
+					
+						select 'HL7' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'HL7')
+						and topic = 'DEERHL7PROD'
+						and payloadname like '%.txt'
+						and trunc(receivedtime) = trunc(SYSDATE)
+						group by trunc(receivedtime)
+						
+					union
+					
+						select 'EXP' type, trunc(receivedtime) receivedday,
+						count(*) tot, count(distinct payloadname) dist,count(*)-count(distinct payloadname) dupes,
+						max(uphn_tranx_in_id) max_uphn_tranx_in_id
+						from uphn_tranx_in
+						where uphn_tranx_in_id > (SELECT MAX(MAX_UPHN_TRANX_IN_ID) from HIT_MESSAGE_COUNTS where TYPE = 'EXP')
+						and topic = 'DEERHL7PROD'
+						and trunc(receivedtime) = trunc(SYSDATE)
+						and payloadname like '%.csv'
+						group by trunc(receivedtime)					
+						order by receivedday, type		
+    ]]>
+	</select>
+
+	<update id="deleteFromUphnTranxPropsIn">
+	<![CDATA[
+		DELETE UPHN_TRANX_PROPS_IN UTPI
+			WHERE EXISTS (SELECT 1 
+                 FROM UPHN_TRANX_IN UTI
+                WHERE UTPI.UPHN_TRANX_IN_ID = UTI.UPHN_TRANX_IN_ID
+                AND Trunc(uti.receivedtime) < SYSDATE - 30)
+                ]]>
+	</update>
+
+	<select id="getHitRaceCodeMapperData" resultType="java.util.Map">
+		SELECT RACE_VALUE,RACE,ETHNICITY FROM CODED_HIT_RACE_DESC
+		WHERE UPDATED_DATE is null and UPDATED_BY is NULL ORDER BY RACE_VALUE
+	</select>
+
+	<select id="getHitRaceValue" resultType="java.util.Map"
+		parameterType="String">
+		select RACE,ETHNICITY from CODED_HIT_RACE_DESC where
+		RACE_VALUE = #{parameterName}
+	</select>
+	
+	<select id="getHitRaceData" resultType="java.util.Map">
+		select distinct RACE from CODED_HIT_RACE_DESC where RACE is not null 
+	</select>
+	
+	<select id="getHitEthnicityData" resultType="java.util.Map">
+		select distinct ETHNICITY from CODED_HIT_RACE_DESC where ETHNICITY is not null
+	</select>
+
+	<update id="updateHitaRaceValue" parameterType="java.util.Map">
+		update
+		CODED_HIT_RACE_DESC set RACE = #{parameterValue1} , ETHNICITY =
+		#{parameterValue2},UPDATED_DATE = TRUNC(SYSDATE), UPDATED_BY = #{userId}  WHERE RACE_VALUE = #{parameterName}
+	</update>
+
+	<update id="updateHITErrorRepriseFlagStatus" parameterType="java.util.Map">
+		update HIT_ERROR set REPRISE_FLAG = #{statusCode}, DATE_OF_REPRISE =
+		SYSDATE where UPHN_TRANX_IN_ID = #{uphnID} and REPRISE_FLAG = 'Y'
+	</update>
+	
+	<select id="getHitErrorRepriseValue" resultType="java.util.Map"	parameterType="String">
+			select HIT_ERROR_ID, 
+         		   UPHN_TRANX_IN_ID, 
+         		   TO_CHAR(substr(ERROR_MESSAGE,0,400))  ERROR,
+         		   TO_CHAR(TO_DATE(CREATE_DATETIME),'MM/DD/YYYY') AS CREATE_DATETIME, 
+         		   RECORD_TYPE, 
+         		   REPRISE_FLAG, 
+         		   DATE_OF_REPRISE,
+         		   COMMENTS notes
+            from HIT_ERROR 
+  			where CASE 
+            		WHEN #{parameterName} = 'ALL' THEN '1'
+            		ELSE RECORD_TYPE
+        		  END  = CASE 
+                    WHEN #{parameterName} = 'ALL' THEN '1'
+                    ELSE #{parameterName}
+                  END 
+    		and DATE_OF_REPRISE is null and REPRISE_FLAG is null
+		
+	</select>
+	
+	<update id="updateHitDocumentsStatusinHITERRROR" parameterType="java.util.Map">
+		UPDATE HIT_ERROR SET REPRISE_FLAG = #{actionName} WHERE HIT_ERROR_ID = #{hitErrorId}
+	</update>
+	
+	<update id="updateHitErrorComments" parameterType="java.util.Map">
+	   UPDATE HIT_ERROR set COMMENTS =  #{notes} where HIT_ERROR_ID = #{hiterrorid}
+    </update>
+
+</mapper>

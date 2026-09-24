@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MergeAndUnlinkDAO">
+
+  	<select id="unlinkRawFacilities" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_unlink_raw_facilities(
+			#{p_fac_id,    jdbcType=VARCHAR, mode=IN},
+			#{p_parent_id, jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,   jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,  jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,   jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="unlinkSubFacilities" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION. pr_unlink_sub_facilities(
+			#{p_fac_id,    jdbcType=VARCHAR, mode=IN},
+			#{p_parent_id, jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,   jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,  jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,   jdbcType=VARCHAR, mode=OUT}		 
+		)}
+	</select>
+  
+  	<select id="mergeSubFacilities" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_merge_sub_facilities(
+			#{p_sub_facility_list,     jdbcType=VARCHAR, mode=IN},
+			#{p_retained_sub_facility, jdbcType=BIGINT,  mode=IN},
+			#{p_master_facility,       jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,               jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,              jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,               jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="mergeGrandFacilities" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_merge_master_facilities(
+			#{p_master_facility_list, jdbcType=VARCHAR, mode=IN},
+			#{p_retained_facility,    jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,              jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,             jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,              jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+</mapper>

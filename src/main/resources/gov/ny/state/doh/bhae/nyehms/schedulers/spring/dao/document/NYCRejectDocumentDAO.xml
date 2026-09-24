@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NYCRejectDocumentDAO">
+
+  <resultMap id="NYCRejectDetailsMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.NYCRejectVO" >
+  
+	    <result column="DOCUMENT_ID" property="DOCUMENT_ID" jdbcType="DECIMAL" />
+	    	<association property="rejectDocumentVO"  column="DOCUMENT_ID" javaType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO">
+	    		<result column="DOCUMENT_ID" property="DOCUMENT_ID" jdbcType="DECIMAL" />	    	
+	    		<result column="STATENO" property="STATENO" jdbcType="VARCHAR" />
+				<result column="NYCNUMBER" property="NYCNUMBER" jdbcType="VARCHAR" />	    		
+	    		<result column="REJECT_DOCUMENT_ID" property="REJECT_DOCUMENT_ID" jdbcType="DECIMAL" />
+				<result column="DISPOSITION_CODE" property="DISPOSITION_CODE" jdbcType="VARCHAR" />
+				<result column="DISPOSITION_DESC" property="DISPOSITION_DESC" jdbcType="VARCHAR" />
+				<result column="DISPOSITION_DESC_SHORT" property="DISPOSITION_DESC_SHORT" jdbcType="VARCHAR" />
+				<result column="STATUSNOTES" property="STATUSNOTES" jdbcType="VARCHAR" />
+				<result column="STATUSNONCASE" property="STATUSNONCASE" jdbcType="VARCHAR" />
+				<result column="STATUS_UPDATE_DATE" property="STATUS_UPDATE_DATE" jdbcType="VARCHAR" />
+				
+				<result column="STATENO2" property="STATENO2" jdbcType="VARCHAR" />
+				<result column="UPLOAD_FILENAME" property="UPLOAD_FILENAME" jdbcType="VARCHAR" />
+				<result column="UPLOAD_UID" property="UPLOAD_UID" jdbcType="VARCHAR" />
+				<result column="UPLOAD_DATE" property="UPLOAD_DATE" jdbcType="VARCHAR" />
+				<result column="COMMENTS" property="COMMENTS" jdbcType="VARCHAR" />
+				<result column="UPDATE_UID" property="UPDATE_UID" jdbcType="VARCHAR" />
+	    		<result column="UPDATE_DATE" property="UPDATE_DATE" jdbcType="VARCHAR" />
+	    	</association>
+
+  </resultMap>
+    
+	<select id="getNYCRejectDetails" resultMap="NYCRejectDetailsMap" parameterType="java.util.Map">
+            SELECT r.DOCUMENT_ID 
+                   , (SELECT PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (STATENO) from DUAL) STATENO
+                   , NYCNUMBER
+                   , REJECT_DOCUMENT_ID
+                   , r.DISPOSITION_CODE
+                   , c.DISPOSITION_DESC
+                   , c.DISPOSITION_DESC_SHORT                   
+                   , STATUSNOTES
+                   , STATUSNONCASE
+                   , STATUS_UPDATE_DATE
+                   , STATENO2
+                   , UPLOAD_FILENAME
+                   , UPLOAD_UID
+                   , to_char(UPLOAD_DATE, 'MM/DD/YYYY') UPLOAD_DATE
+                   , COMMENTS
+                   , UPDATE_UID
+                   , UPDATE_DATE
+            FROM NYC_SURVEILLANCE_REJECT r
+            INNER JOIN document_locator D
+            ON (r.DOCUMENT_ID = D.DOCUMENT_ID and r.REJECT_DOCUMENT_ID =  #{documentId})
+            LEFT OUTER JOIN CODED_NYC_REJECT_DISPOSITION c
+                    ON (r.DISPOSITION_CODE = c.DISPOSITION_CODE)
+		
+		 
+	</select>    
+    
+ 	<update id="updateNYCRejectDocumentComments" parameterType="java.util.Map">
+	   UPDATE NYC_SURVEILLANCE_REJECT SET COMMENTS = #{comments}, UPDATE_DATE = SYSDATE, UPDATE_UID = #{workerId} WHERE DOCUMENT_ID = #{documentId}	   
+    </update>	    
+		
+</mapper>

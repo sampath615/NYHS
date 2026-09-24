@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.initialize.InitializeDAO">
+
+    <select id="getActiveMACAddressesList" parameterType="String" resultType="String">
+
+	  SELECT MA.MAC_ADDRESS
+	  FROM	 USER_MAC_ASSOCIATION MA, NYEHMS_USERS_VW NU
+	  WHERE	 UPPER(NU.LEGACY_UID) = UPPER(#{userId})
+	  AND NU.END_DATE IS NULL
+	  AND SYSDATE >= MA.EFFECTIVE_START_DATE 
+	  AND (MA.EFFECTIVE_END_DATE IS NULL OR MA.EFFECTIVE_END_DATE > SYSDATE)
+	  AND MA.USER_ID = NU.WORKER_ID	  
+
+  	</select>
+  
+    <select id="getUserLockInfo" parameterType="String" resultType="String">
+
+	  SELECT IS_LOCKED
+	  FROM	 NYEHMS_USERS_VW
+	  WHERE	 UPPER(LEGACY_UID) = UPPER(#{userId})
+	  AND END_DATE IS NULL
+
+  	</select>
+
+    <select id="getActiveRoleCount" parameterType="String" resultType="int">
+
+	  SELECT COUNT(ROLE_CODE) AS ROLE_COUNT
+	  FROM	 USER_REGION UR, NYEHMS_USERS_VW NU
+	  WHERE	 UPPER(NU.LEGACY_UID) = UPPER(#{userId})
+	  AND NU.END_DATE IS NULL
+	  AND (UR.END_DATE IS NULL OR UR.END_DATE > SYSDATE)
+	  AND NU.WORKER_ID = UR.WORKER_ID
+
+  	</select>
+  	
+  	<resultMap id="getActiveJREResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.JREVersionVO" >
+  		    <result column="JRE_VERSION" property="JREVersionNo" jdbcType="VARCHAR" />
+    		<result column="REJECT_FLAG" property="rejectFlag" jdbcType="VARCHAR" />
+  	</resultMap>
+  	  
+  	<select id="getActiveJREs" resultMap="getActiveJREResult">
+  	
+	  SELECT JRE_VERSION, REJECT_FLAG
+	  FROM	 NYEHMS_JRE_VERSIONS
+	  WHERE SYSDATE >= EFFECTIVE_START_DATE 
+	  AND (EFFECTIVE_END_DATE IS NULL OR EFFECTIVE_END_DATE > SYSDATE)
+	  
+  	</select>
+  	
+  	<resultMap id="getActiveFirefoxResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionVO" >
+  		    <result column="VERSION" property="FirefoxVersionNo" jdbcType="VARCHAR" />
+    		<result column="REJECT_FLAG" property="rejectFlag" jdbcType="VARCHAR" />
+  	</resultMap>
+  	  
+  	<select id="getValidFirefoxVer" resultMap="getActiveFirefoxResult">
+  	
+	  SELECT VERSION, REJECT_FLAG
+	  FROM	 NYEHMS_FIREFOX_VERSIONS
+	  WHERE SYSDATE >= EFFECTIVE_START_DATE 
+	  AND (EFFECTIVE_END_DATE IS NULL OR EFFECTIVE_END_DATE > SYSDATE)
+	  
+  	</select>
+  	
+  	<select id="getLatestFirefoxVersion" resultType="String">
+  	
+	    SELECT VERSION
+      		FROM NYEHMS_FIREFOX_VERSIONS where 
+      			EFFECTIVE_START_DATE = (select max(EFFECTIVE_START_DATE) from NYEHMS_FIREFOX_VERSIONS)
+	  
+  	</select>
+  	
+  	<select id="getLatestJavaVersionNumber" resultType="String">
+  	
+	    select JRE_VERSION 
+	    	from NYEHMS_JRE_VERSIONS 
+	    		where EFFECTIVE_START_DATE = (select max(EFFECTIVE_START_DATE) from NYEHMS_JRE_VERSIONS)
+	  
+  	</select>
+  	
+  	
+  	
+  	<select id="getActiveOSs" resultType="String">
+
+	  SELECT PARAM_VALUE
+	  FROM	 NYEHMS_PARAMETER
+	  WHERE	 PARAM_NAME = 'VALID_OS'
+	  AND SYSDATE >= EFFECTIVE_START_DATE
+	  AND (EFFECTIVE_END_DATE IS NULL OR EFFECTIVE_END_DATE > SYSDATE)
+
+  	</select>
+  	
+  	<insert id="insertUserAccessAttemp" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserAccessAttemptVO">
+  		
+		INSERT INTO USER_ACCESS_ATTEMPTS (ACCESS_ATTEMPTS_ID, USER_ID, HCS_ROLE, LINK_CLICK_TIME, ACTIVE_MAC_ADDRESS_LIST, HAS_NYEHMS_ACCESS, USER_LOCKED, ATTEMPT_MAC_ADDRESS, BROWSER_USED, BROWSER_VERSION,
+			    						HAS_XPI_PLUGIN, XPI_VERSION, OS_USED, JRE_VERSION, RECORD_CREATED_DATE, REASONS_ATTEMPT_FAILED)
+		VALUES (USER_ACCESS_ATTEMPTS_SEQ.NEXTVAL, #{userId}, #{hcsRole}, #{linkClickTime}, #{activeMACAddresses}, #{activeNyehmsRole}, #{userLocked}, #{attempMACAddress}, #{browserName}, #{browserVersion},
+				#{XPIPlugin}, #{XPIVersion}, #{OSName}, #{JREVersion}, #{recordInsertTime}, #{attemptFailedReasons})
+						
+	</insert>
+	
+  	<resultMap id="getInitFailReasonResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO" >
+  		    <result column="REASON_CD" property="reasoncd" jdbcType="DECIMAL" />
+    		<result column="SHORT_DESC" property="short_desc" jdbcType="VARCHAR" />
+    		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+  	</resultMap>
+  	  
+  	<select id="getInitFailReasons" resultMap="getInitFailReasonResult">
+		SELECT REASON_CD, SHORT_DESC, DESCRIPTION
+		FROM CODED_INIT_FAILURE_REASONS
+		ORDER BY REASON_CD
+	</select>
+</mapper>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO">	
+ 
+  <select id="getLabDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO">
+		 		<![CDATA[
+		 				
+				SELECT STD1.DOCUMENT_ID,
+	          STD1.LAB_SRC_ID,
+	          STD1.FNAME,
+	         STD1.LNAME,
+			STD1.MNAME,
+			STD1.SUFFIX,
+			STD1.DOB_TEXT,
+			STD1.AGE,
+			STD1.BIRTH_COUNTRY,
+			
+          	RAW1.PIDADDRESSLINE1 || ' ' || RAW1.PIDADDRESSLINE2
+             AS RAWPERSONADDRESS,
+             
+             
+          STD1.PERSON_CITY,
+          STD1.PERSON_STATE,
+          STD1.PERSON_ZIP,
+          STD1.PERSON_PLUS4,
+          STD1.PERSON_COUNTY,
+          STD1.PERSON_PHONE,
+          STD1.GENDER,
+          STD1.RACE_ASIAN,
+          STD1.RACE_BLACK,
+          STD1.RACE_INDIAN,
+          STD1.RACE_MULTIPLE,
+          STD1.RACE_OTHER,
+          STD1.RACE_PACIFIC,
+          STD1.RACE_UNKNOWN,
+          STD1.RACE_WHITE,
+          STD1.ETHNICITY,
+          STD1.MED_RECORD_NUMBER,
+          STD1.INSURANCE_CD,
+          STD1.INSURANCE_NUMBER,
+          STD1.DIN,
+          STD1.NYSID,
+          STD1.SSN,
+          STD1.PROV_LNAME,
+          STD1.PROV_FNAME,
+          STD1.PROV_MNAME,
+          STD1.PROV_SUFFIX,
+          RAW1.ZLRPROVIDERADDRESSLINE1 || ' ' || RAW1.ZLRPROVIDERADDRESSLINE2
+             AS RAWPROVADDRESS,
+          STD1.PROV_CITY,
+          STD1.PROV_STATE,
+          STD1.PROV_ZIP,
+          STD1.PROV_PLUS4,
+          STD1.PROV_PHONE,
+          STD1.PROV_COUNTY,
+          STD1.FACILITY_NAME,
+          RAW1.ZLRFACILITYADDRESSLINE1 || ' ' || RAW1.ZLRFACILITYADDRESSLINE2
+             AS RAWFACILITYADDRESS,
+          STD1.FACILITY_CITY,
+          STD1.FACILITY_STATE,
+          STD1.FACILITY_ZIP,
+          STD1.FACILITY_PLUS4,                          
+          STD1.FACILITY_COUNTY,
+          STD1.FACILITY_PHONE,
+          STD1.OBSERVATION_DATE,
+          STD1.COLLECTION_DATE,
+          STD1.RESULT_REPORT_DATE,
+          STD1.LOINC,
+          STD1.LOINC_DESC,
+          STD1.TEST_RESULT,
+          STD1.UNIT_MEASURE_CODE,
+          STD1.PERSON_INTERNAL_ID,
+          STD1.PERSON_EXTERNAL_ID,
+          STD1.SENDING_FACILITY_NAME,
+          STD1.SPECIMEN_SOURCE_CD,
+          STD1.SPECIMEN_SOURCE_NAME,
+          STD1.REFERRING_FACILITY,
+          STD1.TESTING_FACILITY,
+          STD1.PFI,
+          STD1.DATE_RECEIVED,
+          PDOC.STATENO,
+          STD1.HIV_VACCINE_RECIP,
+          STD1.RESIDE_OUTSIDE_USA,
+          STD1.AREA_OF_BIRTH,
+          STD1.LENGTH_RESIDENCY_IN_USA,
+          STD1.SENDING_FACILITY_CLIA,
+          STD1.NYC_SHIP_DATE,
+          STD1.PERSON_COUNTRY,
+          STD1.ACCESSION_NUMBER,
+          STD1.MEDICAID_NUMBER,
+          STD1.LOCAL_TEST_CODE,
+          STD1.LOCAL_TEST_DESC,
+          STD1.FACILITY_ADDRESS,
+          STD1.PERSON_ADDRESS,
+          STD1.PROV_ADDRESS,
+          RAW1.MSHLABPFI PFI,
+          STD1.EHARS_IMPORT_DATE,
+          STD1.NYC_SHIP_DATE NYC_SHIP_DATE,
+          STD1.AGE_CATEGORY,
+			STD1.CURRENT_PROCESS_STATUS,
+			STD1.EHARS_STATUS_CD,
+			STD1.FACILITY_CENSUS_TRACT,
+			STD1.FACILITY_LATITUDE,
+			STD1.FACILITY_LONGITUDE,
+			STD1.INTERPRET_CD,
+			STD1.MATCH_CD,
+			STD1.MATCH_PASS,
+			STD1.MATCH_WEIGHT,
+			STD1.MATCHED_STATENO,
+			STD1.PERSON_CENSUS_TRACT,
+			STD1.PERSON_LATITUDE,
+			STD1.PERSON_LONGITUDE,
+			STD1.PROV_CENSUS_TRACT,
+			STD1.PROV_LATITUDE,
+			STD1.PROV_LONGITUDE,
+			STD1.QS_PARENT_DOC_ID,
+			STD1.REVIEW_DATE,
+			STD1.REVIEW_UID  
+     FROM raw_hiv_eclrs_doc RAW1
+          INNER JOIN std_hiv_eclrs_doc STD1
+             ON (STD1.document_id = RAW1.document_id and  RAW1.DOCUMENT_ID=#{docId})
+          LEFT OUTER JOIN person_doc_association PDOC
+             ON (RAW1.document_id = PDOC.document_id
+                 AND PDOC.dissassociation_date IS NULL)     		
+
+		 			
+		 			]]>
+		 				
+		</select>	
+		
+		
+	<update id="deleteStandardDocument" parameterType="int">
+		delete from STD_HIV_ECLRS_DOC where DOCUMENT_ID = #{document_ID}
+	</update>
+	
+		
+	<update id="deleteEntryInPersonDocAssociation" parameterType="int">
+		delete from person_doc_association where DOCUMENT_ID = #{document_ID}
+	</update>
+	
+	<update id="deleteEntryInDocumentPersonAttribute" parameterType="int">
+		delete from DOCUMENT_PERSON_ATTR where DOCUMENT_ID = #{document_ID}
+	</update>
+	
+	<update id="deleteEntryInDocumentRace" parameterType="int">
+		delete from document_race where DOCUMENT_ID = #{currentDocumentId}
+	</update>
+	
+	
+	
+	<insert id="createEntryInPersonDocAssociation" parameterType="java.util.Map" >
+		INSERT INTO person_doc_association (person_doc_association_id, document_id, stateno, association_status_code, worker_id, association_date) 
+			values(person_doc_association_seq.NEXTVAL, #{documentId}, #{stateNo}, 'ASSOC', #{workerId}, SYSDATE)
+	</insert>
+	
+	
+	
+	 <select id="runMetaDataToAssociateDocumentToStateno" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_consolidation.pr_reconfig_attr_metadata(
+		    #{stateNo,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<insert id="createEntryInDocumentPersonAttribute" parameterType="int" >
+		INSERT INTO document_person_attr (county_fips, date_of_birth, din, dob_text,document_id,dod_text,ethnicity_code,first_name,gender_code,home_phone,insurance_number,insurance_type_code,last_name,middle_name,nysid,ssn,suffix,address_zipcode,address_latitude,birth_sex,tract_suffix_census,birth_country,med_record_number,address_tract_census,plus4,address,address_state,address_longitude,work_phone)
+          select person_county,fn_to_date (dob_text, 'mm/dd/yyyy'),din,dob_text,document_id,dob_text,ethnicity,fname,gender,person_phone,insurance_number,insurance_cd,lname,mname,nysid,ssn,suffix,person_zip,person_latitude,gender,person_census_tract,birth_country,med_record_number,person_census_tract,person_plus4,person_address,person_state,person_longitude,person_phone from std_hiv_eclrs_doc where DOCUMENT_ID = #{document_ID}
+	</insert>
+	
+	
+	<insert id="createEntryInDocumentRace" parameterType="int" >
+		INSERT INTO document_race (race_indian,race_multiple,race_other,race_pacific,race_asian,race_white,race_black,document_id,race_unknown)
+          select race_indian,race_multiple,race_other,race_pacific,race_asian,race_white,race_black,document_id,race_unknown from std_hiv_eclrs_doc where DOCUMENT_ID = #{document_ID}
+	</insert>
+	
+	
+
+<select id="getHivLabDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO">
+		 		<![CDATA[
+		 				
+						SELECT *
+                     FROM 
+                                 RAW_HIV_ECLRS_DOC 
+                     WHERE 
+                                 DOCUMENT_ID=#{docId}	and rownum < 2	 			
+		 			
+		 			]]>
+		 				
+		</select>	
+		
+	<insert id="writeStandardDataToDatabase" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO">
+	
+		INSERT INTO STD_HIV_ECLRS_DOC(DOCUMENT_ID, INTERPRET_CD, LAB_SRC_ID, FNAME, LNAME, MNAME, SUFFIX, DOB_TEXT, AGE, BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_CITY, PERSON_STATE, PERSON_ZIP, PERSON_PLUS4, PERSON_COUNTY, PERSON_PHONE, PERSON_LATITUDE, PERSON_LONGITUDE, PERSON_CENSUS_TRACT, GENDER, RACE_ASIAN, RACE_BLACK, RACE_INDIAN, RACE_MULTIPLE, RACE_OTHER, RACE_PACIFIC, RACE_UNKNOWN, RACE_WHITE, ETHNICITY, MED_RECORD_NUMBER, INSURANCE_CD, INSURANCE_NUMBER, DIN, NYSID, SSN, PROV_LNAME, PROV_ADDRESS, PROV_CITY, PROV_STATE, PROV_ZIP, PROV_PLUS4, PROV_PHONE, PROV_COUNTY, PROV_LATITUDE, PROV_LONGITUDE, PROV_CENSUS_TRACT, FACILITY_NAME, FACILITY_ADDRESS, FACILITY_CITY, FACILITY_STATE, FACILITY_ZIP, FACILITY_PLUS4, FACILITY_COUNTY, FACILITY_PHONE, OBSERVATION_DATE, COLLECTION_DATE, RESULT_REPORT_DATE, LOINC, LOINC_DESC, TEST_RESULT, UNIT_MEASURE_CODE, PERSON_INTERNAL_ID, PERSON_EXTERNAL_ID, SENDING_FACILITY_NAME, SPECIMEN_SOURCE_CD, SPECIMEN_SOURCE_NAME, REFERRING_FACILITY, TESTING_FACILITY, PFI, EHARS_IMPORT_DATE, EHARS_STATUS_CD, MATCH_CD, DATE_RECEIVED, REVIEW_DATE, REVIEW_UID, STATENO, PROV_FNAME, PROV_MNAME, PROV_SUFFIX, HIV_VACCINE_RECIP, RESIDE_OUTSIDE_USA, AREA_OF_BIRTH, LENGTH_RESIDENCY_IN_USA, SENDING_FACILITY_CLIA, NYC_SHIP_DATE, PERSON_COUNTRY, ACCESSION_NUMBER, MEDICAID_NUMBER, LOCAL_TEST_CODE, LOCAL_TEST_DESC, FACILITY_CENSUS_TRACT, FACILITY_LATITUDE, FACILITY_LONGITUDE, CURRENT_PROCESS_STATUS,  MATCHED_STATENO, MATCH_WEIGHT, MATCH_PASS, QS_PARENT_DOC_ID, AGE_CATEGORY, MATCHED_PROCESS_DATE,FLUX_MATCH_CD, FLUX_POT_STATENO, FLUX_MATCHED_STATENO, FLUX_QS_PARENT_DOC_ID, FLUX_MATCHED_PROCESS_DATE) 
+		values(#{DOCUMENT_ID,jdbcType=VARCHAR}, #{INTERPRET_CD,jdbcType=VARCHAR}, #{LAB_SRC_ID,jdbcType=VARCHAR}, #{FNAME,jdbcType=VARCHAR}, #{LNAME,jdbcType=VARCHAR}, #{MNAME,jdbcType=VARCHAR}, #{SUFFIX,jdbcType=VARCHAR}, #{DOB_TEXT,jdbcType=VARCHAR}, #{AGE,jdbcType=VARCHAR}, #{BIRTH_COUNTRY,jdbcType=VARCHAR}, #{PERSON_ADDRESS,jdbcType=VARCHAR}, #{PERSON_CITY,jdbcType=VARCHAR}, #{PERSON_STATE,jdbcType=VARCHAR}, #{PERSON_ZIP,jdbcType=VARCHAR}, #{PERSON_PLUS4,jdbcType=VARCHAR}, #{PERSON_COUNTY,jdbcType=VARCHAR}, #{PERSON_PHONE,jdbcType=VARCHAR}, #{PERSON_LATITUDE,jdbcType=VARCHAR}, #{PERSON_LONGITUDE,jdbcType=VARCHAR}, #{PERSON_CENSUS_TRACT,jdbcType=VARCHAR}, #{GENDER,jdbcType=VARCHAR}, #{RACE_ASIAN,jdbcType=VARCHAR}, #{RACE_BLACK,jdbcType=VARCHAR}, #{RACE_INDIAN,jdbcType=VARCHAR}, #{RACE_MULTIPLE,jdbcType=VARCHAR}, #{RACE_OTHER,jdbcType=VARCHAR}, #{RACE_PACIFIC,jdbcType=VARCHAR}, #{RACE_UNKNOWN,jdbcType=VARCHAR}, #{RACE_WHITE,jdbcType=VARCHAR}, #{ETHNICITY,jdbcType=VARCHAR}, #{MED_RECORD_NUMBER,jdbcType=VARCHAR}, #{INSURANCE_CD,jdbcType=VARCHAR}, #{INSURANCE_NUMBER,jdbcType=VARCHAR}, #{DIN,jdbcType=VARCHAR}, #{NYSID,jdbcType=VARCHAR}, #{SSN,jdbcType=VARCHAR}, #{PROV_LNAME,jdbcType=VARCHAR}, #{PROV_ADDRESS,jdbcType=VARCHAR}, #{PROV_CITY,jdbcType=VARCHAR}, #{PROV_STATE,jdbcType=VARCHAR}, #{PROV_ZIP,jdbcType=VARCHAR}, #{PROV_PLUS4,jdbcType=VARCHAR}, #{PROV_PHONE,jdbcType=VARCHAR}, #{PROV_COUNTY,jdbcType=VARCHAR}, #{PROV_LATITUDE,jdbcType=VARCHAR}, #{PROV_LONGITUDE,jdbcType=VARCHAR}, #{PROV_CENSUS_TRACT,jdbcType=VARCHAR}, #{FACILITY_NAME,jdbcType=VARCHAR}, #{FACILITY_ADDRESS,jdbcType=VARCHAR}, #{FACILITY_CITY,jdbcType=VARCHAR}, #{FACILITY_STATE,jdbcType=VARCHAR}, #{FACILITY_ZIP,jdbcType=VARCHAR}, #{FACILITY_PLUS4,jdbcType=VARCHAR}, #{FACILITY_COUNTY,jdbcType=VARCHAR}, #{FACILITY_PHONE,jdbcType=VARCHAR}, #{OBSERVATION_DATE,jdbcType=DATE}, #{COLLECTION_DATE,jdbcType=DATE}, #{RESULT_REPORT_DATE,jdbcType=DATE}, #{LOINC,jdbcType=VARCHAR}, #{LOINC_DESC,jdbcType=VARCHAR}, #{TEST_RESULT,jdbcType=VARCHAR}, #{UNIT_MEASURE_CODE,jdbcType=VARCHAR}, #{PERSON_INTERNAL_ID,jdbcType=VARCHAR}, #{PERSON_EXTERNAL_ID,jdbcType=VARCHAR}, #{SENDING_FACILITY_NAME,jdbcType=VARCHAR}, #{SPECIMEN_SOURCE_CD,jdbcType=VARCHAR}, #{SPECIMEN_SOURCE_NAME,jdbcType=VARCHAR}, #{REFERRING_FACILITY,jdbcType=VARCHAR}, #{TESTING_FACILITY,jdbcType=VARCHAR}, #{PFI,jdbcType=VARCHAR}, #{EHARS_IMPORT_DATE,jdbcType=DATE}, #{EHARS_STATUS_CD,jdbcType=VARCHAR}, #{MATCH_CD,jdbcType=VARCHAR}, #{DATE_RECEIVED,jdbcType=DATE}, #{REVIEW_DATE,jdbcType=DATE}, #{REVIEW_UID,jdbcType=VARCHAR}, #{STATENO,jdbcType=VARCHAR}, #{PROV_FNAME,jdbcType=VARCHAR}, #{PROV_MNAME,jdbcType=VARCHAR}, #{PROV_SUFFIX,jdbcType=VARCHAR}, #{HIV_VACCINE_RECIP,jdbcType=VARCHAR}, #{RESIDE_OUTSIDE_USA,jdbcType=VARCHAR}, #{AREA_OF_BIRTH,jdbcType=VARCHAR}, #{LENGTH_RESIDENCY_IN_USA,jdbcType=VARCHAR}, #{SENDING_FACILITY_CLIA,jdbcType=VARCHAR}, #{NYC_SHIP_DATE,jdbcType=DATE}, #{PERSON_COUNTRY,jdbcType=VARCHAR}, #{ACCESSION_NUMBER,jdbcType=VARCHAR}, #{MEDICAID_NUMBER,jdbcType=VARCHAR}, #{LOCAL_TEST_CODE,jdbcType=VARCHAR}, #{LOCAL_TEST_DESC,jdbcType=VARCHAR}, #{FACILITY_CENSUS_TRACT,jdbcType=VARCHAR}, #{FACILITY_LATITUDE,jdbcType=VARCHAR}, #{FACILITY_LONGITUDE,jdbcType=VARCHAR}, #{CURRENT_PROCESS_STATUS}, #{MATCHED_STATENO,jdbcType=VARCHAR}, #{MATCH_WEIGHT,jdbcType=VARCHAR}, #{MATCH_PASS,jdbcType=VARCHAR}, #{QS_PARENT_DOC_ID,jdbcType=VARCHAR}, #{AGE_CATEGORY,jdbcType=DECIMAL},#{MATCHED_PROCESS_DATE,jdbcType=DATE},#{FLUX_MATCH_CD, jdbcType=VARCHAR},#{FLUX_POT_STATENO, jdbcType=VARCHAR},#{FLUX_MATCHED_STATENO, jdbcType=VARCHAR},#{FLUX_QS_PARENT_DOC_ID, jdbcType=DECIMAL},#{FLUX_MATCHED_PROCESS_DATE,jdbcType=DATE})
+	</insert>
+	
+		
+	<insert id="insertLabDocData" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO">
+		<![CDATA[
+		
+		 
+		INSERT INTO RAW_LAB_DOC (
+				  DOCUMENT_ID, LAB_SRC_ID, FNAME, 
+			      LNAME, MNAME, SUFFIX, 
+			      DOB_TEXT, AGE, SSN, 
+			      DIN, NYSID, MED_RECORD_NUMBER, 
+			      INSURANCE_CD, INSURANCE_NUMBER, ETHNICITY, 
+			      GENDER, RACE_ASIAN, RACE_BLACK, 
+			      RACE_INDIAN, RACE_MULTIPLE, RACE_OTHER, 
+			      RACE_PACIFIC, RACE_UNKNOWN, RACE_WHITE, 
+			      BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_CITY, 
+			      PERSON_STATE, PERSON_ZIP, PERSON_PLUS4, 
+			      PERSON_COUNTY, PERSON_PHONE, FACILITY_NAME, 
+			      FACILITY_ADDRESS, FACILITY_CITY, FACILITY_STATE, 
+			      FACILITY_ZIP, FACILITY_PLUS4, FACILITY_PHONE, 
+			      PROV_LNAME, PROV_ADDRESS, PROV_CITY, 
+			      PROV_STATE, PROV_ZIP, PROV_PLUS4, 
+			      PROV_PHONE, DATE_RECEIVED, DRAW_DATE, 
+			      COLLECTION_DATE, RESULT_REPORT_DATE, LOINC, 
+			      LOINC_DESC, TEST_RESULT, TEST_RESULT_RAW, 
+			      UNIT_MEASURE_CODE, REFERRING_FACILITY, SENDING_FACILITY_CLIA, 
+			      SPECIMEN_SOURCE_CD, SPECIMEN_SOURCE_NAME, TESTING_FACILITY, 
+			      SWM, SWF, IDU, 
+			      SEX_PARTNER_IDU, SEX_PARTNER_HIV, RECV_BLOOD_PROD, 
+			      PERINATAL, RISK_OTHER, RISK_UNKNOWN, 
+			      SEX_PARTNER_MSM, RISK11, SEX_PARTNER_HEMOPHILIAC, 
+			      SEX_PARTNER_TRANSFUSION, SEX_PARTNER_TRANSPLANT, RECV_TRANSPLANT, 
+			      HEALTHCARE_WORKER, HIV_VACCINE_RECIP, OTHER_IMMUNE_INFECTION, 
+			      RESIDE_OUTSIDE_USA, AREA_OF_BIRTH, LAST_NEG_HIV_TEST_DATE, 
+			      LENGTH_RESIDENCY_IN_USA, SENDING_FACILITY_NAME, 
+			      DATE_SENT, PERSON_EXTERNAL_ID, PERSON_INTERNAL_ID, 
+			      PERSON_COUNTRY, ACCESSION_NUMBER, PROV_FNAME, 
+			      PROV_MNAME, PROV_SUFFIX, MEDICAID_NUMBER, 
+			      LOCAL_TEST_CODE, LOCAL_TEST_DESC)
+    VALUES (
+    			  #{documentId,jdbcType=DECIMAL}, #{labSrcId, jdbcType=DECIMAL}, #{fname,jdbcType=VARCHAR}, 
+			      #{lname,jdbcType=VARCHAR}, #{mname,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR}, 
+			      #{dobText,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, #{ssn,jdbcType=VARCHAR}, 
+			      #{din,jdbcType=VARCHAR}, #{nysid,jdbcType=VARCHAR}, #{medRecordNumber,jdbcType=VARCHAR}, 
+			      #{insuranceCd,jdbcType=VARCHAR}, #{insuranceNumber,jdbcType=VARCHAR}, #{ethnicity,jdbcType=VARCHAR}, 
+			      #{gender,jdbcType=VARCHAR}, #{raceAsian,jdbcType=VARCHAR}, #{raceBlack,jdbcType=VARCHAR}, 
+			      #{raceIndian,jdbcType=VARCHAR}, #{raceMultiple,jdbcType=VARCHAR}, #{raceOther,jdbcType=VARCHAR}, 
+			      #{racePacific,jdbcType=VARCHAR}, #{raceUnknown,jdbcType=VARCHAR}, #{raceWhite,jdbcType=VARCHAR}, 
+			      #{birthCountry,jdbcType=VARCHAR}, #{personAddress,jdbcType=VARCHAR}, #{personCity,jdbcType=VARCHAR}, 
+			      #{personState,jdbcType=VARCHAR}, #{personZip,jdbcType=VARCHAR}, #{personPlus4,jdbcType=VARCHAR}, 
+			      #{personCounty,jdbcType=VARCHAR}, #{personPhone,jdbcType=VARCHAR}, #{facilityName,jdbcType=VARCHAR}, 
+			      #{facilityAddress,jdbcType=VARCHAR}, #{facilityCity,jdbcType=VARCHAR}, #{facilityState,jdbcType=VARCHAR}, 
+			      #{facilityZip,jdbcType=VARCHAR}, #{facilityPlus4,jdbcType=VARCHAR}, #{facilityPhone,jdbcType=VARCHAR}, 
+			      #{provLname,jdbcType=VARCHAR}, #{provAddress,jdbcType=VARCHAR}, #{provCity,jdbcType=VARCHAR}, 
+			      #{provState,jdbcType=VARCHAR}, #{provZip,jdbcType=VARCHAR}, #{provPlus4,jdbcType=VARCHAR}, 
+			      #{provPhone,jdbcType=VARCHAR}, TO_DATE(#{dateReceived,jdbcType=TIMESTAMP}, 'MM/DD/YYYY'), 
+			      #{drawDate,jdbcType=VARCHAR}, 
+			      #{collectionDate,jdbcType=VARCHAR}, #{resultReportDate,jdbcType=VARCHAR}, #{loinc,jdbcType=VARCHAR}, 
+			      #{loincDesc,jdbcType=VARCHAR}, #{testResult,jdbcType=VARCHAR}, #{testResultRaw,jdbcType=VARCHAR}, 
+			      #{unitMeasureCode,jdbcType=VARCHAR}, #{referringFacility,jdbcType=VARCHAR}, #{sendingFacilityClia,jdbcType=VARCHAR}, 
+			      #{specimenSourceCd,jdbcType=VARCHAR}, #{specimenSourceName,jdbcType=VARCHAR}, #{testingFacility,jdbcType=VARCHAR}, 
+			      #{risk01,jdbcType=VARCHAR}, #{risk02,jdbcType=VARCHAR}, #{risk03,jdbcType=VARCHAR}, 
+			      #{risk04,jdbcType=VARCHAR}, #{risk05,jdbcType=VARCHAR}, #{risk06,jdbcType=VARCHAR}, 
+			      #{risk07,jdbcType=VARCHAR}, #{risk08,jdbcType=VARCHAR}, #{risk09,jdbcType=VARCHAR}, 
+			      #{risk10,jdbcType=VARCHAR}, #{risk11,jdbcType=VARCHAR}, #{risk12,jdbcType=VARCHAR}, 
+			      #{risk13,jdbcType=VARCHAR}, #{risk14,jdbcType=VARCHAR}, #{risk15,jdbcType=VARCHAR}, 
+			      #{risk16,jdbcType=VARCHAR}, #{hivVaccineRecip,jdbcType=VARCHAR}, #{otherImmuneInfection,jdbcType=VARCHAR}, 
+			      #{resideOutsideUsa,jdbcType=VARCHAR}, #{areaOfBirth,jdbcType=VARCHAR}, #{lastNegHivTestDate,jdbcType=VARCHAR}, 
+			      #{lengthResidencyInUsa,jdbcType=VARCHAR}, #{sendingFacilityName,jdbcType=VARCHAR}, 
+			      TO_DATE(#{dateSent,jdbcType=TIMESTAMP}, 'MM/DD/YYYY'), #{personExternalId,jdbcType=VARCHAR}, #{personInternalId,jdbcType=VARCHAR}, 
+			      #{personCountry,jdbcType=VARCHAR}, #{accessionNumber,jdbcType=VARCHAR}, #{provFname,jdbcType=VARCHAR}, 
+			      #{provMname,jdbcType=VARCHAR}, #{provSuffix,jdbcType=VARCHAR}, #{medicaidNumber,jdbcType=VARCHAR}, 
+			      #{localTestCode,jdbcType=VARCHAR}, #{localTestDesc,jdbcType=VARCHAR})	
+		
+		]]>
+		</insert>
+
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycIJRDocumentDAO"> 
+    <select id="getNycIJRDocument" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO">
+		 		<![CDATA[
+		 			select
+		 			PDOC.STATENO stateNo,
+		 			PDOC.DISCARD_STATUS,
+		 				std.DOCUMENT_ID, 
+		std.CITYNO, 
+		std.NYC_SENT_STATENO, 
+		std.LNAME, 
+		std.FNAME, 
+		std.MNAME, 
+		std.ALT_LNAME, 
+		std.SSN, 
+		std.DOB_TEXT, 
+		std.CURRENT_GENDER, 
+		std.ETHNICITY, 
+		std.RACE_CD, 
+		std.RACE_INDIAN, 
+		std.RACE_BLACK, 
+		std.RACE_ASIAN, 
+		std.RACE_PACIFIC, 
+		std.RACE_WHITE, 
+		std.RACE_MULTIPLE, 
+		std.RACE_OTHER, 
+		std.RACE_UNKNOWN, 
+		std.MED_RECORD_NUMBER, 
+		std.DIN, 
+		std.NYSID, 
+		std.BIRTH_COUNTRY, 
+		raw1.ADDRESS rawDxAddress,
+		std.DX_PERSON_ADDRESS, 
+		std.DX_PERSON_CITY, 
+		std.DX_PERSON_STATE, 
+		std.DX_PERSON_ZIP, 
+		std.DX_PERSON_TELEPHONE, 
+		std.PERSON_CELLPHONE, 
+		std.PERSON_WORKPHONE, 
+		raw1.CUR_STREET_ADDRESS1 rawAddress,
+		std.CUR_PERSON_ADDRESS , 
+		std.CUR_PERSON_CITY , 
+		std.CUR_PERSON_COUNTY_NAME, 
+		std.CUR_PERSON_STATE , 
+		std.CUR_PERSON_ZIP , 
+		std.CUR_PERSON_COUNTY , 
+		std.CUR_PERSON_PHONE, 
+		raw1.PROV_ADDR rawProvAddress,
+		std.PROV_ADDRESS, 
+		std.PROV_CITY, 
+		std.PROV_STATE, 
+		std.PROV_ZIP, 
+		std.PROV_COUNTY, 
+		std.PROV_NAME, 
+		std.PROV_DEPARTMENT, 
+		std.PROV_PHONE, 
+		std.ADMISSION_DATE_TEXT, 
+		std.INIT_HIV_DIAG, 
+		std.INIT_HIV_DIAG_DATE_TEXT, 
+		std.INIT_AIDS_DIAG, 
+		std.INIT_AIDS_DIAG_DATE_TEXT, 
+		std.INFORMED_HIV_POS, 
+		std.INFORMED_HIV_DATE_TEXT, 
+		std.INDX_INTERVIEWED_DATE_TEXT, 
+		std.INDX_INTERVIEWED, 
+		std.SWM, 
+		std.SWF, 
+		std.IDU, 
+		std.SEX_PARTNER_IDU, 
+		std.SEX_PARTNER_HIV, 
+		std.RECV_BLOOD_PROD, 
+		std.PERINATAL, 
+		std.RISK_OTHER, 
+		std.RISK_OTHER_TEXT, 
+		std.RISK_UNKNOWN, 
+		std.SEX_PARTNER_MSM, 
+		std.RECV_BLOOD_PROD_DATE_TEXT, 
+		std.RECV_BLOOD_PROD_COUNTRY, 
+		std.PROV_SIGNED_DATE, 
+		std.PROV_SIGNED, 
+		std.COMPLETER_FNAME, 
+		std.COMPLETER_MI, 
+		std.COMPLETER_LNAME, 
+		std.COMPLETER_TITLE, 
+		std.COMPLETER_EMAIL, 
+		std.COMPLETED_DATE, 
+		std.CONTACT_LNAME, 
+		std.CONTACT_FNAME, 
+		std.CONTACT_MNAME, 
+		std.CONTACT_TITLE, 
+		std.CONTACT_PHONE, 
+		std.NUMBEROFPARTNERS, 
+		std.PS_REQUESTED, 
+		std.FILE_NAME, 
+		std.FILE_DATE, 
+		std.RSH_PHONE, 
+		std.HIV_DX_DATE_TEXT, 
+		std.AIDS_DX_DATE_TEXT, 
+		std.HIV_FACILITY_NAME, 
+		std.NYC_IJR_SRC_ID, 
+		std.DX_PERSON_COUNTY, 
+		std.DX_PERSON_CENSUS_TRACT, 
+		std.CUR_PERSON_CENSUS_TRACT, 
+		std.PROV_CENSUS_TRACT, 
+		std.DX_PERSON_LATITUDE, 
+		std.DX_PERSON_LONGITUDE, 
+		std.CUR_PERSON_LATITUDE, 
+		std.CUR_PERSON_LONGITUDE, 
+		std.PROV_LATITUDE, 
+		std.PROV_LONGITUDE, 
+		std.PROCESSED, 
+		std.MATCH_CD, 
+		std.CURRENT_PROCESS_STATUS, 
+		std.CREATE_UID, 
+		std.CREATE_DATE, 
+		std.AGE, 
+		std.REVIEW_UID, 
+		std.REVIEW_DT, 
+		std.MATCH_PASS, 
+		std.MATCH_WEIGHT, 
+		std.MATCHED_PROCESS_DATE,
+		 std.EHARS_IMPORT_DATE,
+		 std.NYC_SHIP_DATE 
+		 ,D.PARENT_DOCUMENT_ID  
+		 		 FROM RAW_NYCIJR_DOC raw1
+          INNER JOIN STD_NYCIJR_DOC std
+             ON (std.document_id = raw1.document_id and  raw1.DOCUMENT_ID=#{docId})
+             INNER JOIN document_locator D
+             ON raw1.document_id=d.document_id
+          LEFT OUTER JOIN person_doc_association PDOC
+             ON (raw1.document_id = PDOC.document_id
+                 AND PDOC.dissassociation_date IS NULL)     								 			
+		 			
+		 			]]>
+		 				
+    </select>
+    
+
+    
+    	<insert id="writeStdDocData" parameterType="java.util.Map" >
+insert into STD_NYCIJR_DOC(REVIEW_UID, DIN, ALT_LNAME, DX_PERSON_ADDRESS, CUR_PERSON_ADDRESS, PROV_ADDRESS, PROV_NAME, PROV_DEPARTMENT, PROV_SIGNED, COMPLETER_FNAME, COMPLETER_MI, COMPLETER_LNAME, COMPLETER_TITLE, COMPLETER_EMAIL, CONTACT_LNAME, CONTACT_FNAME, CONTACT_MNAME, CONTACT_TITLE, DX_PERSON_CENSUS_TRACT, CUR_PERSON_CENSUS_TRACT, PROV_CENSUS_TRACT, DX_PERSON_ZIP, CUR_PERSON_ZIP, PROV_ZIP, DX_PERSON_CITY, CUR_PERSON_CITY, PROV_CITY, HIV_FACILITY_NAME, DX_PERSON_COUNTY, CUR_PERSON_COUNTY, PROV_COUNTY, FILE_NAME, LNAME, FNAME, MNAME, MED_RECORD_NUMBER, PROV_PHONE, RISK_OTHER_TEXT, MATCH_CD, ETHNICITY, DX_PERSON_STATE, CUR_PERSON_STATE, PROV_STATE, BIRTH_COUNTRY, DX_PERSON_TELEPHONE, PERSON_CELLPHONE, PERSON_WORKPHONE, CUR_PERSON_COUNTY_NAME, CUR_PERSON_PHONE, RECV_BLOOD_PROD_COUNTRY, CONTACT_PHONE, RSH_PHONE, SSN, DX_PERSON_LONGITUDE, CUR_PERSON_LONGITUDE, PROV_LONGITUDE, CITYNO, NYC_SENT_STATENO, DOB_TEXT, RACE_CD, NYSID, ADMISSION_DATE_TEXT, INIT_HIV_DIAG_DATE_TEXT, INIT_AIDS_DIAG_DATE_TEXT, INFORMED_HIV_DATE_TEXT, INDX_INTERVIEWED_DATE_TEXT, RECV_BLOOD_PROD_DATE_TEXT, MATCHED_STATENO, HIV_DX_DATE_TEXT, AIDS_DX_DATE_TEXT, DX_PERSON_LATITUDE, CUR_PERSON_LATITUDE, PROV_LATITUDE, CURRENT_GENDER, INIT_HIV_DIAG, INIT_AIDS_DIAG, INFORMED_HIV_POS, INDX_INTERVIEWED, SWM, SWF, IDU, SEX_PARTNER_IDU, SEX_PARTNER_HIV, RECV_BLOOD_PROD, PERINATAL, RISK_OTHER, RISK_UNKNOWN, SEX_PARTNER_MSM, PS_REQUESTED, PROCESSED, NUMBEROFPARTNERS, NYC_IJR_SRC_ID, DOCUMENT_ID, CURRENT_PROCESS_STATUS, AGE, MATCH_PASS, MATCH_WEIGHT, RACE_INDIAN, RACE_BLACK, RACE_ASIAN, RACE_PACIFIC, RACE_WHITE, RACE_MULTIPLE, RACE_OTHER, RACE_UNKNOWN, PROV_SIGNED_DATE, COMPLETED_DATE, FILE_DATE, CREATE_DATE, REVIEW_DT, MATCHED_PROCESS_DATE, EHARS_IMPORT_DATE, NYC_SHIP_DATE, CREATE_UID,FLUX_MATCH_CD, FLUX_POT_STATENO, FLUX_MATCHED_STATENO, FLUX_QS_PARENT_DOC_ID, FLUX_MATCHED_PROCESS_DATE)
+values
+  (trim(upper(#{REVIEW_UID,jdbcType=VARCHAR})),trim(upper(#{DIN,jdbcType=VARCHAR})),trim(upper(#{ALT_LNAME,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_ADDRESS,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_ADDRESS,jdbcType=VARCHAR})),trim(upper(#{PROV_ADDRESS,jdbcType=VARCHAR})),trim(upper(#{PROV_NAME,jdbcType=VARCHAR})),trim(upper(#{PROV_DEPARTMENT,jdbcType=VARCHAR})),trim(upper(#{PROV_SIGNED,jdbcType=VARCHAR})),trim(upper(#{COMPLETER_FNAME,jdbcType=VARCHAR})),trim(upper(#{COMPLETER_MI,jdbcType=VARCHAR})),trim(upper(#{COMPLETER_LNAME,jdbcType=VARCHAR})),trim(upper(#{COMPLETER_TITLE,jdbcType=VARCHAR})),trim(upper(#{COMPLETER_EMAIL,jdbcType=VARCHAR})),trim(upper(#{CONTACT_LNAME,jdbcType=VARCHAR})),trim(upper(#{CONTACT_FNAME,jdbcType=VARCHAR})),trim(upper(#{CONTACT_MNAME,jdbcType=VARCHAR})),trim(upper(#{CONTACT_TITLE,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_CENSUS_TRACT,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_CENSUS_TRACT,jdbcType=VARCHAR})),trim(upper(#{PROV_CENSUS_TRACT,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_ZIP,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_ZIP,jdbcType=VARCHAR})),trim(upper(#{PROV_ZIP,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_CITY,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_CITY,jdbcType=VARCHAR})),trim(upper(#{PROV_CITY,jdbcType=VARCHAR})),trim(upper(#{HIV_FACILITY_NAME,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_COUNTY,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_COUNTY,jdbcType=VARCHAR})),trim(upper(#{PROV_COUNTY,jdbcType=VARCHAR})),trim(#{FILE_NAME,jdbcType=VARCHAR}),trim(upper(#{LNAME,jdbcType=VARCHAR})),trim(upper(#{FNAME,jdbcType=VARCHAR})),trim(upper(#{MNAME,jdbcType=VARCHAR})),trim(upper(#{MED_RECORD_NUMBER,jdbcType=VARCHAR})),trim(upper(#{PROV_PHONE,jdbcType=VARCHAR})),trim(upper(#{RISK_OTHER_TEXT,jdbcType=VARCHAR})),trim(upper(#{MATCH_CD,jdbcType=VARCHAR})),trim(upper(#{ETHNICITY,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_STATE,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_STATE,jdbcType=VARCHAR})),trim(upper(#{PROV_STATE,jdbcType=VARCHAR})),trim(upper(#{BIRTH_COUNTRY,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_TELEPHONE,jdbcType=VARCHAR})),trim(upper(#{PERSON_CELLPHONE,jdbcType=VARCHAR})),trim(upper(#{PERSON_WORKPHONE,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_COUNTY_NAME,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_PHONE,jdbcType=VARCHAR})),trim(upper(#{RECV_BLOOD_PROD_COUNTRY,jdbcType=VARCHAR})),trim(upper(#{CONTACT_PHONE,jdbcType=VARCHAR})),trim(upper(#{RSH_PHONE,jdbcType=VARCHAR})),trim(upper(#{SSN,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_LONGITUDE,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_LONGITUDE,jdbcType=VARCHAR})),trim(upper(#{PROV_LONGITUDE,jdbcType=VARCHAR})),trim(upper(#{CITYNO,jdbcType=VARCHAR})),trim(upper(#{NYC_SENT_STATENO,jdbcType=VARCHAR})),trim(upper(#{DOB_TEXT,jdbcType=VARCHAR})),trim(upper(#{RACE_CD,jdbcType=VARCHAR})),trim(upper(#{NYSID,jdbcType=VARCHAR})),trim(upper(#{ADMISSION_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{INIT_HIV_DIAG_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{INIT_AIDS_DIAG_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{INFORMED_HIV_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{INDX_INTERVIEWED_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{RECV_BLOOD_PROD_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{MATCHED_STATENO,jdbcType=VARCHAR})),trim(upper(#{HIV_DX_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{AIDS_DX_DATE_TEXT,jdbcType=VARCHAR})),trim(upper(#{DX_PERSON_LATITUDE,jdbcType=VARCHAR})),trim(upper(#{CUR_PERSON_LATITUDE,jdbcType=VARCHAR})),trim(upper(#{PROV_LATITUDE,jdbcType=VARCHAR})),trim(upper(#{CURRENT_GENDER,jdbcType=VARCHAR})),trim(upper(#{INIT_HIV_DIAG,jdbcType=VARCHAR})),trim(upper(#{INIT_AIDS_DIAG,jdbcType=VARCHAR})),trim(upper(#{INFORMED_HIV_POS,jdbcType=VARCHAR})),trim(upper(#{INDX_INTERVIEWED,jdbcType=VARCHAR})),trim(upper(#{SWM,jdbcType=VARCHAR})),trim(upper(#{SWF,jdbcType=VARCHAR})),trim(upper(#{IDU,jdbcType=VARCHAR})),trim(upper(#{SEX_PARTNER_IDU,jdbcType=VARCHAR})),trim(upper(#{SEX_PARTNER_HIV,jdbcType=VARCHAR})),trim(upper(#{RECV_BLOOD_PROD,jdbcType=VARCHAR})),trim(upper(#{PERINATAL,jdbcType=VARCHAR})),trim(upper(#{RISK_OTHER,jdbcType=VARCHAR})),trim(upper(#{RISK_UNKNOWN,jdbcType=VARCHAR})),trim(upper(#{SEX_PARTNER_MSM,jdbcType=VARCHAR})),trim(upper(#{PS_REQUESTED,jdbcType=VARCHAR})),trim(upper(#{PROCESSED,jdbcType=VARCHAR})),#{NUMBEROFPARTNERS,jdbcType=DECIMAL},#{NYC_IJR_SRC_ID,jdbcType=DECIMAL},#{DOCUMENT_ID,jdbcType=DECIMAL},#{CURRENT_PROCESS_STATUS,jdbcType=DECIMAL},#{AGE,jdbcType=DECIMAL},#{MATCH_PASS,jdbcType=DECIMAL},#{MATCH_WEIGHT,jdbcType=DECIMAL},trim(upper(#{RACE_INDIAN,jdbcType=VARCHAR})),trim(upper(#{RACE_BLACK,jdbcType=VARCHAR})),trim(upper(#{RACE_ASIAN,jdbcType=VARCHAR})),trim(upper(#{RACE_PACIFIC,jdbcType=VARCHAR})),trim(upper(#{RACE_WHITE,jdbcType=VARCHAR})),trim(upper(#{RACE_MULTIPLE,jdbcType=VARCHAR})),trim(upper(#{RACE_OTHER,jdbcType=VARCHAR})),trim(upper(#{RACE_UNKNOWN,jdbcType=VARCHAR})),FN_TO_DATE(#{PROV_SIGNED_DATE,jdbcType=VARCHAR},'MM/DD/YYYY'),FN_TO_DATE(#{COMPLETED_DATE,jdbcType=VARCHAR},'MM/DD/YYYY'),FN_TO_DATE(#{FILE_DATE,jdbcType=VARCHAR},'MM/DD/YYYY'),#{CREATE_DATE,jdbcType=DATE},#{REVIEW_DT,jdbcType=DATE},#{MATCHED_PROCESS_DATE,jdbcType=DATE}, #{EHARS_IMPORT_DATE,jdbcType=DATE}, #{NYC_SHIP_DATE,jdbcType=DATE}, trim(upper(#{CREATE_UID,jdbcType=VARCHAR})),#{FLUX_MATCH_CD, jdbcType=VARCHAR},#{FLUX_POT_STATENO, jdbcType=VARCHAR},#{FLUX_MATCHED_STATENO, jdbcType=VARCHAR},#{FLUX_QS_PARENT_DOC_ID, jdbcType=DECIMAL},#{FLUX_MATCHED_PROCESS_DATE,jdbcType=DATE})
+  
+</insert>
+    
+    <select id="getFileNames"  resultType="String">
+			select distinct(FILE_NAME) from STD_NYCIJR_DOC where REVIEW_DT is null and current_process_STatus = 17
+	</select>
+    
+      <select id="getStdNycIJRDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
+  	SELECT SSN, FNAME, LNAME, MNAME, GENDER_DESCRIPTION  GENDER,  DOB_TEXT DOB, NYSID,  DIN,  
+ BIRTH_COUNTRY, CUR_PERSON_ADDRESS PERSON_ADDRESS, CUR_PERSON_STATE PERSON_STATE, CUR_PERSON_CITY PERSON_CITY, COUNTY_NAME PERSON_COUNTY, CUR_PERSON_ZIP PERSON_ZIP, 
+ ETHNICITY_DESCRIPTION  ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  RACE_UNKNOWN, RACE_OTHER  , MED_RECORD_NUMBER , CITYNO cityNo, NYC_SENT_STATENO stateNo  
+from STD_NYCIJR_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
+where s.CURRENT_GENDER=g.GENDER_CODE (+)
+AND s.CUR_PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
+AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCUMENT_ID = #{docId} 
+  </select>
+    
+     
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.PerinatalReviewDAO">
+	
+	
+	<resultMap type="java.util.Map" id="facilityMonitoringReportData">
+		<result column="FACILITY_NAME" property="FACILITY_NAME"  jdbcType="VARCHAR"/>
+		<result column="REPORT_FROM_DATE" property="REPORT_FROM_DATE"  jdbcType="VARCHAR"/>
+		<result column="REPORT_TO_DATE" property="REPORT_TO_DATE"  jdbcType="VARCHAR"/>
+		<result column="QUARTER_NAME" property="QUARTER_NAME"  jdbcType="VARCHAR"/>
+		<result column="TOTAL_SPECIMEN" property="TOTAL_SPECIMEN"  jdbcType="VARCHAR"/>
+		<result column="TESTED_PRENATALLY" property="TESTED_PRENATALLY"  jdbcType="VARCHAR"/>
+		<result column="TESTED_PRENATALLY_PERCENT" property="TESTED_PRENATALLY_PERCENT"  jdbcType="VARCHAR"/>
+		<result column="EXPEDITED_TESTS_INDICATED" property="EXPEDITED_TESTS_INDICATED"  jdbcType="VARCHAR"/>
+		<result column="EXPEDITED_TESTS_DONE" property="EXPEDITED_TESTS_DONE"  jdbcType="VARCHAR"/>
+		<result column="EXPEDITED_TESTS_DONE_MOM" property="EXPEDITED_TESTS_DONE_MOM"  jdbcType="VARCHAR"/>
+		
+		<result column="EXPEDITED_TESTS_DONE_NEWBORN" property="EXPEDITED_TESTS_DONE_NEWBORN"  jdbcType="VARCHAR"/>
+		<result column="EXPEDITED_TEST_NOT_DONE" property="EXPEDITED_TEST_NOT_DONE"  jdbcType="VARCHAR"/>
+		<result column="EXPEDITED_TEST_NOT_DONE_PERCENT" property="EXPEDITED_TEST_NOT_DONE_PERCENT"  jdbcType="VARCHAR"/>
+		<result column="SEC_PRENATAL_DONE" property="SEC_PRENATAL_DONE"  jdbcType="VARCHAR"/>
+		<result column="SEC_PRENATAL_DONE_PERCENT" property="SEC_PRENATAL_DONE_PERCENT"  jdbcType="VARCHAR"/>
+		<result column="ATTACHMENT_A" property="ATTACHMENT_A"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="ATTACHMENT_B" property="ATTACHMENT_B"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="ATTACHMENT_C" property="ATTACHMENT_C"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="ATTACHMENT_D" property="ATTACHMENT_D"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="ATTACHMENT_E" property="ATTACHMENT_E"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="ATTACHMENT_F" property="ATTACHMENT_F"  jdbcType="VARCHAR" javaType="String"/>
+		<result column="TODAY_DATE" property="TODAY_DATE"  jdbcType="VARCHAR" javaType="String"/>
+		
+	</resultMap>
+	
+
+	
+	<select id="getFacilityNamesByBirthCriteria" parameterType="java.util.Map" resultType="java.util.Map">
+		
+			select distinct PFI, FACILITY_NAME from NBS_FACILITY_MONITORING  where FACILITY_NAME is not null
+ 
+ 
+  <if test="FACILITY_NAME != 'ALL'">
+ 	and PFI = #{FACILITY_NAME}
+ </if>
+		and ((BIRTHQTR = #{birthFirstQuarter} and BIRTHYR = #{birthFirstYear}) or (BIRTHQTR = #{birthSecondQuarter} and BIRTHYR = #{birthSecondYear}))
+							
+							order by FACILITY_NAME asc
+	
+	</select>
+	
+	<select id="getFacilityMonitoringReportDataRange" resultMap="facilityMonitoringReportData" parameterType="java.util.Map">
+	
+	<![CDATA[
+		select min(REPORT_FROM_DATE) from_date, max(REPORT_TO_DATE) to_date from NBS_FACILITY_MONITORING  where FACILITY_NAME is not null
+
+ 
+						      ]]>
+					       and ((BIRTHQTR = #{birthFirstQuarter} and BIRTHYR = #{birthFirstYear}) or (BIRTHQTR = #{birthSecondQuarter} and BIRTHYR = #{birthSecondYear})) order by BIRTHYR asc, BIRTHQTR asc
+	</select>
+	
+	
+	
+	<select id="getFacilityMonitoringReportData" resultMap="facilityMonitoringReportData" parameterType="java.util.Map">
+	
+	<![CDATA[
+		select distinct 'Q'||BIRTHQTR||' ('|| To_char(fn_to_date(REPORT_FROM_DATE, 'MM/DD/YYYY'), 'Mon')||'-'||To_char(fn_to_date(REPORT_TO_DATE, 'MM/DD/YYYY'), 'Mon')||') '||BIRTHYR "QUARTER_NAME", PFI, BIRTHQTR,  FACILITY_NAME, REPORT_FROM_DATE, REPORT_TO_DATE, TOTAL_SPECIMEN, TESTED_PRENATALLY, TESTED_PRENATALLY_PERCENT, EXPEDITED_TESTS_INDICATED, EXPEDITED_TESTS_DONE, EXPEDITED_TESTS_DONE_MOM, EXPEDITED_TESTS_DONE_NEWBORN, EXPEDITED_TEST_NOT_DONE, EXPEDITED_TEST_NOT_DONE_PERCENT,SEC_PRENATAL_DONE, SEC_PRENATAL_DONE_PERCENT, ATTACHMENT_A, ATTACHMENT_B, ATTACHMENT_C, ATTACHMENT_D, ATTACHMENT_E, ATTACHMENT_F, BIRTHYR from NBS_FACILITY_MONITORING  where FACILITY_NAME is not null
+ and PFI = #{PFI}
+ 
+						      ]]>
+					       and ((BIRTHQTR = #{birthFirstQuarter} and BIRTHYR = #{birthFirstYear}) or (BIRTHQTR = #{birthSecondQuarter} and BIRTHYR = #{birthSecondYear})) order by BIRTHYR asc, BIRTHQTR asc
+	</select>
+	
+	<select id="getPrenatalData" resultType="java.util.Map" parameterType="java.util.Map">
+		select to_char((round(sum(TESTED_PRENATALLY_PERCENT )/count(TOTAL_SPECIMEN), 0))) PRENATAL_PERCENTAGE,  to_char((round(sum(SEC_PRENATAL_DONE_PERCENT )/count(TOTAL_SPECIMEN), 0))) SEC_PRENATAL_PERCENTAGE from NBS_FACILITY_MONITORING
+		where  
+		((BIRTHQTR = #{birthFirstQuarter} and BIRTHYR = #{birthFirstYear}) or (BIRTHQTR = #{birthSecondQuarter} and BIRTHYR = #{birthSecondYear}))
+	</select>
+	
+	
+	<select id="getFacilityDesignees" parameterType="String" resultType="java.util.Map">
+		select nbs.*, Trim(To_Char(sysdate, 'Month')) || ' ' || To_Char(sysdate,'dd, yyyy') TODAY_DATE from CODED_NBS_HIV_DESIGNEES nbs where pfi = to_number(#{pfi})
+	</select>
+	
+	<select id="getFacilityAddressDetails" parameterType="String" resultType="java.util.Map">
+		select * from CODED_NBS_PFI_NAMES where pfi = to_number(#{pfi})
+	</select>
+
+	<select id="getFacilityDemographicsData" parameterType="java.util.Map" resultType="java.util.Map">
+		select pfi, facility_name, sex, labid, birthdt, medrecno from nbs_facility_demographics where pfi = #{PFI} and BIRTHQTR = #{BIRTHQTR} and BIRTHYR = #{BIRTHYR}
+	</select>
+	  
+  	
+</mapper>

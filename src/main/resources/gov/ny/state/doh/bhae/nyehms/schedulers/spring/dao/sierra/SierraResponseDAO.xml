@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.sierra.SierraResponseDAO">	
+	<select id="getLastParsedRasDocId" resultType="int">
+		select max(DOCUMENT_ID_MAX)  from RAS_SIERRA_LOG 
+	</select>	
+	
+	
+	
+	<resultMap type="java.util.Map" id="rasDocumentsToParse">
+		<result column="LAB_DOC_ID" property="LAB_DOC_ID" javaType="Integer"/>
+		<result column="GEN_SEQ" property="GEN_SEQ" javaType="String"/>
+	</resultMap>
+  
+  	<select id="getRasDocIdsToParse" parameterType="java.util.Map" resultMap="rasDocumentsToParse">
+  		  <![CDATA[
+	    
+	    select LAB_DOC_ID, GEN_SEQ  from 
+	    (select LAB_DOC_ID, GEN_SEQ  from GEN_SEQUENCE where RAS_ELIG = 'Y' and (LAB_DOC_ID > #{DOC_ID} or LAB_DOC_ID in (select DOCUMENT_ID from RAS_SIERRA_PROCESS_ERRORS where ACTIVE_FLAG = 'R')) order by lab_Doc_id asc) 
+	    where rownum < #{ROW_LIMIT}   
+	    
+	    
+	     			]]> 
+  	</select>
+  	
+  	<insert id="storeSequenceHeaderInformation" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="SEQ_RESULT_ID" keyColumn="SEQ_RESULT_ID">
+  		insert into RAS_SI_RESPONSE(SEQ_RESULT_ID, HEADER, DOCUMENT_ID, VERSION, PUBLISH_DATE, MD5, SHA521, FIRSTNA, SUB_TYPE, RUN_DATE)
+  		values(RAS_SEQ_ID.NEXTVAL, #{header, jdbcType=DECIMAL}, #{header, jdbcType=VARCHAR}, #{version, jdbcType=VARCHAR}, #{publishDate, jdbcType=VARCHAR}, #{MD5, jdbcType=VARCHAR}, #{SHA512, jdbcType=VARCHAR}, #{firstNA, jdbcType=VARCHAR}, #{subType, jdbcType=VARCHAR}, SYSDATE)
+  	</insert>	
+  	
+  	<insert id="storeValidationResults" parameterType="java.util.Map">
+  		insert into RAS_SI_VALIDATION_RESULTS(SEQ_RESULT_ID, VALIDATION_LEVEL, MESSAGE)
+  		
+  		<foreach collection="VALIDATION_RESULTS"  item="VALIDATION_RESULT" index="index" separator=" Union all ">
+			select #{SEQ_RESULT_ID}, #{VALIDATION_RESULT.level}, #{VALIDATION_RESULT.message} from dual 
+		</foreach>
+  	</insert>
+  	
+  	<insert id="storeGenSeqInfromation" parameterType="java.util.Map">
+  		Insert into RAS_SI_GENE(SEQ_RESULT_ID, GENE_SEQ_ID, GENE_NAME, ALIGNED_NA_SEQ, ALIGNED_AA_SEQ, FIRSTAA, LASTAA, FIRSTNA, LASTNA, MATCH_PCT)
+  		values(#{SEQ_RESULT_ID} , #{GENE_SEQ_ID, jdbcType=VARCHAR} ,  #{name, jdbcType=VARCHAR} ,  #{alignedNAsLine, jdbcType=VARCHAR},  #{refAALine, jdbcType=VARCHAR},  #{firstAA, jdbcType=VARCHAR}
+						   ,  #{lastAA, jdbcType=VARCHAR}
+						   ,  #{firstNA, jdbcType=VARCHAR}
+						   ,  #{lastNA, jdbcType=VARCHAR}
+						   ,  #{matchPcnt, jdbcType=VARCHAR})
+  	</insert>	
+		
+  	<insert id="storeMutation" parameterType="java.util.Map">
+  		Insert into RAS_SI_MUTATION(SEQ_RESULT_ID, GENE_SEQ_ID, MUTATION_SEQ, MUTATION_TYPE, MUTATION_NAME, WILD_TYPE, POSITION, NUCLE_ACID, TRANSLATEDAA, INSERTEDNAS, ISINSERTION, ISDELETION, ISINDEL, ISAMBIGUOUS, ISAPOBECMUTATION, ISAPOBECDRM, HASSTOP, ISUNUSUAL)
+  		values(#{SEQ_RESULT_ID} ,  #{GENE_SEQ_ID, jdbcType=VARCHAR} , MUTATION_SEQ.NEXTVAL ,  #{MUTATION_TYPE, jdbcType=VARCHAR} ,  #{NAME, jdbcType=VARCHAR} ,  #{WILD_TYPE, jdbcType=VARCHAR},  #{POSITION, jdbcType=VARCHAR},  #{NUCLE_ACID, jdbcType=VARCHAR},  #{TRANSLATEDAA, jdbcType=VARCHAR},  #{INSERTEDNAS, jdbcType=VARCHAR},  #{ISINSERTION, jdbcType=VARCHAR},  #{ISDELETION, jdbcType=VARCHAR},  #{ISINDEL, jdbcType=VARCHAR},  #{ISAMBIGUOUS, jdbcType=VARCHAR},  #{ISAPOBECMUTATION, jdbcType=VARCHAR},  #{ISAPOBECDRM, jdbcType=VARCHAR},  #{HASSTOP, jdbcType=VARCHAR},  #{ISUNUSUAL, jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<resultMap type="java.util.Map" id="drugCodeMap">
+		<result column="ID" property="ID" javaType="Integer"/>
+		<result column="ABBREV" property="ABBREV" javaType="String"/>
+	</resultMap>
+  
+  	
+  	<select id="getDrugCodedList" resultMap="drugCodeMap">
+  	select ID, ABBREV  from RAS3_DRUG 
+  	</select>
+  	
+  	<insert id="storeDrugDetails" parameterType="java.util.Map">
+  	
+  	Insert into RAS_SI_DRUG_SCORE(SEQ_RESULT_ID, GENE_SEQ_ID, DRUG_ID, DRUG_CODE, DRUG_CLASS_TEXT, DRUG_CLASS, SCORE, RESISTANCE_LEVEL, LEVEL_TEXT, SIR, GENE_NAME)
+  	values(#{SEQ_RESULT_ID} ,  #{GENE_SEQ_ID, jdbcType=VARCHAR} ,  #{DRUG_ID, jdbcType=VARCHAR} , #{DRUG_CODE, jdbcType=VARCHAR} , #{NAME, jdbcType=VARCHAR} , #{TYPE, jdbcType=VARCHAR} , #{SCORE, jdbcType=VARCHAR} , #{RESISTANCE_LEVEL, jdbcType=VARCHAR} , #{LEVEL_TEXT, jdbcType=VARCHAR} , #{SIR, jdbcType=VARCHAR} , #{GENE_NAME, jdbcType=VARCHAR})
+  	
+  	</insert>
+  	
+  	<insert id="storeDrugPartialData" parameterType="java.util.Map">
+  		Insert into RAS_SI_DRUG_PARTIAL_SCORE(SEQ_RESULT_ID, DRUG_ID, MUTATION, PARTIAL_SCORE) 
+	        values(#{SEQ_RESULT_ID}, #{DRUG_ID, jdbcType=VARCHAR}, #{MUTATION_TEXT, jdbcType=VARCHAR}, #{SCORE, jdbcType=VARCHAR})
+  	</insert>
+  	
+  	<insert id="addErrorDocument" parameterType="java.util.Map">
+  		insert into RAS_SIERRA_PROCESS_ERRORS(DOCUMENT_ID, ERROR_DESC, ACTIVE_FLAG, CREATE_ID, CREATE_DATE)
+  		values(#{DOCUMENT_ID}, #{ERROR_DESC}, #{ACTIVE_FLAG}, #{CREATE_ID}, sysdate)
+  	
+  	 </insert>
+
+       
+  	 <insert id="addSierraLoadLog" parameterType="java.util.Map">
+  	 	insert into RAS_SIERRA_LOG(DOCUMENT_ID_MIN, DOCUMENT_ID_MAX, NO_OF_ERRORS, TOTAL_NO_RECORDS, CREATE_DATE, CREATE_ID)
+  	 	values(#{DOCUMENT_ID_MIN, jdbcType=DECIMAL}, #{DOCUMENT_ID_MAX, jdbcType=DECIMAL}, #{NO_OF_ERRORS, jdbcType=DECIMAL}, #{TOTAL_NO_RECORDS, jdbcType=DECIMAL}, sysdate, 'NYEHMS')
+  	 
+  	 </insert>
+			  	 
+  	 <select id="loadActiveFailedRasDocuments" resultType="org.json.simple.JSONObject">
+  	 <![CDATA[
+  	 select DOCUMENT_ID "documentId", gen.GEN_SEQ "sequence", 'HIV_LAB' "documentType", ERROR_DESC "errorDesc", TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') "createdDate"   from RAS_SIERRA_PROCESS_ERRORS errors, gen_sequence gen where gen.lab_doc_id = errors.document_id and ACTIVE_FLAG = 'Y' and REPRISE_FLAG is null
+  	 	]]>
+  	 </select>
+  	 
+  	 <select id="isLabDocIdExist" parameterType="Integer" resultType="int">
+  	 	select count(*) from RAS_SI_RESPONSE where document_id = #{rasDocId}
+  	 </select>
+  	 
+  	 <select id="isLabDocIdExistInErrorTable" parameterType="Integer" resultType="int">
+  	 <![CDATA[
+  	 		select count(*) from RAS_SIERRA_PROCESS_ERRORS where document_id = #{rasDocId} and ACTIVE_FLAG = 'R'
+  	 		]]>
+  	 </select>
+  	 
+  	 <update id="updateRASSelectedDocumentStatus" parameterType="java.util.Map" >
+  			update 	 RAS_SIERRA_PROCESS_ERRORS set 	COMMENTS = #{p_comments, jdbcType=VARCHAR}, UPDATE_ID = #{p_user_id}, UPDATE_DATE = SYSDATE, 
+  			<choose>
+  				<when test="ACTIVE_FLAG_STATUS == 'REPRISE'">
+  					ACTIVE_FLAG = 'R'
+  				</when>
+  				<otherwise>
+  					ACTIVE_FLAG = 'D'
+  				</otherwise>
+  				
+  			</choose>
+  			
+  			where ACTIVE_FLAG = 'Y' and DOCUMENT_ID in 
+			<foreach  collection="p_document_list"  item="DOCUMENT_ID"  open="(" separator="," close=")">
+	        	#{DOCUMENT_ID}
+	    	</foreach>
+  			
+  	 </update>
+  	 
+  	 <update id="processRepriseDocuemnt" parameterType="Integer">
+  	 	update 	 RAS_SIERRA_PROCESS_ERRORS set  ACTIVE_FLAG = 'R_P' where document_id = #{rasDocId}
+  	 </update>
+  	 
+  	 
+  	 <insert id="loadMissingRasDocuments" >
+  	 
+  	 insert into ras_sierra_process_Errors (DOCUMENT_ID, ERROR_DESC, ACTIVE_FLAG, UPDATE_DATE, UPDATE_ID, 
+    CREATE_ID, CREATE_DATE)
+select lab_doc_id, 'missing document_id', 'R', null, null, 
+    'NYEHMS', SYSDATE from gen_sequence seq where lab_doc_id between 89073264 and (
+select max(DOCUMENT_ID_MAX) from  RAS_SIERRA_LOG) and ras_elig = 'Y'
+and not exists (select 1 from ras_si_response where document_id = seq.lab_doc_id)
+  	 
+  	 
+  	 </insert>
+  	 
+  	 
+  	 	<select id="loadNewSierraDataToFinalTable" >
+			<![CDATA[
+				BEGIN
+    FOR i IN (SELECT Distinct document_id
+                FROM ras_si_response a
+               WHERE NOT EXISTS (SELECT 1 FROM sierra_resistance_response b WHERE b.document_id = a.document_id)
+            )
+    LOOP
+        INSERT INTO sierra_resistance_response
+        (stateno, document_id, seq_result_id, run_date, algo, sub_type, pr_aligned_na_seq, pr_aligned_aa_seq, rt_aligned_na_seq, rt_aligned_aa_seq, in_aligned_na_seq, in_aligned_aa_seq, pr_major_muts_found, pr_acc_muts_found, pr_other_muts_found, rt_nrti_muts_found, rt_nnrti_muts_found, rt_other_muts_found, in_major_muts_found, in_acc_muts_found, in_other_muts_found, nfv_drug_class, nfv_score, nfv_resistance_level, nfv_level_text, nfv_sir, nfv_scoredmuts, abc_drug_class, abc_score, abc_resistance_level, abc_level_text, abc_sir, abc_scoredmuts, ddi_drug_class, ddi_score, ddi_resistance_level, ddi_level_text, ddi_sir, ddi_scoredmuts, ftc_drug_class, ftc_score, ftc_resistance_level, ftc_level_text, ftc_sir, ftc_scoredmuts, threetc_drug_class, threetc_score, threetc_resistance_level, threetc_level_text, threetc_sir, threetc_scoredmuts, d4t_drug_class, d4t_score, d4t_resistance_level, d4t_level_text, d4t_sir, d4t_scoredmuts, tdf_drug_class, tdf_score, tdf_resistance_level, tdf_level_text, tdf_sir, tdf_scoredmuts, azt_drug_class, azt_score, azt_resistance_level, azt_level_text, azt_sir, azt_scoredmuts, efv_drug_class, efv_score, efv_resistance_level, efv_level_text, efv_sir, efv_scoredmuts, nvp_drug_class, nvp_score, nvp_resistance_level, nvp_level_text, nvp_sir, nvp_scoredmuts, atv_r_drug_class, atv_r_score, atv_r_resistance_level, atv_r_level_text, atv_r_sir, atv_r_scoredmuts, idv_r_drug_class, idv_r_score, idv_r_resistance_level, idv_r_level_text, idv_r_sir, idv_r_scoredmuts, lpv_r_drug_class, lpv_r_score, lpv_r_resistance_level, lpv_r_level_text, lpv_r_sir, lpv_r_scoredmuts, sqv_r_drug_class, sqv_r_score, sqv_r_resistance_level, sqv_r_level_text, sqv_r_sir, sqv_r_scoredmuts, tpv_r_drug_class, tpv_r_score, tpv_r_resistance_level, tpv_r_level_text, tpv_r_sir, tpv_r_scoredmuts, drv_r_drug_class, drv_r_score, drv_r_resistance_level, drv_r_level_text, drv_r_sir, drv_r_scoredmuts, etr_drug_class, etr_score, etr_resistance_level, etr_level_text, etr_sir, etr_scoredmuts, fpv_r_drug_class, fpv_r_score, fpv_r_resistance_level, fpv_r_level_text, fpv_r_sir, fpv_r_scoredmuts, ral_drug_class, ral_score, ral_resistance_level, ral_level_text, ral_sir, ral_scoredmuts, evg_drug_class, evg_score, evg_resistance_level, evg_level_text, evg_sir, evg_scoredmuts, dtg_drug_class, dtg_score, dtg_resistance_level, dtg_level_text, dtg_sir, dtg_scoredmuts, rpv_drug_class, rpv_score, rpv_resistance_level, rpv_level_text, rpv_sir, rpv_scoredmuts, dor_drug_class, dor_score, dor_resistance_level, dor_level_text, dor_sir, dor_scoredmuts, bic_drug_class, bic_score, bic_resistance_level, bic_level_text, bic_sir, bic_scoredmuts, CAB_DRUG_CLASS, CAB_SCORE, CAB_RESISTANCE_LEVEL, CAB_LEVEL_TEXT, CAB_SIR, CAB_SCOREDMUTS, piclassres, nrticlassres, nnrticlassres, iniclassres, classres, gene_name)
+        SELECT stateno, document_id, seq_result_id, run_date, algo, sub_type, pr_aligned_na_seq, pr_aligned_aa_seq, rt_aligned_na_seq, rt_aligned_aa_seq, in_aligned_na_seq, in_aligned_aa_seq, pr_major_muts_found, pr_acc_muts_found, pr_other_muts_found, rt_nrti_muts_found, rt_nnrti_muts_found, rt_other_muts_found, in_major_muts_found, in_acc_muts_found, in_other_muts_found, nfv_drug_class, nfv_score, nfv_resistance_level, nfv_level_text, nfv_sir, nfv_scoredmuts, abc_drug_class, abc_score, abc_resistance_level, abc_level_text, abc_sir, abc_scoredmuts, ddi_drug_class, ddi_score, ddi_resistance_level, ddi_level_text, ddi_sir, ddi_scoredmuts, ftc_drug_class, ftc_score, ftc_resistance_level, ftc_level_text, ftc_sir, ftc_scoredmuts, threetc_drug_class, threetc_score, threetc_resistance_level, threetc_level_text, threetc_sir, threetc_scoredmuts, d4t_drug_class, d4t_score, d4t_resistance_level, d4t_level_text, d4t_sir, d4t_scoredmuts, tdf_drug_class, tdf_score, tdf_resistance_level, tdf_level_text, tdf_sir, tdf_scoredmuts, azt_drug_class, azt_score, azt_resistance_level, azt_level_text, azt_sir, azt_scoredmuts, efv_drug_class, efv_score, efv_resistance_level, efv_level_text, efv_sir, efv_scoredmuts, nvp_drug_class, nvp_score, nvp_resistance_level, nvp_level_text, nvp_sir, nvp_scoredmuts, atv_r_drug_class, atv_r_score, atv_r_resistance_level, atv_r_level_text, atv_r_sir, atv_r_scoredmuts, idv_r_drug_class, idv_r_score, idv_r_resistance_level, idv_r_level_text, idv_r_sir, idv_r_scoredmuts, lpv_r_drug_class, lpv_r_score, lpv_r_resistance_level, lpv_r_level_text, lpv_r_sir, lpv_r_scoredmuts, sqv_r_drug_class, sqv_r_score, sqv_r_resistance_level, sqv_r_level_text, sqv_r_sir, sqv_r_scoredmuts, tpv_r_drug_class, tpv_r_score, tpv_r_resistance_level, tpv_r_level_text, tpv_r_sir, tpv_r_scoredmuts, drv_r_drug_class, drv_r_score, drv_r_resistance_level, drv_r_level_text, drv_r_sir, drv_r_scoredmuts, etr_drug_class, etr_score, etr_resistance_level, etr_level_text, etr_sir, etr_scoredmuts, fpv_r_drug_class, fpv_r_score, fpv_r_resistance_level, fpv_r_level_text, fpv_r_sir, fpv_r_scoredmuts, ral_drug_class, ral_score, ral_resistance_level, ral_level_text, ral_sir, ral_scoredmuts, evg_drug_class, evg_score, evg_resistance_level, evg_level_text, evg_sir, evg_scoredmuts, dtg_drug_class, dtg_score, dtg_resistance_level, dtg_level_text, dtg_sir, dtg_scoredmuts, rpv_drug_class, rpv_score, rpv_resistance_level, rpv_level_text, rpv_sir, rpv_scoredmuts, dor_drug_class, dor_score, dor_resistance_level, dor_level_text, dor_sir, dor_scoredmuts, bic_drug_class, bic_score, bic_resistance_level, bic_level_text, bic_sir, bic_scoredmuts, CAB_DRUG_CLASS, CAB_SCORE, CAB_RESISTANCE_LEVEL, CAB_LEVEL_TEXT, CAB_SIR, CAB_SCOREDMUTS, piclassres, nrticlassres, nnrticlassres, iniclassres, classres, gene_name
+          FROM sierra_resistance_stg_vw
+         WHERE document_id = i.document_id;
+         
+        COMMIT;
+    END LOOP;
+	END;
+       ]]>
+	</select>
+</mapper>
+  

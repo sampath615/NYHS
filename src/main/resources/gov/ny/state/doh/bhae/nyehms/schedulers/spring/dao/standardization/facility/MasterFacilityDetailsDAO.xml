@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDetailsDAO">
+ <resultMap id="masterFacilitiesWithSubFacilities" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityDetailsVO" >
+    <result column="MASTER_FACILITY_ID" property="masterFacilityId" jdbcType="DECIMAL" />
+    <result column="MASTER_FAC_TYPE_CODE" property="masterFacilityTypeCode" jdbcType="VARCHAR" />
+    <result column="MASTER_FACILITY_NAME"  property="masterFacilityName"  jdbcType="VARCHAR" />
+    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO" column="MASTER_FACILITY_ID" property="subFacilities">
+	    <id column="SUB_FACILITY_ID"  property="subFacilityId" jdbcType="DECIMAL" />
+	    <result column="FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />    	
+	    <result column="FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
+	    <result column="FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
+	    <result column="COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />  
+	    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+	    <result column="CITY" property="city" jdbcType="VARCHAR" />
+	    <result column="STATE" property="state" jdbcType="VARCHAR" />
+	    <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR" />  	
+    	<result column="NPI" property="facilityNpi" jdbcType="VARCHAR" />
+	    <collection ofType="String" column="SUB_FACILITY_ID" property="phone">
+    		<result column="PHONE" property="phone" jdbcType="VARCHAR" />	  
+    	</collection>
+	    <collection property="rawFacilities" column="SUB_FACILITY_ID" ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO">
+	    	<id column="RAW_SUB_FACILITY_ID" property="rawSubFacilityId" jdbcType="DECIMAL" />
+		    <result column="RAW_FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />
+		    <result column="RAW_FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
+		    <result column="RAW_FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
+		    <result column="RAW_ADDRESS" property="address" jdbcType="VARCHAR" />
+		    <result column="RAW_CITY" property="city" jdbcType="VARCHAR" />
+		    <result column="RAW_STATE" property="state" jdbcType="VARCHAR" />
+		    <result column="RAW_ZIPCODE" property="zipcode" jdbcType="VARCHAR" />
+		    <result column="RAW_PLUS4" property="plus4" jdbcType="VARCHAR" />
+		    <result column="RAW_PHONE" property="phone" jdbcType="VARCHAR" />
+		    <result column="RAW_COUNTY_CD" property="countyFips" jdbcType="VARCHAR" />
+		    <result column="RAW_NPI" property="npi" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+  
+  <resultMap id="subFacilitiesWithRawFacilities" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO" >
+        <result column="SUB_FACILITY_ID"  property="subFacilityId" jdbcType="DECIMAL" />
+	    <result column="FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />    	
+	    <result column="FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
+	    <result column="FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
+	    <result column="COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />  
+	    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+	    <result column="CITY" property="city" jdbcType="VARCHAR" />
+	    <result column="STATE" property="state" jdbcType="VARCHAR" />
+	    <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR" />  	
+    	<result column="NPI" property="facilityNpi" jdbcType="VARCHAR" />
+	    <collection ofType="String" column="SUB_FACILITY_ID" property="phone">
+    		<result column="PHONE" property="phone" jdbcType="VARCHAR" />	  
+    	</collection>
+	    <collection property="rawFacilities" column="SUB_FACILITY_ID" ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO">
+	    	<id column="RAW_SUB_FACILITY_ID" property="rawSubFacilityId" jdbcType="DECIMAL" />
+		    <result column="RAW_FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />
+		    <result column="RAW_FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
+		    <result column="RAW_FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
+		    <result column="RAW_ADDRESS" property="address" jdbcType="VARCHAR" />
+		    <result column="RAW_CITY" property="city" jdbcType="VARCHAR" />
+		    <result column="RAW_STATE" property="state" jdbcType="VARCHAR" />
+		    <result column="RAW_ZIPCODE" property="zipcode" jdbcType="VARCHAR" />
+		    <result column="RAW_PLUS4" property="plus4" jdbcType="VARCHAR" />
+		    <result column="RAW_PHONE" property="phone" jdbcType="VARCHAR" />
+		    <result column="RAW_COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />
+		    <result column="RAW_NPI" property="npi" jdbcType="VARCHAR" />
+	    </collection>
+  </resultMap>
+  
+  
+  
+  
+  
+  <select id="getMasterFacilitiesWithSubFacilities" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_facility_search (
+      #{p_master_fac_name,jdbcType=VARCHAR, mode=IN},    
+      #{p_sub_fac_name,jdbcType=VARCHAR, mode=IN},
+      #{p_sub_fac_dept,jdbcType=VARCHAR, mode=IN},
+      #{p_county_fips,jdbcType=VARCHAR, mode=IN},
+      #{p_address,jdbcType=VARCHAR, mode=IN},
+      #{p_city,jdbcType=VARCHAR, mode=IN},
+      #{p_state,jdbcType=VARCHAR, mode=IN},
+      #{p_zipcode,jdbcType=VARCHAR, mode=IN},
+      #{p_plus4,jdbcType=VARCHAR, mode=IN},
+      #{p_phone,jdbcType=VARCHAR, mode=IN},
+      #{p_sub_fac_npi,jdbcType=VARCHAR, mode=IN},
+      #{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=masterFacilitiesWithSubFacilities}
+		)}
+  </select>
+  
+   <select id="getSubFacListForSubIds" parameterType="java.util.Map" resultMap="masterFacilitiesWithSubFacilities">
+  	select mf.MASTER_FACILITY_ID,mf.MASTER_FACILITY_NAME ,
+    sf.SUB_FACILITY_ID,sf.FACILITY_TYPE_CODE,sf.FACILITY_NAME,rf.RAW_SUB_FACILITY_ID,rf.facility_name from master_facility mf,sub_facility sf, raw_facility rf    where mf.master_facility_id=sf.master_facility_id and sf.sub_facility_id = rf.sub_facility_id and sf.sub_facility_id in  
+	<foreach item="subFacilityId" index="index" collection="subIdsList"
+            open="(" separator="," close=")">
+            #{subFacilityId}
+        </foreach>
+   </select>
+
+  <select id="getFacilityDetailsByMasterFacility" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_fac_search_by_master (
+      #{p_master_fac_name,jdbcType=VARCHAR, mode=IN},
+      #{p_facilities_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=masterFacilitiesWithSubFacilities}
+	)}
+  </select>
+  <select id="getFacilityDetailsBySubFacility" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_fac_search_by_sub (
+      #{p_facname,jdbcType=VARCHAR, mode=IN},
+      #{p_fac_dept,jdbcType=VARCHAR, mode=IN},
+      #{p_county,jdbcType=VARCHAR, mode=IN},
+      #{p_address,jdbcType=VARCHAR, mode=IN},
+      #{p_city,jdbcType=VARCHAR, mode=IN},
+      #{p_state,jdbcType=VARCHAR, mode=IN},
+      #{p_zipcode,jdbcType=VARCHAR, mode=IN},
+      #{p_phone,jdbcType=VARCHAR, mode=IN},
+      #{p_npi,jdbcType=VARCHAR, mode=IN},
+      #{p_facilities_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=masterFacilitiesWithSubFacilities}
+	)}
+  </select>
+  <select id="getFacilityDetailsByRawSubFacility" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_fac_search_by_raw (
+      #{p_facname,jdbcType=VARCHAR, mode=IN},
+      #{p_fac_dept,jdbcType=VARCHAR, mode=IN},
+      #{p_address,jdbcType=VARCHAR, mode=IN},
+      #{p_city,jdbcType=VARCHAR, mode=IN},
+      #{p_state,jdbcType=VARCHAR, mode=IN},
+      #{p_zipcode,jdbcType=VARCHAR, mode=IN},
+      #{p_phone,jdbcType=VARCHAR, mode=IN},
+      #{p_npi,jdbcType=VARCHAR, mode=IN},
+      #{p_facilities_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=masterFacilitiesWithSubFacilities}
+	)}
+  </select>
+  
+  
+  <select id="getAssignmentFacilityDetails" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO">
+  
+  select RAW_SUB_FACILITY_ID rawSubFacilityId, FACILITY_TYPE_CODE facilityTypeCode, FACILITY_NAME facilityName, FACILITY_DEPARTMENT facilityDepartment, ADDRESS address,
+  		CITY city, STATE state, ZIPCODE zipcode, PLUS4 plus4, PHONE phone, COUNTY_FIPS countyFips, NPI npi from RAW_FACILITY   
+  		
+  		<trim prefix="where" suffixOverrides="and">
+  			<if test="p_facname != null">
+  				FACILITY_NAME like #{p_facname} and
+  			</if>
+  			<if test="p_fac_dept != null">
+  				FACILITY_DEPARTMENT like #{p_fac_dept}  and
+  			</if>
+  			<if test="p_county != null">
+  				COUNTY_FIPS like #{p_county}  and
+  			</if>
+  			<if test="p_address != null">
+  				ADDRESS like #{p_address}  and
+  			</if>
+  			<if test="p_city != null">
+  				CITY like #{p_city}  and
+  			</if>
+  			<if test="p_state != null">
+  				STATE like #{p_state}  and
+  			</if>
+  			<if test="p_zipcode != null">
+  				ZIPCODE like #{p_zipcode}  and
+  			</if>
+  			<if test="p_plus4 != null">
+  				PLUS4 like #{p_plus4}  and
+  			</if>
+  			<if test="p_phone != null">
+  				PHONE like #{p_phone}  and
+  			</if>
+  			<if test="p_npi != null">
+  				NPI like #{p_npi} 
+  			</if>
+  		
+  		</trim>
+  	
+		    	     
+  </select>
+</mapper>

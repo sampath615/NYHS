@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabProcessDAO">
+
+
+	<resultMap id="getFilterConditionsByFilterTypesMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FilterTypeAndFilterConditionsVO" >
+	    <result column="FILTER_TYPE" property="FILTER_TYPE" jdbcType="DECIMAL" />
+	    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FilterConditionsVO" column="FILTER_TYPE" property="filterConditions">
+		     <id column="FILTER_NUMBER"  property="FILTER_NUMBER" jdbcType="DECIMAL" />
+		<collection ofType="org.json.simple.JSONObject" column="FILTER_NUMBER" property="filterConditions">
+		     <result column="CONDITION" property="CONDITION" jdbcType="VARCHAR" />
+		     <result column="FIELD_NAME" property="FIELD_NAME" jdbcType="VARCHAR" />
+		     <result column="VALUE" property="VALUE" jdbcType="VARCHAR" />
+		     <result column="OPERATOR" property="OPERATOR" jdbcType="VARCHAR" />
+		</collection>
+		</collection>
+  	</resultMap>
+	
+	
+	
+	<select id="getFilterConditionsByFilterTypes" parameterType="java.util.Map"  resultMap="getFilterConditionsByFilterTypesMap">
+	
+		SELECT pfi,FILTER_NUMBER, FILTER_TYPE, CONDITION_ID,FIELD_NAME,CONDITION,NVL(VALUE,'') VALUE,NVL(OPERATOR,' ') OPERATOR, FILTER_FLAG_ACTIVE FROM   NYEHMS_PROCESS_FILTER_VW where 
+		FILTER_FLAG_ACTIVE ='Y' and PFI in 
+            <foreach item="pfi" index="index" collection="pfiList"
+            open="(" separator="," close=")">
+            	#{pfi}
+        	</foreach>   
+        	
+        	<if test="filterTypes != null" >
+        	and
+        	 
+				FILTER_TYPE in 
+			        <foreach item="filterType" index="index" collection="filterTypes"
+			            open="(" separator="," close=")">
+			            #{filterType}
+			        </foreach>
+			 </if>
+			 
+			 <if test="filterNumbers != null" >
+        	and
+        	 
+				FILTER_NUMBER in 
+			        <foreach item="filterNumber" index="index" collection="filterNumbers"
+			            open="(" separator="," close=")">
+			            #{filterNumber}
+			        </foreach>
+			 </if>  order by FILTER_TYPE, FILTER_NUMBER , OPERATOR DESC 
+	</select>
+	
+	<select id="checkDataAgainstQueryConditions" parameterType="java.util.Map"  resultType="int">
+		select count(*) from RAW_HIV_ECLRS_DOC where DOCUMENT_ID = #{documentId} and MSHLABPFI = #{pfi} and (${queryCondition})
+	</select>
+	
+	<select id="getFilterTypeConditions" resultType="java.util.Map">
+	
+		select FILTER_TYPE_CODE, FILTER_TYPE_DESC from CODED_PROCESS_FILTER_TYPE order by FILTER_TYPE_DESC asc
+	</select>
+	
+	<select id="getPfiLabNames" resultType="java.util.Map">
+		SELECT clia, pfi,NVL(lab_name,' ') lab_name FROM lab_physical_facility WHERE flag_active = 'Y' order by lab_name asc		
+	</select>
+	
+	<select id="getBypassErrorCodes" parameterType="int" resultType="String">
+		SELECT distinct ERROR_CODE
+  FROM NYEHMS_PROCESS_ERRORS_DETAIL
+ WHERE     BYPASS_ERROR = 'Y'
+       AND error_id IN
+               (SELECT error_id
+    FROM nyehms_process_errors
+   WHERE document_id = #{documentId}
+     AND process_status IN (6, 15) )  
+	</select>	
+</mapper>
+

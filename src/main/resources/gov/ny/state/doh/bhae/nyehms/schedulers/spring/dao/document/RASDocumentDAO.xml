@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.RASDocumentDAO">
+
+	    <select id="getRASDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RASDocVO">
+	 	<![CDATA[
+			SELECT std.DOCUMENT_ID, 
+				PDOC.STATENO MATCHED_STATENO,
+				FIRST_NAME, 
+				MIDDLE_NAME, 
+				LAST_NAME, 
+		   		to_char(DOB, 'MM/DD/YYYY') DOB,           				
+				VSEQID, 
+		   		to_char(VSEQCREATIONDATE, 'MM/DD/YYYY') VSEQCREATIONDATE,           				
+				RECORDS_GROUPED_COUNT, 
+				RESISTANCE_DOC_ID_1, 
+		   		to_char(RESISTANCE_TEST_DATE_1, 'MM/DD/YYYY') RESISTANCE_TEST_DATE_1,        				
+				RESISTANCE_DOC_ID_2, 
+		   		to_char(RESISTANCE_TEST_DATE_2, 'MM/DD/YYYY') RESISTANCE_TEST_DATE_2,     
+				RESISTANCE_DOC_ID_3, 
+		   		to_char(RESISTANCE_TEST_DATE_3, 'MM/DD/YYYY') RESISTANCE_TEST_DATE_3,     
+				GENESFOUNDTEXT, 
+				PHYLOSUBTYPE, 
+				RESISTANCE_DRUG_CLASS_PR, 
+				RESISTANCE_DRUG_CLASS_NRTI, 
+				RESISTANCE_DRUG_CLASS_NNRTI, 
+				RESISTANCE_DRUG_CLASS_IN
+			FROM STD_RAS_DOC std
+			INNER JOIN document_locator D
+			ON (std.DOCUMENT_ID = D.DOCUMENT_ID and std.DOCUMENT_ID = #{documentId})
+			LEFT OUTER JOIN person_doc_association PDOC
+			  ON (std.DOCUMENT_ID = PDOC.DOCUMENT_ID and PDOC.DISSASSOCIATION_DATE is null)
+		]]>	
+    </select>	
+		
+		
+		
+	    <select id="getSierraResponseData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RASDocVO">
+	 	<![CDATA[
+	 	
+	 	select FNAME FIRST_NAME, LNAME LAST_NAME, MNAME MIDDLE_NAME,  DOB_TEXT DOB, SEQ_RESULT_ID, response.DOCUMENT_ID, to_char(hiv.CALC_COLLECTION_DATE, 'MM/DD/YYYY') COLLECTION_DATE,  SUB_TYPE PHYLOSUBTYPE from RAS_SI_RESPONSE response, std_hiv_Eclrs_Doc hiv 
+	 	where response.document_id =  #{documentId} 
+		and response.document_id = hiv.document_id
+
+		]]>	
+    </select>	
+	
+	<select id="getRASDocGeneNames" parameterType="int" resultType="String">
+	 	<![CDATA[
+	 	
+				 SELECT LISTAGG(gene_name, '_') WITHIN GROUP (ORDER BY seq_result_id) AS description
+			FROM ras_si_gene where seq_Result_id = #{SEQ_RESULT_ID}  
+
+		]]>	
+    </select>	
+    
+    	<select id="getRASDocDrugClasses" parameterType="int" resultType="String">
+	 	<![CDATA[
+	 	
+				select distinct drug_Class from ras_si_drug_score where ((resistance_level > 3 and (DRUG_CLASS in ('PI', 'NRTI', 'NNRTI') )) or (resistance_level > 2 and (DRUG_CLASS in ('INSTI')))) and  seq_Result_id = #{SEQ_RESULT_ID}
+
+		]]>	
+    </select>	
+	
+	
+    <select id="isDocumentLinked" parameterType="int" resultType="int">
+			SELECT count(*) as isLinked FROM GEN_SEQUENCE WHERE LAB_DOC_ID = #{documentId} and RAS_ELIG = 'Y' and VLINK_DATE is not null
+	</select>
+	
+	<update id="updateGenSeqRasElig" parameterType="java.util.Map">
+			UPDATE GEN_SEQUENCE SET RAS_ELIG = #{rasElig}, VLINK_DATE = null WHERE LAB_DOC_ID = #{documentId}
+	</update>
+	
+    <select id="getLinkedRecCount" parameterType="int" resultType="int">
+			SELECT BHAEGENESUM  FROM RASSEQUENCELINKS WHERE LAB_DOC_ID = #{documentId}
+	</select>	
+	
+	<update id="updateRasSeqLinkStatus" parameterType="java.util.Map">
+			UPDATE RASSEQUENCELINKS SET VSEQSTATUS = 2, VSEQDEACTIVATIONDATE = SYSDATE, VSEQDEACTIVATIONUSER = #{user_id}, VSEQDEACTIVATIONREASON = 'RES_DEL_EDIT'   
+			WHERE VSEQID in ( SELECT VSEQID FROM RASSEQUENCELINKS  WHERE LAB_DOC_ID = #{documentId})		
+	</update>
+	
+	<update id="updateStdRasDoc" parameterType="int">
+			UPDATE STD_RAS_DOC SET CURRENT_PROCESS_STATUS = 9 WHERE CURRENT_PROCESS_STATUS = 5 and (RESISTANCE_DOC_ID_1 = #{documentId} or RESISTANCE_DOC_ID_2 = #{documentId} or RESISTANCE_DOC_ID_3 = #{documentId})
+	</update>
+	
+    <select id="getLinkedResDocs" parameterType="int" resultType="int">
+			SELECT LAB_DOC_ID  FROM RASSEQUENCELINKS WHERE VSEQID = ( SELECT VSEQID FROM RASSEQUENCELINKS  WHERE LAB_DOC_ID = #{documentId} and VSEQSTATUS = 1 )
+	</select>		
+		
+</mapper>

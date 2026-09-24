@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SSDMDocumentDAO">	
+ 
+    <select id="getSSDMDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO">
+		 		<![CDATA[
+		 		
+		 		SELECT
+          pdoc.STATENO,
+          pdoc.DISCARD_STATUS,
+			std.DOCUMENT_ID,
+			std.SSDM_SRC_ID,
+			std.SSN,
+			std.FNAME,
+			std.MNAME,
+			std.LNAME,
+			std.SUFFIX,
+			std.DOB_TEXT,
+			std.DOD_TEXT,
+			std.BIRTH_YEAR,
+			std.AGE_AT_DEATH,
+			std.PERSON_STATE_AT_DEATH,
+			std.PERSON_ZIP_AT_DEATH,
+			std.PERSON_COUNTY_AT_DEATH,
+			std.EHARS_IMPORT_DATE,
+			std.SSDM_FILE,
+			std.ORIG_LNAME 
+			,D.PARENT_DOCUMENT_ID  
+                    from std_ssdm_doc std LEFT OUTER JOIN  person_doc_association pdoc
+                   
+                    ON (std.document_id = pdoc.document_id
+                 AND pdoc.dissassociation_date IS NULL)
+                 
+                  INNER JOIN document_locator D
+             ON std.document_id=d.document_id
+              
+                 WHERE std.DOCUMENT_ID = #{documentId}
+                 	
+		 			]]>
+		 				
+    </select>	
+		
+     <insert id="writeStdDocData" parameterType="java.util.Map">
+		INSERT INTO STD_SSDM_DOC (SSN, PERSON_ZIP_AT_DEATH, SSDM_FILE, MATCH_PASS, BIRTH_YEAR, LNAME, SUFFIX, FNAME, MNAME, PERSON_COUNTY_AT_DEATH, MATCH_CD, PERSON_STATE_AT_DEATH, REVIEW_UID, DOB_TEXT, DOD_TEXT, MATCHED_STATENO, EHARS_STATUS_CD, MATCH_WEIGHT, DOCUMENT_ID, SSDM_SRC_ID, AGE_AT_DEATH, CURRENT_PROCESS_STATUS, QS_PARENT_DOC_ID, REVIEW_DATE, CREATE_DATE, EHARS_IMPORT_DATE, MATCHED_PROCESS_DATE, CREATE_UID, ORIG_LNAME,FLUX_MATCH_CD, FLUX_POT_STATENO, FLUX_MATCHED_STATENO, FLUX_QS_PARENT_DOC_ID, FLUX_MATCHED_PROCESS_DATE )
+    VALUES (trim(upper(#{SSN,jdbcType=VARCHAR})),trim(upper(#{PERSON_ZIP_AT_DEATH,jdbcType=VARCHAR})),trim(#{SSDM_FILE,jdbcType=VARCHAR}),trim(upper(#{MATCH_PASS,jdbcType=VARCHAR})),trim(upper(#{BIRTH_YEAR,jdbcType=VARCHAR})),trim(upper(#{LNAME,jdbcType=VARCHAR})),trim(upper(#{SUFFIX,jdbcType=VARCHAR})),trim(upper(#{FNAME,jdbcType=VARCHAR})),trim(upper(#{MNAME,jdbcType=VARCHAR})),trim(upper(#{PERSON_COUNTY_AT_DEATH,jdbcType=VARCHAR})),trim(upper(#{MATCH_CD,jdbcType=VARCHAR})),trim(upper(#{PERSON_STATE_AT_DEATH,jdbcType=VARCHAR})),trim(upper(#{REVIEW_UID,jdbcType=VARCHAR})),TO_CHAR(TO_DATE(trim(#{DOB_TEXT,jdbcType=VARCHAR}),'MM/DD/YYYY'), 'MM/DD/YYYY'),TO_CHAR(TO_DATE(trim(#{DOD_TEXT,jdbcType=VARCHAR}),'MM/DD/YYYY'), 'MM/DD/YYYY'),trim(upper(#{MATCHED_STATENO,jdbcType=VARCHAR})),trim(upper(#{EHARS_STATUS_CD,jdbcType=VARCHAR})),#{MATCH_WEIGHT,jdbcType=DECIMAL},#{DOCUMENT_ID,jdbcType=DECIMAL},#{SSDM_SRC_ID,jdbcType=DECIMAL},#{AGE_AT_DEATH,jdbcType=DECIMAL},#{CURRENT_PROCESS_STATUS,jdbcType=DECIMAL},#{QS_PARENT_DOC_ID,jdbcType=DECIMAL},#{REVIEW_DATE,jdbcType=DATE},#{CREATE_DATE,jdbcType=DATE},#{EHARS_IMPORT_DATE,jdbcType=DATE},#{MATCHED_PROCESS_DATE,jdbcType=DATE},trim(upper(#{CREATE_UID,jdbcType=VARCHAR})), trim(upper(#{ORIGLNAME,jdbcType=VARCHAR})),#{FLUX_MATCH_CD, jdbcType=VARCHAR},#{FLUX_POT_STATENO, jdbcType=VARCHAR},#{FLUX_MATCHED_STATENO, jdbcType=VARCHAR},#{FLUX_QS_PARENT_DOC_ID, jdbcType=DECIMAL},#{FLUX_MATCHED_PROCESS_DATE,jdbcType=DATE})	
+		
+    </insert>
+
+  <select id="getStdSSDMDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
+  	SELECT SSN, FNAME, LNAME, MNAME,SUFFIX, DOB_TEXT DOB, 	PERSON_STATE_AT_DEATH stateOfDeath, DOD_TEXT dateOfDeath        
+from STD_SSDM_DOC where DOCUMENT_ID = #{docId} 
+  </select>
+	
+	
+	<insert id="writeAllRawSSDMDocDataToStdTable">
+	<![CDATA[
+		INSERT INTO STD_SSDM_DOC (SSN, PERSON_ZIP_AT_DEATH, SSDM_FILE, MATCH_PASS, BIRTH_YEAR, LNAME, SUFFIX, FNAME, MNAME, PERSON_COUNTY_AT_DEATH, MATCH_CD, PERSON_STATE_AT_DEATH, REVIEW_UID, DOB_TEXT, DOD_TEXT, MATCHED_STATENO, EHARS_STATUS_CD, MATCH_WEIGHT, DOCUMENT_ID, SSDM_SRC_ID, AGE_AT_DEATH, CURRENT_PROCESS_STATUS, QS_PARENT_DOC_ID, REVIEW_DATE, CREATE_DATE, EHARS_IMPORT_DATE, MATCHED_PROCESS_DATE, CREATE_UID, ORIG_LNAME, HASH_NUMBER)
+            
+            SELECT 
+     
+
+CASE              WHEN LENGTH (SSN) < '9'              THEN                 ''
+                  WHEN UPPER (SSN) != LOWER (SSN)     THEN           '' 
+                  WHEN SSN like '%00000%' or SSN like '%11111%' or SSN like '%22222%' or SSN like '%33333%' or SSN like '%44444%' or SSN like '%55555%' or SSN like '%66666%' or SSN like '%77777%' or SSN like '%88888%'              or SSN like '%99999%'               THEN                 ''
+                  WHEN LENGTH (SSN) = '9'              THEN                SSN 
+                  ELSE ''           END,
+       TRIM (UPPER (ZIP)),
+       TRIM (SSDM_FILE),
+       NULL,
+       TRIM (UPPER (BTHYEAR)),
+       TRIM (UPPER (LASTNAME)),
+       TRIM (UPPER (NSUFFIX)),
+       TRIM (UPPER (FIRSTNAME)),
+       TRIM (UPPER (MIDDLENAME)),
+       NULL,
+       NULL,
+       TRIM (UPPER (STZ)),
+       NULL,
+       
+       case when BTHDATE is not null and fn_to_Date(TRIM (BTHDATE), 'MM/DD/YYYY') is not null then TO_CHAR (fn_TO_DATE (TRIM (BTHDATE), 'MM/DD/YYYY'), 'MM/DD/YYYY')
+            when BTHDATE is not null and fn_to_Date(TRIM (BTHDATE), 'MM/DD/YYYY') is  null and length(BTHDATE) = 8 then REPLACE(substr(BTHDATE, 1,2), '00','..') || '/' || replace(substr(BTHDATE, 3,2), '00','..') || '/' || replace(substr(BTHDATE, 5,4), '00','..')
+           else null
+        end,  
+       
+       case when DTHDATE is not null and fn_to_Date(TRIM (DTHDATE), 'MM/DD/YYYY') is not null then TO_CHAR (fn_TO_DATE (TRIM (DTHDATE), 'MM/DD/YYYY'), 'MM/DD/YYYY')
+            when DTHDATE is not null and fn_to_Date(TRIM (DTHDATE), 'MM/DD/YYYY') is  null and length(DTHDATE) = 8 then REPLACE(substr(DTHDATE, 1,2), '00','..') || '/' || replace(substr(DTHDATE, 3,2), '00','..') || '/' || replace(substr(DTHDATE, 5,4), '00','..')
+           else null
+        end,
+       NULL,
+       NULL,
+       NULL,
+       DOCUMENT_ID,
+       SSDM_SRC_ID,
+       AGEDEATH,
+       5,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       NULL,
+       TRIM (UPPER (ORIGLNAME)),
+       ORA_HASH (
+             TRIM (UPPER (LASTNAME))
+          || TRIM (UPPER (FIRSTNAME))
+          || case when BTHDATE is not null and fn_to_Date(TRIM (BTHDATE), 'MM/DD/YYYY') is not null then TO_CHAR (fn_TO_DATE (TRIM (BTHDATE), 'MM/DD/YYYY'), 'MM/DD/YYYY')
+                when BTHDATE is not null and fn_to_Date(TRIM (BTHDATE), 'MM/DD/YYYY') is  null and length(BTHDATE) = 8 then REPLACE(substr(BTHDATE, 1,2), '00','..') || '/' || replace(substr(BTHDATE, 3,2), '00','..') || '/' || replace(substr(BTHDATE, 5,4), '00','..')
+                else null
+               end
+          || case when DTHDATE is not null and fn_to_Date(TRIM (DTHDATE), 'MM/DD/YYYY') is not null then TO_CHAR (fn_TO_DATE (TRIM (DTHDATE), 'MM/DD/YYYY'), 'MM/DD/YYYY')
+                    when DTHDATE is not null and fn_to_Date(TRIM (DTHDATE), 'MM/DD/YYYY') is  null and length(DTHDATE) = 8 then REPLACE(substr(DTHDATE, 1,2), '00','..') || '/' || replace(substr(DTHDATE, 3,2), '00','..') || '/' || replace(substr(DTHDATE, 5,4), '00','..')
+                    else null
+               end
+          || TRIM (UPPER (SSN))
+          || TRIM (UPPER (NSUFFIX)))
+  FROM raw_ssdm_doc
+ WHERE current_process_Status = 1
+            
+            ]]>
+             
+	</insert>
+	
+	<update id="updateRawDocumentStatus">
+		update RAW_SSDM_DOC set current_process_Status = 5, process_Date = SYSDATE where current_process_Status = 1
+	</update>
+	
+	
+	
+	
+  <update id="documentInitialValidation">
+  	update RAW_SSDM_DOC set current_process_Status = 43 where  (upper(trim(FIRSTNAME)) = 'UNKNOWN' or trim(FIRSTNAME) is null ) and (upper(trim(LASTNAME)) = 'UNKNOWN' or  trim(LASTNAME) is null ) and current_process_Status = 1 
+  </update>
+</mapper>

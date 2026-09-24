@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.MergeUnMergePersonDAO">
+
+ 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.FlaggedStatenoVO" id="stateNoPairs"> 
+		<result property="duplicationId" column="duplication_id"  jdbcType="DECIMAL"/>
+		<result property="flaggedBy" column="flagged_by"  jdbcType="VARCHAR"/>
+	 	<result property="flaggedDate" column="flagged_date"  jdbcType="TIMESTAMP" />
+	 	<result property="requestComments" column="request_comments"  jdbcType="VARCHAR"/>      
+	 	<result property="reviewComments" column="review_comments"  jdbcType="VARCHAR"/>
+	 	<result property="statusCode" column="status_cd"  jdbcType="VARCHAR"/>
+	 	<result property="stateno1" column="stateno_1"  jdbcType="VARCHAR"/>        
+	 	<result property="stateno2" column="stateno_2" jdbcType="VARCHAR" />
+	 	<result property="flaggedEarlier" column="flagged_earlier" jdbcType="VARCHAR" />
+	 	<result property="originCategorieVal" column="origin" jdbcType="VARCHAR" />
+	 	<result property="reviewedBy" column="REVIEWED_BY" jdbcType="VARCHAR" />
+	 	<result property="reviewedDate" column="REVIEW_DATE" jdbcType="TIMESTAMP" />
+	 	<result property="stateno1BadFlag" column="STATENO_1_BAD_FLAG" jdbcType="VARCHAR" />
+	 	<result property="stateno2BadFlag" column="STATENO_2_BAD_FLAG" jdbcType="VARCHAR" />
+	 	<result property="followUp" column="FOLLOWUP" jdbcType="VARCHAR" />
+	 	
+	 	
+	</resultMap>
+
+	<select id="getFlaggedStatenosList"  resultMap="stateNoPairs">	
+		SELECT duplication_id, flagged_by, flagged_date, request_comments, stateno_1, stateno_2, flagged_earlier, stateno_1_bad_flag, stateno_2_bad_flag, origin, FOLLOWUP   
+     FROM nyehms_new_flagged_same_vw  
+	</select> 	
+	
+	
+	<select id="flagStatenoPairsAsSame"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_flag_same(
+			#{p_stateno1,jdbcType=VARCHAR,mode=IN},
+			#{p_stateno2,jdbcType=VARCHAR,mode=IN},
+			#{p_flagged_by,jdbcType=INTEGER,mode=IN},
+			#{p_request_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_originCategorie,jdbcType=INTEGER,mode=IN},
+			#{p_duplication_id,jdbcType=INTEGER,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+		
+	</select>
+	
+	
+	<select id="mergeStatenos"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.PR_MERGE_STATENOS(
+			#{p_duplication_id,jdbcType=INTEGER,mode=IN},
+			#{p_review_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_mergedState_No,jdbcType=VARCHAR,mode=IN},
+			#{p_similar_pairs_exist,jdbcType=VARCHAR,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+		
+	</select>
+	
+	<select id="flagHistory"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_get_flag_history(
+			#{p_stateno_1,jdbcType=VARCHAR,mode=IN},
+			#{p_stateno_2,jdbcType=VARCHAR,mode=IN},
+			#{p_flag_history,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=stateNoPairs},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+		
+	</select>
+	
+	
+	<select id="rejectStatenoFlagPair"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_reject_flag_same(
+			#{p_duplication_id,jdbcType=INTEGER,mode=IN},
+			#{p_review_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_similar_pairs_exist,jdbcType=VARCHAR,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+		
+	</select>
+	
+	<select id="commitCurrentTransaction"  >
+		<![CDATA[		      begin
+						      COMMIT;
+						      END;
+						      ]]>
+		
+	</select>
+	
+	
+	
+	<select id="fetchPersonObjects"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_fetch_to_merge_statenos(
+			#{p_duplication_id,jdbcType=INTEGER,mode=IN},
+			#{p_stateno_1_details,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personViewMappingResult},
+			#{p_stateno_2_details,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personViewMappingResult},
+			#{p_doc_1_timeline,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personDocHistoryVOResultMap},
+			#{p_doc_2_timeline,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personDocHistoryVOResultMap},
+			#{p_stateno_1_race,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personRaceMappingResult},
+			#{p_stateno_2_race,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personRaceMappingResult},
+			#{p_stateno_1_risks,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personRisksMappingResult},
+			#{p_stateno_2_risks,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO.personRisksMappingResult},
+			#{p_stateno_1_mrg_history,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=stateNoHistoryRecords},
+			#{p_stateno_2_mrg_history,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=stateNoHistoryRecords},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT},
+			#{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_access_user_id,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	<resultMap type="String" id="stateNoHistoryRecords"> 
+		<result property="sno" column="sno"  jdbcType="VARCHAR"/>        
+	</resultMap>
+	
+	
+	
+	<select id="flagBadMerge"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_flag_bad_merge(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_flagged_by,jdbcType=INTEGER,mode=IN},
+			#{p_request_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_unmerge_id,jdbcType=INTEGER,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>	
+	
+	<select id="unflagBadMerge"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_unflag_bad_merge(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_review_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>	
+	
+	<select id="getSimilarFlaggedPairs"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_get_similar_flagged_pairs(
+			#{p_duplication_id,jdbcType=INTEGER,mode=IN},
+			#{p_similar_pairs_to_review,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=stateNoPairs}
+		)}
+		
+	</select>
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.BadlyMergedStatenosVO" id="badlyMergedStateNos"> 
+		<result property="unMergeId" column="unmerge_id"  jdbcType="DECIMAL"/>
+		<result property="flaggedBy" column="flagged_by"  jdbcType="VARCHAR"/>
+	 	<result property="flaggedDate" column="flagged_date"  jdbcType="TIMESTAMP" />
+	 	<result property="requestComments" column="request_comments"  jdbcType="VARCHAR"/>      
+	 	<result property="statusCode" column="status_cd"  jdbcType="VARCHAR"/>
+	 	<result property="stateno" column="stateno"  jdbcType="VARCHAR"/>        
+	 	<result property="flaggedEarlier" column="flagged_earlier" jdbcType="VARCHAR" />
+	 	<result property="reviewComments" column="review_comments"  jdbcType="VARCHAR"/>
+	 	<result property="reviewedBy" column="REVIEWED_BY" jdbcType="VARCHAR" />
+	 	<result property="reviewedDate" column="REVIEW_DATE" jdbcType="TIMESTAMP" />
+	</resultMap>
+		
+	
+	<select id="getBadlyMergedStatenosList"  resultMap="badlyMergedStateNos">	
+		SELECT unmerge_id, stateno, flagged_by,  flagged_date, status_cd,  request_comments, flagged_earlier
+     FROM nyehms_new_flagged_badmerge_vw  
+	</select> 	
+	
+	<select id="getBadMergeFlagHistory"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.pr_get_bad_merge_flag_history(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_flag_history,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=badlyMergedStateNos},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+		
+	</select>
+	
+	<select id="unMergeTheDocuments"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_consolidation.PR_UNMERGE_DOCUMENTS(
+			#{p_document_ids,jdbcType=VARCHAR,mode=IN},
+			#{p_from_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_to_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT},
+			#{p_doccs_document_list,jdbcType=VARCHAR,mode=IN}
+		)}
+		
+	</select>
+	
+	
+	<select id="createNewStateno"  parameterType="java.util.Map" statementType="CALLABLE">
+		{call pkg_document_management.pr_generate_new_stateno(
+			#{p_caller,jdbcType=VARCHAR,mode=IN},
+			#{p_new_stateno_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<update id="updateMergeFollowUp" parameterType="java.util.Map">
+		update NYEHMS_DUPLICATE_STATENOS set FOLLOWUP  = #{followUp}, LAST_UPDATED_BY = #{workerId}, LAST_UPDATED_DATE = SYSDATE where DUPLICATION_ID = #{duplicationId} 
+	</update>
+	
+
+	<insert id="addACRFForRejectedStateno" parameterType="java.util.Map">
+	<![CDATA[
+	
+	insert into raw_Acrf_doc(DOCUMENT_ID, DOCUMENT_SOURCE, PERSON_COMPLETING, STATENO, FNAME, MNAME, LNAME, LNAME_SOUNDEX, ADDRESS, CITY, STATE, ZIPCODE, PLUS4, COUNTY_FIPS, TELEPHONE, DATE_OF_BIRTH, ID_TYPE_CODE, OTHER_ID_NUMBER, DATE_COMPLETED, RECEIVED_DATE, OLD_ACRF)
+select  #{DOCUMENT_ID}, #{DOCUMENT_SOURCE}, #{PERSON_COMPLETING}, #{ASSOCIATE_STATENO}, 
+                                FIRST_NAME, MIDDLE_NAME, LAST_NAME, soundex(LAST_NAME), ADDRESS, ADDRESS_CITY, 
+       ADDRESS_STATE, ADDRESS_ZIPCODE, PLUS4, COUNTY_FIPS, HOME_PHONE, TO_CHAR(DATE_OF_BIRTH, 'MM/DD/YYYY'), '3', SSN, TRUNC(SYSDATE), trunc(SYSDATE), 'N' 
+from document_person_attr a
+where a.document_id = (select out.document_id
+from person_doc_association out
+where out.stateno = #{ASSOCIATE_STATENO}
+and out.DISSASSOCIATION_DATE is null
+and out.association_date = (select max(inn.association_date)
+                        from person_doc_association inn
+                        where inn.stateno = out.stateno
+                        and inn.DISSASSOCIATION_DATE is null ) and rownum < 2)
+                        
+                        ]]>
+    </insert>
+	
+	
+	<insert id="addACRFDuplicateReviewData" parameterType="java.util.Map">
+		insert into RAW_ACRF_RIDR_INFO(ACRF_DOC_ID, DUPLICATE_STATUS, STATE_CD, COMMENTS, STATENO)
+		values( #{DOCUMENT_ID}, '2', 'NY', 'Duplicate Review NYEHMS',(select MAX(EHARS_STATENO ) from NYEHMS_EHARS_STATENO_MAP where NYEHMS_STATENO = #{NYEHMS_STATENO}))  
+	
+	</insert>
+	
+	
+	
+	<select id="validateDodAgainstCollectionDate" parameterType="java.util.Map" resultType="String">
+			WITH doccs_doc AS
+(
+    SELECT document_id
+      FROM nyehms_owner.std_din_doccs_doc
+     WHERE doccs_doc_id IN  
+		 <foreach item="documentId" index="index" collection="doccsDocumentIds" open="(" separator="," close=")">
+			#{documentId}
+		 </foreach>
+), data AS
+(
+SELECT MAX (a.date_of_death) dod, MAX(s.calc_collection_date) hiv_col_date, MAX(e.calc_collection_date) std_col_date
+  FROM nyehms_owner.document_person_attr a,
+       nyehms_owner. person_doc_association p,
+       doccs_doc d,
+       nyehms_owner.std_hiv_eclrs_doc s,
+       nyehms_owner.std_std_eclrs_doc e 
+WHERE a.document_id = p.document_id
+   AND p.dissassociation_date IS NULL 
+   AND a.document_id = d.document_id(+)
+   AND p.document_id = s.document_id(+)
+   AND p.document_id = e.document_id(+)
+   AND (a.document_id IN 
+				<foreach item="documentId" index="index" collection="unmergeDocuments" open="(" separator="," close=")">
+								        	#{documentId}
+								  		 </foreach>
+        OR p.stateno = #{stateno_target})
+)
+SELECT 'Y'
+FROM data
+WHERE GREATEST(Nvl(hiv_col_date,To_Date('01/01/1900','MM/DD/YYYY')), Nvl(std_col_date,To_Date('01/01/1900','MM/DD/YYYY'))) > Nvl(dod,To_Date('12/31/2999','MM/DD/YYYY'))
+			                                                                    
+	
+	</select>
+	
+	<select id="validateDodAgainstCollectionDateBeforeMerge" parameterType="java.util.Map" resultType="String">
+	
+	<![CDATA[	
+				
+	
+	WITH data AS
+(
+SELECT Max(a.date_of_death) dod, Max(s.calc_collection_date) hiv_calc_dt, Max(e.calc_collection_date) std_calc_dt
+FROM person_doc_association p
+LEFT OUTER JOIN document_person_attr a
+ON (a.document_id = p.document_id AND a.date_of_death IS NOT NULL)
+LEFT OUTER JOIN std_hiv_eclrs_doc s
+ON (p.document_id = s.document_id)
+LEFT OUTER JOIN std_std_eclrs_doc e
+ON (p.document_id = e.document_id)
+WHERE p.dissassociation_date IS NULL
+AND p.stateno in (#{stateno1}, #{stateno2})
+)
+SELECT 'Y'
+FROM data
+WHERE dod < hiv_calc_dt OR dod < std_calc_dt
+			      ]]>
+	</select>
+
+
+	<select id="getMergeReportsByOrigin"  parameterType="java.util.Map" resultType="java.util.Map">
+		select history.*, curr.Currently_NEW from
+		    (
+		        select c.origin_desc ORIGIN,
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*7)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek1",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*6)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek2",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*5)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek3",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*4)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek4",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*3)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek5",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*2)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek6",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*1)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek7",
+		            sum ( case 
+		                    when (d.run_date = (trunc(sysdate, 'd') - 2 - 7*0)) then d.count_of_new 
+		                    else 0 end
+		                ) as "MergeReportWeek8" 
+		        from coded_merge_origins c left join weekly_count_of_new d 
+		        on d.origin_code = c.origin_code
+		        where (c.END_DATE is NULL or c.END_DATE > sysdate)
+		        group by c.origin_desc 
+		        order by c.origin_desc asc 
+		    ) history
+		full outer join
+		    (
+		        select a.origin_desc ORIGIN, 
+		            sum( case 
+		                        when ( 
+		                                b.status_cd='NEW'
+		                            ) 
+		                        then 1 else 0 end
+		                ) as Currently_NEW
+		            from coded_merge_origins a left join nyehms_duplicate_statenos b
+		            on b.origin_code = a.origin_code
+
+		            where (a.END_DATE is NULL or a.END_DATE > sysdate)
+		            and b.stateno_1 in (select stateno from person where flag_active='Y') 
+		        	and b.stateno_2 in (select stateno from person where flag_active='Y')
+		            group by a.origin_desc 
+		            order by a.origin_desc asc 
+		    ) curr
+		on history.ORIGIN = curr.ORIGIN
+	</select>
+	
+	<select id="getMergeReportsByBadMerges"  parameterType="java.util.Map" resultType="java.util.Map">
+	select history."BadMergesWeek1", history."BadMergesWeek2", history."BadMergesWeek3", history."BadMergesWeek4", 
+	    history."BadMergesWeek5", history."BadMergesWeek6", history."BadMergesWeek7", history."BadMergesWeek8", curr.Currently_NEW from
+	    (
+	        select 1 as dummyId,
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*7)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek1",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*6)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek2",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*5)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek3",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*4)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek4",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*3)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek5",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*2)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek6",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*1)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek7",
+	            sum ( case 
+	                    when (wnb.run_date = (trunc(sysdate, 'd') - 2 - 7*0)) then wnb.count_of_new 
+	                    else 0 end
+	                ) as "BadMergesWeek8" 
+	        from weekly_new_bad_merges wnb group by 1
+	    ) history
+		full outer join
+	    (
+	        select 1 as dummyId,
+	            sum( case 
+	                    when ( 
+	                            unm.status_cd='NEW'
+	                        ) 
+	                    then 1 else 0 end
+	                ) as Currently_NEW
+	            from nyehms_unmerging_statenos unm join person p on unm.stateno = p.stateno and p.flag_active = 'Y' group by 1
+	    ) curr
+		on history.dummyId = curr.dummyId
+	</select>
+	
+	<select id="getMergeReportsByDailyStaff"  parameterType="java.util.Map" resultType="java.util.Map">
+		select to_char(trunc(a.last_updated_date, 'IW'), 'yyyy_mm_dd') WEEKOF, to_char(a.last_updated_date, 'mm/dd/yyyy') UPDATED_DATE, to_char(a.last_updated_date, 'DAY') DAY_NAME, 
+			b.legacy_uid UPDATED_USER, a.status_cd STATUS, count(*) COUNT
+		from nyehms_duplicate_statenos a join nyehms_users b
+			on a.last_updated_by = b.worker_id
+		where a.last_updated_date between to_date(#{fromDate}, 'MM/DD/YYYY') and to_date(#{toDate}, 'MM/DD/YYYY')+1
+			and a.status_cd in ('ACCEPT', 'REJECT')
+		group by to_char(trunc(a.last_updated_date, 'IW'), 'yyyy_mm_dd'), to_char(a.last_updated_date, 'mm/dd/yyyy'), to_char(a.last_updated_date, 'DAY'), b.legacy_uid, a.status_cd
+		order by to_date(updated_date, 'mm/dd/yyyy'), UPDATED_USER, STATUS
+	</select>
+	
+	<select id="getBadMergeReportsByDailyStaff"  parameterType="java.util.Map" resultType="java.util.Map">
+		select to_char(trunc(a.last_updated_date, 'IW'), 'yyyy_mm_dd') WEEKOF, to_char(a.last_updated_date, 'mm/dd/yyyy') UPDATED_DATE, to_char(a.last_updated_date, 'DAY') DAY_NAME, 
+			b.legacy_uid UPDATED_USER, a.status_cd STATUS, count(*) COUNT
+		from nyehms_unmerging_statenos a join nyehms_users b
+			on a.last_updated_by = b.worker_id
+		where a.last_updated_date between to_date(#{fromDate}, 'MM/DD/YYYY') and to_date(#{toDate}, 'MM/DD/YYYY')+1
+			and a.status_cd in ('ACCEPT', 'REJECT')
+		group by to_char(trunc(a.last_updated_date, 'IW'), 'yyyy_mm_dd'), to_char(a.last_updated_date, 'mm/dd/yyyy'), to_char(a.last_updated_date, 'DAY'), b.legacy_uid, a.status_cd
+		order by to_date(updated_date, 'mm/dd/yyyy'), UPDATED_USER, STATUS
+	</select>
+	
+	<select id="getDependentDocumentList" parameterType="int" resultType="Integer">
+			
+			
+			SELECT document_id
+			  FROM (
+			            SELECT demo.document_id
+			              FROM std_cluster_doc clust, std_cluster_doc demo
+			            WHERE clust.document_id = #{documentId}
+			               AND clust.demo_document_id = demo.demo_document_id
+			            UNION
+			            SELECT document_id
+			              FROM (
+			            SELECT Distinct resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3
+			              FROM std_ras_doc ras, std_cluster_doc clust
+			            WHERE clust.document_id = #{documentId}
+			               AND (ras.resistance_doc_id_1 = clust.demo_document_id 
+			                    OR ras.resistance_doc_id_2 = clust.demo_document_id 
+			                    OR ras.resistance_doc_id_3 = clust.demo_document_id))
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3))
+			            UNION
+			            SELECT a.document_id
+			              FROM (
+			            SELECT ras.resistance_doc_id_1, ras.resistance_doc_id_2, ras.resistance_doc_id_3
+			              FROM std_ras_doc ras
+			             WHERE ras.resistance_doc_id_1 = #{documentId}
+			                    OR ras.resistance_doc_id_2 = #{documentId}
+			                    OR ras.resistance_doc_id_3 = #{documentId})
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3)) a
+			            LEFT OUTER JOIN std_cluster_doc clust
+			            ON (clust.demo_document_id = a.document_id)
+			            UNION
+			            SELECT clust.document_id
+			              FROM (
+			            SELECT ras.resistance_doc_id_1, ras.resistance_doc_id_2, ras.resistance_doc_id_3
+			              FROM std_ras_doc ras
+			            WHERE ras.resistance_doc_id_1 = #{documentId}
+			                    OR ras.resistance_doc_id_2 = #{documentId}
+			                    OR ras.resistance_doc_id_3 = #{documentId})
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3)) a, std_cluster_doc clust
+			            WHERE a.document_id = clust.demo_document_id
+			        )
+			WHERE document_id != #{documentId}
+			UNION
+			SELECT demo_document_id from std_cluster_doc where document_id = #{documentId}
+            UNION  
+            SELECT document_id from std_cluster_doc where demo_document_id = #{documentId}
+		union
+             select lab_doc_id DOCUMENT_ID from nyehms_ria_doc ria where document_id in #{documentId} and lab_doc_id not in #{documentId}
+             union 
+             select document_id from nyehms_ria_doc ria where lab_doc_id in #{documentId} and document_id not in #{documentId}
+             union 
+             select TRIGGERING_DOC_ID DOCUMENT_ID from SURVEILLANCE_ASSIGNMENT where AHI_DOC_ID in #{documentId} and  TRIGGERING_DOC_ID not in #{documentId}
+                union 
+             select AHI_DOC_ID DOCUMENT_ID from SURVEILLANCE_ASSIGNMENT where TRIGGERING_DOC_ID in #{documentId} and  AHI_DOC_ID not in #{documentId}
+		
+	</select>
+</mapper>

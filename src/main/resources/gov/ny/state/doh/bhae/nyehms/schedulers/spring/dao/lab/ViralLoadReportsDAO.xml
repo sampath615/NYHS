@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.ViralLoadReportsDAO">
+ 	<select id="loadNdvlReportData" resultType="org.json.simple.JSONObject">
+ 		   WITH open_elig_ria AS
+(
+    SELECT *
+      FROM nyehms_ria_doc
+     WHERE complete_date IS NULL
+       AND Nvl(ria_eligible, 'N') != 'N' and MERGED_RIA_STATENO IS NULL and nvl(STATENO_DELETED, 'N') != 'Y'
+), vl_labs AS
+(
+SELECT eligRia.document_id RIA_DOCUMENT_ID, 'VL'  LAB_DOCUMENT_TYPE, p.stateno , eligRia.lab_doc_id DOCUMENT_ID , s.interpret_cd, c.interpret_cd_group, s.calc_collection_date, s.FNAME, s.LNAME, s.DOB_TEXT
+        , ROW_NUMBER() OVER (PARTITION BY p.stateno ORDER BY s.calc_collection_date DESC) vlrn
+  FROM person_doc_association p, std_hiv_eclrs_doc s, coded_interpret_code_group c, open_elig_ria eligRia
+WHERE 
+    eligRia.curr_nyehms_stateno = p.stateno
+   AND p.document_id = s.document_id
+   AND p.dissassociation_date IS NULL
+   AND s.interpret_cd = c.interpret_cd
+   AND c.test_type_cd = 'VL'
+)
+SELECT STATENO "stateno", RIA_DOCUMENT_ID, LAB_DOCUMENT_TYPE "documentType", TO_CHAR(DOCUMENT_ID) "documentId", INTERPRET_CD, INTERPRET_CD_GROUP, TO_CHAR(CALC_COLLECTION_DATE, 'MM/DD/YYYY') COLLECTION_DATE, FNAME, LNAME, DOB_TEXT
+  FROM vl_labs
+WHERE vlrn = 1
+   AND interpret_cd_group = 'NDVL'
+ 	</select>    	
+ 	
+ 	
+ 	<select id="getNoAdditionalReportData" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+ 	
+ 		WITH labs AS
+(
+SELECT Distinct p.stateno, fn_to_date(s.calc_collection_date, 'MM/DD/YYYY') calc_collection_date
+  FROM person_doc_association p, std_hiv_eclrs_doc s
+WHERE p.document_id = s.document_id
+   --AND p.dissassociation_date IS NULL
+   AND s.interpret_cd in ('QUAN_VL','DET_QUAN_VL','ND_QUAN_VL')
+), final_labs AS
+(
+SELECT Distinct a.curr_nyehms_stateno stateno, r.calc_ehars_hiv_dx_dt, r.RIA_FLAGGED_DATE
+       , sysdate - fn_to_date(r.calc_ehars_hiv_dx_dt, 'MM/DD/YYYY') days
+  FROM nyehms_ria_doc a, all_ria_vw r
+WHERE a.complete_date IS NULL
+   AND Nvl(a.ria_eligible, 'X') != 'N'
+   AND r.curr_nyehms_stateno = a.curr_nyehms_stateno
+   AND r.calc_ehars_hiv_dx_dt IS NOT NULL
+   AND NOT EXISTS (SELECT 1
+                     FROM labs l
+                    WHERE r.curr_nyehms_stateno = l.stateno
+                      AND l.calc_collection_date > fn_to_date(r.calc_ehars_hiv_dx_dt, 'MM/DD/YYYY'))
+)
+SELECT stateno, calc_ehars_hiv_dx_dt, round(days) days, TO_CHAR(RIA_FLAGGED_DATE, 'MM/DD/YYYY') RIA_FLAGGED_DATE
+  FROM final_labs
+		 	<choose>
+		 		<when test="p_dateRange != null">
+		 			where days > #{p_dateRange}
+		 		</when>
+		 		<otherwise>
+		 			where  days BETWEEN #{p_dateRangeFrom} AND #{p_dateRangeTo}		
+		 		</otherwise>
+		 	</choose>
+ 	</select>
+ 	
+ 	<select id="getVLObxNotes" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+ 	<![CDATA[
+ 		SELECT r.document_id "documentId", TO_CHAR(r.mshcreateDate, 'MM/DD/YYYY') "receivedDate", to_char(r.obxnote) "obxNote"
+  FROM std_hiv_eclrs_doc a
+  JOIN person_doc_association b ON b.document_id = a.document_id AND b.dissassociation_date IS NULL
+  JOIN raw_hiv_eclrs_doc r ON r.document_id = a.document_id
+WHERE Trim(a.test_result) LIKE '<%'
+   AND Trim(a.test_result) != '<0'
+   AND Trunc(a.calc_collection_date) > Trunc(sysdate) - 30
+   AND (a.prov_county not in ('005','047','061','081','085','999','998') OR a.facility_county not in ('005','047','061','081','085','999','998'))
+   AND b.stateno = #{p_stateno}
+   ]]>
+ 	</select>
+ 	
+</mapper>
+

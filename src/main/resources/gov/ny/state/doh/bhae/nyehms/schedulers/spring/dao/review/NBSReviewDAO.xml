@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.NBSReviewDAO">
+	
+	<select id="getNBSYearListToReview" resultType="String" parameterType="String">
+	
+		${SQL_QUERY}
+	
+	</select>
+	
+	
+	<select id="getPerinatalReviewRecords" resultType="org.json.simple.JSONObject" parameterType="java.util.Map">
+	 	${SQL_QUERY} 
+	</select>
+	
+	
+	
+	
+	<select id="moveDocToStdNBS"  statementType="CALLABLE">	
+		{call perinatal_process.nbs_move_raw_to_std(
+			#{p_documentId,jdbcType=VARCHAR,mode=IN},
+			#{p_error_cd,jdbcType=INTEGER,mode=OUT},
+			#{p_err_msg,jdbcType=VARCHAR,mode=OUT}
+		)}  
+	</select>
+	
+	<update id="updateNBSExposureStatus" parameterType="java.util.Map">
+	
+		update RAW_NBS_DOC raw1 set current_process_Status = #{currentProcessStatus}, REVIEW_ID = #{p_worker_id}, REVIEW_DATE = sysdate, REVIEW_COMMENTS = REVIEW_COMMENTS || ' '|| #{comments, jdbcType=VARCHAR}  where document_id = #{p_documentId}
+		<if test='exposureStatus == "Y"'>
+			and exists (select 1 from std_nbs_doc where document_id = raw1.document_id)
+		</if>
+		
+	
+	</update>
+	
+	<select id="getPerinatalReviewQuery" parameterType="String" resultType="java.util.Map">
+		SELECT SCREEN_SQL, ORDERBY FROM coded_perinatal_review_sql where SCREEN_CD = #{screenName} 
+	</select>
+	
+
+	
+	<select id="getNBSDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO">
+	
+		select DOCUMENT_ID, NYS_ID, LABID, LABNO, LINK, MEDRECNO, INFANT_FNAME, INFANT_LNAME, AKA, TO_CHAR(BIRTH_DATE, 'MM/DD/YYYY') BIRTH_DATE, BIRTH_TIME, BIRTH_WEIGHT, RACE_WHITE, RACE_BLACK, RACE_ASIAN, RACE_OTHER, RACE_INDIAN, ETHNICITY, SEX, MOTHER_FNAME, MOTHER_LNAME, MOTHER_AGE, TO_CHAR(MOTHER_DOB, 'MM/DD/YYYY') MOTHER_DOB, MOTHER_ADDRESS, MOTHER_CITY, MOTHER_STATE, MOTHER_ZIP, MOTHER_COUNTY, MOTHER_REGION, MOTHER_PHONE, MOTHER_LATITUDE, MOTHER_LONGITUDE, MOTHER_CENSUS_TRACT, TO_CHAR(COLLECTION_DATE, 'MM/DD/YYYY') COLLECTION_DATE, TO_CHAR(DATE_RECEIVED, 'MM/DD/YYYY') DATE_RECEIVED, TO_CHAR(DATE_REPORTED, 'MM/DD/YYYY') DATE_REPORTED, INIT_RPT, BIRTH_HOSPITAL_CODE, PFI, FACILITY_NAME, FACILITY_ADDRESS, FACILITY_CITY, FACILITY_STATE, FACILITY_ZIP, FACILITY_COUNTY, FACILITY_REGION, FACILITY_LATITUDE, FACILITY_LONGITUDE, FACILITY_CENSUS_TRACT, TWIN_STATUS, HIV_FINAL_STATUS, TRANS_CALC_KEEP, CLIMS_RECID, PATIENTID, MEMO, CLIMS_MATCH_UID, CLIMS_MATCH_DT, CURRENT_PROCESS_STATUS, INFANT_STATENO, MOTHER_STATENO, POT_MOTHER_STATENO, FACILITY_PHONE, FACILITY_EHARS_UID from std_nbs_doc where document_id = #{docId}
+		
+	</select>
+	
+	<select id="getIndNbsDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO">
+		
+		SELECT document_id,
+       TRIM (labid) labid,
+       TRIM (labno) labno,
+       TRIM (link) link,
+       TRIM (medrecno) medrecno,
+       TRIM (fname) infant_fname,
+       TRIM (lname) infant_lname,
+       TRIM (aka) aka,
+       fn_to_char (TRIM (birthdt), 'MM/DD/YYYY') BIRTH_DATE,
+       TRIM (birthtm) BIRTH_TIME,
+       TRIM (birthwt) BIRTH_WEIGHT,
+       CASE WHEN TRIM (race) = '1' THEN 1 ELSE 0 END race_white,
+       CASE WHEN TRIM (race) = '2' THEN 1 ELSE 0 END race_black,
+       CASE WHEN TRIM (race) = '4' THEN 1 ELSE 0 END race_asian,
+       CASE WHEN TRIM (race) = '5' THEN 1 ELSE 0 END race_other,
+       CASE WHEN TRIM (race) = '6' THEN 1 ELSE 0 END race_indian,
+       CASE WHEN TRIM (race) = '3' THEN '01' ELSE NULL END ethnicity,
+       case when TRIM (sex) = '1' then 'M'
+       		when TRIM (sex) = '2' then 'F' else null end  sex,
+       TRIM (mfname) mother_fname,
+       TRIM (mlname) mother_lname,
+       TRIM (motherage) mother_age,
+       fn_to_char (TRIM (motherdob), 'MM/DD/YYYY') mother_dob,
+       TRIM (street) mother_address,
+       TRIM (r.city) mother_city,
+       TRIM (r.state) mother_state,
+       TRIM (r.zipcode) mother_zip,
+       n.county_fips_cd mother_county             -- Check if Lpad is required
+                                     ,
+       CASE
+          WHEN n.county_fips_cd IN ('005',
+                                    '047',
+                                    '061',
+                                    '081',
+                                    '085')
+          THEN
+             'NYC'
+          WHEN     TRIM (r.state) = 'NY'
+               AND n.county_fips_cd NOT IN ('005',
+                                            '047',
+                                            '061',
+                                            '081',
+                                            '085')
+          THEN
+             'NYS'
+          ELSE
+             'OOS'
+       END
+          MOTHER_REGION,
+       TRIM (phone) mother_phone,
+       fn_to_char (TRIM (dtcoll), 'MM/DD/YYYY') collection_date,
+       fn_to_char (TRIM (dtrecv), 'MM/DD/YYYY') date_received,
+       fn_to_char (TRIM (dtrptd), 'MM/DD/YYYY') date_reported,
+       TRIM (init_rpt) init_rpt,
+       TRIM (birthhosp) birthhosp,
+       TRIM (r.pfi) pfi,
+       TRIM (p.name) facility_name,
+       TRIM (p.address) facility_address,
+       TRIM (p.city) facility_city,
+       NULL facility_state,
+       TRIM (p.zipcode) facility_zip,
+       TRIM (p.county_cd) facility_county,
+       CASE
+          WHEN n1.county_fips_cd IN ('005',
+                                     '047',
+                                     '061',
+                                     '081',
+                                     '085')
+          THEN
+             'NYC'
+          WHEN     TRIM (p.state) = 'NY'
+               AND n1.county_fips_cd NOT IN ('005',
+                                             '047',
+                                             '061',
+                                             '081',
+                                             '085')
+          THEN
+             'NYS'
+          ELSE
+             'OOS'
+       END
+          facility_region,
+       TRIM (twin) twin_status,
+       CASE
+          WHEN TRIM (twin) IS NULL THEN NULL
+          WHEN TRIM (twin) IN ('0', '1') THEN 'Y'
+          ELSE 'NT'
+       END
+          trans_calc_keep,
+       clims_recid,
+       patientid,
+       memo,
+       clims_match_dt
+  FROM raw_nbs_doc r
+       LEFT OUTER JOIN coded_nbs_pfi_names p
+          ON (TRIM (r.pfi) = LPAD (p.pfi, 6, '0'))
+       LEFT OUTER JOIN nyehms_county_reference n
+          ON (    TRIM (r.zipcode) = n.zip_cd
+              AND TRIM (r.state) = n.state_cd
+              AND n.num_city = 1)
+       LEFT OUTER JOIN nyehms_county_reference n1
+          ON (    TRIM (p.zipcode) = n1.zip_cd
+              AND TRIM (p.state) = n1.state_cd
+              AND n1.num_city = 1)
+ WHERE   document_id = #{docId}
+	
+	</select>
+	
+	
+	<select id="getClimsPatientId" parameterType="String" resultType="String">
+		WITH clims AS
+(
+    SELECT Distinct pkg_consolidation.fn_give_current_stateno(matched_stateno) infant_stateno, patientId, colldate
+      FROM std_clims_doc
+     WHERE pkg_consolidation.fn_give_current_stateno(matched_stateno) = PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (#{stateno}) AND patientid IS NOT NULL
+), final_clims AS
+(
+    SELECT patientId, colldate, ROW_NUMBER() OVER (PARTITION BY infant_stateno ORDER BY colldate desc ) rn
+      FROM clims
+)
+SELECT patientId
+  FROM final_clims
+ WHERE rn = 1
+	
+	</select>
+	
+	<update id="matchNBSDocumentToStateno" parameterType="java.util.Map">
+		update STD_NBS_DOC set INFANT_STATENO = #{stateno}, patientId = #{climsPatientId, jdbcType=VARCHAR}, REVIEW_COMMENTS = REVIEW_COMMENTS ||'     ' ||#{p_reviewComments, jdbcType=VARCHAR},
+<!-- 		review_uid = #{p_worker_id}, review_date = sysdate -->
+CLIMS_MATCH_UID = #{p_worker_id}, CLIMS_MATCH_DT = sysdate, MEMO = 'MANUAL'
+		 where document_id = #{p_documentId}
+<!-- 		 current_process_Status = 5 -->
+	</update>	
+	
+	
+	<update id="updateNBSMotherStatenoDetails" parameterType="java.util.Map">
+		update STD_NBS_DOC set MOTHER_STATENO = #{STATENO} , REVIEW_ID = #{p_worker_id}, REVIEW_DATE = sysdate, REVIEW_COMMENTS = trim(REVIEW_COMMENTS ||'     ' ||#{p_comments, jdbcType=VARCHAR})  where DOCUMENT_ID = #{DOCUMENT_ID} and MOTHER_STATENO is null 
+	</update>
+	
+	<select id="getClimsDocumentDetailsForMatchReview" parameterType="Integer" resultType="java.util.Map">
+	select DOCUMENT_ID, 'N' MATCH_CD, 
+		
+		
+		null FUZZY_CLUSTER_ID, DOCUMENT_ID CLUSTER_ID, '' POT_STATENO, 'CLIMS' DOC_TYPE
+		
+		from std_clims_doc where DOCUMENT_ID = #{documentId}	
+	</select>
+	
+	<select id="getNBSDocumentDetailsForMatchReview" parameterType="Integer" resultType="java.util.Map">
+		select DOCUMENT_ID, 'C' MATCH_CD, 
+		
+		
+		null FUZZY_CLUSTER_ID, DOCUMENT_ID CLUSTER_ID, POT_MOTHER_STATENO "POT_STATENO", 'NBS' DOC_TYPE
+		
+		from STD_NBS_DOC where DOCUMENT_ID = #{documentId}	
+	</select>
+	
+	<select id="getHivFinalStatusList" resultType="java.util.Map">
+		select HIV_FINAL_STATUS_CD statusCd, HIV_FINAL_STATUS_DESC statusDesc from CODED_HIV_FINAL_STATUS order by HIV_FINAL_STATUS_DESC asc
+	</select>
+	
+	<update id="updateHivFinalStatus" parameterType="java.util.Map">
+		update std_nbs_Doc set REVIEW_COMMENTS = #{p_reviewComments}, REVIEW_DATE = sysdate, REVIEW_ID = #{p_workerId}, HIV_FINAL_STATUS_USER = #{p_hivFinalStatus} where DOCUMENT_ID = #{p_documentId}
+	</update>
+	
+	
+	<update id="updateStdNbsReviewComments" parameterType="java.util.Map">
+		update std_nbs_Doc set REVIEW_COMMENTS = #{p_reviewComments}, REVIEW_DATE = sysdate, REVIEW_ID = #{p_workerId} where DOCUMENT_ID = #{p_documentId}
+	</update>
+	
+	<update id="updateClimsReviewComments" parameterType="java.util.Map">
+		update std_clims_doc set REVIEW_COMMENTS = #{p_reviewComments}, REVIEW_DATE = sysdate, REVIEW_ID = #{p_workerId} where DOCUMENT_ID = #{p_documentId}
+	</update>
+	
+	<update id="updateRawNBSData" parameterType="java.util.Map">
+		update raw_nbs_Doc set REVIEW_COMMENTS = #{p_reviewComments}, REVIEW_DATE = sysdate, REVIEW_ID = #{p_workerId} where DOCUMENT_ID = #{p_documentId}
+	</update>
+	
+	<select id="getNBSSearchViewResults" parameterType="java.util.Map" resultType="java.util.Map">
+		
+		select DOCUMENT_ID, LABID, LABNO, FNAME, LNAME, MEDRECNO, to_char(BIRTHDT, 'MM/DD/YYYY') DATE_OF_BIRTH, 
+		case when SEX = '1' then 'Male'
+		     when SEX = '2' then 'Female' end GENDER, BIRTHWT WEIGHT, PFI, ZIPCODE from raw_nbs_doc
+		
+		where PATIENTID is null
+		
+		<if test="p_labId != null and p_labId != ''" >
+	        AND UPPER(LABID) LIKE trim(UPPER(#{p_labId,jdbcType=VARCHAR})) 
+	      </if>
+		<if test="p_firstName != null and p_firstName != ''" >
+	        AND UPPER(FNAME) LIKE trim(UPPER(#{p_firstName,jdbcType=VARCHAR})) 
+	      </if>
+	    <if test="p_lastName != null and p_lastName != ''" >
+	        AND UPPER(LNAME) LIKE trim(UPPER(#{p_lastName,jdbcType=VARCHAR})) 
+	      </if>
+	    <if test="p_labNo != null and p_labNo != ''" >
+	        AND UPPER(LABNO) LIKE trim(UPPER(#{p_labNo,jdbcType=VARCHAR}) )
+	      </if>
+	    <if test="p_medRecordNumber != null and p_medRecordNumber != ''" >
+	        AND UPPER(MEDRECNO) LIKE trim(UPPER(#{p_medRecordNumber,jdbcType=VARCHAR})) 
+	      </if>
+	    <if test="p_dateOfBirth != null and p_dateOfBirth != ''" >
+	        AND to_char(BIRTHDT, 'MM/DD/YYYY') LIKE #{p_dateOfBirth,jdbcType=VARCHAR} 
+	      </if>
+	      
+	      <if test="p_weight != null and p_weight != ''" >
+	        AND BIRTHWT = #{p_weight,jdbcType=VARCHAR} 
+	      </if>
+	      
+	      <if test="p_gender != null and p_gender != ''" >
+	        AND SEX = trim(#{p_gender,jdbcType=VARCHAR}) 
+	      </if>
+	      
+	      
+	      
+	      <if test="p_pfi != null and p_pfi != ''" >
+	        AND PFI LIKE UPPER(#{p_pfi,jdbcType=VARCHAR}) 
+	      </if>
+	    
+		 
+		
+		
+	</select>
+	
+	<update id="matchClimsDocumentToNBS" parameterType="java.util.Map">
+		update raw_nbs_Doc set current_process_Status = 16, PATIENTID = #{p_patientId,jdbcType=VARCHAR}, memo = 'MANUAL_REVIEW', clims_match_uid = #{p_workerId}, clims_match_dt = sysdate, REVIEW_COMMENTS = REVIEW_COMMENTS || '       ' || #{p_reviewComments,jdbcType=VARCHAR} where document_id = #{p_nbsDocumentId} and PATIENTID is null 
+	</update>	
+	
+	<update id="updateClimsDocumentToStdNBS" parameterType="java.util.Map">
+		update STD_nbs_Doc set PATIENTID = #{p_patientId,jdbcType=VARCHAR}, memo = 'MANUAL_REVIEW', clims_match_uid = #{p_workerId}, clims_match_dt = sysdate, REVIEW_COMMENTS = REVIEW_COMMENTS || '       ' || #{p_reviewComments,jdbcType=VARCHAR} where document_id = #{p_nbsDocumentId} and PATIENTID is null 
+	</update>				
+	
+	<select id="getClimsNonMatchBirthYearList" resultType="String">
+		SELECT Distinct TO_CHAR(BIRTH_DATE, 'YYYY')    BIRTH_YEAR
+  FROM std_nbs_doc
+ WHERE ((clims_recid IS NULL AND infant_stateno IS NULL) OR (hiv_final_status NOT IN ('CN', 'CP')))
+   AND current_process_status NOT IN (9, 20)
+   AND EXTRACT(YEAR FROM birth_date) >= 2021
+   order by TO_CHAR(BIRTH_DATE, 'YYYY') desc	
+	</select>	
+</mapper>
+

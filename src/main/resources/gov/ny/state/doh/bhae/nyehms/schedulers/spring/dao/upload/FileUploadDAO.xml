@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO">
+
+	<select id="validateClusterId" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM NYEHMS_UPLOAD_CLUSTER WHERE CLUSTER_ID = #{clusterId}
+	</select>
+	
+<!-- 	<select id="getErrorClusterIds" resultType="String">
+		SELECT distinct u.CLUSTER_ID 
+		FROM RAW_CLUSTER_DOC r, NYEHMS_UPLOAD_CLUSTER u
+		WHERE (U.CLUSTER_TYPE = 'CDC_M' or U.CLUSTER_TYPE = 'BHAE_M')
+		AND U.CLUSTER_ID_PK = r.CLUSTER_ID_PK
+		AND r.CURRENT_PROCESS_STATUS  in (39,40) order by CLUSTER_ID		
+	</select>	
+  	  
+  	<select id="getClusterUploadErrors" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO">
+		SELECT r.DOCUMENT_ID documentId, u.CLUSTER_ID clusterId, u.CLUSTER_TYPE clusterType, r.EHARS_STATENO uploadedEharsStateno, r.UPLOAD_NYEHMS_STATENO uploadedNyehmsStateno, u.CLUSTER_ID strClusterId
+		                , CASE WHEN R.CURRENT_PROCESS_STATUS = 40 THEN 'No Demographic info found'
+		                         ELSE 'STATENO not found'
+		                    END as errorReason, r.identification_method_code identificationMethod, r.identification_date identificationDate
+		FROM NYEHMS_UPLOAD_CLUSTER u, RAW_CLUSTER_DOC r WHERE u.CLUSTER_ID = #{clusterId} and U.CLUSTER_ID_PK = R.CLUSTER_ID_PK AND r.CURRENT_PROCESS_STATUS in (39,40)
+  	</select>
+  	
+  	<select id="getClusterUploadErrorsAll" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO">
+        SELECT r.DOCUMENT_ID documentId, u.CLUSTER_ID clusterId, u.CLUSTER_TYPE clusterType, r.EHARS_STATENO uploadedEharsStateno, r.UPLOAD_NYEHMS_STATENO uploadedNyehmsStateno, u.CLUSTER_ID strClusterId
+                        , CASE WHEN R.CURRENT_PROCESS_STATUS = 40 THEN 'No Demographic info found'
+                                 ELSE 'STATENO not found'
+                            END as errorReason, r.identification_method_code identificationMethod, r.identification_date identificationDate
+        FROM NYEHMS_UPLOAD_CLUSTER u, RAW_CLUSTER_DOC r WHERE (U.CLUSTER_TYPE = 'CDC_M' or U.CLUSTER_TYPE = 'BHAE_M') AND U.CLUSTER_ID_PK = R.CLUSTER_ID_PK AND r.CURRENT_PROCESS_STATUS in (39,40)  	</select>
+  	 -->
+	<select id="errorCountinUpload" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM RAW_CLUSTER_DOC WHERE CLUSTER_ID_PK = #{clusterIdPk} AND CURRENT_PROCESS_STATUS in (39,40)
+	</select>  	
+
+<!-- 	<select id="errorCountAfterUpdateUpload" parameterType="long" resultType="int">
+		SELECT COUNT(*) FROM RAW_CLUSTER_DOC WHERE DOCUMENT_ID = #{documentId} AND CURRENT_PROCESS_STATUS in (39,40)
+	</select> 
+
+ 	<update id="updateNewNyehmsStateno" parameterType="java.util.Map">
+	   UPDATE RAW_CLUSTER_DOC set UPLOAD_CURRENT_NYEHMS_STATENO =  #{p_newNyehmsStateno}, CURRENT_PROCESS_STATUS = #{currrentProcessStatus}, LAST_STATENO_UPDATE_UID = #{p_worker_id}, LAST_STATENO_UPDATE_DATE = SYSDATE, PROCESS_DATE = SYSDATE where DOCUMENT_ID = #{p_documentId}
+    </update>
+    
+    <select id="getNyehmsStatenoFromNYSehars" parameterType="String" resultType="String">
+    	SELECT NYEHMS_STATENO from NYEHMS_EHARS_STATENO_MAP WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
+    </select>
+    
+    <select id="getNyehmsStatenoFromNYCehars" parameterType="String" resultType="String">
+    	SELECT NYEHMS_STATENO from EHARS_PERSON_NYC WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
+    </select>
+    
+    <select id="checkEharsStatenoInNysEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB, 'NYS_eHARS' as DEMO_DATA_SOURCE from NYEHMS_EHARS_STATENO_MAP WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
+    </select>
+    
+    <select id="checkEharsStatenoInNycEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB, 'NYC_eHARS' as DEMO_DATA_SOURCE from EHARS_PERSON_NYC WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
+    </select>    
+
+    <select id="checkNyehmsStatenoInNysEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB,  EHARS_STATENO, CITYNO, 'NYS_eHARS' as DEMO_DATA_SOURCE 
+    	from NYEHMS_EHARS_STATENO_MAP WHERE NYEHMS_STATENO = #{stateno} and rownum = 1
+    </select>
+    
+    <select id="checkNyehmsStatenoInNycEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB,  EHARS_STATENO, CITYNO, 'NYC_eHARS' as DEMO_DATA_SOURCE  
+    	from EHARS_PERSON_NYC WHERE NYEHMS_STATENO = #{stateno} and rownum = 1
+    </select>
+    
+	<select id="getDemographicByFirstResistance" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+		<![CDATA[
+		WITH data AS
+		(
+		    SELECT /*+ parallel(a,6) */ c.stateno, a.document_id, a.fname, a.mname, a.lname, a.dob_text, b.received_date
+		            , ROW_NUMBER() OVER (PARTITION BY c.stateno ORDER BY b.received_date) recd_order 
+		      FROM document_locator b, person_doc_association c, std_hiv_eclrs_doc a
+		     WHERE b.document_type_code = 'HIV_LAB'
+		       AND b.test_type_cd = 'RESISTANCE'
+		       AND b.is_active = 'Y'
+		       AND b.document_id = a.document_id
+		       AND c.stateno = #{stateno}
+		       AND a.document_id = c.document_id
+		       AND c.dissassociation_date IS NULL
+		)
+		SELECT document_id DOCUMENT_ID, stateno CURRENT_NYEHMS_STATENO, fname FIRST_NAME, mname MIDDLE_NAME, lname LAST_NAME, FN_TO_DATE(dob_text,'MM/DD/YYYY') as DOB, 'RESISTANCE' DEMO_DATA_SOURCE
+		  FROM data
+		WHERE recd_order = 1
+		]]>
+	</select>		    
+	    
+	<select id="getDemographicByMostRecentLab" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+		<![CDATA[
+		WITH data AS
+		(
+		    SELECT /*+ parallel(a,6) */ c.stateno, a.document_id, a.fname, a.mname, a.lname, a.dob_text, c.association_date
+		            , ROW_NUMBER() OVER (PARTITION BY c.stateno ORDER BY c.association_date DESC, a.document_id DESC) lab_order 
+		      FROM document_locator b, person_doc_association c, std_hiv_eclrs_doc a
+		     WHERE b.document_type_code = 'HIV_LAB'
+		       AND b.is_active = 'Y'
+		       AND b.document_id = a.document_id
+		       AND c.stateno = #{stateno}
+		       AND a.document_id = c.document_id
+		       AND c.dissassociation_date IS NULL
+		)
+		SELECT document_id DOCUMENT_ID, stateno CURRENT_NYEHMS_STATENO, fname FIRST_NAME, mname MIDDLE_NAME, lname LAST_NAME, FN_TO_DATE(dob_text,'MM/DD/YYYY') as DOB, 'HIV_LAB' DEMO_DATA_SOURCE
+		  FROM data
+		WHERE lab_order = 1
+
+		]]>
+	</select>		 
+	-->
+	
+	<update id="identifyCDCRidrDuplicates" parameterType="String">
+			<![CDATA[
+				MERGE INTO NYEHMS_OWNER.CDC_RIDR_INFO  out
+                USING (
+                        SELECT *
+                        FROM
+                        (
+                        SELECT a.rowid row_id ,  pdoc.ASSOCIATION_DATE
+                               
+                              , ROW_NUMBER() OVER (PARTITION BY pdoc.stateno, a.REPORTING_JURISDICTION, a.STATENO  ORDER BY pdoc.ASSOCIATION_DATE  DESC) rn
+                          FROM CDC_RIDR_INFO  a, RAW_ACRF_RIDR_INFO  b, RAW_ACRF_DOC  c , person_doc_association  pdoc , coded_state st
+                        WHERE 
+                            a.FILE_NAME = #{fileName}
+                            and a.RESOLVED_DATE is null
+                            and b.ACRF_DOC_ID = c.document_id
+                            and c.DOCUMENT_SOURCE  in ('A06.18', 'A06.29') 
+                            and c.document_id = pdoc.document_id
+                            and pdoc.DISSASSOCIATION_DATE is null
+                            
+                            AND ABS(Trunc(pdoc.ASSOCIATION_DATE ) - Trunc(SYSDATE)) <= 90
+                            
+                             
+                            and upper(st.STATE_DESCRIPTION) = upper(a.REPORTING_JURISDICTION)
+                            and b.STATE_CD =  st.state_code
+                            and b.STATENO  =  a.STATENO
+                            and pdoc.stateno =  PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (a.NYS_STATENO)
+                            
+   
+                        )
+                        WHERE rn = 1
+                ) m
+                ON (out.rowid = m.row_id)
+                WHEN MATCHED THEN
+                UPDATE SET PARENT_DOC_EXISTS = 'Y', PARENT_DOC_CREATE_DT = ASSOCIATION_DATE
+			]]>
+	</update>
+	
+ 	<update id="deleteTempSTDConfirmTableData">
+	   DELETE FROM STG_STD_CONFIRMED_DOC
+    </update>	
+ 
+ 	<insert id="moveSTDConfirmDocumentID">
+ 	
+	   INSERT INTO 
+	   		document_locator (DOCUMENT_ID, DOCUMENT_TYPE_CODE, IS_ACTIVE, RECEIVED_DATE)
+            SELECT DOCUMENT_ID, 'STD_CONF', 'Y', SYSDATE
+            FROM stg_std_confirmed_doc
+
+    </insert>	
+            
+ 	<insert id="moveSTDConfirmFromTempToRaw">
+       INSERT INTO raw_std_confirmed_doc
+                  (DOCUMENT_ID
+                , CASEKEY
+                , HINSERIALNO
+                , FNAME
+                , MNAME
+                , LNAME
+                , PERSON_ADDRESS
+                , PERSON_CITY
+                , PERSON_STATE
+                , PERSON_ZIP
+                , PERSON_COUNTY
+                , PERSON_PHONE
+                , DOB
+                , ETHNICITY
+                , BIRTH_SEX
+                , CURRENT_GENDER
+                , DATE_OF_DEATH
+                , PROV_FNAME
+                , PROV_LNAME
+                , PROV_PHONE
+                , PROV_ADDRESS
+                , PROV_CITY
+                , PROV_ST
+                , PROV_ZIP
+                , RACE_WHITE
+                , RACE_BLACK
+                , RACE_INDIAN
+                , RACE_ASIAN
+                , RACE_PACIFIC
+                , RACE_UNKNOWN
+                , RACE_OTHER
+                , DIAG_DATE
+                , DISEASE
+                , RISK_SEX_MALE
+                , RISK_SEX_FEMALE
+                , RISK_SEX_TRANSGENDER
+                , RISK_SEX_IDU
+                , RISK_SEX_DRUGS
+                , RISK_SEX_EXCHANGED
+                , RISK_SEX_ANONYMOUS
+                , RISK_SEX_MSM
+                , RISK_SEX_WITHOUT_CONDOM
+                , RISK_DRUGS_USED
+                , RISK_DRUG_USED_LIST
+                , RISK_DRUG_OTHER_TEXT
+                , RISK_DRUG_INCARCERATED
+                , RISK_DRUG_PARAPHENALIA
+                , RISK_IDU
+                , RISK_OTHER_TEXT
+                , FIELDNOTE
+                , NINEHUNDREDTEST
+                , TESTTECHNOLOGY
+                , X900POSITIVE
+                , X900DXDATE
+                , CURRENT900TESTRESULT
+                , UPLOAD_ID
+                , UPLOAD_DT
+                , CURRENT_PROCESS_STATUS
+                , FILENAME    )
+            SELECT DOCUMENT_ID
+                , CASEKEY
+                , HINSERIALNO
+                , FNAME
+                , MNAME
+                , LNAME
+                , PERSON_ADDRESS
+                , PERSON_CITY
+                , PERSON_STATE
+                , PERSON_ZIP
+                , PERSON_COUNTY
+                , PERSON_PHONE
+                , TO_DATE(DOB, 'MM/DD/YYYY')
+                , ETHNICITY
+                , BIRTH_SEX
+                , CURRENT_GENDER
+                , TO_DATE(DATE_OF_DEATH, 'MM/DD/YYYY')
+                , PROV_FNAME
+                , PROV_LNAME
+                , PROV_PHONE
+                , PROV_ADDRESS
+                , PROV_CITY
+                , PROV_ST
+                , PROV_ZIP
+                , RACE_WHITE
+                , RACE_BLACK
+                , RACE_INDIAN
+                , RACE_ASIAN
+                , RACE_PACIFIC
+                , RACE_UNKNOWN
+                , RACE_OTHER
+                , TO_DATE(DIAG_DATE, 'MM/DD/YYYY')
+                , DISEASE
+                , RISK_SEX_MALE
+                , RISK_SEX_FEMALE
+                , RISK_SEX_TRANSGENDER
+                , RISK_SEX_IDU
+                , RISK_SEX_DRUGS
+                , RISK_SEX_EXCHANGED
+                , RISK_SEX_ANONYMOUS
+                , RISK_SEX_MSM
+                , RISK_SEX_WITHOUT_CONDOM
+                , RISK_DRUGS_USED
+                , RISK_DRUG_USED_LIST
+                , RISK_DRUG_OTHER_TEXT
+                , RISK_DRUG_INCARCERATED
+                , RISK_DRUG_PARAPHENALIA
+                , RISK_IDU
+                , RISK_OTHER_TEXT
+                , FIELDNOTE
+                , NINEHUNDREDTEST
+                , TESTTECHNOLOGY
+                , X900POSITIVE
+                , TO_DATE(X900DXDATE, 'MM/DD/YYYY')
+                , CURRENT900TESTRESULT
+                , UPLOAD_ID
+                , UPLOAD_DT
+                , CURRENT_PROCESS_STATUS
+                , FILENAME
+                 FROM stg_std_confirmed_doc
+
+    </insert>	    
+	
+	<insert id="insertNYCSurvRejectDataRow" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO">
+		insert into NYC_SURVEILLANCE_REJECT (
+			DOCUMENT_ID
+			, STATENO
+			, NYCNUMBER
+			, REJECT_DOCUMENT_ID
+			, DISPOSITION_CODE
+			, STATUSNOTES
+			, STATUSNONCASE
+			, STATUS_UPDATE_DATE
+			, STATENO2
+			, UPLOAD_FILENAME
+			, UPLOAD_UID
+			, UPLOAD_DATE )
+		values (#{DOCUMENT_ID,			jdbcType=INTEGER},
+				#{STATENO,				jdbcType=VARCHAR},
+				#{NYCNUMBER,			jdbcType=VARCHAR},
+				#{REJECT_DOCUMENT_ID,	jdbcType=INTEGER},
+				#{DISPOSITION_CODE,		jdbcType=VARCHAR},
+				#{STATUSNOTES,			jdbcType=VARCHAR},
+				#{STATUSNONCASE,		jdbcType=VARCHAR},
+				#{STATUS_UPDATE_DATE,	jdbcType=VARCHAR},
+				#{STATENO2,				jdbcType=VARCHAR},
+				#{UPLOAD_FILENAME,		jdbcType=VARCHAR},
+				#{UPLOAD_UID,			jdbcType=VARCHAR},				
+				SYSDATE
+			)
+	</insert>
+	
+	
+	<select id="getCurrentActiveStatenoList" parameterType="java.util.Map" resultType="java.util.Map">
+		 <foreach collection="STATENOS"  item="stateno" index="index" separator=" Union all ">
+			SELECT  #{stateno} ACTUAL_STATENO, PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (#{stateno}) CURRENT_STATENO from DUAL 
+		</foreach>
+	</select>	
+</mapper>
