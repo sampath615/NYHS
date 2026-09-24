@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jnlp codebase="$$codebase" href="launch.jnlp" spec="1.0+">
+    <information>
+        <title>nyehmssecappj</title>
+        <vendor>NYEHMS</vendor>
+        <homepage href=""/>
+        <description>nyehmssecappj</description>
+        <description kind="short">nyehmssecappj</description>
+    </information>
+    <update check="always"/>
+    <security>
+<all-permissions/>
+</security>
+    <resources>
+        <j2se version="1.7+"/>
+        <jar href="nyehmssecappj.jar" main="true"/>
+    <jar href="lib/commons-httpclient-3.1-sources.jar"/>
+<jar href="lib/commons-httpclient-3.1.jar"/>
+<jar href="lib/commons-logging-1.1.1.jar"/>
+</resources>
+    <application-desc main-class="applet.Applet">
+    </application-desc>
+</jnlp>
