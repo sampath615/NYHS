@@ -15,7 +15,7 @@ Working rules: one small reviewable cleanup step per commit; no unrelated refact
 - **Code state:** dead-code cleanup is complete per the automated scans. Cleanup commits, oldest first: `77b99f6`, `5e78269`, `e8840de`, `da444ee`, `2f13871`, `88f2727`, `020ee5b`, `5d6bfd0`, `b84cc85` (each followed by an AGENTS.md log commit). Nothing has been pushed from the agent session.
 - **Verification status:** the project owner confirmed a working build/deployment through `88f2727`. Commits `020ee5b`, `5d6bfd0` and `b84cc85` (methods/comments/dead mapper XML/pom deps; no-caller DAO methods + mapper SQL; applet bundle, JSPs, 126 unused fields) were reviewed but **not explicitly confirmed as built and deployed** — build and deploy `HEAD` first thing. Each cleanup commit is self-contained, so a failure can be isolated with `git revert <hash>`.
 - **Still not recorded anywhere:** a clean `mvn clean package -DskipTests` result from a machine with JDK 8 + Maven (the agent machine has neither), and screen-level regression checks (scheduler page, assignments, document review, lab reports, provider/facility standardization, scan and CCD screens). Also confirm from access logs that the removed root-level applet files (`AppletCall.jsp`, `index.jsp`, `launch.html`, `launch.jnlp`) were not requested directly.
-- **Remaining cleanup:** none flagged by the automated scans after the seventh pass. What is left is documentation and decisions: refresh the stale sections of this file (§0 counts, §1 tree, §3 candidate table, §8 step 1, Summary still describe already-removed items as candidates), decide fix-vs-remove for the two small bugs in §8 step 2 (`/getUserGuide` → missing `UserGuide.jsp`; `controller.reports` vs `controller.report` pointcut), and check access logs for the removed root-level applet files. Prose comments were intentionally kept.
+- **Remaining cleanup:** none flagged by the automated scans after the seventh pass. What is left is documentation and decisions: refresh the stale sections of this file (§0 counts, §1 tree, §3 candidate table, §8 step 1, Summary still describe already-removed items as candidates), decide fix-vs-remove for the remaining small bug in §8 step 4 (`controller.reports` vs `controller.report` pointcut; the `/getUserGuide` bug went away with the User Guide removal), and check access logs for the removed root-level applet files. Prose comments were intentionally kept.
 - **Next stage (modernization, not started):** in this order — (1) record a real Maven build baseline; (2) remove the hardcoded WebLogic deploy password from `WEB-INF/properties/pom.properties` (and rotate it); (3) fix or remove `ControllerLayerInterceptingAspect` (WebLogic-internal `ServletRequestImpl` type check, plus the `controller.reports` vs `controller.report` pointcut typo); (4) split `spring-config.xml` by concern; (5) then the Java 21 / Tomcat / modular-monolith / MyBatis→JPA plan in sections 6–8. Keep the working rules above: one small reviewable step per commit, verify references before removing, no unrelated refactors.
 - **Working conventions used so far:** dry-run first, then apply; verify with comment-stripped diffs (zero added code lines), declaration-name diffs, brace balance using a character-level lexer to mask comments and strings (regex masks are unreliable — a 37,000-character string literal once defeated one), and XML well-formedness checks; commit code first, then a separate AGENTS.md commit that records the code commit hash.
 
@@ -30,6 +30,7 @@ Working rules: one small reviewable cleanup step per commit; no unrelated refact
 | `5d6bfd0` | **Fifth cleanup pass:** removed 26 no-caller DAO interface methods (18 in `PersonDAO` incl. the `get*DocumentDetails` family whose only callers were commented-out code, 4 in `SchedulerJobsDAO`, `AHIDocumentDAO.checkAhiFlagEligibility`, `ScanDocumentDAO.getDocDetails`, `LaftFollowupDocumentDAO.getDocumentReviewComment`, `RecordSearchReviewDAO.updateNoReturnSequences`) with their 24 mapper XML statements; deleted 3 unreferenced VOs (`NyehmsRolePermissionsViewVO`, `LAFTCountReconcileTestDataVO`, `UploadPSConfirmedSTDVO`); removed 4 unused `CommonConstants` entries. | JSPs newly unreferenced, ~128 unused private/`@Autowired` fields, legacy applet files, `SchedulerMetaData.properties`, `webapp/lib` jars (see "Open findings after the fifth pass"). |
 | `b84cc85` | **Sixth cleanup pass:** deleted the legacy Java applet / Web Start bundle (`AppletCall.jsp`, `index.jsp`, `index2.jsp`, `launch.html`, `launch.jnlp`, `nyehmssecappj.jar` and its 3 `webapp/lib` jars — the applet call in `InitializeController` was already commented out); deleted 6 JSPs left unreferenced by earlier removals (`reports/ClusterViews`, `uploads/uploadClusterError`, `uploads/delManualAddedStatenoTSCluster`, `initialize/CryptoAuthSucess`, `standardization/facility/confirm/NewPageGrdStandardizeDialog`, `standardization/facility/search/GrandSearchCriteria`); removed 2 unused `AppConstants` enum constants; removed 126 unused private/`@Autowired` fields (75 files; the `@Autowired` line goes with its field, fields carrying other annotations were skipped) and the 77 imports they freed. | `scanning/ShowScannedFileNames.jsp` (still returned by a live controller method); properties files (all live — see notes below). |
 | `e9f249e` | **Seventh cleanup pass:** deleted `scanning/ShowScannedFileNames.jsp` (its controller method had been removed with the earlier comment sweep, so it became unreferenced; the earlier note saying a live method returned it was stale); removed 6 unused methods — private `ManualQuartzJobServiceImpl.populateCountyValue`, `DocumentTransactionHelper.checkAndAddFacilityAddress`/`checkAndSubProviderAddress`, `QuartzSchedulerTransactionHelper.storeDocumentMatchDataToStandardAndMatchResultsTable`, `AssignmentController.parseAssignmentsByRegionByStatus`, and public `QuartzSchedulerTransactionHelper.processMultiStepDocumentsToGether` (with their `@Transactional`/Javadoc); removed the dead AllJaro entries from the LOCAL fallback `SchedulerMetaData.properties` (`AJJARO_REFERENCE_ID_POSITION`, `ALLJARO_*` x7, `LAST_ALL_JARO_SCHEDULER_RUN_DATE`, `LOAD_ALLJARO_SCHEDULER`) and the then-unused `CommonConstants.LOAD_ALLJARO_SCHEDULER`; 2 freed imports. | `NycDeathDocumentServiceImpl.isOldNycDeathFile` was a scan false positive (it is called from live code at line 377) and stays. DB rows for the removed scheduler keys (if any) are outside this repo. |
+| `8746622` | **Eighth cleanup pass — removed the User Guide / context-sensitive help feature:** deleted `controller/userGuideHelp/ContextSensitiveUserGuideHelpController` (endpoints `/getUserGuide` [broken — its view never existed], `/getWebUserGuide`, `/getWebUserGuideFields`, `/help/getHelpPage`), the 3 `userguide/` JSPs (`webUserGuide`, `webUserGuideContent`, `webUserGuideFieldContent`), the 25 `help/**` page JSPs, 70 empty `<helpContext .../>` markers in 12 JSPs (administration, reports and facility/provider standardization pages), the "USER GUIDE" button in `common/Menu.jsp`, the `js/userguide/webUserGuide.js` include in `email/helpLine.jsp`, and the empty "Help Manual" overlay `div` in `common/commonScriptsIncludes.html`. This also resolves the `/getUserGuide` bug from section 3. | **Assets outside this repo still exist and are now unused:** the external static path (`${staticPath}`) likely still holds `js/userguide/webUserGuide.js`, `css/userguide/webUserGuide.css`, `docs/UserGuideNyehms_07_15_2019.pdf`, the `userGuideModal()` function and the script that renders `<helpContext>` icons/`referenceTarget` help — clean those up where that content is deployed. The `clusterHelpIcon` definition tooltips/dialogs (`document/ClusterDocument.jsp`, `uploads/uploadCluster.jsp`) are a separate mechanism and were kept. The `HELPLINE` menu item and email form are a separate feature and were kept. |
 
 Manual checks for `77b99f6`: app starts cleanly on WebLogic (DONE — deployment works), the scheduler page renders and its other buttons work (not yet recorded), external static JS has no references to `*CreatingAllJaro` IDs or `runAllJaroLoaderJob` (not yet recorded).
 
@@ -39,20 +40,20 @@ Manual checks for `77b99f6`: app starts cleanly on WebLogic (DONE — deployment
 
 | Metric | Count |
 |---|---|
-| Java source files (`src/main/java`) | 741 |
-| JSP files | ~439 (436 by direct glob) |
-| MyBatis mapper XML files (app + scheduler) | ~104 |
-| DAO/mapper Java interfaces | 99 (web) + 4 (schedulers) |
-| Service classes | 241 |
-| Controller classes | 65 |
-| Domain/VO/DTO classes | 257 |
+| Java source files (`src/main/java`) | 685 (+ 17 test classes) |
+| JSP files | 376 |
+| MyBatis mapper XML files (files with `<mapper namespace>`) | 76 |
+| DAO/mapper Java interfaces | 98 (web) + 4 (schedulers) |
+| Service classes | 235 (~70k lines) |
+| Controller classes | 62 |
+| Domain/VO/DTO classes | 224 |
 | Standalone `.js` files in the repo | **0** — all JS is served from an external static-content path, not this repo |
-| Quartz-scheduled jobs (active) | 13 (+1 commented-out dead job, see §3) |
+| Quartz jobs (active) | 12 cron-triggered + 1 manual-only (`runCCDLoaderJob`) |
 | Java version | 8 (`maven-compiler-plugin` source/target `1.8`) |
 | Spring Framework version | 5.3.20 (XML config, not Spring Boot) |
 | Build | Maven, packaged as `.war`, WebLogic-specific manifest entries |
 
-Root build file is `pom.xml` (Maven, `.war` packaging).
+Root build file is `pom.xml` (Maven, `.war` packaging). *Numbers in this section were re-measured after the eighth cleanup pass (JSP and controller counts) and the seventh (the rest); the original analysis counted 741 Java files, ~439 JSPs and 257 domain classes.*
 
 ---
 
@@ -62,31 +63,30 @@ Base Java package: `gov.ny.state.doh.bhae.nyehms`
 
 ```
 src/main/java/gov/ny/state/doh/bhae/nyehms/
-├── utils/                          # 2 loose static-helper classes (County, HtmlMethods)
+├── utils/                          # 1 loose static-helper class (County)
 ├── web/
 │   ├── ajax/json/                  # GridObject, JsonObject — JSON payload shapes for jqGrid/AJAX
 │   └── spring/
-│       ├── controller/             # 65 files — Spring MVC @Controllers, grouped by feature
-│       ├── service/                # 241 files — business logic, grouped by feature
-│       ├── dao/                    # 99 MyBatis mapper interfaces, mirrors service grouping
-│       ├── domain/                 # 257 VO/DTO classes — MyBatis result-map targets AND MVC form objects
-│       ├── bo/                     # 4 legacy "business object" processor classes
+│       ├── controller/             # 62 files — Spring MVC @Controllers, grouped by feature
+│       ├── service/                # 235 files — business logic, grouped by feature
+│       ├── dao/                    # 98 MyBatis mapper interfaces, mirrors service grouping
+│       ├── domain/                 # 224 VO/DTO classes — MyBatis result-map targets AND MVC form objects
+│       ├── bo/                     # 3 legacy "business object" processor classes
 │       ├── util/                   # shared utility classes (CommonUtil, DateUtil, SendEmail, etc.)
 │       ├── constants/, enums/      # CommonConstants, EharsVariableConstants, AppConstants
-│       ├── security/               # AuthFilter (dead), UserAuthorization, UserObject (session principal)
+│       ├── security/               # UserAuthorization, UserObject (session principal)
 │       ├── aop/                    # exception-handling, logging, and intercepting aspects
 │       ├── validation/             # per-document-type Validators
 │       ├── view/                   # legacy Spring AbstractPdfView/AbstractXlsView subclasses (PDF/Excel export)
 │       ├── listener/                # ServletContextListener (app bootstrap)
-│       ├── exception/               # NyehmsException, CommonException
-│       └── jms/                    # EnQueMessage/DeQueMessage/JmsExceptionListener — dead, unwired (§3)
+│       └── exception/               # NyehmsException
 ├── schedulers/spring/dao/{ecrls,nyehms,ursdb}/   # scheduler-specific MyBatis DAOs, 3 separate datasources
 └── webservice/{oauth,webclient}/   # modern WebClient/reactor-based HCS OAuth2 client (outside component-scan!)
 ```
 
 ```
 src/main/resources/
-├── spring-config.xml               # the entire Spring wiring: datasources, MyBatis, Quartz, MVC, JMS namespace (unused)
+├── spring-config.xml               # the entire Spring wiring: datasources, MyBatis, Quartz, MVC
 ├── log4j2.xml
 ├── *_environment.properties        # per-environment config: DEV/EVAL/LOCAL/PROD
 ├── views.properties                 # ResourceBundleViewResolver — PDF/Excel export views ONLY, not JSPs
@@ -100,18 +100,18 @@ src/main/webapp/
 ├── WEB-INF/web.xml                 # HCSSecurityFilter + ServiceConsumerSecurityFilter (external HIN libs), DispatcherServlet on /web/*
 ├── WEB-INF/weblogic.xml            # WebLogic-specific: context-root, session/JSP descriptors
 ├── WEB-INF/jsp/                    # 439 JSPs, ~24 top-level feature folders (see §2)
-├── WEB-INF/properties/pom.properties  # ⚠ contains a hardcoded WebLogic deploy password (see §3)
+└── WEB-INF/properties/pom.properties  # ⚠ contains a hardcoded WebLogic deploy password (see §5)
 ```
 
 ### Layer responsibilities (as-built, not idealized)
 
-- **Controllers** (`web/spring/controller/**`): Spring `@Controller` classes, `.html`-suffixed `@RequestMapping`s, mostly return JSP view-name strings against a `Map<String,Object>` model rather than typed `@ModelAttribute`/`ResponseEntity`. Heavily pull `UserObject` off the `HttpSession` (589 occurrences across 58 files). Several controllers contain real business logic and even direct DAO access (see §3/§5).
-- **Services** (`web/spring/service/**`): the largest layer (241 files, ~77k lines). Mix of legitimate business logic and — in a substantial minority of classes — raw JDBC, PDF/Excel/FreeMarker generation, email sending, and SFTP file transfer, all inside `@Service` classes that also do database orchestration. `*TransactionHelper` classes (~20 of them, one per feature) wrap MyBatis calls in `@Transactional` boundaries.
+- **Controllers** (`web/spring/controller/**`): Spring `@Controller` classes, `.html`-suffixed `@RequestMapping`s, mostly return JSP view-name strings against a `Map<String,Object>` model rather than typed `@ModelAttribute`/`ResponseEntity`. Heavily pull `UserObject` off the `HttpSession` (569 occurrences across 59 files). Several controllers contain real business logic and even direct DAO access (see §3/§5).
+- **Services** (`web/spring/service/**`): the largest layer (235 files, ~70k lines). Mix of legitimate business logic and — in a substantial minority of classes — raw JDBC, PDF/Excel/FreeMarker generation, email sending, and SFTP file transfer, all inside `@Service` classes that also do database orchestration. `*TransactionHelper` classes (~20 of them, one per feature) wrap MyBatis calls in `@Transactional` boundaries.
 - **DAOs / MyBatis mappers** (`web/spring/dao/**` + matching XML in `resources/.../dao/**`): interface-per-feature, XML-per-interface, wired via 3 separate `MapperScannerConfigurer`s onto 3 separate `SqlSessionFactory`s (`sqlSessionFactory`/`appDS`, `elrlsSessionFactory`/`appDS`, `ursSessionFactory`/`ursDS`) plus a 3rd raw datasource (`eharsDS`) accessed only via hand-rolled JDBC (`ConnectionDAO`/`JdbcConnectionDAO`), not MyBatis. The `document/` subpackage alone has 44 DAOs, one per external data-feed type.
 - **Domain/VOs** (`web/spring/domain/**`): plain getter/setter classes with no Jackson/Bean-Validation annotations in most cases; the same VO instance is typically populated by MyBatis via reflection **and** bound to JSP forms/models — a dual-purpose pattern that will need to be split for a clean JPA entity vs. DTO separation later.
 - **JSP + JS** (`webapp/WEB-INF/jsp/**`): server-rendered views resolved via `InternalResourceViewResolver` (prefix `/WEB-INF/jsp/`, suffix `.jsp`). **No JavaScript lives in this repository at all** — every JSP loads JS from an externally deployed static path (`${staticPath}/js/...`, set from `session.getAttribute("staticPath")`, e.g. `/hpn/ctrldocs/nyehms`), including shared libraries (jQuery 1.9.1, jQuery UI 1.10.1, jqGrid 4.5.4) centralized via `common/commonScriptsIncludes.html`. This is an important discovery for modernization: **front-end assets are managed and deployed outside this codebase** and are not visible to static analysis here.
-- **Config**: `spring-config.xml` is the single, large, XML-based Spring context (datasources, MyBatis session factories, Quartz jobs/triggers, MVC view resolvers, JAXB/Jackson marshalling, JMS namespace declared-but-unused). `web.xml`/`weblogic.xml` carry WebLogic-specific deployment descriptors (JNDI-based filters, session replication, context-root). Environment selection is via `*_environment.properties` files.
-- **Utilities**: scattered across `utils/` (2 files), `web/spring/util/` (9 files, including a 1,506-line `LabCommonUtils`), and many per-feature `*TransactionHelper`/`*Util`/`*Helper` classes embedded directly inside `service/` subpackages rather than centralized.
+- **Config**: `spring-config.xml` is the single, large, XML-based Spring context (datasources, MyBatis session factories, Quartz jobs/triggers, MVC view resolvers, JAXB/Jackson marshalling). `web.xml`/`weblogic.xml` carry WebLogic-specific deployment descriptors (JNDI-based filters, session replication, context-root). Environment selection is via `*_environment.properties` files.
+- **Utilities**: scattered across `utils/` (1 file), `web/spring/util/` (9 files) and `web/spring/util/scheduler/LabCommonUtils` (1,484 lines), and many per-feature `*TransactionHelper`/`*Util`/`*Helper` classes embedded directly inside `service/` subpackages rather than centralized.
 
 ---
 
@@ -141,60 +141,54 @@ Oracle Database (3 WebLogic JNDI datasources: appDS, ursDS, eharsDS)
         └── some services bypass MyBatis entirely via ConnectionDAO/JdbcConnectionDAO (raw JDBC on appDS/eharsDS)
 
 Scheduled side-flow:
-Quartz (spring-config.xml JobDetailFactoryBean/CronTriggerFactoryBean, 13 active jobs)
+Quartz (spring-config.xml JobDetailFactoryBean/CronTriggerFactoryBean, 12 cron-triggered jobs + 1 manual-only)
         → *Loader / *ServiceImpl classes in web/spring/service/schedulers/**
         → same Service → DAO → Oracle pattern, plus JSch/SFTP and JavaMail for file exchange and notifications
 ```
 
 View resolution: controller returns a String like `"search/personSearchTabDetail"` → `InternalResourceViewResolver` → `/WEB-INF/jsp/search/personSearchTabDetail.jsp`. A **separate** `ResourceBundleViewResolver` (`views.properties`) resolves a small set of non-JSP export views (PDF via iText `AbstractPdfView`, Excel via `AbstractXlsView`) — these are Java classes in `web/spring/view/**`, not JSPs.
 
-JSP folder names line up close to 1:1 with controller package names (administration, assignment, document, lab, person, review, search, standardization, uploads all match directly); a few don't match literally but resolve correctly through the view-name string (controller package `report` → JSP folder `reports`; `scan` → `scanning`; `userGuideHelp` → `userguide`).
+JSP folder names line up close to 1:1 with controller package names (administration, assignment, document, lab, person, review, search, standardization, uploads all match directly); a few don't match literally but resolve correctly through the view-name string (controller package `report` → JSP folder `reports`; `scan` → `scanning`).
 
 ---
 
-## 3. Unnecessary Code Candidates
+## 3. Unnecessary Code Candidates — status
 
-**Do not delete.** Each item below was checked by grepping across Java, MyBatis XML, JSP, and `spring-config.xml` before being listed — but only a human with deploy/runtime visibility should make the final call, especially for anything touching Quartz (reflection-invoked) or Spring component-scan (annotation-invoked).
+The original analysis listed candidates here with a "do not delete" warning. After verification, **all High-confidence items have been removed** across the cleanup passes recorded in the Cleanup Log; the original table is in Git history (commit `b7b944a`). This section now tracks what was resolved and what is still open.
 
-| Item | Why it looks unnecessary | Confidence |
+**Resolved (see the Cleanup Log for commits):** `AllJaroLoader` + `RunAllJaroLoaderJob` and their JSP buttons (`77b99f6`); the Sierra loader job (`5e78269`); `AuthFilter`; the unwired `jms/**` package and its tests; `SSDMDocValidator`/`ADAPDocValidator`; `UpperCase`/`UpperCaseValidator`; `GetTblNameMap`; `domain/test/**` + `TestController`; `utils/HtmlMethods`; `SubProviderAddressDAO` (+ XML); the empty `SystemMessagingController`; the `sqljdbc4` and `maven-plugin-api` Maven dependencies; ~60 unused `CommonConstants` entries; `CCDDocumentServiceDOMXPATH` (+ Impl); the unreferenced JSPs (`AssignmentsCountsSuper`, `labFacilitiesGrid` and ~40 more); the applet/Web Start bundle; plus unused VOs, DAO methods and mapper SQL, imports, fields and commented-out code (see the Appendix).
+
+**Still open:**
+
+| Item | Why | Confidence |
 |---|---|---|
-| ~~`web/spring/service/schedulers/AllJaroLoader.java` + `RunAllJaroLoaderJob.java`~~ | **DONE — removed in commit `77b99f6`** (see Cleanup Log). Was: beans/trigger commented out in `spring-config.xml`, plus 4 dead buttons in `manualQuartzSchedulerJob.jsp`. | ~~High~~ |
-| `web/spring/security/AuthFilter.java` | Its only reference anywhere in the repo is the commented-out `<filter-class>` in `web.xml:63`. Zero other Java/JSP/XML references. | **High** |
-| `web/spring/jms/EnQueMessage.java`, `DeQueMessage.java`, `JmsExceptionListener.java` | `spring-config.xml` declares the `jms` XML namespace but never defines a `ConnectionFactory`, `JmsTemplate`, or any `<jms:...>` element. Entire package is unwired. | **High** |
-| `web/spring/validation/document/SSDMDocValidator.java`, `ADAPDocValidator.java` | `DocumentValidator.java` (the only dispatcher) instantiates only `TBDocValidator`/`LabDocValidator`; these two classes have no other referrers. | **High** |
-| `web/spring/validation/custom/antn/UpperCase.java` + `UpperCaseValidator.java` | The `@UpperCase` annotation is never applied to any field anywhere in the codebase. | **High** |
-| `web/spring/bo/GetTblNameMap.java` | Entire method body (~100 lines) is block-commented; only an empty `@Component` shell with one unused field remains live. | **High** |
-| `web/spring/domain/test/Person.java`, `PersonInfo.java` + `controller/TestController.java` | Class-level Javadoc self-describes as a Spring-validation demo/scratchpad ("used for testing purpose of any new functionality"); hardcoded sample data, no other feature references `domain.test.*`. Endpoints are technically live/routable but serve no product function. | **High** (leftover scratch code, not wired to any real feature) |
-| `utils/HtmlMethods.java` | Zero callers found anywhere in `src/main`. | **High** |
-| `dao/standardization/provider/SubProviderAddressDAO.java`/`.xml` | Only self-reference found; appears superseded by the actively-used, similarly-named `SubProviderAndAddressDAO`. | **High** |
-| `EharsVariableConstants.EHARS_VARIABLES` map (~40 entries) | Its only call site is a commented-out line in `AssignmentServiceImpl.java:765`. (The sibling `EHARS_VAR_NAME_MAP` in the same file IS actively used dynamically — do not remove the whole class.) | **High** |
-| `com.microsoft.sqlserver:sqljdbc4` Maven dependency (`pom.xml`) | No `jdbc:sqlserver:` URL or SQL Server JNDI datasource exists anywhere. The one method that sounds related, `ConnectionDAO.getSqlServerConnectionObj()`, is actually wired to `eharsDS` — an Oracle datasource — in `spring-config.xml:188-191`. The method name is misleading; the driver itself appears unused. | **Medium** (dependency looks dead; the misleadingly-named method is real/called-from-6-places code, keep it, just note the name is wrong) |
-| `administration/SystemMessagingController.java` | 9 lines, only a commented-out `@RequestMapping`; effectively an empty stub. | **Medium** |
-| ~30% of sampled `CommonConstants.java` constants (6 of 20 sampled, e.g. `SCHEDULER_QUALITY_STAGE`, `TRIGGER_STOP`, `TEST_TYPE_IFA`, `STD_RESULTS_HIV2`, `NEW_HIE_DTH_DATA`) | No references outside their own declaration. `CommonConstants.java` (332 lines, ~110 constants) is an ungrouped "junk drawer" spanning many unrelated concerns — a fuller audit (not just the 20 sampled) would likely find more. | **Medium** (sampled only; needs a full sweep) |
-| `reports/LoincResults.jsp`, `reports/labFacilitiesGrid.jsp`, `assignment/AssignmentsCountsSuper.jsp` | No controller view-name match, no JSP include/AJAX reference found anywhere. | **Low** (static grep only — dynamic view-name construction or access-log evidence should be checked before removal) |
-| `userguide/UserGuideController` endpoint `/getUserGuide` → view `"userguide/UserGuide"` | No `UserGuide.jsp` exists (only `webUserGuide.jsp`, case-sensitive mismatch) — endpoint is likely broken/orphaned, possibly superseded by `/getWebUserGuide`. | **Medium** |
-| `aop/intercepting/ControllerLayerInterceptingAspect.java` pointcut segment for `controller.reports..*` | Actual package is `controller.report` (singular) — this portion of the pointcut can never match; report-package controllers silently don't get whatever behavior this aspect provides. Functionally dead logic, not a whole dead file. | **High** |
+| `EharsVariableConstants.EHARS_VARIABLES` map (~40 entries) | Its only call site was a commented-out line in `AssignmentServiceImpl`, which the comment sweep removed; the map now has no references. The sibling `EHARS_VAR_NAME_MAP` in the same file IS used dynamically — do not remove the whole class. (It was missed by the constants sweep because it is a map, not a `public static final String`.) | High |
+| `reports/LoincResults.jsp` | No controller view-name match found; only a substring-style reference. Verify before removing. | Low |
+| `ConnectionDAO.getSqlServerConnectionObj()` | Misleading name — it is wired to `eharsDS`, an Oracle datasource. Real code (called from 6 places); rename later, do not remove. | Note |
+| ~~`/getUserGuide` → missing `UserGuide.jsp`~~ | **RESOLVED (eighth pass)** — the whole User Guide / context-sensitive help feature was removed, including this broken endpoint. | ~~Medium~~ |
+| `aop/intercepting/ControllerLayerInterceptingAspect.java` pointcut `controller.reports..*` | Actual package is `controller.report` (singular), so that segment can never match and report-package controllers silently miss whatever this aspect does. Also imports WebLogic-internal `ServletRequestImpl` (see section 5). A bug — decide fix vs. remove. | High |
 
-**Caveats that apply across this whole section** (per project instructions — do not blindly classify code as unused):
-- `@Service`/`@Component`/`@Controller` classes under `gov.ny.state.doh.bhae.nyehms.web.spring.*` are auto-registered by the single `<context:component-scan>` in `spring-config.xml:24` even with zero explicit XML bean refs and zero direct Java callers.
+**Caveats that apply across this whole section** (still valid for any future cleanup — do not blindly classify code as unused):
+- `@Service`/`@Component`/`@Controller` classes under `gov.ny.state.doh.bhae.nyehms.web.spring.*` are auto-registered by the single `<context:component-scan>` in `spring-config.xml` even with zero explicit XML bean refs and zero direct Java callers.
 - Classes under `gov.ny.state.doh.bhae.nyehms.webservice.*` (a *different* top-level package) are **outside** that component-scan base package — e.g. `webservice/oauth/AccessTokenClient.java` carries `@Service`/`@Autowired` but is actually instantiated with `new AccessTokenClient(...)` by `NyhemsHCSWebServiceOp`, not by Spring DI. This is a wiring inconsistency worth fixing, not dead code.
-- `RunXxxLoaderJob extends QuartzJobBean` classes are invoked by Quartz via reflection from `spring-config.xml`'s `JobDetailFactoryBean.jobClass` — absence of a direct Java caller does **not** imply dead code for this pattern (this is why AllJaroLoader could only be confirmed dead via its commented-out bean, not via a caller search alone).
-- MyBatis mapper interfaces are proxied by `MapperScannerConfigurer`, not registered in XML individually — only a literal `@Autowired`/interface-reference grep can confirm liveness.
+- `RunXxxLoaderJob extends QuartzJobBean` classes are invoked by Quartz via reflection from `spring-config.xml`'s `JobDetailFactoryBean.jobClass` — absence of a direct Java caller does **not** imply dead code for this pattern.
+- MyBatis mapper interfaces are proxied by `MapperScannerConfigurer`; their XML is loaded by convention (same package path, same name as the interface) — only a literal `@Autowired`/interface-reference grep can confirm liveness.
+- Properties files are looked up by dynamically built keys (see the Appendix) — never prune them by name search.
 
 ---
 
 ## 4. Redundant / Duplicate Code
 
 - **~40 near-identical `Raw*/Std*` document-feed pipelines**, each spanning Controller → Service → DAO/XML → VO, one per external source system (ADAP, AHI, Birth, Cancer, CASA, CCD, Death, Doccs, HL7, ICCR, Medicaid, NDI, PRF, RAS, SSDM, STD, SYPH, TB, TTH, Tracking, …). Every layer repeats the same method-name skeleton per feed: `get<Feed>Doc`, `insertRaw<Feed>Document`, `insertStd<Feed>Document`, `get<Feed>DocumentForClericalReview`, `getRawDocAsHTML`/`sendEmailNotificationTo<Feed>Users`. This is the single largest duplication surface in the codebase, spanning `web/spring/dao/document/**` (44 DAOs), `web/spring/domain/document/**` (132 VOs, 76 of them loose at the top level with inconsistent sub-packaging), `web/spring/service/document/**`, and `person/DocumentController.java` (which alone has ~28 near-identical `getXxxDocAsHTML` methods, lines 213–662+). **Consolidation direction**: a generic/strategy-based document-feed abstraction (type → handler map) instead of one bespoke class per feed at every layer — a strong long-term target, but high-risk/high-effort given ~40x fan-out; do this after the modular-monolith boundary work, not before.
-- **Repeated session/user-lookup boilerplate**: `HttpSession session = request.getSession(); UserObject userObject = (UserObject) session.getAttribute("UserObj");` (or equivalent) repeated **589 times across 58 of 65 controller files**. Candidate for a `HandlerMethodArgumentResolver` or `@ModelAttribute`-based interceptor.
+- **Repeated session/user-lookup boilerplate**: `HttpSession session = request.getSession(); UserObject userObject = (UserObject) session.getAttribute("UserObj");` (or equivalent) repeated **569 times across 59 of 62 controller files**. Candidate for a `HandlerMethodArgumentResolver` or `@ModelAttribute`-based interceptor.
 - **Repeated file-upload handling**: 7 controllers (`ADAPNYCFeedBackController`, `ClepAuditResultsController`, `LaftCountReconcilleController`, `RecordSearchReviewController`, `DocumentsScanController`, `DatafluxUploadController`, `FileUploadController`) each independently handle `MultipartFile`/`MultipartHttpServletRequest` with no shared upload utility/base controller.
-- **Ad hoc email-sending wrappers**: 30 service files wrap the shared `web/spring/util/SendEmail.java` utility with their own `sendEmail*` methods rather than a single shared notification service — e.g. near-duplicate `sendEmailToBureauDirector` logic exists independently in both `EPRFOOCDocumentServiceImpl.java:471` and `DocumentReviewTransactionHelper.java:512`.
+- **Ad hoc email-sending wrappers**: 24 service files wrap the shared `web/spring/util/SendEmail.java` utility with their own `sendEmail*` methods rather than a single shared notification service — e.g. near-duplicate `sendEmailToBureauDirector` logic exists independently in both `EPRFOOCDocumentServiceImpl.java:471` and `DocumentReviewTransactionHelper.java:512`.
 - **Report/export generation duplication**: 9+ service files independently hand-build PDF (itext), Excel (POI via `AbstractXlsView`), and FreeMarker output rather than going through one shared report-building service. The 16 `Generate*` classes in `web/spring/view/review/**` each re-implement Excel header/style/row boilerplate on top of Spring's `AbstractXlsView` — e.g. 4 separate `Generate*ReportByDailyStaff` classes share an identical report shape.
-- **Two CCD parsing implementations**: `CCDDocumentServiceImpl` and `CCDDocumentServiceDOMXPATHImpl` (1,256 lines) both implement CCD-document parsing via different strategies — worth confirming which is actually current before treating both as live.
+- **Two CCD parsing implementations — RESOLVED**: `CCDDocumentServiceDOMXPATHImpl` was unused (nothing injected its interface) and was removed; `CCDDocumentServiceImpl` is the live CCD parser.
 - **Per-feature `*TransactionHelper` classes** (~20 of them, one per service subpackage: `PersonTransactionHelper`, `AssignmentTransactionHelper`, `DocumentTransactionHelper`, `RiaTransactionHelper`, etc.) repeat the same "wrap DAO calls in a transactional boundary" shape — a plausible candidate for a shared generic transactional-service base once the module boundaries are clearer.
 - **Raw/Std VO pairing duplicated ~7+ times structurally**: `RawCCDDocVO`/`StdCCDDocVo`, `RawHL7DocVO`/`StdHL7DocVO`, `RawHIEDTHDocVO`/`StdHIEDTHDocVO`, etc. — each subpackage reinvents the "incoming raw record" vs. "standardized record" concept with its own field set instead of a shared base/interface.
-- **JSP header/menu/footer includes are actually well-consolidated** (not a duplication problem): `common_includes.jsp`, `commonStylesIncludes.html`, `commonScriptsIncludes.html`, `MainMenuIncludes.jsp`, `Menu.jsp` are reused 90–150+ times each via `<%@ include %>`/`jsp:include`. The one real duplication here is cosmetic: the same one-line scriptlet `pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));` appears independently (not via include) in ~54 JSP files.
-- **Two grid libraries coexisting**: legacy jqGrid (4.5.4, the default via `commonScriptsIncludes.html`) alongside a newer `commonagGridScriptsIncludes.html` (ag-Grid) used in only 8 places — evidence of an in-progress, incomplete UI library migration that predates this modernization effort.
+- **JSP header/menu/footer includes are actually well-consolidated** (not a duplication problem): `common_includes.jsp`, `commonStylesIncludes.html`, `commonScriptsIncludes.html`, `MainMenuIncludes.jsp`, `Menu.jsp` are reused 90–150+ times each via `<%@ include %>`/`jsp:include`. The one real duplication here is cosmetic: the same one-line scriptlet `pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));` appears independently (not via include) in 52 JSP files.
+- **Two grid libraries coexisting**: legacy jqGrid (4.5.4, the default via `commonScriptsIncludes.html`) alongside a newer `commonagGridScriptsIncludes.html` (ag-Grid) now referenced from 25 JSP files — evidence of an in-progress, incomplete UI library migration that predates this modernization effort.
 
 ---
 
@@ -204,15 +198,15 @@ These are the patterns that will most complicate the planned Java 21 / Tomcat / 
 
 **Direct database access outside the DAO layer** (the biggest single issue for a MyBatis→JPA migration, since it's invisible to any repository-based approach):
 - `web/spring/dao/jdbc/impl/JdbcConnectionDAO.java` hands out raw `Connection` objects (`getConnectionObj()` from `appDS`, `getSqlServerConnectionObj()` — actually Oracle `eharsDS`, see §3) which 6+ services then use to build hand-rolled `PreparedStatement`/`CallableStatement` SQL.
-- Confirmed raw JDBC (`Connection`/`Statement`/`PreparedStatement`) in **18 service files, ~60 occurrences**, heaviest in `ManualQuartzJobServiceImpl.java` and `LabProficiencyServiceImpl.java` (9 occurrences).
+- Confirmed raw JDBC (`Connection`/`Statement`/`PreparedStatement`) in **17 service files**, heaviest in `ManualQuartzJobServiceImpl.java` and `LabProficiencyServiceImpl.java` (9 occurrences).
 - Raw `CallableStatement` built directly in application code (not MyBatis) in `LabReportsServiceImpl.java:910` and `AddLabProficiencyDataVO.java:50`.
 - One controller, `ExperimentalController.java:26,40`, `@Autowired`s a DAO (`CCDDocumentDAO`) directly, skipping the service layer entirely.
 
 **God classes mixing many responsibilities:**
-- `ManualQuartzJobServiceImpl.java` — **6,825 lines**, the largest file in the app. Combines Quartz job control, raw JDBC, JSch/SFTP file transfer, JavaMail, and ECLRS/HIV lab-record validation in one `@Service`. Individual methods run to **1,327 lines** (`getRawDocsList`) and **752 lines** (`storeDocumentMatchResults`).
-- `person/DocumentController.java` — **1,967 lines**, 60 methods, 55 `@RequestMapping`s, 43 `@Autowired` fields — effectively an omnibus controller for nearly every document type.
-- Other files over ~1,500 lines: `FileUploadServiceImpl.java` (3,141), `HL7DocumentServiceImpl.java` (2,739), `QuartzSchedulerTransactionHelper.java` (2,394, despite the "helper" name), `CCDDocumentServiceImpl.java` (2,288), `assignment/AssignmentController.java` (1,691), `LabReportsController.java` (1,338), `LabCommonUtils.java` (1,506), `AssignmentReabstractUtil.java` (1,180).
-- `web/spring/bo/**` — all 4 "business object" classes mix data access, `HttpServletRequest` handling, and presentation-string encoding (e.g. `ProcessSearchResults.java:42` injects a literal marker string `"~#&^italics~#&^"` into a data field for the JSP to later interpret) inside classes with no clean single responsibility.
+- `ManualQuartzJobServiceImpl.java` — **6,610 lines**, the largest file in the app. Combines Quartz job control, raw JDBC, JSch/SFTP file transfer, JavaMail, and ECLRS/HIV lab-record validation in one `@Service`. Individual methods run to roughly **1,300 lines** (`getRawDocsList`) and **750 lines** (`storeDocumentMatchResults`).
+- `person/DocumentController.java` — **1,919 lines**, 55 `@RequestMapping`s, 43 `@Autowired` fields — effectively an omnibus controller for nearly every document type.
+- Other files over ~1,500 lines: `HL7DocumentServiceImpl.java` (2,678), `FileUploadServiceImpl.java` (2,606), `CCDDocumentServiceImpl.java` (2,259), `QuartzSchedulerTransactionHelper.java` (2,215, despite the "helper" name), `assignment/AssignmentController.java` (1,584), `LabCommonUtils.java` (1,484), `LabReportsController.java` (1,299), `AssignmentReabstractUtil.java` (1,004); the largest domain classes are `RawAcrfDocVO` (3,285), `EcrlsLabDocVO` (2,272) and `PsAssignmentView` (2,095).
+- `web/spring/bo/**` — all 3 "business object" classes mix data access, `HttpServletRequest` handling, and presentation-string encoding (e.g. `ProcessSearchResults.java:42` injects a literal marker string `"~#&^italics~#&^"` into a data field for the JSP to later interpret) inside classes with no clean single responsibility.
 
 **Business logic embedded in controllers:**
 - `DocumentController.getClericalDocumentAsPerson` (~168 lines) and `.getACRFFormAsHTML` (~151 lines) branch on document-type strings and assemble page models by calling 8+ services sequentially — this orchestration belongs in a service.
@@ -221,7 +215,7 @@ These are the patterns that will most complicate the planned Java 21 / Tomcat / 
 
 **Old Spring/Java patterns that will need addressing:**
 - Field injection (`@Autowired` on fields, never constructors) is universal — 43 fields in one controller alone.
-- Manual `Map<String,Object>` model + `HttpServletRequest` parameters instead of typed binding/`ResponseEntity`, across the large majority of the 65 controllers.
+- Manual `Map<String,Object>` model + `HttpServletRequest` parameters instead of typed binding/`ResponseEntity`, across the large majority of the 62 controllers.
 - Hand-built `BindingResult`/`MapBindingResult` instead of `@Valid` + injected `BindingResult`.
 - Legacy Spring `AbstractPdfView`/`AbstractXlsView` subclasses (17 classes) instead of a modern export-generation service.
 - `SimpleDateFormat`, `java.util.Date`/`Calendar` throughout (no `java.time` usage found in sampled god classes) — direct Java 8→21 friction, though low-risk to modernize incrementally.
@@ -234,8 +228,8 @@ These are the patterns that will most complicate the planned Java 21 / Tomcat / 
 - `webapp/WEB-INF/properties/pom.properties` contains a **hardcoded WebLogic deployment password** (`wlpassword=password77`) — a security hygiene issue independent of the modernization effort, worth flagging to the team regardless of migration timing.
 
 **Excessive/monolithic XML configuration:**
-- `spring-config.xml` is a single ~480-line file mixing datasource config, 3 MyBatis session factories, ~13 Quartz job/trigger bean pairs, MVC/JAXB/Jackson wiring, and an unused JMS namespace declaration — a good candidate to split by concern (datasource, MyBatis, scheduling, MVC) even before any Spring Boot migration.
-- `standardization/**` and large chunks of `assignment/`, `review/`, and `CommonDAO.xml` rely heavily on Oracle stored procedures (`PKG_STANDARDIZATION.*`, `PKG_CONSOLIDATION.*`) — 39 mapper XML files, ~123 `CALLABLE` statements total — meaning substantial business logic lives in the Oracle database itself, not in Java, which the eventual JPA migration cannot simply "port."
+- `spring-config.xml` is a single ~450-line file mixing datasource config, 3 MyBatis session factories, ~13 Quartz job/trigger bean pairs, and MVC/JAXB/Jackson wiring — a good candidate to split by concern (datasource, MyBatis, scheduling, MVC) even before any Spring Boot migration.
+- `standardization/**` and large chunks of `assignment/`, `review/`, and `CommonDAO.xml` rely heavily on Oracle stored procedures (`PKG_STANDARDIZATION.*`, `PKG_CONSOLIDATION.*`) — 38 mapper XML files, ~130 `CALLABLE` statements total — meaning substantial business logic lives in the Oracle database itself, not in Java, which the eventual JPA migration cannot simply "port."
 - `CommonDAO.xml:166-168` and `:` (notification list query) use `${tableName}`/`${COLUMN_NAME}` raw string substitution (MyBatis `${}`, not `#{}`) — this is a SQL-injection-shaped pattern even if current call sites only pass internally-controlled values; worth a security review independent of modernization.
 
 ---
@@ -314,7 +308,7 @@ Given the ~40x document-feed duplication (§4), the `documentintake` module is t
 
 ## 7. MyBatis → JPA Migration Candidates
 
-**No conversion has been performed.** Classification below is based on scanning all ~78 in-scope mapper XML files for dynamic SQL (`<if>/<choose>/<foreach>`), `statementType="CALLABLE"`, and Oracle-specific syntax (`CONNECT BY`, `ROWNUM`, `LISTAGG`).
+**No conversion has been performed.** Classification below is based on scanning the 76 mapper XML files for dynamic SQL (`<if>/<choose>/<foreach>`), `statementType="CALLABLE"`, and Oracle-specific syntax (`CONNECT BY`, `ROWNUM`, `LISTAGG`).
 
 ### Easy JPA Candidates (single-table/two-table CRUD, no dynamic SQL, no stored procs)
 
@@ -330,12 +324,12 @@ A second, moderate tier (static SQL but a 2–4 table join, or a single `CALLABL
 ### Keep MyBatis Temporarily (complex, Oracle-specific, or stored-procedure-driven)
 
 - **`standardization/facility/**` and `standardization/provider/**`** (16 files) — almost entirely built on `CALLABLE` calls into `PKG_STANDARDIZATION.*` Oracle packages (e.g. `SubProviderAndAddressDAO.xml`: 17 dynamic tags + 3 CALLABLE; `RawProviderAddressDAO.xml`: 16 dynamic + 5 CALLABLE). Real business logic lives in the database here — not portable to JPA without first extracting that logic from PL/SQL.
-- **`assignment/AssignmentDAO.xml`** (1,055 lines, 81 statements, 31 dynamic tags, 14 CALLABLE) and **`assignment/reports/AssignmentReportsDAO.xml`** (487 lines, 25 dynamic tags) — large dynamic search/report queries.
-- **`review/RecordSearchReviewDAO.xml`** (uses `CONNECT BY LEVEL` for a number generator) and **`review/RiaRecordsReviewDAO.xml`** (1,124 lines, heavy CALLABLE).
-- **`document/HL7DocumentDAO.xml`** (1,254 lines) and **`document/CCDDocumentDAO.xml`** (1,433 lines) — both use `CONNECT BY` twice: once as a sequence-value generator loop, once as a CSV-split trick via `regexp_substr(...) CONNECT BY LEVEL`.
+- **`assignment/AssignmentDAO.xml`** (980 lines, dynamic-SQL heavy, 14 CALLABLE) and **`assignment/reports/AssignmentReportsDAO.xml`** (479 lines, 25 dynamic tags) — large dynamic search/report queries.
+- **`review/RecordSearchReviewDAO.xml`** (uses `CONNECT BY LEVEL` for a number generator) and **`review/RiaRecordsReviewDAO.xml`** (1,117 lines, heavy CALLABLE).
+- **`document/HL7DocumentDAO.xml`** (1,164 lines) and **`document/CCDDocumentDAO.xml`** (1,088 lines) — both use `CONNECT BY` twice: once as a sequence-value generator loop, once as a CSV-split trick via `regexp_substr(...) CONNECT BY LEVEL`.
 - **`lab/LabReportsDAO.xml`** (CSV-split via `CONNECT BY`, 3 CALLABLE), **`lab/LaftCountReconcileDAO.xml`** (9 CALLABLE), **`lab/LaftDetailsDAO.xml`** (6 CALLABLE).
 - **`CommonDAO.xml`** — the shared/cross-cutting mapper (permissions, session, address/county/state lookups, error logging). Contains 2 `CALLABLE` calls, heavy `ROWNUM`/`LISTAGG`/`DECODE` usage, nested dynamic `<choose>`, and — notably — a fully dynamic table-name substitution (`${tableName}`, lines ~166-168) that cannot be represented as a static JPA query at all and should stay MyBatis (or be redesigned) regardless of migration timeline. Because it's injected broadly across nearly every feature, it's also a poor first-mover even where individual statements look simple.
-- Any mapper using `statementType="CALLABLE"` (39 files, ~123 occurrences total) — these need explicit `StoredProcedureQuery`/native handling if ever ported, not a straight `@Query`/derived-method JPA translation.
+- Any mapper using `statementType="CALLABLE"` (38 files, ~130 occurrences total) — these need explicit `StoredProcedureQuery`/native handling if ever ported, not a straight `@Query`/derived-method JPA translation.
 
 Raw JDBC usage (`JdbcConnectionDAO`, direct `CallableStatement` construction in `LabReportsServiceImpl.java`/`AddLabProficiencyDataVO.java`) sits **outside MyBatis entirely** and needs its own remediation plan before or alongside any MyBatis→JPA work, since neither MyBatis nor JPA tooling has visibility into it today.
 
@@ -343,31 +337,37 @@ Raw JDBC usage (`JdbcConnectionDAO`, direct `CallableStatement` construction in 
 
 ## 8. Recommended Cleanup Order
 
-1. **Verify and remove confirmed dead code** — start with the **High**-confidence items in §3 (~~`AllJaroLoader`/`RunAllJaroLoaderJob` + its broken JSP buttons~~ — done, `77b99f6`; next: `AuthFilter`, the unwired `jms/**` package, `SSDMDocValidator`/`ADAPDocValidator`, `UpperCase`/`UpperCaseValidator`, `GetTblNameMap`'s dead body, `domain/test/**` + `TestController`, `HtmlMethods`, `SubProviderAddressDAO`, `EHARS_VARIABLES`). These are low-risk, well-verified, and immediately shrink the surface area for every subsequent step.
-2. **Fix the two "silently broken" findings** discovered during this analysis, since they're cheap and currently misleading anyone reading the code: the `controller.reports` vs `controller.report` pointcut typo in `ControllerLayerInterceptingAspect`, and the `/getUserGuide` → missing `UserGuide.jsp` view. (Decide fix vs. removal with the team — these aren't cleanup so much as bugs uncovered along the way.)
-3. **Do a full sweep of `CommonConstants.java`/`EharsVariableConstants.java`** beyond the sampled subset in §3 — this file pattern (many unused named constants) is likely to repeat, and a scripted "grep every constant name" pass is cheap to run exhaustively.
-4. **Consolidate obvious duplicate/redundant code** (§4) that's low-risk to touch without behavior change: the session/user-lookup boilerplate (589 occurrences) via an interceptor/argument-resolver, the file-upload handling duplication (7 controllers), and the copy-pasted `buildDate` scriptlet (54 JSPs) via a single request attribute set once per request.
-5. **Address the WebLogic-coupled `ControllerLayerInterceptingAspect`** (`weblogic.servlet.internal.ServletRequestImpl` type-check) — this needs a fix before a Tomcat migration can work correctly, not just before it's "nice to have."
-6. **Clean package/config boundaries** — split `spring-config.xml` by concern (datasource, MyBatis, scheduling, MVC), fix the `webservice.oauth`/component-scan base-package mismatch, and remove the hardcoded WebLogic password from `pom.properties`.
-7. **Prepare modular monolith structure** — carve out module boundaries per §6 starting with the most isolated modules (e.g. `standardization`, `lab`) before attempting the large, ~40x-duplicated `documentintake` module, which likely needs its generic-abstraction redesign (§4) done *before* or *during* the module split rather than after.
-8. **Upgrade Java/Spring dependencies** (Java 8 → 21, dependency version bumps) — do this after dead-code removal and package cleanup so the upgrade touches a smaller, better-understood codebase.
-9. **Move deployment from WebLogic to Tomcat** — contingent on #5 and #6 above (WebLogic-specific filters, JNDI datasource config, `weblogic.xml`).
-10. **Gradually migrate the "Easy JPA Candidate" MyBatis mappers** (§7, ~20 single-table `document/` DAOs first) to Spring Data JPA, module by module as each module boundary is established in step 7.
-11. **Handle complex MyBatis/Oracle queries and stored-procedure-backed modules separately** (§7 "Keep MyBatis" list) — treat `standardization/**`, `CommonDAO.xml`, and the CALLABLE-heavy mappers as a distinct, longer-horizon workstream, since real business logic in Oracle PL/SQL needs to be understood and possibly extracted before those can move.
+Status legend: DONE / OPEN. Keep the rule of one small, verified, reviewable step per commit.
+
+1. **DONE — Verify and remove confirmed dead code** — seven cleanup passes (see the Cleanup Log and the Appendix).
+2. **DONE — Sweep `CommonConstants.java`.** Still OPEN from this step: the `EharsVariableConstants.EHARS_VARIABLES` map (section 3).
+3. **OPEN — Record a real build baseline and finish verification** — a clean `mvn clean package -DskipTests` on a machine with JDK 8 + Maven; confirm deployment of the latest cleanup commits (see "Status / resume here"); screen-level regression checks; access-log check for the removed applet files.
+4. **OPEN — Fix or remove the remaining "silently broken" finding** — the `controller.reports` vs `controller.report` pointcut in `ControllerLayerInterceptingAspect` (section 3). The other one, `/getUserGuide`, was resolved by removing the User Guide feature (eighth pass). This changes behavior, so decide with the team.
+5. **OPEN — Remove the hardcoded WebLogic deploy password** from `WEB-INF/properties/pom.properties` (and rotate it) — a security issue independent of modernization.
+6. **OPEN — Address the WebLogic-coupled `ControllerLayerInterceptingAspect`** (`weblogic.servlet.internal.ServletRequestImpl` type-check) — needs a fix before a Tomcat migration can work correctly.
+7. **OPEN — Consolidate obvious duplicate/redundant code** (section 4) that is low-risk without behavior change: the session/user-lookup boilerplate (569 occurrences) via an interceptor/argument-resolver, the file-upload handling duplication (7 controllers), and the copy-pasted `buildDate` scriptlet (52 JSPs) via a single request attribute.
+8. **OPEN — Clean package/config boundaries** — split `spring-config.xml` by concern (datasource, MyBatis, scheduling, MVC), fix the `webservice.oauth`/component-scan base-package mismatch.
+9. **OPEN — Prepare modular monolith structure** — carve out module boundaries per section 6 starting with the most isolated modules (e.g. `standardization`, `lab`) before the large, ~40x-duplicated `documentintake` module, whose generic-abstraction redesign (section 4) should happen before or during the split.
+10. **OPEN — Upgrade Java/Spring dependencies** (Java 8 to 21, dependency bumps) — now touching a smaller, better-understood codebase than at the start.
+11. **OPEN — Move deployment from WebLogic to Tomcat** — contingent on items 5, 6 and 8 (WebLogic-specific filters, JNDI datasource config, `weblogic.xml`).
+12. **OPEN — Gradually migrate the "Easy JPA Candidate" MyBatis mappers** (section 7, ~20 single-table `document/` DAOs first) to Spring Data JPA, module by module. Remember mapper XML is loaded by convention next to its interface — move them together.
+13. **OPEN — Handle complex MyBatis/Oracle queries and stored-procedure-backed modules separately** (section 7 "Keep MyBatis" list) as a longer-horizon workstream.
 
 ---
 
 ## Summary
 
-**Top unnecessary-code candidates:** (`AllJaroLoader`/`RunAllJaroLoaderJob` already removed), `AuthFilter` (dead, disabled in `web.xml`), the entire unwired `jms/**` package, `domain/test/**` + `TestController` (leftover scratch code), `utils/HtmlMethods.java` (zero callers), `SubProviderAddressDAO` (superseded), and a likely-dead `sqljdbc4` Maven dependency.
+**Done so far:** seven cleanup passes removed the dead code identified in section 3 and the Appendix — the AllJaro and Sierra jobs, `AuthFilter`, the `jms` package, scratch/test controllers, the applet/Web Start bundle, ~60 unused constants, unused VOs, DAO methods and mapper SQL, unused imports and fields, ~3,300 commented-out code lines, and two unused Maven dependencies. Net effect: 685 Java files (was 741) and 376 JSPs (was ~439).
 
-**Top redundant-code areas:** the ~40-feed document-intake pipeline duplicated across DAO/Service/Domain/Controller layers (biggest by far), the 589x-repeated session/user-lookup boilerplate in controllers, and the ad hoc per-service email/report-generation wrappers instead of shared abstractions.
+**Top open items:** (1) record a real Maven build baseline and confirm deployment of the latest commits; (2) the hardcoded WebLogic deploy password in `pom.properties`; (3) the WebLogic-coupled `ControllerLayerInterceptingAspect` and its `controller.reports` pointcut typo; (4) the unused `EHARS_VARIABLES` map; (5) clean up the now-unused User Guide / help assets in the external static-content path.
 
-**Biggest legacy/problematic areas:** `ManualQuartzJobServiceImpl.java` (6,825-line god class mixing JDBC/JSch/mail/business logic), 18 services doing raw JDBC outside the DAO layer, `person/DocumentController.java` (1,967-line omnibus controller), universal field-injection/`Map`-based-model Spring MVC patterns, and the WebLogic-internal-class coupling in `ControllerLayerInterceptingAspect`.
+**Top redundant-code areas (unchanged):** the ~40-feed document-intake pipeline duplicated across DAO/Service/Domain/Controller layers (biggest by far), the 569x-repeated session/user-lookup boilerplate in controllers, and the ad hoc per-service email/report-generation wrappers.
+
+**Biggest legacy/problematic areas (unchanged):** `ManualQuartzJobServiceImpl.java` (6,610-line god class mixing JDBC/JSch/mail/business logic), 17 services doing raw JDBC outside the DAO layer, `person/DocumentController.java` (1,919-line omnibus controller), universal field-injection/`Map`-based-model Spring MVC patterns, and the WebLogic-internal-class coupling in `ControllerLayerInterceptingAspect`.
 
 **Suggested future modules:** person, document-intake, assignment, lab, review, standardization, administration, authentication, reporting, scheduling, messaging, uploads/scanning, search, integrations — all derived directly from existing package/JSP groupings, no invented boundaries.
 
-**Best next cleanup task:** the AllJaro removal is done (`77b99f6`). Pick the next High-confidence item from §3 (e.g. `AuthFilter` or the unwired `jms/**` package), one small reviewable step at a time.
+**Best next step:** items 3-5 of section 8 (build baseline, the pointcut bug, the deploy password) — each is small and independent, and they unblock the Tomcat/Java 21 work.
 
 ---
 
