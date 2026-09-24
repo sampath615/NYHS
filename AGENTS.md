@@ -14,6 +14,8 @@ Working rules: one small reviewable cleanup step per commit; no unrelated refact
 |---|---|---|
 | `77b99f6` | Removed `AllJaroLoader.java`, `RunAllJaroLoaderJob.java`; removed the commented-out `allJaroLoader`/`runAllJaroLoaderJob`/`allJaroCronTrigger` XML in `spring-config.xml`; removed the "Create AllJaro" button table from `manualQuartzSchedulerJob.jsp`. | `CommonConstants.LOAD_ALLJARO_SCHEDULER` (now unused); `SchedulerJobsDAO.getLatestAllJaroData()` (no mapped SQL, no callers); commented-out AllJaro code in `QualityStageLoader`/`RawRecordsCleaner`; `ALLJARO_*`/`JAROT_*` entries in `SchedulerMetaData.properties` (JAROT settings are still used by live code); copy-pasted "started loading alljaro data" log line in `RunEharsDataLoaderJob`. |
 
+| `5e78269` | **Sierra job:** removed `RunSierraServiceLoaderJob.java` and `SierraServiceLoader.java` (not wired anywhere in `spring-config.xml`, not even in a comment; no JSP references). **DAO methods:** removed 22 interface methods that had no callers and no mapped SQL (8 in `SchedulerJobsDAO` incl. `getLatestAllJaroData`; 2 in `AssignmentDAO`; 1 each in `ADAPDocumentDAO`, `DocumentDAO`, `HITDocumentDAO`, `NonCaseDocumentDAO`, `LaftCountReconcileDAO`, `LoincResultDomainMappingDAO`, `ProviderPortalReportDAO`, `SearchDAO`, `SubFacilityDAO`, `FileUploadDAO`; 2 in `CCDDocumentDAO`). **VOs:** deleted 17 unreferenced domain classes (`JsonRequestReaderVO`, `AdminSearchVO`, `AssignmentDocsVO`, `AssignmentReportsVO`, `DocumentViewVO`, `EcrlsLabEditDocVO`, `StdEcrlsLabEditDocVO`, `PRFPartnerDocumentVO`, `HitMessageCountVO`, `RawCCDPersonAddressOldVO`, `RawHL7NteVO`, `DocumentsStatusVO`, `LAFTCountReconcileVO`, `LAFTCountReconcileDashboardVO`, `LAFTReconcileDashboardVO`, `LoincInterpretResultsVO`, `LabDocumentVO`, `PersonACRFVO`, `AhiAlertUserNotesHistoryVO`). | Orphaned mapper XML for the removed DAO methods (see scan findings below); unused imports left in edited DAO interfaces; `SchedulerMetaData.properties` `SIERRA`/`ALLJARO` entries. |
+
 Manual checks still pending for `77b99f6`: app starts cleanly on WebLogic, the scheduler page renders and its other buttons work, external static JS has no references to `*CreatingAllJaro` IDs or `runAllJaroLoaderJob`.
 
 ---
@@ -352,3 +354,27 @@ Raw JDBC usage (`JdbcConnectionDAO`, direct `CallableStatement` construction in 
 **Suggested future modules:** person, document-intake, assignment, lab, review, standardization, administration, authentication, reporting, scheduling, messaging, uploads/scanning, search, integrations — all derived directly from existing package/JSP groupings, no invented boundaries.
 
 **Best next cleanup task:** the AllJaro removal is done (`77b99f6`). Pick the next High-confidence item from §3 (e.g. `AuthFilter` or the unwired `jms/**` package), one small reviewable step at a time.
+
+---
+
+## Appendix: Full-codebase dead-code scan (static, name-based)
+
+Scripted scan of all Java, mapper XML, JSP, properties and config. Evidence is name search only: reflection, string-built SQL IDs, string-built view names and the external static JS are **not** covered. "Done" items are recorded in the Cleanup Log.
+
+**Zero-reference classes still present (High):** `utils/HtmlMethods`, `web/spring/util/DBUtils`, `web/spring/exception/CommonException`, `webservice/webclient/filter/CustomClientException`, `SSDMDocValidator`, `ADAPDocValidator`, `SubProviderAddressDAO` (+ XML).
+
+**Unused service (Medium):** `CCDDocumentServiceDOMXPATH` interface + `CCDDocumentServiceDOMXPATHImpl` (1,256 lines, `@Service`). Its interface is used only by its own implementation; all controllers/helpers inject `CCDDocumentService`. This answers the "which CCD parser is live" question in §4.
+
+**DAO methods with no callers but with mapper SQL (Medium, ~37):** e.g. `DocumentDAO.getAccess/deleteDocId/associateEditedDoc/getProcessValidationReport`, `CCDDocumentDAO.getCCD{Provider,Encounter,Med,Payer}List`, `SchedulerJobsDAO` (11 methods incl. `checkForExistingProcessFilterMatch`, `getMatchesForRaceCode`, `getCountyNameByCity`), `LabReportsDAO` (3), `SubProviderDAO`/`SubProviderAndAddressDAO`/`RawProviderAddressDAO`, `NycDeathDocumentDAO` (2). Removal must also remove the mapper XML statement.
+
+**Mapper XML statements with no interface method (Medium, ~26):** `LabDocumentDAO.xml` (9, e.g. `createEntryInDocumentRace`, `writeStandardDataToDatabase`), `ClusterDocumentDAO.xml` (3), `HL7DocumentDAO.xml` (`insertRawHL7ADT`, `insertRawHL7ORU`), `AssignmentDAO.xml` (`getAssignmentSuperTallyList`, `getAssignmentWorkerTallyList`), `PcrfDocDAO.xml` (2), `CCDDocumentDAO.xml` (`getDAOAccess`), `DocumentDAO.xml` (`changeSchema`, `getProcessValidationReportWithFileName`), others. Check no `sqlSession.select*("id")` string calls first.
+
+**Unused constants (High):** 30 of 153 in `CommonConstants` (full list: `SCHEDULER_RAW_HIV_CLEAN`, `SCHEDULER_QUALITY_STAGE`, `TRIGGER_STOP`, `TEST_TYPE_*`, `STD_RESULTS_*`, `OBX_RESULTKEY`, `OBR_REQUESTKEY`, `QS_MATCH_DATA_*`, `NEW_LINE`, `NEW_HIT_CCD_DATA`, `NEW_HIE_DTH_DATA`, `LOAD_WEEKLY_DOCUMENT_STATUS_SUMMARY`, `LOAD_ENCRYPT_SCAN_DOCS_JOB`, `LOAD_DECRYPT_SCAN_DOCS_JOB`, `DEFAULT_CLIA`, plus a few status/subject strings). `LOAD_ALLJARO_SCHEDULER` also becomes unused after the AllJaro removal.
+
+**Unreferenced JSPs (Low–Medium, 25):** `assignment/{AssignmentsCountsSuper,AssignmentsCountsWorker,psMessageReportsMatrix}`, `common/{Footer,SuccessPage}`, `document/{ClusterPartner,EditLabDocument,OldPrfProviderDetails,ScannedDocument,clusterPartner/ClusterPartnerDocumentDisposition}`, `administration/InProgressSystemMessages`, `messageBox/messageListContentSent`, `person/{ClusterPartnerPersonView,DocumentView,HepatitisDocument,OOCClericalReview,ePRFOOCclericalReview}`, `reports/{AcceptedTestDomain,addLabPermitAndInstrument,labFacilitiesGrid}`, `review/nbs/{nbsComparisonPage,nbsHivStatusReview}`, `standardization/facility/{DeficientReports,NewPageGrand}`, `worker/ACRFImmunoassays`. Check access logs / external JS before removing.
+
+**Commented-out code:** ~1,500 commented-out code lines in Java (worst: `ManualQuartzJobServiceImpl` 111, `InitializeController` 102, `DocumentsScanServiceImpl` 92, `FileUploadServiceImpl` 78) and commented-out statements in 8 mapper XML files.
+
+**Corrections to §3:**
+- The `jms/**` package is not fully isolated: `src/test/.../EnQueMessageTest` imports `EnQueMessage` (and `DeQueMessageTest` exists alongside it). Removing the package requires removing those tests too; note `pom.xml` sets `skipTests=true`, which would hide a test-compile break only if test compilation is also skipped — verify.
+- `web/spring/domain/cryptocardImage/ImageServiceImpl` is live (injected via `ImageService` in `ImageController`), though it sits in the wrong layer (`domain`).
