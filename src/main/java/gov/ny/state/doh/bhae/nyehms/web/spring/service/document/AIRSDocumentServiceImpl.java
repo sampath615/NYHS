@@ -101,17 +101,6 @@ public class AIRSDocumentServiceImpl implements AIRSDocumentService {
 		BigDecimal existingProcessStatus = (BigDecimal) docVO.get("CURRENT_PROCESS_STATUS");
 
 		currentProcessStatus = validateAirsRecord(docVO, errors);
-//		if(errors.size() > 0){
-//			
-//			if(log.isDebugEnabled()){
-//				log.debug(documentId+"  has validation errors");
-//			}
-//			currentProcessStatus = CommonConstants.RAW_RECORD_VALIDATION_ERRORS_PROCESS_STATUS;
-//		}else{
-//			
-//			currentProcessStatus = CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS;
-//			
-//		}
 		if(currentProcessStatus == CommonConstants.RAW_RECORD_DELETED_PROCESS_STATUS){
 			int _deleteFlagStatus = manualQuartzJobService.makeDocumentAsInactivate(documentId.intValue());
 			if(_deleteFlagStatus != 0){

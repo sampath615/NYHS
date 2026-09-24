@@ -107,8 +107,6 @@ public class HIEDTHDocumentServiceImpl implements HIEDTHDocumentService {
 		// catch (SAXException SAXEe){}
 
 		finally {
-			// if(rollbackFlag)
-			// commonExceptionHandler.populateBindObjTrsnFail(dummyBindingResult);
 		}
 		return document;
 	}

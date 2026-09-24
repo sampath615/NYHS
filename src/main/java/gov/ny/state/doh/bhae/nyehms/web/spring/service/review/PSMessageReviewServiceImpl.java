@@ -243,32 +243,8 @@ public class PSMessageReviewServiceImpl implements PSMessageReviewService {
 				throw new DataRetrievalFailureException(transactionMessage);
 				
 			}finally {
-				//try {
-					//workbook.close();
 					
-//		             if(obj_SFTPChannel != null) {
-//							obj_SFTPChannel.disconnect();
-//					 }
-//		             if(writer != null && !writer.isCloseStream()) {
-//		            	 writer.close();
-//		             }
-//		             if(pdfDocument != null) {
-//		            	 pdfDocument.close();
-//		             }
-//		             if(obj_InputStream != null) {
-//		            	 obj_InputStream.close();
-//		             }
 		             
-//				} catch (IOException e) {
-//
-//					String transactionMessage = "Exception occured while closing the JSCH channel :"+e.getMessage();
-//					
-//					log.error(transactionMessage);
-//					log.error(CommonUtil.getStackTrace(e));
-//					
-//					throw new DataRetrievalFailureException(transactionMessage);
-//
-//				}
 			}
         
 		

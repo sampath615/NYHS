@@ -195,27 +195,6 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
         
         
         
-//        for (String _coulmnName : EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS) {
-//    		
-//        	header.createCell(columnCount).setCellValue(_coulmnName);
-//            header.getCell(columnCount++).setCellStyle(style5);
-//            
-//		}
-//        
-//
-//        for (String _coulmnName : EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS) {
-//    		
-//        	header.createCell(columnCount).setCellValue(_coulmnName);
-//            header.getCell(columnCount++).setCellStyle(style6);
-//            
-//		}
-//       
-//        
-//        Map<String, String> yesNoMap = new HashMap<String, String>();
-//        
-//        
-//        yesNoMap.put("Y", "Yes");
-//        yesNoMap.put("N", "No");
         
         
         

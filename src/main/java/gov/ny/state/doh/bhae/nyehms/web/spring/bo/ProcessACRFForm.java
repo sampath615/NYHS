@@ -145,10 +145,6 @@ public class ProcessACRFForm {
 			}
 			
 
-			// String key = codedAcrfTestList.get(i).getAcrtTestCode().trim();
-			// String value = codedAcrfTestList.get(i).getAcrtTestDesc().trim();
-			// log.debug(nyehmsLog+" Patesent Test Code :: "+ttCode);
-			// log.debug(nyehmsLog+" Key :: "+key +" value ::: "+value);
 
 
 		}

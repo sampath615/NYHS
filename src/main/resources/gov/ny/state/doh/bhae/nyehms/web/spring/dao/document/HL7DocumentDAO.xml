@@ -131,23 +131,6 @@
 	</insert>
 
 
-	<!-- <insert id="insertRawHL7OBR" parameterType="java.util.Map"> INSERT 
-		INTO RAW_HL7_LAB_TEST ( LAB_TEST_ID,HL7_DOC_ID,UPHN_TRANX_IN_ID,OBRSETID,OBRACCESSIONNUM,OBRCALLBACKPHONE,OBRCOLLECTIONDATE, 
-		OBROBSERVATIONDATE,OBRPROVIDERFIRSTNAME, OBRPROVIDERLASTNAME, OBRPROVIDERMIDDLENAME, 
-		OBRPROVIDERNAMESUFFIX, OBRPROVIDERFACILITYID, OBRPROVIDERLICENSEID, OBRPROVIDERNPI, 
-		OBRPROVIDERIDLIST, OBRRESULTREPORTDATE, OBRSPECIMENSOURCECODE, OBRSPECIMENSOURCENAME 
-		) select raw_hl7_lab_test_seq.NEXTVAL,d.* from ( <foreach collection="hl7LabTestList" 
-		item="labtestVO" index="index" separator=" Union all "> select #{hl7DocId, 
-		jdbcType=INTEGER}, #{labtestVO.uphnTranxInId, jdbcType=INTEGER}, #{labtestVO.obrSetId, 
-		jdbcType=INTEGER}, #{labtestVO.obrAccessionNum, jdbcType=VARCHAR}, #{labtestVO.obrcallBackPhone, 
-		jdbcType=VARCHAR}, #{labtestVO.obrCollectionDate, jdbcType=DATE}, #{labtestVO.obrObservationDate, 
-		jdbcType=DATE}, #{labtestVO.obrProviderFirstName, jdbcType=VARCHAR}, #{labtestVO.obrProviderLastName, 
-		jdbcType=VARCHAR}, #{labtestVO.obrProviderMiddleName, jdbcType=VARCHAR}, 
-		#{labtestVO.obrProviderNameSuffix, jdbcType=VARCHAR}, #{labtestVO.obrProviderFacilityId, 
-		jdbcType=VARCHAR}, #{labtestVO.obrProviderLicenseId, jdbcType=VARCHAR}, #{labtestVO.obrProviderNpi, 
-		jdbcType=VARCHAR}, #{labtestVO.obrProviderIdList, jdbcType=VARCHAR}, #{labtestVO.obrResultReportDate, 
-		jdbcType=DATE}, #{labtestVO.obrSpecimenSourceCode, jdbcType=VARCHAR}, #{labtestVO.obrSpecimenSourcename, 
-		jdbcType=VARCHAR} from dual </foreach> )d </insert> -->
 
 	<insert id="insertRawHL7OBR" parameterType="java.util.Map">
 		INSERT
@@ -683,50 +666,6 @@
        ]]>
 	</select>
 	
-	<!-- <resultMap
-		type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ObrVO"
-		id="labTestMap">
-		<result property="hl7DocId" column="HL7_DOC_ID" />
-		<result property="hl7labTestId" column="HL7_LAB_TEST_ID" />
-		<result property="uphnTranxInId" column="UPHN_TRANX_IN_ID" />
-		<result property="obrSetId" column="OBRSETID" />
-		<result property="obrAccessionNum" column="OBRACCESSIONNUM" />
-		<result property="obrcallBackPhone" column="OBRCALLBACKPHONE" />
-		<result property="obrCollectionDate" column="OBRCOLLECTIONDATE" />
-		<result property="obrObservationDate" column="OBROBSERVATIONDATE" />
-		<result property="obrProviderFirstName" column="OBRPROVIDERFIRSTNAME" />
-		<result property="obrProviderLastName" column="OBRPROVIDERLASTNAME" />
-		<result property="obrProviderMiddleName" column="OBRPROVIDERMIDDLENAME" />
-		<result property="obrProviderNameSuffix" column="OBRPROVIDERNAMESUFFIX" />
-		<result property="obrProviderFacilityId" column="OBRPROVIDERFACILITYID" />
-		<result property="obrProviderLicenseId" column="OBRPROVIDERLICENSEID" />
-		<result property="obrProviderNpi" column="OBRPROVIDERNPI" />
-		<result property="obrProviderIdList" column="OBRPROVIDERIDLIST" />
-		<result property="obrResultReportDate" column="OBRRESULTREPORTDATE" />
-		<result property="obrSpecimenSourceCode" column="OBRSPECIMENSOURCECODE" />
-		<result property="obrSpecimenSourcename" column="OBRSPECIMENSOURCENAME" />
-		<result property="obrLoincDesc" column="OBRLOINCDESC" />
-		<result property="obrLoincCode" column="OBRLOINCCODE" />
-		<result property="obrTestCode" column="OBRTESTCODE" />
-		<result property="obrTestDesc" column="OBRTESTDESC" />
-		<result property="obrTestCodingSystem" column="OBRTESTCODINGSYSTEM" />
-		<result property="obrAltTestCode" column="OBRALTTESTCODE" />
-		<result property="obrAltTestDesc" column="OBRALTTESTDESC" />
-		<result property="obrAltTestCodingSystem" column="OBRALTTESTCODINGSYSTEM" />
-		<result property="obrNote" column="OBRNOTE" />
-		
-		<collection	ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ObxVO" column="HL7_LAB_TEST_ID" property="theLabResult">
-			<id     property="hl7LabResultId" column="HL7_LAB_RESULT_ID" jdbcType="DECIMAL" />
-			<result property="obxLoincDesc" column="OBXLOINCDESC" jdbcType="VARCHAR" />
-			<result property="obxLoincCode" column="OBXLOINCCODE" jdbcType="VARCHAR" />
-			<result property="obxTestCode" column="OBXTESTCODE" jdbcType="VARCHAR" />
-			<result property="obxTestDesc" column="OBXTESTDESC" jdbcType="VARCHAR" />
-			<result property="obxTestCodingSystem" column="OBXTESTCODINGSYSTEM" jdbcType="VARCHAR"/>
-			<result property="obxObservationResultText" column="OBXOBSERVATIONRESULTTEXT" jdbcType="VARCHAR"/>
-			<result property="obxAbnormalFlag" column="OBXANORMALFLAG" jdbcType="VARCHAR"/>
-		</collection>
-		
-	</resultMap> -->
 
 	<select id="updateCurrentProcessStatusInRawForMPIChange" resultType="java.util.Map">
 			<![CDATA[
@@ -1177,7 +1116,6 @@
   
     </select>
 	
-	<!-- <resultMap type="org.json.simple.JSONObject" id="numberOfProcessedDoc"></resultMap> -->
 	
 	<select id="updateDataSTDMatchorNonMatchtoCCD" parameterType="java.util.Map" statementType="CALLABLE">
 	

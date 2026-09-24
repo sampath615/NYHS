@@ -66,10 +66,6 @@ public class CryptoController {
         	userInitObj.setCryptoCardAuthenticationSuccess(true);
         	session.setAttribute("userInitObj", userInitObj);
             log.debug("Authenticated successfully : {}", userInitObj.getUserId());
-		//	return "initialize/CryptoAuthSucess";
-            //	RequestDispatcher dispatcher = request.getRequestDispatcher("getAssignmentsTally");
-            //	RequestDispatcher dispatcher = request.getRequestDispatcher("login?user=" + userInitObj.getUserId());
-            //	dispatcher.forward(request, response);
 
             //return "forward:/web/login?user=" + userInitObj.getUserId();
             

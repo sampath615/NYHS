@@ -133,73 +133,7 @@ public class EharsDataLoaderServiceImpl implements EharsDataLoaderService {
 	}
 	
 //	@Override
-//	public void loadRidrDataToNYEHMS(ResultSet sqlDataResultSet, List<String> notificationObj) throws SQLException {
-//		PreparedStatement preparedStatement = null;
-//		Connection oracleConnection = null;
-//		
-//		try {
-//			
-//			oracleConnection = connectionDAO.getConnectionObj();
-//			
-//			if (oracleConnection != null) {
-//				
-//				if(log.isDebugEnabled()){
-//					log.debug("SQL server database Connection is available "+oracleConnection);
-//				}
-//				preparedStatement = oracleConnection.prepareStatement("insert into EHARS_RIDR(RIDR_STATENO, RIDR_STATE_CD, EHARS_STATENO) values(?,?, ?)");
-//				
-//				if(log.isDebugEnabled()){
-//					log.debug("Statement object for SQL server database "+preparedStatement);
-//				}
-//				
-//				int index = 0;
-//				
-//				while(sqlDataResultSet.next()) {
-//					
-//					index++;
-//					
-//					preparedStatement.setString(1, sqlDataResultSet.getString("RIDR_STATENO"));
-//					preparedStatement.setString(2, sqlDataResultSet.getString("RIDR_STATE_CD"));
-//					preparedStatement.setString(3, sqlDataResultSet.getString("EHARS_STATENO"));
-//					
-//					preparedStatement.addBatch();
-//					
-//					if (index % 5000 == 0) {
-//						preparedStatement.executeBatch();
-//					}
-//					
-//				}
-//				
-//				preparedStatement.executeBatch();
-//				
-//				notificationObj.add("Loaded the RIDR same as data in NYEHMS EHARS_RIDR table");
-//				
-//
-//			}else{
-//				
-//				log.debug("Oracle Datasource connection not available. ");
-//				
-//				throw new DataRetrievalFailureException("Oracle Datasource connection not available");
-//				
-//			}
-//		}  finally {
-//			try {
-//				if (oracleConnection != null) {
-//					oracleConnection.close();
-//				}
-//				if (preparedStatement != null) {
-//					preparedStatement.close();
-//				}
-//				if (sqlDataResultSet != null) {
-//					sqlDataResultSet.close();
-//				}
-//			} catch (SQLException sqlException) {
 //				log.error("Exception while closing the connection"
-//						+ sqlException.getMessage());
-//			}
-//		}
-//			
-//	}
 	
 	@Override
 	public boolean loadEharsDataInToNyehmsTables(List<String> notificationObj) {

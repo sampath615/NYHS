@@ -88,8 +88,6 @@ public class AHIDocumentController {
 				ahiCiStiList.add(new AHICiStiVO());
 				ahiCiStiList.add(new AHICiStiVO());
 				
-//				ahiNegInd900TestHistoryList.add(new AHINegInd900TestHistoryVO());
-//				ahiNegInd900TestHistoryList.add(new AHINegInd900TestHistoryVO());
 				
 			}
 			
@@ -279,8 +277,6 @@ public class AHIDocumentController {
 		List<Map<String, String>> ahiPrfFollowupList = ahiDocumentService.getAhiPrfFollowup();
 		map.put("ahiPrfFollowupMap", ahiPrfFollowupList);
 		
-//		List<AhiAlertTrackingVO> ahiAlertUserNotesHistory = ahiDocumentService.getAhiAlertUserNotesHistory(ahiAlertSeqId);
-//		map.put("ahiAlertUserNotesHistory", ahiAlertUserNotesHistory);
 		map.put("ahiAlertTrackingVO", ahiAlertTrackingVO);
 		
 		return "reports/AHIAlertTrackingForm";

@@ -30,9 +30,6 @@ public class RemoteServerUtil {
 
 	public ChannelSftp getRemoteServerSession()  {
 
-//		if (obj_SFTPChannel != null && obj_SFTPChannel.isConnected()) {
-//			return obj_SFTPChannel;
-//		}
 
 		try {
 

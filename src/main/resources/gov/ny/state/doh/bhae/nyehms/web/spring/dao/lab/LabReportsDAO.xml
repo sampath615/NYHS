@@ -314,17 +314,6 @@
 	   where PFI = #{p_pfi} and CLIA = #{p_clia}  
     </update>
     
-    <!-- 
-    <update id="updateLabCommunicationDetails" parameterType="java.util.Map">
-	   UPDATE LAB_INTERACTION_HISTORY set COMMUNICATION_TYPE = #{communicationType}, INTERACTION_DATE = to_date(#{interactionDate}, 'MM/DD/YYYY'), 
-	   INTERACTION_NOTES = #{interactionNotes}, ISSUE_RESOLVED = #{issueResolved} where INTERACTION_ID = #{interactionId} 
-    </update>
-     -->
-<!--      
-    <update id="updateLabCommunicationDetails" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInteractionHistoryVO">
-	   UPDATE LAB_INTERACTION_HISTORY set ISSUE_RESOLVED = #{issueResolved} where INTERACTION_ID = #{interactionId}
-	</update>
-    -->  
   	 <insert id="addNewPermitCodeToFacility" parameterType="java.util.Map">
   		 insert into LAB_PERMITS(PFI,  PERMIT_CD,  DATE_VALID_FROM, DATE_VALID_TILL, BHAE_CERTIFICATION_DATE, COMMENTS, LAST_UPDATED_BY, LAST_UPDATED_DATE) 
   		  VALUES (#{pfi}, #{permitCode}, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'),  to_date(#{bhaeCertDate}, 'MM/DD/YYYY'),
@@ -414,11 +403,6 @@
 		select LAB_LOINC_MAP_ID from LAB_LOCAL_CD_LOINC_MAPPING where LAB_LOCAL_CD_MAP_ID = #{localCodeMapId} and (END_DATE IS NULL or END_DATE > SYSDATE)
 	</select>
 	
-	<!-- 
-	<select id="getInterationHistory" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInteractionHistoryVO">
-		select INTERACTION_NOTES interactionNotes, COMMUNICATION_TYPE communicationType, INTERACTION_BY interactionBy, TO_CHAR(INTERACTION_DATE, 'MM/DD/YYYY') interactionDate  from LAB_INTERACTION_HISTORY where PFI = #{pfi} ORDER BY  INTERACTION_DATE ASC
-	</select>
-	 -->
 	 
 	<select id="getCommunicationHistory" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInteractionHistoryVO">
 		select INTERACTION_ID interactionId, INTERACTION_NOTES interactionNotes, lct.COMMUNICATION_TYPE_DESCRIPTION communicationType, lih.INTERACTION_BY workerId, 

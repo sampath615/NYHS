@@ -67,9 +67,6 @@ public class ADAPNYCFeedBackController {
 	@RequestMapping("/uploadNYCFile")
 	public String uploadNYCFile(Map<String, Object> map, HttpServletRequest request) {
 		
-//		List<String> fileNames = aDAPDocumentService.getFileNameNotShippedToNYC("Shipped");
-//		
-//		map.put("fileNames", fileNames);
 
 		
 		return "review/adap/uploadNYCFilePage";
@@ -402,9 +399,6 @@ public class ADAPNYCFeedBackController {
 		documentReviewTransactionHelper.uploadNYCReturnFileData(uploadedFile, bindingResult, userObject);
 		
 		
-//		List<String> fileNames = aDAPDocumentService.getFileNameNotShippedToNYC("Shipped");
-//		
-//		map.put("fileNames", fileNames);
 
 		
 		return "review/adap/uploadNYCFilePage";

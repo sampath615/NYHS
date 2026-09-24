@@ -293,47 +293,6 @@ public class FileUploadController {
 	
 	
 	
-//	@RequestMapping(value="/uploadUpdatedDispositions", method = RequestMethod.POST)
-//	public String  addStandardAddress(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
-//		
-//		HttpSession session = request.getSession();
-//		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-//
-//		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
-//		
-//		session.removeAttribute("resultMap");
-//		
-//		session.removeAttribute("resultMessage");
-//		
-//		Map<Object, Object> scanResultMap = fileUploadService.validateAndScanFile(fileData, bindingResult);
-//		
-//		if(scanResultMap != null && scanResultMap.size() > 0 ){
-//			
-//			session.setAttribute("resultMessage", scanResultMap.get("TRANSACTION_MESSAGE"));
-//			
-//			return "uploads/updatedDispositions";
-//			
-//		}  
-//		
-//		Map<Object, Object> resultMap = fileUploadService.uploadUpdatedDispositionsFile(fileData, bindingResult, userObject);
-//		
-//		if(resultMap != null && resultMap.size() > 0 ){
-//			
-//			map.put("resultMap", resultMap);
-//			
-//			session.setAttribute("resultMap", resultMap);
-//
-//			
-//		}else{
-//			
-//			session.setAttribute("resultMap", null);
-//		}
-//		
-//		
-//		session.setAttribute("resultMessage", map.get("TRANSACTION_MESSAGE"));
-//		
-//		return "uploads/updatedDispositions";
-//	}
 	
 	
 	

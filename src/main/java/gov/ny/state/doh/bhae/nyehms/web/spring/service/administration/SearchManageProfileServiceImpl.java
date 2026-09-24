@@ -77,10 +77,6 @@ public class SearchManageProfileServiceImpl implements SearchManageProfileServic
 		
 		List<String> graphsHierarchyList = searchManageProfileDAO.getGraphsHierarchy(inOutParameterMap);
 		
-//		Map<String, String> graphsHierarchyMap = new HashMap<String, String>();
-//		for(Map<String, String> graphObj : graphsHierarchyList){
-//			graphsHierarchyMap.put(graphObj.get("graphRank"), graphObj.get("graphDescription"));
-//		}
 		return graphsHierarchyList;
 		
 	}

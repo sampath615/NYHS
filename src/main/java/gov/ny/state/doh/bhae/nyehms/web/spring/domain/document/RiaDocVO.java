@@ -607,12 +607,6 @@ public class RiaDocVO extends NYEHMSDocVO {
 	public void setARV_BEGIN_DATE(String aRV_BEGIN_DATE) {
 		ARV_BEGIN_DATE = defaultDateValidation(aRV_BEGIN_DATE);
 	}
-//	public String getARV_END_DATE() {
-//		return ARV_END_DATE;
-//	}
-//	public void setARV_END_DATE(String aRV_END_DATE) {
-//		ARV_END_DATE = defaultDateValidation(aRV_END_DATE);
-//	}
 	public String getPS_WORKER_ASSIGNED() {
 		return PS_WORKER_ASSIGNED;
 	}

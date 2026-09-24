@@ -156,13 +156,6 @@ public class AssignmentTransactionHelper {
 																						userObject, 
 																						sessionID);
 		
-//		if(acrfFormVO.getRawAcrfDoc() != null && acrfFormVO.getRawAcrfDoc().getDocumentId() != 0){
-//			
-//			acrfFormVO.getRawTTHDocVO().setAcrfDocId(acrfFormVO.getRawAcrfDoc().getDocumentId());
-//			
-//			tthDocumentService.insertTTHDocData(acrfFormVO.getRawTTHDocVO(), result, userObject, sessionID);
-//		
-//		}
 		
 		
 			//compile labs records and insert.		
@@ -290,24 +283,15 @@ public class AssignmentTransactionHelper {
 			try {
 			
 				sendEmail.processEmail(null, "Potential COPHI", userObject.getUserFullName() +"has selected the following risk for stateno: "+acrfDoc.getStateno()+" "+riskSelected.toString(), "ACRF_RISK", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-				//String[] recipientEmailAddressesTo = EnvironmentProperties.envProperties.getProperty("acrfNotificationEmailTo").split(",");
-				//String[] recipientEmailAddressesCC = null;
 				
 				//String ccList = EnvironmentProperties.envProperties.getProperty("acrfNotificationEmailCC");
 				
-				//if(CommonUtil.isNotNullAndEmpty(ccList)){
-					//recipientEmailAddressesCC = ccList.split(",");
-				//}
 				
 				//if (recipientEmailAddressesTo.length > 0) {
 					//sendEmail.sendSSLMessage(
 					//		recipientEmailAddressesTo,
 					//		 "Potential COPHI", userObject.getUserFullName() +"has selected the following risk for stateno: "+acrfDoc.getStateno()+" "+riskSelected.toString(),
 					//		 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
-					//		CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-				//} else {
-					//log.error(userObject.getUserFullName() +"has selected the following risk for stateno: "+acrfDoc.getStateno()+" "+riskSelected.toString());
-				//}
 			} catch (MessagingException messagingException) {
 				
 				log.error(nyehmsLog + "   Failed to send the Risk notification    ");
@@ -335,13 +319,6 @@ public class AssignmentTransactionHelper {
 			acrfFDocumentService.updateRawACRFDoc(acrfFormVO, documentType, result,userObject, sessionID);
 		}
 		
-//		if(acrfFormVO.getRawAcrfDoc() != null && acrfFormVO.getRawAcrfDoc().getDocumentId() != 0){
-//			
-//			acrfFormVO.getRawTTHDocVO().setAcrfDocId(acrfFormVO.getRawAcrfDoc().getDocumentId());
-//			
-//			tthDocumentService.updateTTHDocData(acrfFormVO.getRawTTHDocVO(), result, userObject, sessionID);
-//		
-//		}
 
 
 		hasLabDataChange = acrfFDocumentService.updateRawACRFLabs(acrfFormVO, documentType, result,userObject, sessionID);

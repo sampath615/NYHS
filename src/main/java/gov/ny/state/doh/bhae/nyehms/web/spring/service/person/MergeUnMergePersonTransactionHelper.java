@@ -93,9 +93,6 @@ public class MergeUnMergePersonTransactionHelper {
 		
 		Integer statusCode = mergeUnMergePersonService.callMergeStatenosService(flaggedStatenoVO, bindingResult, userObject);
 		
-//		if(statusCode == 0){
-//			mergeUnMergePersonService.commitTransaction();
-//		}
 		
 		
 	}

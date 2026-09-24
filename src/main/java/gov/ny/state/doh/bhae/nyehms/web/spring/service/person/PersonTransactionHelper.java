@@ -354,8 +354,6 @@ public class PersonTransactionHelper {
 		
 //		if(resultCount > 0) {
 //			commonExceptionHandler.inspectDBTransacionResult(0,
-//					"Unflagged from Non Case status", bindingResult);
-//		}
 		
 		return stateno;
 		

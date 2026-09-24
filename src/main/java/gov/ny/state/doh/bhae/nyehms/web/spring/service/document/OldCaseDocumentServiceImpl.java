@@ -42,9 +42,6 @@ public class OldCaseDocumentServiceImpl implements OldCaseDocumentService {
         try {
         	oldCaseDocVO = oldCasesDocumentDAO.getOldCaseDocVO(docId);
             
-//            if(oldCaseDocVO == null){
-//            	oldCaseDocVO = new OldCaseDocVO();
-//            }
         } catch (DataAccessException e) {
             rollbackFlag = true;
             commonExceptionHandler.handleException(e, userObject, sessionID);

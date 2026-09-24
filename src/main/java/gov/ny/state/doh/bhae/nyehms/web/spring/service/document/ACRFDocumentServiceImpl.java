@@ -118,8 +118,6 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 							BindingResult result, 
 							UserObject userObject, 
 							String sessionID) {		
-//		boolean errorFlag=false;
-//		try{
 		rawAcrfDoc.setWorkerId(userObject.getUserId());
 		if("PCRF".equals(documentType)){
 			pcrfDocDAO.addRawPCRFDoc(rawAcrfDoc);
@@ -128,20 +126,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 			acrfDocDAO.addRawACRFDoc(rawAcrfDoc);
 		}
 			
-//		} catch (DataAccessException e) {
-//			errorFlag=true;
-//			result.addError(new ObjectError("Sample", "Insert Record Error. Please try again "));
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			errorFlag=true;
-//			result.addError(new ObjectError("Sample", "Insert Record Error. Please try again "));
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}
 	}
 	
 	
@@ -150,8 +135,6 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 								BindingResult result, 
 								UserObject userObject, 
 								String sessionID) {
-//		boolean errorFlag=false;
-//		try{
 			RawAcrfDocVO rawAcrfDoc = acrfFormVo.getRawAcrfDoc();
 			rawAcrfDoc.setWorkerId(userObject.getUserId());
 			log.debug("{}  Updating with Doc ID {}",nyehmsLog,rawAcrfDoc.getAcrfSrcId());
@@ -163,18 +146,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 				acrfDocDAO.updateRawACRFDoc(rawAcrfDoc);
 			}
 			
-//		} catch (DataAccessException e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}
 	}
 	
 	@Override
@@ -291,21 +263,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 					hasLabDataChange = true;
 				}
 			}
-//		}catch (DataAccessException e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}catch(NumberFormatException e){
-//			log.error(nyehmsLog+"--- NUMBER FORMAT EXCEPTION  --" + e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);		
-//		}catch (Exception e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}
 			
 			return hasLabDataChange;
 		
@@ -549,18 +507,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 					hasLabCd4Changes = true;
 				}
 			}
-//		}catch (DataAccessException e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}
 			return hasLabCd4Changes;
 		
 	}
@@ -801,19 +748,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 					}
 				}
 			}
-//		}catch (DataAccessException e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//			
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}	
 			return hasLabDataChange;
 		
 	}
@@ -956,18 +891,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 				}
 				
 			}		
-//		}catch (DataAccessException e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			errorFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(errorFlag)
-//				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-//		}
 			return hasLabCd4Change;
 	}	
 	
@@ -1383,13 +1307,6 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 		
 //		List<PcrfSubstanceDocVO> actualPregOutcomeList = new ArrayList<>();
 		
-//		for (PcrfSubstanceDocVO pcrfSubstanceDocVO : pregOutcomeList) {
-//			
-//			if(CommonUtil.isNotNullAndEmpty(pcrfSubstanceDocVO.getPregOutcome())){
-//				actualPregOutcomeList.add(pcrfSubstanceDocVO);
-//			}
-//		}
-//		if(actualPregOutcomeList.size() > 0) {
 			inputParameterMap.put("PREGOUTCOME_LIST", pregOutcomeList);
 			pcrfDocDAO.addPregOutcomeList(inputParameterMap);
 //		}

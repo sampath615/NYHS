@@ -352,9 +352,6 @@ public class EPRFOOCDocumentServiceImpl implements EPRFOOCDocumentService {
 	}
 	
 //	@Override
-//	public Map<String, String> getEprfEharsData(Integer documentId){
-//		return ePRFOOCDocumentDAO.getEprfEharsData(documentId);
-//	}
 	
 	@Override
 	public EPRFFollowUpDocVO getFollowUpData(String documentFileName){

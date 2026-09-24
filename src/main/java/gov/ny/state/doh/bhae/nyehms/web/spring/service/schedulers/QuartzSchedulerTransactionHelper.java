@@ -577,19 +577,6 @@ public class QuartzSchedulerTransactionHelper {
 //	 * @throws NyehmsException ?
 //	 */
 //	@Transactional
-//	public boolean writeRawCCDData(RawCCDDocVO theCCDVO) throws DataAccessException, NyehmsException {
-//
-//		boolean transactionStatus = true;
-//		Map<Object, Object> map = new HashMap<Object, Object>();
-//		map.put("p_document_type", "CCD");
-//		manualQuartzJobService.getNewDocId(map);
-//		int newDocId = (Integer) map.get("p_new_doc_id");
-//		if (newDocId != 0) {
-//			theCCDVO.setDocumentId(newDocId);
-//			manualQuartzJobService.writeRawCCDData(theCCDVO);
-//		}
-//		return transactionStatus;
-//	}
 	
 //	/**
 //	 * Gets the new row in DOCUMENT_LOCATOR for one EXP, then inserts
@@ -602,19 +589,6 @@ public class QuartzSchedulerTransactionHelper {
 //	 * @throws NyehmsException ?
 //	 */
 //	@Transactional
-//	public boolean writeRawEXPData(RawExpDocVO theEXPVO) throws DataAccessException, NyehmsException {
-//
-//		boolean transactionStatus = true;
-//		Map<Object, Object> map = new HashMap<Object, Object>();
-//		map.put("p_document_type", "EXP");
-//		manualQuartzJobService.getNewDocId(map);
-//		int newDocId = (Integer) map.get("p_new_doc_id");
-//		if (newDocId != 0) {
-//			theEXPVO.setDocumentId(newDocId);
-//			manualQuartzJobService.writeRawEXPData(theEXPVO);
-//		}
-//		return transactionStatus;
-//	}
 
 	/**
 	 * 
@@ -700,8 +674,6 @@ public class QuartzSchedulerTransactionHelper {
 				//Validating CLIA and PFI combination in the database
 				boolean cliaAnaPFINotFound = manualQuartzJobService.validateCliaAndPFi(ecrlsLabDocVO, errors, errorCodes);
 				if(!cliaAnaPFINotFound){
-//					boolean havingProfieciencyValidationErrors = manualQuartzJobService.handleProficiencyValidation(ecrlsLabDocVO, errors, errorCodes, schedulerMetaData);
-//					if(!havingProfieciencyValidationErrors){
 						String errorStatus = validatingRawRecord(ecrlsLabDocVO, errors, errorCodes, stdEcrlsLabDocVO, schedulerMetaData);
 						
 						if(errorStatus.indexOf("SOFT")  != -1){
@@ -719,19 +691,6 @@ public class QuartzSchedulerTransactionHelper {
 							
 						}
 						
-//					}else{
-//						if(log.isDebugEnabled()){
-//							log.debug(_documentID+"  Invalidation the Document. Its Proficiency report");
-//						}
-//						currentProcessStatus = CommonConstants.RAW_RECORD_PROFICIENCY_ERROR_PROCESS_STATUS;
-//						
-//						int _deleteFlagStatus = manualQuartzJobService.makeDocumentAsInactivate(_documentID);
-//						
-////						if(_deleteFlagStatus  == 0){
-////							
-////						}
-//						
-//					}
 					
 				}else{
 
@@ -1385,9 +1344,6 @@ public class QuartzSchedulerTransactionHelper {
 		for (Map<Object, Object> docVO : docList) {
 			try{
 					writeRawRecordDataToStdTable(docVO, documentType);
-//					if(insertStatus == 0){
-//						throw new DataRetrievalFailureException("DataAccessException while storing the "+documentType+" record in Standard table");
-//					}
 			}catch (DataAccessException e) {
 				String _exceptionMessage = docVO.get("DOCUMENT_ID")+" DataAccessException while storing the "+documentType+" record :  " +e.getMessage();
 				failedToValidateDocuments.add(_exceptionMessage.toString());
@@ -1569,16 +1525,6 @@ public class QuartzSchedulerTransactionHelper {
 			boolean finalStageOfLoadingResults, List<String> schedulerNotificationObj
 			, boolean needToArchieve)
 	{
-//		StringBuilder statusMailSubject = new StringBuilder("POST-MATCH ");
-//		statusMailSubject.append(EnvironmentProperties.envProperties.getProperty("environmentName"));
-//		statusMailSubject.append(" BY ");
-//		if(CommonUtil.isNullOrEmpty(initiator)){
-//			statusMailSubject.append("QUARTZ");
-//		}else{
-//			statusMailSubject.append("MANUAL <").append(initiator).append(">");
-//		}
-//		statusMailSubject.append(" DB ");
-//		statusMailSubject.append(schedulerMetaData.get("DATABASE_NAME"));
 		//Sending notification mail that the Quality stage match results Process started
 //		manualQuartzJobService.sendNotificationEmail(schedulerMetaData,
 //				"START "+statusMailSubject.toString(),
@@ -1596,24 +1542,11 @@ public class QuartzSchedulerTransactionHelper {
 				schedulerStatusObject, schedulerMetaData, jobName,
 				finalStageOfLoadingResults, schedulerNotificationObj, true, nonCaseDocumentDetails);
 //		if ("Y".equals(schedulerMetaData
-//				.get("REQUIRED_TO_RUN_PROV_FACILITY_QS_PROCESS"))) {
-//			log.error("started the process to run the Provider Facility Quality stage process");
 //			//Step4, step5, Step6
 //			mapProviderFacilityQsResults(
-//					schedulerStatusObject, schedulerMetaData, schedulerNotificationObj);
-//		} else {
-//			log.error("Skipping the process to run the Provider Facility Quality stage process");
-//		}
-//		if("Y".equals(schedulerMetaData.get("REQUIRED_TO_SEND_DETAILED_NOTIFICATION"))){
-//			
-//			log.error("Started the process to send Details Process status email");
 //			/* Send Email */
 //			manualQuartzJobService.sendSchedulerDetailedProcessStatus( 
 //					schedulerStatusObject, "END "+statusMailSubject.toString(),
-//					schedulerMetaData);
-//		}else{
-//			log.error("Skipping the process to send Detailed Process status email");
-//		}
 	}
 
 	
@@ -1629,14 +1562,6 @@ public class QuartzSchedulerTransactionHelper {
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME, "Storing Raw "+documentType+" data in Standard table.");
 		
 		
-//		if (totalDocuments == 0) {
-//			transactionMessage = "No new data available to store the data in Standard "+documentType+" table.";
-//			log.error(transactionMessage);
-//			statusObject.put(CommonConstants.TRANSACTION_STATUS, transactionStatus);
-//			statusObject.put(CommonConstants.TRANSACTION_MESSAGE, transactionMessage);
-//			schedulerStatusObject.add(statusObject);
-//			return;
-//		}
 		
 		boolean isError = false;
 		
@@ -1648,10 +1573,6 @@ public class QuartzSchedulerTransactionHelper {
 			
 			totalDocuments = ssdmDocumentService.writeAllRawSSDMDocDataToStdTable();
 		//totalDocuments= 
-				//writeRawRecordDataToStdTable(docVO, documentType);
-//					if(insertStatus == 0){
-//						throw new DataRetrievalFailureException("DataAccessException while storing the "+documentType+" record in Standard table");
-//					}
 		}catch (DataAccessException e) {
 			
 			isError = true; 
@@ -1720,9 +1641,6 @@ public class QuartzSchedulerTransactionHelper {
 				"Checking the duplicates for STD " + documentType + " Document");
 
 		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
-//
-//		inputOutputParameterMap.put("p_doc_type_cd", recordType);
-//		inputOutputParameterMap.put("process_date", new Date(Calendar.getInstance().getTimeInMillis()));
 		
 		boolean isError = false;
 		
@@ -1732,10 +1650,6 @@ public class QuartzSchedulerTransactionHelper {
 			manualQuartzJobService.checkDuplicatesinStdDocTable(documentType);
 
 		//totalDocuments= 
-				//writeRawRecordDataToStdTable(docVO, documentType);
-//					if(insertStatus == 0){
-//						throw new DataRetrievalFailureException("DataAccessException while storing the "+documentType+" record in Standard table");
-//					}
 		}catch (DataAccessException e) {
 			
 			isError = true; 
@@ -2066,11 +1980,6 @@ public class QuartzSchedulerTransactionHelper {
 				continue;
 			}
 			
-//			else if(CURRENT_PROCESS_STATUS_RAW == 20 && isDataChanged && !(currentProcessStatusList.contains(5) || currentProcessStatusList.contains(9))){
-//				
-//				throw new DataRetrievalFailureException("There is no valid Document (after editing) for this obxObservationResultKey");
-//				
-//			}
 			
 			else if(CURRENT_PROCESS_STATUS_RAW == 5){
 				

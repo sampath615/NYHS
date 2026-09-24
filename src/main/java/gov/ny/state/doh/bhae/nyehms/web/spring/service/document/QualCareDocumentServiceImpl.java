@@ -16,8 +16,6 @@ public class QualCareDocumentServiceImpl implements QualCareDocumentService {
 	
 	@Autowired private QualCareDocumentDAO qualCareDocumentDAO;
 	
-	//private static Logger log = LoggerFactory.getLogger(QualCareDocumentServiceImpl.class);
-	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 
 	
 	@Override

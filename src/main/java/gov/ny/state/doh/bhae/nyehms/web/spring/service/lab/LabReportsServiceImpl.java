@@ -223,9 +223,6 @@ public class LabReportsServiceImpl implements LabReportsService {
 			//Map<String, String> permitCodeAndDescriptionMap = new HashMap<String, String>();
 			
 			List<Map<String, String>> permitCodesAndDescriptionsList = labReportsDAO.getActiveAssociatedPermitCodesAndDescriptions(pfi);
-//			for(Map<String, String> permit : permitCodesAndDescriptionsList){
-//				permitCodeAndDescriptionMap.put(permit.get("permitCode"), permit.get("permitDescription"));
-//			}
 		return permitCodesAndDescriptionsList;
 	}
 	
@@ -239,10 +236,6 @@ public class LabReportsServiceImpl implements LabReportsService {
 	@Override
 	public List<Map<String, String>> getActiveAssociatedInstrumentCodeAndDescriptionDetails(long labPermitId, BindingResult result, UserObject userObject) {
 			List<Map<String, String>> instrumentCodesAndDescriptionsList = labReportsDAO.getActiveAssociatedInstrumentCodesAndDescriptions(labPermitId);
-//			Map<String, String> instrumentCodeAndDescriptionMap = new TreeMap<String, String>();
-//			for(Map<String, String> instrument : instrumentCodesAndDescriptionsList){
-//				instrumentCodeAndDescriptionMap.put(instrument.get("instrumentName"), instrument.get("instrumentId"));
-//			}
 		return instrumentCodesAndDescriptionsList;
 	}
 	

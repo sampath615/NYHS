@@ -176,9 +176,7 @@
 		
 <!-- 		and SENT_FILE_SEQ in  -->
 		
-<!-- 		  		<foreach item="trackId" index="index" collection="sequenceNumbers" open="(" separator="," close=")"> -->
 <!-- 						        	#{trackId} -->
-<!-- 						  		 </foreach> -->
 	</update>
     
     <select id="generateCDCReturnData" parameterType="java.util.Map" resultType="java.util.Map">

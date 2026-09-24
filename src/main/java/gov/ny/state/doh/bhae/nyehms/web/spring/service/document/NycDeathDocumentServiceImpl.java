@@ -579,29 +579,17 @@ public class NycDeathDocumentServiceImpl implements NycDeathDocumentService {
 	 * @param instCode
 	 * @return
 	 */
-//	public static String getNycFacCode(String instCode) {
-//		
-//		String nycFacCode = null;		
 //		if(instCode.equals("N0 000") ||
 //           instCode.equals("0000") ||
 //           instCode.equals("N0000") ||
-//           instCode.equals("N8-00")) {
-//		    nycFacCode = null;
 //		} else { //assume format is "N_ ____" or "N____"
 //			if(instCode.length() == 6) {
 //				nycFacCode = 
 //						instCode.substring(3,4)
 //						+ instCode.substring(1, 2)
-//						+ instCode.substring(4,6);
-//			} else if (instCode.length() == 5) {
 //				nycFacCode =
 //						instCode.substring(2,3)
 //						+ instCode.substring(1,2)
-//						+ instCode.substring(3,5);
-//			}          
-//		}
-//		return nycFacCode;
-//	}
 	
 	/**
 	 * After eliminating invalid values for instCode, creates the following

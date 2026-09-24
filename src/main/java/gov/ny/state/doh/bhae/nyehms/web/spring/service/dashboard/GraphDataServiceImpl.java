@@ -33,15 +33,6 @@ public class GraphDataServiceImpl implements GraphDataService {
     @Override
     public List<JSONObject> getWorkerTallyCounts(UserObject userObject){
     	
-//    	Connection conn = connectionDAO.getConnectionObj();
-//
-//        if (conn == null) {
-//            throw new IllegalArgumentException("database connection is null");
-//        }
-//        Statement statement = null;
-//        ResultSet rs = null;
-//        
-//        StringBuilder partnerListQuery =  new StringBuilder();
         
 //        partnerListQuery.append("SELECT REGION_DESCRIPTION , COUNT(*) OPEN_CNT , SUM(CASE WHEN s.CREATE_DATE < SYSDATE-90 THEN 1 ELSE 0 END ) CNT_90, MAX(fn_to_date(E.HIV_DX_DT ,'MMDDYYYY')) hiv_dx_date ");
 //        
@@ -111,66 +102,5 @@ public class GraphDataServiceImpl implements GraphDataService {
 //        
 ////        String partnerListQuery = "SELECT NVL(REGION_DESC,'') REGION_DESC, ALL_OPEN_COUNT ,  ALL_REOPEN_COUNT , "
 ////                + " PENDING_REASSIGN_COUNT, NEW_COUNT, ADMIN_CLOSED_COUNT, CLOSED_90_DAYS"
-////                + " FROM NYEHMS_ASSGN_WORKER_TALLY_VW WHERE WORKER_ID =  " + workerId;
-////      
-//        List<JSONObject> regionsAndWorkersList = new ArrayList<JSONObject>();
-//        
-//        try {
-//            statement = conn.createStatement();
-//            rs = statement.executeQuery(partnerListQuery.toString());
-//            int count = 1;
-//            while (rs.next()) {
-//            	
-//            	JSONObject regionAndWorkersList = new JSONObject();
-//            	
-//                List<Integer> assignmentCountsByRegion = new ArrayList<Integer>();
-//
-//                String regionName = rs.getString("REGION_DESCRIPTION");
-//                
-//                if("".equals(regionName) || regionName == null){
-//                	regionName = String.valueOf(count);
-//                	count++;
-//                }
-//                
-//
-//                int _openCount = rs.getInt("OPEN_CNT");
-//
-//                int _closed90Days = rs.getInt("CNT_90");
-//                
-//                if(_openCount == 0 && _closed90Days == 0){
-//                	break;
-//                }
-//                
-//                  assignmentCountsByRegion.add(_openCount);
-//
-//                  assignmentCountsByRegion.add(_closed90Days);
-//                
-//                
-//                regionAndWorkersList.put("name",regionName);
-//                regionAndWorkersList.put("data", assignmentCountsByRegion);
-//
-//                
-//                regionsAndWorkersList.add(regionAndWorkersList);
-//
-//                
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GraphDataService.class.getName()).log(Level.SEVERE, null, ex);
-//        }finally{
-//	        try {
-//	            if (statement != null) {
-//	            	statement.close();
-//	            }
-//	            if (rs != null) {
-//	            	rs.close();
-//	            }
-//	            if (conn != null) {
-//	            	conn.close();
-//	            }
-//	        } catch (SQLException sqlException) {
-//	        	Logger.getLogger(GraphDataService.class.getName()).log(Level.SEVERE, null, sqlException);
-//	        }
-//		}
-//        return regionsAndWorkersList;
     }
 }

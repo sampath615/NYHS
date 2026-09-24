@@ -211,8 +211,6 @@ public class AccessTokenClient {
 		} catch(WebClientResponseException webEx) {
 			log.error("error while adding user permission {}", webEx.getMessage());
 		} catch (Exception ex) {
-			//ex.printStackTrace();
-			//throw new RuntimeException(ex);
 			log.error("error while adding user permission {}", ex.getMessage());
 		} finally {
 			if (isDebug) {log.debug(buf.toString());}
@@ -247,8 +245,6 @@ public class AccessTokenClient {
 		} catch(WebClientResponseException webEx) {
 			log.error("error while removing user permission {}", webEx.getMessage());
 		} catch (Exception ex) {
-			//ex.printStackTrace();
-			//throw new RuntimeException(ex);
 			log.error("error while removing user permission {}", ex.getMessage());
 		} finally {
 			if (isDebug) {log.debug(buf.toString());}

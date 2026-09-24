@@ -40,8 +40,6 @@ public class NycPRFDocumentServiceImpl implements NycPRFDocumentService{
 	UserAuthorization userAuthorization;
 	
 	
-	//private Log log = LogFactory.getLog(this.getClass());
-	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Override
 	public NycPRFDocVO getNycPRFDoc(int docId, BindingResult result, UserObject userObject, String sessionID) {
@@ -228,13 +226,7 @@ public class NycPRFDocumentServiceImpl implements NycPRFDocumentService{
     	stdDocData.put("FIRST_POS_LOCATION",docVO.get("FLITYTYPE_D"));
     	stdDocData.put("FIRST_POS_FAC_NAME",docVO.get("FLITYNAME_D"));
     	stdDocData.put("FIRST_POS_FAC_STATE",docVO.get("FLITYST_D"));
-//    	stdDocData.put("RSON_FIRST_POS_EXP",LabCommonUtils.checkTestDataValues((String)docVO.get("EXPSIX")));
-//    	stdDocData.put("RSON_FIRST_POS_ROUTN",LabCommonUtils.checkTestDataValues((String)docVO.get("TSTAGAIN")));
-//    	stdDocData.put("RSON_FIRST_POS_CHKNEG",LabCommonUtils.checkTestDataValues((String)docVO.get("CHECKING")));
-//    	stdDocData.put("RSON_FIRST_POS_REQD",LabCommonUtils.checkTestDataValues((String)docVO.get("REQIRED")));
     	
-//    	stdDocData.put("RSON_FIRST_POS_OTHER", LabCommonUtils.checkTestDataValues((String)docVO.get("OTHERRSON")));
-//    	stdDocData.put("RSON_FIRST_POS_OTHER_TEXT",docVO.get("SPOTHERRSON"));
     	stdDocData.put("ARV_6_MO",LabCommonUtils.checkTestDataValues((String)docVO.get("ANTISIX")));
     	stdDocData.put("ARV_6_MO_NAME",docVO.get("WHICH"));
     	stdDocData.put("ARV_6_MO_START_DATE_TEXT",docVO.get("STARTDT"));
@@ -247,8 +239,6 @@ public class NycPRFDocumentServiceImpl implements NycPRFDocumentService{
     	
     	
     	
-//    	stdDocData.put("EVER_TEST_NEG",LabCommonUtils.checkTestDataValues((String)docVO.get("TSTNGBEF")));
-//    	stdDocData.put("LAST_NEG_DATE_TEXT",docVO.get("LSTNGTSTDT"));
     	stdDocData.put("LAST_NEG_FAC_TYPE",docVO.get("FLITYTYPE_J"));
     	stdDocData.put("LAST_NEG_FAC_NAME",docVO.get("FCLITYNAME_J"));
     	stdDocData.put("LAST_NEG_FAC_STATE",docVO.get("FCLITYST_J"));

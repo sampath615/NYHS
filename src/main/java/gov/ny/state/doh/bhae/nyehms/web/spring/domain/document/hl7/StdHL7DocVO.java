@@ -135,13 +135,6 @@ public class StdHL7DocVO {
 	public void setMedRecordNos(String medRecordNos) {
 		this.medRecordNos = medRecordNos;
 	}
-//	
-//	public int getMpi() {
-//		return mpi;
-//	}
-//	public void setMpi(int mpi) {
-//		this.mpi = mpi;
-//	}
 	public int getNysid() {
 		return nysid;
 	}

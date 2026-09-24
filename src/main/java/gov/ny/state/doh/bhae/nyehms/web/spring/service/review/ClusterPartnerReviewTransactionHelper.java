@@ -71,17 +71,6 @@ public class ClusterPartnerReviewTransactionHelper {
 			 
 			 //int existingMatches = clusterPartnerReviewService.checkForExistingMatches(inOutParameterMap);
 			 
-//			 if(existingMatches > 0) {
-//				 int updateCount = clusterPartnerReviewService.updateWithExistingClusterDetails(inOutParameterMap);
-//				 
-//				 if(updateCount > 0) {
-//					 commonExceptionHandler.inspectDBTransacionResult(0, "Document mapped to existing Cluster partner document", bindingResult);
-//					 return;
-//				 }else {
-//						throw new DataRetrievalFailureException("Failed to map the document to existing Cluster partner document ");
-//
-//				 }
-//			 }
 			 
 		 }else if(CommonUtil.isNotNullAndEmpty(stateno) && "N".equals(INS_CLUSTER)) {
 			 

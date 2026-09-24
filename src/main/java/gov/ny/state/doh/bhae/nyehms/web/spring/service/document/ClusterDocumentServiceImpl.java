@@ -528,8 +528,6 @@ public class ClusterDocumentServiceImpl implements ClusterDocumentService {
 	public void updateClustEharsNyehmsStateno(Map<String, Object> clusterDetailsMap, ClusterDocVO currentDemoInfo, UserObject userObject, BindingResult bindingResult) {
 		
 		String clusterType = clusterDetailsMap.get("clusterType").toString();
-	//	String uploadedEharsStateno = clusterDetailsMap.get("uploadedEharsStateno").toString();
-	//	String uploadedNyehmsStateno = clusterDetailsMap.get("nyehmsStateno").toString();
 		long documentId = Long.parseLong(clusterDetailsMap.get("documentId").toString());
 		
 				Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
@@ -814,10 +812,6 @@ public class ClusterDocumentServiceImpl implements ClusterDocumentService {
 		@SuppressWarnings("unchecked")
 		List<ClusterIdReportDataVO> clusterIdReportDataList = (List<ClusterIdReportDataVO>)inOutParameterMap.get("p_clust_data");
 		
-	//	ClusterIdReportHeaderVO clusterIdReportHeaderDetails = clusterIdReportHeaderList.get(0);
-	//	clusterIdReportHeaderDetails.setCluster_create_date(clusterIdReportDataList.get(0).getCluster_date());
-//		clusterIdReportHeaderDetails.setCluster_rpt_date(dateUtil.getCurrentDate());
-//		clusterIdReportHeaderDetails.setCluster_type_desc(getClusterTypeDesc(clusterType));
 		
 		ClusterIdReportVO clusterIdReportVO = new ClusterIdReportVO();
 		

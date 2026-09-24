@@ -85,51 +85,14 @@ public class ClusterPartnerReviewServiceImpl implements ClusterPartnerReviewServ
 			
 				
 				
-//				if("RESISTANCE".equals(documentType) || "ADAP".equals(documentType)){
-//					documentToReview = clericalReviewDAO.getQualityStagedDocumentToReviewByParent(inOutParamaterMap);
-//				}else{
-//					documentToReview = clericalReviewDAO.getQualityStagedDocumentToReview(inOutParamaterMap);
-//				}
 				
 				if(documentDetailsToReview != null){
 					
 					documentDetailsToReview.put("documentsToReview", documentsCountToReview);
-//					String matchCd = (String)documentToReview.get("MATCH_CD");
-//					BigDecimal document_id = (BigDecimal)documentToReview.get("DOCUMENT_ID");
 					
-//					documentDetailsToReview.put("MATCH_CD", matchCd);
-//					documentDetailsToReview.put("DOCUMENT_ID", document_id);
 					
-//					List<String> statenoList = null;
-//					if("C".equals(matchCd)){
-//						statenoList = clericalReviewDAO.getStatnosForClericalDocument(document_id);
-//						
-//						if(statenoList == null){
 //							log.error("Failed to get the Clerical Matching stateno list from RAW_DOCUMENT_MATCH_RESULTS for the DocumentId : "+document_id
-//									);
-//							log.error(document_id+"  don't have matching potentian statenos");
-//							
-//							throw new DataRetrievalFailureException("unable to load the "+documentType+" document for review");
-//						}
-//						
-//						documentDetailsToReview.put("STATENO_LIST", statenoList);
-//					}else if("M".equals(matchCd)){
-//						
-//						inOutParamaterMap.put("DOCUMENT_ID", document_id);
-//						
-//						statenoList = clericalReviewDAO.getMatchingStatnoForDocument(inOutParamaterMap);
-//						
-//						if(statenoList == null){
 //							log.error("Failed to get the Matching stateno from STD table for the DocumentId : "+document_id
-//									);
-//							log.error(document_id+"  don't have matching stateno");
-//							
-//							throw new DataRetrievalFailureException("unable to load the "+documentType+" document for review");
-//						}
-//						
-//						
-//						documentDetailsToReview.put("STATENO_LIST", statenoList);
-//					}
 					documentDetailsToReview.put("STATUS", "SUCCESS");
 					
 					//documentDetailsToReview.put("documentsToReview", documentsCountToReview);
@@ -308,14 +271,8 @@ public class ClusterPartnerReviewServiceImpl implements ClusterPartnerReviewServ
 	}
 	
 //	@Override
-//	public int checkForExistingMatches(Map<String, Object> inOutParameterMap) {
-//		return clusterPartnerReviewDAO.checkForExistingMatches(inOutParameterMap);
-//	}
 	
 //	@Override
-//	public int updateWithExistingClusterDetails(Map<String, Object> inOutParameterMap) {
-//		return clusterPartnerReviewDAO.updateWithExistingClusterDetails(inOutParameterMap);
-//	}
 	
 	@Override
 	public void processClusterparterDocumentToClusterTables(Map<String, Object> inOutParameterMap) {

@@ -147,15 +147,6 @@ public class NonCaseDocumentController {
 //			@RequestParam String comments,
 //			@RequestParam int reason,
 //			HttpServletRequest request)
-//	{		
-//		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-//		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-//		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-//		
-//		documentTransactionHelper.discardNonCaseDocument(triggeringDocId, comments, reason, bindingResult, userObject);
-//		
-//		return targetMap;
-//	}
 	
 	@RequestMapping(value="/getNonCaseDocHistory.html", method = RequestMethod.POST)	
 	public String getNonCaseDocHistory(
@@ -226,10 +217,6 @@ public class NonCaseDocumentController {
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-//				
-//		List<Map<String, String>> nonCaseFlaggedHistory = nonCaseDocumentService.getNonCaseFlaggedHistory(bindingResult,  userObject);
-//
-//		pMap.put("nonCaseFlaggedHistory", nonCaseFlaggedHistory);
 		
 		return "review/NonCaseFlaggedHistory";
 	}

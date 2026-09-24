@@ -76,8 +76,6 @@ public class AdminController {
 		map.put("regOfficeList", regOfficeList);
 		
 		
-		//List<String> statusTypes = administrationService.getSrchstatusTypes(bindingResult, userObject);
-		//map.put("statusTypes", statusTypes);
 		String startDate = dateUtil.getCurrentDate();
 		map.put("startDate", startDate);
 		return "administration/Administration";
@@ -259,8 +257,6 @@ public class AdminController {
 		map.put("userFacilityNames", userFacilityNames);
 		List<NyehmsRole> nyehmsRole = administrationService.getSrchroleTypes(bindingResult, userObject);
 		map.put("nyehmsRole", nyehmsRole);
-		//List<String> statusTypes = administrationService.getSrchstatusTypes(bindingResult, userObject);
-		//map.put("statusTypes", statusTypes);
 		List<JSONObject>  trainerList = administrationService.getTrainerList(bindingResult, userObject);
 		map.put("trainerList", trainerList);
 		

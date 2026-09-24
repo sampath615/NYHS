@@ -40,8 +40,6 @@ public class CommonTest {
 		final String tstWorkerId="141";
 		final String tstWorkerRegionId="1015";
 		
-		//private Date tstStDate = new java.util.Date();
-		//private Date tstEdDate = new java.util.Date();
 		final String tstCallingProgram="NYEHMS";	
 		UserObject userObject=new UserObject();
 		
@@ -99,8 +97,6 @@ public class CommonTest {
 			if(addressFieldVO.getCountry().equals("Unknown") || addressFieldVO.getCountry().equals("")){
 				addressFieldVO.setCountry("");
 			}			
-			//addressFieldVO.setCounty("Out of State");
-			//addressFieldVO.setState("");			
 			List<String> list=commonService.getAddressDropDownInfo(addressFieldVO, result, userObject, sessionId);
 			
 			for(String str: list){

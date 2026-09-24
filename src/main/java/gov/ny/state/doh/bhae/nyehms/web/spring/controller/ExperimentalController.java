@@ -104,10 +104,6 @@ public class ExperimentalController {
 	// public String experiment2(
 	// HttpServletRequest request,
 	// Map<String, String> map)
-	// {
-	// HttpSession session = request.getSession();
-	// UserObject userObject = (UserObject) session.getAttribute("UserObj");
-	// Map<Object, Object> targetMap = new HashMap<Object, Object>();
 	// BindingResult bindingResult = new MapBindingResult(targetMap,
 	// "targetMap");
 	// // Checking the Permissions for the user
@@ -116,30 +112,9 @@ public class ExperimentalController {
 	// userObject);
 	// map.put(AppConstants.NYEHM_TRANSACTION_MESSAGE.getName(),
 	// (String)
-	// targetMap.get(AppConstants.NYEHM_TRANSACTION_MESSAGE.getName()));
-	// if (AppConstants.NYEHM_TRANSACTION_SUCCESS_CODE.getName()
-	// .equals(targetMap.get(AppConstants.NYEHM_TRANSACTION_RESULT.getName())))
-	// {
 	// // The user has permissions
-	// PrintWriter jOut = null;
-	// String response = null;
-	// try {
 	// List<Map<String, String>> ccdCounts =
-	// ccdDocumentDAO.getAllCcdCountIndex();
-	// if (ccdCounts.size() != 0) {
-	// response = getCCDindex(ccdCounts);
-	// }
-	// map.put("ccdIndexTable", response);
-	// } catch(Exception ioe) {
-	// System.out.println(ioe.getMessage());
-	// }
-	// return "experimental/experiment2";
-	// } else {
 	// // if user is not having the permissions
-	// log.debug("Redirecting to Error page");
-	// return "common/errorPage";
-	// }
-	// }
 
 	/*
 	 * @RequestMapping(value = "/hitracecodemapper") public String

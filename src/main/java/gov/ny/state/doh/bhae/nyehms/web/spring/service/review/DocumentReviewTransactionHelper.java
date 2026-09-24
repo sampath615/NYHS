@@ -437,38 +437,6 @@ public class DocumentReviewTransactionHelper {
 						
 						patientsInormation.append(conclusion.getCONCLUSION_DESC());
 							
-//						if(conclusion.getCONCLUSION_ID() == 8 && fileFollowUpData.getFILE_CATEGORY().indexOf("HICAPP") == -1){
-//							
-//							
-//							
-//							Map<String, Integer> oOCDocumentPatientInformation = ePRFOOCDocumentService.getOOCDocumentPatientInformation(documentFileName);
-//							
-//							StringBuilder oocPatientsInformationMessage = new StringBuilder();
-//							
-//							
-//							if(oOCDocumentPatientInformation != null){
-//								
-//								
-//								oocPatientsInformationMessage.append("<ul>");
-//								if(oOCDocumentPatientInformation.get("MONTHS") != null && oOCDocumentPatientInformation.get("MONTHS") != 0){
-//									
-//									oocPatientsInformationMessage.append("<li>"+oOCDocumentPatientInformation.get("MONTHS")+" have been OOC for more than 24 months.</li>");
-//									
-//								}
-//								
-//								if(oOCDocumentPatientInformation.get("NYC_COUNTY_COUNT") != null && oOCDocumentPatientInformation.get("NYC_COUNTY_COUNT") != 0){
-//									
-//									oocPatientsInformationMessage.append("<li>"+oOCDocumentPatientInformation.get("NYC_COUNTY_COUNT")+" OOC and reside in NYC.</li>");
-//									
-//								}
-//								
-//								oocPatientsInformationMessage.append("</ul>");
-//								
-//								patientsInormation.append(oocPatientsInformationMessage);
-//								
-//							}
-//							
-//						}
 						
 						patientsInormation.append("</li>");
 						
@@ -917,17 +885,6 @@ public class DocumentReviewTransactionHelper {
 			 
 			 //int existingMatches = clusterPartnerReviewService.checkForExistingMatches(inOutParameterMap);
 			 
-//			 if(existingMatches > 0) {
-//				 int updateCount = clusterPartnerReviewService.updateWithExistingClusterDetails(inOutParameterMap);
-//				 
-//				 if(updateCount > 0) {
-//					 commonExceptionHandler.inspectDBTransacionResult(0, "Document mapped to existing Cluster partner document", bindingResult);
-//					 return;
-//				 }else {
-//						throw new DataRetrievalFailureException("Failed to map the document to existing Cluster partner document ");
-//
-//				 }
-//			 }
 			 
 		 }else if(CommonUtil.isNotNullAndEmpty(stateno) && "N".equals(INS_CLUSTER)) {
 			 

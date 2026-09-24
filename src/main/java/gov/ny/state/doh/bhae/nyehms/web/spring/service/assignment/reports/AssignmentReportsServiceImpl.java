@@ -201,11 +201,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 						String documentType= resultSet.getString("DOCUMENT_TYPE_CODE");
 						
 						
-//						Integer documentCount =  assignmentByWorker.get(documentType);
-//						
-//						if(documentCount == null){
-//							documentCount = 0;
-//						}
 					
 						Integer _currentOpenAssignmentsCount = resultSet.getInt("COUNT");
 						
@@ -624,11 +619,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 			assignmentReportsMatrix = assignmentReportsDAO.getAssignmentStatusReportByDocumentByRegion(inputParameterMap);
 		}
 			
-//		}else if(CommonUtil.isNotNullAndEmpty(startDate) && CommonUtil.isNotNullAndEmpty(toDate)){
-//			
-//			assignmentReportsMatrix = assignmentReportsDAO.getAssignmentStatusReportByDocumentByRegionByCreateDate(inputParameterMap);
-//			
-//		}
 		return assignmentReportsMatrix;
 	}
 	
@@ -672,14 +662,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		}
 		
 			
-//		}else if(CommonUtil.isNotNullAndEmpty(fromDate) && CommonUtil.isNotNullAndEmpty(toDate)){
-//			
-//			
-//			inputParameterMap.put("stdTableName", stdTableColumnNames.get("CREATE_DATE"));
-//			
-//			assignmentReportsMatrix = assignmentReportsDAO.getAssignmentStatusReportByEharsStatusByCreateDate(inputParameterMap);
-//			
-//		}
 		return assignmentReportsMatrix;
 	}
 	
@@ -704,9 +686,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		inputParameterMap.put("regionId", regionId);
 		inputParameterMap.put("eharsStatus", eharsStatus);
 		System.out.println(eharsStatus);
-//		if(assignmentStatus != null && (assignmentStatus.startsWith("ACL22") || assignmentStatus.startsWith("ACL64") || assignmentStatus.startsWith("ACL83")) ){
-//			inputParameterMap.put("assignmentStatus", "CLS_ADM");
-//			inputParameterMap.put("activityTypeCode", assignmentStatus);
 //		}else 
 		if(assignmentStatus != null && assignmentStatus.startsWith("ACL")){
 			inputParameterMap.put("assignmentStatus", "CLOSED");

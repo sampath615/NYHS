@@ -184,8 +184,6 @@ public class ProviderPortalReviewController {
 	@RequestMapping(value="/snpFeedbackFile.xlsx", method = RequestMethod.GET)
 	public ModelAndView  snpFeedbackFile(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
 		
-		//response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        //response.setHeader("Content-disposition", "attachment; filename= Updated Messages");
 
 		HttpSession session = request.getSession();
 		UserObject userObject=(UserObject)session.getAttribute("UserObj");

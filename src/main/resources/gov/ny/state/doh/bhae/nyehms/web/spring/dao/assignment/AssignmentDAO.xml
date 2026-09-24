@@ -906,47 +906,6 @@ AND s.CURRENT_REGION_CD = ${p_regionCode}
 					</foreach>
 				
 	</select>
-<!-- 	
-	<select id="getARVFullDiffUseType" parameterType="java.util.Map" resultType="String">
-	
-		SELECT arv1.ARV_USE_TYPE FROM RAW_ACRF_ARVS arv1 WHERE  ACRF_DOC_ID = #{documentId1} 
- 		AND NOT EXISTS (SELECT 1 FROM RAW_ACRF_ARVS WHERE arv1.ARV_USE_TYPE = ARV_USE_TYPE  AND ACRF_DOC_ID = #{documentId2})
-   		
-	</select>
-	
-	<select id="getARVPartialDiffUseType" parameterType="java.util.Map" resultType="java.util.Map">
-	
-		SELECT * FROM (
-			SELECT 
-				<foreach collection="columnNames" item="columnName">
-					CASE WHEN  NVL(arv1.${columnName}, 'X') != NVL(arv2.${columnName}, 'X') THEN 'false' ELSE 'true' END ${columnName},
-				</foreach>
-				
-				arv1.ARV_USE_TYPE ARV_USE_TYPE1, arv2.ARV_USE_TYPE ARV_USE_TYPE2
-				
-			FROM RAW_ACRF_ARVS arv1 , RAW_ACRF_ARVS arv2 WHERE arv1.ACRF_DOC_ID in (#{documentId2})
-			<if test="fsLabSrcIds != null and fsLabSrcIds != '[]'">
-				and	arv1.ARV_USE_TYPE not in 
-					<foreach item="srcId" index="index" collection="fsLabSrcIds" open="(" separator="," close=")">
-						        	#{srcId}
-					</foreach>
-			</if>
-			AND arv2.ACRF_DOC_ID IN (#{documentId1})
-			<if test="reabLabSrcIds != null and reabLabSrcIds != '[]'">
-				and	arv2.ARV_USE_TYPE not in 
-					<foreach item="srcId" index="index" collection="reabLabSrcIds" open="(" separator="," close=")">
-						        	#{srcId}
-					</foreach>
-			</if>
-			AND arv1.ARV_USE_TYPE = arv2.ARV_USE_TYPE
-		) WHERE 
-					<foreach collection="columnNames" item="columnName" open="(" separator="or" close=")">
-						${columnName} = 'false' 
-					</foreach>
-				
-	</select>
-	
- -->	
  
  	 <select id="getReabAssignmentClosureCategories" parameterType="int" resultType="java.util.Map">
 		select STATENO, CASE WHEN ACRF_DOCUMENT_ID IS NOT NULL THEN 'ACRF' ELSE 'PCRF' END document_type ,

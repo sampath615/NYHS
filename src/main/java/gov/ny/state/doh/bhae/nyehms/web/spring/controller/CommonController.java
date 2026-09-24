@@ -93,9 +93,6 @@ public class CommonController {
 		if(userObject!=null && "Y".equals(EnvironmentProperties.envProperties.getProperty("byPass"))){
 			session.setAttribute("UserObj", userObject);
 			//If the User initialize object is not loaded loading the method to validate the USer details  
-			//if(session.getAttribute("userInitObj") == null){
-			//	return "redirect:appInitialize";
-			//}
 			Map<String, String> targetMap= new HashMap<String, String>();
 			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 			//set the User login date in the Date base to show the current logged in date for the next log in
@@ -293,9 +290,6 @@ public class CommonController {
 			
 			if(userObject!=null && userInitObj != null && userInitObj.isCryptoCardAuthenticationSuccess()){
 				//If the User initialize object is not loaded loading the method to validate the USer details  
-				//if(session.getAttribute("userInitObj") == null){
-				//	return "redirect:appInitialize";
-				//}
 				//set the User login date in the Date base to show the current logged in date for the next log in
 				commonService.setLoginDate(userObject.getWorkerId(), bindingResult);
 				//Checking the User training date

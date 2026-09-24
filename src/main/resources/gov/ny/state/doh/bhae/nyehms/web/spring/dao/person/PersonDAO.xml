@@ -158,13 +158,9 @@
 		)}  
 	</select>  	 
 	
-<!--  	<select id="geteHARSNysStatenoHistory" parameterType="String" resultType="String"> -->
 <!-- 	     		<![CDATA[select EHARS_STATENO from NYEHMS_EHARS_STATENO_MAP where NYEHMS_STATENO = #{stateNo} and STATUS_FLAG not in ('D', 'M', 'P') and EHARS_STATENO != (select EHARS_STATENO from nyehms_ehars_stateno_map where NYEHMS_STATENO = #{stateNo} and STATUS_FLAG not in ('D', 'M', 'P') and rownum < 2)]]> -->
-<!-- 	</select>  	  -->
 	
-<!--  	<select id="geteHARSNycStatenoHistory" parameterType="String" resultType="String"> -->
 <!-- 	     		<![CDATA[select EHARS_STATENO from EHARS_PERSON_NYC where NYEHMS_STATENO = #{stateNo} and EHARS_STATENO != (select EHARS_STATENO from EHARS_PERSON_NYC where NYEHMS_STATENO = #{stateNo} and rownum < 2)]]> -->
-<!-- 	</select>  	  -->
 		
 	<select id="checkStatenoIsActive" parameterType="String" resultType="String">
 		select FLAG_ACTIVE from PERSON where STATENO = #{stateNo}

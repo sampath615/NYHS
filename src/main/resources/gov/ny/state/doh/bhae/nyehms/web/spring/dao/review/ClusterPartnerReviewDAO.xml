@@ -77,11 +77,9 @@
 		
 	</update>	
 	
-<!-- 	<select id="checkForExistingMatches" parameterType="java.util.Map" resultType="int"> -->
 <!-- 		select count(*) from nyehms_cluster_partners a, nyehms_cluster_partners b where a.current_process_Status = 10 and b.current_process_status = 17 -->
 <!-- 		and a.flux_cluster_id = b.flux_cluster_id and a.cluster_id = b.cluster_id -->
 <!-- 		and b.partner_id =  #{p_document_id} -->
-<!-- 	</select> -->
 	
 	
 		<update id="updateClusterPartnerMatchSummary" parameterType="java.util.Map">
@@ -107,7 +105,6 @@ when matched
 	</update>
 	
 	
-<!-- 		<update id="updateWithExistingClusterDetails" parameterType="java.util.Map"> -->
 		
 		
 <!-- 		 merge into nyehms_cluster_partners b using  nyehms_cluster_partners a -->
@@ -127,7 +124,6 @@ when matched
 <!--      where b.current_process_Status = 17 and b.FLUX_match_Cd = #{ACTUAL_MATCH_CD}  -->
 			
 		
-<!-- 	</update> -->
 	
 	<select id="processClusterparterDocumentToClusterTables" parameterType="java.util.Map"  statementType="CALLABLE" >
 		{call  ins_clust_partner_attr_tables(

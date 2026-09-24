@@ -62,8 +62,6 @@ public class AdministrationTest {
 		
 		log.debug(nyehmsLog+ " get users with sample values -----");
 		getSearchUsersList();
-		//createUser();
-		//terminateUser();
 		getNyehmsRoles();
 	}
 	private void getSearchUsersList(){

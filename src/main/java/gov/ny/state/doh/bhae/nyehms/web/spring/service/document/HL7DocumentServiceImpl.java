@@ -1380,9 +1380,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 		if (lastName.endsWith(firstName)) {
 			sb.substring(0, lastName.length() - firstName.length()).trim().replaceAll("[\\-/:!]+$", "").trim();
 			lastName = sb.toString();
-			// lastName = lastName.substring(0, lastName.length() -
-			// firstName.length()).trim();
-			// lastName = lastName.replaceAll("[\\-/:!]+$","").trim();
 		}
 		return lastName;
 	}
@@ -1788,8 +1785,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 				}
 			} else {
 				stdHL7DocinsertVo = null;
-				//log.error("Document_id" + document_id);
-				//log.error("Ethnicity VALUE for HL7's : " + ethnicity);
 				commonDocumentService.updateRawDocumentStatus(document_id, "RAW_HL7_DOC", 4);
 				return 4;
 			}
@@ -2373,17 +2368,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 					}
 					rawHL7DocVO.setPersonRaceData(stdHL7RaceDocVO);
 				}
-				// List<RawHL7AddressVO> theHL7AddressList = new ArrayList<RawHL7AddressVO>();
-				// theHL7AddressList = hl7DocumentDAO.getHL7AddressList(docId);
-				// if (theHL7AddressList != null && theHL7AddressList.size() > 0) {
-				// rawHL7DocVO.setTheAddressList(theHL7AddressList);
-				// }
-				// List<RawHL7INSVO> theINSList = new ArrayList<RawHL7INSVO>();
-				// theINSList = hl7DocumentDAO.getHL7InsuranceList(docId);
-				// if (theINSList != null && theINSList.size() > 0) {
-				// rawHL7DocVO.setTheINSList(theINSList);
-				// }
-				// rawHL7DocVO.setTheAddressList(theAddressList);
 
 				/*
 				 * List<RawHL7ObrVO> theLabTestList = new ArrayList<RawHL7ObrVO>();
@@ -2435,16 +2419,7 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 				}
 				// List<RawHL7AddressVO> theHL7AddressList = new ArrayList<RawHL7AddressVO>();
 				// theHL7AddressList =
-				// hl7DocumentDAO.getFilteredHL7AddressList(inputOutputParameterMap);
-				// if (theHL7AddressList != null && theHL7AddressList.size() > 0) {
-				// rawHL7DocVO.setTheAddressList(theHL7AddressList);
-				// }
-				// List<RawHL7INSVO> theINSList = new ArrayList<RawHL7INSVO>();
 				// theINSList =
-				// hl7DocumentDAO.getFilteredHL7InsuranceList(inputOutputParameterMap);
-				// if (theINSList != null && theINSList.size() > 0) {
-				// rawHL7DocVO.setTheINSList(theINSList);
-				// }
 			}
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());
@@ -2584,9 +2559,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 				} 
 			}
 			if (counter == 0) {
-				// transactionStatus = CommonConstants.NO_DATA_RETRIEVED;
-				// transactionMessage = "No HL7's Data Retrieved to move from
-				// Raw layer to Standard layer";
 				// statusObject.put(CommonConstants.TRANSACTION_STATUS,
 				// transactionStatus);
 				// statusObject.put(CommonConstants.TRANSACTION_MESSAGE,
@@ -2607,37 +2579,22 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 				// the Standard layer due to Race Map failure are = "
 				// + raceErrorCounter + "<br>" + "<br>" + " New Value added to
 				// CODED_HIT_RACE_DESC are : "
-				// + raceCodeErrors.toString();
-				// statusObject.put("RACE_CODE_ERRORS", transactionMessage);
 			}
 
 			if (success == counter) {
 				if (success > 0) {
-					// transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
-					// transactionMessage = "Number of Documents Successfully moved to Standard
 					// layer with MPI Change are ="
 					// + success;
 				}
 			} else if (failureCount + raceErrorCounter == counter) {
 				// transactionStatus =
-				// CommonConstants.TRANSACTION_STATUS_FAILURE;
-				// transactionMessage = "All the Documents failed while moving
-				// it to Standard layer";
 			} else if (failureCount > 0 || raceErrorCounter > 0) {
 				// transactionStatus =
-				// CommonConstants.TRANSACTION_STATUS_SUCCESS;
-				// transactionMessage = "Some Documents failed while moving it
-				// to Standard layer";
 			}
 			// statusObject.put(CommonConstants.TRANSACTION_STATUS,
 			// transactionStatus);
 			// statusObject.put(CommonConstants.TRANSACTION_MESSAGE,
-			// transactionMessage);
-			// statusObject.put("Total Documents", counter);
-			// statusObject.put("Total Documents Moved to STD table", success);
 			// statusObject.put("Total Documents failed ", failureCount +
-			// raceErrorCounter);
-			// statusObject.put("RACE Code Failed Count ", raceErrorCounter);
 
 		} catch (Throwable t) {
 			log.error(CommonUtil.getStackTrace(t).substring(0, 200));

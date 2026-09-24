@@ -214,15 +214,6 @@ public class LoincResultDomainMappingServiceImpl implements LoincResultDomainMap
 		
 		//List<JSONObject> eharsTestResultsList =  
 		
-//		JSONObject eharsTestRestults = new JSONObject();
-//		
-//		for (JSONObject jsonObject : eharsTestResultsList) {
-//			
-//			eharsTestRestults.put(jsonObject.get("STANDARDRESULTSCODE"), jsonObject.get("STANDARDRESULTSDESC"));
-//		}
-//		
-//		
-//		return eharsTestRestults;
 	}
 	
 	@Override

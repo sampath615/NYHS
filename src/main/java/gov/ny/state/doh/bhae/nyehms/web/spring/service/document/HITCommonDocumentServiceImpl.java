@@ -78,8 +78,6 @@ public class HITCommonDocumentServiceImpl implements HITCommonDocumentService {
 	public void insertCodedRace(Set<String> raceCodeErrors) {
 		Set<String> newraceCodeErrors = new HashSet<String>();
 		Map<String, Object> inputParameters = new HashMap<String, Object>();
-		//inputParameters.put("raceCodeErrorsList", raceCodeErrors);
-		//hitDocumentDAO.insertCodedRace(inputParameters);
 		// New Code was added by MXM69 on 11-July-2018 to avoid multiple entries
 		for (String str : raceCodeErrors) {
 			if (CommonUtil.isNotNullAndEmpty(str)) {
@@ -253,9 +251,6 @@ public class HITCommonDocumentServiceImpl implements HITCommonDocumentService {
 	// List<JSONObject> schedulerStatusObject,
 	// String recordType,
 	// Map<String, String> schedulerMetaData,
-	// String initiator) {
-	//
-	// }
 	/**
 	 * Method to read the UPHN_TRANX_IN table using JDBC so as to get a
 	 * ResultSet, presumed to do lazy loading to prevent too much data being

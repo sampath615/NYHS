@@ -84,15 +84,6 @@
 		)d
 	</insert>
 
-	<!-- <insert id="insertRawCcdPersonAddress" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDPersonAddressVO"> 
-		<![CDATA[ insert into raw_ccd_person_address ( PERSON_ADDRESS_ID, CCD_DOC_ID, 
-		ADDRESS_USE, PERSON_ADDRESS_1, PERSON_ADDRESS_2, PERSON_CITY, PERSON_STATE, 
-		PERSON_ZIP, PERSON_COUNTRY, USEABLE_PERIOD_LOW, USEABLE_PERIOD_HIGH) values 
-		( raw_ccd_person_address_seq.NEXTVAL, #{ccdDocID, jdbcType=INTEGER}, #{ccdUse, 
-		jdbcType=VARCHAR}, #{street1, jdbcType=VARCHAR}, #{street2, jdbcType=VARCHAR}, 
-		#{city, jdbcType=VARCHAR}, #{state, jdbcType=VARCHAR}, #{zip, jdbcType=VARCHAR}, 
-		#{country, jdbcType=VARCHAR}, #{useableStartTime, jdbcType=VARCHAR}, #{useableEndTime, 
-		jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCcdProvidersList" parameterType="java.util.Map">
 		insert into raw_ccd_provider (
@@ -142,18 +133,6 @@
 		)d
 	</insert>
 
-	<!-- <insert id="insertRawCcdProvider" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProviderVO"> 
-		<![CDATA[ insert into raw_ccd_provider ( provider_id, ccd_doc_id, provider_type_code, 
-		provider_type_description, provider_lname, provider_fname, provider_mname, 
-		provider_address_1, provider_address_2, provider_city, provider_state, provider_zip, 
-		provider_phone, start_date_text, end_date_text) values ( raw_ccd_provider_info_seq.NEXTVAL, 
-		#{ccdDocID, jdbcType=INTEGER}, #{providerTypeCode, jdbcType=VARCHAR}, #{providerTypeDesc, 
-		jdbcType=VARCHAR}, #{providerName.lastName, jdbcType=VARCHAR}, #{providerName.firstName, 
-		jdbcType=VARCHAR}, #{providerName.middleName, jdbcType=VARCHAR}, #{address.street1, 
-		jdbcType=VARCHAR}, #{address.street2, jdbcType=VARCHAR}, #{address.city, 
-		jdbcType=VARCHAR}, #{address.state, jdbcType=VARCHAR}, #{address.zip, jdbcType=VARCHAR}, 
-		#{phone, jdbcType=VARCHAR}, #{startDateText, jdbcType=VARCHAR}, #{endDateText, 
-		jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCcdPayersList" parameterType="java.util.Map">
 		insert into raw_ccd_payer (
@@ -252,38 +231,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdPayer" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDPayerVO"> 
-		<![CDATA[ insert into raw_ccd_payer ( PAYER_ID, CCD_DOC_ID, POLICY_ID, POLICY_NAME, 
-		POLICY_ADDRESS1, POLICY_ADDRESS2, POLICY_CITY, POLICY_STATE, POLICY_ZIPCODE, 
-		POLICY_COUNTRY, POLICY_COUNTY, POLICY_PHONE, MEMBER_ID, MEMBER_FNAME, MEMBER_MNAME, 
-		MEMBER_LNAME, MEMBER_ADDRESS1, MEMBER_ADDRESS2, MEMBER_CITY, MEMBER_STATE, 
-		MEMBER_ZIPCODE, MEMBER_COUNTRY, MEMBER_COUNTY, MEMBER_PHONE, MEMBER_DOB_TEXT, 
-		HOLDER_ID, HOLDER_FNAME, HOLDER_MNAME, HOLDER_LNAME, HOLDER_ADDRESS1, HOLDER_ADDRESS2, 
-		HOLDER_CITY, HOLDER_STATE, HOLDER_ZIPCODE, HOLDER_COUNTRY, HOLDER_COUNTY, 
-		HOLDER_PHONE, HOLDER_DOB_TEXT, START_DATE_TEXT, END_DATE_TEXT) values ( raw_ccd_payer_seq.NEXTVAL, 
-		#{ccdDocID, jdbcType=INTEGER}, #{policyId, jdbcType=VARCHAR}, #{policyName, 
-		jdbcType=VARCHAR}, #{policyAddress.street1, jdbcType=VARCHAR}, #{policyAddress.street2, 
-		jdbcType=VARCHAR}, #{policyAddress.city, jdbcType=VARCHAR}, #{policyAddress.state, 
-		jdbcType=VARCHAR}, #{policyAddress.zip, jdbcType=VARCHAR}, #{policyAddress.country, 
-		jdbcType=VARCHAR}, #{policyAddress.county, jdbcType=VARCHAR}, #{policyPhone, 
-		jdbcType=VARCHAR}, #{memberId, jdbcType=VARCHAR}, #{memberName.firstName, 
-		jdbcType=VARCHAR}, #{memberName.middleName, jdbcType=VARCHAR}, #{memberName.lastName, 
-		jdbcType=VARCHAR}, #{memberAddress.street1, jdbcType=VARCHAR}, #{memberAddress.street2, 
-		jdbcType=VARCHAR}, #{memberAddress.city, jdbcType=VARCHAR}, #{memberAddress.state, 
-		jdbcType=VARCHAR}, #{memberAddress.zip, jdbcType=VARCHAR}, #{memberAddress.country, 
-		jdbcType=VARCHAR}, #{memberAddress.county, jdbcType=VARCHAR}, #{memberPhone, 
-		jdbcType=VARCHAR}, #{memberDobText, jdbcType=VARCHAR}, #{holderId, jdbcType=VARCHAR}, 
-		#{holderName.firstName, jdbcType=VARCHAR}, #{holderName.middleName, jdbcType=VARCHAR}, 
-		#{holderName.lastName, jdbcType=VARCHAR}, #{holderAddress.street1, jdbcType=VARCHAR}, 
-		#{holderAddress.street2, jdbcType=VARCHAR}, #{holderAddress.city, jdbcType=VARCHAR}, 
-		#{holderAddress.state, jdbcType=VARCHAR}, #{holderAddress.zip, jdbcType=VARCHAR}, 
-		#{holderAddress.country, jdbcType=VARCHAR}, #{holderAddress.county, jdbcType=VARCHAR}, 
-		#{holderPhone, jdbcType=VARCHAR}, #{holderDobText, jdbcType=VARCHAR}, #{startDateText, 
-		jdbcType=VARCHAR}, #{endDateText, jdbcType=VARCHAR}) ]]> </insert> -->
-	<!-- <insert id="insertRawCcdLab" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDLabVO"> 
-		<![CDATA[ insert into raw_ccd_lab ( lab_id, CCD_DOC_ID, test_description) 
-		values ( raw_ccd_lab_seq.NEXTVAL, #{ccdDocID, jdbcType=INTEGER}, #{testDescription, 
-		jdbcType=VARCHAR}) ]]> </insert> -->
 	<insert id="insertCcdLabTestList" parameterType="java.util.Map">
 		insert into raw_ccd_lab_test (
 		ccd_lab_test_id,
@@ -338,17 +285,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdLabTest" keyProperty="theLabResult.ccdLabTestId" 
-		keyColumn="ccd_lab_test_id" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDLabTestVO"> 
-		<selectKey keyProperty="ccdLabTestId" resultType="int" order="BEFORE"> select 
-		raw_ccd_lab_test_seq.NEXTVAL from dual </selectKey> <![CDATA[ insert into 
-		raw_ccd_lab_test ( ccd_lab_test_id, ccd_doc_id, test_code, test_code_coding_system, 
-		test_code_display_name, test_date, test_encounter_number, specimen, test_comments) 
-		values ( #{ccdLabTestId, jdbcType=INTEGER}, #{ccdDocID, jdbcType=INTEGER}, 
-		#{testCode, jdbcType=VARCHAR}, #{testCodeCodingSystem, jdbcType=VARCHAR}, 
-		#{testCodeDisplayName, jdbcType=VARCHAR}, #{testDate, jdbcType=VARCHAR}, 
-		#{testEncounterNumber, jdbcType=VARCHAR}, #{specimen, jdbcType=VARCHAR}, 
-		#{testComments, jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCcdLabResultsList" parameterType="java.util.Map">
 		insert into raw_ccd_lab_result (
@@ -480,17 +416,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdMed" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDMedVO"> 
-		<![CDATA[ insert into raw_ccd_med ( med_id, ccd_doc_id, ordered_medication_name, 
-		start_date_text, stop_date_text, dosage_value, dosage_unit, filled_medication_name, 
-		current_medication, ordering_prov_fname, ordering_prov_mname, ordering_prov_lname, 
-		frequency) values ( raw_ccd_med_seq.NEXTVAL, #{ccdDocID, jdbcType=INTEGER}, 
-		#{orderedMedicationName, jdbcType=VARCHAR}, #{startDateText, jdbcType=VARCHAR}, 
-		#{stopDateText, jdbcType=VARCHAR}, #{dosageValue, jdbcType=VARCHAR}, #{dosageUnit, 
-		jdbcType=VARCHAR}, #{filledMedicationName, jdbcType=VARCHAR}, #{currentMedication, 
-		jdbcType=VARCHAR}, #{orderingProvName.firstName, jdbcType=VARCHAR}, #{orderingProvName.middleName, 
-		jdbcType=VARCHAR}, #{orderingProvName.lastName, jdbcType=VARCHAR}, #{frequency, 
-		jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCcdProblemsList" parameterType="java.util.Map">
 		insert into raw_ccd_problem (
@@ -533,16 +458,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdProblem" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProblemVO"> 
-		<![CDATA[ insert into raw_ccd_problem ( problem_doc_id, ccd_doc_id, problem_date_text, 
-		provider_fname, provider_mname, provider_lname, facility_name, problem_code, 
-		problem_code_system_name, problem_display_name, encounter_id, problem_category) 
-		values ( raw_ccd_problem_seq.NEXTVAL, #{ccdDocID, jdbcType=INTEGER}, #{problemDateText, 
-		jdbcType=VARCHAR}, #{providerName.firstName, jdbcType=VARCHAR}, #{providerName.middleName, 
-		jdbcType=VARCHAR}, #{providerName.lastName, jdbcType=VARCHAR}, #{facilityName, 
-		jdbcType=VARCHAR}, #{problemCode, jdbcType=VARCHAR}, #{problemCodeSystemName, 
-		jdbcType=VARCHAR}, #{problemDisplayName, jdbcType=VARCHAR}, #{encounterId, 
-		jdbcType=VARCHAR}, #{problemCategory, jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCcdEncounterList" parameterType="java.util.Map">
 		insert into raw_ccd_encounter(
@@ -594,19 +509,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdEncounter" keyProperty="theDiagnosis.encounterDocId" 
-		keyColumn="encounter_doc_id" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDEncounterVO"> 
-		<selectKey keyProperty="encounterDocId" resultType="int" order="BEFORE"> 
-		select raw_ccd_encounter_seq.NEXTVAL from dual </selectKey> <![CDATA[ insert 
-		into raw_ccd_encounter( encounter_doc_id, ccd_doc_id, encounter_id, start_date_text, 
-		end_date_text, encounter_type, provider_fname, provider_mname, provider_lname, 
-		facility_name,facility_dept,admission_type) values ( #{encounterDocId, jdbcType=INTEGER}, 
-		#{ccdDocID, jdbcType=INTEGER}, #{encounterId, jdbcType=VARCHAR}, #{startDateText, 
-		jdbcType=VARCHAR}, #{endDateText, jdbcType=VARCHAR}, #{encounterType, jdbcType=VARCHAR}, 
-		#{providerName.firstName, jdbcType=VARCHAR}, #{providerName.middleName, jdbcType=VARCHAR}, 
-		#{providerName.lastName, jdbcType=VARCHAR}, #{facilityName, jdbcType=VARCHAR}, 
-		#{facilityDept, jdbcType=VARCHAR}, #{admissionType, jdbcType=VARCHAR}) ]]> 
-		</insert> -->
 
 	<insert id="insertCcdDiagnosisList" parameterType="java.util.Map">
 		insert into raw_ccd_diagnosis (
@@ -637,12 +539,6 @@
 		</foreach>
 		)d
 	</insert>
-	<!-- <insert id="insertRawCcdDiagnosis" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDDiagnosisVO"> 
-		<![CDATA[ insert into raw_ccd_diagnosis ( diagnosis_id, encounter_doc_id, 
-		diagnosis_text, diagnosis_code, diagnosis_code_system_code, diagnosis_code_system_oid) 
-		values ( raw_ccd_diagnosis_seq.NEXTVAL, #{encounterDocId, jdbcType=INTEGER}, 
-		#{diagnosisText, jdbcType=VARCHAR}, #{diagnosisCode, jdbcType=VARCHAR}, #{diagnosisCodeSystemCode, 
-		jdbcType=VARCHAR}, #{diagnosisCodeSystemOid, jdbcType=VARCHAR}) ]]> </insert> -->
 
 	<insert id="insertCCDFromRAWToSTD" parameterType="java.util.Map">
 		insert into
@@ -803,15 +699,6 @@
 		</association>
 	</resultMap>
 
-	<!-- <resultMap type="RawCCDLabVO" id="LabMap"> <result property="labId" 
-		column="LAB_ID" /> <result property="ccdDocID" column="CCD_DOC_ID" /> <result 
-		property="testDescription" column="TEST_DESCRIPTION" /> <result property="testDate" 
-		column="TEST_DATE" /> <result property="testComments" column="TEST_COMMENTS" 
-		/> <result property="testResults" column="TEST_RESULTS" /> <result property="resultsComments" 
-		column="RESULTS_COMMENTS" /> </resultMap> <select id="getCCDLabList" parameterType="int" 
-		resultMap="LabMap"> <![CDATA[ SELECT LAB_ID, CCD_DOC_ID, TEST_DESCRIPTION, 
-		TEST_DATE, TEST_COMMENTS, TEST_RESULTS, RESULTS_COMMENTS FROM RAW_CCD_LAB 
-		WHERE CCD_DOC_ID = #{CCD_DOC_ID} ]]> </select> -->
 	<resultMap
 		type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDMedVO"
 		id="medMap">

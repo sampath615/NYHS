@@ -223,28 +223,11 @@ public class RawRecordsCleaner {
 					
 					//datafluxJobExce.runRemoteServerJob();
 					
-//					if ("Y".equals(schedulerMetaData.get("REQUIRED_TO_WRITE_DATA_TO_EXPORT01"))) {
-//						log.error("Started loading Standard data to EXPORT01");
 //						// Loading all the Standardized STD records into
 //						// EXPORT01 file
 //						transactionStatus = manualQuartzJobService.writeStandardDataToExport01(schedulerStatusObject,
-//								schedulerMetaData, RUN_SECOND_JOB_FOR_DEAD, schedulerNotificationObj);
-//						
-//						
-//						
-//						
-//						
-//
-//					} else {
-//						log.error("Skipping the process load Standard data to EXPORT01");
-//					}
-//					if ("Y".equals(schedulerMetaData.get("REQUIRED_TO_WRITE_RUN_QS_NYEHMSTEST"))) {
-//						if (CommonConstants.TRANSACTION_STATUS_SUCCESS.equals(transactionStatus)) {
-//							log.error("started the process to run QS NYEHMS test process");
 //							boolean isAlljaroSchedulerRanToday = manualQuartzJobService.isSchedulerRanToday(
 //									"LAST_ALL_JARO_SCHEDULER_RUN_DATE", schedulerStatusObject, "ALLJARO",
-//									schedulerMetaData);
-//							if (isAlljaroSchedulerRanToday) {
 //								// Calling the Quality stage process for Matches
 //								// and Standardize data
 //								///////////////////////////////////////////////////
@@ -255,13 +238,7 @@ public class RawRecordsCleaner {
 //								///////////////////////////////////////////////////
 //								manualQuartzJobService.callingShellProcess(schedulerStatusObject, schedulerMetaData,
 //										qualityStageExecuteCommand, executeQualityStageProcessActionName,
-//										schedulerNotificationObj);
-//							} else {
-//								JSONObject statusObject = new JSONObject();
 //								statusObject.put("MESSAGE",
-//										"ALLJARO File is not latest, Stopping the Complete Quality stage process");
-//								statusObject.put("Comments", "Stopping the dependent Schedulers.");
-//								schedulerStatusObject.add(statusObject);
 //								schedulerNotificationObj
 //										.add("ALLJARO File is not latest, Stopping the Complete Quality stage process");
 //								manualQuartzJobService.updateSchedulerMetaData(
@@ -269,12 +246,6 @@ public class RawRecordsCleaner {
 //								manualQuartzJobService.updateSchedulerMetaData(
 //										"LOAD_QUALITY_STAGE_MATCH_RESULTS_SCHEDULER_FOR_BOTH_JOBS", "N", null);
 //								manualQuartzJobService.sendNotificationEmailToUsers(schedulerMetaData,
-//										schedulerNotificationObj);
-//							}
-//						}
-//					} else {
-//						log.error("Skipping the process to run QS NYEHMS test process");
-//					}
 					if ("Y".equals(schedulerMetaData.get("REQUIRED_TO_SEND_DETAILED_NOTIFICATION"))) {
 						log.error("Sending the status email");
 						// Sending the notification email
@@ -293,8 +264,6 @@ public class RawRecordsCleaner {
 //								"LOAD_QUALITY_STAGE_MATCH_RESULTS_SCHEDULER_FOR_BOTH_JOBS", "N", null);
 //						quartzSchedulerTransactionHelper.loadQualityStageMatchResultsJob(initiator,
 //								schedulerStatusObject, schedulerMetaData, CommonConstants.FIRST_JOB, true,
-//								schedulerNotificationObj, true);
-//					}
 				}
 			}
 		}

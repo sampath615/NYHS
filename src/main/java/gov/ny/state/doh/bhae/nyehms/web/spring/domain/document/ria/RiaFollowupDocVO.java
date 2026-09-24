@@ -52,20 +52,5 @@ public class RiaFollowupDocVO extends NYEHMSDocVO {
 	}
 	
 	
-//	private String INTERVENTION_CD;
-//	private String INTERVENTION_OTHER_TEXT;
-//	
-//	public String getINTERVENTION_CD() {
-//		return INTERVENTION_CD;
-//	}
-//	public void setINTERVENTION_CD(String iNTERVENTION_CD) {
-//		INTERVENTION_CD = iNTERVENTION_CD;
-//	}
-//	public String getINTERVENTION_OTHER_TEXT() {
-//		return INTERVENTION_OTHER_TEXT;
-//	}
-//	public void setINTERVENTION_OTHER_TEXT(String iNTERVENTION_OTHER_TEXT) {
-//		INTERVENTION_OTHER_TEXT = iNTERVENTION_OTHER_TEXT;
-//	}
 
 }

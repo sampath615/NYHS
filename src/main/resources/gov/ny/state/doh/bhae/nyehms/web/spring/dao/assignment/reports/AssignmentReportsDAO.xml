@@ -427,8 +427,6 @@ from SURVEILLANCE_ASSIGNMENT surv,
 CODED_ACTIVITY_TYPE,
 document_locator doc
 where
-<!-- <choose>  -->
-<!-- <when test="ahiFlag=='Y'"> -->
 <choose>
 	<when test="ahiFlag=='ninty'">
 		AHI_FLAG = 'Y' and surv.create_date > sysdate-90 and
@@ -438,14 +436,8 @@ where
 	</otherwise>
 </choose>
 	
-<!-- </when> -->
-<!-- <when test="ahiFlag=='N'"> -->
 <!-- 	AHI_FLAG = 'N' -->
-<!-- </when> -->
-<!-- <otherwise> -->
 <!-- 	AHI_FLAG = 'Y' and CREATE_DATE > SYSDATE - 90 -->
-<!-- </otherwise> -->
-<!-- </choose> -->
 
 -- and region_code = current_region_cd
 CURRENT_ACTIVITY_TYPE_CODE = ACTIVITY_TYPE_CODE (+)

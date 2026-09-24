@@ -412,7 +412,6 @@ AND   (  a.interpret_cd  = 'DET_QUAL_VL'  OR a.interpret_cd  = 'DET_QUAN_VL' )
 			and t.ALERT_COMPLETED_BY = usr3.worker_id(+)    
 	</select>
 	
-<!-- 	<select id="getAhiAlertUserNotesHistory" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.AhiAlertTrackingVO"> -->
 <!-- 		SELECT AHI_ALERT_SEQ_ID ahiAlertSeqId, cf.FOLLOW_UP_DESC followupStepTaken, USER_NOTES userNotes, -->
 <!-- 		       nvl(USR.FULL_NAME, 'System') lastUpdatedBy,  -->
 <!-- 		       nvl(to_char(FOLLOW_UP_DATE, 'MM/DD/YYYY'),  -->
@@ -420,7 +419,6 @@ AND   (  a.interpret_cd  = 'DET_QUAL_VL'  OR a.interpret_cd  = 'DET_QUAN_VL' )
 <!-- 		  FROM AHI_ALERT_FOLLOWUP f, NYEHMS_USERS_VW usr, CODED_AHI_PRF_FOLLOWUP cf -->
 <!-- 		  WHERE  AHI_ALERT_SEQ_ID = #{ahiAlertSeqId} and f.FOLLOW_UP_UID = usr.worker_id(+) and f.FOLLOW_UP_CODE = cf.FOLLOW_UP_CODE(+) -->
 <!-- 		  ORDER BY  FOLLOW_UP_DATE DESC -->
-<!-- 	</select> -->
 	
 	<select id="getAHIAlertPSMessageInfo" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.AHIAlertPSMessageVO">
  	<![CDATA[		

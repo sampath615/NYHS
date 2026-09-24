@@ -64,10 +64,6 @@ public class LabPFIVO {
             	pfiMap.put("label", _name.toString());
             	
             	pfiAndLabNameMap.add(pfiMap);
-//                JsonObject jsonObj = new JsonObject();
-//               
-//                jsonObj.add("pfi",new JsonPrimitive(rs.getString("pfi")));
-//                jsonObj.add("lab_name",new JsonPrimitive(rs.getString("lab_name")));
                 
                 // add the array to the object
                 

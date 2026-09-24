@@ -676,9 +676,6 @@ public class DocumentController {
 		}
 		// if (result.hasErrors()) {
 		// log.debug(nyehmsLog + " Result got eerror sending to JSP page....." +
-		// retPage);
-		// retPage = "document/LabDocument";
-		// } else {
 		labDocumentService.editLabErrorDoc(ecrlsLabDocVO, requestComments, result, userObject,
 				request.getSession().getId());
 		return targetMap;
@@ -1116,9 +1113,6 @@ public class DocumentController {
 			// ("true".equalsIgnoreCase(nycPRFPartnerVOList.get(i).getTempDelete()))
 			// {
 			// log.debug(nyehmsLog + " removing the object form list with first
-			// name :" + nycPRFPartnerVOList.get(i).getFname());
-			// nycPRFPartnerVOList.remove(i);
-			// }
 		}
 		nycPrfFormVO.setNycPRFPartnerVOList(nycPRFPartnerVOList);
 		return retPage;
@@ -1345,8 +1339,6 @@ public class DocumentController {
 		processACRFForm.preserveLabResults(acrfFormVO, bindingResult, userObject, request.getSession().getId());
 		boolean hasLabDataChange = false;
 		// Validate the Form
-		// ACRFValidator acrfValidator = new ACRFValidator();
-		// acrfValidator.validate(acrfFormVO, result);
 		if (bindingResult.hasErrors()) {
 			statusCode = -1;
 			

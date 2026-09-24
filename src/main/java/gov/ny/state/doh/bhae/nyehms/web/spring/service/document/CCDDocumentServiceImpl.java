@@ -847,10 +847,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 				theLabResultVO.setComponentDisplayName(translationElement.getAttribute("displayName").getValue());
 				theLabResultVO.setComponentCodeSystemName(translationElement.getAttribute("codeSystemName").getValue());
 			} else {
-				// theLabResultVO.setComponentCode(codeElement.getAttribute("code").getValue());
-				// theLabResultVO.setComponentCodeSystem(codeElement.getAttribute("codeSystem").getValue());
-				// theLabResultVO.setComponentDisplayName(codeElement.getAttribute("displayName").getValue());
-				// theLabResultVO.setComponentCodeSystemName(codeElement.getAttribute("codeSystemName").getValue());
 				if (codeElement != null) {// added by @rzp05
 
 					List<Attribute> attrlist = codeElement.getAttributes();
@@ -1276,12 +1272,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 
 		stdCCDDocinsertVo.put("DOCUMENT_ID", stdCCDDocVO.get("DOCUMENT_ID"));
 		stdCCDDocinsertVo.put("UPHN_TRANX_IN_ID", stdCCDDocVO.get("UPHN_TRANX_IN_ID"));
-		// stdCCDDocinsertVo.put("FNAME", CommonUtil.NameValidation((String)
-		// stdCCDDocVO.get("FNAME")));
-		// stdCCDDocinsertVo.put("MNAME", CommonUtil.NameValidation((String)
-		// stdCCDDocVO.get("MNAME")));
-		// stdCCDDocinsertVo.put("LNAME", CommonUtil.NameValidation((String)
-		// stdCCDDocVO.get("LNAME")));
 		String FirstName = CommonUtil.NameValidationHit((String) stdCCDDocVO.get("FNAME"));
 		String MiddleName = CommonUtil.NameValidationHit((String) stdCCDDocVO.get("MNAME"));
 		String LastName = CommonUtil.NameValidationHit((String) stdCCDDocVO.get("LNAME"));
@@ -1441,9 +1431,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 		}
 		stdCCDDocinsertVo.put("PERSON_COUNTRY", stdCCDDocVO.get("PERSON_COUNTRY"));
 		stdCCDDocinsertVo.put("PERSON_ADDRESS_ID", stdCCDDocVO.get("PERSON_ADDRESS_ID"));
-		//stdCCDDocinsertVo.put("PERSON_PHONE_HOME", CommonUtil.GetNumberFromString((String) stdCCDDocVO.get("PERSON_PHONE_HOME")));
-		//stdCCDDocinsertVo.put("PERSON_PHONE_CELL", CommonUtil.GetNumberFromString((String) stdCCDDocVO.get("PERSON_PHONE_CELL")));
-		//stdCCDDocinsertVo.put("PERSON_PHONE_WORK", CommonUtil.GetNumberFromString((String) stdCCDDocVO.get("PERSON_PHONE_WORK")));
 		
 		String person_phone_home = (String)stdCCDDocVO.get("PERSON_PHONE_HOME");
 		if (CommonUtil.isNotNullAndEmpty(person_phone_home)) {
@@ -1657,8 +1644,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 					String raceCode = list_cd[i];
 					String raceDescr = list_desc[i];
 					if (raceMap.get(raceDescr) != null) {
-						// if (stdCCDDocinsertVo.get("ETHNICITY") != "01" &&
-						// stdCCDDocinsertVo.get("ETHNICITY") != "02") {
 						if (!stdCCDDocinsertVo.get("ETHNICITY").equals("01")
 								&& !stdCCDDocinsertVo.get("ETHNICITY").equals("02")) {
 							String theEthnicity = ethnicityMap.get(raceCode);
@@ -1984,8 +1969,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 				}
 			}
 			
-			//inputParameterForLabInsert.put("LabsList", theLabTestVOList);
-			//ccdDocumentDAO.insertCcdLabTestList(inputParameterForLabInsert);
 			if (completeLabResultVOList != null && completeLabResultVOList.size() > 0) {
 				if (!individualLabResultInsert) {
 					Map<String, Object> labResultMap = new HashMap<String, Object>();
@@ -2079,8 +2062,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 		if (theMeds != null && theMeds.size() > 0) {
 			Map<String, Object> inputParameterMapMed = new HashMap<String, Object>();
 			inputParameterMapMed.put("ccdDocId", docId);
-			//inputParameterMapMed.put("medsList", theMeds);
-			//ccdDocumentDAO.insertCcdMedsList(inputParameterMapMed);
 			
 			int Size = theMeds.size();
 
@@ -2102,8 +2083,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 		if (theProblems != null && theProblems.size() > 0) {
 			Map<String, Object> inputParameterProblems = new HashMap<String, Object>();
 			inputParameterProblems.put("ccdDocId", docId);
-			//inputParameterProblems.put("problemsList", theProblems);
-			//ccdDocumentDAO.insertCcdProblemsList(inputParameterProblems);			
 			int Size = theProblems.size();
 		
 			// Where condition can accept 1000 arguments.

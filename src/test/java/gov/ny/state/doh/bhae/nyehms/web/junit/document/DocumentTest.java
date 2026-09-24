@@ -108,19 +108,7 @@ public class DocumentTest {
 	//Test PRF Doc
 	public void testPRFDoc(BindingResult result, UserObject userObject, String sessionId){
 		//Fetch PRF Document.
-//		int prfDocId=30701;
-//		PrfFormVO prfFormVO= pRFDocumentService.getPRFDoc(prfDocId, result, userObject, sessionId);
-//		log.debug(nyehmsLog+ " First name from PRF Document :: " +prfFormVO.getStdPRFDocVO().getFname());
-//		
-//		for(PRFPartnerVO  stdPRFPartnerVO:  prfFormVO.getStdPRFPartnerVOList()){
-//			log.debug(nyehmsLog+ " Last name from PRF Partner Document :: " +stdPRFPartnerVO.getLname());
-//		}		
 //		//Add one more new partner
-//		LinkedList linkedList=prfFormVO.getStdPRFPartnerVOList();		
-//		PRFPartnerVO stdPRFPartnerVO=new PRFPartnerVO();
-//		stdPRFPartnerVO.setFname("HaiGone");		
-//		linkedList.add(stdPRFPartnerVO);		
-//		prfFormVO.setStdPRFPartnerVOList(linkedList);		
 //		//Save the fetched PRF Dcouemnt
 //		pRFDocumentService.insertPRFDoc(prfFormVO, result, userObject, sessionId);		
 	}
@@ -150,8 +138,6 @@ public class DocumentTest {
 		}		
 		//Insert Doccs Document
 		DoccsDocVO stdDoccsDocVOInsert= new DoccsDocVO();
-		//stdDoccsDocVOInsert.setFname("KnockKnock");		
-		//doccsDocumentService.insertDocsDocData(stdDoccsDocVOInsert, result, userObject, sessionId);
 	}
 	
 	//Test Death Doc
@@ -209,21 +195,8 @@ public class DocumentTest {
 	public void testNycPRFDoc(BindingResult result, UserObject userObject, String sessionId){		
 		
 		//Fetch NYCPRF Document		
-//		int nycPrfDocId=3883637;
-//		NycPrfFormVO nycPrfFormVO= nycPRFDocumentService.getNycPRFDoc(nycPrfDocId, result, userObject, sessionId);
-//		log.debug(nyehmsLog+ " First name from PRF Document :: " +nycPrfFormVO.getNycPRFDocVO().getFname());
-//		
-//		
-//		for(NycPRFPartnerVO  nycPRFPartnerVO:  nycPrfFormVO.getNycPRFPartnerVOList()){
-//			log.debug(nyehmsLog+ " Last name from PRF Partner Document :: " +nycPRFPartnerVO.getLname());
-//		}
 ////		/*
 //		//Add one more new partner
-//		LinkedList linkedList=nycPrfFormVO.getNycPRFPartnerVOList();		
-//		NycPRFPartnerVO stdPRFPartnerVO=new PRFPartnerVO();
-//		stdPRFPartnerVO.setFname("HaiGone");		
-//		linkedList.add(stdPRFPartnerVO);		
-//		prfFormVO.setStdPRFPartnerVOList(linkedList);		
 //		//Save the fetched PRF Dcouemnt
 //		pRFDocumentService.insertPRFDoc(prfFormVO, result, userObject, sessionId);
 //		*/	

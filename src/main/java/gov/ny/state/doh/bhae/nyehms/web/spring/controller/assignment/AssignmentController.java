@@ -178,20 +178,9 @@ public class AssignmentController {
 				.getGraphsHierarchy(dummyBindingResult, userObject);
 
 		map.put("graphsHierarchy", graphsHierarchy);
-//
-//		Map<String, String> regionMap = new LinkedHashMap<String, String>();
-//
-//		for (AssignmentWorkerRegionsVO assignmentWorkerRegionsVO : assignmentWorkerRegionsVOList) {
 //			regionMap.put(assignmentWorkerRegionsVO.getWorkerRegionId(),
-//					assignmentWorkerRegionsVO.getWorkerRegionDescription());
-//		}
 
-//		AssignmentsHomeVO assignmentsHomeVO = new AssignmentsHomeVO();
-//
-//		map.put("assignmentsHomeVO", assignmentsHomeVO);
 
-//		userObject.setRegionMap(regionMap);
-//		session.setAttribute("userObject", userObject);
 //		session.setAttribute("assignmentWorkerRegionsVOList",
 //				assignmentWorkerRegionsVOList);
 		
@@ -390,15 +379,11 @@ public class AssignmentController {
 				dummyBindingResult, userObject);
 		// TODO: Redirect to Error page if map is null
 
-		// if(userRoleCodes.size() == 1){
-		// for(String roleCode : userRoleCodes.keySet()){
 		// regionMapforSelectedRole =
 		// assignmentService.getRegionsMapForSelectedRole(roleCode,
 		// dummyBindingResult, userObject);
 		// TODO: Redirect to Error page if map is null
 
-		// }
-		// }
 
 		String endDate = dateUtil.getCurrentDate();
 		String startDate = dateUtil.get30DaysPriorDate();
@@ -886,9 +871,6 @@ public class AssignmentController {
 	        if(diffMonth <= 0 ){
 	        	errorMessage = "Please check the Date Range.";
 	        }
-//	        else if(diffMonth > 12){
-//	        	errorMessage = "Date range can't exceed one year.";
-//	        }
 	        
 	        if(errorMessage != null){
 	        	map.put("errorMessage", errorMessage);
@@ -1077,15 +1059,6 @@ public class AssignmentController {
         
         return mav;
         
-//        return mav;
-//        
-//        
-//		bytes[] pdfConent = parseAssignmentsByRegionByStatus(assignmentDocuments, documentType, regionName, assignmentStatusDisplayName);
-//		
-//        response.setContentLength(data.length);
-//
-//        response.getOutputStream().write(data);
-//        response.getOutputStream().flush();
         		
 	}
 	

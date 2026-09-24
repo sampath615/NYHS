@@ -177,11 +177,6 @@ public class DocumentTransactionHelper {
 			}else{
 				labDocVO_original.setOBRCOLLECTIONDATE(null);
 			}
-			//			if(_observationDate != null && !"".equals(_observationDate)){
-			//				labDocVO_original.setOBXOBSERVATIONDATE(new java.sql.Timestamp(formatter.parse(_observationDate).getTime()));
-			//			}else{
-			//				labDocVO_original.setOBXOBSERVATIONDATE(null);
-			//			}
 			if(_resultReportDate != null && !"".equals(_resultReportDate)){
 				labDocVO_original.setOBRRESULTREPORTDATE(new java.sql.Timestamp(formatter.parse(_resultReportDate).getTime()));
 			}else{
@@ -195,9 +190,6 @@ public class DocumentTransactionHelper {
 		} catch (ParseException e) {
 			throw new DataRetrievalFailureException("Failed to parse the date fields while editing the lab document  "+e.getMessage());
 		}
-		//		labDocVO_original.setOBXLOINCCODE(ecrlsLabDocVO.getOBXLOINCCODE());
-		//		labDocVO_original.setOBXLOINCDESCSHORT(ecrlsLabDocVO.getOBXLOINCDESCSHORT());
-		//		labDocVO_original.setOBXUNITOFMEASURE(ecrlsLabDocVO.getOBXUNITOFMEASURE());
 		
 		
 		
@@ -749,10 +741,6 @@ public class DocumentTransactionHelper {
 			
 			BigDecimal OBXOBSERVATIONRESULTKEY = (BigDecimal)originalStdDoc.get("LAB_SRC_ID");
 				
-//			Timestamp COLLECTIONDATE = (Timestamp)originalStdDoc.get("COLLECTION_DATE");
-//			Timestamp OBSERVATION_DATE = (Timestamp)originalStdDoc.get("OBSERVATION_DATE");
-//			Timestamp RESULT_REPORT_DATE = (Timestamp)originalStdDoc.get("RESULT_REPORT_DATE");
-//			Timestamp DATE_RECEIVED = (Timestamp)originalStdDoc.get("DATE_RECEIVED");
 			
 			//java.util.Date derivedCollectionDate = LabCommonUtils.getDerivedCollectionDate(COLLECTIONDATE, OBSERVATION_DATE, RESULT_REPORT_DATE, DATE_RECEIVED);
 			
@@ -812,14 +800,6 @@ public class DocumentTransactionHelper {
 		else if((CommonUtil.isNullOrEmpty(providerCounty) || "998".equals(providerCounty) || "999".equals(providerCounty))  && (CommonUtil.isNullOrEmpty(facilityCounty) || "998".equals(facilityCounty) || "999".equals(facilityCounty))){
 			//Assignment status : No assignment needed (3)
 			
-//			StringBuilder comments = new StringBuilder("Flagged from ");
-//			
-//			if("998".equals(providerCounty) || "998".equals(facilityCounty)){
-//				comments.append("OOS - ");
-//			}else if("999".equals(providerCounty) || "999".equals(facilityCounty)){
-//				comments.append("UNKNOWN - ");
-//			}
-//			comments.append(documentType);
 			
 //			recordSearchReviewService.changeRecordSearchStatus((String)personDocData.get("STATENO"), comments.toString(), "Automatic", "Y", bindingResult, userObject);
 			
@@ -916,13 +896,6 @@ public class DocumentTransactionHelper {
 				
 				commonExceptionHandler.inspectDBTransacionResult(0, "Successfully associated the document to give stateno.", bindingResult);
 				
-//			}else{
-//				Map<Object,Object> resultMap=((Map<Object,Object>)bindingResult.getTarget());
-//	    		
-//	    		resultMap.put("errors", errors);
-//	    		
-//				commonExceptionHandler.inspectDBTransacionResult(-301, "Lab document has errors, please resolve the errors.", bindingResult);
-//			}
 		 }
 		 
 				
@@ -1119,12 +1092,7 @@ public class DocumentTransactionHelper {
 			
 			boolean cliaAnaPFINotFound = manualQuartzJobService.validateCliaAndPFi(ecrlsLabDocVO, errors, errorCodes);
 			if(!cliaAnaPFINotFound){
-//				boolean havingProfieciencyValidationErrors = manualQuartzJobService.handleProficiencyValidation(ecrlsLabDocVO, errors, errorCodes, schedulerMetaData);
-//				if(!havingProfieciencyValidationErrors){
 					errorStatus = quartzSchedulerTransactionHelper.validatingRawRecord(ecrlsLabDocVO, errors, errorCodes, stdEcrlsLabDocVO, schedulerMetaData);
-//				}else{
-//					errorStatus = "HARD";
-//				}
 
 			}else{
 				errorStatus = "HARD";
@@ -1297,12 +1265,7 @@ public class DocumentTransactionHelper {
 		//Need to write again
 		//		if((CommonUtil.isNotNullAndEmpty(providerCounty) && CommonConstants.NY_CITY_COUNTIES.contains(providerCounty)) || (CommonUtil.isNotNullAndEmpty(facilityCounty) && CommonConstants.NY_CITY_COUNTIES.contains(facilityCounty))){
 		//			//Assignment status : NYC provider/facility (6)
-		//			commonDocumentService.updateSurvellianceAssignmentStatus(newDocumentId, 6, userObject, bindingResult);
-		//		}
-		//		else if((CommonUtil.isNotNullAndEmpty(providerCounty) && ("998".equals(providerCounty) || "999".equals(providerCounty)))  || (CommonUtil.isNotNullAndEmpty(facilityCounty) && ("998".equals(facilityCounty) || "999".equals(facilityCounty)))){
 		//			//Assignment status : No assignment needed (3)
-		//			commonDocumentService.updateSurvellianceAssignmentStatus(newDocumentId, 3, userObject, bindingResult);
-		//		}
 	}
 
 	@Transactional
@@ -1506,31 +1469,6 @@ public class DocumentTransactionHelper {
 	}
 	
 //	public void discardNonCaseDocument(int triggeringDocId, String comments,
-//			int reason, BindingResult bindingResult, UserObject userObject) {
-//		
-//		boolean isError = false; 
-//		try{
-//			nonCaseDocumentService.discardNonCaseDocument(triggeringDocId, comments, reason, bindingResult,userObject);
-//			
-//			
-//		}catch(DataAccessException dataAccessException){
-//			isError = true;
-//			log.error("Failed to discard the Non Case Document for the Document "+triggeringDocId);
-//			log.error(dataAccessException.getMessage());
-//		}catch(Exception exception){
-//			isError = true;
-//			log.error("Failed to discard the Non Case Document for the Document "+triggeringDocId);
-//			log.error(exception.getMessage());
-//		}
-//		
-//		if(isError){
-//			commonExceptionHandler.inspectDBTransacionResult(-1, "Failed to discard the Non Case Document, Please contact helpline.", bindingResult);
-//		}else if(!isError && !bindingResult.hasErrors()){
-//			commonExceptionHandler.inspectDBTransacionResult(0, "Successfully discarded the Non Case Document", bindingResult);
-//		}
-//		
-//		
-//	}
 
 
 	public void changeNonCaseActiveFlagStatus(int triggeringDocId,

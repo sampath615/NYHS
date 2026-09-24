@@ -135,23 +135,6 @@ public class ADAPDocumentServiceImpl implements ADAPDocumentService {
     	
     	Map<Object, Object> stdDocData = new HashMap<Object, Object>();
 
-    	//stdDocData.put("MATCHED_STATENO","");
-    	//stdDocData.put("PERSON_CENSUS_TRACT","");
-    	//stdDocData.put("PERSON_LATITUDE","");
-    	//stdDocData.put("PERSON_LONGITUDE","");
-    	//stdDocData.put("CERT_PROV_CENSUS_TRACT","");
-    	//stdDocData.put("CERT_PROV_LATITUDE","");
-    	//stdDocData.put("CERT_PROV_LONGITUDE","");
-//    	stdDocData.put("PROV_CENSUS_TRACT_PCP","");
-//    	stdDocData.put("PROV_CENSUS_TRACT_SUFFIX_PCP","");
-//    	stdDocData.put("PCP_PROV_LATITUDE","");
-//    	stdDocData.put("PCP_PROV_LONGITUDE","");
-//    	stdDocData.put("RX_PROV_CENSUS_TRACT","");
-//    	stdDocData.put("RX_PROV_LATITUDE","");
-//    	stdDocData.put("RX_PROV_LONGITUDE","");
-//    	stdDocData.put("MATCH_WEIGHT","");
-//    	stdDocData.put("MATCH_PASS","");
-//    	stdDocData.put("MATCH_CD","");
 //    	
     	
     	
@@ -303,9 +286,6 @@ public class ADAPDocumentServiceImpl implements ADAPDocumentService {
     		npis.add(pcpNpi);
     	}
     	
-//    	if(CommonUtil.isNotNullAndEmpty(certNPI)){
-//    		npis.add(certNPI);
-//    	}
     	if(CommonUtil.isNotNullAndEmpty(rxNpi)){
     		npis.add(rxNpi);
     	}
@@ -394,31 +374,12 @@ public class ADAPDocumentServiceImpl implements ADAPDocumentService {
     	stdDocData.put("RECV_BLOOD_PROD",LabCommonUtils.checkRiskData((String)docVO.get("TRANS")));
     	stdDocData.put("PERINATAL",LabCommonUtils.checkRiskData((String)docVO.get("MATER")));
     	stdDocData.put("RISK_OTHER",LabCommonUtils.checkRiskData((String)docVO.get("ROTHER")));
-    	//stdDocData.put("RISK_UNKNOWN","");
-    	//stdDocData.put("SEX_PARTNER_MSM","");
-    	//stdDocData.put("RISK11","");
-    	//stdDocData.put("SEX_PARTNER_HEMOPHILIAC","");
-    	//stdDocData.put("SEX_PARTNER_TRANSFUSION","");
-    	//stdDocData.put("SEX_PARTNER_TRANSPLANT","");
-    	//stdDocData.put("RECV_TRANSPLANT","");
     	stdDocData.put("HEALTHCARE_WORKER",LabCommonUtils.checkRiskData((String)docVO.get("HEALTH")));
     	stdDocData.put("RECEIVED_DATE",docVO.get("RECV_DT"));
     	stdDocData.put("CURRENT_PROCESS_STATUS", CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS);
-    	//stdDocData.put("NYC_SHIP_DT","");
-    	//stdDocData.put("CITYNO","");
 
-    	//stdDocData.put("EHARS_IMPORT_DATE","");
-    	//stdDocData.put("QS_PARENT_DOC_ID","");
-    	//stdDocData.put("RECEIVED_DATE","");
 
     	
-    	//stdDocData.put("EHARS_STATUS_CD","");
-    	//stdDocData.put("ASSESS_ASSIGN","");
-    	//stdDocData.put("REVIEW_UID","");
-    	//stdDocData.put("REVIEW_DT","");
-    	//stdDocData.put("ADAP_SRC_ID","");    	
-    	//stdDocData.put("MNAME","");
-    	//stdDocData.put("SUFFIX","");
     	
     	stdDocData.put("CREATE_UID","900");
     	stdDocData.put("CREATE_DATE",new Date(Calendar.getInstance().getTimeInMillis()));
@@ -631,19 +592,6 @@ public class ADAPDocumentServiceImpl implements ADAPDocumentService {
 					
 					
 					
-//					for(int columnIndex = 0; columnIndex < COLUMN_NAMES_LENGTH; columnIndex++){
-//						
-//						if(row.getCell(columnIndex) != null){
-//							fileData.put(ADAP_RETURN_FILE_COLUMN_NAMES[columnIndex], row.getCell(columnIndex).toString());
-//						}
-//						
-//						
-////						if(columnIndex == 1){
-////							sequenceNumbers.add((int)row.getCell(columnIndex).getNumericCellValue());
-////						}
-//
-//						
-//					}
 					
 					
 

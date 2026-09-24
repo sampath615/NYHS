@@ -577,8 +577,6 @@ public class LabCommonUtils {
     	rawTbColumnReferances.put("PROVIDER_PHONE", "PROVIDERPHONE");
     	rawTbColumnReferances.put("PROVIDER_FNAME", "PROVIDERFNAME");
     	rawTbColumnReferances.put("PROVIDER_LNAME", "PROVIDERLNAME");
-    	//rawTbColumnReferances.put("PROVIDER_MNAME", "OBRPROVIDERMIDDLENAME");
-    	//rawTbColumnReferances.put("PROVIDER_SUFFIX", "OBRPROVIDERNAMESUFFIX");
     	
     	stdTbColumnReferances.put("FACILITY_ADDRESS", "FACILITY_ADDRESS");
     	stdTbColumnReferances.put("FACILITY_CITY", "FACILITY_CITY");
@@ -598,8 +596,6 @@ public class LabCommonUtils {
     	stdTbColumnReferances.put("PROVIDER_COUNTY", "PROV_COUNTY");
     	stdTbColumnReferances.put("PROVIDER_PHONE", "PROV_PHONE");
     	stdTbColumnReferances.put("PROVIDER_FNAME", "PROV_FNAME");
-    	//stdTbColumnReferances.put("PROVIDER_MNAME", "PROV_MNAME");
-    	//stdTbColumnReferances.put("PROVIDER_SUFFIX", "PROV_SUFFIX");
     	
     	
     	
@@ -789,8 +785,6 @@ public class LabCommonUtils {
         deathStandardDocumentsQuery.append(" UNION ALL SELECT  NVL((LPAD(std.MED_RECORD_NUMBER, 30, ' ')),'                              ') || NVL((LPAD (std.FNAME, 20, ' ')),'                    ') || NVL((LPAD (std.LNAME, 25, ' ')),'                         ') || NVL((LPAD (std.MNAME, 25, ' ')),'                         ') ||                                 '     '  || NVL((LPAD (std.DOB_TEXT, 10, ' ')),'          ') || NVL((LPAD (trim(raw1.CUR_STREET_ADDRESS1), 62, ' ')),'                                                              ') || NVL((LPAD (std.CUR_PERSON_CITY, 30, ' ')),'                              ') || NVL((LPAD (std.CUR_PERSON_STATE, 2, ' ')),'  ') || NVL((LPAD (std.CUR_PERSON_ZIP, 5, ' ')),'     ') || '    ' || NVL((LPAD (std.SSN, 9, ' ')),'         ') || NVL((LPAD (trim(raw1.PROV_ADDR), 62, ' ')),'                                                              ') || NVL((LPAD (std.PROV_CITY, 30, ' ')),'                              ') || NVL((LPAD (std.PROV_STATE, 2, ' ')),'  ') || NVL((LPAD (std.PROV_ZIP, 5, ' ')),'     ') || '    ' || '                                                              ' || '                              ' || '  ' || '     ' || '    ' || NVL((LPAD (std.NYSID,9, ' ')), '         ') || NVL((LPAD (std.DIN, 7, ' ')),'       ') || '                    ' || NVL((LPAD (std.ETHNICITY, 2, ' ')),'  ') || NVL((LPAD (std.CURRENT_GENDER, 1, ' ')),' ') || NVL((LPAD (std.NYC_IJR_SRC_ID, 20, ' ')),'                    ') || NVL((LPAD (std.DOCUMENT_ID, 20, ' ')),'                    ') || 'NYC_IJR   ' AS output FROM STD_NYCIJR_DOC std, RAW_NYCIJR_DOC raw1 where std.current_process_status = '5'  and raw1.DOCUMENT_ID = std.DOCUMENT_ID"); 
         deathStandardDocumentsQuery.append(" UNION ALL  SELECT                                             '                              '  || NVL((LPAD (std.FNAME, 20, ' ')),'                    ') || NVL((LPAD (std.LNAME, 25, ' ')),'                         ') || NVL((LPAD (std.MNAME, 25, ' ')),'                         ') ||                                 '     '  || NVL((LPAD (to_char(std.DOB,'MM/DD/YYYY'), 10, ' ')),     '          ') || NVL((LPAD (trim(raw1.PERSON_ADDRESS), 62, ' ')),     '                                                              ') || NVL((LPAD (std.PERSON_CITY, 30, ' ')),    '                              ') || NVL((LPAD (std.PERSON_STATE, 2, ' ')),    '  ') || NVL((LPAD (std.PERSON_ZIP, 5, ' ')),    '     ') || '    ' ||                              '         '  || NVL((LPAD (trim(raw1.PROV_ADDRESS), 62, ' ')),  '                                                              ') || NVL((LPAD (std.PROV_CITY, 30, ' ')),'                              ') || NVL((LPAD (std.PROV_STATE, 2, ' ')),'  ') || NVL((LPAD (std.PROV_ZIP, 5, ' ')),'     ') || '    ' || '                                                              ' || '                              ' || '  ' || '     ' || '    ' ||                                '         '  ||                              '       '  || '                    ' ||                                     '  '  ||                                           ' '  ||                                          '                    '  || NVL((LPAD (std.DOCUMENT_ID, 20, ' ')),'                    ') || 'ICCR      ' AS output FROM STD_ICCR_DOC std, RAW_ICCR_DOC raw1 where std.current_process_Status =  5  and raw1.DOCUMENT_ID = std.DOCUMENT_ID");
         
-        //deathStandardDocumentsQuery.append(" UNION ALL SELECT    NVL ( (LPAD (trim(upper(MOTHER_MED_REC)), 30, ' ')),                '                              ')        || NVL ( (LPAD (trim(upper(MOTHER_FNAME)), 20, ' ')), '                    ')        || NVL ( (LPAD (trim(upper(MOTHER_CURRENT_LNAME)), 25, ' ')), '                         ')        || NVL ( (LPAD (trim(upper(MOTHER_MNAME)), 25, ' ')), '                         ')        || '     '        || NVL ( (LPAD (To_CHAR(fn_to_Date(mother_dob, 'MM/DD/YYYY'), 'MM/DD/YYYY'), 10, ' ')), '          ')        || NVL (              (LPAD (                     upper(TRIM (                  mother_res_house_no || ' ' || mother_res_direct || ' ' ||  mother_res_street || ' ' || mother_res_street_type ||                           case when MOTHER_RES_APT_NO is not null then ' APT ' || MOTHER_RES_APT_NO end                                     )),62,                  ' ')),              '                                                              ')        || NVL((LPAD (trim(upper(ref.CITY)), 30, ' ')),'                              ')        || NVL ( (LPAD (trim(upper(ref.STATE_CD)), 2, ' ')), '  ')        || NVL ( (LPAD (MOTHER_RES_ZIP, 5, ' ')), '     ')        || '    '        || case when length(MOTHER_SSN) = '9' then NVL ( (LPAD (MOTHER_SSN, 9, ' ')), '         ')             else '         ' end        || '                                                              '        || '                              '        || '  '        || '     '        || '    '        || '                                                              '        || '                              '        || '  '        || '     '        || '    '        || '         '        || '       '        || '                    '        ||            case when mother_not_hispanic = '1' then '02'                 when mother_hisp_origin_mexican = '1' or mother_hisp_origin_puerto_rico = '1' or mother_hisp_origin_cuban = '1' or mother_hisp_origin_other = '1' then '01'                else '09' end        || 'F'        || '                    '        || NVL ( (LPAD (BIRTH_MATCH_PK, 20, ' ')), '                    ')        || 'BTH_MOM   '           AS output   FROM RAW_BIRTH_MATCH_DOC std , nyehms_county_reference ref   where current_process_Status = 1   and std.MOTHER_RES_ZIP = ref.ZIP_CD(+)   and num_city(+) = 1");
-        //deathStandardDocumentsQuery.append(" UNION ALL SELECT  NVL((LPAD(trim(upper(INFANT_MED_REC)), 30, ' ')),                '                              ')        || NVL ( (LPAD (trim(upper(INFANT_FNAME)), 20, ' ')), '                    ')        || NVL ( (LPAD (trim(upper(INFANT_LNAME)), 25, ' ')), '                         ')        || NVL ( (LPAD (trim(upper(INFANT_MNAME)), 25, ' ')), '                         ')        || NVL((LPAD (trim(upper(INFANT_SUFFIX)), 5, ' ')),'     ')         || NVL ( (LPAD (To_CHAR(fn_to_Date(INFANT_DOB, 'MM/DD/YYYY'), 'MM/DD/YYYY'), 10, ' ')), '          ')        || NVL ((LPAD (upper(TRIM (MAIL_ADDR_HOUSE_NO || ' ' || MAIL_ADDR_DIRECT || ' ' ||  MAIL_ADDR_STREET || ' ' || MAIL_ADDR_STREET_TYPE ||                           case when MAIL_ADDR_APT_NO is not null then ' APT ' || MAIL_ADDR_APT_NO end                                     )),62,                  ' ')),              '                                                              ')        || NVL((LPAD (trim(upper(ref.CITY)), 30, ' ')),'                              ')        || NVL ( (LPAD (trim(upper(ref.STATE_CD)), 2, ' ')), '  ')        || NVL ( (LPAD (MAIL_ADDR_ZIP, 5, ' ')), '     ')        || '    '        || '         '        || '                                                              '        || '                              '        || '  '        || '     '        || '    '        || '                                                              '        || '                              '        || '  '        || '     '        || '    '        || '         '        || '       '        || '                    '        ||  '  '  || case when INFANT_SEX = '1' then 'M' when INFANT_SEX = '2' then 'F' else ' ' end || '                    '        || NVL ( (LPAD (BIRTH_MATCH_PK, 20, ' ')), '                    ')        || 'BTH_INF   '           AS output   FROM RAW_BIRTH_MATCH_DOC std , nyehms_county_reference ref   where current_process_Status = 11   and std.MOTHER_RES_ZIP = ref.ZIP_CD(+)   and num_city(+) = 1");
         
         ssdmStandardDocumentsQuery.append(" SELECT NVL((LPAD (std.FNAME, 20, ' ')),'                    ') ||NVL((LPAD (std.LNAME, 25, ' ')),'                         ') ||NVL((LPAD (std.MNAME, 25, ' ')),'                         ') ||'     ' ||NVL((LPAD (std.DOB_TEXT, 10, ' ')),'          ') ||NVL((LPAD (std.SSN, 9, ' ')),'         ')||NVL((LPAD (std.SSDM_SRC_ID, 20, ' ')),'                    ') ||NVL((LPAD (std.DOCUMENT_ID, 20, ' ')),'                    ') ||'SSDM      ' AS output FROM STD_SSDM_DOC std where std.current_process_status = 5");
         
@@ -1036,8 +1030,6 @@ public class LabCommonUtils {
 			tableName = "RAW_AIRS_DOC";
 		} else if ("ADAP".equals(documentType)) {
 			tableName = "RAW_ADAP_DOC";
-//		}else if("LEG_PS".equals(documentType) || "LEGACY_PS".equals(documentType)){
-//			tableName = "RAW_STD_ECLRS_DOC";
 		}else if("SSDM".equals(documentType)){
 			tableName = "RAW_SSDM_DOC";
 		} else if ("NDI".equals(documentType)) {
@@ -1046,10 +1038,6 @@ public class LabCommonUtils {
 			tableName = "RAW_NYCIJR_DOC";
 		} else if ("NYC_DTH".equals(documentType)) {
 			tableName = "RAW_NYC_DEATH_DOC";
-//		} else if ("OLDHARS".equals(documentType)) {
-//			tableName = "RAW_STD_ECLRS_DOC";
-//		} else if ("EHARS".equals(documentType)) {
-//			tableName = "RAW_STD_ECLRS_DOC";
 		} else if ("MED".equals(documentType) || "INS".equals(documentType)) {
 			tableName = "RAW_MEDICAID_DOC";
 		}else if("OLD_CASES".equals(documentType)){
@@ -1122,8 +1110,6 @@ public class LabCommonUtils {
 			tableName = "STD_AIRS_DOC";
 		} else if ("ADAP".equals(documentType)) {
 			tableName = "STD_ADAP_DOC";
-//		}else if("LEG_PS".equals(documentType) || "LEGACY_PS".equals(documentType)){
-//			tableName = "STD_STD_ECLRS_DOC";
 		}else if("SSDM".equals(documentType)){
 			tableName = "STD_SSDM_DOC";
 		} else if ("NDI".equals(documentType)) {
@@ -1132,10 +1118,6 @@ public class LabCommonUtils {
 			tableName = "STD_NYCIJR_DOC";
 		} else if ("NYC_DTH".equals(documentType)) {
 			tableName = "STD_NYC_DEATH_DOC";
-//		} else if ("OLDHARS".equals(documentType)) {
-//			tableName = "STD_STD_ECLRS_DOC";
-//		} else if ("EHARS".equals(documentType)) {
-//			tableName = "STD_STD_ECLRS_DOC";
 		} else if ("MED".equals(documentType) || "INS".equals(documentType)) {
 			tableName = "STD_MEDICAID_DOC";
 		}else if("OLD_CASES".equals(documentType)){

@@ -52,9 +52,6 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 		sheet.setDefaultColumnWidth(11);
 		
 		
-//		sheet.setColumnWidth(27, 12000);
-//		sheet.setColumnWidth(28, 5100);
-//		sheet.setColumnWidth(29, 4800);
 
 		CellStyle commonStyles = workbook.createCellStyle();
 		
@@ -76,8 +73,6 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 	    String[] ADAP_NYC_DATA_DB_COLUMNS = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_DATA_DB_COLUMNS").split(",");
 	    
 	    
-//		int dbColumnsLength = ADAP_NYC_DATA_DB_COLUMNS.length;
-//		int spreadSheetColumnsLength = ADAP_NYC_DATA_SPREAD_SHEET_COLUMNS.length;
 		
 	   
 	        int rowIndex = 0;
@@ -92,71 +87,18 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 	    
 	    
 		
-//		CellStyle style1 = workbook.createCellStyle();
-//		
-//		style1.setAlignment(HorizontalAlignment.CENTER);
-//		style1.setBorderBottom(BorderStyle.THIN);
-//		style1.setBorderTop(BorderStyle.THIN);
-//		style1.setBorderLeft(BorderStyle.THIN);
-//		style1.setBorderRight(BorderStyle.THIN);
-//		
-//        //style1.setFillForegroundColor(Color.DARK_TEAL.index);
-//        style1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-//        style1.setWrapText(true);
     
         
-//        Font font = workbook.createFont();
-//        font.setBold(true);
-//        font.setFontHeight((short)(14*20));
-//        font.setFontName("Calibri");
 //        
 //        style1.setFont(font);//set it to bold
-//        
-//        Color myColor1 = palette.findSimilarColor(146, 208, 80);
-//        short palIndex = myColor1.getIndex();
-//        style1.setFillForegroundColor(palIndex);
-//        
-//        
-//        
-//        CellStyle style2 = workbook.createCellStyle();
-//        style2.cloneStyleFrom(style1);
-//        Color myColor2 = palette.findSimilarColor(0, 176, 240);
-//        palIndex = myColor2.getIndex();
-//        style2.setFillForegroundColor(palIndex);
         
         
         
         
-//        CellStyle style3 = workbook.createCellStyle();
-//        
-//        style3.cloneStyleFrom(style1);
-//          
-//        Color myColor3 = palette.findSimilarColor(255, 192, 0);
-//        palIndex = myColor3.getIndex();
-//        style3.setFillForegroundColor(palIndex);
         
         
-//        
-//        
-//        Font font2 = workbook.createFont();
-//        font2.setBold(true);
-//        font2.setFontHeight((short)(11*20));
-//        font2.setFontName("Calibri");
         
         
-//        CellStyle style4 = workbook.createCellStyle();
-//        CellStyle style5 = workbook.createCellStyle();
-//        CellStyle style6 = workbook.createCellStyle();
-//        
-//        
-//        style4.cloneStyleFrom(style1);
-//        style4.setFont(font2);
-//        
-//        style5.cloneStyleFrom(style2);
-//        style5.setFont(font2);
-//        
-//        style6.cloneStyleFrom(style3);
-//        style6.setFont(font2);
         
 
 		Row header = sheet.createRow(rowIndex++);
@@ -171,27 +113,6 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 		}
         
         
-//        for (String _coulmnName : EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS) {
-//    		
-//        	header.createCell(columnCount).setCellValue(_coulmnName);
-//            header.getCell(columnCount++).setCellStyle(style5);
-//            
-//		}
-//        
-//
-//        for (String _coulmnName : EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS) {
-//    		
-//        	header.createCell(columnCount).setCellValue(_coulmnName);
-//            header.getCell(columnCount++).setCellStyle(style6);
-//            
-//		}
-//       
-//        
-//        Map<String, String> yesNoMap = new HashMap<String, String>();
-//        
-//        
-//        yesNoMap.put("Y", "Yes");
-//        yesNoMap.put("N", "No");
         
         
         

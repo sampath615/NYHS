@@ -102,8 +102,6 @@ public class SierraResponseTransactionHelper {
 				
 				sierraWebService.processRepriseDocuemnt(rasDocId);
 				
-				//failedDocumentIds.put(rasDocId, "DocumentId already in error table, please reprise that");
-				//continue;
 			}
 			
 			
@@ -117,9 +115,6 @@ public class SierraResponseTransactionHelper {
 				
 				//JsonObject viewerResponse = sierraRasResponseObject.getAsJsonObject("viewer");
 				
-				//if(viewerResponse.isJsonNull()) {
-				//	throw new DataRetrievalFailureException("No viewer element in the Sierra response");
-				//}
 				
 				JsonObject algorithDetails = sierraRasResponseObject.getAsJsonObject("currentVersion");
 				JsonArray allSeqResponse = sierraRasResponseObject.getAsJsonArray("sequenceAnalysis");

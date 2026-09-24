@@ -307,18 +307,8 @@ public class HITMessageCountLoader {
 						
 						
 						
-//						String[] recipientEmailAddressesTo = null;
-//						if (schedulerMetaData.get("HIT_NOTIFICATION_USERS_TO") != null) {
-//							recipientEmailAddressesTo = schedulerMetaData.get("HIT_NOTIFICATION_USERS_TO").split(",");
-//							if (recipientEmailAddressesTo != null && recipientEmailAddressesTo.length > 0) {
 //								sendEmail.sendSSLMessage(recipientEmailAddressesTo, statusMailSubject,
 //										messageContent.toString(), schedulerMetaData.get("NOTIFICATIONS_FROM"), null,
-//										CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-//							} else {
-//								log.error("No reciepients found for sending PRF Review count status");
-//								log.error(message);
-//							}
-//						}
 						// DELETE FROM UPHN_TRANX_PROPS_IN table code goes here.
 						log.error("Starting to delete data from UPHN_TRANX_PROS_IN table");
 						hitDocumentService.deleteFromUphnTranxPropsIn();

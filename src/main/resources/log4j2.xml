@@ -26,7 +26,6 @@
   	<Loggers> <!-- we can define the logger to use the logging level to particular package 
 			level -->
 	    <Root level="ERROR">
-			<!-- <AppenderRef ref="STDOUT" /> -->
 			<AppenderRef ref="File" />
 		
 		</Root>

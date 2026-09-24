@@ -15,8 +15,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 @Service
 public class RASDocumentServiceImpl implements RASDocumentService {
 	
-	//private static Logger log = LoggerFactory.getLogger(RASDocumentServiceImpl.class);
-	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	RASDocumentDAO rasDocumentDAO;

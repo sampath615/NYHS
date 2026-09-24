@@ -464,15 +464,11 @@ GROUP BY  lb.OBXLOINCCODE,lb.MSHFILENAME))  where sum_current > 0 order by MSHFI
 	</resultMap>
   	
 	
-<!-- 	<select id="getmultiStepPfiGroupCountDetails" resultMap="loincPfiGroupCountDetailsMap"> -->
 <!-- 		select DISTINCT PFI, GROUPED_LOINC, LOINC_CD   from LAB_LOINC_MAPPING where (GROUPED_LOINC is not null and GROUPED_LOINC  > 0) -->
-<!-- 	</select> -->
 	
 	
 	
-<!-- 	<select id="getMultiStepGroupLoincCount" resultType="int"> -->
 <!-- 		select MAX(GROUPED_LOINC) from LAB_LOINC_MAPPING where PFI = #{pfi} and LOINC_CD = #{loincCode} and (END_DATE is null or END_DATE > SYSDATE) -->
-<!-- 	</select> -->
 	
 	
 	<resultMap id="multiStepDocumentDetailsMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MultiStepDocumentsVO" >
@@ -2238,7 +2234,6 @@ WHERE ROWID IN (SELECT rwid
 		
 	</update>
 	
-<!-- 	<select id="clericalReviewNonCaseDocumentDetails" resultType="java.util.Map"> -->
 <!-- WITH data AS -->
 <!-- ( -->
 <!--             SELECT d.document_id, -->
@@ -2266,9 +2261,7 @@ WHERE ROWID IN (SELECT rwid
 <!--                   AND pin.stateno = pout.stateno and pin.dissassociation_date IS NULL) -->
 
 		
-<!-- 	</select> -->
 	
-<!-- 	<select id="getMatchedNonCaseDocumentDetails" resultType="java.util.Map"> -->
 <!-- 		WITH data AS -->
 <!-- ( -->
 <!--             SELECT d.document_id, -->
@@ -2296,7 +2289,6 @@ WHERE ROWID IN (SELECT rwid
 <!--                   AND pin.stateno = pout.stateno and pin.dissassociation_date IS NULL) -->
 
 
-<!-- 	</select> -->
 	
 	<insert id="addFileNameToAssignmentReportsTable" parameterType="java.util.Map">
 			insert into coded_display_file_name(FILE_NAME, DOCUMENT_TYPE_CODE, DISPLAY_NAME, LAST_UPDATED_BY, LAST_UPDATED_DATE)

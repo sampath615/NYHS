@@ -154,29 +154,5 @@ public class ViralLoadReportsController {
 		return viralLoadReportsService.getNoAdditionalReportData(dateRange, dummyBindingResult, userObject, null);
 		
 	}
-//	
-//	@RequestMapping(value="/generateRiaActivityReportData.xlsx", method = RequestMethod.GET)
-//	public ModelAndView  generateRiaActivityReportData(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String fromDate, @RequestParam String toDate){
-//		
-//		HttpSession session = request.getSession();
-//		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-//		if(userObject==null) userObject= new UserObject();
-//		
-//		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-//		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
-//		
-//		ModelAndView mav = new ModelAndView("riaActivityReportSpreadsheet");
-//		
-//		List<Map<String, String>> riaActivityRecords = riaReviewService.getRiaActivityReportData(fromDate, toDate, dummyBindingResult, userObject, mav);
-//		
-//		
-//		
-//		mav.addObject("fromDate", fromDate);
-//		mav.addObject("toDate", toDate);
-//		mav.addObject("riaActivityRecords", riaActivityRecords);
-//		
-//        return mav;
-//           		
-//	}
 	
 }

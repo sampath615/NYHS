@@ -214,8 +214,6 @@
 				
 				
 				<collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UpdatedDispositionsVO" column="DOCUMENT_ID" property="updatedDispositionsList" >
-<!-- 				     <id column="DOCUMENT_ID"  property="DOCUMENT_ID" jdbcType="DECIMAL" /> -->
-<!-- 				    <result column="DATE_OF_DEATH" property="DATE_OF_DEATH" jdbcType="VARCHAR" /> -->
 				    <result column="PS_DATA_DISPOSITION_CODE" property="DISPOSITION_CODE" jdbcType="DECIMAL" />
 				    <result column="DISPOSITION_DESC" property="DISPOSITION_DESC" jdbcType="VARCHAR" />
 				    <result column="DISPOSITION_DATE" property="DISPOSITION_DATE" jdbcType="VARCHAR" />

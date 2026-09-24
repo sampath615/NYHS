@@ -239,8 +239,6 @@ public interface SchedulerJobsDAO {
 	public void updatePIDErrorDocumentStatus(String recordType);
 	public void checkDuplicatesinStdDocTable(
 			Map<String, String> inputParameterMap);
-	//public List<Map<String, Object>> clericalReviewNonCaseDocumentDetails();
-	//public List<Map<String, Object>> getMatchedNonCaseDocumentDetails();
 	public void addFileNameToAssignmentReportsTable(Map<String, String> inputParameterMap);
 	public int storeDocumentMatchResultsToSTDConfStdTable(
 			Map<String, Object> documentMatchData);

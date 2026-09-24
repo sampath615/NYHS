@@ -97,28 +97,16 @@ public class QualityStageLoader{
 									"notificationObject",
 									SchedulerNotificationVO.class);
 					List<String> schedulerNotificationObj =  schedulerNotificationVO.getSchedulerStatusObj();
-//					String NEED_TO_RUN_SECOND_JOB = schedulerMetaData.get("NEED_TO_RUN_SECOND_JOB");
-//					boolean loadFirstJobResults = true;
 //					if("Y".equals(NEED_TO_RUN_SECOND_JOB)){ // Two jobs
-//						JobDataMap jobDataMap = new JobDataMap();
-//						jobDataMap.put("RUN_SECOND_JOB_FOR_DEAD", "Y");
-//						jobDataMap.put("initiator", initiator);
 //						manualQuartzJobService.updateSchedulerMetaData(
 //								"LAST_ALL_JARO_SCHEDULER_RUN_DATE", "", null);
 //						String status = manualQuartzJobService.triggerSchedulerJob(
 //								null, "runAllJaroLoaderJob", 
 //								CommonConstants.TRIGGER_SCHEDULER,
-//								jobDataMap);
-//						if(CommonConstants.TRANSACTION_STATUS_FAILURE.equals(status)){
 //
 //							manualQuartzJobService.sendNotificationEmail(schedulerMetaData,
 //									"ALLJARO Process for Dead people",
 //									"Failed while executing ALLJARO job for Dead people, Loading the First Job Results.",
-//									CommonConstants.RESPONSE_CONTENT_TYPE_PLAIN);
-//						}else{
-//							loadFirstJobResults = false;
-//						}
-//					}
 //					if(loadFirstJobResults){ // Only one job
 						//This method will execute when we want to process only one job.  
 						quartzSchedulerTransactionHelper.loadQualityStageMatchResultsJob(

@@ -17,17 +17,6 @@
  	  		<result property="visibleToWorker" column="VISIBLE_TO_WORKER"/>  	
  	  		<result property="flaggedSameOrBadInd" column="flag_bad_or_same"/>
  	 </resultMap>
- 	 <!-- 
- 	 <select id="searchPersonFields" parameterType="java.util.Map" statementType="CALLABLE">	
-		{call  PKG_SEARCH.pr_search_engine(			
-			#{p_fieldValues,jdbcType=VARCHAR,mode=IN},
-			#{p_tableNames,jdbcType=VARCHAR,mode=IN},
-			#{p_fieldNames,jdbcType=VARCHAR,mode=IN},			
-			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=searchPersonResult},
-			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN} 
-		)}  
-	</select>
-	-->
 	
 	<select id="searchPersonFields" parameterType="java.util.Map" statementType="CALLABLE">	
 		{call  PKG_SEARCH.PR_PERSON_SEARCH(

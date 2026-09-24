@@ -412,9 +412,6 @@ public class LabDocumentServiceImpl implements LabDocumentService {
 			BindingResult bindingResult, UserObject userObject, String pfi, String loincs){
 		
 		
-//		if(loincs.endsWith(",")) {
-//			loincs = loincs.replaceAll(",$", "");
-//		}
 		
 		
 		
@@ -639,31 +636,13 @@ public class LabDocumentServiceImpl implements LabDocumentService {
 
 		stdEcrlsLabDocVO.setFACILITY_PHONE(ecrlsLabDocVO.getZLRFACILITYPHONE());
 
-		// Calendar OBXOBSERVATIONDATECalender = null;
-		//
-		// if(ecrlsLabDocVO.getOBXOBSERVATIONDATE() != null){
 		//
 		// OBXOBSERVATIONDATECalender =
 		// CommonUtil.resetTimeToZero(ecrlsLabDocVO.getOBXOBSERVATIONDATE(),
-		// 1970);
-		//
-		// }
-		// if (OBXOBSERVATIONDATECalender == null &&
-		// CommonUtil.isNotNullAndEmpty(ecrlsLabDocVO.getOBXOBSERVATIONDATERAW())){
 		// Timestamp observationDateRaw =
-		// schedulerJobsDAO.getDateValueFromString(ecrlsLabDocVO.getOBXOBSERVATIONDATERAW());
-		//
-		// if(observationDateRaw != null){
 		//
 		// OBXOBSERVATIONDATECalender =
-		// CommonUtil.resetTimeToZero(observationDateRaw, 1970);
-		// }
-		// }
-		//
-		// if (OBXOBSERVATIONDATECalender != null) {
 		// stdEcrlsLabDocVO.setOBSERVATION_DATE(new Date(
-		// OBXOBSERVATIONDATECalender.getTimeInMillis()));
-		// }
 
 		stdEcrlsLabDocVO.setHIV_VACCINE_RECIP(ecrlsLabDocVO.getPIDVACCINETRIALIND());
 

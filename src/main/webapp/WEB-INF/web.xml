@@ -58,14 +58,6 @@
    </listener>
    	
  
-<!-- 	<filter> -->
-<!--         <filter-name>loginFilterChain</filter-name> -->
-<!--         <filter-class>gov.ny.state.doh.bhae.nyehms.web.spring.security.AuthFilter</filter-class> -->
-<!--     </filter> -->
  
-<!--     <filter-mapping> -->
-<!--       <filter-name>loginFilterChain</filter-name> -->
-<!--       <url-pattern>/*</url-pattern> -->
-<!--     </filter-mapping>	 -->
 
 </web-app>

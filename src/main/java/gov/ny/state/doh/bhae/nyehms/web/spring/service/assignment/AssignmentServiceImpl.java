@@ -758,27 +758,6 @@ public class AssignmentServiceImpl implements AssignmentService {
 	return eharsPersonData;
     }
 	
-//	private String formattedEharsVariableValue(String variableName, String variableValue) {
-//
-//		if (variableValue != null && variableValue.indexOf(PIPE_SYMBOL) != -1) {
-//
-//			Integer variableIndex = EharsVariableConstants.EHARS_VARIABLES.get(variableName);
-//			String[] eharsVariables = variableValue.split(SPLIT_PIPE_REGEX);
-//
-//			if (variableIndex != null && eharsVariables.length > variableIndex) {
-//				variableValue = eharsVariables[variableIndex];
-//
-//				variableValue = variableValue.replaceAll("\\~", "");
-//			} else if (eharsVariables.length == 2) {
-//				variableValue = variableValue.replaceAll("\\|", "");
-//			} else if ("transfusion".equals(variableName)) {
-//				variableValue = variableValue.replaceAll("\\|", " ");
-//			}
-//
-//		}
-//
-//		return variableValue;
-//	}
 	/**
 	 * {@inheritDoc}
 	 */

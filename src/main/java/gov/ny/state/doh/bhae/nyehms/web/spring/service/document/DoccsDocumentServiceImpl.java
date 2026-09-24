@@ -68,18 +68,6 @@ public class DoccsDocumentServiceImpl implements DoccsDocumentService{
 				inputParemeterMap.put("DoccsDocId", documentId);
 				
 				List<DinDoccsDocVO> dinDoccs = doccsDocumentDAO.getDinDoccsDocContent(inputParemeterMap);
-//				
-//				List<DinDoccsDocVO> dinDoccs = doccsDocumentDAO.getDinDocInformation(documentId);
-//				
-//				for (DinDoccsDocVO dinDoccsDocVO : dinDoccs) {
-//					
-//					if(dinDoccsDocVO.getDOCUMENT_ID() != 0){
-//						List<DoccsProbCodesVO> docProbCodes = doccsDocumentDAO.getDoccsProbCodes(dinDoccsDocVO.getDOCUMENT_ID());
-//						
-//						dinDoccsDocVO.setDoccsProbCodes(docProbCodes);
-//						
-//					}
-//				}
 				
 				stdDoccsDocVO.setDinDoccsDocVO(dinDoccs);
 				

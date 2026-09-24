@@ -125,16 +125,12 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
         
         style1.setFont(font);//set it to bold
         
-//        Color myColor1 = palette.findSimilarColor(146, 208, 80);
-//        short palIndex = myColor1.getIndex();
         style1.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
         
         
         
         CellStyle style2 = workbook.createCellStyle();
         style2.cloneStyleFrom(style1);
-//        Color myColor2 = palette.findSimilarColor(0, 176, 240);
-//        palIndex = myColor2.getIndex();
         style2.setFillForegroundColor(IndexedColors.LIGHT_BLUE.index);
         
         
@@ -144,8 +140,6 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
         
         style3.cloneStyleFrom(style1);
           
-//        Color myColor3 = palette.findSimilarColor(255, 192, 0);
-//        palIndex = myColor3.getIndex();
         style3.setFillForegroundColor(IndexedColors.LIGHT_ORANGE.index);
         
         

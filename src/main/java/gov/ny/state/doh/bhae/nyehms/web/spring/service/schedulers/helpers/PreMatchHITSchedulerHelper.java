@@ -773,18 +773,10 @@ public class PreMatchHITSchedulerHelper {
 		// // CODE FOR MOVED_TO_STD
 		// try {
 		// List<Map<Object, Object>> rawDiagnosisList =
-		// schedulerJobsDAO.getNewRawDiagnosisList();
-		// writeRawDiagnosisToStdLayer(rawDiagnosisList, schedulerStatusObject);
 		// // Code for REVIEWED DIAGNOSIS
 		// List<Map<Object, Object>> rawDiagnosisReviewedList =
-		// schedulerJobsDAO.getRawReviewedDiagnosisList();
-		// writeRawReviewedList(rawDiagnosisReviewedList);
-		// } catch (Exception e) {
 		// log.error("Exception processing Raw Hit Records To Std layer for
 		// DIAGNOSIS : "
-		// + CommonUtil.getStackTrace(e).substring(0, 200));
-		// }
-		// }
 
 	}
 

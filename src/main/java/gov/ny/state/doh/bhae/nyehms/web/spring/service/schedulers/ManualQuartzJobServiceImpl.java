@@ -141,14 +141,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	
 	//private static final  List<String> bioplexClias = new ArrayList<String>();
 	
-//	static{
-//		bioplexClias.add("31D0106549");
-//		//bioplexClias.add("33D0159701");
-//		//bioplexClias.add("33D1012663");
-//		bioplexClias.add("07D0101031");
-//		bioplexClias.add("31D0961672");
-//		
-//	}
 
 	/**
 	 * {@inheritDoc}
@@ -336,10 +328,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 			schedulerJobsDAO.insertSchedulerLog(inOutParameterMap);
 
-			//
-			// if(resultCount > 0){
-			//
-			// }else{
 			// //throw an exception
 			// }
 
@@ -465,11 +453,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 			String pfi = ecrlsLabDocVO.getMSHLABPFI();
 
-//			if (!CommonUtil.isNumeric(pfi)) {
-//				pfi = "-" + pfi.replaceAll("[^\\d.]", "");
-//
-//				ecrlsLabDocVO.setMSHLABPFI(pfi);
-//			}
 			ecrlsLabDocVO.setMSHLABPFI(pfi);
 			inputOutputParamters.put("pfi", pfi);
 			int existingCliaAndPfiMatches = schedulerJobsDAO.checkForExistingCliaAndPFIMatches(inputOutputParamters);
@@ -514,24 +497,9 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 //	@Override
 //	public boolean handleProficiencyValidation(EcrlsLabDocVO ecrlsLabDocVO, List<String> errors,
-//			List<Integer> errorCodes, Map<String, String> schedulerMetaData) {
-//
-//		boolean hasErrors = false;
-//		int documentId = ecrlsLabDocVO.getDOCUMENT_ID();
-//		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
-//		List<String> pfiList = new ArrayList<String>();
-//
-//		pfiList.add(ecrlsLabDocVO.getMSHLABPFI());
-//		inputOutputParamters.put("pfiList", pfiList);
-//		List<Integer> filterTypes = new ArrayList<Integer>();
-//		filterTypes.add(2);
-//		inputOutputParamters.put("filterTypes", filterTypes);
 //		List<FilterTypeAndFilterConditionsVO> filterTypeAndFilterConditions = labProcessDAO
 //				.getFilterConditionsByFilterTypes(inputOutputParamters);
 //		hasErrors = checkLabProcessValidationExist(filterTypeAndFilterConditions, filterTypes, documentId,
-//				ecrlsLabDocVO.getMSHLABPFI(), errors, errorCodes, schedulerMetaData);
-//		return hasErrors;
-//	}
 
 	@Override
 	public int makeDocumentAsInactivate(int documentId) {
@@ -1298,12 +1266,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 		// if (errors.size() == 0
 		// && ecrlsLabDocVO.getCURRENT_PROCESS_STATUS() ==
 		// CommonConstants.RAW_RECORD_REPRISE_PROCESS_STATUS &&
-		// !CommonConstants.TEST_TYPE_RESISTANCE.equals(testType)) {
-		//
-		// if(alreadyValidatedCount > 0){
-		// return false;
-		// }
-		// }
 
 		String std_interpretation_id = "";
 		String test_result = "";
@@ -2004,14 +1966,8 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	}
 
 	// @Override
-	// public long getLastInsertedCCDRecordId(String recordType) {
-	// return schedulerJobsDAO.getLastInsertedCCDRecordId(recordType);
-	// }
 	//
 	// @Override
-	// public long getLastInsertedEXPRecordId(String recordType) {
-	// return schedulerJobsDAO.getLastInsertedEXPRecordId(recordType);
-	// }
 	@Override
 	public List<EcrlsReAssignDocs> getReAssignDocList(String recordType) {
 		return schedulerJobsDAO.getReAssignDocList(recordType);
@@ -2527,8 +2483,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 //								if (CommonUtil.isNullOrEmpty(_personCounty) || CommonUtil.isNullOrEmpty(_personState)
 //										|| !"NY".equals(_personState)) {
 //									populateCountyValue(_personCounty, _personState, _personCity, _personZip,
-//											documentMatchResults, "personCounty", "personState", "personCity");
-//								}
 
 								documentMatchResults.put("personPlus4",
 										matchingData[CommonConstants.QS_MATCH_DATA_PERSON_PLUS4_POSITION].trim());
@@ -2575,9 +2529,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 //								if (CommonUtil.isNullOrEmpty(_providerCounty)
 //										|| CommonUtil.isNullOrEmpty(_providerState) || !"NY".equals(_providerState)) {
 //									populateCountyValue(_providerCounty, _providerState, _providerCity, _providerZip,
-//											documentMatchResults, "providerCounty", "providerState", "providerCity");
-//
-//								}
 
 								
 								documentMatchResults.put("providerPlus4",
@@ -2621,9 +2572,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 //								if (CommonUtil.isNullOrEmpty(_facilityCounty)
 //										|| CommonUtil.isNullOrEmpty(_facilityState) || !"NY".equals(_facilityState)) {
 //									populateCountyValue(_facilityCounty, _facilityState, _facilityCity, _facilityZip,
-//											documentMatchResults, "facilityCounty", "facilityState", "facilityCity");
-//
-//								}
 
 								documentMatchResults.put("facilityPlus4",
 										matchingData[CommonConstants.QS_MATCH_DATA_FACILITY_PLUS4_POSITION].trim());
@@ -4426,13 +4374,7 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 			String responseType) {
 
 		try {
-			//String[] recipientEmailAddresses = schedulerMetaData.get(addressTo).split(",");
-			//if (recipientEmailAddresses.length > 0) {
 			//	sendEmail.sendSSLMessage(recipientEmailAddresses, subject.toString(), mailContent.toString(),
-			//			schedulerMetaData.get("NOTIFICATIONS_FROM"), null, CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-			//} else {
-			//	log.error(mailContent);
-			//}
 			sendEmail.processEmail(null, subject, mailContent, "NIGHTLY_JOB", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 		} catch (MessagingException messagingException) {
 			//log.error(subject + "  :   " + mailContent.toString() + " with error: " + );
@@ -4571,8 +4513,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 		// false, ecrlsLabDocVO.getCURRENT_PROCESS_STATUS(), "HIV_LAB");
 		// writeErrorCode(
 		// CommonConstants.RAW_RECORD_VALIDATION_ERRORS_PROCESS_STATUS,
-		// ecrlsLabDocVO.getDOCUMENT_ID(), "HIV_LAB");
-		// }
 		return transactionStatus;
 	}
 
@@ -4648,46 +4588,8 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	 *            etc)
 	 */
 //	@Override
-//	public void archiveMatchResultsData(List<JSONObject> schedulerStatusObject, List<String> schedulerNotificationObj) {
-//		JSONObject statusObject = new JSONObject();
-//
-//		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
-//		String transactionMessage = null;
-//
-//		try {
 //			// Calling the scheduler to Archieve the Match results data
-//			schedulerJobsDAO.clearMatchResultsTable();
-//
-//			transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
-//			transactionMessage = "Successfully archived the match results data";
-//
-//			schedulerNotificationObj.add(transactionMessage);
-//		} catch (DataAccessException dataAccessException) {
 //			transactionMessage = "Data Access Exception while archeiving the match results data "
-//					+ dataAccessException.getMessage();
-//			transactionStatus = CommonConstants.TRANSACTION_STATUS_FAILURE;
-//			log.error(transactionMessage);
-//		} catch (Exception exception) {
-//			transactionMessage = "Exception while archeiving the match results data " + exception.getMessage();
-//			transactionStatus = CommonConstants.TRANSACTION_STATUS_FAILURE;
-//			log.error(transactionMessage);
-//		}
-//
-//		statusObject.put(CommonConstants.STATUS_ACTION_NAME, "Archeiving the match results data.");
-//
-//		statusObject.put(CommonConstants.TRANSACTION_STATUS, transactionStatus);
-//
-//		statusObject.put(CommonConstants.TRANSACTION_MESSAGE, transactionMessage);
-//
-//		schedulerStatusObject.add(statusObject);
-//
-//		if (CommonConstants.TRANSACTION_STATUS_FAILURE.equals(transactionStatus)) {
-//
-//			schedulerNotificationObj.add(transactionMessage);
-//
-//			throw new DataRetrievalFailureException(transactionMessage);
-//		}
-//	}
 
 	/**
 	 * Performs the POST-MATCH processing
@@ -4751,40 +4653,7 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	}
 
 //	private void sendNonCaseDocumentDetails(
-//			List<Map<String, Object>> nonCaseDocumentDetails, Map<String, String> schedulerMetaData) {
-//		StringBuilder mailContent = new StringBuilder("");
-//
-//		mailContent.append("<span style='font-weight:bold'>The following STATENOs are actively flagged as a non_case but have a new lab (excluding CD4), AIRS or ADAP document that matched. Please review and manually trigger surveillance assignments and/or PS Messages as appropriate. No assignments or messages are systematically sent for persons with Active non_case documents</span>");
-//		
-//		
-//		mailContent.append("<table border='1' width='500px;' >");
-//
-//		for (Map<String, Object> document : nonCaseDocumentDetails) {
-//			mailContent.append("<tr><td>");
-//			mailContent.append(document.get("DOCUMENT_ID"));
-//			mailContent.append("</td><td>");
-//			mailContent.append(document.get("STATENO"));
-//			mailContent.append("</td><td>");
-//			mailContent.append(document.get("DOCUMENT_TYPE"));
-//			mailContent.append("</td></tr>");
-//			
-//		}
-//
-//		mailContent.append("</table><br/><br/><br/>");
-//
-//		String[] recipientEmailAddresses = schedulerMetaData.get("NON_CASE_NOTIFICATIONS_USERS_TO").split(",");
-//
-//		try {
 //			sendEmail.sendSSLMessage(recipientEmailAddresses, "New Documents match to a person with an active non_case document", mailContent.toString(),
-//					schedulerMetaData.get("NOTIFICATIONS_FROM"), null, CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-//		} catch (MessagingException e) {
-//			log.error(mailContent);
-//
-//			log.error("failed to send the Non Case Documents Notification to Users ", e);
-//
-//		}
-//		
-//	}
 	
 	
 	private void sendDatafluxQualityStageSummaryDetails(List<Map<String, String>> adhocDataFluxStatusList, List<Map<String, String>> dailyJobDataFluxStatusList,
@@ -5021,9 +4890,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	}
 
 //	@Override
-//	public List<MultiStepGroupedLoincsVO> getmultiStepPfiGroupCountDetails() {
-//		return schedulerJobsDAO.getmultiStepPfiGroupCountDetails();
-//	}
 
 	@Override
 	public String checkMultiStepDocumentsInRawHIVRecords(List<JSONObject> schedulerStatusObject, String recordType) {
@@ -5605,13 +5471,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	}
 
 //	@Override
-//	public int getMultiStepGroupLoincCount(String pfi, String loincCode) {
-//		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
-//		inputOutputParameterMap.put("pfi", pfi);
-//		inputOutputParameterMap.put("loincCode", loincCode);
-//
-//		return schedulerJobsDAO.getMultiStepGroupLoincCount(inputOutputParameterMap);
-//	}
 
 	@Override
 	public boolean isSchedulerRanToday(String schedulerName, List<JSONObject> schedulerStatusObject, String processName,
@@ -5627,15 +5486,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 //			String transactionStatus = CommonConstants.TRANSACTION_STATUS_FAILURE;
 			String transactionMessage = "Unable to verify the  Last run data for " + schedulerName + ".  Error : " + e.getMessage();
 
-//			JSONObject statusObject = new JSONObject();
-//
-//			statusObject.put(CommonConstants.TRANSACTION_STATUS, transactionStatus);
-//
-//			statusObject.put(CommonConstants.TRANSACTION_MESSAGE, transactionMessage);
-//
-//			schedulerStatusObject.add(statusObject);
-//
-//			sendSchedulerDetailedProcessStatus("DEVELOPER_NOTIFICATIONS_TO", schedulerStatusObject, processName, schedulerMetaData);
 
 			log.error(transactionMessage);
 		}
@@ -5818,11 +5668,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 		
 		String pfi = ecrlsLabDocVO.getMSHLABPFI();
 
-//		if (!CommonUtil.isNumeric(pfi)) {
-//			pfi = "-" + pfi.replaceAll("[^\\d.]", "");
-//
-//			ecrlsLabDocVO.setMSHLABPFI(pfi);
-//		}
 		ecrlsLabDocVO.setMSHLABPFI(pfi);
 		ecrlsStdDocVO.setDOCUMENT_ID(ecrlsLabDocVO.getDOCUMENT_ID());
 		ecrlsStdDocVO.setLAB_SRC_ID(ecrlsLabDocVO.getOBXOBSERVATIONRESULTKEY());
@@ -6013,18 +5858,8 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 		ecrlsStdDocVO.setSPECIMEN_SOURCE_NAME(ecrlsLabDocVO.getOBRSPECIMENSOURCENAME());
 		ecrlsStdDocVO.setREFERRING_FACILITY(ecrlsLabDocVO.getPIDFACILITYIDEXTERNAL());
 		ecrlsStdDocVO.setTESTING_FACILITY(ecrlsLabDocVO.getPIDFACILITYIDINTERNAL());
-		// ecrlsStdDocVO.setCASEKIND(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setCRBATCHNUM(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setPROCESSED(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setPROVIDER_TYPE(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setRECB(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setTEST_RESULT_RAW(ecrlsLabDocVO);
 
 		ecrlsStdDocVO.setHIV_VACCINE_RECIP(ecrlsLabDocVO.getPIDVACCINETRIALIND());
-		// ecrlsStdDocVO.setOTHER_IMMUNE_INFECTION(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setRESIDE_OUTSIDE_USA(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setAREA_OF_BIRTH(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setLAST_NEG_HIV_TEST_DATE(ecrlsLabDocVO);
 		ecrlsStdDocVO.setLENGTH_RESIDENCY_IN_USA(ecrlsLabDocVO.getPIDLENGTHOFRESIDENCY());
 		ecrlsStdDocVO.setSENDING_FACILITY_CLIA(ecrlsLabDocVO.getMSHSENDINGFACILITYCLIA());
 		// ecrlsStdDocVO.setDATE_SENT(ecrlsLabDocVO);
@@ -6034,24 +5869,14 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 		ecrlsStdDocVO.setLOCAL_TEST_CODE(ecrlsLabDocVO.getOBXLOCALTESTCODE());
 		ecrlsStdDocVO.setLOCAL_TEST_DESC(ecrlsLabDocVO.getOBXLOCALTESTDESC());
-		// ecrlsStdDocVO.setREVIEW_UID(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setREVIEW_DATE(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setRECEIVED_DATE(ecrlsLabDocVO);
 
 		ecrlsStdDocVO.setCREATE_UID("NYEHMS");
 		// ecrlsStdDocVO.setCREATE_DATE(new Date());
 
-		// ecrlsStdDocVO.setEHARS_STATUS_CD(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setEHARS_IMPORT_DATE(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setNYC_SHIP_DATE(ecrlsLabDocVO);
 
 		// ecrlsStdDocVO.setAGE_CATEGORY(ecrlsLabDocVO);//where to calculate
 
 		ecrlsStdDocVO.setCURRENT_PROCESS_STATUS(CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS);
-		// ecrlsStdDocVO.setQS_PARENT_DOC_ID(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setMATCH_CD(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setMATCH_WEIGHT(ecrlsLabDocVO);
-		// ecrlsStdDocVO.setMATCH_PASS(ecrlsLabDocVO);
 		// ecrlsStdDocVO.setMATCHED_STATENO
 
 		Float _ageValue = calculateAgeValue(ecrlsLabDocVO);
@@ -6261,10 +6086,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 		schedulerJobsDAO.updateSchedulerLogWithPidUpdateDate(inOutParameterMap);
 
-			//
-			// if(resultCount > 0){
-			//
-			// }else{
 			// //throw an exception
 			// }
 

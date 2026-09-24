@@ -84,9 +84,6 @@ public interface PersonDAO {
 
 	public List<String> getStatenoHistory(Map<Object, Object> map);
 
-//	public List<String> geteHARSNysStatenoHistory(String stateNo);
-//
-//	public List<String> geteHARSNycStatenoHistory(String stateNo);
 
 	public List<PersonDocHistoryVO> getHIVDocumentDetails(Map<String, Object> inputParameterMap);
 

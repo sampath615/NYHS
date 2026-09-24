@@ -28,8 +28,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Service
 public class STDConfDocumentServiceImpl implements STDConfDocumentService {
 
-	//private static Logger log = LoggerFactory.getLogger(STDConfDocumentServiceImpl.class);
-   // private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
     STDConfDocumentDAO stdConfDocumentDAO;

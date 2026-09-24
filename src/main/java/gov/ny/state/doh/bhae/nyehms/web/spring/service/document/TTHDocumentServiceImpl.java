@@ -42,27 +42,7 @@ public class TTHDocumentServiceImpl implements TTHDocumentService {
 //	public ADAPDocVO getADAPDoc(int docId, 
 //									BindingResult result, 
 //									UserObject userObject, 
-//									String sessionID) {
-//		ADAPDocVO stdADAPDocVO=null;
-//		boolean rollbackFlag=false;
-//		log.debug(nyehmsLog+" fetching for docId : "+docId);
-//		try{
-//			stdADAPDocVO=aDAPDocumentDAO.getADAPDoc(docId);			
-//		} catch (DataAccessException e) {
-//			rollbackFlag=true;
-//			log.error(nyehmsLog+"  "+e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		} catch (Exception e) {
-//			rollbackFlag=true;
-//			log.error(nyehmsLog+"  "+ e.getMessage());
-//			commonExceptionHandler.handleException(e, userObject,sessionID);
-//		}finally{						
 //			if(rollbackFlag)
-//				commonExceptionHandler.populateBindObjTrsnFail(result);
-//		}		
-//		
-//		return stdADAPDocVO;
-//	}
 
 	@Override
 	@Transactional

@@ -244,11 +244,6 @@ public class PRFDocumentServiceImpl implements PRFDocumentService {
 	    	
 	//    	if(CommonUtil.isNotNullAndEmpty(_din) && (_din.length() != 7  || !checkDinFormat(_din))){
 	//    		errors.put("DIN", "Patient DIN code must be exactly 7 characters, with 3rd being a letter (A-Z) and " +
-	//					"rest should be numbers (Example: 99X9999).");
-	//    	}
-	//    	if(pRFDocumentVO.isRACE_OTHER() && !CommonUtil.isNotNullAndEmpty(pRFDocumentVO.getRACE_OTHER_TEXT())){
-	//    		errors.put("RACE_OTHER_TEXT", "Patient other race is selected, please enter the value in other text box.");
-	//    	}
 	    	
 	    	String altFname = pRFDocumentVO.getALT_FNAME();
 	    	String altMname = pRFDocumentVO.getALT_MNAME();

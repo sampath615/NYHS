@@ -79,9 +79,6 @@ public class ClusterPartnerReviewController {
 			Map<String, Object> map, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UserObject userObject = (UserObject) session.getAttribute("UserObj");
-//		if (userObject == null) {
-//			userObject = new UserObject();
-//		}
 		
 		boolean isStdDocument = false;
 		

@@ -165,8 +165,6 @@ public class AHIDocumentServiceImpl implements AHIDocumentService {
 	public void sendEmail(BindingResult result, UserObject userObject) throws MessagingException {
 		
 		String subject = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_SUBJECT");
-		//String address_to = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_TO");
-		//String address_cc = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_CC");
 		
 		//String[] recipientEmailAddresses = address_to.split(",");
 		
@@ -191,18 +189,8 @@ public class AHIDocumentServiceImpl implements AHIDocumentService {
 		if(ahiFlagStatus){
 			
 			
-//			if(!"PRF".equals(documentType)){
-//				int resultCount = ahiDocumentDAO.checkAhiFlagEligibility(assignmentId);
-//				
-//				if(resultCount == 0){
 //					
 //					commonExceptionHandler.inspectDBTransacionResult(-1,
-//							"Failed to enable the AHI flag, AHI criteria not met", bindingResult);
-//					
-//					return resultCount;
-//					
-//				}
-//			}
 			
 			
 			
@@ -247,24 +235,10 @@ public class AHIDocumentServiceImpl implements AHIDocumentService {
 			sendEmail.processEmail(null, subject, content, "ASSIGNMENT_AHI", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 			
 			
-//			String[] recipientEmailAddressesTo = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_TO").split(",");
-//			String[] recipientEmailAddressesCC = null;
-//			
-//			String ccList = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_CC");
-//			
-//			if(CommonUtil.isNotNullAndEmpty(ccList)){
-//				recipientEmailAddressesCC = ccList.split(",");
-//			}
-//			
-//			if (recipientEmailAddressesTo.length > 0) {
 //				sendEmail.sendSSLMessage(
 //						recipientEmailAddressesTo,
 //						subject, content,
 //						 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
-//						CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-//			} else {
-//				log.error(content);
-//			}
 		} catch (MessagingException messagingException) {
 			
 			log.error(nyehmsLog + "   Failed to send the Email notification to AHI Users   ");
@@ -603,9 +577,6 @@ public class AHIDocumentServiceImpl implements AHIDocumentService {
 	}
 
 //	@Override
-//	public List<AhiAlertTrackingVO> getAhiAlertUserNotesHistory(int ahiAlertSeqId) {
-//		return ahiDocumentDAO.getAhiAlertUserNotesHistory(ahiAlertSeqId);
-//	}
 	
 	@Override
 	public List<AhiAlertTrackingVO> getAhiAlertData(UserObject userObject, BindingResult bindingResult, String dataType, String dataSubType) {

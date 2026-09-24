@@ -20,9 +20,6 @@ public class PersonVO implements Serializable {
 	
 	private List<String> statenoHistory;
 	
-//	private List<String> eHARSNysStatenoHistory;
-//	
-//	private List<String> eHARSNycStatenoHistory;
 	
 	public PersonViewVO getPersonViewVO() {
 		return personViewVO;
@@ -48,18 +45,6 @@ public class PersonVO implements Serializable {
 	public void setPersonDocHistoryList(List<PersonDocHistoryVO> personDocHistoryList) {
 		this.personDocHistoryList = personDocHistoryList;
 	}
-//	public List<String> geteHARSNysStatenoHistory() {
-//		return eHARSNysStatenoHistory;
-//	}
-//	public void seteHARSNysStatenoHistory(List<String> eHARSNysStatenoHistory) {
-//		this.eHARSNysStatenoHistory = eHARSNysStatenoHistory;
-//	}
-//	public List<String> geteHARSNycStatenoHistory() {
-//		return eHARSNycStatenoHistory;
-//	}
-//	public void seteHARSNycStatenoHistory(List<String> eHARSNycStatenoHistory) {
-//		this.eHARSNycStatenoHistory = eHARSNycStatenoHistory;
-//	}
 	
 	
 	

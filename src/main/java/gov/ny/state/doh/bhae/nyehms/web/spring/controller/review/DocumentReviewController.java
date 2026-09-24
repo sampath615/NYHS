@@ -85,8 +85,6 @@ public class DocumentReviewController {
 	public String getLabQualAcrfView(
 			Map<String, Object> pMap)
 	{	
-//		List<String> stateCodes = searchService.getRidrStateCodesToProcess(null);
-//		pMap.put("stateCodes", stateCodes);
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		pMap.put("addressFieldVO", addressFieldVO);
 		return "review/document/acrf/labQualAcrfView";

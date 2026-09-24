@@ -8,109 +8,10 @@
 		SELECT COUNT(*) FROM NYEHMS_UPLOAD_CLUSTER WHERE CLUSTER_ID = #{clusterId}
 	</select>
 	
-<!-- 	<select id="getErrorClusterIds" resultType="String">
-		SELECT distinct u.CLUSTER_ID 
-		FROM RAW_CLUSTER_DOC r, NYEHMS_UPLOAD_CLUSTER u
-		WHERE (U.CLUSTER_TYPE = 'CDC_M' or U.CLUSTER_TYPE = 'BHAE_M')
-		AND U.CLUSTER_ID_PK = r.CLUSTER_ID_PK
-		AND r.CURRENT_PROCESS_STATUS  in (39,40) order by CLUSTER_ID		
-	</select>	
-  	  
-  	<select id="getClusterUploadErrors" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO">
-		SELECT r.DOCUMENT_ID documentId, u.CLUSTER_ID clusterId, u.CLUSTER_TYPE clusterType, r.EHARS_STATENO uploadedEharsStateno, r.UPLOAD_NYEHMS_STATENO uploadedNyehmsStateno, u.CLUSTER_ID strClusterId
-		                , CASE WHEN R.CURRENT_PROCESS_STATUS = 40 THEN 'No Demographic info found'
-		                         ELSE 'STATENO not found'
-		                    END as errorReason, r.identification_method_code identificationMethod, r.identification_date identificationDate
-		FROM NYEHMS_UPLOAD_CLUSTER u, RAW_CLUSTER_DOC r WHERE u.CLUSTER_ID = #{clusterId} and U.CLUSTER_ID_PK = R.CLUSTER_ID_PK AND r.CURRENT_PROCESS_STATUS in (39,40)
-  	</select>
-  	
-  	<select id="getClusterUploadErrorsAll" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO">
-        SELECT r.DOCUMENT_ID documentId, u.CLUSTER_ID clusterId, u.CLUSTER_TYPE clusterType, r.EHARS_STATENO uploadedEharsStateno, r.UPLOAD_NYEHMS_STATENO uploadedNyehmsStateno, u.CLUSTER_ID strClusterId
-                        , CASE WHEN R.CURRENT_PROCESS_STATUS = 40 THEN 'No Demographic info found'
-                                 ELSE 'STATENO not found'
-                            END as errorReason, r.identification_method_code identificationMethod, r.identification_date identificationDate
-        FROM NYEHMS_UPLOAD_CLUSTER u, RAW_CLUSTER_DOC r WHERE (U.CLUSTER_TYPE = 'CDC_M' or U.CLUSTER_TYPE = 'BHAE_M') AND U.CLUSTER_ID_PK = R.CLUSTER_ID_PK AND r.CURRENT_PROCESS_STATUS in (39,40)  	</select>
-  	 -->
 	<select id="errorCountinUpload" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM RAW_CLUSTER_DOC WHERE CLUSTER_ID_PK = #{clusterIdPk} AND CURRENT_PROCESS_STATUS in (39,40)
 	</select>  	
 
-<!-- 	<select id="errorCountAfterUpdateUpload" parameterType="long" resultType="int">
-		SELECT COUNT(*) FROM RAW_CLUSTER_DOC WHERE DOCUMENT_ID = #{documentId} AND CURRENT_PROCESS_STATUS in (39,40)
-	</select> 
-
- 	<update id="updateNewNyehmsStateno" parameterType="java.util.Map">
-	   UPDATE RAW_CLUSTER_DOC set UPLOAD_CURRENT_NYEHMS_STATENO =  #{p_newNyehmsStateno}, CURRENT_PROCESS_STATUS = #{currrentProcessStatus}, LAST_STATENO_UPDATE_UID = #{p_worker_id}, LAST_STATENO_UPDATE_DATE = SYSDATE, PROCESS_DATE = SYSDATE where DOCUMENT_ID = #{p_documentId}
-    </update>
-    
-    <select id="getNyehmsStatenoFromNYSehars" parameterType="String" resultType="String">
-    	SELECT NYEHMS_STATENO from NYEHMS_EHARS_STATENO_MAP WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
-    </select>
-    
-    <select id="getNyehmsStatenoFromNYCehars" parameterType="String" resultType="String">
-    	SELECT NYEHMS_STATENO from EHARS_PERSON_NYC WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
-    </select>
-    
-    <select id="checkEharsStatenoInNysEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB, 'NYS_eHARS' as DEMO_DATA_SOURCE from NYEHMS_EHARS_STATENO_MAP WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
-    </select>
-    
-    <select id="checkEharsStatenoInNycEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB, 'NYC_eHARS' as DEMO_DATA_SOURCE from EHARS_PERSON_NYC WHERE EHARS_STATENO = #{stateno}  and NYEHMS_STATENO != '-1' and rownum = 1
-    </select>    
-
-    <select id="checkNyehmsStatenoInNysEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB,  EHARS_STATENO, CITYNO, 'NYS_eHARS' as DEMO_DATA_SOURCE 
-    	from NYEHMS_EHARS_STATENO_MAP WHERE NYEHMS_STATENO = #{stateno} and rownum = 1
-    </select>
-    
-    <select id="checkNyehmsStatenoInNycEharsNyehms" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-    	SELECT NYEHMS_STATENO as CURRENT_NYEHMS_STATENO, FIRST_NAME, MIDDLE_NAME, LAST_NAME, FN_TO_DATE(DOB,'MM/DD/YYYY') as DOB,  EHARS_STATENO, CITYNO, 'NYC_eHARS' as DEMO_DATA_SOURCE  
-    	from EHARS_PERSON_NYC WHERE NYEHMS_STATENO = #{stateno} and rownum = 1
-    </select>
-    
-	<select id="getDemographicByFirstResistance" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-		<![CDATA[
-		WITH data AS
-		(
-		    SELECT /*+ parallel(a,6) */ c.stateno, a.document_id, a.fname, a.mname, a.lname, a.dob_text, b.received_date
-		            , ROW_NUMBER() OVER (PARTITION BY c.stateno ORDER BY b.received_date) recd_order 
-		      FROM document_locator b, person_doc_association c, std_hiv_eclrs_doc a
-		     WHERE b.document_type_code = 'HIV_LAB'
-		       AND b.test_type_cd = 'RESISTANCE'
-		       AND b.is_active = 'Y'
-		       AND b.document_id = a.document_id
-		       AND c.stateno = #{stateno}
-		       AND a.document_id = c.document_id
-		       AND c.dissassociation_date IS NULL
-		)
-		SELECT document_id DOCUMENT_ID, stateno CURRENT_NYEHMS_STATENO, fname FIRST_NAME, mname MIDDLE_NAME, lname LAST_NAME, FN_TO_DATE(dob_text,'MM/DD/YYYY') as DOB, 'RESISTANCE' DEMO_DATA_SOURCE
-		  FROM data
-		WHERE recd_order = 1
-		]]>
-	</select>		    
-	    
-	<select id="getDemographicByMostRecentLab" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
-		<![CDATA[
-		WITH data AS
-		(
-		    SELECT /*+ parallel(a,6) */ c.stateno, a.document_id, a.fname, a.mname, a.lname, a.dob_text, c.association_date
-		            , ROW_NUMBER() OVER (PARTITION BY c.stateno ORDER BY c.association_date DESC, a.document_id DESC) lab_order 
-		      FROM document_locator b, person_doc_association c, std_hiv_eclrs_doc a
-		     WHERE b.document_type_code = 'HIV_LAB'
-		       AND b.is_active = 'Y'
-		       AND b.document_id = a.document_id
-		       AND c.stateno = #{stateno}
-		       AND a.document_id = c.document_id
-		       AND c.dissassociation_date IS NULL
-		)
-		SELECT document_id DOCUMENT_ID, stateno CURRENT_NYEHMS_STATENO, fname FIRST_NAME, mname MIDDLE_NAME, lname LAST_NAME, FN_TO_DATE(dob_text,'MM/DD/YYYY') as DOB, 'HIV_LAB' DEMO_DATA_SOURCE
-		  FROM data
-		WHERE lab_order = 1
-
-		]]>
-	</select>		 
-	-->
 	
 	<update id="identifyCDCRidrDuplicates" parameterType="String">
 			<![CDATA[

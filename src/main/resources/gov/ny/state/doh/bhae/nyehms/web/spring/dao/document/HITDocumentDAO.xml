@@ -69,9 +69,6 @@
 	<!-- ********************************************************************** -->
 	<!-- ********************************************************************** -->
 
-	<!-- <update id="updateHitLoadLogAfterZeroRows" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO"> 
-		<![CDATA[ update HIT_LOAD_LOG (NO_OF_FAILED_DOCS, NO_OF_RETRIEVED_DOCS, NO_OF_SUCCESSFUL_DOCS) 
-		values ( 0, 0, 0) ]]> </update> -->
 
 	<!-- ********************************************************************** -->
 	<!-- ********************************************************************** -->

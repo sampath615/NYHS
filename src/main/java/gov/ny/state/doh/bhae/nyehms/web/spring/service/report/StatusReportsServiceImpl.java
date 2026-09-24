@@ -244,9 +244,6 @@ public class StatusReportsServiceImpl implements StatusReportsService {
 			
 			String header = null;
 			
-//			if("4".equals(dataset) || "5".equals(dataset) || "6".equals(dataset)) {
-//				header = "Frequency";
-//			}else {
 				header = dateFrom + " - " + dateEnd;
 			//}
 			
@@ -274,8 +271,6 @@ public class StatusReportsServiceImpl implements StatusReportsService {
 //			
 //			if("4".equals(dataset) || "5".equals(dataset) || "6".equals(dataset)) {
 //				//3rd set Percentage Map
-//				currentYearPercentageMap.put(testType, percentage);
-//			}
 			
 			
 			
@@ -415,8 +410,6 @@ public class StatusReportsServiceImpl implements StatusReportsService {
              footerStyle.setWrapText(true);
         	
              Font footerFont = workbook.createFont();
-//             footerFont.setBold(true);
-//             footerFont.setColor(IndexedColors.PALE_BLUE.getIndex());
              footerFont.setFontHeight((short)(9*20));
              footerStyle.setFont(footerFont);
         	

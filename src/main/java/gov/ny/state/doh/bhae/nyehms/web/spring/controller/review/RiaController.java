@@ -299,8 +299,6 @@ public class RiaController {
 	Map<Object, Object> updateRiaDocData(@RequestParam Map<String, String> data,  @RequestParam Integer DOCUMENT_ID,
 			@ModelAttribute("riaDocVO") RiaDocVO riaDocVO,
 			HttpServletRequest request) {
-		//riaDocVO.getAcrfRidrList()
-		//riaDocVO.getFollowUpDocList()
 		HttpSession session = request.getSession();
 		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		

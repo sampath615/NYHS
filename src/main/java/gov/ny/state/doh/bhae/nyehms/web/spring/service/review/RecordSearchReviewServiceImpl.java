@@ -140,8 +140,6 @@ public class RecordSearchReviewServiceImpl implements RecordSearchReviewService 
 		String transactionMessage = null;
 		
 		
-		//STATENO has been flagged as a bad merge and is currently pending review";
-		//private final String UNFLAG_AS_BAD_MERGE = "Unflagged as Bad Merge";
 		try {
 			
 			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
@@ -171,9 +169,6 @@ public class RecordSearchReviewServiceImpl implements RecordSearchReviewService 
 
 					recordSearchReviewDAO.updateAutoRecordSearchEntry(inOutParameters);
 					
-//					
-//					isError = true;
-//					transactionMessage = "This stateno is already flagged for a Record Search";
 				}else{
 					
 					
@@ -624,10 +619,6 @@ public class RecordSearchReviewServiceImpl implements RecordSearchReviewService 
 						String _inputDob = columnData[3].trim();
 						String _inputBirthSex = columnData[4].trim();
 						
-//						if(CommonUtil.isNullOrEmpty(_inputStateno)) {
-//							  log.error("Input stateno is blank at Rownumber : "+rowCount);
-//							  throw new DataRetrievalFailureException("Input file is wrong, Input stateno is blank at Rownumber : "+rowCount);
-//						}
 //						
 						if(CommonUtil.isNullOrEmpty(_inputLastNameSoundex)) {
 							  log.error("Input Last name soundex is blank at Rownumber : {}",rowCount);
@@ -692,25 +683,8 @@ public class RecordSearchReviewServiceImpl implements RecordSearchReviewService 
 				inputParameterMap.put("fileName", inputFileName);
 				inputParameterMap.put("workerId", userObject.getWorkerId());
 				
-//				if(noReturnMessageSequences.size() > 0) {
-//					
-//					
-//					int rowIdListSize = noReturnMessageSequences.size();
 //					
 //					//Where condition can accept 1000 arguments.
-//					for (int index = 0; index < rowIdListSize; index = index+1000){
-//						
-//						if(index + 1000 > rowIdListSize){
-//							inputParameterMap.put("noReturnSequences", noReturnMessageSequences.subList(index, rowIdListSize));
-//						}else{
-//							inputParameterMap.put("noReturnSequences", noReturnMessageSequences.subList(index, index+1000));
-//						}
-//						
-//						recordSearchReviewDAO.updateNoReturnSequences(inputParameterMap);
-//						
-//					}
-//					
-//				}
 				
 				//documentDAO.writeRidrData(inputParameterMap);
 				recordSearchReviewDAO.uploadCDCFileData(inputParameterMap);

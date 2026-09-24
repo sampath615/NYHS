@@ -80,15 +80,9 @@ public class PrfReviewStatusLoader{
 						
 						//String[] recipientEmailAddressesTo = null;
 						
-						//if(schedulerMetaData.get("PRF_REVIEW_NOTIFICATIONS_TO") != null){
-						//	recipientEmailAddressesTo = schedulerMetaData.get("PRF_REVIEW_NOTIFICATIONS_TO").split(",");
-						//}
 						
 						//String[] recipientEmailAddressesCC = null;
 						
-						//if(schedulerMetaData.get("PRF_REVIEW_NOTIFICATIONS_CC") != null){
-						//	recipientEmailAddressesCC = schedulerMetaData.get("PRF_REVIEW_NOTIFICATIONS_CC").split(",");
-						//}
 						
 						
 						//if (recipientEmailAddressesTo != null && recipientEmailAddressesTo.length > 0) {
@@ -96,11 +90,6 @@ public class PrfReviewStatusLoader{
 						//			recipientEmailAddressesTo,
 						//			"PRFs queued for review", message.toString() ,
 						//			schedulerMetaData.get("NOTIFICATIONS_FROM"), recipientEmailAddressesCC,
-						//			CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-						//} else {
-						//	log.error("No reciepients found for sending PRF Review count status");
-						//	log.error(message);
-						//}
 						sendEmail.processEmail(null, "PRFs queued for review", message.toString(), "PRF_REVIEW", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 						
 					}catch(Exception e){

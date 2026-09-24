@@ -140,13 +140,6 @@ public class LabProficiencyController {
      */
 //    @RequestMapping(value = "/getLabPfiData", method = RequestMethod.GET, produces = "application/json")
 //    public @ResponseBody
-//    String getLabPfiData(Map<String, Object> map, HttpServletRequest request) {
-//
-//        JsonObject jsonObject = labProficiencyService.getLabPfiList();
-//        map.put("ProficiencyConditions", jsonObject);
-//        return jsonObject.toString();
-//
-//    }
 
     /**
      * This method accepts parameters pfi and filterId and returns the relevant
@@ -271,9 +264,6 @@ public class LabProficiencyController {
        
        
         
-//
-//        JsonElement jsonElement = parser.parse(jsonStr);
-//        JsonArray editData = jsonElement.getAsJsonArray();
 //
         List<String> filterNumbers = new ArrayList<String>();
         

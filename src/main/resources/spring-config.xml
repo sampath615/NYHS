@@ -43,8 +43,6 @@
 			name="gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject" />
 		<oxm:class-to-be-bound
 			name="gov.ny.state.doh.bhae.nyehms.web.ajax.json.JsonObject" />	
-		<!-- <oxm:class-to-be-bound
-			name="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonAddressVO" /> -->
 			<oxm:class-to-be-bound
 			name="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO" />
 	</oxm:jaxb2-marshaller>
@@ -66,12 +64,6 @@
 	<!-- Bind the return value of the Rest service to the ResponseBody. -->
 <!-- 	<bean -->
 <!-- 	    class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
-<!-- 	    <property name="messageConverters"> -->
-<!-- 	        <util:list id="beanList"> -->
-<!-- 	            <ref bean="jsonHttpMessageConverter" />           -->
-<!-- 	        </util:list> -->
-<!-- 	    </property> -->
-<!-- 	</bean> -->
 		
 		
 	
@@ -84,7 +76,7 @@
 	</mvc:annotation-driven>
 	<!--  REST, Web Services Related declaration End -->
 	
-	<!--  Spring Core and MVC Declarations Start -->	
+	<!--  Spring Core and MVC Declarations Start -->
 	<bean id="jspViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
@@ -114,7 +106,6 @@
 	      </props>
 	    </property> 
  	    <property name="jndiName" value="BHAE_NYEHMS_DS_ONE_GL"> </property> 
-<!--	    <property name="jndiName" value="BHAE_NYEHMS_PRODUCTION_DS_ONE"> </property> -->
 	</bean>
 	
 	<bean id="ursDS" class="org.springframework.jndi.JndiObjectFactoryBean">

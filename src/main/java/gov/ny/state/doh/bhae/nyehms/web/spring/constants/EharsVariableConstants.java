@@ -23,29 +23,8 @@ public class EharsVariableConstants {
 		 	eharsFieldMap.put("first_name", 2);
 			eharsFieldMap.put("middle_name", 3);
 			eharsFieldMap.put("last_name", 1);
-			//eharsFieldMap.put("dob", "Date of birth");
-			//eharsFieldMap.put("birth_sex", "Sex");
-			//eharsFieldMap.put("vital_status", "Vital Status");
-			//eharsFieldMap.put("dod", "Date of death");
-			//eharsFieldMap.put("ethnicity", "Ethnicity");
-			//eharsFieldMap.put("old_race", "Old Race");
-			//eharsFieldMap.put("race", "Race");
-			//eharsFieldMap.put("swm", "SWM");
-			//eharsFieldMap.put("swf", "SWF");
-			//eharsFieldMap.put("idu", "IDU");
-			//eharsFieldMap.put("clotting_factor", "Clotting Factor");
-			//eharsFieldMap.put("sex_idu", "Sex IDU");
-			//eharsFieldMap.put("sex_bisexual_male", "Sex Bisexual Male");
-			//eharsFieldMap.put("sex_hemo", "Sex Hemo");
-			//eharsFieldMap.put("sex_transfusion", "Sex Transfusion");
-			//eharsFieldMap.put("sex_transplant", "Sex Transplant");
-			//eharsFieldMap.put("sex_hiv", "Sex HIV");
-			//eharsFieldMap.put("transfusion", "Transfusion");
-			//eharsFieldMap.put("transplant", "Transplant");
 			eharsFieldMap.put("hcw_risk", 1);
 			
-			//eharsFieldMap.put("oth_risk", "Other Risk");
-			//eharsFieldMap.put("nir", "NIR");
 			eharsFieldMap.put("hf_facility_name1", 1);
 			eharsFieldMap.put("hf_facility_addr1", 3);
 			eharsFieldMap.put("hf_facility_addr2", 4);
@@ -61,9 +40,6 @@ public class EharsVariableConstants {
 			eharsFieldMap.put("af_facility_state", 7);
 			eharsFieldMap.put("af_facility_zip", 8);
 			
-			//eharsFieldMap.put("hiv_dx_dt", "HIV DX DT");
-			//eharsFieldMap.put("aids_dx_dt", "AIDS DX DT");
-			//eharsFieldMap.put("hiv_aids_dx_dt", "HIV AIDS DX DT");
 			
 			eharsFieldMap.put("cur_address1", 4);
 			eharsFieldMap.put("cur_address2", 5);
@@ -101,8 +77,6 @@ public class EharsVariableConstants {
 		EHARS_VAR_NAME_MAP.put("current_gender", "Current Gender");
 		EHARS_VAR_NAME_MAP.put("vital_status", "Vital Status");
 		EHARS_VAR_NAME_MAP.put("dod", "Date of Death");
-		//eharsFieldVariableNameMap.put("old_race", "Old Race");
-		//eharsFieldVariableNameMap.put("race", "Ethnicity and Race");
 		EHARS_VAR_NAME_MAP.put("swm", "Sex with Male");
 		EHARS_VAR_NAME_MAP.put("swf", "Sex with Female");
 		EHARS_VAR_NAME_MAP.put("idu", "Injected Non-Prescription Drug");
@@ -206,11 +180,6 @@ public class EharsVariableConstants {
         EHARS_VAR_NAME_MAP.put("most_recent_cd4_cnt_dt", "Most Recent CD4 Count Date");
         EHARS_VAR_NAME_MAP.put("most_recent_cd4_pct", "Most Recent CD4 Percentage");
         EHARS_VAR_NAME_MAP.put("most_recent_cd4_pct_dt", "Most Recent CD4 Percentage Date");
-        //eharsFieldVariableNameMap.put("hiv_dx_test_name", "HIV Diagnosis Test Name");
-        //eharsFieldVariableNameMap.put("hiv_dx_test_date", "HIV Diagnosis Test Date");
-        //eharsFieldVariableNameMap.put("hiv_dx_result", "HIV Diagonosis Result");
-        //eharsFieldVariableNameMap.put("hiv_dx_units", "HIV Diagnosis Units");
-        //eharsFieldVariableNameMap.put("hiv_dx_interpretation", "HIV Diagnosis Interpretation");
         EHARS_VAR_NAME_MAP.put("aids_dx_cnt_dt", "AIDS Dianosis Count Date");
         EHARS_VAR_NAME_MAP.put("aids_dx_cnt_result", "AIDS Diagnosis Count Result");
         EHARS_VAR_NAME_MAP.put("aids_dx_pct_dt", "AIDS Diagnosis Percentage Date");

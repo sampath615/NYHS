@@ -35,9 +35,6 @@ public class FullAppLogger {
 		stopWatch.stop();
 		StringBuffer stringBuffer = new StringBuffer();
 		stringBuffer.append(joinPoint.getTarget().getClass().getName());
-		//stringBuffer.append(".");
-		//stringBuffer.append(joinPoint.getSignature().getName());
-		//stringBuffer.append("(");
 		Object[] methodArrgs = joinPoint.getArgs();
 		for (int i = 0; i < methodArrgs.length; i++) {
 			//stringBuffer.append(methodArrgs[i]).append(",");

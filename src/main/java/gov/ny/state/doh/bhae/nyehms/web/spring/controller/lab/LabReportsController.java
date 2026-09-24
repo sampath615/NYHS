@@ -466,16 +466,6 @@ public class LabReportsController {
 
 //	@RequestMapping(value="/getLabReport", method = RequestMethod.POST)
 //	public String getLabReport(@RequestParam String  workerId,@RequestParam String  startDate, 
-//			@RequestParam String  endDate, HttpServletRequest request, Map<String, Object> map){
-//
-//		HttpSession session = request.getSession();
-//		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-//
-//		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-//		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-//		
-//		return "reports/workerMetrics/workerMetricsDetails";
-//	}
 
 	
 	@RequestMapping(value="/getMatchedProviderDetails.json", method = RequestMethod.POST, produces = "application/json")

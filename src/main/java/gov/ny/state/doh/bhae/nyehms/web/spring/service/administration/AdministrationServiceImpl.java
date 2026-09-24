@@ -469,9 +469,6 @@ public class AdministrationServiceImpl implements AdministrationService {
 			if(statusCode!=0)throw new DataRetrievalFailureException(transactionMessage);
 			
 			
-//			if(StringUtils.isNotBlank(nyehmsWorkerRegionsViewVO.getUserComments()){
-//				
-//			}
 			
 			commonExceptionHandler.inspectDBTransacionResult(statusCode, transactionMessage, bindingResult);
 			

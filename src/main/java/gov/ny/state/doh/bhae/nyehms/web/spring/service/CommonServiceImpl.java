@@ -388,8 +388,6 @@ private static String getINIPath() {
         
         if (isWindows)//windows machines
         {
-        	//String WindowsLibPath_32 = systemDriveLetter + "Program Files/CRYPTOCard/BlackShield ID/javaapi/bin/x86/JCryptoWrapperWin.dll";
-        	//String WindowsLibPath_64 = "C:/development/workspace/CryptoDWP/ini/JCryptoWrapperWin.dll";
             String WindowsLibPath_64 = "C:/Program Files/CRYPTOCard/BlackShield ID/JavaAPI/bin/x64/JCryptoWrapperWin.dll";
 
             if (is64)
@@ -679,13 +677,6 @@ private static String getINIPath() {
 			}
 		}
 		
-//		if(!"".equals(tableName)){
-//			
-//			Map<Object, Object> inputParameters = new HashMap<Object, Object>();
-//			inputParameters.put("tableName", tableName);
-//			inputParameters.put("documentId", documentId);
-//			documentData = commonDAO.getDocumentData(inputParameters);
-//		}
 		
 		return documentData;
 	}

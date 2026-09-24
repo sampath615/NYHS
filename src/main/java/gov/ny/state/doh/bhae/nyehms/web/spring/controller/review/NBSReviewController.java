@@ -96,8 +96,6 @@ public class NBSReviewController {
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		NBSDocVO nbsDocVO = nbsReviewService.getNBSDoc(docId, reviewType, bindingResult, userObject);
 //		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
-//				userObject);
-//		map.put("nyehmsStatenoDetails", nyehmsStatenoDetails);
 		map.put("stdNBSDocVO", nbsDocVO);
 		return "document/NBSDocument";
 	}

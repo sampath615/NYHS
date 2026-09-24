@@ -51,8 +51,6 @@ public class FacilityController {
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		//Map<String, String> facilityTypeCodes = facilityService.getFacilityTypeCodes(bindingResult, userObject);
-		//map.put("facilityTypeCodes", facilityTypeCodes);
 		SubFacilityVO subFacilityVO= new SubFacilityVO();
 		map.put("subFacilityVO", subFacilityVO);
 		//For State and County DropDown
@@ -75,8 +73,6 @@ public class FacilityController {
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		//Map<String, String> facilityTypeCodes = facilityService.getFacilityTypeCodes(bindingResult, userObject);
-		//map.put("facilityTypeCodes", facilityTypeCodes);
 		
 		//For State and County DropDown
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
@@ -248,8 +244,6 @@ public class FacilityController {
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		//Map<String, String> facilityTypeCodes = facilityService.getFacilityTypeCodes(bindingResult, userObject);
-		//map.put("facilityTypeCodes", facilityTypeCodes);
 		SubFacilityVO subFacilityVO= new SubFacilityVO();
 		map.put("subFacilityVO", subFacilityVO);
 		

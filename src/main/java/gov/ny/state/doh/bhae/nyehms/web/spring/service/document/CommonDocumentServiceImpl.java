@@ -368,9 +368,6 @@ public class CommonDocumentServiceImpl implements CommonDocumentService{
 		
 		commonDocLabsDAO.deleteEntryInDocumentPersonAttr(documentId);
 		
-//		if(resultcount == 0){
-//			throw new DataRetrievalFailureException("Failed to delete the entry in Document Person attr  :"+documentId);
-//		}
 	}
 	
 
@@ -384,10 +381,6 @@ public class CommonDocumentServiceImpl implements CommonDocumentService{
 	public void deleteEntryInDocumentRace(int documentId, UserObject userObject){
 		
 		commonDocLabsDAO.deleteEntryInDocumentRace(documentId);
-//		
-//		if(resultcount == 0){
-//			throw new DataRetrievalFailureException("Failed to delete the entry in Document Race  :"+documentId);
-//		}
 	}
 	
 	@Override
@@ -432,9 +425,6 @@ public class CommonDocumentServiceImpl implements CommonDocumentService{
 		
 		commonDocLabsDAO.updateTriggeringDocumentIdInNyehmsMessage(inputOutputParameterMap);
 		
-//		if(resultCount == 0){
-//			throw new DataRetrievalFailureException("Failed to update the Triggering document in Nyehms messages  :"+newDocumentId);
-//		}
 //		
 	}
 	

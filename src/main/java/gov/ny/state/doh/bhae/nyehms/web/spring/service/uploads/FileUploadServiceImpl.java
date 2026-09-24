@@ -125,307 +125,10 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 //	@Override
 //	public Map<Object, Object> uploadUpdatedDispositionsFile(MultipartFile updatedDispositionFile,
-//			BindingResult bindingResult, UserObject userObject){
-//		
-//		boolean isError = false; 
-//		
-//		XSSFWorkbook workbook = null;
-//		XSSFSheet worksheet = null;
-//		
-//		String transactionMessage = null;
-//		
-//		List<UpdatedDispositionsVO>  updatedDispositionsList = new ArrayList<UpdatedDispositionsVO>();
-//		
-//		Set<Integer> returnMessageDocIds = new HashSet<Integer>();
-//		
-//		List<Integer> docIdsDateOfDeathNull = new ArrayList<Integer>();
-//		
-//		String workerUid = userObject.getUserId();
-//		
-//		Map<Object, Object> resultMap = new HashMap<Object, Object>();
-//		
-//		
-//		
-//		SimpleDateFormat inputDateFormat = null;
-//		
-//		try{
-//			
-//			
-//			
-//			if(updatedDispositionFile.isEmpty()){
-//				
-//				isError = true;
-//				transactionMessage = "The file uploaded contains no return messages";
-//				
-//			}else{
-//				workbook = new XSSFWorkbook(updatedDispositionFile.getInputStream());
-//				
-//				 worksheet = workbook.getSheetAt(0);
-//				
-//				 
-//				int index = 0; 
-//				
-//				
-//				String[] UPDATE_RETURN_MESSAGE_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPDATE_RETURN_MESSAGE_COLUMN_NAMES").split(",");
-//				
-//				
-//				int UPDATE_RETURN_MESSAGE_COLUMN_NAMES_LENGTH = UPDATE_RETURN_MESSAGE_COLUMN_NAMES.length;
-//				
-//				
-//				
-//				while (index <= worksheet.getLastRowNum()) {
-//					
-//					XSSFRow row = worksheet.getRow(index++);
-//					
-//					if(index == 1){
-//						
-//						
-//						
-//						
-//						for(int columnIndex = 0; columnIndex < UPDATE_RETURN_MESSAGE_COLUMN_NAMES_LENGTH; columnIndex++){
-//							
-//							String columnNameInSheet = row.getCell(columnIndex).getStringCellValue();
-//							
-//							columnNameInSheet = columnNameInSheet.replaceAll("\n", " ");
-//							
-//							if(!UPDATE_RETURN_MESSAGE_COLUMN_NAMES[columnIndex].equalsIgnoreCase(columnNameInSheet.trim())){
-//								
-//								isError = true; 
-//								
-//								transactionMessage = "Column headers must match the template";
-//								
-//								break;
-//								
-//							}
-//							
-//						}
-//						
-//						if(isError){
-//							break;
-//						}else{
-//							continue;
-//						}
-//						
-//					}
-//					
-//					if(row == null){
-//						
-//						if(log.isDebugEnabled()){
-//							log.debug("Empty is row is there");
-//						}
-//						continue;
-//					}
-//					
-//					
-//					boolean hasRowData = false;
-//					
-//					
-//					for(int columnIndex = 0; columnIndex < UPDATE_RETURN_MESSAGE_COLUMN_NAMES_LENGTH; columnIndex++){
-//						
-//						if(!(row.getCell(columnIndex) == null || CommonUtil.isNullOrEmpty(row.getCell(columnIndex).toString()))){
-//							
-//							hasRowData = true;
-//							
-//							break;
-//						}
-//						
-//					}
-//					
-//					if(!hasRowData){
-//						continue;
-//					}
-//					
-//					
-//					UpdatedDispositionsVO updatedDispositionsVO = new UpdatedDispositionsVO();
-//					
-//										
-//					if(row.getCell(0) == null && CommonUtil.isNotNullAndEmpty(row.getCell(0).toString())){
-//						isError = true;
-//						
-//						
-//						transactionMessage = "Document Id must be populated for every return message";
-//						
-//						log.error(transactionMessage);
-//						
-//						break;
-//					}
-//					
-//					int messageDocId;
-//					
-//					try{
-//						messageDocId = (int) row.getCell(0).getNumericCellValue();
-//					}catch(Exception e){
-//						log.error("Failed, while reading "+index+" row for Message Doc Id");
-//						
-//						transactionMessage = "Document Id is invalid at Row number "+index;
-//						
-//						log.error(transactionMessage);
-//						
-//						isError = true;
-//						
-//						break;
-//						
-//					}
-//					
-//					if(!returnMessageDocIds.add(messageDocId)){
-//						
-//
-//						isError = true;
-//						transactionMessage = "There are duplicate records in the file upload, please de-duplicate file";
-//						
-//						log.error(transactionMessage);
-//						
-//						break;
-//						
-//					}
-//					
-//					StringBuilder failedMessage = new StringBuilder();
-//
-//					updatedDispositionsVO.setDOCUMENT_ID(messageDocId);
-//					
-//					Cell DateOfDeathCell = row.getCell(1); 
 //					//|| DateOfDeathCell.getStringCellValue().isEmpty()
-//					if(DateOfDeathCell == null || CommonUtil.isNullOrEmpty(DateOfDeathCell.toString())){
-//						docIdsDateOfDeathNull.add(messageDocId);
-//					}else{
-//						
-//						String Date_Of_Death = DateOfDeathCell.toString().trim();;
-//						
-//						try{
-//							if(Date_Of_Death.indexOf("-") != -1){
-//								inputDateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-//								
-//								updatedDispositionsVO.setDATE_OF_DEATH(inputDateFormat.parse(Date_Of_Death));
-//								
-//							}else if(Date_Of_Death.indexOf("/") != -1){
-//								inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
-//								
-//								updatedDispositionsVO.setDATE_OF_DEATH(inputDateFormat.parse(Date_Of_Death));
-//							
-//							}else{
-//								log.error("Date of Death is in invalid format   "+messageDocId);
-//								
-//								failedMessage.append("Date of Death is in invalid format, please use MM/DD/YYYY, ");
-//							}
-//						}catch(ParseException parseException){
-//							
-//							log.error("Date of Death is in invalid format for DocumentId "+messageDocId);
-//							
-//							failedMessage.append("Date of Death is in invalid format, please use MM/DD/YYYY, ");
-//							
-//						}
-//						
-//					}
-//					
-//					Cell dispositionCell = row.getCell(2); 
 //
 //					//|| dispositionCell.getStringCellValue().isEmpty() 
-//					if(dispositionCell == null  || CommonUtil.isNullOrEmpty(dispositionCell.toString())){
-//						failedMessage.append("Disposition code must be populated for every return message");
-//					}else{
-//						
-//						
-//						
-//						try{
-//							
-//							updatedDispositionsVO.setLATEST_DISPOSITION_CODE((int)dispositionCell.getNumericCellValue());
-//							
-//						}catch(Exception e){
-//							log.error("Failed, while reading "+index+" row for Disposition code");
-//							
-//							transactionMessage = "Disposition code is invalid at Row number "+index;
-//							
-//							log.error(transactionMessage);
-//							
-//							isError = true;
-//							
-//							break;
-//						}
-//						
-//						
-//					}
-//					
-//					if(row.getCell(3) != null && CommonUtil.isNotNullAndEmpty(row.getCell(3).toString())){
-//						
-//						if(row.getCell(3).toString().length() <= 4000){
-//							updatedDispositionsVO.setFIELDNOTES(row.getCell(3).toString());
-//						}else{
-//							failedMessage.append("FIELD NOTES should not exceed 4000 characters, ");
-//						}
-//					}
-//					
-//					updatedDispositionsVO.setCREATE_UID(workerUid);
-//					
-//					
-//					if("".equals(failedMessage.toString())){
 //						// persist data into database in here
-//						updatedDispositionsList.add(updatedDispositionsVO);
-//					}else{
-//						resultMap.put(messageDocId, failedMessage);
-//					}
-//					
-//				}
-//				
-//				
-//				if(!isError && returnMessageDocIds.size() == 0){
-//					isError = true;
-//					transactionMessage = "The file uploaded contains no return messages";
-//					log.error(transactionMessage);
-//				}
-//				
-//			}
-//	        
-//			
-//			
-//			
-//			if(!isError){
-//				
-//				
-//				
-//
-//				
-//				fileUploadTransactionHelper.uploadUpdatedDispositionsCodes(returnMessageDocIds, docIdsDateOfDeathNull, updatedDispositionsList, resultMap, bindingResult, userObject);
-//				
-//				
-//				
-//			}
-//			
-//			
-//			
-//			
-//			
-//			
-//		}catch(DataAccessException dataAccessException){
-//			isError = true;
-//			
-//			transactionMessage = "Failed to read the file, please contact helpline";
-//			
-//			log.error("Failed to read the file.   "+dataAccessException.getMessage());
-//		}catch(Exception exception){
-//			isError = true;
-//			
-//			transactionMessage = "Failed to read the file, please contact helpline";
-//			
-//			log.error("Failed to read the file.   "+exception.getMessage());
-//		}finally{
-//			
-//			try {
-//				workbook.close();
-//			} catch (IOException e) {
-//				log.error("IO EXCEPTION while closing the workbook   :  " +e.getMessage());
-//			}catch (Exception e) {
-//				log.error("EXCEPTION while closing the workbook   :  " +e.getMessage());
-//			}
-//		}
-//		
-//		if(isError){
-//			commonExceptionHandler.inspectDBTransacionResult(-1, transactionMessage, bindingResult);
-//		}
-//		
-//		
-//		return resultMap;
-//		
-//	}
 	
 	
 	@Override
@@ -452,44 +155,11 @@ public class FileUploadServiceImpl implements FileUploadService {
 	
 //	@Override
 //	public int checkForDuplicateDispositionCode(
-//			UpdatedDispositionsVO updatedDispositionsVO){
-//		
-//		
-//		int resultCount = personDAO.checkForDuplicateDispositionCode(updatedDispositionsVO);
-//		
-//		log.error(resultCount+"           "+updatedDispositionsVO.getDOCUMENT_ID());
-//		
-//		if(resultCount > 0){
-//			
-//			updatedDispositionsVO.setTABLE_NAME("DUP_UPDATE_PS_RETURN_MESSAGE");
-//			
-//			personDAO.insertUpdatedReturnMessage(updatedDispositionsVO);
-//			
-//		}
-//		
-//		return resultCount;
-//		
-//	}
 //	@Override
 //	public void insertUpdatedDispositionCode(
-//			UpdatedDispositionsVO updatedDispositionsVO)throws SQLException{
-//		
-//		updatedDispositionsVO.setTABLE_NAME("UPDATE_PS_RETURN_MESSAGE");
-//		
-//		personDAO.insertUpdatedReturnMessage(updatedDispositionsVO);
-//	}
 	
 //	@Override
 //	public List<Map<String, Object>> checkExistingDateOfDeathForMessageDocIds(
-//			List<Integer> docIdsDateOfDeathNull){
-//		
-//
-//		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
-//		
-//		inputParameterMap.put("docIdsDateOfDeathNull", docIdsDateOfDeathNull);
-//		
-//		return personDAO.checkExistingDateOfDeathForMessageDocIds(inputParameterMap);
-//	}
 
 
 	@Override
@@ -750,11 +420,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 				ps.addBatch();
 				
-//				if(index%1000 == 0){
-//					ps.executeBatch();
-//					
-//					index = 0;
-//				}
 				
 				
 				
@@ -1668,11 +1333,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 				}
 				
 				
-//				if(!isError && statenoHistoryMap.size() == 0){
-//					isError = true;
-//					transactionMessage = "There is no History for all the STATENO(S) uploaded.";
-//					log.error(transactionMessage);
-//				}
 				
 			}
 			
@@ -1823,11 +1483,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 				}
 				
 				
-//				if(!isError && currentStatenoMap.size() == 0){
-//					isError = true;
-//					transactionMessage = "There is no History for all the STATENO(S) uploaded.";
-//					log.error(transactionMessage);
-//				}
 				
 			}
 			

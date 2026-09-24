@@ -364,19 +364,9 @@ public class PerinatalServiceImpl implements PerinatalService {
 					String chartBarImgAsBase64 = "data:image/png;base64," + chartBarImgDataAsBase64;
 					log.error("1");
 					
-//					String birthQtr = facilityData.get("BIRTHQTR");
-//		
-//					if (birthQtr.equals(birthFirstQuarter)) {
-//						birthQtr = "1";
-//					} else {
-//						birthQtr = "2";
-//					}
 		
 					String fileName = "performance data attachment.docx";
 					
-//					facilityData.put("BIRTH_QTR", birthQtr);
-//					facilityData.put("ATTACHMENT_NAME", attachmentName);
-				//	log.error("attachmentName  "+attachmentName);
 					StringWriter graphResponseContent = new StringWriter();
 					log.error("2");
 					facilityData.putAll(facilityAddressDetails);
@@ -453,9 +443,6 @@ public class PerinatalServiceImpl implements PerinatalService {
 					
 //					if(isYearsSame) {
 						
-//						completeFacilityData.put("ATTACHMENT_B_QUARTER", "Attachment 1B ("+quarterNames.get(birthFirstQuarter)+" quarter) and 2B ("+quarterNames.get(birthSecondQuarter)+" quarter) of "+birthFirstYear);
-//						completeFacilityData.put("YEAR", birthFirstYear);
-//					}else {
 						
 						
 						if(isYearsSame) {
@@ -626,12 +613,8 @@ public class PerinatalServiceImpl implements PerinatalService {
 		Inline inline = imagePart.createImageInline("image",
 		"image", docPrId, cNvPrId, false);
 		
-//		int originalWidth = imagePart.getImageInfo().getSize().getWidthPx();
-//	      int originalHeight = imagePart.getImageInfo().getSize().getHeightPx();
 //	      
 //	      227, 65
-//	      log1.error("originalWidth  "+originalWidth);
-//	      log1.error("originalHeight  "+originalHeight);
 		
 		P paragraph = addInlineImageToParagraph(inline);
 		
@@ -655,90 +638,13 @@ public class PerinatalServiceImpl implements PerinatalService {
     }
 
 //	private void generateFacilityPerformanceLetter(Configuration configuration, ChannelSftp obj_SFTPChannel, Map<String, String> completeFacilityData,
-//			WordprocessingMLPackage facilityReportDocxOut, XHTMLImporter facilityReportXHTMLImporter) throws Exception   {
-//		
-//			if(facilityReportDocxOut != null) {
-//				facilityReportDocxOut.reset();
-//			}
-//			
-//			facilityReportDocxOut = WordprocessingMLPackage.createPackage(PageSizePaper.LETTER, false);
-//			facilityReportXHTMLImporter = new XHTMLImporterImpl(facilityReportDocxOut);
-//			
-//			
-//			//File file = new File(new URL("http://example.com/my-file-path.txt"));
-//		    byte[] bytes = convertImageToByteArray(obj_SFTPChannel.get("/H:/BHAE/HAEGroup/Lab Reporting/Weekly Counts/Facility Data/Header4.png"));
-//		      
-//		    HeaderPart headerPart = createHeader(facilityReportDocxOut);
-//		      
-//		    headerPart.getContent().add(newImage(facilityReportDocxOut, headerPart, bytes));
-//		      
-//		      
-//		     bytes = convertImageToByteArray(obj_SFTPChannel.get("/H:/BHAE/HAEGroup/Lab Reporting/Weekly Counts/Facility Data/Footer4.png"));
-//		      
-//		     FooterPart footerPart = createFooter(facilityReportDocxOut);
-//		      
-//		     footerPart.getContent().add(newFooterImage(facilityReportDocxOut, footerPart, bytes));
-//		     
-//		
-//			Template template = configuration.getTemplate("perinatalPerformanceLetter.ftl");
-//	
-//			StringWriter responseContent = new StringWriter();
-//	
-//			template.process(completeFacilityData, responseContent);
 //			
 //			facilityReportDocxOut.getMainDocumentPart().getContent().addAll( 
-//					facilityReportXHTMLImporter.convert(responseContent.toString(), null) );
-//			
-//			facilityReportDocxOut.save(obj_SFTPChannel.put("Bi-Annual Performance Letter.docx"));
-//	
-//			
-//		
-//	}
-//
-//	private void generatePerinatalAttachment(Configuration configuration, List<String> attachments, Map<String, String> facilityData, ChannelSftp obj_SFTPChannel, WordprocessingMLPackage docxOut, XHTMLImporter xHTMLImporter) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException, Docx4JException, SftpException  {
-//		
-//		
-//		
-//			Template template = configuration.getTemplate("perinatalAttachment.ftl");
-//	
-//			for (String attachmentName : attachments) {
-//				
-//				if(docxOut != null) {
-//					docxOut.reset();
-//				}
-//				
-////				docxOut = WordprocessingMLPackage.createPackage(PageSizePaper.LETTER, false);
-////				docxOut.getDocumentModel().getSections().get(0).getPageDimensions().setMargins(MarginsWellKnown.NARROW);
-////				xHTMLImporter = new XHTMLImporterImpl(docxOut);
-//	
-//				String birthQtr = facilityData.get("BIRTHQTR");
-//	
-//				if ("3".equals(birthQtr)) {
-//					birthQtr = "1";
-//				} else if ("4".equals(birthQtr)) {
-//					birthQtr = "2";
-//				}
-//	
-//				String fileName = "Attachment " + birthQtr + "A.docx";
-//				
-//				facilityData.put("BIRTH_QTR", birthQtr);
-//				facilityData.put("ATTACHMENT_NAME", attachmentName);
-//	
-//				StringWriter responseContent = new StringWriter();
-//	
-//				template.process(facilityData, responseContent);
 //				
 //				
 //				
 //				
 ////				docxOut.getMainDocumentPart().getContent().addAll( 
-////						xHTMLImporter.convert(responseContent.toString(), null) );
-////				
-////				docxOut.save(obj_SFTPChannel.put(fileName));
-//			}
-//				
-//		
-//	}
 
 	private List<String> findPerinatalAttachments(Map<String, String> facilityData) {
 
@@ -801,22 +707,9 @@ public class PerinatalServiceImpl implements PerinatalService {
 //        		sourcePart, bytes);
 //		
 ////        Inline inline = imagePart.createImageInline( filenameHint, altText, 
-////    			id1, id2, false);
-//        Inline inline = imagePart.createImageInline(filenameHint, altText, id1, id2, false);
 //
 //        
 //        // Now add the inline in w:p/w:r/w:drawing
-//		ObjectFactory factory = Context.getWmlObjectFactory();
-//		P  p = factory.createP();
-//		R  run = factory.createR();		
-//		p.getContent().add(run);        
-//		Drawing drawing = factory.createDrawing();		
-//		run.getContent().add(drawing);		
-//		drawing.getAnchorOrInline().add(inline);
-//		
-//		return p;
-//		
-//	}
 	
 	
 	 private static byte[] convertImageToByteArray(InputStream inputStream)
@@ -827,28 +720,10 @@ public class PerinatalServiceImpl implements PerinatalService {
 	        return IOUtils.toByteArray(inputStream);
 	        
 	        
-//	        InputStream is = new FileInputStream(file );
-//	        long length = file.length();
 //	        // You cannot create an array using a long, it needs to be an int.
-////	        if (length > Integer.MAX_VALUE) {
-////	            System.out.println("File too large!!");
-////	        }
-//	        
-//	        byte [] byteArray = new byte[1024];
-//	        
-//	        byte[] bytes = new byte[(int)length];
-//	        int offset = 0;
-//	        int numRead = 0;
-//	        while (offset < bytes.length               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-//	            offset += numRead;
-//	        }
 //	        // Ensure all the bytes have been read
 //	        if (offset < bytes.length) {
 //	            System.out.println("Could not completely read file "
-//	                        +file.getName());
-//	        }
-//	        is.close();
-//	        return bytes;
 	    }
 	 
 	 

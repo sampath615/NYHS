@@ -238,23 +238,8 @@ public class DeathDocumentServiceImpl implements DeathDocumentService {
 		}
 		
 		
-//		stdDocData.put("PERSON_CITY", docVO.get("RES_CITY"));
-//
-//		String fipsState = (String) docVO.get("FIPS_ST");
 //		if (DASHDASH.equals(fipsState) || ZZ.equals(fipsState)
-//				|| XX.equals(fipsState)) {
-//			fipsState = "";
-//		}
-//		stdDocData.put("PERSON_STATE", fipsState);
-//
-//		
-//
-//		String fipsCounty = (String) docVO.get("FIPS_CNTY");
 //		if (CommonUtil.isNotNullAndEmpty(fipsCounty)
-//				&& (fipsCounty.equals("000") || fipsCounty.equals("999"))) {
-//			fipsCounty = "";
-//		}
-//		stdDocData.put("PERSON_COUNTY", fipsCounty);
 
 		// PERSON_CENSUS_TRACT NOT IN RAW
 		// PERSON_LATITUDE NOT IN RAW
@@ -485,35 +470,6 @@ public class DeathDocumentServiceImpl implements DeathDocumentService {
 		
 		stdDocData.put("DEATH_FILE", docVO.get("DEATH_FILE"));
 		
-//		boolean hasHCauseValue = false;
-//		
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "ICD10", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "UNDERLYING", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE1", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE2", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE3", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE4", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE5", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE6", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE7", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE8", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE9", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE10", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE11", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE12", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE13", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE14", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE15", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE16", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE17", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE18", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE19", hasHCauseValue);
-//		hasHCauseValue = updateStdCauseAndGetHCause(docVO, stdDocData, "CAUSE20", hasHCauseValue);
-//		
-//		
-//		if(!hasHCauseValue){
-//			stdDocData.put("H_CAUSE", "N");
-//		}
 		
 		// EHARS_STATUS_CD
 		// UPS_CASE_DEF
@@ -616,36 +572,6 @@ public class DeathDocumentServiceImpl implements DeathDocumentService {
 
 	}
 	
-//	private boolean updateStdCauseAndGetHCause(Map<Object, Object> docVo, Map<Object, Object> stdDocData, String variableName, boolean hasHCauseValue){
-//		String _cause = (String)docVo.get(variableName);
-//		if (CommonUtil.isNotNullAndEmpty(_cause)) {
-//			_cause = _cause.trim();
-//			
-//			stdDocData.put(variableName, _cause);
-//			
-//			if(!hasHCauseValue){
-//				String hCause = checkHCauseValue(_cause);
-//				
-//				if(!"N".equals(hCause)){
-//					stdDocData.put("H_CAUSE", hCause);
-//					hasHCauseValue = true;
-//				//	return true;
-//				}
-//			}
-//		}
-//		
-//		return hasHCauseValue;
-//		// return false;
-//	}
-//	
-//	private String checkHCauseValue(String inputCause){
-//		if(inputCause.startsWith("B20") || inputCause.startsWith("B21") || inputCause.startsWith("B22") || inputCause.startsWith("B23") || inputCause.startsWith("B24") || inputCause.startsWith("R75") || inputCause.startsWith("Z21")){
-//			return "H";
-//		}else if(inputCause.startsWith("B59") || inputCause.startsWith("C46")    || inputCause.startsWith("B58") || inputCause.startsWith("A15")    || inputCause.startsWith("A16") || inputCause.startsWith("A17")    || inputCause.startsWith("A18") || inputCause.startsWith("A19")    || inputCause.startsWith("A31")){
-//			return "A";
-//		}
-//		return "N";
-//	}
 
 
 	/**
