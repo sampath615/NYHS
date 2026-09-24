@@ -2,14 +2,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.exception.NyehmsException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 	/*

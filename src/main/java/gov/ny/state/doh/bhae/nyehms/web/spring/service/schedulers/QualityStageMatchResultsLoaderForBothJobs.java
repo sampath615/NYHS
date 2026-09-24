@@ -10,7 +10,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

@@ -3,15 +3,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.SubProviderDAO">
 
-  <resultMap id="subProviderResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO" >
-    <id 	column="PROVIDER_ID" 	 property="providerId" 	   jdbcType="DECIMAL" />
-    <result column="PROVIDER_FNAME"  property="providerFname"  jdbcType="VARCHAR" />
-    <result column="PROVIDER_MNAME"  property="providerMname"  jdbcType="VARCHAR" />
-    <result column="PROVIDER_LNAME"  property="providerLname"  jdbcType="VARCHAR" />
-    <result column="PROVIDER_SUFFIX" property="providerSuffix" jdbcType="VARCHAR" />
-    <result column="TOTAL_SUB_PROVIDER_ADDRESS" property="totalSubProviderAddress" jdbcType="DECIMAL" />
-    <result column="INPUT_PROV_ADDR_ID" property="inputProvAddrId" jdbcType="DECIMAL" />
-  </resultMap>
 
   
   

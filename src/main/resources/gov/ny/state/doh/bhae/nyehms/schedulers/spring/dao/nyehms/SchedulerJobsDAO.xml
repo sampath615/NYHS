@@ -453,15 +453,6 @@ GROUP BY  lb.OBXLOINCCODE,lb.MSHFILENAME))  where sum_current > 0 order by MSHFI
 	
 	
 	
-	<resultMap id="loincPfiGroupCountDetailsMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MultiStepGroupedLoincsVO" >
-	    <result column="PFI" property="pfi" jdbcType="VARCHAR" javaType="String"/>
-	    <result column="GROUPED_LOINC" property="groupCount" jdbcType="DECIMAL" javaType="Integer"/>
-	    
-	     <collection ofType="String" column="LOINC_CD" property="loincCodes">
-		     <id column="LOINC_CD"  jdbcType="VARCHAR" />
-		</collection>
-	
-	</resultMap>
   	
 	
 <!-- 		select DISTINCT PFI, GROUPED_LOINC, LOINC_CD   from LAB_LOINC_MAPPING where (GROUPED_LOINC is not null and GROUPED_LOINC  > 0) -->

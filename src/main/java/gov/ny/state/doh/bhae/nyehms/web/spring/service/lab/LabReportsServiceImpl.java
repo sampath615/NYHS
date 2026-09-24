@@ -1,9 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -13,14 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.activation.DataHandler;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,17 +23,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.jcraft.jsch.ChannelSftp;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.ClinicalLaboratoryVO;
@@ -57,16 +39,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabNewContactVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabPermitsVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabReportsCountVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabTestMappingVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissionReportVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import oracle.jdbc.OracleConnection;
 import oracle.sql.ARRAY;

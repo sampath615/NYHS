@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.aop.exceptionHandling;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationServiceImpl;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;

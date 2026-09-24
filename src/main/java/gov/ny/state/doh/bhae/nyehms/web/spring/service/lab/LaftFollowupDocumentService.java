@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftFollowupDetailsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;

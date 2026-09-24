@@ -6,7 +6,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface SYPHDocumentDAO {
 	

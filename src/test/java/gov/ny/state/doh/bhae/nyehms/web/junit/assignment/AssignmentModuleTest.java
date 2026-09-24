@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.junit.assignment;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.bo.ProcessACRFForm;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerTallyListVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerRegionsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentsHomeVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentsListVO;
@@ -9,10 +8,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestResultVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedParentTestTypeVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.AcrfFormVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.HIVABTstNonTypDiffVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.HIVABTstTypDiffVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.HIVQualiTstVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.HIVQuantiTstVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfCd4TstVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfLabsVO;

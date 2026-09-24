@@ -1,14 +1,10 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.bo;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

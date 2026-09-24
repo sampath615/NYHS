@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document.partnerService;
 
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PartnerServicesDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsAssignmentView;

@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.review;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;

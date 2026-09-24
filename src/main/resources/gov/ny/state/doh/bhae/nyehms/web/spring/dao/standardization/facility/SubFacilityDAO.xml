@@ -3,37 +3,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.SubFacilityDAO">
 
-  <resultMap id="subFacilityResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO" >
-    <id     column="SUB_FACILITY_ID" 		property="subFacilityId"       jdbcType="DECIMAL" />
-    <result column="MASTER_FACILITY_ID" 	property="masterFacilityId"    jdbcType="DECIMAL" />
-    <result column="NEW_SUB_FACILITY_ID"    property="newSubFacilityId"    jdbcType="DECIMAL" />
-    <result column="FACILITY_TYPE_CODE"	    property="facilityTypeCode"    jdbcType="VARCHAR" />
-    <result column="FACILITY_TYPE_DESC"	    property="facilityTypeDesc"    jdbcType="VARCHAR" />
-    <result column="FACILITY_NAME" 			property="facilityName" 	   jdbcType="VARCHAR" />
-    <result column="FACILITY_DEPARTMENT" 	property="facilityDepartment"  jdbcType="VARCHAR" />
-    <result column="LEGACY_FACILITY_ID" 	property="legacyFacilityId"    jdbcType="VARCHAR" />
-    <result column="LEGACY_FACILITY_TYPE" 	property="legacyFacilityType"  jdbcType="VARCHAR" />
-    <result column="COUNTY_FIPS" 			property="countyFips" 		   jdbcType="VARCHAR" />
-    <result column="COUNTY_NAME" 			property="countyName" 		   jdbcType="VARCHAR" />
-    <result column="ADDRESS" 				property="address" 			   jdbcType="VARCHAR" />
-    <result column="CITY" 					property="city" 			   jdbcType="VARCHAR" />
-    <result column="STATE" 					property="state" 			   jdbcType="VARCHAR" />
-    <result column="ZIPCODE" 				property="zipcode" 			   jdbcType="VARCHAR" />
-    <result column="PLUS4" 					property="plus4" 			   jdbcType="VARCHAR" />
-    <result column="TRACT_CENSUS" 			property="tractCensus" 		   jdbcType="VARCHAR" />
-    <result column="TRACT_SUFFIX_CENSUS"    property="tractSuffixCensus"   jdbcType="VARCHAR" />
-    <result column="LATITUDE"               property="latitude" 		   jdbcType="VARCHAR" />
-    <result column="LONGITUDE"              property="longitude" 		   jdbcType="VARCHAR" />
-    <result column="LEGACY_SEQ_NUM_ADDRESS" property="legacySeqNumAddress" jdbcType="DECIMAL" />
-    <result column="CREATE_UID" 			property="createUid" 		   jdbcType="VARCHAR" />
-    <result column="DATE_CREATED" 			property="dateCreated" 		   jdbcType="VARCHAR" />
-    <result column="DATE_ENDED" 			property="dateEnded" 		   jdbcType="VARCHAR" />
-    <result column="CHILD_COUNT" 			property="totalRawFacility"    jdbcType="DECIMAL" />
-    <result column="END_UID" 				property="endUid" 			   jdbcType="VARCHAR" />
-    <collection ofType="String" column="SUB_FACILITY_ID" property="phone">
- 		<result column="PHONE" property="phone" jdbcType="VARCHAR" />	    	
- 	</collection>
-  </resultMap>
  
   <resultMap id="subFacForRawFacResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityForRawFacilityVO" >
     <result column="SUB_FACILITY_ID" 	   property="subFacilityId"      jdbcType="DECIMAL" />

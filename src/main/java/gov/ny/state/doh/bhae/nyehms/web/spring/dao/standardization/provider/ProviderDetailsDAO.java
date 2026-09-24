@@ -2,12 +2,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.ProviderDetailsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.transaction.annotation.Transactional;
 
 
 /**

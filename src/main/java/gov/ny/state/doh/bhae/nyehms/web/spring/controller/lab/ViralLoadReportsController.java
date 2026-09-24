@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;

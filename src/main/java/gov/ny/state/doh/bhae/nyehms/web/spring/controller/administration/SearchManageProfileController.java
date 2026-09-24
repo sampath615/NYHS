@@ -4,7 +4,6 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.ModuleAndPermissionsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SearchManageProfileService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 import java.util.List;

@@ -13,8 +13,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabPermitsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabTestMappingVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissionReportVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClustereHARSImportFlagVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 import java.util.List;

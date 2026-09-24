@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document;
 
-import java.sql.Clob;
 import java.sql.Date;
 
 public class HitErrorVO {

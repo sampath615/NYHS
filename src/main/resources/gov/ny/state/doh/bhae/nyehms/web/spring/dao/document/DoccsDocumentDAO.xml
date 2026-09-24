@@ -6,57 +6,6 @@
 	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO">
 	
 
-<resultMap id="getDoccsDocResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO">
-    <result column="DOCUMENT_ID" jdbcType="DECIMAL" property="documentId" />
-    <result column="DOCCS_SRC_ID" jdbcType="DECIMAL" property="doccsSrcId" />
-    <result column="FNAME" jdbcType="VARCHAR" property="fname" />
-    <result column="LNAME" jdbcType="VARCHAR" property="lname" />
-    <result column="MNAME" jdbcType="VARCHAR" property="mname" />
-    <result column="DOB_TEXT" jdbcType="VARCHAR" property="dobText" />
-    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
-    <result column="ETHNICITY" jdbcType="VARCHAR" property="ethnicity" />
-    <result column="DIN" jdbcType="VARCHAR" property="din" />
-    <result column="NYSID" jdbcType="VARCHAR" property="nysid" />
-    <result column="UNDER_CUSTODY" jdbcType="VARCHAR" property="underCustody" />
-    <result column="RELEASE_DATE" jdbcType="VARCHAR" property="releaseDate" />
-    <result column="THRU_DEATH" jdbcType="VARCHAR" property="thruDeath" />
-    <result column="DOD_TEXT" jdbcType="VARCHAR" property="dodText" />
-    <result column="DATE_RECEIVED" jdbcType="TIMESTAMP" property="dateReceived" />
-    <result column="PERSON_ADDRESS" jdbcType="VARCHAR" property="personAddress" />
-    <result column="PERSON_CITY" jdbcType="VARCHAR" property="personCity" />
-    <result column="PERSON_STATE" jdbcType="VARCHAR" property="personState" />
-    <result column="PERSON_ZIP" jdbcType="VARCHAR" property="personZip" />
-    <result column="PERSON_PLUS4" jdbcType="VARCHAR" property="personPlus4" />
-    <result column="PERSON_COUNTY" jdbcType="VARCHAR" property="personCounty" />
-    <result column="FACILITY_NAME" jdbcType="VARCHAR" property="facilityName" />
-    <result column="FACILITY_ADDRESS" jdbcType="VARCHAR" property="facilityAddress" />
-    <result column="FACILITY_CITY" jdbcType="VARCHAR" property="facilityCity" />
-    <result column="FACILITY_STATE" jdbcType="VARCHAR" property="facilityState" />
-    <result column="FACILITY_ZIP" jdbcType="VARCHAR" property="facilityZip" />
-    <result column="FACILITY_PLUS4" jdbcType="VARCHAR" property="facilityPlus4" />
-    <result column="FACILITY_COUNTY" jdbcType="VARCHAR" property="facilityCounty" />
-    <result column="FACILITY_PHONE" jdbcType="VARCHAR" property="facilityPhone" />
-    <result column="STATENO" jdbcType="VARCHAR" property="stateno" />
-    <result column="RACE_INDIAN" jdbcType="VARCHAR" property="raceIndian" />
-    <result column="RACE_BLACK" jdbcType="VARCHAR" property="raceBlack" />
-    <result column="RACE_ASIAN" jdbcType="VARCHAR" property="raceAsian" />
-    <result column="RACE_PACIFIC" jdbcType="VARCHAR" property="racePacific" />
-    <result column="RACE_WHITE" jdbcType="VARCHAR" property="raceWhite" />
-    <result column="RACE_MULTIPLE" jdbcType="VARCHAR" property="raceMultiple" />
-    <result column="RACE_OTHER" jdbcType="VARCHAR" property="raceOther" />
-    <result column="RACE_UNKNOWN" jdbcType="VARCHAR" property="raceUnknown" />
-    <result column="SSN" jdbcType="VARCHAR" property="ssn" />
-    <result column="MED_RECORD_NUMBER" jdbcType="VARCHAR" property="medRecordNumber" />
-    <result column="DOCCS_HIV" jdbcType="VARCHAR" property="doccsHiv" />
-    <result column="DOCCS_HIV_DATE" jdbcType="VARCHAR" property="doccsHivDate" />
-    <result column="DOCCS_AIDS" jdbcType="VARCHAR" property="doccsAids" />
-    <result column="DOCCS_AIDS_DATE" jdbcType="VARCHAR" property="doccsAidsDate" />
-    <result column="ALT_FACILITY_NAME" jdbcType="VARCHAR" property="altFacilityName" />
-    <result column="SUFFIX" jdbcType="VARCHAR" property="suffix" />
-    <result column="STD_PERSON_ADDRESS" jdbcType="VARCHAR" property="stdPersonAddress" />
-    <result column="STD_FACILITY_ADDRESS" jdbcType="VARCHAR" property="stdFacilityAddress" />
-    <result column="EHARS_IMPORT_DATE" property="eharsImportDate" jdbcType="VARCHAR" />
-  </resultMap>
 
 <select id="getDoccsDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO">
 		<![CDATA[

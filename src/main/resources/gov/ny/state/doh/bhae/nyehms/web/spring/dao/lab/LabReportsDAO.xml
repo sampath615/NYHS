@@ -468,10 +468,6 @@
 	</select>
 	
 		
-	<resultMap type="java.util.Map" id="reportingStatusMap"> 	
- 	  	<result property="REPORTING_STATUS_CODE"  column="REPORTING_STATUS_CODE"   javaType="String"/>
-		<result property="REPORTING_STATUS_DESCRIPTION" column="REPORTING_STATUS_DESCRIPTION"  javaType="String"/>
- 	</resultMap>
  		
 	
 	

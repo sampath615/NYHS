@@ -8,7 +8,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionV
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.JREVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 public interface InitializeService {
 	

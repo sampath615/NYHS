@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadPSConfirmedSTDVO;
 
 import java.util.List;
 import java.util.Map;

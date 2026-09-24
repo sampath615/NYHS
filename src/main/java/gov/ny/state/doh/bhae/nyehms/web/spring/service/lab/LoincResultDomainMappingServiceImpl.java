@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LoincResultDomainMappingDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.AcceptedTestResultDomainVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;

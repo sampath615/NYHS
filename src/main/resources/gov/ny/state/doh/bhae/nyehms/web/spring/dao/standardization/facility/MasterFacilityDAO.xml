@@ -3,19 +3,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDAO">
 
-  <resultMap id="masterFacilityResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityVO" >
-    <id 	column="MASTER_FACILITY_ID" 	property="masterFacilityId" 	jdbcType="DECIMAL" />
-    <result column="FACILITY_TYPE_CODE" 	property="facilityTypeCode" 	jdbcType="VARCHAR" />
-    <result column="FACILITY_TYPE_DESC" 	property="facilityTypeDesc" 	jdbcType="VARCHAR" />
-    <result column="MASTER_FACILITY_NAME" 	property="masterFacilityName" 	jdbcType="VARCHAR" />
-    <result column="NEW_MASTER_FACILITY_ID" property="newMasterFacilityId" 	jdbcType="DECIMAL" />
-    <result column="CREATE_UID" 			property="createUid" 			jdbcType="VARCHAR" />
-    <result column="DATE_CREATED" 			property="dateCreated"			jdbcType="VARCHAR" />
-    <result column="DATE_ENDED" 			property="dateEnded" 			jdbcType="VARCHAR" />
-    <result column="END_UID" 				property="endUid" 				jdbcType="VARCHAR" />
-    <result column="CHILD_COUNT" 	        property="totalSubFacility" 	jdbcType="DECIMAL" />
-    <result column="INPUT_SUB_FACILITY_ID" 	property="inputSubFacilityId" 	jdbcType="DECIMAL" />
-  </resultMap>
   
    <select id="insertNewGrdFacility" parameterType="java.util.Map" statementType="CALLABLE">
 		{call PKG_STANDARDIZATION.PR_LINK_SUB_NEW_MAST_FACILITY(

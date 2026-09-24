@@ -1,12 +1,10 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.standardization.facility;
 import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityDetailsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.FacilityManualReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;

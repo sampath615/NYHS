@@ -5,7 +5,6 @@ import java.util.Map;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterPartnerDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PartnerInvestigationVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 public interface ClusterPartnerReviewDAO {
 

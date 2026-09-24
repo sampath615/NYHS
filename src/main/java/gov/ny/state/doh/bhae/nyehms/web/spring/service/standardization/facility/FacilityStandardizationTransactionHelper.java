@@ -4,7 +4,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.M
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

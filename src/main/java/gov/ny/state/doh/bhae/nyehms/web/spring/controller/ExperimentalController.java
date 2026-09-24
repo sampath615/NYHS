@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller;
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

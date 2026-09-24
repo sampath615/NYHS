@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7;
 
-import java.util.Date;
 
 public class RawHL7ObxVO {
 

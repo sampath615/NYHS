@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd;
 
 import java.util.*;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ObxVO;
 
 public class RawCCDEncounterVO {
 

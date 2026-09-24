@@ -37,35 +37,6 @@
   </resultMap>
   
   
-  <resultMap id="subFacilitiesWithRawFacilities" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO" >
-        <result column="SUB_FACILITY_ID"  property="subFacilityId" jdbcType="DECIMAL" />
-	    <result column="FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />    	
-	    <result column="FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
-	    <result column="FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
-	    <result column="COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />  
-	    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
-	    <result column="CITY" property="city" jdbcType="VARCHAR" />
-	    <result column="STATE" property="state" jdbcType="VARCHAR" />
-	    <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR" />  	
-    	<result column="NPI" property="facilityNpi" jdbcType="VARCHAR" />
-	    <collection ofType="String" column="SUB_FACILITY_ID" property="phone">
-    		<result column="PHONE" property="phone" jdbcType="VARCHAR" />	  
-    	</collection>
-	    <collection property="rawFacilities" column="SUB_FACILITY_ID" ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO">
-	    	<id column="RAW_SUB_FACILITY_ID" property="rawSubFacilityId" jdbcType="DECIMAL" />
-		    <result column="RAW_FACILITY_TYPE_CODE" property="facilityTypeCode" jdbcType="VARCHAR" />
-		    <result column="RAW_FACILITY_NAME" property="facilityName" jdbcType="VARCHAR" />
-		    <result column="RAW_FACILITY_DEPARTMENT" property="facilityDepartment" jdbcType="VARCHAR" />
-		    <result column="RAW_ADDRESS" property="address" jdbcType="VARCHAR" />
-		    <result column="RAW_CITY" property="city" jdbcType="VARCHAR" />
-		    <result column="RAW_STATE" property="state" jdbcType="VARCHAR" />
-		    <result column="RAW_ZIPCODE" property="zipcode" jdbcType="VARCHAR" />
-		    <result column="RAW_PLUS4" property="plus4" jdbcType="VARCHAR" />
-		    <result column="RAW_PHONE" property="phone" jdbcType="VARCHAR" />
-		    <result column="RAW_COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />
-		    <result column="RAW_NPI" property="npi" jdbcType="VARCHAR" />
-	    </collection>
-  </resultMap>
   
   
   

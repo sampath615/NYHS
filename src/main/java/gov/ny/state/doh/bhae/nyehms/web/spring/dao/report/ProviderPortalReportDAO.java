@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissionCareStatusVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissionReportVO;
 
 public interface ProviderPortalReportDAO {

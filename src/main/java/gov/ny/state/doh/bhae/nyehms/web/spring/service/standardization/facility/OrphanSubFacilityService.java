@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 import java.util.List;

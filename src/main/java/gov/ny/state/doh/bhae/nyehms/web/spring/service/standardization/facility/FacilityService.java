@@ -9,8 +9,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
-import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindingResult;
 
 public interface FacilityService {

@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitErrorVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.UphnTranxInVo;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 /**

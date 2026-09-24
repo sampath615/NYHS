@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.cryptocardImage;
 
-import java.util.Map;
 
 
 /**

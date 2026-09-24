@@ -102,10 +102,6 @@ order by MODULE_NAME, SUB_MODULE_NAME, PERMISSION_DESC asc
 	
 
 	
-	<resultMap type="java.util.Map" id="graphsHierarchyMap"> 	
- 	  	<result property="graphRank"  column="GRAPH_ROLE_RANK"  jdbcType="VARCHAR" javaType="String"/>
-		<result property="graphDescription" column="GRAPH_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
- 	</resultMap>
   
   <select id="getGraphsHierarchy" parameterType="java.util.Map" resultType="String">
 		select GRAPH_DESCRIPTION from NYEHMS_GRAPH_PRIORITY_VW where ROLE_CODE in (select min(ROLE_CODE) from USER_REGION where END_DATE IS NULL and WORKER_ID = #{p_worker_id} ) ORDER BY GRAPH_ROLE_RANK

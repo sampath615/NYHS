@@ -9,7 +9,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;

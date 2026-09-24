@@ -1,8 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.search;
 
 import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.bo.ProcessSearchCriteria;
-import gov.ny.state.doh.bhae.nyehms.web.spring.bo.ProcessSearchResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;

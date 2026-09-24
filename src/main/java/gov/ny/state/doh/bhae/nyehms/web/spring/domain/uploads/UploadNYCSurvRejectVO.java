@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads;
 
-import java.sql.Date;
 
 public class UploadNYCSurvRejectVO {
 	

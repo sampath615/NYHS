@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7AddressVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7Dg1VO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7DocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7INSVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ObrVO;

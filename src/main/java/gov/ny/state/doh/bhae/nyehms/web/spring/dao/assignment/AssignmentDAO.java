@@ -11,7 +11,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentActivityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerRegionsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentsListVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO;
 
 import java.util.ArrayList;

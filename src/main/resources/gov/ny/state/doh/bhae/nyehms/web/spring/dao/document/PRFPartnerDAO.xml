@@ -4,65 +4,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFPartnerDAO">	
 
-<resultMap id="getPRFPartnerMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO" >
-    <id column="PARTNER_ID" property="partnerId" jdbcType="DECIMAL" />
-    <result column="DOCUMENT_ID" property="documentId" jdbcType="DECIMAL" />
-    <result column="FNAME" property="fname" jdbcType="VARCHAR" />
-    <result column="MNAME" property="mname" jdbcType="VARCHAR" />
-    <result column="LNAME" property="lname" jdbcType="VARCHAR" />
-    <result column="ALIAS_FNAME" property="aliasFname" jdbcType="VARCHAR" />
-    <result column="ALIAS_MNAME" property="aliasMname" jdbcType="VARCHAR" />
-    <result column="ALIAS_LNAME" property="aliasLname" jdbcType="VARCHAR" />
-    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
-    <result column="CITY" property="city" jdbcType="VARCHAR" />
-    <result column="STATE" property="state" jdbcType="VARCHAR" />
-    <result column="ZIP" property="zip" jdbcType="VARCHAR" />
-    <result column="PLUS4" property="plus4" jdbcType="VARCHAR" />
-    <result column="COUNTY" property="county" jdbcType="VARCHAR" />
-    <result column="HOME_PHONE" property="homePhone" jdbcType="VARCHAR" />
-    <result column="CELL_PHONE" property="cellPhone" jdbcType="VARCHAR" />
-    <result column="PAGER" property="pager" jdbcType="VARCHAR" />
-    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
-    <result column="DOB_TEXT" property="dobText" jdbcType="VARCHAR" />
-    <result column="AGE" property="age" jdbcType="DECIMAL" />
-    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
-    <result column="ETHNICITY" property="ethnicity" jdbcType="VARCHAR" />
-    <result column="RACE_WHITE" property="raceWhite" jdbcType="VARCHAR" />
-    <result column="RACE_BLACK" property="raceBlack" jdbcType="VARCHAR" />
-    <result column="RACE_ASIAN" property="raceAsian" jdbcType="VARCHAR" />
-    <result column="RACE_INDIAN" property="raceIndian" jdbcType="VARCHAR" />
-    <result column="RACE_PACIFIC" property="racePacific" jdbcType="VARCHAR" />
-    <result column="RACE_UNKNOWN" property="raceUnknown" jdbcType="VARCHAR" />
-    <result column="RACE_OTHER" property="raceOther" jdbcType="VARCHAR" />
-    <result column="RACE_OTHER_TEXT" property="raceOtherText" jdbcType="VARCHAR" />
-    <result column="COMPLEXION" property="complexion" jdbcType="VARCHAR" />
-    <result column="HAIR" property="hair" jdbcType="VARCHAR" />
-    <result column="HEIGHT" property="height" jdbcType="VARCHAR" />
-    <result column="WEIGHT" property="weight" jdbcType="VARCHAR" />
-    <result column="OTHER_CHARACTERISTICS" property="otherCharacteristics" jdbcType="VARCHAR" />
-    <result column="PLACE_OF_EMPLOYMENT" property="placeOfEmployment" jdbcType="VARCHAR" />
-    <result column="WORK_HOURS" property="workHours" jdbcType="VARCHAR" />
-    <result column="WORK_PHONE" property="workPhone" jdbcType="VARCHAR" />
-    <result column="WORK_PHONE_EXT" property="workPhoneExt" jdbcType="VARCHAR" />
-    <result column="MARITAL_STATUS" property="maritalStatus" jdbcType="VARCHAR" />
-    <result column="PREGNANT" property="pregnant" jdbcType="VARCHAR" />
-    <result column="SPOUSE" property="spouse" jdbcType="VARCHAR" />
-    <result column="DV_SCREEN" property="dvScreen" jdbcType="VARCHAR" />
-    <result column="DV_RISK" property="dvRisk" jdbcType="VARCHAR" />
-    <result column="PARTNER_ASSISTANCE_STATUS" property="partnerAssistanceStatus" jdbcType="VARCHAR" />
-    <result column="PARTNER_NOTIFIED_DATE" property="partnerNotifiedDate" jdbcType="VARCHAR" />
-    <result column="PARTNER_STATUS" property="partnerStatus" jdbcType="VARCHAR" />
-    <result column="PARTNER_TEST_DATE" property="partnerTestDate" jdbcType="VARCHAR" />
-    <result column="IDENTIFIED_BY_HD_PS" property="identifiedByHdPs" jdbcType="VARCHAR" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="CREATE_DATE" property="createDate" jdbcType="VARCHAR" />
-    <result column="ENTRY_REVIEW_ID" property="entryReviewId" jdbcType="VARCHAR" />
-    <result column="ENTRY_REVIEW_DATE" property="entryReviewDate" jdbcType="VARCHAR" />
-    <result column="HIGH_PRIORITY" property="highPriority" jdbcType="VARCHAR" />
-    <result column="ELICITED_BY_PNAP" property="elicitedByPnap" jdbcType="VARCHAR" />
-    <result column="ELICITED_BY_ACT" property="elicitedByAct" jdbcType="VARCHAR" />
-    <result column="STD_ADDRESS" property="stdAddress" jdbcType="VARCHAR" />
-  </resultMap>
  
   <select id="getPRFPartner" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO" parameterType="int" >
     SELECT raw1.prf_DOC_ID  documentId,

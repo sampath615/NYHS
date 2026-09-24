@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

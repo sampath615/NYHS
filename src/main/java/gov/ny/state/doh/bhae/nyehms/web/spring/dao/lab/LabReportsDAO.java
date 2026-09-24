@@ -7,7 +7,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabNewContactVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabReportsCountVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissionReportVO;
 
 import java.util.List;
 import java.util.Map;

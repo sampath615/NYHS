@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.ViralLoadReportsDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.BadlyMergedStatenosVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 

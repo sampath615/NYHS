@@ -395,23 +395,6 @@ WHERE document_id = #{documentId}
  		select distinct FILE_NAME from nyehms_sasdb_owner.er_person_clusters_Stage where doc_type = #{docType} and current_process_STatus = 17
  	</select>
 	
-	<resultMap id="dataFluxclericalReviewDocAndStatenos" type="java.util.Map">
-		<result column="DOCUMENT_ID" property="documentId" jdbcType="DECIMAL" />
-		<result column="DOCUMENT_TYPE_CODE" property="documentType"
-			jdbcType="VARCHAR" />
-			<result column="TEST_TYPE_CD" property="testTypeCd"
-			jdbcType="VARCHAR" />
-			<result column="MATCH_CD" property="matchCd"
-			jdbcType="VARCHAR" />
-			<result column="FUZZY_CLUSTER_ID" property="fuzzyClusterId"
-			jdbcType="DECIMAL" />
-			<result column="CLUSTER_ID" property="clusterId"
-			jdbcType="DECIMAL" />
-		<collection javaType="ArrayList" ofType="String" column="DOCUMENT_ID"
-			property="stateno">
-			<result column="POT_STATENO" property="stateno" jdbcType="VARCHAR"				 />
-		</collection>
-	</resultMap>
 	
 	
 	<update id="updateMatchDetailsInStageTable" parameterType="java.util.Map">
