@@ -165,14 +165,6 @@ public class LaftFollowupDocumentServiceImpl implements LaftFollowupDocumentServ
 		for (int followupIdPk : followupIdsPk) {
 			
 			inputParameterMap.put("followupIdPk", followupIdPk);
-/*			
-			String dbComments = laftFollowupDocumentDAO.getDocumentReviewComment(followupIdPk);
-			
-			if (CommonUtil.isNullOrEmpty(dbComments)) {
-				dbComments = "";
-			}
-			
-			inputParameterMap.put("existingComments", dbComments); */
 			
 			if (CommonUtil.isNotNullAndEmpty(resolutionId)) {
 				laftFollowupDocumentDAO.resolveLaftFollowupDocuments(inputParameterMap);

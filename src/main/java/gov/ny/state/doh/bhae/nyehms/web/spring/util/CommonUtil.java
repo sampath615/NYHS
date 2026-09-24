@@ -123,15 +123,6 @@ public class CommonUtil {
 		return new String(Base64.getEncoder().encode(_inputValue.getBytes()), "UTF-8");
 	}
 
-	public static Date convertStringToDateFormat(String timeInString) {
-		try {
-			Timestamp collectionDate = Timestamp.valueOf(timeInString.trim());
-			return new Date(collectionDate.getTime());
-		} catch (Exception timeFormatException) {
-			log.error("Unable to convert the String to Std Date");
-			return null;
-		}
-	}
 	
 	public static String convertDateToStringFormat(Date date, String dateFormat) {
 		try {
@@ -144,15 +135,6 @@ public class CommonUtil {
 		}
 	}
 
-	public static Timestamp convertStringToTimeStamp(String timeInString) {
-		try {
-			Timestamp collectionDate = Timestamp.valueOf(timeInString.trim());
-			return collectionDate;
-		} catch (Exception timeFormatException) {
-			log.error("Unable to convert the String to Timestamp");
-			return null;
-		}
-	}
 
 	public static boolean isNotNullAndEmpty(String _inputValue) {
 		if (_inputValue != null && !"".equals(_inputValue.trim())) {

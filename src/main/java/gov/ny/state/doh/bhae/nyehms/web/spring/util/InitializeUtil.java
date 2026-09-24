@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.JREVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 
@@ -130,29 +129,6 @@ public class InitializeUtil {
 		
 	}
 	
-	public boolean checkUserActiveMAC(List<String> activeMACAddressesList, UserInitObject userInitObj, HttpServletRequest request) {
-		
-		session = request.getSession();
-		boolean hasActiveMACAddress = false;
-		String macAddresses = "";
-		
-		if (activeMACAddressesList.size() > 0) {
-			hasActiveMACAddress = true;
-			
-			for (int i=0; i<activeMACAddressesList.size(); i++) {
-				if (i==0) {
-					macAddresses = activeMACAddressesList.get(0);
-				} else {
-					macAddresses += "/" + activeMACAddressesList.get(i);
-				}
-			}
-		}
-		userInitObj.setActiveMACAddresses(macAddresses);
-		session.setAttribute("userInitObj", userInitObj);
-		
-		log.debug(nyehmsDebugLog + " User active MAC Addresses : " + userInitObj.getActiveMACAddresses());
-		return hasActiveMACAddress;
-	}
 	
 	public boolean checkUserLocked(String userLocked) {
 		
@@ -173,35 +149,6 @@ public class InitializeUtil {
 		return isActiveRole;
 	}
 	
-	public boolean checkValidityOfMacAddress(UserInitObject userInitObj) {
-		
-		boolean isValidMAC = false;
-		
-		if (!userInitObj.getLoginMACAddress().equals("") && userInitObj.getLoginMACAddress() != null ) {
-			String userLoginMacAddress = userInitObj.getLoginMACAddress();
-			log.debug(nyehmsDebugLog + " userLoginMacAddress  " + userLoginMacAddress);
-			if (userLoginMacAddress.length() == 17) {
-				// Get User MAC Address from NYEHMS DB and match with user's current MAC address. If both MAC address match user is accessing the application 
-				// from authorized computer, otherwise user is not accessing the application from authorized computer
-				String userActiveMACAddresses = userInitObj.getActiveMACAddresses();
-				log.debug(nyehmsDebugLog + " userActiveMACAddresses  " + userActiveMACAddresses);
-				if (userActiveMACAddresses.length() > 17) {
-					StringTokenizer st = new StringTokenizer(userActiveMACAddresses, "/");
-						String token;
-						while(st.hasMoreTokens()) {
-							token = st.nextToken();
-							if (token.equalsIgnoreCase(userLoginMacAddress)) {
-								isValidMAC = true;
-							}
-						}
-				} else if (userActiveMACAddresses.length() == 17 && userActiveMACAddresses.equalsIgnoreCase(userLoginMacAddress)) {
-					isValidMAC = true;
-				}
-			}
-		}
-		
-		return isValidMAC;
-	}
 	
 	public boolean CheckValidBrowser(HttpServletRequest request) {
 		String userAgent = request.getHeader("User-Agent");
@@ -272,44 +219,7 @@ public class InitializeUtil {
 
 	}
 	
-	public boolean checkValidityOfOS(List<String> OSNames,  UserInitObject userInitObj) {
-		
-		boolean isValidOS = false;
-		String userOSName = userInitObj.getOS();
-		
-		for (int i=0; i<OSNames.size(); i++) {
-			if (userOSName.equalsIgnoreCase(OSNames.get(i))) {
-				isValidOS = true;
-				break;
-			}
-		}
-		
-		return isValidOS;
-	}
 
-	public boolean checkValidityOfJRE(List<JREVersionVO> JREVersions, UserInitObject userInitObj) {
-		
-		boolean isValidJRE = false;
-		String userJRE = userInitObj.getJREVersion();
-		String dbJREVerNo = "";
-		String dbJRERejectFlag="";
-		
-		for (int i=0; i<JREVersions.size(); i++) {
-			
-			dbJREVerNo = JREVersions.get(i).getJREVersionNo() != null ? JREVersions.get(i).getJREVersionNo().trim() : "";
-			dbJRERejectFlag = JREVersions.get(i).getRejectFlag() != null ? JREVersions.get(i).getRejectFlag().trim() : "";
-			
-			if (userJRE.equalsIgnoreCase(dbJREVerNo) && dbJRERejectFlag.equals("Y")) {
-				isValidJRE = false;
-				break;
-			}
-			if (userJRE.startsWith(dbJREVerNo) && !dbJRERejectFlag.equals("Y")) {
-				isValidJRE = true;
-			}
-		}
-		
-		return isValidJRE;
-	}
 	
 	public boolean checkValidityOfFirefox(List<FirefoxVersionVO> firefoxVersions, UserInitObject userInitObj) {
 		

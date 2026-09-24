@@ -464,14 +464,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 		//	X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
 		//See http://www.eicar.org/86-0-Intended-use.html
 		//Need to escape the single backslash.
-/*		String virusStringForTesting = 
-			"X5O!P%@AP[4\\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*";
-	    try {
-	    		inputStream = IOUtils.toInputStream(virusStringForTesting, "UTF-8");
-		} catch (IOException e) {
-			log.error("Error while reading uploaded XML file.",e);
-			return result;
-		}*/
 	    
 		//Instantiate the scan engine:
 		ScanEngine.ScanEngineInfo scanEngineTobeUsed = new ScanEngine.ScanEngineInfo("scanserv",1344);
@@ -698,66 +690,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 					for (Cell c : row) {
 						 clusterData.put(CLUSTER_COLUMN_NAMES[c.getColumnIndex()], fmt.formatCellValue(c));
 					}
-/*					Map<String, Object> validateGenotypeDocumentMap = null;
-					
-					for (int columnIndex = 0; columnIndex < CLUSTER_COLUMN_NAMES_LENGTH; columnIndex++) {
-						
-						if(row.getCell(0) != null){
-							
-							if (columnIndex == 0 && row.getCell(columnIndex).toString().trim().length() > 10) {
-								transactionMessage = "Provided stateno " + row.getCell(columnIndex).toString() + " lenght is more than allowed. Please update the file and retry.";
-								isError = true;
-								break;
-							} 	
-							else if (columnIndex == 2) {
-								if (row.getCell(columnIndex) == null) {
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Identification method code is required. Please updated the file and retry.";
-									isError = true;
-									break;
-								} else if (CommonUtil.isNotNullAndEmpty(row.getCell(columnIndex).toString()) && !(row.getCell(columnIndex).toString().trim().equals("1") || row.getCell(columnIndex).toString().trim().equals("2"))){
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Identification method code is not valid. Please updated the file and retry.";
-									isError = true;
-									break;
-								} else {
-									validateGenotypeDocumentMap.put("identificationMethodCode", row.getCell(columnIndex).toString().trim());
-								}
-							}
-							else if (columnIndex == 1) {
-								if ( (row.getCell(columnIndex) == null || CommonUtil.isNullOrEmpty(row.getCell(columnIndex).toString()) ) || !CommonUtil.isNumeric(row.getCell(columnIndex).toString()) ) {									
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Document Id is required field and can only be a numeric value. Please updated the file and retry.";
-									isError = true;
-									break;
-								} else if (CommonUtil.isNotNullAndEmpty(row.getCell(columnIndex).toString()) && CommonUtil.isNumeric(row.getCell(columnIndex).toString()) ){
-									
-									validateGenotypeDocumentMap.put("identificationMethodCode", row.getCell(columnIndex).toString().trim());
-									
-									genotypeDocId = Long.parseLong(row.getCell(columnIndex).toString());
-									boolean isDocIdGenotype = clusterDocumentDAO
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Document Id is not of GENOTYPE Document. Please updated the file and retry.";
-									isError = true;
-									break;
-								}
-							}							
-							else if (columnIndex == 3) {
-								if (row.getCell(columnIndex) == null) {
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Identification date is required. Please updated the file and retry.";
-									isError = true;
-									break;
-								} else if (CommonUtil.isNotNullAndEmpty(row.getCell(columnIndex).toString()) && !DateUtil.isValidDate(row.getCell(columnIndex).toString())){
-									transactionMessage = "Provided stateno " + row.getCell(0).toString() + " Identification date is not valid. Please updated the file and retry.";
-									isError = true;
-									break;
-								}
-							}
-								
-							clusterData.put(CLUSTER_DB_COLUMN_NAMES[columnIndex], row.getCell(columnIndex).toString().trim());
-						}
-					}
-					
-					if(isError){
-						break;
-					}
-					*/
 					clusterDataList.add(clusterData);
 				}
 				
@@ -847,124 +779,8 @@ public class FileUploadServiceImpl implements FileUploadService {
 		return false;
 	}
 
-/*	@Override
-	public List<String> getErrorClusterIds() {
-		return fileUploadDAO.getErrorClusterIds();
-	}
-*/
 
-/*	@Override
-	public List<ClusterUploadErrorVO> getClusterUploadErrors(String clusterId, BindingResult bindingResult, UserObject userObject) {
-		
-		List<ClusterUploadErrorVO> clusterUploadError  = null;
-		
-		if (!clusterId.equals("ALL")) {
-			clusterUploadError = fileUploadDAO.getClusterUploadErrors(clusterId);
-		} else {
-			clusterUploadError = fileUploadDAO.getClusterUploadErrorsAll();
-		}
-		
-		return clusterUploadError;
-	}*/
 
-/*
-	@Override
-	public void updateClustEharsNyehmsStateno(long id, String clusterType, String clusterId, String uploadedEharsStateno, String uploadedNyehmsStateno, BindingResult bindingResult, UserObject userObject, HttpSession session,
-			String identificationMethod, String identificationDate) {
-		
-		boolean isError = false;
-		String currentNyehmsStateno = null;
-		ClusterDocVO currentDemoInfo = null;
-		boolean isDemoInfoFound = false;
-		
-		if (clusterType.equals("CDC_M")) {
-			
-			currentNyehmsStateno = clusterDocumentService.checkEharsStatenoValidity(uploadedEharsStateno);
-			
-			if (CommonUtil.isNullOrEmpty(currentNyehmsStateno)) {
-				isError = true;
-			}
-	
-		} else{
-			currentNyehmsStateno = commonService.getCurrentActiveStateNo(uploadedNyehmsStateno);
-			if (CommonUtil.isNullOrEmpty(currentNyehmsStateno) || currentNyehmsStateno.equals("-1")) {
-				isError = true;
-			}
-//		}
-		
-		if (isError) {
-			
-			if (clusterType.equals("CDC_M")) {
-				commonExceptionHandler.inspectDBTransacionResult(-1, "New eHARS stateno  " + uploadedEharsStateno + " not found in NYEHMS .", bindingResult);
-			} else {
-				commonExceptionHandler.inspectDBTransacionResult(-1, "New NYEHMS stateno  " + uploadedNyehmsStateno + " not found in NYEHMS.", bindingResult);
-//			}
-			
-		} else {
-			try {
-				
-				Map<String, Object> clusterDetailsMap = new HashMap<String, Object>();
-				
-				if (clusterType.equals("CDC_M")) {
-					clusterDetailsMap.put("eharsStateno", uploadedEharsStateno);
-					clusterDetailsMap.put("uploadedEharsStateno", uploadedEharsStateno);
-					clusterDetailsMap.put("uploadNyehmsStateno", "");
-					currentDemoInfo = clusterDocumentService.getStatenoDemographicInfo(clusterType, currentNyehmsStateno, clusterId);
-					
-				} else{
-					clusterDetailsMap.put("eharsStateno", "");
-					clusterDetailsMap.put("uploadedEharsStateno", "");					
-					clusterDetailsMap.put("uploadNyehmsStateno", uploadedNyehmsStateno);
-					currentDemoInfo = clusterDocumentService.getStatenoDemographicInfo(clusterType, currentNyehmsStateno, clusterId);
-//				}		        
-						
-				clusterDetailsMap.put("documentId", id);
-				clusterDetailsMap.put("clusterId", clusterId);
-				clusterDetailsMap.put("clusterType", clusterType);
-				clusterDetailsMap.put("userId", Integer.toString(userObject.getWorkerId()));
-				
-				clusterDetailsMap.put("identificationMethodCode", identificationMethod);
-				clusterDetailsMap.put("identificationDate", identificationDate);
-				
-				int clusterIdPk = clusterDocumentDAO.getClusterPkNumber(clusterId);
-				clusterDetailsMap.put("clusterIdPk", clusterIdPk);
-				
-				if (currentDemoInfo != null) {
-					isDemoInfoFound = true;
-					documentTransactionHelper.updateClustEharsNyehmsStateno(clusterDetailsMap, currentDemoInfo, userObject, bindingResult);
-				} else {
-					isDemoInfoFound = false;
-					clusterDocumentService.updateClustEharsNyehmsStateno(clusterDetailsMap, currentDemoInfo, userObject, bindingResult);
-				}
-				
-			} catch (DataAccessException e) {
-				isError = true;
-				log.error("documentId   " + id);
-				log.error(nyehmsLog + " Failed to update the documentId " + e.getMessage());
-				commonExceptionHandler.handleException(e, userObject, userObject.getSessionId());
-			} catch (Exception e) {
-				isError = true;
-				log.error("documentId   " + id);
-				log.error(nyehmsLog + " Failed to update the documentId " + e.getMessage());
-				commonExceptionHandler.handleException(e, userObject, userObject.getSessionId());
-			}
-			
-			if (!isDemoInfoFound && !isError) {
-				commonExceptionHandler.inspectDBTransacionResult(-1, "No Demographic Information found for the stateno " + currentNyehmsStateno + ". Please followup.", bindingResult);
-			} else {
-				
-				if (isError) {
-					commonExceptionHandler.inspectDBTransacionResult(-1,
-							"Failed to update the documentId of cluster, Please contact helpline.", bindingResult);
-				} else {
-					commonExceptionHandler.inspectDBTransacionResult(0,
-							"Document id updated with cluster successfully.", bindingResult);
-				}
-			}
-		}
-		
-	}
-	*/
 	@Override
 	public Map<String, String> uploadRecordSearchFile(MultipartFile uploadedRecordSearchFile,
 			BindingResult bindingResult, UserObject userObject){
@@ -2320,10 +2136,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 			if ( (currentObj != null && CommonUtil.isNotNullAndEmpty(currentObj.toString()) ) && (currentObj.toString().length() != 2 ) ) {
 				errorMessage.append( passedVar + "  can only have value of 2 char.<br/>");
 			}
-		/*} else if (varType.equals("PHONE")) {
-			if ( (currentObj != null && CommonUtil.isNotNullAndEmpty(currentObj.toString()) ) && !(CommonUtil.isNumeric(currentObj.toString()) && (currentObj.toString().length()  == 10) ) ) {
-				errorMessage.append( passedVar + "("+currentObj.toString()+") can only have numeric value of 10 char.<br/>");
-			}*/
 		} else if (varType.equals("ZIP")) {
 			if ( (currentObj != null && CommonUtil.isNotNullAndEmpty(currentObj.toString()) ) && (!CommonUtil.isZipValid(currentObj.toString().trim()) ) ) {
 				errorMessage.append( passedVar + " should be in 12345 or 12345-1234 format only.<br/>");

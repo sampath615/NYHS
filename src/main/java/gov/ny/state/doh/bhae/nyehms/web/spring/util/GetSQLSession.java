@@ -15,19 +15,6 @@ public class GetSQLSession {
 	
 	public org.apache.ibatis.session.SqlSession getSqlSession(){
 		
-		/*
-		Resource res  = new FileSystemResource("/WEB-INF/spring-servlet.xml");		
-		ClassPathResource res = new ClassPathResource("spring-servlet.xml");
-		
-		ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("spring-servlet.xml");
-		
-		BeanFactory beanFactory = 
-		new XmlBeanFactory(getClass().getResourceAsStream("/spring-servlet.xml"));
-
-		BeanFactory factory = new XmlBeanFactory(res);
-		SqlSessionTemplate test = (SqlSessionTemplate) factory.getBean("sqlSession");	
-		return test.getConnection();
-		*/
 		
 		return sqlSession;
 	}

@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -362,23 +360,6 @@ public class PRFDocumentServiceImpl implements PRFDocumentService {
 			        			errors.put("partnerList_"+index+"_age","Partner Estimated Age shouldn't greater than " + maxAge);
 			    			}
 			        		
-/*			        		if (("Y").equals(pRFPartnerVO.getDvScreen()) && ("NA").equals(pRFPartnerVO.getDvRisk())) {
-			        			errors.put("partnerList_"+index+"_dvRisk", "Partner DV Screening was done. " +
-			    						"Please Enter the Result in DV Risk OR Leave it Blank if No Result.");
-			    			}
-			        		if (("N").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-			        			errors.put("partnerList_"+index+"_dvRisk", "Partner : You Cannot Indicate 'No' Risk without a DV Screening. " +
-			    						"Please Correct DV Risk or DV Screen.");
-			    			}
-			        		if (("NA").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-			        			errors.put("partnerList_"+index+"_dvRisk", "Partner: You have Indicated DV Screening Was 'NA'. " +
-			    						"Please Correct the DV Risk.");
-			    			}
-			        		
-			        		if (("").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-			        			errors.put("partnerList_"+index+"_dvRisk", "Partner: You Cannot Indicate 'No' Risk without a DV Screening. " +
-			    						"Please Correct the DV Risk or DV Screen.");
-			    			}*/
 			        		if (CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getDvScreen()) && pRFPartnerVO.getDvScreen().equals("Y") && CommonUtil.isNullOrEmpty(pRFPartnerVO.getDvRisk()) ) {
 			        			errors.put("partnerList_"+index+"_dvRisk", "Partner Domestic violence screen done is marked as Yes, please mark the risk of domestic violence identified?.");
 			        		}			        		
@@ -426,149 +407,6 @@ public class PRFDocumentServiceImpl implements PRFDocumentService {
 	    	if(CommonUtil.isNotNullAndEmpty(completedEmailAddress) && !validateEmail(completedEmailAddress)){
 				errors.put("COMPLETER_EMAIL", "Completer Email Address is not valid.");
 			}
-/*    	}else{
-    		if(!pRFDocumentVO.isINIT_HIV_DIAG() && !pRFDocumentVO.isPREV_HIV_DIAG() && !pRFDocumentVO.isINIT_AIDS_DIAG() && !pRFDocumentVO.isPREV_AIDS_DIAG()){
-        		errors.put("TYPE_OF_REPORT_SECTION", "At least one Patient Type Report must be selected.");
-        	}
-        	
-        	String personZip = pRFDocumentVO.getPERSON_ZIP();
-        	
-        	if (CommonUtil.isNotNullAndEmpty(personZip) && (personZip.length() != 5 || !CommonUtil.isNumeric(personZip))) {
-    			errors.put("PERSON_ZIP","Person zip code must be exactly 5 numeric characters.");
-    		}
-        	
-        	String _din = pRFDocumentVO.getDIN();
-        	
-        	if(CommonUtil.isNotNullAndEmpty(_din) && (_din.length() != 7  || !checkDinFormat(_din))){
-        		errors.put("DIN", "Patient DIN code must be exactly 7 characters, with 3rd being a letter (A-Z) and " +
-    					"rest should be numbers (Example: 99X9999).");
-        	}
-        	if(pRFDocumentVO.isRACE_OTHER() && !CommonUtil.isNotNullAndEmpty(pRFDocumentVO.getRACE_OTHER_TEXT())){
-        		errors.put("RACE_OTHER_TEXT", "Patient other race is selected, please enter the value in other text box.");
-        	}
-        	
-        	if ((CommonUtil.isNotNullAndEmpty(pRFDocumentVO.getALT_FNAME()) || CommonUtil.isNotNullAndEmpty(pRFDocumentVO.getALT_MNAME())) && !CommonUtil.isNotNullAndEmpty(pRFDocumentVO.getALT_LNAME())) {
-        		errors.put("ALT_LNAME", "Enter Patient Alternate's Last Name.");  
-    		}
-        	
-        	if(pRFDocumentVO.isRACE_OTHER() && "HISPANIC".equalsIgnoreCase(pRFDocumentVO.getRACE_OTHER_TEXT())){
-        		errors.put("RACE_OTHER_TEXT", "Patient other race can't be Hispanic. Use ethnicity field to record Hispanic or non-Hispanic.");
-        	}
-        	
-        	if((pRFDocumentVO.isRACE_WHITE() || pRFDocumentVO.isRACE_BLACK() || pRFDocumentVO.isRACE_ASIAN() || pRFDocumentVO.isRACE_PACIFIC() || pRFDocumentVO.isRACE_INDIAN() || pRFDocumentVO.isRACE_OTHER()) && pRFDocumentVO.isRACE_UNKNOWN()){
-        		errors.put("RACE_UNKNOWN_SECTION", "Patient Unknown Race can't be selected if any other race is selected.");
-        	}
-        	
-        	String patientGender = pRFDocumentVO.getGENDER();
-        	String swm = pRFDocumentVO.getSwm();
-        	String swf = pRFDocumentVO.getSwf();
-        	String idu = pRFDocumentVO.getIdu(); 
-        	String sexIdu = pRFDocumentVO.getSexIDU();
-        	String sexBI = pRFDocumentVO.getSexBI();
-        	String  sexAIDSHIV = pRFDocumentVO.getSexAIDSHIV();
-        	String riskRecvBldProd = pRFDocumentVO.getRcvdTransfusion();
-        	String riskOtherText = pRFDocumentVO.getRISK_OTHER_TEXT();
-        	
-        	
-        	StringBuilder riskErrors = new StringBuilder("");
-        	
-        	if("M".equals(patientGender) && "Y".equals(swm) && !"Y".equals(swf) && ("Y".equals(sexIdu) || "Y".equals(sexBI) || "Y".equals(sexAIDSHIV))){
-        		riskErrors.append("Patient gender is male, sex with male is YES and sex with female is not YES. Any heterosexual risks shouldn't be YES.");
-        	}else if("F".equals(patientGender) && !"Y".equals(swm) && "Y".equals(swf) && ("Y".equals(sexIdu) || "Y".equals(sexBI) || "Y".equals(sexAIDSHIV))){
-        		riskErrors.append("Patient gender is female, sex with male is not YES and sex with female " +
-    					"is YES. Any heterosexual risks shouldn't be YES.");
-        	}
-        	
-        	if("Y".equals(pRFDocumentVO.getPerinatalExposure()) && (!"N".equals(swm) || !"N".equals(swf) || !"N".equals(idu) || !"N".equals(sexIdu) || !"N".equals(sexBI) || !"N".equals(sexAIDSHIV) || !"N".equals(riskRecvBldProd) || !"".equals(riskOtherText))){
-        		riskErrors.append("Patient Perinatal Exposure risk is YES, all adult risks should be No." +
-    					"Other Risk text box should be blank.");
-        	}
-        	
-        	if(!"".equals(riskErrors.toString())){
-        		errors.put("PATIENT_RISK",riskErrors.toString());
-        	}
-        	
-        	
-        	List<PRFPartnerVO> partnersList = pRFDocumentVO.getPartnerList(); 
-        	if(partnersList != null && partnersList.size() >= 0){
-        		int index = -1;
-        	
-	        	for (PRFPartnerVO pRFPartnerVO : partnersList) {
-	        		index++;
-	        		
-	        		if(!CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getLname())){
-	        			continue;
-	        		}
-	        		
-	        		
-	        		if(!CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getAliasLname()) && (CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getAliasFname()) || CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getAliasMname()))){
-	        			errors.put("partnerList_"+index+"_aliasLname","Enter Partner Alias's Last Name.");
-	        		}
-	        		
-	        		String partnerZip = pRFPartnerVO.getZip();
-	        		
-	        		if (CommonUtil.isNotNullAndEmpty(partnerZip) && (partnerZip.length() != 5 || !CommonUtil.isNumeric(partnerZip))) {
-	    				errors.put("partnerList_"+index+"_zip","Partner zip code must be exactly 5 numeric characters.");
-	    			}
-	        		
-	        		if(pRFPartnerVO.isRaceOther() && !CommonUtil.isNotNullAndEmpty(pRFPartnerVO.getRaceOtherText())){
-	        			errors.put("partnerList_"+index+"_raceOtherText","Partner other race is selected, please enter the value in " +
-	    						"other text box.");
-	        		}
-	        		Integer _age = pRFPartnerVO.getAge();
-	        		if (_age != null && (pRFPartnerVO.getAge() < 0 || pRFPartnerVO.getAge() > maxAge)) {
-	        			errors.put("partnerList_"+index+"_age","Partner Estimated Age shouldn't greater than " + maxAge);
-	    			}
-	        		
-	        		if (("Y").equals(pRFPartnerVO.getDvScreen()) && ("NA").equals(pRFPartnerVO.getDvRisk())) {
-	        			errors.put("partnerList_"+index+"_dvRisk", "Partner DV Screening was done. " +
-	    						"Please Enter the Result in DV Risk OR Leave it Blank if No Result.");
-	    			}
-	        		if (("N").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-	        			errors.put("partnerList_"+index+"_dvRisk", "Partner : You Cannot Indicate 'No' Risk without a DV Screening. " +
-	    						"Please Correct DV Risk or DV Screen.");
-	    			}
-	        		if (("NA").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-	        			errors.put("partnerList_"+index+"_dvRisk", "Partner: You have Indicated DV Screening Was 'NA'. " +
-	    						"Please Correct the DV Risk.");
-	    			}
-	        		
-	        		if (("").equals(pRFPartnerVO.getDvScreen()) && ("N").equals(pRFPartnerVO.getDvRisk())) {
-	        			errors.put("partnerList_"+index+"_dvRisk", "Partner: You Cannot Indicate 'No' Risk without a DV Screening. " +
-	    						"Please Correct the DV Risk or DV Screen.");
-	    			}
-	        		
-	        		
-	        		if(pRFPartnerVO.isRaceOther() && "HISPANIC".equalsIgnoreCase(pRFPartnerVO.getRaceOtherText())){
-	        			errors.put("partnerList_"+index+"_raceOtherText", "Partner other race can't be Hispanic. " +
-	    						"Use ethnicity field to record Hispanic or non-Hispanic.");
-	        		}
-	        		
-	        		
-	        		if((pRFPartnerVO.isRaceWhite() || pRFPartnerVO.isRaceAsian() || pRFPartnerVO.isRaceBlack() || pRFPartnerVO.isRaceIndian() || pRFPartnerVO.isRaceOther() || pRFPartnerVO.isRacePacific() ) &&  
-	        		pRFPartnerVO.isRaceUnknown()){
-	        			errors.put("partnerList_"+index+"_raceUnknown", "Partner Unknown Race can't be selected if any other race is selected.");
-	        		}
-	        		
-	        		
-	        		if("M".equals(pRFPartnerVO.getGender()) && "Y".equals(pRFPartnerVO.getPregnant())){
-	        			errors.put("partnerList_"+index+"_gender", "Partner is a Pregnant Male? Please correct Gender or Pregnant Status.");
-	        		}
-	        		
-	        		String emailAddress = pRFPartnerVO.getEmail(); 
-	        		
-	        		if(CommonUtil.isNotNullAndEmpty(emailAddress) && !validateEmail(emailAddress)){
-	        			errors.put("partnerList_"+index+"_email", "Partner Email Address is not valid.");
-	        		}
-	        		
-	        		
-	    		}
-        	}
-        	String completedEmailAddress = pRFDocumentVO.getCOMPLETER_EMAIL();
-        	if(CommonUtil.isNotNullAndEmpty(completedEmailAddress) && !validateEmail(completedEmailAddress)){
-    			errors.put("COMPLETER_EMAIL", "Completer Email Address is not valid.");
-    		}
-    	}*/
     	
     	
     	if(errors.size() > 0){
@@ -646,19 +484,6 @@ public class PRFDocumentServiceImpl implements PRFDocumentService {
 		return isValid;
 	}
     
-    private static boolean checkDinFormat(String _inputValue){
-    	String regEx = "[0-9][0-9][A-Za-z][0-9][0-9][0-9][0-9]";
-
-		Pattern pattern = Pattern.compile(regEx);
-
-		Matcher matcher = pattern.matcher(_inputValue);
-
-		if (!matcher.matches()) {
-			return false;
-		}else{
-			return true;
-		}
-    }
     
     @Override
     public int writeRawPRFRecordDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId){

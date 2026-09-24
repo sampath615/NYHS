@@ -237,16 +237,6 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 				log.debug("{} Result Code : {}",nyehmsLog,  rawAcrfLabs.getAcrfResultCode());
 				if(rawAcrfLabs.getAcrfResultCode() !=null && !"".equals(rawAcrfLabs.getAcrfResultCode())){
 					resultCode=Integer.parseInt(rawAcrfLabs.getAcrfResultCode());
-					/*
-					resultCode=commonUtil.getIntFromString(rawAcrfLabs.getAcrfResultCode(), 
-														userObject, 
-														sessionID);
-					try{
-					resultCode= Integer.parseInt(rawAcrfLabs.getAcrfResultCode());
-					}catch(Exception e){
-						log.error(nyehmsLog+"  "+e.getMessage());
-					}
-					*/
 				}
 				
 				log.debug("{}  DocID: {}",nyehmsLog,rawAcrfLabs.getAcrfSrcId()

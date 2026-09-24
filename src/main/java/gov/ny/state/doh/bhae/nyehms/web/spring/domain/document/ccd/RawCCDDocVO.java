@@ -218,49 +218,4 @@ public class RawCCDDocVO {
 		theSession.commit();
 	}
 
-/*
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-	sb.append("*** The DOCUMENT_ID ***\n" + documentId);
-	sb.append("*** THE PERSON ***\n");
-	sb.append(thePerson.toString() + "\n\n");
-
-	sb.append("*** ADDRESSES(" + theAddressList.size() + ") ***" + "\n");
-	for (int i = 0; i < theAddressList.size(); i++) {
-		sb.append("*** Address " + (i+1) + " ***\n");
-		sb.append(theAddressList.get(i).toString());
-	}
-	sb.append("\n*** PROVIDERS(" + theProviderList.size() + ") ***" + "\n");
-	for (int i = 0; i < theProviderList.size(); i++) {
-		sb.append("*** Provider " + (i+1) + " ***\n");
-		sb.append(theProviderList.get(i).toString());
-	}
-	sb.append("\n*** PAYERS(" + thePayerList.size() + ") ***" + "\n");
-	for (int i = 0; i < thePayerList.size(); i++) {
-		sb.append("*** Payer " + (i+1) + " ***\n");
-		sb.append(thePayerList.get(i).toString() +" ***\n");
-	}
-	sb.append("\n*** ENCOUNTERS(" + theEncounterList.size() + ") ***\n");
-	for (int i = 0; i < theEncounterList.size(); i++) {
-		sb.append("*** Encounter " + (i+1) + " ***\n");
-		sb.append(theEncounterList.get(i).toString());
-	}
-	sb.append("\n*** MEDS(" + theMedList.size() + ") ***\n");
-	for (int i = 0; i < theMedList.size(); i++) {
-		sb.append("*** Medication " + (i+1) + " ***\n");
-		sb.append(theMedList.get(i).toString() +") ***\n");
-	}
-	sb.append("\n*** LABS(" + theLabTestList.size() + ") ***\n");
-	for (int i = 0; i < theLabTestList.size(); i++) {
-		sb.append("*** Lab " + (i+1) + " ***\n");
-		sb.append(theLabTestList.get(i).toString() +") ***\n");
-	}
-	sb.append("\n*** PROBLEMS(" + theProblemList.size() + ") ***\n");
-	for (int i = 0; i < theProblemList.size(); i++) {
-		sb.append("*** Problem " + (i+1) + " ***\n");
-		sb.append(theProblemList.get(i).toString() +") ***\n");
-	}
-	return sb.toString();
-	}
-*/
 }

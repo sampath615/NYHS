@@ -97,60 +97,9 @@ public class DocumentsScanController {
 	
 	
 
-	/*
-	@RequestMapping(value="/getScannedDocument.pdf", method = RequestMethod.GET, produces = "application/pdf" )
-	public @ResponseBody byte[] getScannedImage(
-			HttpServletRequest request, @RequestParam String fileName)  
-	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		
-		return documentsScanService.getScannedImage(fileName, userObject);
-		
-	}*/
 	
-	/*
-	@RequestMapping(value="/disCardScanDocument.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> deleteScannedDocument(
-			HttpServletRequest request, @RequestParam String fileName)
-	{
-		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		//searchService.deCryptScannedDocument(stateNo, bindingResult, userObject);
-		
-		try {
-			
-			documentsScanService.disCardScanDocument(fileName, bindingResult, userObject);
-					    
-		}  catch (Exception e) {
-			log.error("Exception while discarding the Scanned Document");
-		}
-
-		return targetMap;
-		
-	}*/
 	
 
-	/*
-	
-	@RequestMapping(value="/getScannedDocumentFileNames.json", method = RequestMethod.POST, produces = "application/json")
-	public String getScannedDocumentFileNames(
-			HttpServletRequest request, Map<String, Object> map)
-	{
-		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		//searchService.deCryptScannedDocument(stateNo, bindingResult, userObject);
-		List<String> scannedFileNames = documentsScanService.getScannedDocumentFileNames("SCANNED_FILES_LOCATION", bindingResult, userObject);
-		
-		map.put("scannedFileNames", scannedFileNames);
-		
-		return "scanning/ShowScannedFileNames";
-		
-	}
-	*/
 	
 	
 	

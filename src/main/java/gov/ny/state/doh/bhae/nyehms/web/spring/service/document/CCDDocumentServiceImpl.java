@@ -100,14 +100,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 		this.ethnicityMap = _ethnicityMap;
 	}
 
-	/*@Override
-	public Document getDomDocumentFromCCDString(String theCCDString) throws Exception {
-		BufferedReader br = new BufferedReader(new StringReader(theCCDString));
-		InputSource is = new InputSource();
-		is.setCharacterStream(br);
-		Document document = new SAXBuilder().build(new InputSource(new StringReader(theCCDString)));
-		return document;
-	}*/
 	
 	public Document convertStringToDocument(String theCCDString) throws Exception{
 		SAXBuilder saxBuilder = new SAXBuilder();

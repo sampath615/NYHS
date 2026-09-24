@@ -954,60 +954,7 @@ public class PreMatchHITSchedulerHelper {
 		return resultCount;
 	}
 
-	public void writeRawDiagnosisToStdLayer(List<Map<Object, Object>> rawDiagDataList,
-			List<JSONObject> schedulerStatusObject) {
-		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
-		String transactionMessage = "Succesfully stored filtered Raw Diagnosis records in the Standard layer";
-		List<String> failedToValidateDocuments = new ArrayList<String>();
-		int totalDocuments = rawDiagDataList.size();
-		log.error("Writing Filtered Raw Diagnosis data to Std table");
-		if (totalDocuments == 0) {
-			log.error("No data available to store in Standard HIE_DTH table.");
-			return;
-		}
-		List<Integer> validDocumentIds = new ArrayList<Integer>();
-		JSONObject statusObject = new JSONObject();
-		for (Map<Object, Object> stdDiagnosisVo : rawDiagDataList) {
-			try {
-				BigDecimal diagnosisId = (BigDecimal) stdDiagnosisVo.get("DIAGNOSIS_ID");
-				int insertStatus = writeRawDiagnosisDataToStdTable(stdDiagnosisVo);
-				// IF NEEDED TO UPDATE A COLUMN FOR STATUS CHECK
-				ccdDocumentService.updateRawDiagnosisMovedToSTDStatus(diagnosisId.intValue(), "RAW_CCD_DIAGNOSIS", 'Y');
 
-			} catch (DataAccessException e) {
-
-				String _exceptionMessage = " DataAccessException while storing the Diagnosis record :  "
-						+ e.getMessage();
-				failedToValidateDocuments.add(_exceptionMessage.toString());
-				log.error(_exceptionMessage);
-			} catch (Exception e) {
-
-				String _exceptionMessage = " Exception while storing the Diagnosis record :  " + e.getMessage();
-				failedToValidateDocuments.add(_exceptionMessage.toString());
-				log.error(_exceptionMessage);
-			}
-		}
-		if (failedToValidateDocuments.size() == totalDocuments) {
-			transactionStatus = CommonConstants.TRANSACTION_STATUS_FAILURE;
-			transactionMessage = "All the documents were failed while storing all the RAW_CCD_DIAGNOSIS records in the Standard layer";
-		} else if (failedToValidateDocuments.size() > 0) {
-			transactionMessage = "Few documents were failed while storing all the Raw RAW_CCD_DIAGNOSIS records in the Standard layer";
-		}
-		log.error(transactionMessage);
-		statusObject.put(CommonConstants.TRANSACTION_STATUS, transactionStatus);
-		statusObject.put(CommonConstants.TRANSACTION_MESSAGE, transactionMessage);
-		schedulerStatusObject.add(statusObject);
-	}
-
-	private int writeRawReviewedList(List<Map<Object, Object>> lstrawCCDDiagVO) {
-		for (Map<Object, Object> rawReviewedDiagnosisVo : lstrawCCDDiagVO) {
-
-			BigDecimal diagnosisId = (BigDecimal) rawReviewedDiagnosisVo.get("DIAGNOSIS_ID");
-			ccdDocumentService.updateRawReviewedStatus(diagnosisId.intValue(), "RAW_CCD_DIAGNOSIS", 'Y');
-
-		}
-		return 0;
-	}
 
 	private int writeRawDiagnosisDataToStdTable(Map<Object, Object> stdCCDDiagVO) {
 

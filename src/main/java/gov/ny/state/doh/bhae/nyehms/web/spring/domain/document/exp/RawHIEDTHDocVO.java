@@ -21,13 +21,6 @@ public class RawHIEDTHDocVO
     private String hieName;
     
 	
-    /*
-    public int getSerialID() {
-		return serialID;
-	}
-	public void setSerialID(int serialID) {
-		this.serialID = serialID;
-	}*/
 	
 	public int getDocumentId() {
 		return documentId;

@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,8 +31,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import us.ny.state.health.hie.endec.EnDecrypter;
@@ -111,14 +108,6 @@ public class HIEDTHDocumentServiceImpl implements HIEDTHDocumentService {
 		return document;
 	}
 
-	public Map<String, String> getMapFromNodeMap(NamedNodeMap n) {
-		Map<String, String> attrs = new TreeMap<String, String>();
-		for (int i = 0; i < n.getLength(); i++) {
-			Node attr = n.item(i);
-			attrs.put(attr.getNodeName(), attr.getNodeValue());
-		}
-		return attrs;
-	}
 
 	@Override
 	@Transactional

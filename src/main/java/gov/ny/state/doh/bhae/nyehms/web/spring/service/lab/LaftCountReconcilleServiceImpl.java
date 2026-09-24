@@ -296,13 +296,6 @@ public class LaftCountReconcilleServiceImpl implements LaftCountReconcilleServic
 			
 			recipientEmailAddressesTo = new String[]{"sanjay.garg@health.ny.gov"};
 			mailSubject = mailSubject + " - System :" + userStage;
-/*
-			for (String emailAddress : surveyEmailList) {
-				System.out.println("Sanjay @@@@@@ email : " + emailAddress);
-			}
-			for (int trackPk : surveyTrackPkList) {
-				System.out.println("Sanjay @@@@@@ trackPk : " + trackPk);
-			} */
 			surveyEmailList.clear();
 			surveyEmailList.add("sanjay.garg@health.ny.gov");
 			surveyEmailList.add("jyothsna.katari@health.ny.gov");

@@ -2208,19 +2208,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 			log.error("Before fetching the RAW HL7 Data");
 			conn = connectionDAO.getConnectionObj();
 			StringBuilder sqlQuery = new StringBuilder("");
-			/*sqlQuery.append("SELECT a.*, ").append(
-					"(SELECT p.stateno FROM person_doc_association P WHERE P.DOCUMENT_ID = a.CCD_MATCH_DOC_ID AND p.DISSASSOCIATION_DATE IS NULL) CCD_MATCH_STATENO, ")
-					.append("chf.FACILITY_NAME, ").append("chf.FACILITY_ADDRESS, ").append("chf.FACILITY_CITY, ")
-					.append("chf.FACILITY_STATE, ").append("chf.FACILITY_ZIP, ").append("R.COUNTY_FIPS_CD  ")
-					.append("FROM (SELECT H.*, ROW_NUMBER () OVER (PARTITION BY c.MPI, H.document_id ORDER BY c.document_id) rwnum, ")
-					.append("c.document_id AS CCD_MATCH_DOC_ID ").append("FROM RAW_HL7_DOC H, STD_CCD_DOC C ")
-					.append("WHERE H.PIDMPI  = C.MPI ").append("AND H.current_process_status = 1 ")
-					.append("AND C.MATCH_CD != 'C' ")
-					.append("AND C.current_process_status =10) a , CODED_HIE_FACILITY chf , NYEHMS_COUNTY_REFERENCE R ")
-					.append("WHERE a.MSHSENDINGFACILITYNAME = chf.FACILITY_CODE (+) ")
-					.append("AND    UPPER(a.pidcity) = R.CITY (+) ").append("AND    a.PIDZIPCODE = R.ZIP_CD (+) ")
-					.append("AND    UPPER(a.PIDSTATE) = R.STATE_CD (+) ").append("AND  R.NUM_CITY(+) =1 ")
-					.append("AND rwnum = 1 ");*/
 			
 			sqlQuery.append("SELECT H.*,\r\n" + 
 					"       chf.FACILITY_NAME,\r\n" + 

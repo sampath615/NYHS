@@ -30,14 +30,6 @@ public class DateUtil {
 	private static java.util.Date dt =null;
 	private static String strDt=null;
 	
-	public String getNyehmsTimeStampFromat(java.util.Date date){		
-		try{
-			strDt= nyehmsTimeStampFromatter.format(date);		
-		}catch(Exception e){
-			log.debug(nyehmsLog+" ERROR "+e.getLocalizedMessage());
-		}
-		return strDt;
-	}
 	
 	public java.util.Date getNyehmsDateFromString(String date){
 		try{
@@ -127,35 +119,7 @@ public class DateUtil {
 		return currentDate;
 	}
 	
-	public static Timestamp getTimeStampInCustomFormatDate(Timestamp customDate, String customDateFormat){
-		
-		Date parsedDate = null;
-		if(customDate != null){
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(customDateFormat);
-		    String dateInCustomFormat = simpleDateFormat.format(customDate);
-		    try {
-				parsedDate = simpleDateFormat.parse(dateInCustomFormat);
-			} catch (ParseException parseException) {
-				// TODO Auto-generated catch block
-				log.debug("Unable to parse String to TimeStamp   {}",parseException.getMessage());
-				return null;
-			}
-		    return new Timestamp(parsedDate.getTime());
-		    
-		}else
-			return null;
-		
-		
-
-	}
 	
-	public static String getTimeStampInCustomFormat(Timestamp customDate, String customDateFormat){
-		if(customDate != null){
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(customDateFormat);
-		    return simpleDateFormat.format(customDate);
-		}else
-			return "";
-	}
 	
 	public  static String convertStringToTimeStampInCustomFormat(String customDate, String outputDateFormat){
 		String customFormattedDate = null;
@@ -180,24 +144,6 @@ public class DateUtil {
 			return customFormattedDate;
 	}
 	
-	public  static String convertAllDateFormats(String inputDate, String outputFormatType, String inputFormatType){
-		
-		try {
-			SimpleDateFormat inputFormat = new SimpleDateFormat(inputFormatType);
-			SimpleDateFormat outputFormat = new SimpleDateFormat(outputFormatType);
-		
-			return outputFormat.format(inputFormat.parse(inputDate));
- 
-		}catch(ParseException p) {
-
-			String year = inputDate.substring(inputFormatType.indexOf("y"), inputFormatType.lastIndexOf("y")+1);
-			String month = inputDate.substring(inputFormatType.indexOf("M"), inputFormatType.lastIndexOf("M")+1);
-			String day = inputDate.substring(inputFormatType.indexOf("d"), inputFormatType.lastIndexOf("d")+1);
-			
-			return outputFormatType.replaceAll("MM", month).replaceAll("dd", day).replaceAll("yyyy", year);
-			
-		}
-	}
 	
 	public static boolean isValidDate(String strDate)	{
 		

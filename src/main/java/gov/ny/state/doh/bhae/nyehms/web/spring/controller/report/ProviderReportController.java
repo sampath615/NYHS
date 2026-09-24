@@ -60,11 +60,6 @@ public class ProviderReportController {
 			userObject = new UserObject();
 		
 		Map<String, String> userRoleCodes = assignmentService.getUserRoleCodes(dummyBindingResult, userObject);
-/*		userRoleCodes.remove("2", "Worker");
-		userRoleCodes.remove("3", "Central Office Processing Unit");
-		userRoleCodes.remove("5", "Laboratory Analysis and Follow-up Unit");
-		userRoleCodes.remove("6", "Central Office Administrator");
-		userRoleCodes.remove("7", "PS Message"); */
 		
 		
 		Map<String, String> regionsList = administrationService.getSrchregionTypes(dummyBindingResult, userObject);

@@ -357,11 +357,6 @@ public class UnStandardizedProviderServiceImpl implements
 									}
 								}
 								
-/*								if(addressData.get("county")!= null) {
-									COUNTY_JSON = (String)addressData.get("COUNTY_JSON");
-									subProviderAddresses.setCountyFips(COUNTY_JSON);
-								}
-*/
 								if(addressData.get("telephone_number")!= null) {
 									PHONE_JSON = (String)addressData.get("telephone_number");
 									phoneList.add(PHONE_JSON);

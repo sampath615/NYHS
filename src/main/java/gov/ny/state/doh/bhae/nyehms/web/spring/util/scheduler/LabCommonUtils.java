@@ -874,9 +874,6 @@ public class LabCommonUtils {
     	return raceColumnToSetToOne;
     }
     
-    public static Object[] getOldNycColumns () {
-    	return oldNycRaceColumnMap.values().toArray();
-    }
    
     
 	/**

@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadErrorVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO;
 
@@ -21,22 +20,6 @@ public interface FileUploadDAO {
 	
 	public int errorCountinUpload(int clusterIdPk);
 	
-/*	public int errorCountAfterUpdateUpload(long documentId);
-	
-	public int updateNewNyehmsStateno(Map<Object, Object> inOutParameterMap);
-	
-	public ClusterDocVO checkEharsStatenoInNysEharsNyehms(String stateno);
-	
-	public ClusterDocVO checkEharsStatenoInNycEharsNyehms(String stateno);
-	
-	public ClusterDocVO checkNyehmsStatenoInNysEharsNyehms(String stateno);
-	
-	public ClusterDocVO checkNyehmsStatenoInNycEharsNyehms(String stateno);
-
-	public ClusterDocVO getDemographicByFirstResistance(String stateno);
-	
-	public ClusterDocVO getDemographicByMostRecentLab(String stateno);
-	*/
 //	public String getNyehmsStatenoFromNYSehars(String stateno);
 	
 //	public String getNyehmsStatenoFromNYCehars(String stateno);

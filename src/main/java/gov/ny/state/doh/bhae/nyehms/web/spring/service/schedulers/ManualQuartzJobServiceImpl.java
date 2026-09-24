@@ -3293,10 +3293,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 
 	}
 
-	public void loadRawFacilityMappingResults(List<JSONObject> schedulerStatusObject,
-			Map<String, String> schedulerMetaData) {
-
-	}
 
 	/**
 	 * 

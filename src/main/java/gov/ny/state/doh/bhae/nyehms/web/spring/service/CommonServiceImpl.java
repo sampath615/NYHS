@@ -395,11 +395,6 @@ private static String getINIPath() {
             	log.debug(String.format("SafeNet -> getBinaryPath -> WindowsLibPath_64->[%s]", WindowsLibPath_64));
                 binaryPath = WindowsLibPath_64;
             }
-            /*else
-            {
-                log1.info(String.format("SafeNet -> getBinaryPath -> WindowsLibPath_32->[%s]", WindowsLibPath_32));
-                binaryPath = WindowsLibPath_32;
-            }*/
         }
         else // Linux Machines
         {

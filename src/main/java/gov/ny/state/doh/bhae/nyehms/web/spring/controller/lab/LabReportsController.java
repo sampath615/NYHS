@@ -400,35 +400,6 @@ public class LabReportsController {
 	}
 
 	
-	/*
-	@RequestMapping("/editLabLocalCode")
-	public String editLabLocalCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String localCodeMapId, @RequestParam long pfi) {
-		
-		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		
-		//Map<String, String> loincCodeAndDescriptionMap = reportsService.getActiveAssociatedLabLoincDescriptionDetails(pfi, bindingResult, userObject);
-		
-		
-		List<LabLocalCodesMappingVO> labLocalCodeDetailsList = (List<LabLocalCodesMappingVO>)session.getAttribute("currentLabLocalCodeDetails");
-		
-		//List<LabLoincMappingVO> associatedLoincMappingDetailsList = getLabLoincDetailsOfLocalCodeFromList(labLocalCodeDetailsList, localCodeMapId);
-		
-		LabLoincMappingVO  labLoincMappingVO  = new LabLoincMappingVO();
-		
-		map.put("labLoincMappingVO", labLoincMappingVO);
-		
-		Map<String, String> loincCodeAndDescriptionMap = reportsService.getActiveAssociatedLabLoincDescriptionDetails(pfi, bindingResult, userObject);
-		
-		map.put("loincCodeAndDescriptionMap", loincCodeAndDescriptionMap);
-		
-		return "reports/addLabLocalCode";
-		
-	}*/
 	
 	
 	@RequestMapping(value="/getFeedbackMedicalReport.html", method = RequestMethod.POST)

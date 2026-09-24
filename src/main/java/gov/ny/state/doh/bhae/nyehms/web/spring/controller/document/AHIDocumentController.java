@@ -217,37 +217,6 @@ public class AHIDocumentController {
 		return jsonResponse;
 
 	}	
-/*	
-	@RequestMapping(value="/loadAHIFollowupData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getAHIFollowupData(HttpServletRequest request){
-		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		
-		GridObject jsonResponse = getGridObject.GetGrid(ahiDocumentService.getAhiFlaggedStatenoData(userObject, bindingResult, "Y", ""));
-		
-		return jsonResponse;
-
-	}	
-	
-	@RequestMapping(value="/loadAHIFollowupCompleteData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getAhiFlaggedStatenoData(HttpServletRequest request, @RequestParam String followupComp){
-		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		
-		GridObject jsonResponse = getGridObject.GetGrid(ahiDocumentService.getAhiFlaggedStatenoData(userObject, bindingResult, "N", followupComp));
-		
-		return jsonResponse;
-
-	}		
-*/	
 	@RequestMapping(value="/saveAHIAlertTrackingForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveAHIAlertTrackingForm(
 			@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result) {

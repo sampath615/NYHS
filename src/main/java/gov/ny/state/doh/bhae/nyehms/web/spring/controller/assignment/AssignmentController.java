@@ -802,28 +802,6 @@ public class AssignmentController {
 	 * @return redirecting to eharsPersonViewDetails to load the ehars data in a
 	 *         table format
 	 */
-/*	@RequestMapping(value = "/loadEharsPersonViewDetails.html", method = RequestMethod.POST)
-	public String loadEharsPersonViewDetails(
-			@RequestParam("stateno") String stateno,
-			HttpServletRequest request, Map<String, Object> map) {
-
-		UserObject userObject = (UserObject) request.getSession().getAttribute(
-				"UserObj");
-		if (userObject == null)
-			userObject = new UserObject();
-
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
-
-		Map<String, String> eharPersonDataObj = assignmentService
-				.loadEharsPersonViewDetails(stateno, dummyBindingResult,
-						userObject, request.getSession().getId());
-
-		map.put("eharPersonDataObj", eharPersonDataObj);
-
-		return "person/ehars/eharsPersonViewDetails";
-	}*/
 	
 	
 

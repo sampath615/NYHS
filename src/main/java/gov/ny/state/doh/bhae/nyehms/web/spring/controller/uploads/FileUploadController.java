@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentService;
@@ -496,46 +494,7 @@ public class FileUploadController {
 		return "uploads/uploadCluster";
 	}	
 	
-/*	@RequestMapping("/uploadClusterError")
-	public String uploadClusterError(Map<String, Object> map, HttpServletRequest request) {
-		
-		List<String> clusterIds = fileUploadService.getErrorClusterIds();
-		
-		if(clusterIds != null && clusterIds.size() > 1){
-			clusterIds.add(0, "ALL");
-		}
-		map.put("clusterIds", clusterIds);
-
-		return "uploads/uploadClusterError";
-	}*/
 	
-/*	@RequestMapping(value="/getErrorEharsStateNoFromRaw.json", method = RequestMethod.POST,  produces = "application/json")
-	public @ResponseBody GridObject getErrorEharsStateNoFromRaw(HttpServletRequest request, @RequestParam String clusterId){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-
-		GridObject jsonResponse = getGridObject.GetGrid(fileUploadService.getClusterUploadErrors(clusterId, bindingResult, userObject));
-		
-		return jsonResponse;
-	}
-	
-	@RequestMapping(value="/updateClustEharsNyehmsStateno.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> updateClustEharsNyehmsStateno(HttpServletRequest request, @RequestParam long id, @RequestParam String strClusterId,
-			@RequestParam String clusterType, @RequestParam String identificationMethod, @RequestParam String identificationDate, 
-			@RequestParam(required = false) String uploadedEharsStateno, @RequestParam(required = false) String uploadedNyehmsStateno){
-		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		
-		fileUploadService.updateClustEharsNyehmsStateno(id, clusterType, strClusterId, uploadedEharsStateno, uploadedNyehmsStateno, bindingResult, userObject, session, identificationMethod, identificationDate);
-		
-		return targetMap;
-	}*/
 	
 	
 	@RequestMapping("/uploadPSConfirmedStds")

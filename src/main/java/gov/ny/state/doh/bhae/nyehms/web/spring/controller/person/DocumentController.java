@@ -807,26 +807,6 @@ public class DocumentController {
 			return "document/PrfDocument2016";
 		}
 		
-/*		if (CommonUtil.isNotNullAndEmpty(sexAtBirth)) {
-			List<JSONObject> addressTypes = commonDocumentService.getAddressTypes();
-			List<JSONObject> codedSexAtBirthValues = commonDocumentService.getCodedSexAtBirthValues();
-			List<JSONObject> codedYesNoUnkownValues = commonDocumentService.getCodedYesNoUnkownValues();
-			List<JSONObject> codedYesNoRefUnkownValues = commonDocumentService.getCodedYesNoRefUnkownValues();
-			List<JSONObject> codedPrimaryLanguageValues = commonDocumentService.getCodedPrimaryLanguageValues();
-			List<JSONObject> codedTelephoneTypeValues = commonDocumentService.getCodedTelephoneTypeValues();
-			
-			List<JSONObject> codedProfessionValues = commonDocumentService.getCodedProfessionValues();
-			map.put("codedYesNoUnkownValues", codedYesNoUnkownValues);
-			map.put("codedYesNoRefUnkownValues", codedYesNoRefUnkownValues);
-			map.put("codedPrimaryLanguageValues", codedPrimaryLanguageValues);
-			map.put("codedTelephoneTypeValues", codedTelephoneTypeValues);
-			map.put("codedSexAtBirthValues", codedSexAtBirthValues);
-			map.put("codedAddressTypes", addressTypes);
-			map.put("codedProfessionValues", codedProfessionValues);
-			return "document/PrfDocument";
-		} else {
-			return "document/OldPrfDocument";
-		}*/
 	}
 
 	/**
@@ -892,26 +872,6 @@ public class DocumentController {
 			return "document/PrfDocument2016";
 		}
 		
-/*		String sexAtBirth = pRFDocumentVO.getSEX_AT_BIRTH();
-		if (CommonUtil.isNotNullAndEmpty(sexAtBirth)) {
-			List<JSONObject> addressTypes = commonDocumentService.getAddressTypes();
-			List<JSONObject> codedSexAtBirthValues = commonDocumentService.getCodedSexAtBirthValues();
-			List<JSONObject> codedYesNoUnkownValues = commonDocumentService.getCodedYesNoUnkownValues();
-			List<JSONObject> codedYesNoRefUnkownValues = commonDocumentService.getCodedYesNoRefUnkownValues();
-			List<JSONObject> codedPrimaryLanguageValues = commonDocumentService.getCodedPrimaryLanguageValues();
-			List<JSONObject> codedTelephoneTypeValues = commonDocumentService.getCodedTelephoneTypeValues();
-			List<JSONObject> codedProfessionValues = commonDocumentService.getCodedProfessionValues();
-			map.put("codedYesNoUnkownValues", codedYesNoUnkownValues);
-			map.put("codedYesNoRefUnkownValues", codedYesNoRefUnkownValues);
-			map.put("codedPrimaryLanguageValues", codedPrimaryLanguageValues);
-			map.put("codedTelephoneTypeValues", codedTelephoneTypeValues);
-			map.put("codedSexAtBirthValues", codedSexAtBirthValues);
-			map.put("codedAddressTypes", addressTypes);
-			map.put("codedProfessionValues", codedProfessionValues);
-			return "document/PrfDocument";
-		} else {
-			return "document/OldPrfDocument";
-		}*/
 	}
 
 	/**

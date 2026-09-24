@@ -215,22 +215,6 @@ public class AdminController {
 	}
 
 
-	/*
-	 * get the module name and permissions
-	 removeCode
-
-	@RequestMapping(value="/getModuleNamePermissionsList", method = RequestMethod.POST)
-	public String getModuleNamePermissions(@RequestParam long roleCode, Map<String, Object> map, HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
-		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		List<NyehmsRolePermissionsViewVO> nyehmsRolePermissionsViewVOList =
-				administrationService.getModuleNamePermissions(roleCode , bindingResult, userObject);
-		map.put("nyehmsRolePermissionsViewVOList", nyehmsRolePermissionsViewVOList);
-		return "administration/Permissions";
-	}
-	 */
 
 	/**
 	 * This method is used to load the initial variables like Regions, Roles

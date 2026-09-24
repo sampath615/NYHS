@@ -130,26 +130,6 @@ public class ICCRDocumentServiceImpl implements ICCRDocumentService {
 		return iccrDocVO;
 	}
 	
-/*	private List<ICCRTestVO> getICCRDocTestData(int documentId, BindingResult result, UserObject userObject) {
-		
-		boolean errorFlag=false;
-		List<ICCRTestVO> testDataList = new ArrayList<ICCRTestVO>();
-		try{
-			testDataList = iccrDocumentDAO.getICCRDocTestData(documentId);
-		}catch (DataAccessException e) {
-			errorFlag=true;
-			log.error(nyehmsLog+"  "+ e.getMessage());
-			commonExceptionHandler.handleException(e, userObject,userObject.getSessionId());
-		} catch (Exception e) {
-			errorFlag=true;
-			log.error(nyehmsLog+"  "+ e.getMessage());
-			commonExceptionHandler.handleException(e, userObject,userObject.getSessionId());
-		}finally{						
-			if(errorFlag)
-				result.addError(new ObjectError("SQLError", "Transaction Failed. Please try again "));
-		}
-		return testDataList;		
-	}*/
 
 	@Override
 	public int writeRawICCRDocDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId) {
