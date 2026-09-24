@@ -10,6 +10,4 @@ import org.springframework.transaction.annotation.Transactional;
 public interface NycPRFPartnerDAO {
 	
 	public LinkedList<NycPRFPartnerVO> getNycPRFPartner(int docId)throws DataAccessException;
-	@Transactional	
-
 }
