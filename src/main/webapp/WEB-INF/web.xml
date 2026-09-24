@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+
+
+	<welcome-file-list>
+   		<welcome-file>web/appInitialize</welcome-file>   
+ 	</welcome-file-list>
+	
+	  <!-- The HCSSecurityFilter must be first filter !! -->
+	<filter>
+		<filter-name>HCSSecurityFilter</filter-name>
+		<filter-class>
+		gov.ny.health.hcs.fwrk.security.HCSSecurityFilter
+		</filter-class>
+	</filter>
+	<filter>
+		<filter-name>ServiceConsumerSecurityFilter</filter-name>
+		<filter-class>
+		us.ny.state.health.hin.srvs.filter.ServiceConsumerSecurityFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HCSSecurityFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>ServiceConsumerSecurityFilter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+		
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		  <init-param> 
+        	<param-name>contextConfigLocation</param-name> 
+        	<param-value> 
+               /WEB-INF/classes/spring-config.xml 
+        </param-value> 
+    		</init-param> 
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/web/*</url-pattern>
+	</servlet-mapping>	
+	
+	<listener>
+		<listener-class>
+             gov.ny.state.doh.bhae.nyehms.web.spring.listener.NYEHMSAppServletContextListener 
+        </listener-class>
+   </listener>
+   	
+ 
+<!-- 	<filter> -->
+<!--         <filter-name>loginFilterChain</filter-name> -->
+<!--         <filter-class>gov.ny.state.doh.bhae.nyehms.web.spring.security.AuthFilter</filter-class> -->
+<!--     </filter> -->
+ 
+<!--     <filter-mapping> -->
+<!--       <filter-name>loginFilterChain</filter-name> -->
+<!--       <url-pattern>/*</url-pattern> -->
+<!--     </filter-mapping>	 -->
+
+</web-app>
