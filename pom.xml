@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>nyehms</groupId>
+	<artifactId>nyehms</artifactId>
+	<packaging>war</packaging>
+	<version>2.5.66</version>
+	<description></description>
+	<!-- To see all dependencies that are not explicitly listed here, issue
+		mvn dependency:tree command at project directory where pom is located. This
+		will list all dependencies which are not listed in this file but maven download
+		them automatically. For example, commons logging is spring core dependency
+		which is not listed as dependency here but still maven downloads it. To avoid
+		such things, you can use exclusions shown bellow with <exclusion> tag.
+
+		-->
+
+	<dependencies>
+
+		<!-- Spring Framework Dependencies start -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.freemarker</groupId>
+		    <artifactId>freemarker</artifactId>
+		    <version>2.3.30</version>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		
+        <dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+
+		<!-- JSR 303 Bean Validation Support Jars End -->
+
+		<!--  Log4j2 logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.17.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.17.2</version>
+		</dependency>
+		<!-- SLF4J Bridge -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>2.17.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.35</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.7.35</version>
+		</dependency>
+		
+
+		<!-- Spring AOP Support -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>1.6.12</version>
+		</dependency>
+
+		<!-- JSP/Servlet/Tag Libs Start -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- JSP/Servlet/Tag Libs End -->
+
+		<!-- JUnit Tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- MyBatis Jars -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.mybatis</groupId>
+		    <artifactId>mybatis</artifactId>
+		    <version>3.3.0</version>
+		</dependency>
+
+		<!-- JDBC Driver -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.1.0</version>
+		</dependency>
+
+		<!-- Java Mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.5</version>
+		</dependency>
+
+		<!-- Maven Plugins -->
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+		<!-- Weblogic deployment options from eclipse -->
+		<dependency>
+			<groupId>weblogic</groupId>
+			<artifactId>wlfullclient</artifactId>
+			<version>10.3</version>
+			<scope>provided</scope>
+		</dependency>
+
+	
+
+		<!-- HIN Security Jars -->
+		<dependency>
+			<groupId>gov.nyhealth.comdir</groupId>
+			<artifactId>hin-framework-common</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>gov.nyhealth.comdir</groupId>
+			<artifactId>hin-framework-services</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ny-oits</groupId>
+			<artifactId>endec</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.mwiede</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.72</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>3.15</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>3.15</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>doh.bhae.nyehms</groupId>
+			<artifactId>BSIDJavaAPI</artifactId>
+			<version>1.03</version>
+		</dependency>
+
+		<dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.2.2</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client</artifactId>
+		    <version>1.17.0-rc</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>com.google.http-client</groupId>
+		    <artifactId>google-http-client-jackson2</artifactId>
+		    <version>1.11.0-beta</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>com.microsoft.sqlserver</groupId>
+		  <artifactId>sqljdbc4</artifactId>
+		  <version>4.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.itextpdf</groupId>
+		    <artifactId>itextpdf</artifactId>
+		    <version>5.4.1</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.itextpdf</groupId>
+		    <artifactId>html2pdf</artifactId>
+		    <version>5.0.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.docx4j</groupId>
+		    <artifactId>docx4j-openxml-objects</artifactId>
+		    <version>8.1.4</version>
+		    
+		     <exclusions>
+		    	 <exclusion>
+    				 <groupId>javax.xml.bind</groupId>
+    				 <artifactId>jaxb-api</artifactId>
+    			</exclusion>
+                 <exclusion>
+                     <groupId>javax.activation</groupId>
+    				 <artifactId>javax.activation-api</artifactId>
+                 </exclusion>
+                 
+                 </exclusions>
+		    
+		</dependency>
+		<dependency>
+		
+		
+		    <groupId>org.docx4j</groupId>
+		    <artifactId>docx4j-core</artifactId>
+		    <version>8.0.0</version>
+		    <exclusions>
+		    	 <exclusion>
+    				 <groupId>org.docx4j</groupId>
+    				 <artifactId>docx4j-openxml-objects</artifactId>
+    			</exclusion>
+                 <exclusion>
+                     <groupId>org.codehaus.mojo</groupId>
+    				 <artifactId>animal-sniffer-annotations</artifactId>
+                 </exclusion>
+                 <exclusion>
+                      <groupId>antlr</groupId>
+    				  <artifactId>antlr</artifactId>
+                 </exclusion>
+                  <exclusion>
+                    <groupId>org.antlr</groupId>
+    				<artifactId>antlr-runtime</artifactId>
+                 </exclusion>
+                 <exclusion>
+                	<groupId>org.checkerframework</groupId>
+    				<artifactId>checker-qual</artifactId>
+    			</exclusion>
+                 <exclusion>
+    				 <groupId>org.docx4j</groupId>
+    				 <artifactId>docx4j-openxml-objects-pml</artifactId>
+    			</exclusion>
+                 <exclusion>	 
+    				 <groupId>org.docx4j</groupId>
+    				<artifactId>docx4j-openxml-objects-sml</artifactId>
+    			</exclusion>
+    			
+                 <exclusion>
+	    			 <groupId>com.google.errorprone</groupId>
+	    			 <artifactId>error_prone_annotations</artifactId>
+    			 </exclusion>
+                 <exclusion>
+	    			 <groupId>com.google.guava</groupId>
+	    			 <artifactId>failureaccess</artifactId>
+    			 </exclusion>
+                 <exclusion>
+	    			 <groupId>com.google.j2objc</groupId>
+	    			 <artifactId>j2objc-annotations</artifactId>
+    			</exclusion>
+    			<exclusion>
+    				<groupId>com.google.guava</groupId>
+    				<artifactId>guava</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>com.fasterxml.jackson.core</groupId>
+	    			<artifactId>jackson-annotations</artifactId>
+    			</exclusion>
+<!--                  <exclusion> -->
+<!-- 	    			<groupId>com.fasterxml.jackson.core</groupId> -->
+<!-- 	    			<artifactId>jackson-databind</artifactId> -->
+<!--     			</exclusion> -->
+                 <exclusion>
+	    			<groupId>org.plutext</groupId>
+	    			<artifactId>jaxb-svg11</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>org.slf4j</groupId>
+	    			<artifactId>jcl-over-slf4j</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>com.google.guava</groupId>
+	    		 	<artifactId>listenablefuture</artifactId>
+    		 	</exclusion>
+                 <exclusion>
+	    		 	<groupId>com.thedeanda</groupId>
+	    			<artifactId>lorem</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>net.engio</groupId>
+	    			<artifactId>mbassador</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>org.antlr</groupId>
+	    			<artifactId>stringtemplate</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>net.arnx</groupId>
+	    			<artifactId>wmf2svg</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>org.docx4j.org.apache</groupId>
+	    			<artifactId>xalan-metainf</artifactId>
+    			</exclusion>
+                 <exclusion>
+	    			<groupId>org.docx4j.org.apache</groupId>
+	    			<artifactId>xalan-serializer</artifactId>
+    			</exclusion>
+<!--                  <exclusion> -->
+<!-- 	    			<groupId>org.apache.xmlgraphics</groupId> -->
+<!-- 	    			<artifactId>xmlgraphics-commons</artifactId> -->
+<!--     			</exclusion> -->
+             </exclusions>
+		    
+		    
+		    
+		</dependency>
+		<dependency>
+		    <groupId>org.docx4j</groupId>
+		    <artifactId>docx4j-ImportXHTML</artifactId>
+		    <version>8.0.0</version>
+		</dependency>	
+		<dependency>
+		    <groupId>org.docx4j</groupId>
+		    <artifactId>docx4j-JAXB-Internal</artifactId>
+		    <version>8.1.4</version>
+		     <exclusions>
+			    <exclusion>
+		   			    <groupId>javax.activation</groupId>
+    					<artifactId>javax.activation-api</artifactId>
+	  			</exclusion>
+	  			<exclusion>
+		   			    <groupId>javax.xml.bind</groupId>
+    					<artifactId>jaxb-api</artifactId>
+	  			</exclusion>
+  			</exclusions>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.docx4j</groupId>
+			<artifactId>docx4j-JAXB-MOXy</artifactId>
+			<version>8.0.0</version>
+			  <exclusions>
+			    <exclusion>
+		   			    <groupId>org.eclipse.persistence</groupId>
+    					<artifactId>org.eclipse.persistence.moxy</artifactId>
+	  			</exclusion>
+	  			<exclusion>
+		   			    <groupId>org.eclipse.persistence</groupId>
+    					<artifactId>org.eclipse.persistence.core</artifactId>
+	  			</exclusion>
+	  			<exclusion>
+		   			    <groupId>org.eclipse.persistence</groupId>
+    					<artifactId>org.eclipse.persistence.asm</artifactId>
+	  			</exclusion>
+  			</exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>com.google.collections</groupId>
+		    <artifactId>google-collections</artifactId>
+		    <version>1.0</version>
+		</dependency>
+		
+		
+		<dependency>
+		    <groupId>com.itextpdf.tool</groupId>
+		    <artifactId>xmlworker</artifactId>
+		    <version>5.4.1</version>
+		</dependency>
+		
+		
+		<!-- Added on 8/1/24 for new weblogic patch -->
+		<dependency>
+		    <groupId>org.codehaus.jackson</groupId>
+		    <artifactId>jackson-xc</artifactId>
+		    <version>1.9.13</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>commons-codec</groupId> -->
+<!-- 			<artifactId>commons-codec</artifactId> -->
+<!-- 			<version>1.15</version> -->
+<!-- 		</dependency> -->
+		<dependency>
+			<groupId>hapi</groupId>
+			<artifactId>hapi-base</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>hapi</groupId>
+			<artifactId>hapi-structures-v25</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+			<version>2.0.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.symantec</groupId>
+		  	<artifactId>SymJavaAPI</artifactId>
+		  	<version>4.3.0.2</version>
+		</dependency>
+
+
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.3</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>io.projectreactor.netty</groupId>
+			<artifactId>reactor-netty</artifactId>
+			<version>0.9.1.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.3.0.RELEASE</version>
+		</dependency>
+
+	</dependencies>
+
+
+	<properties>
+		<org.springframework.version>5.3.20</org.springframework.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.directory>C:/NyehmsBuild/dev2</project.build.directory>
+	</properties>
+	<build>
+		<directory>${project.build.directory}</directory>
+		<finalName>${artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>1.0-alpha-1</version>
+				<executions>
+					<execution>
+						<phase>initialize</phase>
+						<goals>
+							<goal>read-project-properties</goal>
+						</goals>
+						<configuration>
+							<files>
+								<file>src\main\webapp\WEB-INF\properties\pom.properties</file>
+							</files>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+			<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						 <artifactId>maven-war-plugin</artifactId>
+						 <version>2.2</version>
+						 <configuration>
+						 <archive>
+                         <manifestEntries>
+                             <Weblogic-Application-Version>${project.artifactId}-${project.version}</Weblogic-Application-Version>
+                         </manifestEntries>
+                     </archive>
+
+ </configuration>
+
+ </plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>auto-clean</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<goalPrefix>weblogic</goalPrefix>
+				</configuration>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<skipTests>true</skipTests>
+					<groups>gov.ny.state.doh.bhae.nyehms.web.junit.BuildTests</groups>
+				</configuration>
+			</plugin>
+
+<!-- don't want to deploy dev build to local weblogic instance
+			<plugin>
+				<groupId>com.oracle.weblogic</groupId>
+				<artifactId>weblogic-maven-plugin</artifactId>
+				<version>10.3.4</version>
+				<configuration>
+					<adminurl>${wl.deploy.url}</adminurl>
+					<user>${wluser}</user>
+					<password>${wlpassword}</password>
+					<targets>AdminServer</targets>
+					<action>redeploy</action>
+					<delete_files>true</delete_files>
+					<upload>true</upload>
+					<remote>false</remote>
+					<verbose>true</verbose>
+					<name>${project.build.finalName}</name>
+					<exploded>true</exploded>
+				</configuration>
+				<executions>
+					<execution>
+						<id>1</id>
+						<phase>package</phase>
+						<goals>
+							<goal>undeploy</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>2</id>
+						<phase>install</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+							<source>${project.build.directory}/${project.build.finalName}.${project.packaging}</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+-->
+
+		</plugins>
+	</build>
+</project>
