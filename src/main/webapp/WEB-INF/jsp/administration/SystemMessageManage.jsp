@@ -23,7 +23,6 @@
 
 <body>
 	<%@ include file="../common/Menu.jsp"%>
-	<helpContext context="SystemMessageManage" />
 	<div id="systemMessagingPage" >
 		<ul id="sysytemMessageStatusTab">
 			<li><a href="#adminManageProfPageTab" id="activeSystemMessageTab" status="Active">Active Messages</a></li>

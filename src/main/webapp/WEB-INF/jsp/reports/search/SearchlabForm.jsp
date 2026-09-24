@@ -21,7 +21,6 @@
 					</div>
 				</div>
 				<div class="standardInputDiv">
-					<helpContext context="common_city_search" />
 					<div class="fLW33">
 						<label class="standardInputTitle"><spring:message code="label.city" /></label>
 					</div>
@@ -31,7 +30,6 @@
 				</div>
 				
 				<div class="standardInputDiv">
-					<helpContext context="common_city_search" />
 					<div class="fLW33">
 						<label class="standardInputTitle"><spring:message code="label.zip" /></label>
 					</div>
@@ -51,7 +49,6 @@
 					</div>
 				</div>
 				<div class="standardInputDiv">
-					<helpContext context="common_streetAddress_search"  />
 					<div class="fLW33">
 						<label class="standardInputTitle"><spring:message code="label.streetAddress" /></label>
 					</div>
@@ -61,7 +58,6 @@
 				</div>
 				
 				<div class="standardInputDiv">
-					<helpContext context="common_state_search"  />
 					<div class="fLW33">
 						<label class="standardInputTitle"><spring:message code="label.state" /></label>
 					</div>
@@ -74,7 +70,6 @@
 					</div>
 				</div>
 				<div class="standardInputDiv">
-					<helpContext context="common_country_search" />
 					<div class="fLW33">
 						<label class="standardInputTitle"><spring:message code="label.country" /></label>
 					</div>

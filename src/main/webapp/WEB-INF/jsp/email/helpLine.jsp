@@ -41,7 +41,6 @@
         <script src="${staticPath}/js/main.js"></script>
         <script src="${staticPath}/js/jquery/jquery.collapsible.js"></script>
         <script src="${staticPath}/js/jquery/jquerycombobox.js"></script>
-        <script src="${staticPath}/js/userguide/webUserGuide.js?v=${buildDate}"></script>   
         <script src="${staticPath}/js/common/Validator.js?v=${buildDate}"></script>
         <script src="${staticPath}/js/common/jquery.maskedinput.js"></script>
         

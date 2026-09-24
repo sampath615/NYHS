@@ -31,18 +31,15 @@
 			
 			<div id="newPage" style="margin-left: 20px; margin-top: 5px;">
 				<div id="rawFacilityDiv">
-					<helpContext class="referenceTarget" context="rawFacilityDataGridManual" ref="help/standardization/facility/unStandardized/rawFacilityDataGrid" />
 					<table id="newPageTable"></table>
 					<div id="newPagePagerDiv"></div>
 				</div>
 				<div id="orphanSubFacilityDiv">
-					<helpContext class="referenceTarget" context="orphanFacilityDataGridManual" ref="help/standardization/facility/unStandardized/orphanFacilityDataGrid" />
 					<table id="orphanSubFacilityTable"></table>
 					<div id="orphanSubFacilityPagerDiv"></div>
 				</div>
 			</div>
 			<div id="facilitySearchFormElements">
-				<helpContext class="referenceTarget" context="facilitySearchFormManual" ref="help/standardization/facility/unStandardized/facilitySearchForm" />
 				<div id="accordion" style="width: 950px; margin-left: 20px; clear: both;" >
 					<h3><span id="searchForFacilityAccordian">Search For Master Facility</span><span id="searchForSubFacilityAccordian">Search For Sub Facility</span></h3>
 					<div style="height: 285px;">
@@ -57,7 +54,6 @@
 			</div>
 			
 			<div id="searchResultsDiv" style="margin-left: 20px;" >
-				<helpContext class="referenceTarget" context="facilitySearchResultsDataGridManual" ref="help/standardization/facility/unStandardized/facilitySearchResultsDataGrid" />
 				<table id="searchResultsTable"></table>
 				<div id="searchResultsPagerDiv"></div>
 				<br />

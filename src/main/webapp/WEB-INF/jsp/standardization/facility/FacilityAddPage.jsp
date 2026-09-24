@@ -27,7 +27,6 @@
 		</ul>
 		<div id="newPageTab">
 			<div id="facilitySearchFormElements">
-				<helpContext class="referenceTarget" context="facilitySearchFormManual" ref="help/standardization/facility/unStandardized/facilitySearchForm" />
 				<div id="accordion" style="width: 950px; margin-left: 20px; clear: both;" >
 					<h3><span id="searchForSubFacilityAccordian">Search For Sub Facility</span></h3>
 					<div style="height: 285px;">
@@ -42,7 +41,6 @@
 			</div>
 			
 			<div id="searchResultsDiv" style="margin-left: 20px;" >
-				<helpContext class="referenceTarget" context="facilitySearchResultsDataGridManual" ref="help/standardization/facility/unStandardized/facilitySearchResultsDataGrid" />
 				<table id="searchResultsTable"></table>
 				<div id="searchResultsPagerDiv"></div>
 				<br />

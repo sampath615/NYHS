@@ -48,26 +48,17 @@
 			<div id="providerStandardizationTab">
 				<div id="providerStandardizationElements">
 					<div id="rawProvAddrsDiv">
-						<helpContext class="referenceTarget"
-							context="rawProviderAddressDataGridManual"
-							ref="help/standardization/provider/unStandardized/rawProviderAddressDataGrid" />
 						<table id="rawProvAddrsTable"></table>
 						<div id="rawProvAddrsPager"></div>
 					</div>
 	
 					<div id="provAddrsDiv" style="display: none">
-						<helpContext class="referenceTarget"
-							context="orphanProviderAddressDataGridManual"
-							ref="help/standardization/provider/unStandardized/orphanProviderAddressDataGrid" />
 						<table id="provAddrsTable"></table>
 						<div id="provAddrsPager"></div>
 					</div>
 	
 	
 					<div id="providerSearchFormElements">
-						<helpContext class="referenceTarget"
-							context="providerSearchFormManual"
-							ref="help/standardization/provider/unStandardized/providerSearchForm" />
 						<div id="provAccordion"
 							style="width: 950px; clear: both;">
 							<h3><span id="searchForProviderAccordian">Search For Provider</span><span id="searchForStandardProviderAccordian">Search For Provider Address</span></h3>
@@ -98,9 +89,6 @@
 					</div>
 					<div id="subProvSearchResults"
 						style="display: none;">
-						<helpContext class="referenceTarget"
-							context="providerSearchResultsDataGridManual"
-							ref="help/standardization/provider/unStandardized/providerSearchResultsDataGrid" />
 						<table id="subProvAddrsTable"></table>
 						<div id="subProvAddrsPager" style="color: #FFFFFF"></div>
 						

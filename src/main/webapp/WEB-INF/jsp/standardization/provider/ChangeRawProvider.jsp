@@ -14,7 +14,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 		<div id="providerStandardizationTab">
 				<div id="providerStandardizationElements">
 					<div id="providerSearchFormElements">
-						<helpContext class="referenceTarget" context="providerSearchFormManual" ref="help/standardization/provider/unStandardized/providerSearchForm" />
 						<div id="provAccordion" style="width: 950px; clear: both;">
 							<h3><span id="searchForProviderAccordian">Search For Provider</span><span id="searchForStandardProviderAccordian">Search For Provider Address</span></h3>
 							
@@ -35,11 +34,9 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 								
 									<form:form id="providerSearchForm" name="providerSearchForm" modelAttribute="addressFieldVO">
 										  <div class="stdDetailsDiv"> 
-											<helpContext class="referenceTarget" context="providerSearchManual" ref="help/standardization/provider/unStandardized/providerSearchForm" />
 											<div>&nbsp;&nbsp;&nbsp;</div> <!-- dummy div -->
 											<div class="leftDiv">
 												<div class="standardInputDiv" subProvCrit="provSrch" >
-													<helpContext context="common_firstName_search"  />
 													<div style="float:left">
 														<label for="subProvFName"><spring:message code="label.firstname" /></label>
 													</div>
@@ -48,7 +45,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv" subProvCrit="provSrch">
-													<helpContext context="common_lastName_search"  />
 													<div style="float:left">
 														<label for="subProvLName"><spring:message code="label.lastname" /></label>
 													</div>
@@ -57,7 +53,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_streetAddress_search"  />
 													<div style="float:left">
 														<label for="subProvStAddrs"><spring:message code="label.streetAddress" /></label>
 													</div>
@@ -66,7 +61,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_city_search" />
 													<div style="float:left">
 														<label for="subProvCity"><spring:message code="label.city"  /></label>
 													</div>
@@ -75,7 +69,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_state_search"  />
 													<div style="float:left">
 														<label for="state"><spring:message code="label.state" /></label>
 													</div>
@@ -90,7 +83,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 											</div>
 											<div class="rightDiv">
 											    <div class="standardInputDiv" subProvCrit="provSrch">
-													<helpContext context="common_middleName_search" />
 													<div style="float:left">
 														<label for="subProvMName"><spring:message code="label.middleName" /></label>
 													</div>
@@ -99,7 +91,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_phoneNumber_search" />
 													<div style="float:left">
 														<label for="subProvPhone"><spring:message code="label.phoneNumber" /></label>
 													</div>
@@ -108,7 +99,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_county_search" />
 													<div style="float:left">
 														<label for="countyFipsCd"><spring:message code="label.county" /></label>
 													</div>
@@ -122,7 +112,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 													</div>
 												</div>
 												<div class="standardInputDiv">
-													<helpContext context="common_zip_search"  />
 													<div style="float:left">
 														<label for="subProvZip"><spring:message code="label.zip"  /></label>
 													</div>
@@ -132,7 +121,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 												</div>
 												
 												<div class="standardInputDiv" subProvCrit="provSrch">
-													<helpContext context="common_npi_search"  />
 													<div style="float:left">
 														<label for="subProvNPI">NPI</label>
 													</div>
@@ -183,7 +171,6 @@ pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getPro
 						<br />
 					</div>
 					<div id="subProvSearchResults" style="display: none;">
-						<helpContext class="referenceTarget" context="providerSearchResultsDataGridManual" ref="help/standardization/provider/unStandardized/providerSearchResultsDataGrid" />
 						<table id="subProvAddrsTable"></table>
 						<div id="subProvAddrsPager" style="color: #FFFFFF"></div>
 						

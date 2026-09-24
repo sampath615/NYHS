@@ -4,11 +4,9 @@
 
 <form:form id="searchForm" name="searchForm" modelAttribute="subFacilityVO">
 	<div class="stdDetailsDiv" id="stdInfoDiv">
-		<helpContext class="referenceTarget" context="facilitySearchManual" ref="help/standardization/facility/unStandardized/facilitySearchForm" />
 		<div>&nbsp;&nbsp;&nbsp;</div> <!-- dummy div -->
 		<div style="float:left; width:47%">
 			<div class="standardInputDiv" grandFacility="allSrch">
-				<helpContext context="common_masterFacilityName_search"  />
 				<div style="float: left">
 					<label class="standardInputTitle"><spring:message code="label.masterFacilityName" /></label>
 				</div>
@@ -20,7 +18,6 @@
 		<div style="clear: both;"></div> <!-- dummy div -->
 		<div class="leftDiv">		
 			<div class="standardInputDiv" >
-				<helpContext context="common_facilityName_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.facilityName" /></label>
 				</div>
@@ -30,7 +27,6 @@
 			</div>
 			
 			<div class="standardInputDiv">
-				<helpContext context="common_streetAddress_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.streetAddress" /></label>
 				</div>
@@ -39,7 +35,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv">
-				<helpContext context="common_city_search" />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.city" /></label>
 				</div>
@@ -48,7 +43,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv">
-				<helpContext context="common_state_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.state" /></label>
 				</div>
@@ -61,7 +55,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv">
-				<helpContext context="common_facility_npi"  />
 				<div style="float:left">
 					<label class="standardInputTitle">NPI</label>
 				</div>
@@ -72,7 +65,6 @@
 		</div>
 		<div class="rightDiv">		
 			<div class="standardInputDiv">
-				<helpContext context="common_department_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.department" /></label>
 				</div>
@@ -81,7 +73,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv">
-				<helpContext context="common_phoneNumber_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.phoneNumber" /></label>
 				</div>
@@ -90,7 +81,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv">
-				<helpContext context="common_zip_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.zip" /></label>
 				</div>
@@ -99,7 +89,6 @@
 				</div>
 			</div>
 			<div class="standardInputDiv" rawCrit="allSrch">
-				<helpContext context="common_county_search"  />
 				<div style="float:left">
 					<label class="standardInputTitle"><spring:message code="label.county" /></label>
 				</div>

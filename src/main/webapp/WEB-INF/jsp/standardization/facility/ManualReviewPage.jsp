@@ -26,7 +26,6 @@
 			
 			<div id="newPage" style="margin-left: 20px; margin-top: 5px;">
 				<div id="rawFacilityDiv">
-					<helpContext class="referenceTarget" context="rawFacilityDataGridManual" ref="help/standardization/facility/unStandardized/rawFacilityDataGrid" />
 					<table id="newPageTable"></table>
 					<div id="newPagePagerDiv"></div>
 				</div>
@@ -35,7 +34,6 @@
 				<br />
 			</div>
 			<div id="searchResultsDiv" style="margin-left: 20px;" >
-				<helpContext class="referenceTarget" context="facilitySearchResultsDataGridManual" ref="help/standardization/facility/unStandardized/facilitySearchResultsDataGrid" />
 				<table id="searchResultsTable"></table>
 				<div id="searchResultsPagerDiv"></div>
 				<br />

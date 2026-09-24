@@ -31,9 +31,6 @@
 
 			<div id="searchPageTab">
 				<div id="providerSearchFormElements">
-					<helpContext class="referenceTarget"
-						context="providerSearchFormManual"
-						ref="help/standardization/provider/searchAndManage/providerSearchForm" />
 					<div id="accordion" style="width: 950px; padding-left:22px">
 						<h3>Search Criteria</h3>
 						<div style="height: 210px;">
@@ -71,9 +68,6 @@
 				</div>
 
 				<div id="srchResultsDiv" style="padding-left:22px">
-					<helpContext class="referenceTarget"
-						context="providerSearchResultsDataGridManual"
-						ref="help/standardization/provider/searchAndManage/providerSearchResultsDataGrid" />
 					<div id="workTypeRadioDiv">
 						<c:if  test="${userPermissions['39'] != null}" >
 							Choose Work Area Type : &nbsp; <input type="radio"

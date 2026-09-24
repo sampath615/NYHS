@@ -12,7 +12,6 @@
 					<c:if  test="${userPermissions['76'] != null}" >
 						<td><a class="a_demo_search"  href="${contextPath}/web/getSearchView"> SEARCH </a></td>
 					</c:if>
-					<td><a class="actionButtons a_demo_search a_demo_save" onClick="userGuideModal();"> USER GUIDE </a></td>
 					<td><a class="a_demo_four" href="${contextPath}/web/helpline"> HELPLINE </a></td>
 			<%-- 		<td><a class="a_demo_mess" href="${contextPath}/web/messageBox"> MESSAGING <span id='messCount' class='badge'><span></a></td>		 --%>			
 					<td><a class="a_demo_log" href="${contextPath}/web/logout"> LOG OUT </a></td>
