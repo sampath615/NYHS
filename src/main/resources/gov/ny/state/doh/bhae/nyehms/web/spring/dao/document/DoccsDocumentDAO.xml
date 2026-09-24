@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO">
+	
+
+<resultMap id="getDoccsDocResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO">
+    <result column="DOCUMENT_ID" jdbcType="DECIMAL" property="documentId" />
+    <result column="DOCCS_SRC_ID" jdbcType="DECIMAL" property="doccsSrcId" />
+    <result column="FNAME" jdbcType="VARCHAR" property="fname" />
+    <result column="LNAME" jdbcType="VARCHAR" property="lname" />
+    <result column="MNAME" jdbcType="VARCHAR" property="mname" />
+    <result column="DOB_TEXT" jdbcType="VARCHAR" property="dobText" />
+    <result column="GENDER" jdbcType="VARCHAR" property="gender" />
+    <result column="ETHNICITY" jdbcType="VARCHAR" property="ethnicity" />
+    <result column="DIN" jdbcType="VARCHAR" property="din" />
+    <result column="NYSID" jdbcType="VARCHAR" property="nysid" />
+    <result column="UNDER_CUSTODY" jdbcType="VARCHAR" property="underCustody" />
+    <result column="RELEASE_DATE" jdbcType="VARCHAR" property="releaseDate" />
+    <result column="THRU_DEATH" jdbcType="VARCHAR" property="thruDeath" />
+    <result column="DOD_TEXT" jdbcType="VARCHAR" property="dodText" />
+    <result column="DATE_RECEIVED" jdbcType="TIMESTAMP" property="dateReceived" />
+    <result column="PERSON_ADDRESS" jdbcType="VARCHAR" property="personAddress" />
+    <result column="PERSON_CITY" jdbcType="VARCHAR" property="personCity" />
+    <result column="PERSON_STATE" jdbcType="VARCHAR" property="personState" />
+    <result column="PERSON_ZIP" jdbcType="VARCHAR" property="personZip" />
+    <result column="PERSON_PLUS4" jdbcType="VARCHAR" property="personPlus4" />
+    <result column="PERSON_COUNTY" jdbcType="VARCHAR" property="personCounty" />
+    <result column="FACILITY_NAME" jdbcType="VARCHAR" property="facilityName" />
+    <result column="FACILITY_ADDRESS" jdbcType="VARCHAR" property="facilityAddress" />
+    <result column="FACILITY_CITY" jdbcType="VARCHAR" property="facilityCity" />
+    <result column="FACILITY_STATE" jdbcType="VARCHAR" property="facilityState" />
+    <result column="FACILITY_ZIP" jdbcType="VARCHAR" property="facilityZip" />
+    <result column="FACILITY_PLUS4" jdbcType="VARCHAR" property="facilityPlus4" />
+    <result column="FACILITY_COUNTY" jdbcType="VARCHAR" property="facilityCounty" />
+    <result column="FACILITY_PHONE" jdbcType="VARCHAR" property="facilityPhone" />
+    <result column="STATENO" jdbcType="VARCHAR" property="stateno" />
+    <result column="RACE_INDIAN" jdbcType="VARCHAR" property="raceIndian" />
+    <result column="RACE_BLACK" jdbcType="VARCHAR" property="raceBlack" />
+    <result column="RACE_ASIAN" jdbcType="VARCHAR" property="raceAsian" />
+    <result column="RACE_PACIFIC" jdbcType="VARCHAR" property="racePacific" />
+    <result column="RACE_WHITE" jdbcType="VARCHAR" property="raceWhite" />
+    <result column="RACE_MULTIPLE" jdbcType="VARCHAR" property="raceMultiple" />
+    <result column="RACE_OTHER" jdbcType="VARCHAR" property="raceOther" />
+    <result column="RACE_UNKNOWN" jdbcType="VARCHAR" property="raceUnknown" />
+    <result column="SSN" jdbcType="VARCHAR" property="ssn" />
+    <result column="MED_RECORD_NUMBER" jdbcType="VARCHAR" property="medRecordNumber" />
+    <result column="DOCCS_HIV" jdbcType="VARCHAR" property="doccsHiv" />
+    <result column="DOCCS_HIV_DATE" jdbcType="VARCHAR" property="doccsHivDate" />
+    <result column="DOCCS_AIDS" jdbcType="VARCHAR" property="doccsAids" />
+    <result column="DOCCS_AIDS_DATE" jdbcType="VARCHAR" property="doccsAidsDate" />
+    <result column="ALT_FACILITY_NAME" jdbcType="VARCHAR" property="altFacilityName" />
+    <result column="SUFFIX" jdbcType="VARCHAR" property="suffix" />
+    <result column="STD_PERSON_ADDRESS" jdbcType="VARCHAR" property="stdPersonAddress" />
+    <result column="STD_FACILITY_ADDRESS" jdbcType="VARCHAR" property="stdFacilityAddress" />
+    <result column="EHARS_IMPORT_DATE" property="eharsImportDate" jdbcType="VARCHAR" />
+  </resultMap>
+
+<select id="getDoccsDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO">
+		<![CDATA[
+		   SELECT NYSID,
+		   std.DOCUMENT_ID,
+                            std.FILE_RECEIVED_DATE DATE_RECEIVED, 
+                            MATCHED_STATENO,
+                            pda.DISCARD_STATUS,
+                            pda.STATENO
+                             from STD_DOCCS_DOC std LEFT OUTER JOIN  person_doc_association pda
+                    
+                    ON (std.document_id = pda.document_id
+                 AND pda.dissassociation_date IS NULL) 
+                 WHERE std.DOCUMENT_ID = #{documentId}
+
+
+		]]>
+</select>
+
+
+
+<select id="getDoccsDocumentId" parameterType="int" resultType="int">
+	select DOCCS_DOC_ID from STD_DIN_DOCCS_DOC where DOCUMENT_ID = #{docId}
+</select>
+
+<resultMap id="dinDoccsResultMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO" >
+    <result column="DOCUMENT_ID" property="DOCUMENT_ID" jdbcType="DECIMAL"/>
+    <result column="FNAME" property="FNAME" jdbcType="VARCHAR"/>
+    <result column="LNAME" property="LNAME" jdbcType="VARCHAR"/>
+    <result column="MNAME" property="MNAME" jdbcType="VARCHAR"/>
+    <result column="DOB" property="DOB" jdbcType="VARCHAR"/>
+    <result column="LSTREET" property="LSTREET" jdbcType="VARCHAR"/>
+    <result column="CURRENT_GENDER" property="GENDER" jdbcType="VARCHAR"/>
+    <result column="ETHNICITY" property="ETHNICITY" jdbcType="VARCHAR"/>
+    <result column="DOB" property="DOB" jdbcType="VARCHAR"/>
+	<result column="LSTREET" property="LSTREET" jdbcType="VARCHAR"/>
+	<result column="ETHNICITY" property="ETHNICITY" jdbcType="VARCHAR"/>
+	<result column="DIN" property="DIN" jdbcType="VARCHAR"/>
+	<result column="LATEST_RELEASE_DATE_TEXT" property="LATEST_RELEASE_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="DOD_TEXT" property="DOD_TEXT" jdbcType="VARCHAR"/>
+	<result column="UNDER_CUSTODY" property="UNDER_CUSTODY" jdbcType="VARCHAR"/>
+	<result column="PERSON_CITY" property="PERSON_CITY" jdbcType="VARCHAR"/>
+	<result column="PERSON_STATE" property="PERSON_STATE" jdbcType="VARCHAR"/>
+	<result column="PERSON_ZIP" property="PERSON_ZIP" jdbcType="VARCHAR"/>
+	<result column="PERSON_PLUS4" property="PERSON_PLUS4" jdbcType="VARCHAR"/>
+	<result column="PERSON_COUNTY" property="PERSON_COUNTY" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_NAME" property="CURRENT_FACILITY_NAME" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_ADDRESS" property="CURRENT_FACILITY_ADDRESS" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_CITY" property="CURRENT_FACILITY_CITY" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_STATE" property="CURRENT_FACILITY_STATE" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_ZIP" property="CURRENT_FACILITY_ZIP" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_PLUS4" property="CURRENT_FACILITY_PLUS4" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_COUNTY" property="CURRENT_FACILITY_COUNTY" jdbcType="VARCHAR"/>
+	<result column="CURRENT_FACILITY_PHONE" property="CURRENT_FACILITY_PHONE" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_NAME" property="OWNING_FACILITY_NAME" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_ADDRESS" property="OWNING_FACILITY_ADDRESS" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_CITY" property="OWNING_FACILITY_CITY" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_STATE" property="OWNING_FACILITY_STATE" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_ZIP" property="OWNING_FACILITY_ZIP" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_PLUS4" property="OWNING_FACILITY_PLUS4" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_COUNTY" property="OWNING_FACILITY_COUNTY" jdbcType="VARCHAR"/>
+	<result column="OWNING_FACILITY_PHONE" property="OWNING_FACILITY_PHONE" jdbcType="VARCHAR"/>
+	<result column="RACE_INDIAN" property="RACE_INDIAN" jdbcType="VARCHAR"/>
+	<result column="RACE_BLACK" property="RACE_BLACK" jdbcType="VARCHAR"/>
+	<result column="RACE_ASIAN" property="RACE_ASIAN" jdbcType="VARCHAR"/>
+	<result column="RACE_PACIFIC" property="RACE_PACIFIC" jdbcType="VARCHAR"/>
+	<result column="RACE_WHITE" property="RACE_WHITE" jdbcType="VARCHAR"/>
+	<result column="RACE_MULTIPLE" property="RACE_MULTIPLE" jdbcType="VARCHAR"/>
+	<result column="RACE_OTHER" property="RACE_OTHER" jdbcType="VARCHAR"/>
+	<result column="RACE_UNKNOWN" property="RACE_UNKNOWN" jdbcType="VARCHAR"/>
+	<result column="SSN" property="SSN" jdbcType="VARCHAR"/>
+	<result column="SUFFIX" property="SUFFIX" jdbcType="VARCHAR"/>
+	<result column="PERSON_ADDRESS" property="PERSON_ADDRESS" jdbcType="VARCHAR"/>
+	<result column="EHARS_IMPORT_DATE" property="EHARS_IMPORT_DATE" jdbcType="DATE"/>
+	<result column="NYC_SHIP_DATE" property="NYC_SHIP_DATE" jdbcType="DATE"/>
+	<result column="LEGAL_PERSON_ADDRESS" property="LEGAL_PERSON_ADDRESS" jdbcType="VARCHAR"/>
+	<result column="LEGAL_PERSON_CITY" property="LEGAL_PERSON_CITY" jdbcType="VARCHAR"/>
+	<result column="LEGAL_PERSON_STATE" property="LEGAL_PERSON_STATE" jdbcType="VARCHAR"/>
+	<result column="LEGAL_PERSON_ZIP" property="LEGAL_PERSON_ZIP" jdbcType="VARCHAR"/>
+	<result column="LEGAL_PERSON_COUNTY_NAME" property="LEGAL_PERSON_COUNTY_NAME" jdbcType="VARCHAR"/>
+	<result column="MEDICAID_NUMBER" property="MEDICAID_NUMBER" jdbcType="VARCHAR"/>
+	<result column="STREET" property="STREET" jdbcType="VARCHAR"/>
+	<result column="STATENO" property="STATENO" jdbcType="VARCHAR"/>
+	<result column="BIRTH_COUNTRY" property="BIRTH_COUNTRY" jdbcType="VARCHAR"/>
+	<result column="NYSID" property="NYSID" jdbcType="VARCHAR"/>
+	<result column="UNDER_SUPERVISION" property="UNDER_SUPERVISION" jdbcType="VARCHAR"/>
+	<result column="ENTERED_US_DATE_TEXT" property="ENTERED_US_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="ADMIN_DATE_TEXT" property="ADMIN_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="LATEST_ADMIN_DATE_TEXT" property="LATEST_ADMIN_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="EARLIEST_RELEASE_DATE_TEXT" property="EARLIEST_RELEASE_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="LATEST_DISCHARGE_DATE_TEXT" property="LATEST_DISCHARGE_DATE_TEXT" jdbcType="VARCHAR"/>
+	<result column="PREV_STREET" property="PREV_STREET" jdbcType="VARCHAR"/>
+	<result column="PREV_PERSON_ADDRESS" property="PREV_PERSON_ADDRESS" jdbcType="VARCHAR"/>
+	<result column="PREV_PERSON_CITY" property="PREV_PERSON_CITY" jdbcType="VARCHAR"/>
+	<result column="PREV_PERSON_STATE" property="PREV_PERSON_STATE" jdbcType="VARCHAR"/>
+	<result column="PREV_PERSON_ZIP" property="PREV_PERSON_ZIP" jdbcType="VARCHAR"/>
+	<result column="DRUG1" property="DRUG1" jdbcType="VARCHAR"/>
+	<result column="DRUG2" property="DRUG2" jdbcType="VARCHAR"/>
+	<result column="DRUG3" property="DRUG3" jdbcType="VARCHAR"/>
+	<result column="PAROLE_RELEASE_COUNTY" property="PAROLE_RELEASE_COUNTY" jdbcType="VARCHAR"/>
+	<result column="DOCCS_FILE" property="DOCCS_FILE" jdbcType="VARCHAR"/>
+	<result column="ALIEN_STATUS" property="ALIEN_STATUS" jdbcType="VARCHAR"/>
+	<result column="RESCO" property="RESCO" jdbcType="VARCHAR"/>
+	<result column="LRELDA" property="LRELDA" jdbcType="VARCHAR"/>
+    
+    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsProbCodesVO" column="PROBLEM_CD" property="doccsProbCodes">
+	     <result column="PROBLEM_CD" property="PROBLEM_CD" jdbcType="VARCHAR"/>
+	     <result column="PROBLEM_CD_DATE" property="PROBLEM_CD_DATE" jdbcType="VARCHAR"/>
+	     <result column="HIV_DIAG_DATE_TEXT" property="HIV_DIAG_DATE_TEXT" jdbcType="VARCHAR"/>
+	     <result column="AIDS_DIAG_DATE_TEXT" property="AIDS_DIAG_DATE_TEXT" jdbcType="VARCHAR"/>
+	     <result column="HIV_DIAG" property="HIV_DIAG" jdbcType="DECIMAL"/>
+	     <result column="AIDS_DIAG" property="AIDS_DIAG" jdbcType="DECIMAL"/>
+    </collection>
+  </resultMap>
+  
+
+<select id="getDinDoccsDocContent" parameterType="java.util.Map" resultMap="dinDoccsResultMap">
+	select             std.DOCUMENT_ID,
+std.FNAME,
+std.LNAME,
+std.MNAME,
+std.DOB_TEXT DOB,
+raw1.LSTREET,
+std.CURRENT_GENDER,
+std.ETHNICITY,
+std.DIN,
+std.NYSID,
+std.DOD_TEXT,
+std.UNDER_CUSTODY,
+std.UNDER_SUPERVISION,
+std.BIRTH_COUNTRY,
+std.ENTERED_US_DATE_TEXT,
+std.ADMIN_DATE_TEXT,
+std.LATEST_ADMIN_DATE_TEXT,
+std.EARLIEST_RELEASE_DATE_TEXT,
+std.LATEST_DISCHARGE_DATE_TEXT,
+std.LATEST_RELEASE_DATE_TEXT,
+std.PERSON_CITY,
+std.PERSON_STATE,
+std.PERSON_ZIP,
+std.PERSON_PLUS4,
+std.PERSON_COUNTY,
+std.RESCO,
+std.LRELDA,
+std.CURRENT_FACILITY_NAME,
+std.CURRENT_FACILITY_ADDRESS,
+std.CURRENT_FACILITY_CITY,
+std.CURRENT_FACILITY_STATE,
+std.CURRENT_FACILITY_ZIP,
+std.CURRENT_FACILITY_PLUS4,
+std.CURRENT_FACILITY_COUNTY,
+std.CURRENT_FACILITY_PHONE,
+std.OWNING_FACILITY_NAME,
+std.OWNING_FACILITY_ADDRESS,
+std.OWNING_FACILITY_CITY,
+std.OWNING_FACILITY_STATE,
+std.OWNING_FACILITY_ZIP,
+std.OWNING_FACILITY_PLUS4,
+std.OWNING_FACILITY_COUNTY,
+std.OWNING_FACILITY_PHONE,
+raw1.PREV_STREET,
+std.PREV_PERSON_ADDRESS,
+std.PREV_PERSON_CITY,
+std.PREV_PERSON_STATE,
+std.PREV_PERSON_ZIP,
+std.DRUG1,
+std.DRUG2,
+std.DRUG3,
+std.PAROLE_RELEASE_COUNTY,
+std.ALIEN_STATUS,
+std.DOCCS_FILE,
+std.RACE_INDIAN,
+std.RACE_BLACK,
+std.RACE_ASIAN,
+std.RACE_PACIFIC,
+std.RACE_WHITE,
+std.RACE_MULTIPLE,
+std.RACE_OTHER,
+std.RACE_UNKNOWN,
+std.SSN,
+std.SUFFIX,
+std.PERSON_ADDRESS,
+std.EHARS_IMPORT_DATE,
+std.NYC_SHIP_DATE,
+std.LEGAL_PERSON_ADDRESS,
+std.LEGAL_PERSON_CITY,
+std.LEGAL_PERSON_STATE,
+std.LEGAL_PERSON_ZIP,
+std.LEGAL_PERSON_COUNTY_NAME,
+std.MEDICAID_NUMBER,
+raw1.STREET,
+coded_prob.PROBLEM_DESCRIPTION PROBLEM_CD,
+std_prob.PROBLEM_CD_DATE ,
+std_prob.HIV_DIAG,
+std_prob.HIV_DIAG_DATE_TEXT  ,
+std_prob.AIDS_DIAG,
+std_prob.AIDS_DIAG_DATE_TEXT  
+from STD_DIN_DOCCS_DOC std, RAW_DIN_DOCCS_DOC raw1, STD_DOCCS_PROB_CODES std_prob, CODED_DOCCS_PROBLEM_CODES coded_prob where 
+    std.document_id = raw1.document_id and std.document_id = std_prob.DIN_DOCCS_DOC_ID(+) and 
+    std_prob.PROBLEM_CD = coded_prob.PROBLEM_CD(+) and 
+   	<choose>
+   		<when test="byDoccsDocId == true">
+   			std.DOCCS_DOC_ID = #{DoccsDocId}		
+   		</when>
+   		<otherwise>
+   			std.document_id = #{docId}	
+   		</otherwise>
+   	</choose>
+   	
+   	order by FN_TO_DATE(LATEST_ADMIN_DATE_TEXT, 'MM/DD/YYYY') desc
+    
+   
+   
+	
+		
+</select>
+
+	
+	<insert id="insertRawDoccsDataToStdTable" parameterType="java.util.Map">
+		insert into STD_DOCCS_DOC(DOCUMENT_ID, NYSID, FILE_RECEIVED_DATE, MATCHED_STATENO, DOCCS_FILE, CURRENT_PROCESS_STATUS)
+		 values(#{DOCUMENT_ID,jdbcType=DECIMAL},#{NYSID,jdbcType=VARCHAR},#{FILE_RECEIVED_DATE,jdbcType=DATE},#{MATCHED_STATENO,jdbcType=VARCHAR},#{DOCCS_FILE,jdbcType=VARCHAR},#{CURRENT_PROCESS_STATUS,jdbcType=DECIMAL})
+	</insert>
+	
+	<select id="getRawDinDoccsList" parameterType="bigdecimal" resultType="java.util.Map">
+		select DOCUMENT_ID, DOCCS_DOC_ID, RECNUM, NYSID, DIN, ADMDATE, LADMDATE, FNAME, MNAME, LNAME, SUFFIX, BIRTH, POB, ALIENS2, USDATE, RESCO, LEGRESC, SEX, RACE, ETHNICITY, LRELDA, DRUG1, DRUG2, DRUG3, UC, LSTREET, LCITY, LSTATE, LZIP, LZIP9, STREET, CITY, STATE, ZIP, ZIP9, SRP, PREV_STREET, PREV_CITY, PREV_STATE, PREV_ZIP9, DEATH, SSN, CIN, LRELDATE, LDISCHRGDATE, CURRENT_FACILITY, OWNING_FACILITY, CURRENT_PROCESS_STATUS, ERDATE, DOCCS_FILE, PROCESS_DATE, PRLRELCNTY from RAW_DIN_DOCCS_DOC where DOCCS_DOC_ID = #{documentId}   and current_process_status != 43
+	</select>
+	
+	
+	
+	<insert id="insertRawDinDoccsDataToStdTable" parameterType="java.util.Map">
+insert into STD_DIN_DOCCS_DOC(DOCUMENT_ID, DOCCS_DOC_ID, NYSID, SSN, PROVNAME, MEDICAID_NUMBER, DIN, PERSON_ADDRESS, LEGAL_PERSON_ADDRESS, PREV_PERSON_ADDRESS, PROV_ADDR, PERSON_CENSUS_TRACT, OWNING_FACILITY_CENSUS_TRACT, CURRENT_FACILITY_CENSUS_TRACT, DOCCS_FILE, SUFFIX, PERSON_ZIP, LEGAL_PERSON_ZIP, PREV_PERSON_ZIP, PROV_ZIP, PERSON_PLUS4, LEGAL_PERSON_PLUS4, PREV_PERSON_PLUS4, PROV_PLUS4, PROV_CENSUS_TRACT, MATCH_PASS, PERSON_CITY, LEGAL_PERSON_CITY, PREV_PERSON_CITY, PROV_CITY, PERSON_COUNTY, COUNTY_PROV, ALT_PROVIDER, LNAME, MNAME, BIRTH_COUNTRY, DRUG1, DRUG2, DRUG3, PAROLE_RELEASE_COUNTY, FNAME, PROV_PHONE, ETHNICITY, PERSON_STATE, LEGAL_PERSON_STATE, PREV_PERSON_STATE, PROV_ST, PROV_CENSUS_TRACT_SUFFIX, RACE_CD, ALIEN_STATUS, LEGAL_PERSON_COUNTY_NAME, RESCO, PERSON_LONGITUDE, OWNING_FACILITY_LONGITUDE, CURRENT_FACILITY_LONGITUDE, PROV_LONG, STATENO, DOB_TEXT, ENTERED_US_DATE_TEXT, PERSON_LATITUDE, OWNING_FACILITY_LATITUDE, CURRENT_FACILITY_LATITUDE, ADMIN_DATE_TEXT, LATEST_ADMIN_DATE_TEXT, EARLIEST_RELEASE_DATE_TEXT, LATEST_RELEASE_DATE_TEXT, LATEST_DISCHARGE_DATE_TEXT, DOD_TEXT, PROV_LAT, PROVIDER_TYPE, LRELDA, MATCHED_STATENO, CURRENT_GENDER, UNDER_CUSTODY, UNDER_SUPERVISION, PROCESSED, ASSESS_ASSIGN, MATCH_WEIGHT, CURRENT_PROCESS_STATUS, QS_PARENT_DOC_ID, REVIEW_DATE, CREATE_DATE, EHARS_IMPORT_DATE, NYC_SHIP_DATE, MATCHED_PROCESS_DATE, REVIEW_DT, REVIEW_UID, MATCH_CD, CREATE_UID, RACE_INDIAN, RACE_BLACK, RACE_ASIAN, RACE_PACIFIC, RACE_WHITE, RACE_MULTIPLE, RACE_OTHER, RACE_UNKNOWN, EHARS_STATUS_CD,  
+		
+		OWNING_FACILITY_NAME, OWNING_FACILITY_ADDRESS, OWNING_FACILITY_CITY, OWNING_FACILITY_STATE, OWNING_FACILITY_ZIP, OWNING_FACILITY_PLUS4, OWNING_FACILITY_COUNTY, OWNING_FACILITY_PHONE, 
+		
+		CURRENT_FACILITY_NAME, CURRENT_FACILITY_ADDRESS, CURRENT_FACILITY_CITY, CURRENT_FACILITY_STATE,  CURRENT_FACILITY_ZIP, CURRENT_FACILITY_PLUS4, CURRENT_FACILITY_COUNTY, CURRENT_FACILITY_PHONE 
+		
+		)
+
+		<foreach collection="dinDoccsList"  item="dinDoc" index="index" separator=" Union all ">
+		
+		 SELECT #{dinDoc.DOCUMENT_ID,jdbcType=DECIMAL}, #{dinDoc.DOCCS_DOC_ID,jdbcType=DECIMAL}, trim(upper(#{dinDoc.NYSID,jdbcType=VARCHAR})), trim(upper(#{dinDoc.SSN,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROVNAME,jdbcType=VARCHAR})), trim(upper(#{dinDoc.MEDICAID_NUMBER,jdbcType=VARCHAR})), trim(upper(#{dinDoc.DIN,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_ADDRESS,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_ADDRESS,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PREV_PERSON_ADDRESS,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_ADDR,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_CENSUS_TRACT,jdbcType=VARCHAR})), trim(upper(#{dinDoc.OWNING_FACILITY_CENSUS_TRACT,jdbcType=VARCHAR})), trim(upper(#{dinDoc.CURRENT_FACILITY_CENSUS_TRACT,jdbcType=VARCHAR})), #{dinDoc.DOCCS_FILE,jdbcType=VARCHAR}, trim(upper(#{dinDoc.SUFFIX,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_ZIP,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_ZIP,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PREV_PERSON_ZIP,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_ZIP,jdbcType=VARCHAR})),trim(upper(#{dinDoc.PERSON_PLUS4,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_PLUS4,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PREV_PERSON_PLUS4,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_PLUS4,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_CENSUS_TRACT,jdbcType=VARCHAR})), trim(upper(#{dinDoc.MATCH_PASS,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_CITY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_CITY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PREV_PERSON_CITY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_CITY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_COUNTY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.COUNTY_PROV,jdbcType=VARCHAR})), trim(upper(#{dinDoc.ALT_PROVIDER,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LNAME,jdbcType=VARCHAR})), trim(upper(#{dinDoc.MNAME,jdbcType=VARCHAR})), 
+		 
+		 
+		 case when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in (select upper(country_desc) from coded_country)
+            THEN (select country_code from coded_country where #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = upper(country_desc))
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'ZAIRE' then 'COD'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'ANTIGUA' then 'ATG'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'BAHAMA ISLANDS' then 'BHS'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'BOSNIA' then 'BIH'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('BRIT.VIRG.ISLE','BRITISH VIRGIN IS') then 'VGB'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'BRUNEI' then 'BRN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'BURMA' then 'MMR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'CANAL ZONE' then 'PAN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'CAYMAN ISLES' then 'CYM'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'CZECHOSLOVAKIA' then 'CZE'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'DOMINICAN REP.' then 'DOM'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('WEST GERMANY','EAST GERMANY') then 'DEU'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('ENGLAND','ENGLAND,SCOT.','SCOTLAND','WALES') then 'GBR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'EQUADOR' then 'ECU'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'FIJI ISLANDS' then 'FJI'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'GGAMBIA' then 'GMB'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'GRENEDA' then 'GRD'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'GUATAMALA' then 'GTM'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'IRAN' then 'IRN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'ITALY,CORSICA' then 'ITA'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'IVORY COAST' then 'CIV'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'LAOS' then 'LAO'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'LYBIA' then 'LBY'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'NETH. ANTILLES' then 'ANT'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'NEVIS-ANGUILLA' then 'KNA'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'NORTH KOREA' then 'PRK'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'NEW HEBRIDES' then 'VUT'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('PAP.NEW GUINEA','PAPAU NEW GUINEA') then 'PNG'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'PHILLIPPINES' then 'PHL'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('SOVIET UNION', 'RUSSIA','USSR') then 'RUS'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'S.W. AFRICA' then 'ZAF'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'SOUTH KOREA' then 'KOR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'SPAIN,PORTUGAL' then 'ESP'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'SURINAM' then 'SUR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'SYRIA' then 'SYR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'TAIWAN' then 'TWN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'TANZANIA' then 'TZA'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'TIBET' then 'CHN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'TRINIDAD' then 'TTO'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'TURKS - CAICOS' then 'TCA'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'UNITED ARAB EM' then 'ARE'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'VIETNAM' then 'VNM'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'VIRGIN ISLANDS' then 'VIR'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} = 'WEST SAHARA' then 'ESH'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR} in ('AB','BC','MB','NB','NL','NS','NT','ON','PE','QC','SK','YT','CANADA') then 'CAN'
+     when #{dinDoc.BIRTH_COUNTRY,jdbcType=VARCHAR}in ('AK','AL','AR','AZ','CA','CO','CT','DC','DE','FL',
+                  'GA','HI','IA','ID','IL','IN','KS','KY','LA','MA',
+                  'MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH',
+                  'NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD',
+                  'TN','TX','UT','VA','VT','WA','WI','WV','WY',
+                  'ALABAMA','ALASKA','ARIZONA','ARKANSAS','CALIFORNIA','COLORADO','CONNECTICUT',
+                  'DELAWARE','DISTRICT OF COLUMBIA','FLORIDA','GEORGIA','HAWAII','IDAHO',
+                  'ILLINOIS','INDIANA','IOWA','KANSAS','KENTUCKY','LOS ANGELES COUNTY',
+                  'LOUISIANA','MAINE','MARYLAND','MASSACHUSETTS','MICHIGAN','MINNESOTA',
+                  'MISSISSIPPI','MISSOURI','MONTANA','NEBRASKA','NEVADA','NEW HAMPSHIRE',
+                  'NEW JERSEY','NEW MEXICO','NEW YORK','NEW YORK CITY','NORTH CAROLINA',
+                  'NORTH DAKOTA','OHIO','OKLAHOMA','OREGON','PENNSYLVANIA','PHILADELPHIA',
+                  'PUERTO RICO','RHODE ISLAND','SAN FRANCISCO','SOUTH CAROLINA','SOUTH DAKOTA',
+                  'TENNESSEE','TEXAS','UTAH','VERMONT','VIRGINIA','WASHINGTON','WEST VIRGINIA',
+                  'WISCONSIN','WYOMING','NEW YORK STATE','WASHINGTON D C') THEN 'USA'
+     else null END, 
+		 
+		 
+		 
+		 
+		 
+		 trim(upper(#{dinDoc.DRUG1,jdbcType=VARCHAR})), trim(upper(#{dinDoc.DRUG2,jdbcType=VARCHAR})), trim(upper(#{dinDoc.DRUG3,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PAROLE_RELEASE_COUNTY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.FNAME,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_PHONE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.ETHNICITY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_STATE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_STATE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PREV_PERSON_STATE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_ST,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_CENSUS_TRACT_SUFFIX,jdbcType=VARCHAR})), trim(upper(#{dinDoc.RACE_CD,jdbcType=VARCHAR})), trim(upper(#{dinDoc.ALIEN_STATUS,jdbcType=VARCHAR})), trim(upper(#{dinDoc.LEGAL_PERSON_COUNTY_NAME,jdbcType=VARCHAR})), trim(upper(#{dinDoc.RESCO,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PERSON_LONGITUDE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.OWNING_FACILITY_LONGITUDE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.CURRENT_FACILITY_LONGITUDE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROV_LONG,jdbcType=VARCHAR})), trim(upper(#{dinDoc.STATENO,jdbcType=VARCHAR})), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.DOB_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.ENTERED_US_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), trim(upper(#{dinDoc.PERSON_LATITUDE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.OWNING_FACILITY_LATITUDE,jdbcType=VARCHAR})), trim(upper(#{dinDoc.CURRENT_FACILITY_LATITUDE,jdbcType=VARCHAR})), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.ADMIN_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.LATEST_ADMIN_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.EARLIEST_RELEASE_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.LATEST_RELEASE_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.LATEST_DISCHARGE_DATE_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.DOD_TEXT,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), trim(upper(#{dinDoc.PROV_LAT,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROVIDER_TYPE,jdbcType=VARCHAR})), TO_CHAR(FN_TO_DATE(trim(upper(#{dinDoc.LRELDA,jdbcType=VARCHAR})),'MM/DD/YYYY'),'MM/DD/YYYY'), trim(upper(#{dinDoc.MATCHED_STATENO,jdbcType=VARCHAR})), trim(upper(#{dinDoc.CURRENT_GENDER,jdbcType=VARCHAR})), trim(upper(#{dinDoc.UNDER_CUSTODY,jdbcType=VARCHAR})), trim(upper(#{dinDoc.UNDER_SUPERVISION,jdbcType=VARCHAR})), trim(upper(#{dinDoc.PROCESSED,jdbcType=VARCHAR})), trim(upper(#{dinDoc.ASSESS_ASSIGN,jdbcType=VARCHAR})), #{dinDoc.MATCH_WEIGHT,jdbcType=DECIMAL}, #{dinDoc.CURRENT_PROCESS_STATUS,jdbcType=DECIMAL}, #{dinDoc.QS_PARENT_DOC_ID,jdbcType=DECIMAL}, #{dinDoc.REVIEW_DATE,jdbcType=DATE}, #{dinDoc.CREATE_DATE,jdbcType=DATE}, #{dinDoc.EHARS_IMPORT_DATE,jdbcType=DATE}, #{dinDoc.NYC_SHIP_DATE,jdbcType=DATE}, #{dinDoc.MATCHED_PROCESS_DATE,jdbcType=DATE}, #{dinDoc.REVIEW_DT,jdbcType=DATE}, trim(upper(#{dinDoc.REVIEW_UID,jdbcType=VARCHAR})), trim(upper(#{dinDoc.MATCH_CD,jdbcType=VARCHAR})), trim(upper(#{dinDoc.CREATE_UID,jdbcType=VARCHAR})), #{dinDoc.RACE_INDIAN,jdbcType=VARCHAR}, #{dinDoc.RACE_BLACK,jdbcType=VARCHAR}, #{dinDoc.RACE_ASIAN,jdbcType=VARCHAR}, #{dinDoc.RACE_PACIFIC,jdbcType=VARCHAR}, #{dinDoc.RACE_WHITE,jdbcType=VARCHAR}, #{dinDoc.RACE_MULTIPLE,jdbcType=VARCHAR}, #{dinDoc.RACE_OTHER,jdbcType=VARCHAR}, #{dinDoc.RACE_UNKNOWN,jdbcType=VARCHAR}, trim(upper(#{dinDoc.EHARS_STATUS_CD,jdbcType=VARCHAR})),  
+		 
+		 
+	 	 
+		 OWNING_FAC.FACILITY_NAME, OWNING_FAC.ADDRESS1 ||' ' ||OWNING_FAC.ADDRESS2, OWNING_FAC.CITY, OWNING_FAC.STATE, OWNING_FAC.ZIPCODE, OWNING_FAC.PLUS4, OWNING_FAC.COUNTY_FIPS, OWNING_FAC.PHONE, 
+		 
+		 CURR_FAC.FACILITY_NAME, CURR_FAC.ADDRESS1 ||' ' ||CURR_FAC.ADDRESS2, CURR_FAC.CITY, CURR_FAC.STATE, CURR_FAC.ZIPCODE, CURR_FAC.PLUS4, CURR_FAC.COUNTY_FIPS, CURR_FAC.PHONE 
+		 
+		  
+		   
+FROM (select trim(upper(#{dinDoc.CURRENT_FACILITY_NAME,jdbcType=VARCHAR})) as CURRENT_FACILITY, trim(upper(#{dinDoc.OWNING_FACILITY_NAME,jdbcType=VARCHAR})) as OWNING_FACILY from dual ) d , CODED_DOCCS_FACILITY_XREF  CURR_XREF , CODED_DOCCS_FACILITY CURR_FAC , CODED_DOCCS_FACILITY_XREF  OWNING_XREF , CODED_DOCCS_FACILITY OWNING_FAC
+ 
+WHERE d.CURRENT_FACILITY = CURR_XREF.DOCCS_FACILITY_NAME(+)
+AND     CURR_XREF.FACILITY_NAME = CURR_FAC. FACILITY_NAME (+)
+AND     d.OWNING_FACILY  = OWNING_XREF.DOCCS_FACILITY_NAME (+)
+AND     OWNING_XREF.FACILITY_NAME = OWNING_FAC. FACILITY_NAME (+)
+
+	</foreach>
+
+
+	</insert>
+	
+	<insert id="insertRawDinProbCodesToStdProbCodes" parameterType="bigdecimal">
+		INSERT INTO STD_DOCCS_PROB_CODES  (DIN_DOCCS_DOC_ID, PROBLEM_CD, PROBLEM_CD_DATE, HIV_DIAG, HIV_DIAG_DATE_TEXT, AIDS_DIAG, AIDS_DIAG_DATE_TEXT)
+SELECT DIN_DOCCS_DOC_ID, PROBLEM_CD, TO_CHAR(FN_TO_DATE(trim(upper(PROBLEM_CD_DATE)),'MM/DD/YYYY'),'MM/DD/YYYY'), HIV_DIAG, TO_CHAR(FN_TO_DATE(trim(upper(HIV_DIAG_DATE_TEXT)),'MM/DD/YYYY'),'MM/DD/YYYY'), AIDS_DIAG, TO_CHAR(FN_TO_DATE(trim(upper(AIDS_DIAG_DATE_TEXT)),'MM/DD/YYYY'),'MM/DD/YYYY')
+FROM RAW_DOCCS_PROB_CODES 
+WHERe DIN_DOCCS_DOC_ID  in (select DOCUMENT_ID from STD_DIN_DOCCS_DOC where DOCCS_DOC_ID = #{documentId} )
+
+	</insert>
+	
+	  <select id="getStdDinDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
+	  <![CDATA[
+  	select * from (SELECT SSN, FNAME, LNAME, MNAME,SUFFIX, GENDER_DESCRIPTION  GENDER,  DOB_TEXT DOB, DOD_TEXT dateOfDeath, NYSID, MEDICAID_NUMBER, DIN,  
+ BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP, 
+PERSON_PLUS4, ETHNICITY_DESCRIPTION  ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  RACE_UNKNOWN, RACE_OTHER  
+from STD_DIN_DOCCS_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
+where s.CURRENT_GENDER=g.GENDER_CODE (+)
+AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
+AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCCS_DOC_ID = (SELECT DOCCS_DOC_ID FROM STD_DIN_DOCCS_DOC WHERE document_id = #{docId})  ORDER BY TO_DATE(s.ADMIN_DATE_TEXT , 'MM/DD/YYYY' ) desc)  WHERE rownum < 2
+
+	]]>
+  </select>
+  <select id="getDinDoccsIds" parameterType="int" resultType="int">
+  	select document_id from STD_DIN_DOCCS_DOC where DOCCS_DOC_ID  = #{document_ID}
+  </select>
+  
+  <update id="documentInitialValidation" parameterType="bigdecimal">
+  	update RAW_DIN_DOCCS_DOC set current_process_Status = 43 where  DOCCS_DOC_ID  = #{documentId} and (upper(trim(FNAME)) = 'UNKNOWN' or trim(FNAME) is null ) and (upper(trim(LNAME)) = 'UNKNOWN' or  trim(LNAME) is null )
+  </update>
+	
+	
+	<update id="stopDoccsDocumentAtRaw" parameterType="bigdecimal">
+	
+		update RAW_DOCCS_DOC doccs set current_process_Status = 43 where  document_id  = #{documentId} and not exists ( select 1 from RAW_DIN_DOCCS_DOC where DOCCS_DOC_ID  = doccs.document_id and nvl(current_process_Status, 1) != 43)
+		
+	</update>
+	
+	<update id="updateRawDinDocStatus"  parameterType="bigdecimal">
+		update RAW_DIN_DOCCS_DOC set current_process_Status = 5 where current_process_Status = 1 and  DOCCS_DOC_ID  = #{documentId}
+	</update>
+	
+</mapper>	

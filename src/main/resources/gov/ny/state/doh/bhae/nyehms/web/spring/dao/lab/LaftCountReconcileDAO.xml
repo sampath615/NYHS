@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LaftCountReconcileDAO">
+
+	<select id="getPFICountCollectionPeriod" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+		SELECT distinct LAFT_RECON_ID, COLLECTION_START_DATE , COLLECTION_END_DATE , COLLECTION_START_DATE || ' - ' ||  COLLECTION_END_DATE collectionPeriod
+		from LAFT_LAB_RECON_LIST 
+		order by to_date(COLLECTION_START_DATE, 'MM/DD/YYYY') desc
+	</select>	
+ 	
+	<resultMap type="org.json.simple.JSONObject" id="reconcileDashboardData"></resultMap>
+	<resultMap type="org.json.simple.JSONObject" id="reconcileSummaryOut"></resultMap>
+	<resultMap type="org.json.simple.JSONObject" id="reconcileListPfis"></resultMap>
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LAFT_LAB_RECON_BHAE_COMMENTS" id="bhaeCommentsCur"></resultMap>
+	<resultMap type="org.json.simple.JSONObject" id="surveyResponse"></resultMap>
+	
+  	<select id="getReconcileDashboardData" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.get_recon_summary(
+			#{p_laft_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_recon_dash,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=reconcileDashboardData},
+			#{p_recon_summ_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=reconcileSummaryOut},
+			#{p_recon_list_pfis,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=reconcileListPfis},
+			#{p_bhae_comments_cur,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=bhaeCommentsCur},
+			#{p_survey_response,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=surveyResponse}
+		)}
+  	</select> 		
+
+
+	<resultMap type="org.json.simple.JSONObject" id="openSurveysData"></resultMap>
+	
+  	<select id="getCurOpenSurveysData" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.get_recon_summary_for_worker(
+			#{p_laft_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi_cur,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=openSurveysData}
+		)}
+  	</select> 		
+  	
+	<select id="updateLabReconcileData" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.edit_recon_summary(
+			#{p_laft_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_bhae_comments,jdbcType=VARCHAR,mode=IN},	
+			#{p_update_worker_id,jdbcType=VARCHAR,mode=IN},
+			#{p_initial_contact_date,jdbcType=VARCHAR,mode=IN},
+			#{p_reconciled,jdbcType=VARCHAR,mode=IN},
+			#{p_accession_compare,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	<insert id="insertEditSurveyData" parameterType="java.util.Map">
+	
+		INSERT INTO LAFT_RECON_SUMM_GTT (LAFT_RECON_SUMM_PK, LAFT_RECON_ID, PFI, CLIA, UPDATE_WORKER_ID, LAFT_TEST_CD, INITIAL_LAB_COUNT, 
+		CURRENT_LAB_COUNT, SURVEY_LAB_COUNT, ADJUSTED_SURVEY_LAB_COUNT, COUNT_DIFFERENCE, DATE_RESOLVED)
+		 <foreach collection="surveyEditDataList"  item="surveyRecVO" index="index" separator=" Union all ">
+			select #{surveyRecVO.LAFT_RECON_SUMM_PK,jdbcType=DECIMAL}, #{surveyRecVO.LAFT_RECON_ID,jdbcType=VARCHAR}, #{surveyRecVO.PFI,jdbcType=VARCHAR},
+				#{surveyRecVO.CLIA,jdbcType=VARCHAR}, #{surveyRecVO.UPDATE_WORKER_ID,jdbcType=VARCHAR}, #{surveyRecVO.LAFT_TEST_CD,jdbcType=VARCHAR},
+				#{surveyRecVO.INITIAL_LAB_COUNT,jdbcType=DECIMAL},#{surveyRecVO.CURRENT_LAB_COUNT,jdbcType=DECIMAL},
+				#{surveyRecVO.SURVEY_LAB_COUNT,jdbcType=DECIMAL}, #{surveyRecVO.ADJUSTED_SURVEY_LAB_COUNT,jdbcType=DECIMAL}, #{surveyRecVO.COUNT_DIFFERENCE,jdbcType=DECIMAL},
+				FN_TO_DATE(#{surveyRecVO.DATE_RESOLVED,jdbcType=DATE},'MM/DD/YYYY')
+			from dual
+		</foreach>
+		
+	</insert>	
+	
+	<resultMap type="org.json.simple.JSONObject" id="surveyEmailRecipients"></resultMap>
+	
+  	<select id="getSurveyEmailRecipients" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.get_survey_email_recipients(
+			#{p_survey_email,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=surveyEmailRecipients},
+			#{p_message,jdbcType=VARCHAR, mode=OUT}
+		)}
+  	</select> 	
+  	
+   <update id="updateSurveyEmailSendData" parameterType="java.util.Map">
+   	update LAFT_LAB_SURVEY_TRACK set SURVEY_SENT_DATE = SYSDATE, SURVEY_SENT_BY = #{hcsUserId} where SURVEY_TRACK_PK in 
+   	         <foreach item="surveyTrackPk" index="index" collection="trackPkList" open="(" separator="," close=")">
+						        	#{surveyTrackPk}
+			</foreach>
+   </update>  			
+	
+	<select id="getLaftSurveyResponseFilenameCt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM LAFT_LAB_SURVEY_RESPONSE WHERE SURVEY_RESPONSE_FILENAME = #{uploadFilename}
+	</select>	
+	
+	<insert id="insertLaftSurveyResponseData" parameterType="java.util.Map">
+		insert into LAFT_LAB_SURVEY_RESPONSE (LAFT_RECON_ID, SURVEY_RESPONSE_FILENAME, UPLOAD_DATE, WORKER_ID, PFI, CLIA, WES_BLOT, HIV1_2_RNA_NAT_QL, HIV_1_RNA_NAT_QL,
+					HIV_2_RNA_NAT_QL, HIV_1_RNA_COPY, HIV_1_RNA_LOG, CD4_PCT, CD4_ABS, GENO_RESIST, DTA_SCREEN_ALERE, DTA_SCREEN, BIOPLEX_HIV_1_AG, BIOPLEX_HIV_1_AB, 
+					BIOPLEX_HIV_2_AB, ELECSYS_HIV1_2_AB, DTA_DIFF, DTA_DIFF_HIV_1, DTA_DIFF_HIV_2, HIV1_DNA, HIV_2_RNA_DNA, IFA, OPEN_ENDED_RESPONSE, SURVEY_COMPLETED_BY, 
+					SURVEY_COMPLETED_BY_EMAIL, SURVEY_COMPLETED_BY_PHONE, SURVEY_COMPLETED_DATE)
+		 <foreach collection="laftSurveyResponseDataList"  item="laftSurveyData" index="index" separator=" Union all ">
+			select  #{laftSurveyData.collectionPeriod,jdbcType=VARCHAR}, #{laftSurveyData.fileName,jdbcType=VARCHAR}, SYSDATE, #{laftSurveyData.userId,jdbcType=VARCHAR}, 
+					#{laftSurveyData.PFI, jdbcType=VARCHAR}, #{laftSurveyData.CLIA,jdbcType=VARCHAR}, 
+					#{laftSurveyData.Western_Blot(Pos/IN/Neg),jdbcType=INTEGER},
+					#{laftSurveyData.RNA_NAAT_HIV_1/2_RNA_QL,jdbcType=INTEGER},
+					#{laftSurveyData.RNA_NAAT/HIV_1_RNA_QL,jdbcType=INTEGER},
+					#{laftSurveyData.RNA_NAAT/HIV_2_RNA_QL,jdbcType=INTEGER},
+					#{laftSurveyData.Viral_Load_(copies/ml),jdbcType=INTEGER},
+					#{laftSurveyData.Viral_Load_(log_copies),jdbcType=INTEGER},
+					#{laftSurveyData.CD4_Percent,jdbcType=INTEGER},
+					#{laftSurveyData.CD4_Absolute,jdbcType=INTEGER},
+					#{laftSurveyData.Genotype_Resistance,jdbcType=INTEGER},
+					#{laftSurveyData.Abbott_Determine,jdbcType=INTEGER},
+					#{laftSurveyData.HIV_1_HIV_2_Immunoassay,jdbcType=INTEGER},
+					#{laftSurveyData.HIV1_Ag,jdbcType=INTEGER},
+					#{laftSurveyData.HIV1_Ab,jdbcType=INTEGER},
+					#{laftSurveyData.HIV2_Ab,jdbcType=INTEGER},
+					#{laftSurveyData.HIV1+2_Ab,jdbcType=INTEGER},
+					#{laftSurveyData.Geenius_Assay_Interpretation,jdbcType=INTEGER},
+					#{laftSurveyData.Geenius_HIV_1,jdbcType=INTEGER},
+					#{laftSurveyData.Geenius_HIV_2,jdbcType=INTEGER},
+					#{laftSurveyData.HIV_1_DNA,jdbcType=INTEGER},
+					#{laftSurveyData.HIV_2_DNA,jdbcType=INTEGER},
+					#{laftSurveyData.IFA,jdbcType=INTEGER},
+					#{laftSurveyData.Open_Ended_Response,jdbcType=VARCHAR},
+					#{laftSurveyData.Survey_Completor_Name,jdbcType=VARCHAR},
+					#{laftSurveyData.Survey_Completor_Email_Id,jdbcType=VARCHAR},
+					#{laftSurveyData.Survey_Completor_Phone,jdbcType=VARCHAR},
+					FN_TO_DATE(#{laftSurveyData.Survey_Completed_Date,jdbcType=DATE},'MM/DD/YYYY') from dual
+		</foreach>
+	</insert>	
+	
+	<select id="processUploadedSurveyResponse" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.process_survey_response(
+			#{p_laft_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_survey_filename,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	<resultMap type="org.json.simple.JSONObject" id="accessionList"></resultMap>
+	
+  	<select id="getAccessionList" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.get_accession_list(
+			#{p_laft_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_accession_list,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=accessionList}
+		)}
+  	</select> 		
+  	
+  	<select id="refreshNyehmsLabCount" parameterType="java.util.Map" statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.refresh_nyehms_lab_count(
+			#{p_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}
+  	</select> 		  
+  		
+  	<select id="saveAddReconcilePFI" parameterType="java.util.Map"  statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.add_pfi(
+			#{p_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_laft_staff,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN},
+			#{p_code,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+  	</select> 	
+
+  	<select id="deleteReconcilePFI" parameterType="java.util.Map"  statementType="CALLABLE">
+		{call LAFT_LAB_RECON_PROCESS.delete_pfi(
+			#{p_recon_id,jdbcType=VARCHAR,mode=IN},
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}
+  	</select> 
+  	
+	<select id="getDuplicatePFIFromSurveyResponse" parameterType="String"  resultType="String">
+		select distinct PFI from LAFT_LAB_SURVEY_RESPONSE where LAFT_RECON_ID = #{collectionPeriod}
+	</select>  	
+  		  		
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<wls:weblogic-web-app xmlns:wls="http://www.bea.com/ns/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd">
+
+<wls:session-descriptor>
+	  	<wls:cookie-name>JSESSIONID</wls:cookie-name> 
+		<wls:persistent-store-type>replicated_if_clustered</wls:persistent-store-type>
+	  	<wls:cookie-path>/</wls:cookie-path> 
+	  	<wls:timeout-secs>1800</wls:timeout-secs> 
+	  	<wls:cookies-enabled>true</wls:cookies-enabled> 
+  </wls:session-descriptor>
+  
+<wls:jsp-descriptor>
+		  <wls:precompile>true</wls:precompile> 
+		  <wls:precompile-continue>true</wls:precompile-continue> 
+		  <wls:backward-compatible>true</wls:backward-compatible> 
+		  <wls:print-nulls>false</wls:print-nulls> 
+		  <wls:keepgenerated>true</wls:keepgenerated> 
+  </wls:jsp-descriptor>
+  
+  <wls:context-root>doh2/applinks/nyehms</wls:context-root>
+  
+   <wls:session-descriptor>
+
+   <wls:persistent-store-type>replicated_if_clustered</wls:persistent-store-type>
+
+</wls:session-descriptor>  
+  
+  </wls:weblogic-web-app>
+  

@@ -1,0 +1,257 @@
+package gov.ny.state.doh.bhae.nyehms.web.spring.service.reports;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.activation.DataHandler;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.util.ByteArrayDataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Service;
+
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.SftpException;
+
+import freemarker.template.Configuration;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.TemplateNotFoundException;
+import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.reports.DocumentSummaryReportDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+
+@Service
+public class DocumentSummaryReportsServiceImpl implements DocumentSummaryReportsService {
+
+	private static Logger log = LoggerFactory.getLogger(DocumentSummaryReportsServiceImpl.class);
+	
+
+	@Autowired
+	RemoteServerUtil remoteServer;
+	@Autowired
+	SendEmail sendEmail;
+
+	@Autowired
+	private DocumentSummaryReportDAO documentSummaryReportDAO ;
+	
+	private static Configuration prepareConfiguration() {
+        Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
+        configuration.setDefaultEncoding("UTF-8");
+        configuration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        configuration.setLogTemplateExceptions(false);
+        return configuration;
+    }
+	
+	private static JSONArray loadSQLQueries() throws FileNotFoundException, IOException, ParseException {
+		JSONParser parser = new JSONParser();
+		//Object obj = parser.parse(new FileReader("C:\\Users\\ska03\\oxygen\\TEST_PROGS\\src\\sql.json"));
+		Object obj = parser.parse("[ 	{		\"TABLE_NAME\":\"RAW_HIV_ECLRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (mshcreatedate, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (mshcreatedate, 'MM/YYYY'),                          current_process_status)             COUNT     FROM raw_hiv_eclrs_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_HIV_ECLRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (date_received, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (date_received, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM std_hiv_eclrs_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_STD_ECLRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (mshcreatedate, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (mshcreatedate, 'MM/YYYY'),                          current_process_status)             COUNT     FROM RAW_STD_ECLRS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_STD_ECLRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (date_received, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (date_received, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM STD_STD_ECLRS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"RAW_AIRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status)             COUNT     FROM raw_airs_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_AIRS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\" SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status,                          FLUX_MATCH_CD)             COUNT     FROM std_airs_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"RAW_PRF_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status)             COUNT     FROM raw_prf_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_PRF_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\" SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status,                          FLUX_MATCH_CD)             COUNT     FROM std_prf_doc h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_MEDICAID_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.MEDICAID_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.MEDICAID_FILE,                          current_process_status)             COUNT     FROM RAW_MEDICAID_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_MEDICAID_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.MEDICAID_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,      p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.MEDICAID_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_MEDICAID_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_STD_CONFIRMED_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.FILENAME FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.FILENAME,                          current_process_status)             COUNT     FROM RAW_STD_CONFIRMED_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_STD_CONFIRMED_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.FILENAME FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.FILENAME,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_STD_CONFIRMED_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_NYCPRF_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (ENTER_DT, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (ENTER_DT, 'MM/YYYY'),                          current_process_status)             COUNT     FROM RAW_NYCPRF_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_NYCPRF_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (ENTER_DATE, 'MM/YYYY') create_date,          h.current_process_status,    h.FLUX_MATCH_CD,                    p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (ENTER_DATE, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM STD_NYCPRF_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_NYC_DEATH_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.DEATH_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.DEATH_FILE,                          current_process_status)             COUNT     FROM RAW_NYC_DEATH_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_NYC_DEATH_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.DEATH_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.DEATH_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_NYC_DEATH_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_CASA_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.CASA_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.CASA_FILE,                          current_process_status)             COUNT     FROM RAW_CASA_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_CASA_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.CASA_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.CASA_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_CASA_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_EPRF_OOC_UPLOAD\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.UPLOAD_FILENAME FILE_NAME,  FILE_TYPE_CD,        h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.UPLOAD_FILENAME,      FILE_TYPE_CD ,                   current_process_status)             COUNT     FROM RAW_EPRF_OOC_UPLOAD h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_EPRF_OOC_UPLOAD\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.UPLOAD_FILENAME FILE_NAME,   FILE_TYPE_CD,       h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.UPLOAD_FILENAME,          FILE_TYPE_CD,                current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_EPRF_OOC_UPLOAD h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_SSDM_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.SSDM_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.SSDM_FILE,                          current_process_status)             COUNT     FROM RAW_SSDM_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_SSDM_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.SSDM_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.SSDM_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_SSDM_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_NYCIJR_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.FILE_NAME FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.FILE_NAME,                          current_process_status)             COUNT     FROM RAW_NYCIJR_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_NYCIJR_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.FILE_NAME FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.FILE_NAME,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_NYCIJR_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_SYPHILIS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (h.RECEIVED_DATE, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.RECEIVED_DATE, 'MM/YYYY'),                          current_process_status)             COUNT     FROM RAW_SYPHILIS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_SYPHILIS_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (h.RECEIVED_DATE, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.RECEIVED_DATE, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM STD_SYPHILIS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_DIN_DOCCS_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.DOCCS_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.DOCCS_FILE,                          current_process_status)             COUNT     FROM RAW_DIN_DOCCS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_DIN_DOCCS_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.DOCCS_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.DOCCS_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_DIN_DOCCS_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_TB_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.TB_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.TB_FILE,                          current_process_status)             COUNT     FROM RAW_TB_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_TB_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.TB_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.TB_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_TB_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_ICCR_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status)             COUNT     FROM RAW_ICCR_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_ICCR_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM STD_ICCR_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_QUALITY_CARE_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.QUAL_CARE_FILE FILE_NAME,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.QUAL_CARE_FILE,                          current_process_status)             COUNT     FROM RAW_QUALITY_CARE_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"STD_QUALITY_CARE_DOC\",		\"REFERENCE_COLUMN\":\"FILE_NAME\",		\"SQL_QUERY\":\"  SELECT DISTINCT          h.QUAL_CARE_FILE FILE_NAME,          h.current_process_status,    h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY h.QUAL_CARE_FILE,                          current_process_status, FLUX_MATCH_CD)             COUNT     FROM STD_QUALITY_CARE_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY FILE_NAME DESC, current_process_status\"	},{		\"TABLE_NAME\":\"RAW_CCD_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"  SELECT DISTINCT          TO_CHAR (h.DATE_CREATED, 'MM/YYYY') create_date,          h.current_process_status,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.DATE_CREATED, 'MM/YYYY'),                          current_process_status)             COUNT     FROM RAW_CCD_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)           AND not EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE     d.document_id = h.document_id                         ) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	},	{		\"TABLE_NAME\":\"STD_CCD_DOC\",		\"REFERENCE_COLUMN\":\"CREATE_DATE\",		\"SQL_QUERY\":\"    SELECT DISTINCT          TO_CHAR (h.CREATE_DATE, 'MM/YYYY') create_date,          h.current_process_status,          h.FLUX_MATCH_CD,          p.processes_status_desc,          COUNT (             h.document_id)          OVER (             PARTITION BY TO_CHAR (h.CREATE_DATE, 'MM/YYYY'),                          current_process_status,                          h.FLUX_MATCH_CD)             COUNT     FROM STD_CCD_DOC h          JOIN coded_lab_process_Status p             ON (h.current_process_status = p.processes_status_code)    WHERE     h.current_process_status != 5          AND EXISTS                 (SELECT 1                    FROM document_locator d                   WHERE     d.document_id = h.document_id                         AND d.received_date > SYSDATE - 365)          AND NOT EXISTS                 (SELECT 1                    FROM person_doc_association d                   WHERE d.document_id = h.document_id) ORDER BY TO_DATE (create_date, 'MM/YYYY') DESC, current_process_status\"	}			]");
+       return (JSONArray)obj;
+	}
+	
+	@Override
+	public void generateWeeklyDocumentStatusSummaryReport() throws TemplateNotFoundException, MalformedTemplateNameException, freemarker.core.ParseException, IOException, TemplateException, SftpException, MessagingException  {
+
+		Configuration configuration=null;
+		Map<String, Map<String, List<JSONObject>>> finalData = new LinkedHashMap<String, Map<String, List<JSONObject>>>();
+
+		ConverterProperties converterProperties = new ConverterProperties();
+		PdfWriter writer = null;
+		PdfDocument pdfDocument = null;
+		ChannelSftp obj_SFTPChannel = null;
+		InputStream obj_InputStream = null;
+		ByteArrayDataSource byteArrayDataSource = null;
+		MimeBodyPart messageBodyPart2 = null;
+        
+	    	
+		JSONArray sqlQueries = null;
+		JSONParser parser = new JSONParser();
+		
+		
+		obj_SFTPChannel = remoteServer.getRemoteServerSession();
+        
+        if(obj_SFTPChannel == null){
+               throw new DataRetrievalFailureException("Remote server(Scchoit31) connection not established.");
+        }
+        
+		StringBuilder sqlString = new StringBuilder("");
+        
+        InputStream stream = obj_SFTPChannel.get(EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME")+"DOCUMENT_REPORT/"+"sql.json");
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+            String line;
+            while ((line = br.readLine()) != null) {
+            	sqlString.append(line);
+            }
+            
+            Object obj = parser.parse(sqlString.toString());
+            
+            sqlQueries = (JSONArray)obj;
+
+        } catch (IOException io) {
+            log.error("Exception occurred during reading file from SFTP server due to {}", io.getMessage());
+            throw new DataRetrievalFailureException(io.getMessage());
+
+        } catch (ParseException e) {
+        	log.error("Exception occurred while parsing the sql string {}", e.getMessage());
+        	throw new DataRetrievalFailureException(e.getMessage());
+		}catch (Exception e) {
+        	log.error("Exception occurred during reading file from SFTP server due to {}", e.getMessage());
+        	throw new DataRetrievalFailureException(e.getMessage());
+        }
+        
+        
+         
+        
+        
+		String referenceColumn = null;
+		
+		Iterator i = sqlQueries.iterator();
+		
+		while(i.hasNext()) {
+		 
+			JSONObject tableRefData = (JSONObject)i.next();
+			
+			String tableName = (String)tableRefData.get("TABLE_NAME");
+			
+			referenceColumn = (String)tableRefData.get("REFERENCE_COLUMN");
+			
+			
+			String sqlQuery = (String)tableRefData.get("SQL_QUERY");
+			
+			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			
+			inputParameterMap.put("SQL_QUERY", sqlQuery);
+			
+			List<Map<String, String>> documentSummaryList = documentSummaryReportDAO.getDocumentSummaryData(inputParameterMap); 
+			
+			if(documentSummaryList == null || documentSummaryList.size() == 0) {
+				continue;
+			}
+			
+			
+			Map<String, List<JSONObject>> byDocument = new LinkedHashMap<String, List<JSONObject>>();
+			
+			for (Map<String, String> data : documentSummaryList) {
+				
+			
+	
+				String referenceColumnData = data.get(referenceColumn);
+				List<JSONObject> byCreateDate = null;
+				if(byDocument.get(referenceColumnData) != null) {
+					byCreateDate =  byDocument.get(referenceColumnData);
+				}else {
+					byCreateDate = new ArrayList<JSONObject>();
+				}
+				
+				JSONObject byStatus = new JSONObject();
+				byStatus.put("CURRENT_PROCESS_STATUS", data.get("CURRENT_PROCESS_STATUS"));
+				byStatus.put("PROCESSES_STATUS_DESC", data.get("PROCESSES_STATUS_DESC"));
+				if(tableName.startsWith("STD")) {
+					byStatus.put("FLUX_MATCH_CD", data.get("FLUX_MATCH_CD"));
+				}
+				byStatus.put("COUNT", data.get("COUNT"));
+				
+				byCreateDate.add(byStatus);
+				
+				byDocument.put(referenceColumnData, byCreateDate);
+			}
+			
+			if(byDocument != null && byDocument.size() > 0) {
+				finalData.put(tableName, byDocument);
+			}
+			
+		}
+		
+		JSONObject inputData = new JSONObject();
+		
+		inputData.put("statusSummary", finalData);
+		
+		inputData.put("REFERENCE_COLUMN", referenceColumn);
+		
+		
+
+        String formatedDate = CommonUtil.convertDateToStringFormat(new Date(), "YYYY-MM-dd");
+        String slashedFormatedDate = CommonUtil.convertDateToStringFormat(new Date(), "MM/dd/YYYY");
+        inputData.put("formattedDate", slashedFormatedDate);
+		
+		configuration = prepareConfiguration();
+    	
+		configuration.setClassForTemplateLoading(this.getClass(), "/templates/");
+
+		Template template = configuration.getTemplate("documentStatusSummary.ftl");
+
+		StringWriter responseContent = new StringWriter();
+		
+        template.process(inputData, responseContent);
+		try {
+        String filePath = EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME");
+        
+        
+        String fileName = (new StringBuilder(formatedDate).append("_").append("DOCUMENT_STATUS_REPORT.pdf").toString());
+        
+        writer= new PdfWriter(obj_SFTPChannel.put(filePath+"DOCUMENT_REPORT/"+fileName));
+        pdfDocument = new PdfDocument(writer);
+	        HtmlConverter.convertToPdf(responseContent.toString(), pdfDocument, converterProperties);
+	        pdfDocument.close();
+	        
+	        
+	        obj_InputStream = obj_SFTPChannel.get(filePath+"DOCUMENT_REPORT/"+fileName);
+ 	        byteArrayDataSource = new ByteArrayDataSource(obj_InputStream, "application/pdf"); 
+ 	        messageBodyPart2 = new MimeBodyPart();
+ 	        messageBodyPart2.setDataHandler(new DataHandler(byteArrayDataSource));
+ 	        messageBodyPart2.setFileName(fileName);  
+	     	        
+ 	       String[] emailTo = EnvironmentProperties.envProperties.getProperty("DOCUMENT_STATUS_REPORT_TO").split(",");
+     	   String[] emailCC = {};
+           sendEmail.sendemailAttachments(emailTo, "Document Status Report "+slashedFormatedDate, "Please see attached document status report.", EnvironmentProperties.envProperties.getProperty("helpLineFrom"), emailCC, CommonConstants.RESPONSE_CONTENT_TYPE_HTML, messageBodyPart2);
+     	        
+     	      
+     	        
+     	       
+		}finally {
+			 if(obj_SFTPChannel != null) {
+					obj_SFTPChannel.disconnect();
+			 }
+          if(writer != null) {
+         	 writer.close();
+          }
+          if(pdfDocument != null) {
+         	 pdfDocument.close();
+          }
+
+		}
+	}
+		
+}
+
+

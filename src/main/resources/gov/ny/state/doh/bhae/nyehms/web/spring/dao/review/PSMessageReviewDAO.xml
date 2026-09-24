@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.PSMessageReviewDAO">
+
+
+	<select id="getPsMessageReviewDocuments"
+		resultType="org.json.simple.JSONObject" parameterType="java.util.Map">
+
+	select sent.DOCUMENT_ID msgDocId, TRIGGER_MSG_TYPE messageType,
+	FOLLOW_UP_DOC_ID documentId, STATENO stateno, FNAME firstName, LNAME
+	lastName, DOB dateOfBirth,
+	PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP
+	address,
+	pkg_trk_common.fn_get_fullname (PROV_LNAME, PROV_FNAME, NULL,NULL) as providerName,
+	PROV_ADDRESS || ', ' || PROV_CITY || ', ' || PROV_STATE || ', ' || PROV_ZIP AS
+	providerAddress,
+	TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') createDate, PROCESS_IND processInd
+	from NYEHMS_STD_MESSAGE_SENT sent, document_locator doc where
+	
+	doc.document_id = sent.follow_up_doc_id
+	 and doc.document_type_code IN (SELECT *
+                             FROM TABLE(get_user_permissions(#{p_module_id}, #{p_worker_id})))
+                             and
+		<choose>
+			<when test="RESOLVED_STATUS == 'YES'">
+				REVIEW_DATE is not null and nvl(REVIEW_UID, 'X') != '900'
+			</when>
+			<when test="PARAMETER_NAME == 'LAFT_NEEDS_REVIEWED' and RESOLVED_STATUS == 'No'">
+				PROCESS_IND = 'R' and LAFT_REVIEW_BY is null and TRIGGER_MSG_TYPE = '900  MS Incomp'
+			</when>
+			<when test="MSG_TYPE_NAME == 'PRF_PS_REQUEST' and RESOLVED_STATUS == 'No'">
+				PROCESS_IND = 'R' and TRIGGER_MSG_TYPE = 'PRF PS Request'
+			</when>
+			<when test="MSG_TYPE_NAME == '900_MS_INCOMP' and RESOLVED_STATUS == 'No'">
+				PROCESS_IND = 'R' and TRIGGER_MSG_TYPE = '900  MS Incomp'
+			</when>
+			<when test="MSG_TYPE_NAME == 'POSSIBLE_AHI' and RESOLVED_STATUS == 'No'">
+				PROCESS_IND = 'R' and TRIGGER_MSG_TYPE = 'Possible AHI'
+			</when>
+			
+			<otherwise>
+				PROCESS_IND = 'R'
+			</otherwise>
+	    </choose>
+	</select>
+	
+	<update id="deletePsMessage" parameterType="java.util.Map">
+	   UPDATE NYEHMS_STD_MESSAGE_SENT set PROCESS_IND='R_X', DELETE_IND =  'D', REVIEW_UID = #{p_worker_id}, REVIEW_DATE = SYSDATE where 
+	        FOLLOW_UP_DOC_ID = #{p_trigger_doc_id} and PROCESS_IND = 'R' 
+    </update>
+    
+    <update id="processPsMessage" parameterType="java.util.Map">
+	   UPDATE NYEHMS_STD_MESSAGE_SENT set PROCESS_IND =  'Y', REVIEW_UID = #{p_worker_id}, REVIEW_DATE = SYSDATE where 
+	        FOLLOW_UP_DOC_ID = #{p_trigger_doc_id} and PROCESS_IND = 'R'
+    </update>
+    
+    <insert id="savePSMessageComments" parameterType="java.util.Map">
+    	
+    	insert into PS_MESSAGE_COMMENTS(DOCUMENT_ID, COMMENTS, CREATE_ID, CREATE_DATE) values(#{p_documentId}, #{p_comments}, #{p_workerId}, sysdate)
+    
+    </insert>
+    
+    <update id="saveLAFTMessageComments" parameterType="java.util.Map">
+    	
+    	UPDATE NYEHMS_STD_MESSAGE_SENT SET LAFT_COMMENTS = #{p_comments}, LAFT_REASONS = #{p_reason}, LAFT_REVIEW_BY = #{p_workerId}, LAFT_REVIEW_DATE = SYSDATE where 
+    				DOCUMENT_ID = #{p_documentId}
+    
+    </update>
+	
+	<select id="getPSMessageComments" parameterType="Integer" resultType="java.util.Map">
+	select comments.COMMENTS,
+       case when comments.CREATE_ID is not null then comments_usr.LAST_NAME || ',' || comments_usr.FIRST_NAME end CREATE_ID,
+       TO_CHAR(comments.CREATE_DATE, 'MM/DD/YYYY HH:MI:SS AM') CREATE_DATE
+       FROM NYEHMS_USERS comments_usr, PS_MESSAGE_COMMENTS comments
+        WHERE comments.document_id  = #{dOCUMENT_ID}
+       and comments.CREATE_ID=comments_usr.worker_Id
+       union
+       select laft_comments||'; '||laft_reasons as comments, case when LAFT_REVIEW_BY is not null then comments_usr.LAST_NAME || ',' || comments_usr.FIRST_NAME end CREATE_ID,TO_CHAR(s.LAFT_REVIEW_DATE, 'MM/DD/YYYY HH:MI:SS AM')as create_date
+       from nyehms_std_message_sent s, nyehms_users comments_usr
+       where document_id = #{dOCUMENT_ID}
+       and s.LAFT_REVIEW_BY=comments_usr.worker_Id
+       order by create_date
+	</select>
+	
+	<insert id="updateReviewComments"  parameterType="java.util.Map">
+		
+		
+		insert into PS_MESSAGE_COMMENTS(DOCUMENT_ID, COMMENTS, CREATE_ID, CREATE_DATE) 
+			select document_id, #{p_comments}, #{p_worker_id}, sysdate from NYEHMS_STD_MESSAGE_SENT where FOLLOW_UP_DOC_ID = #{p_trigger_doc_id} and PROCESS_IND = 'R'
+		
+	</insert>
+	
+	
+	<select id="getCountyCodes" resultType="String">
+ WITH data AS
+(
+select distinct CASE
+    WHEN a.COUNTY_FIPS_CODE IN ('031', '041')
+    THEN 'Essex and Hamilton'
+    WHEN a.COUNTY_FIPS_CODE IN ('097', '123')
+    THEN 'Schuyler and Yates'
+    WHEN a.COUNTY_FIPS_CODE IN ('049', '089')
+    THEN 'Lewis and St. Lawrence'
+    ELSE Initcap(a.county_name)
+ END  COUNTY_NAME,  ps_sort_order
+ from
+ coded_county a
+ORDER BY ps_sort_order
+)
+SELECT county_name
+  FROM data
+	</select>	
+	
+	<select id="getPsMessageReport" parameterType="java.util.Map" resultType="java.util.Map">
+			WITH new900 AS
+(
+    SELECT Distinct a.stateno
+           , a.person_county
+           , Trunc(a.create_date) create_date
+           , To_Char(Trunc(a.create_date, 'IW') - 1, 'MM/DD/YYYY')||' - '||To_Char(Trunc(a.create_date, 'IW') + 5, 'MM/DD/YYYY') create_week
+           , Trim(To_Char(a.create_date, 'Month'))||' '||Extract(YEAR FROM a.create_date) create_month
+      FROM nyehms_std_message_sent a
+      JOIN coded_ps_msg_type c ON (a.trigger_msg_type = c.ps_msg_type)
+     WHERE c.include_new900_count = 'Y'
+       AND (
+       
+        <choose>
+		  	<when test="p_reportType == 'Monthly'">
+		  		(Trunc(a.create_date) BETWEEN To_Date(#{p_fromDate}, 'MM/DD/YYYY') AND To_Date(#{p_toDate}, 'MM/DD/YYYY'))
+		  	</when>
+		  	<otherwise>
+		  		(Trunc(a.create_date) BETWEEN Trunc(To_Date(#{p_fromDate}, 'MM/DD/YYYY'), 'IW') - 1 AND Trunc(To_Date(#{p_toDate}, 'MM/DD/YYYY'), 'IW') + 5)	
+		  	</otherwise>
+		  </choose>
+		  
+  				
+      )
+  ORDER BY create_date
+), new900county AS
+(
+    SELECT Distinct a.stateno,
+           CASE
+                WHEN a.person_county IN ('031', '041')
+                THEN 'Essex and Hamilton'
+                WHEN a.person_county IN ('097', '123')
+                THEN 'Schuyler and Yates'
+                WHEN a.person_county IN ('049', '089')
+                THEN 'Lewis and St. Lawrence'
+                ELSE Initcap(b.county_name)
+             END county,
+             a.create_week,
+             a.create_month,
+             a.create_date
+      FROM new900 a, coded_county b
+     WHERE a.person_county = b.county_fips_code
+ ORDER BY create_date
+), final AS
+(
+<choose>
+  	<when test="p_reportType == 'Monthly'">
+  		SELECT Distinct 
+         'MONTHLY' report
+          ,create_date
+         , county
+         , create_month metric
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY county, create_month) group_count
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY county) county_total
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY create_month) metric_total
+    FROM new900county
+	</when>
+  	<otherwise>
+  		SELECT Distinct 
+         'WEEKLY' report
+          ,create_date
+         , county
+         , create_week metric
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY county, create_week) group_count
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY county) county_total
+         , SUM(CASE WHEN stateno IS NULL THEN 0 ELSE 1 END) OVER (PARTITION BY create_week) metric_total
+    FROM new900county
+  	
+  	</otherwise>
+  </choose>
+    ORDER BY create_date
+)
+SELECT report, county, metric, group_count, county_total, metric_total
+  FROM final
+  
+	</select>		
+	<select id="getPSDispositionReport" parameterType="java.util.Map" statementType="CALLABLE">
+		  {call  ps_disposition_report(
+			#{fromDate,jdbcType=VARCHAR,mode=IN},
+			#{toDate,jdbcType=VARCHAR,mode=IN},
+			#{messageTypes,jdbcType=VARCHAR,mode=IN},
+			#{messageCounties,jdbcType=VARCHAR,mode=IN},
+			#{messageDispositions,jdbcType=VARCHAR,mode=IN},
+			#{p_ps_disp_report,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=dispositionReportMap}
+			 
+		)}
+	
+	</select>
+	
+		<select id="getPSOOCExpsReport" parameterType="java.util.Map" statementType="CALLABLE">
+		  {call  ps_ooc_exps_report(
+			#{fromDate,jdbcType=VARCHAR,mode=IN},
+			#{toDate,jdbcType=VARCHAR,mode=IN},
+			#{messageCounties,jdbcType=VARCHAR,mode=IN},
+			#{p_ooc_exps_report,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=dispositionReportMap}
+			 
+		)}
+	
+	</select>
+	
+	
+	
+	   <resultMap id="dispositionReportMap" type="java.util.Map" >
+    <result column="DOCUMENT_ID" property="DOCUMENT_ID" jdbcType="VARCHAR" />
+    <result column="TRIGGER_MSG_TYPE" property="TRIGGER_MSG_TYPE" jdbcType="VARCHAR" />
+    <result column="STATENO" property="STATENO" jdbcType="VARCHAR" />
+    <result column="PERSON_COUNTY" property="PERSON_COUNTY" jdbcType="VARCHAR" />
+    <result column="HIV_DX_DATE" property="HIV_DX_DATE" jdbcType="VARCHAR" />
+    <result column="TEST_RECENT_DATE" property="TEST_RECENT_DATE" jdbcType="VARCHAR" />
+    <result column="MESSAGE_ENTERED_DATE" property="MESSAGE_ENTERED_DATE" jdbcType="VARCHAR" />
+    <result column="RECEIVED_DATE" property="RECEIVED_DATE" jdbcType="VARCHAR" />
+    <result column="DISPOSITION_DESC" property="DISPOSITION_DESC" jdbcType="VARCHAR" />
+    <result column="DISPOSITIONDATE" property="DISPOSITIONDATE" jdbcType="VARCHAR" />
+    <result column="PROV_COUNTY" property="PROV_COUNTY" jdbcType="VARCHAR" />
+    
+  </resultMap>
+	
+		
+</mapper>

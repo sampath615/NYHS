@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFPartnerDAO">	
+
+
+  <select id="getNycPRFPartner" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO" parameterType="int" >
+   SELECT DISTINCT std.PATIENT_ID ,
+       std.NYCPRF_DOCUMENT_ID  ,
+       std.FNAME,
+       std.MNAME,
+       std.LNAME,
+       std.ALT_NAME ,
+       std.ADDRESS as STD_ADDRESS,
+       std.CITY,
+       std.STATE,
+       std.ZIP,
+      std.PLUS4,
+       std.HOME_PHONE,
+       std.CELL_PHONE,
+       std.PAGER,
+       std.EMAIL,
+       std.DOB_TEXT,
+       std.AGE,
+       std.CURRENT_GENDER ,
+       std.ETHNICITY,
+       std.RACE_WHITE,
+       std.RACE_BLACK,
+       std.RACE_ASIAN,
+       std.RACE_INDIAN,
+       std.RACE_PACIFIC,
+       std.RACE_UNKNOWN,
+       std.RACE_OTHER,
+       std.RACE_OTHER_TEXT,
+       std.COMPLEXION_PARTNER ,
+       std.HAIR_PARTNER ,
+       std.HEIGHT,
+       std.WEIGHT,
+       std.PLACE_OF_EMPLOYMENT,
+       std.WORK_HOURS,
+       std.WORK_PHONE,
+       std.MARITAL_CODE ,
+       std.PREGNANT,
+       std.SPOUSE,
+       std.DVSCREEN ,
+       std.RISK_VIOLENCE ,
+       std.PARTNER_ASSISTANCE_STATUS,
+       std.PARTNER_TEST_DATE_TEXT ,
+       std.PARTNER_STATUS,
+       std.PARTNER_TEST_DATE_TEXT ,
+       std.HDISP_DT HDISP_DT  ,
+       std.CREATE_UID ,
+       std.CREATE_DATE,
+       std.INFORMED_DATE,
+       std.HIGH_PRIORITY,
+       std.ELICITED_BY_PNAP,
+       std.ELICITED_BY_ACT,
+       raw1.PRTADDRESS  as raw_address
+  FROM RAW_NYCPRF_PARTNER    RAW1 , STD_NYCPRF_PARTNER   std
+  WHERE Raw1.PATIENTID   = std.PATIENT_ID  
+AND  RAW1.NYCPRF_DOCUMENT_ID = #{docId}
+  </select>
+  
+  
+  <insert id="insertNycPRFPartner" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO" >
+    INSERT INTO RAW_PRF_PARTNER 
+    		  (PARTNER_ID, DOCUMENT_ID, FNAME, 
+		      MNAME, LNAME, ALIAS_FNAME, 
+		      ALIAS_MNAME, ALIAS_LNAME, ADDRESS, 
+		      CITY, STATE, ZIP, PLUS4, 
+		      COUNTY, HOME_PHONE, CELL_PHONE, 
+		      PAGER, EMAIL, DOB_TEXT, 
+		      AGE, GENDER, ETHNICITY, 
+		      RACE_WHITE, RACE_BLACK, RACE_ASIAN, 
+		      RACE_INDIAN, RACE_PACIFIC, RACE_UNKNOWN, 
+		      RACE_OTHER, RACE_OTHER_TEXT, COMPLEXION, 
+		      HAIR, HEIGHT, WEIGHT, 
+		      OTHER_CHARACTERISTICS, PLACE_OF_EMPLOYMENT, 
+		      WORK_HOURS, WORK_PHONE, WORK_PHONE_EXT, 
+		      MARITAL_STATUS, PREGNANT, SPOUSE, 
+		      DV_SCREEN, DV_RISK, PARTNER_ASSISTANCE_STATUS, 
+		      PARTNER_NOTIFIED_DATE, PARTNER_STATUS, PARTNER_TEST_DATE, 
+		      IDENTIFIED_BY_HD_PS, CREATE_ID, CREATE_DATE, 
+		      ENTRY_REVIEW_ID, ENTRY_REVIEW_DATE, HIGH_PRIORITY, 
+		      ELICITED_BY_PNAP, ELICITED_BY_ACT)
+    VALUES 
+    		  (SEQ_PRF_PARTNER.NEXTVAL, #{documentId,jdbcType=DECIMAL}, #{fname,jdbcType=VARCHAR}, 
+		      #{mname,jdbcType=VARCHAR}, #{lname,jdbcType=VARCHAR}, #{aliasFname,jdbcType=VARCHAR}, 
+		      #{aliasMname,jdbcType=VARCHAR}, #{aliasLname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+		      #{city,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{zip,jdbcType=VARCHAR}, #{plus4,jdbcType=VARCHAR}, 
+		      #{county,jdbcType=VARCHAR}, #{homePhone,jdbcType=VARCHAR}, #{cellPhone,jdbcType=VARCHAR}, 
+		      #{pager,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{dobText,jdbcType=VARCHAR}, 
+		      #{age,jdbcType=DECIMAL}, #{gender,jdbcType=VARCHAR}, #{ethnicity,jdbcType=VARCHAR}, 
+		      #{raceWhite,jdbcType=VARCHAR}, #{raceBlack,jdbcType=VARCHAR}, #{raceAsian,jdbcType=VARCHAR}, 
+		      #{raceIndian,jdbcType=VARCHAR}, #{racePacific,jdbcType=VARCHAR}, #{raceUnknown,jdbcType=VARCHAR}, 
+		      #{raceOther,jdbcType=VARCHAR}, #{raceOtherText,jdbcType=VARCHAR}, #{complexion,jdbcType=VARCHAR}, 
+		      #{hair,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
+		      #{otherCharacteristics,jdbcType=VARCHAR}, #{placeOfEmployment,jdbcType=VARCHAR}, 
+		      #{workHours,jdbcType=VARCHAR}, #{workPhone,jdbcType=VARCHAR}, #{workPhoneExt,jdbcType=VARCHAR}, 
+		      #{maritalStatus,jdbcType=VARCHAR}, #{pregnant,jdbcType=VARCHAR}, #{spouse,jdbcType=VARCHAR}, 
+		      #{dvScreen,jdbcType=VARCHAR}, #{dvRisk,jdbcType=VARCHAR}, #{partnerAssistanceStatus,jdbcType=VARCHAR}, 
+		      #{partnerNotifiedDate,jdbcType=VARCHAR}, #{partnerStatus,jdbcType=VARCHAR}, #{partnerTestDate,jdbcType=VARCHAR}, 
+		      #{identifiedByHdPs,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, TO_DATE(#{createDate}, 'MM/DD/YYYY'),  
+		      #{entryReviewId,jdbcType=VARCHAR}, TO_DATE(#{entryReviewDate}, 'MM/DD/YYYY'),  #{highPriority,jdbcType=VARCHAR}, 
+		      #{elicitedByPnap,jdbcType=VARCHAR}, #{elicitedByAct,jdbcType=VARCHAR})
+  </insert>
+  
+</mapper>

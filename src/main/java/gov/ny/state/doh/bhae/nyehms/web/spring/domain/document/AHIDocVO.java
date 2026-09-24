@@ -1,0 +1,536 @@
+package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document;
+
+import java.util.List;
+
+public class AHIDocVO extends NYEHMSDocVO {
+	
+	private Integer DOCUMENT_ID;
+	private String STATENO;
+	private String FNAME;
+	private String MNAME;
+	private String LNAME;
+	private String DOB;
+	private String SSN;
+	private String PERSON_ADDRESS;
+	private String PERSON_CITY;
+	private String PERSON_STATE;
+	private String PERSON_ZIP;
+	private String PERSON_COUNTY;
+	
+	private String CI_REASON_PATIENT_TESTED;
+	private String CI_REASON_PATIENT_TESTED_OTHR;
+	private String MFA_REFSD_LNK_TO_900_OMC;
+	private String MFA_REFSD_LNK_TO_900_OMC_RESN;
+	private String MFA_REFSD_LNK_TO_900_OMC_OTHR;
+	private String MFA_NEXT_900_RELATD_APPT_DATE;
+	private String MFA_PROVIDER_NAME;
+	private String MFA_CLINIC_ADDRESS;
+	private String MFA_CLINIC_CITY;
+	private String MFA_CLINIC_STATE;
+	private String MFA_CLINIC_ZIP;
+	private String MFA_CLINIC_COUNTY_FIPS;
+	private String EVIDENCE_AHI_REPTD_SYMPTOMS;
+	private String AHI_SYMPTOMS_REPTD_NOT_SPECFD;
+	private String AHI_SYMPTOMS_ABDOMINAL_PAIN;
+	private String AHI_SYMPTOMS_ARTHRALGIAS;
+	private String AHI_SYMPTOMS_EXDA_PHRYNGTIS;
+	private String AHI_SYMPTOMS_FATIGUE;
+	private String AHI_SYMPTOMS_FEVER;
+	private String AHI_SYMPTOMS_FLU_LIKE_SYMPTOM;
+	private String AHI_SYMPTOMS_GENITAL_ULCERS;
+	private String AHI_SYMPTOMS_HEADACHE;
+	private String AHI_SYMPTOMS_LYMPHADENCPATHY;
+	private String AHI_SYMPTOMS_MYALGIAS;
+	private String AHI_SYMPTOMS_NAUSEA;
+	private String AHI_SYMPTOMS_NIGHT_SWEATS;
+	private String AHI_SYMPTOMS_ORAL_ULCERS;
+	private String AHI_SYMPTOMS_PHOTOPHOBIA;
+	private String AHI_SYMPTOMS_RASH;
+	private String AHI_SYMPTOMS_RECTAL_ULCERS;
+	private String AHI_SYMPTOMS_SORE_THROAT;
+	private String AHI_SYMPTOMS_STIFF_NECK;
+	private String AHI_SYMPTOMS_VOMITING;
+	private String AHI_SYMPTOMS_WEIGHT_LOSS;
+	private String AHI_SYMPTOMS_OTHER;
+	private String AHI_SYMPTOMS_OTHER_TEXT;
+	private String EVIDENCE_AHI_PROV_DX_OF_AHI;
+	private String EVIDENCE_AHI_PROV_DX_DATE;
+	private String AHI_SYMPTOMS_DIARRHEA;
+	private int CREATE_UID;
+	
+	private String CITY_NO;
+	private String FACILITY_ID;
+	private String FACILITY_NAME;
+	private String FACILITY_PHONE;
+	private String FACILITY_ADDRESS;
+	private String FACILITY_CITY;
+	private String FACILITY_STATE;
+	private String FACILITY_COUNTRY;
+	private String FACILITY_ZIP;
+	private String FACILITY_PLUS4;
+	private String FACILITY_COUNTY;
+	private String DIAGNOSIS_PROVIDER_NOTES;
+	private String FACILITY_EHARS_UID;
+
+	private int PARENT_DOCUMENT_ID;
+	
+	private String DIAGNOSIS_PROVIDER_FNAME;
+	private String DIAGNOSIS_PROVIDER_LNAME;
+	private String DIAGNOSIS_PROVIDER_MNAME;
+	private String DIAGNOSIS_PROVIDER_SUFFIX;
+	
+	
+	private List<AHICiStiVO> ciStiConditionList; 
+	private List<AHINegInd900TestHistoryVO> negInd900TestHisList;
+	
+	private String AHI_FLAG;
+	
+	public Integer getDOCUMENT_ID() {
+		return DOCUMENT_ID;
+	}
+	public void setDOCUMENT_ID(Integer dOCUMENT_ID) {
+		DOCUMENT_ID = dOCUMENT_ID;
+	}
+	public String getSTATENO() {
+		return STATENO;
+	}
+	public void setSTATENO(String sTATENO) {
+		STATENO = sTATENO;
+	}
+	public String getFNAME() {
+		return FNAME;
+	}
+	public void setFNAME(String fNAME) {
+		FNAME = fNAME;
+	}
+	public String getMNAME() {
+		return MNAME;
+	}
+	public void setMNAME(String mNAME) {
+		MNAME = mNAME;
+	}
+	public String getLNAME() {
+		return LNAME;
+	}
+	public void setLNAME(String lNAME) {
+		LNAME = lNAME;
+	}
+	public String getSSN() {
+		return SSN;
+	}
+	public void setSSN(String sSN) {
+		SSN = sSN;
+	}
+	public String getPERSON_ADDRESS() {
+		return PERSON_ADDRESS;
+	}
+	public void setPERSON_ADDRESS(String pERSON_ADDRESS) {
+		PERSON_ADDRESS = pERSON_ADDRESS;
+	}
+	public String getPERSON_CITY() {
+		return PERSON_CITY;
+	}
+	public void setPERSON_CITY(String pERSON_CITY) {
+		PERSON_CITY = pERSON_CITY;
+	}
+	public String getPERSON_STATE() {
+		return PERSON_STATE;
+	}
+	public void setPERSON_STATE(String pERSON_STATE) {
+		PERSON_STATE = pERSON_STATE;
+	}
+	public String getPERSON_ZIP() {
+		return PERSON_ZIP;
+	}
+	public void setPERSON_ZIP(String pERSON_ZIP) {
+		PERSON_ZIP = pERSON_ZIP;
+	}
+	public String getPERSON_COUNTY() {
+		return PERSON_COUNTY;
+	}
+	public void setPERSON_COUNTY(String pERSON_COUNTY) {
+		PERSON_COUNTY = pERSON_COUNTY;
+	}
+	public String getCI_REASON_PATIENT_TESTED() {
+		return CI_REASON_PATIENT_TESTED;
+	}
+	public void setCI_REASON_PATIENT_TESTED(String cI_REASON_PATIENT_TESTED) {
+		CI_REASON_PATIENT_TESTED = cI_REASON_PATIENT_TESTED;
+	}
+	public String getCI_REASON_PATIENT_TESTED_OTHR() {
+		return CI_REASON_PATIENT_TESTED_OTHR;
+	}
+	public void setCI_REASON_PATIENT_TESTED_OTHR(
+			String cI_REASON_PATIENT_TESTED_OTHR) {
+		CI_REASON_PATIENT_TESTED_OTHR = cI_REASON_PATIENT_TESTED_OTHR;
+	}
+	public String getMFA_REFSD_LNK_TO_900_OMC() {
+		return MFA_REFSD_LNK_TO_900_OMC;
+	}
+	public void setMFA_REFSD_LNK_TO_900_OMC(String mFA_REFSD_LNK_TO_900_OMC) {
+		MFA_REFSD_LNK_TO_900_OMC = mFA_REFSD_LNK_TO_900_OMC;
+	}
+	public String getMFA_REFSD_LNK_TO_900_OMC_RESN() {
+		return MFA_REFSD_LNK_TO_900_OMC_RESN;
+	}
+	public void setMFA_REFSD_LNK_TO_900_OMC_RESN(
+			String mFA_REFSD_LNK_TO_900_OMC_RESN) {
+		MFA_REFSD_LNK_TO_900_OMC_RESN = mFA_REFSD_LNK_TO_900_OMC_RESN;
+	}
+	public String getMFA_REFSD_LNK_TO_900_OMC_OTHR() {
+		return MFA_REFSD_LNK_TO_900_OMC_OTHR;
+	}
+	public void setMFA_REFSD_LNK_TO_900_OMC_OTHR(
+			String mFA_REFSD_LNK_TO_900_OMC_OTHR) {
+		MFA_REFSD_LNK_TO_900_OMC_OTHR = mFA_REFSD_LNK_TO_900_OMC_OTHR;
+	}
+	public String getMFA_PROVIDER_NAME() {
+		return MFA_PROVIDER_NAME;
+	}
+	public void setMFA_PROVIDER_NAME(String mFA_PROVIDER_NAME) {
+		MFA_PROVIDER_NAME = mFA_PROVIDER_NAME;
+	}
+	public String getMFA_CLINIC_ADDRESS() {
+		return MFA_CLINIC_ADDRESS;
+	}
+	public void setMFA_CLINIC_ADDRESS(String mFA_CLINIC_ADDRESS) {
+		MFA_CLINIC_ADDRESS = mFA_CLINIC_ADDRESS;
+	}
+	public String getMFA_CLINIC_CITY() {
+		return MFA_CLINIC_CITY;
+	}
+	public void setMFA_CLINIC_CITY(String mFA_CLINIC_CITY) {
+		MFA_CLINIC_CITY = mFA_CLINIC_CITY;
+	}
+	public String getMFA_CLINIC_STATE() {
+		return MFA_CLINIC_STATE;
+	}
+	public void setMFA_CLINIC_STATE(String mFA_CLINIC_STATE) {
+		MFA_CLINIC_STATE = mFA_CLINIC_STATE;
+	}
+	public String getMFA_CLINIC_ZIP() {
+		return MFA_CLINIC_ZIP;
+	}
+	public void setMFA_CLINIC_ZIP(String mFA_CLINIC_ZIP) {
+		MFA_CLINIC_ZIP = mFA_CLINIC_ZIP;
+	}
+	public String getMFA_CLINIC_COUNTY_FIPS() {
+		return MFA_CLINIC_COUNTY_FIPS;
+	}
+	public void setMFA_CLINIC_COUNTY_FIPS(String mFA_CLINIC_COUNTY_FIPS) {
+		MFA_CLINIC_COUNTY_FIPS = mFA_CLINIC_COUNTY_FIPS;
+	}
+	public String getEVIDENCE_AHI_REPTD_SYMPTOMS() {
+		return EVIDENCE_AHI_REPTD_SYMPTOMS;
+	}
+	public void setEVIDENCE_AHI_REPTD_SYMPTOMS(String eVIDENCE_AHI_REPTD_SYMPTOMS) {
+		EVIDENCE_AHI_REPTD_SYMPTOMS = eVIDENCE_AHI_REPTD_SYMPTOMS;
+	}
+	public String getAHI_SYMPTOMS_REPTD_NOT_SPECFD() {
+		return AHI_SYMPTOMS_REPTD_NOT_SPECFD;
+	}
+	public void setAHI_SYMPTOMS_REPTD_NOT_SPECFD(
+			String aHI_SYMPTOMS_REPTD_NOT_SPECFD) {
+		AHI_SYMPTOMS_REPTD_NOT_SPECFD = aHI_SYMPTOMS_REPTD_NOT_SPECFD;
+	}
+	public String getAHI_SYMPTOMS_ABDOMINAL_PAIN() {
+		return AHI_SYMPTOMS_ABDOMINAL_PAIN;
+	}
+	public void setAHI_SYMPTOMS_ABDOMINAL_PAIN(String aHI_SYMPTOMS_ABDOMINAL_PAIN) {
+		AHI_SYMPTOMS_ABDOMINAL_PAIN = aHI_SYMPTOMS_ABDOMINAL_PAIN;
+	}
+	public String getAHI_SYMPTOMS_ARTHRALGIAS() {
+		return AHI_SYMPTOMS_ARTHRALGIAS;
+	}
+	public void setAHI_SYMPTOMS_ARTHRALGIAS(String aHI_SYMPTOMS_ARTHRALGIAS) {
+		AHI_SYMPTOMS_ARTHRALGIAS = aHI_SYMPTOMS_ARTHRALGIAS;
+	}
+	public String getAHI_SYMPTOMS_EXDA_PHRYNGTIS() {
+		return AHI_SYMPTOMS_EXDA_PHRYNGTIS;
+	}
+	public void setAHI_SYMPTOMS_EXDA_PHRYNGTIS(String aHI_SYMPTOMS_EXDA_PHRYNGTIS) {
+		AHI_SYMPTOMS_EXDA_PHRYNGTIS = aHI_SYMPTOMS_EXDA_PHRYNGTIS;
+	}
+	public String getAHI_SYMPTOMS_FATIGUE() {
+		return AHI_SYMPTOMS_FATIGUE;
+	}
+	public void setAHI_SYMPTOMS_FATIGUE(String aHI_SYMPTOMS_FATIGUE) {
+		AHI_SYMPTOMS_FATIGUE = aHI_SYMPTOMS_FATIGUE;
+	}
+	public String getAHI_SYMPTOMS_FEVER() {
+		return AHI_SYMPTOMS_FEVER;
+	}
+	public void setAHI_SYMPTOMS_FEVER(String aHI_SYMPTOMS_FEVER) {
+		AHI_SYMPTOMS_FEVER = aHI_SYMPTOMS_FEVER;
+	}
+	public String getAHI_SYMPTOMS_FLU_LIKE_SYMPTOM() {
+		return AHI_SYMPTOMS_FLU_LIKE_SYMPTOM;
+	}
+	public void setAHI_SYMPTOMS_FLU_LIKE_SYMPTOM(
+			String aHI_SYMPTOMS_FLU_LIKE_SYMPTOM) {
+		AHI_SYMPTOMS_FLU_LIKE_SYMPTOM = aHI_SYMPTOMS_FLU_LIKE_SYMPTOM;
+	}
+	public String getAHI_SYMPTOMS_GENITAL_ULCERS() {
+		return AHI_SYMPTOMS_GENITAL_ULCERS;
+	}
+	public void setAHI_SYMPTOMS_GENITAL_ULCERS(String aHI_SYMPTOMS_GENITAL_ULCERS) {
+		AHI_SYMPTOMS_GENITAL_ULCERS = aHI_SYMPTOMS_GENITAL_ULCERS;
+	}
+	public String getAHI_SYMPTOMS_HEADACHE() {
+		return AHI_SYMPTOMS_HEADACHE;
+	}
+	public void setAHI_SYMPTOMS_HEADACHE(String aHI_SYMPTOMS_HEADACHE) {
+		AHI_SYMPTOMS_HEADACHE = aHI_SYMPTOMS_HEADACHE;
+	}
+	public String getAHI_SYMPTOMS_LYMPHADENCPATHY() {
+		return AHI_SYMPTOMS_LYMPHADENCPATHY;
+	}
+	public void setAHI_SYMPTOMS_LYMPHADENCPATHY(String aHI_SYMPTOMS_LYMPHADENCPATHY) {
+		AHI_SYMPTOMS_LYMPHADENCPATHY = aHI_SYMPTOMS_LYMPHADENCPATHY;
+	}
+	public String getAHI_SYMPTOMS_MYALGIAS() {
+		return AHI_SYMPTOMS_MYALGIAS;
+	}
+	public void setAHI_SYMPTOMS_MYALGIAS(String aHI_SYMPTOMS_MYALGIAS) {
+		AHI_SYMPTOMS_MYALGIAS = aHI_SYMPTOMS_MYALGIAS;
+	}
+	public String getAHI_SYMPTOMS_NAUSEA() {
+		return AHI_SYMPTOMS_NAUSEA;
+	}
+	public void setAHI_SYMPTOMS_NAUSEA(String aHI_SYMPTOMS_NAUSEA) {
+		AHI_SYMPTOMS_NAUSEA = aHI_SYMPTOMS_NAUSEA;
+	}
+	public String getAHI_SYMPTOMS_NIGHT_SWEATS() {
+		return AHI_SYMPTOMS_NIGHT_SWEATS;
+	}
+	public void setAHI_SYMPTOMS_NIGHT_SWEATS(String aHI_SYMPTOMS_NIGHT_SWEATS) {
+		AHI_SYMPTOMS_NIGHT_SWEATS = aHI_SYMPTOMS_NIGHT_SWEATS;
+	}
+	public String getAHI_SYMPTOMS_ORAL_ULCERS() {
+		return AHI_SYMPTOMS_ORAL_ULCERS;
+	}
+	public void setAHI_SYMPTOMS_ORAL_ULCERS(String aHI_SYMPTOMS_ORAL_ULCERS) {
+		AHI_SYMPTOMS_ORAL_ULCERS = aHI_SYMPTOMS_ORAL_ULCERS;
+	}
+	public String getAHI_SYMPTOMS_PHOTOPHOBIA() {
+		return AHI_SYMPTOMS_PHOTOPHOBIA;
+	}
+	public void setAHI_SYMPTOMS_PHOTOPHOBIA(String aHI_SYMPTOMS_PHOTOPHOBIA) {
+		AHI_SYMPTOMS_PHOTOPHOBIA = aHI_SYMPTOMS_PHOTOPHOBIA;
+	}
+	public String getAHI_SYMPTOMS_RASH() {
+		return AHI_SYMPTOMS_RASH;
+	}
+	public void setAHI_SYMPTOMS_RASH(String aHI_SYMPTOMS_RASH) {
+		AHI_SYMPTOMS_RASH = aHI_SYMPTOMS_RASH;
+	}
+	public String getAHI_SYMPTOMS_RECTAL_ULCERS() {
+		return AHI_SYMPTOMS_RECTAL_ULCERS;
+	}
+	public void setAHI_SYMPTOMS_RECTAL_ULCERS(String aHI_SYMPTOMS_RECTAL_ULCERS) {
+		AHI_SYMPTOMS_RECTAL_ULCERS = aHI_SYMPTOMS_RECTAL_ULCERS;
+	}
+	public String getAHI_SYMPTOMS_SORE_THROAT() {
+		return AHI_SYMPTOMS_SORE_THROAT;
+	}
+	public void setAHI_SYMPTOMS_SORE_THROAT(String aHI_SYMPTOMS_SORE_THROAT) {
+		AHI_SYMPTOMS_SORE_THROAT = aHI_SYMPTOMS_SORE_THROAT;
+	}
+	public String getAHI_SYMPTOMS_STIFF_NECK() {
+		return AHI_SYMPTOMS_STIFF_NECK;
+	}
+	public void setAHI_SYMPTOMS_STIFF_NECK(String aHI_SYMPTOMS_STIFF_NECK) {
+		AHI_SYMPTOMS_STIFF_NECK = aHI_SYMPTOMS_STIFF_NECK;
+	}
+	public String getAHI_SYMPTOMS_VOMITING() {
+		return AHI_SYMPTOMS_VOMITING;
+	}
+	public void setAHI_SYMPTOMS_VOMITING(String aHI_SYMPTOMS_VOMITING) {
+		AHI_SYMPTOMS_VOMITING = aHI_SYMPTOMS_VOMITING;
+	}
+	public String getAHI_SYMPTOMS_WEIGHT_LOSS() {
+		return AHI_SYMPTOMS_WEIGHT_LOSS;
+	}
+	public void setAHI_SYMPTOMS_WEIGHT_LOSS(String aHI_SYMPTOMS_WEIGHT_LOSS) {
+		AHI_SYMPTOMS_WEIGHT_LOSS = aHI_SYMPTOMS_WEIGHT_LOSS;
+	}
+	public String getAHI_SYMPTOMS_OTHER() {
+		return AHI_SYMPTOMS_OTHER;
+	}
+	public void setAHI_SYMPTOMS_OTHER(String aHI_SYMPTOMS_OTHER) {
+		AHI_SYMPTOMS_OTHER = aHI_SYMPTOMS_OTHER;
+	}
+	public String getEVIDENCE_AHI_PROV_DX_OF_AHI() {
+		return EVIDENCE_AHI_PROV_DX_OF_AHI;
+	}
+	public void setEVIDENCE_AHI_PROV_DX_OF_AHI(String eVIDENCE_AHI_PROV_DX_OF_AHI) {
+		EVIDENCE_AHI_PROV_DX_OF_AHI = eVIDENCE_AHI_PROV_DX_OF_AHI;
+	}
+	public List<AHICiStiVO> getCiStiConditionList() {
+		return ciStiConditionList;
+	}
+	public void setCiStiConditionList(List<AHICiStiVO> ciStiConditionList) {
+		this.ciStiConditionList = ciStiConditionList;
+	}
+	public List<AHINegInd900TestHistoryVO> getNegInd900TestHisList() {
+		return negInd900TestHisList;
+	}
+	public void setNegInd900TestHisList(
+			List<AHINegInd900TestHistoryVO> negInd900TestHisList) {
+		this.negInd900TestHisList = negInd900TestHisList;
+	}
+	public String getAHI_SYMPTOMS_DIARRHEA() {
+		return AHI_SYMPTOMS_DIARRHEA;
+	}
+	public void setAHI_SYMPTOMS_DIARRHEA(String aHI_SYMPTOMS_DIARRHEA) {
+		AHI_SYMPTOMS_DIARRHEA = aHI_SYMPTOMS_DIARRHEA;
+	}
+	public int getCREATE_UID() {
+		return CREATE_UID;
+	}
+	public void setCREATE_UID(int cREATE_UID) {
+		CREATE_UID = cREATE_UID;
+	}
+	public String getDOB() {
+		return DOB;
+	}
+	public void setDOB(String dOB) {
+		DOB = dOB;
+	}
+	public String getMFA_NEXT_900_RELATD_APPT_DATE() {
+		return MFA_NEXT_900_RELATD_APPT_DATE;
+	}
+	public void setMFA_NEXT_900_RELATD_APPT_DATE(
+			String mFA_NEXT_900_RELATD_APPT_DATE) {
+		MFA_NEXT_900_RELATD_APPT_DATE = mFA_NEXT_900_RELATD_APPT_DATE;
+	}
+	public String getEVIDENCE_AHI_PROV_DX_DATE() {
+		return EVIDENCE_AHI_PROV_DX_DATE;
+	}
+	public void setEVIDENCE_AHI_PROV_DX_DATE(String eVIDENCE_AHI_PROV_DX_DATE) {
+		EVIDENCE_AHI_PROV_DX_DATE = eVIDENCE_AHI_PROV_DX_DATE;
+	}
+	public String getAHI_SYMPTOMS_OTHER_TEXT() {
+		return AHI_SYMPTOMS_OTHER_TEXT;
+	}
+	public void setAHI_SYMPTOMS_OTHER_TEXT(String aHI_SYMPTOMS_OTHER_TEXT) {
+		AHI_SYMPTOMS_OTHER_TEXT = aHI_SYMPTOMS_OTHER_TEXT;
+	}
+	public String getCITY_NO() {
+		return CITY_NO;
+	}
+	public void setCITY_NO(String cITY_NO) {
+		CITY_NO = cITY_NO;
+	}
+	public String getFACILITY_ID() {
+		return FACILITY_ID;
+	}
+	public void setFACILITY_ID(String fACILITY_ID) {
+		FACILITY_ID = fACILITY_ID;
+	}
+	public String getFACILITY_NAME() {
+		return FACILITY_NAME;
+	}
+	public void setFACILITY_NAME(String fACILITY_NAME) {
+		FACILITY_NAME = fACILITY_NAME;
+	}
+	public String getFACILITY_PHONE() {
+		return FACILITY_PHONE;
+	}
+	public void setFACILITY_PHONE(String fACILITY_PHONE) {
+		FACILITY_PHONE = fACILITY_PHONE;
+	}
+	public String getFACILITY_ADDRESS() {
+		return FACILITY_ADDRESS;
+	}
+	public void setFACILITY_ADDRESS(String fACILITY_ADDRESS) {
+		FACILITY_ADDRESS = fACILITY_ADDRESS;
+	}
+	public String getFACILITY_CITY() {
+		return FACILITY_CITY;
+	}
+	public void setFACILITY_CITY(String fACILITY_CITY) {
+		FACILITY_CITY = fACILITY_CITY;
+	}
+	public String getFACILITY_STATE() {
+		return FACILITY_STATE;
+	}
+	public void setFACILITY_STATE(String fACILITY_STATE) {
+		FACILITY_STATE = fACILITY_STATE;
+	}
+	public String getFACILITY_COUNTRY() {
+		return FACILITY_COUNTRY;
+	}
+	public void setFACILITY_COUNTRY(String fACILITY_COUNTRY) {
+		FACILITY_COUNTRY = fACILITY_COUNTRY;
+	}
+	public String getFACILITY_ZIP() {
+		return FACILITY_ZIP;
+	}
+	public void setFACILITY_ZIP(String fACILITY_ZIP) {
+		FACILITY_ZIP = fACILITY_ZIP;
+	}
+	public String getFACILITY_PLUS4() {
+		return FACILITY_PLUS4;
+	}
+	public void setFACILITY_PLUS4(String fACILITY_PLUS4) {
+		FACILITY_PLUS4 = fACILITY_PLUS4;
+	}
+	public String getFACILITY_COUNTY() {
+		return FACILITY_COUNTY;
+	}
+	public void setFACILITY_COUNTY(String fACILITY_COUNTY) {
+		FACILITY_COUNTY = fACILITY_COUNTY;
+	}
+
+	public String getDIAGNOSIS_PROVIDER_NOTES() {
+		return DIAGNOSIS_PROVIDER_NOTES;
+	}
+	public void setDIAGNOSIS_PROVIDER_NOTES(String dIAGNOSIS_PROVIDER_NOTES) {
+		DIAGNOSIS_PROVIDER_NOTES = dIAGNOSIS_PROVIDER_NOTES;
+	}
+	public String getFACILITY_EHARS_UID() {
+		return FACILITY_EHARS_UID;
+	}
+	public void setFACILITY_EHARS_UID(String fACILITY_EHARS_UID) {
+		FACILITY_EHARS_UID = fACILITY_EHARS_UID;
+	}
+	public int getPARENT_DOCUMENT_ID() {
+		return PARENT_DOCUMENT_ID;
+	}
+	public void setPARENT_DOCUMENT_ID(int pARENT_DOCUMENT_ID) {
+		PARENT_DOCUMENT_ID = pARENT_DOCUMENT_ID;
+	}
+	public String getDIAGNOSIS_PROVIDER_FNAME() {
+		return DIAGNOSIS_PROVIDER_FNAME;
+	}
+	public void setDIAGNOSIS_PROVIDER_FNAME(String dIAGNOSIS_PROVIDER_FNAME) {
+		DIAGNOSIS_PROVIDER_FNAME = dIAGNOSIS_PROVIDER_FNAME;
+	}
+	public String getDIAGNOSIS_PROVIDER_LNAME() {
+		return DIAGNOSIS_PROVIDER_LNAME;
+	}
+	public void setDIAGNOSIS_PROVIDER_LNAME(String dIAGNOSIS_PROVIDER_LNAME) {
+		DIAGNOSIS_PROVIDER_LNAME = dIAGNOSIS_PROVIDER_LNAME;
+	}
+	public String getDIAGNOSIS_PROVIDER_MNAME() {
+		return DIAGNOSIS_PROVIDER_MNAME;
+	}
+	public void setDIAGNOSIS_PROVIDER_MNAME(String dIAGNOSIS_PROVIDER_MNAME) {
+		DIAGNOSIS_PROVIDER_MNAME = dIAGNOSIS_PROVIDER_MNAME;
+	}
+	public String getDIAGNOSIS_PROVIDER_SUFFIX() {
+		return DIAGNOSIS_PROVIDER_SUFFIX;
+	}
+	public void setDIAGNOSIS_PROVIDER_SUFFIX(String dIAGNOSIS_PROVIDER_SUFFIX) {
+		DIAGNOSIS_PROVIDER_SUFFIX = dIAGNOSIS_PROVIDER_SUFFIX;
+	}
+	public String getAHI_FLAG() {
+		return AHI_FLAG;
+	}
+	public void setAHI_FLAG(String aHI_FLAG) {
+		AHI_FLAG = aHI_FLAG;
+	}
+	
+	
+}

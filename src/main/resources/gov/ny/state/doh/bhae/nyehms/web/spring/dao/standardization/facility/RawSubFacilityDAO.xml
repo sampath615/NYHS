@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.RawSubFacilityDAO">
+
+  <resultMap id="rawSubFacilityResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO" >
+    <id 	column="RAW_SUB_FACILITY_ID"	property="rawSubFacilityId" 	jdbcType="DECIMAL" />
+    <result column="SUB_FACILITY_ID" 		property="subFacilityId" 		jdbcType="DECIMAL" />
+    <result column="FACILITY_TYPE_CODE"		property="facilityTypeCode" 	jdbcType="VARCHAR" />
+    <result column="FACILITY_TYPE_DESC"		property="facilityTypeDesc" 	jdbcType="VARCHAR" />
+    <result column="FACILITY_NAME"			property="facilityName" 		jdbcType="VARCHAR" />
+    <result column="FACILITY_DEPARTMENT" 	property="facilityDepartment" 	jdbcType="VARCHAR" />
+    <result column="LEGACY_FACILITY_ID" 	property="legacyFacilityId" 	jdbcType="VARCHAR" />
+    <result column="LEGACY_FACILITY_TYPE" 	property="legacyFacilityType" 	jdbcType="VARCHAR" />
+    <result column="ADDRESS" 				property="address" 				jdbcType="VARCHAR" />
+    <result column="CITY" 					property="city" 				jdbcType="VARCHAR" />
+    <result column="STATE" 					property="state" 				jdbcType="VARCHAR" />
+    <result column="ZIPCODE" 				property="zipcode" 				jdbcType="VARCHAR" />
+    <result column="PLUS4" 					property="plus4" 				jdbcType="VARCHAR" />
+    <result column="PHONE" 					property="phone" 				jdbcType="VARCHAR" />
+    <result column="NPI" 					property="npi" 				jdbcType="VARCHAR" />
+    <result column="LEGACY_SEQ_NUM_ADDRESS" property="legacySeqNumAddress"  jdbcType="DECIMAL" />
+    <result column="CREATE_UID" 			property="createUid" 			jdbcType="VARCHAR" />
+    <result column="DATE_CREATED" 			property="dateCreated" 			jdbcType="VARCHAR" />
+    <result column="DATE_ENDED" 			property="dateEnded" 			jdbcType="VARCHAR" />
+    <result column="END_UID" 				property="endUid" 				jdbcType="VARCHAR" />
+    
+    <result column="POT_RAW_FACILITY_ID" 	property="pmRawFacilityId" 		jdbcType="DECIMAL" />
+  </resultMap>
+ 
+  <select id="getRawSubFacilityListNewPage" resultMap="rawSubFacilityResult" parameterType="java.util.Map">
+	SELECT 
+			RAW_SUB_FACILITY_ID, FACILITY_TYPE_DESC, FACILITY_NAME, FACILITY_DEPARTMENT, 
+			LEGACY_FACILITY_ID, ADDRESS, CITY, STATE, ZIPCODE, PLUS4, PHONE, NPI
+	FROM    NYEHMS_RAW_FACS_NO_MATCH_VW
+	
+		<choose>
+			    <when test="_search == true">
+			    	<trim prefix="where" >
+			    		<choose>
+						    <when test="searchField == 'facilityName'">
+						    	UPPER(FACILITY_NAME)
+			  		    	</when>
+			  		    	<when test="searchField == 'facilityTypeDesc'">
+						    	UPPER(FACILITY_TYPE_DESC)
+			  		    	</when>
+			  		    	<when test="searchField == 'facilityDepartment'">
+						    	UPPER(FACILITY_DEPARTMENT)
+			  		    	</when>
+			  		    	<when test="searchField == 'address'">
+						    	UPPER(ADDRESS) 
+			  		    	</when>
+			  		    	<when test="searchField == 'city'">
+						    	UPPER(CITY) 
+			  		    	</when>
+			  		    	<when test="searchField == 'state'">
+						    	UPPER(STATE) 
+			  		    	</when>
+			  		    	<when test="searchField == 'zipcode'">
+						    	UPPER(ZIPCODE) 
+			  		    	</when>
+			  		    	<when test="searchField == 'phone'">
+						    	UPPER(PHONE) 
+			  		    	</when>
+			  		    	<otherwise>
+							   
+						    </otherwise>
+						  </choose>
+						  
+						  	<choose>
+						    <when test="searchOper == 'eq'">
+						    <![CDATA[
+						      = UPPER(#{searchString})
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'ne'">
+						    <![CDATA[
+						      != UPPER(#{searchString})
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'bw'">
+						    <![CDATA[
+						      like UPPER(#{searchString}) || '%'
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'bn'">
+						    <![CDATA[
+						      not like UPPER(#{searchString}) || '%'
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'ew'">
+						    <![CDATA[
+						       like '%' || UPPER(#{searchString}) 
+						       ]]>   
+						    </when>
+						    <when test="searchOper == 'en'">
+						    <![CDATA[
+						      not like '%' || UPPER(#{searchString})
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'cn'">
+						    <![CDATA[
+						      like '%' || UPPER(#{searchString}) || '%'
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'nc'">
+						    <![CDATA[
+						      not like '%' || UPPER(#{searchString}) || '%'
+						      ]]>   
+						    </when>
+						    <when test="searchOper == 'in'">
+						    	 in <foreach item="parameter" index="index" collection="searchString"
+							            open="(" separator="," close=")">
+							            UPPER(#{parameter})
+							        </foreach>
+						    </when>
+						    <when test="searchOper == 'ni'">
+						    
+						      not in  	  
+						   			<foreach item="parameter" index="index" collection="searchString"
+							            open="(" separator="," close=")">
+							            UPPER(#{parameter})
+							        </foreach>
+							</when>
+						    <otherwise>
+						    <![CDATA[
+						      ROWNUM <= 100
+						      ]]>  
+						    </otherwise>
+						  </choose>
+						 </trim>
+			    </when>
+			    <otherwise>
+				    <![CDATA[
+	     					where  ROWNUM <= 100   
+	     			]]>    
+			    </otherwise>
+			  </choose>
+  </select>
+  
+  <select id="getRawSubFacilityListManualReview" resultMap="rawSubFacilityResult">
+	SELECT 
+			RAW_SUB_FACILITY_ID, FACILITY_TYPE_DESC, FACILITY_NAME, FACILITY_DEPARTMENT, 
+			LEGACY_FACILITY_ID, ADDRESS, CITY, STATE, ZIPCODE, PLUS4, PHONE
+	FROM    NYEHMS_RAW_FACS_CLERIC_RVW_VW 
+  </select>
+  
+  
+   <select id="getRawListByStdFacilityId" parameterType="java.util.Map"  statementType="CALLABLE">
+	   {CALL PKG_STANDARDIZATION.PR_RAW_FACILITIES_BY_SUB(
+	  		#{subFacilityId,        jdbcType=BIGINT,  mode=IN},
+			#{rawFacilityIds,       jdbcType=VARCHAR, mode=IN},
+			#{rawFacilityRefCursor, jdbcType=CURSOR,  mode=OUT, javaType=java.sql.ResultSet, resultMap=rawSubFacilityResult}
+		)}
+  </select>
+   
+  <select id="updateStandardize" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.PR_LINK_RAW_SUB_FACILITY(
+			#{rawSubFacilityId, jdbcType=BIGINT,  mode=IN},
+			#{subFacilityId,    jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,       jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,        jdbcType=VARCHAR, mode=OUT}	 
+		)}
+  </select>
+  
+  <select id="getPotentialRawFacList" parameterType="Long" resultMap="rawSubFacilityResult">
+		SELECT 	    RAW_FACILITY_ID, POT_RAW_FACILITY_ID
+		FROM 		RAW_FACILITY_MATCH_RESULTS
+		WHERE		RAW_FACILITY_ID =#{rawSubFacilityId}
+  </select>
+    <select id="flagFacilityAsProvider" parameterType="java.util.Map"  statementType="CALLABLE">
+	   {CALL PKG_STANDARDIZATION.pr_flip_to_provider (
+	      #{facilityId,jdbcType=BIGINT,mode=IN},
+	      #{workerId,jdbcType=BIGINT,mode=IN},
+	      #{statusCode,jdbcType=INTEGER,mode=OUT},
+	      #{statusMessage,jdbcType=VARCHAR,mode=OUT}
+		)}
+  </select>
+  
+  
+   <select id="checkRawFacilityExistance" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO" resultType="int" >
+	 	select NVL(MAX(RAW_SUB_FACILITY_ID),0) from RAW_FACILITY where
+	 	
+	 		<choose>
+			    <when test="facilityName != null and facilityName != ''">
+			    <![CDATA[
+			      FACILITY_NAME = #{facilityName}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    FACILITY_NAME is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="address != null and address != ''">
+			    <![CDATA[
+			      and ADDRESS = #{address}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    and ADDRESS is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="city != null and city != ''">
+			    <![CDATA[
+			      and CITY = #{city}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    and CITY is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="phone != null and phone != ''">
+			    <![CDATA[
+			      and PHONE = #{phone}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			   and  PHONE is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="plus4 != null and plus4 != ''">
+			    <![CDATA[
+			      and PLUS4 = #{plus4}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    and PLUS4 is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="state != null and state != ''">
+			    <![CDATA[
+			      and STATE = #{state}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    and STATE is null
+			    </otherwise>
+			</choose>
+			
+			<choose>
+			    <when test="zipcode != null and zipcode != ''">
+			    <![CDATA[
+			      and ZIPCODE = #{zipcode}
+			      ]]>   
+			    </when>
+			    <otherwise>
+			    and ZIPCODE is null
+			    </otherwise>
+			</choose>
+			<![CDATA[
+			       and rownum < 2
+			      ]]>   
+			 
+	 </select>
+	
+	<insert id="createRawFacility" parameterType="java.util.Map" useGeneratedKeys="true" keyColumn="RAW_SUB_FACILITY_ID" keyProperty="rawFacilityId">
+		insert into RAW_FACILITY(RAW_SUB_FACILITY_ID, SUB_FACILITY_ID, FACILITY_NAME, ADDRESS, CITY, STATE, ZIPCODE, PLUS4,   CREATE_UID,  DATE_CREATED, PHONE, COUNTY_FIPS) 
+                values(RAW_FACILITY_SEQ.NEXTVAL, #{p_subfacility_id}, #{p_facility_fname}, #{p_address}, #{p_city}, #{p_state}, #{p_zipcode}, #{p_plus4}, #{p_userId}, SYSDATE, #{p_phone}, #{p_county})
+	</insert>  
+</mapper>

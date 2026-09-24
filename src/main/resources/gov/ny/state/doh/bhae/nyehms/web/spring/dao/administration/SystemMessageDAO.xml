@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.administration.SystemMessageDAO">
+
+   <resultMap id="systemMessage" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessage" >
+    <result column="MSG_ID" property="messageId" jdbcType="DECIMAL" />
+    <result column="MSG_BODY" property="messageBody" jdbcType="VARCHAR" />
+     <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+    <result column="CREATED_BY_NAME" property="createdByName" jdbcType="VARCHAR" />
+    <result column="EFFECTIVE_START_DATE" property="effectiveStartDate" jdbcType="VARCHAR" />
+    <result column="EFFECTIVE_END_DATE" property="effectiveEndDate" jdbcType="VARCHAR" />
+    <result column="FLAG_DELETED" property="deleted" jdbcType="CHAR" />
+    <result column="FLAG_HISTORY_EXIST" property="historyFlag" jdbcType="CHAR" />
+    <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+    <result column="ACTION" property="messageAction" jdbcType="VARCHAR"/>
+    <result column="LAST_UPDATED_BY_NAME" property="lastUpdatedByName" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED_SHORT_NAME" property="lastUpdatedByShortName" jdbcType="VARCHAR" />
+    <result column="CREATED_BY_SHORT_NAME" property="createdByShortName" jdbcType="VARCHAR" />
+    
+  </resultMap>
+	
+	<select id="getActiveSystemMessages" resultMap="systemMessage">
+		SELECT MSG_ID,MSG_BODY,CREATED_BY,CREATED_BY_NAME,TO_CHAR(EFFECTIVE_START_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_START_DATE,
+			TO_CHAR(EFFECTIVE_END_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_END_DATE, FLAG_HISTORY_EXIST,TO_CHAR(LAST_UPDATED_DATE, 'MM/DD/YYYY HH:MI:SS AM') LAST_UPDATED_DATE,LAST_UPDATED_BY, LAST_UPDATED_BY_NAME, LAST_UPDATED_SHORT_NAME, CREATED_BY_SHORT_NAME  
+			FROM NYEHMS_ACTIVE_SYSTEM_MSG_VW
+	</select>
+	
+	
+	<select id="getInProgressActiveSystemMessages" resultMap="systemMessage">
+		SELECT MSG_BODY FROM NYEHMS_ACTIVE_SYSTEM_MSG_VW where SYSDATE > EFFECTIVE_START_DATE   
+	</select>
+	
+	
+	
+	<select id="getInActiveSystemMessages" resultMap="systemMessage">
+		SELECT MSG_ID,MSG_BODY,CREATED_BY_NAME,TO_CHAR(EFFECTIVE_START_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_START_DATE,
+			TO_CHAR(EFFECTIVE_END_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_END_DATE, FLAG_DELETED, FLAG_HISTORY_EXIST,TO_CHAR(LAST_UPDATED_DATE, 'MM/DD/YYYY HH:MI:SS AM') LAST_UPDATED_DATE,LAST_UPDATED_BY_NAME , LAST_UPDATED_SHORT_NAME, CREATED_BY_SHORT_NAME
+			FROM NYEHMS_INACTIVE_SYSTEM_MSG_VW
+	</select>
+	
+  
+  	 <insert id="saveSystemMessageDetails" parameterType="java.util.Map">
+		 insert into NYEHMS_SYSTEM_MESSAGES(effective_start_date,  effective_end_date,  msg_body, CREATED_BY, LAST_UPDATED_BY, LAST_UPDATED_DATE) VALUES (#{effectiveStartDate}, #{effectiveEndDate}, #{messageBody}, #{createdBy}, #{lastUpdatedBy}, SYSDATE)
+	</insert>
+	
+	<update id="updateSystemMessageDetails" parameterType="java.util.Map">
+       UPDATE NYEHMS_SYSTEM_MESSAGES set effective_start_date =  #{effectiveStartDate}, LAST_UPDATED_BY = #{createdBy}, LAST_UPDATED_DATE = SYSDATE, effective_end_date = #{effectiveEndDate}, FLAG_DELETED = #{deleted}, MSG_BODY = #{messageBody} where MSG_ID =#{messageId} 
+    </update>
+   <resultMap id="systemMessageArchive" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessageArchive" >
+    <result column="MSG_ID" property="messageId" jdbcType="DECIMAL" />
+	<collection property="systemMessageArchives" column="MSG_ID" resultMap="systemMessage">
+	</collection>
+  </resultMap>
+	<select id="getSystemMessageArchives" resultMap="systemMessageArchive">
+		SELECT MSG_ID,MSG_BODY,CREATED_BY_NAME,TO_CHAR(EFFECTIVE_START_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_START_DATE,
+            TO_CHAR(EFFECTIVE_END_DATE, 'MM/DD/YYYY HH:MI:SS AM') EFFECTIVE_END_DATE, FLAG_DELETED, TO_CHAR(LAST_UPDATED_DATE, 'MM/DD/YYYY HH:MI:SS AM') LAST_UPDATED_DATE,LAST_UPDATED_BY_NAME, LAST_UPDATED_SHORT_NAME, CREATED_BY_SHORT_NAME
+            FROM NYEHMS_SYSTEM_MSG_HISTORY_VW  where MSG_ID = #{messageId}   
+	</select>
+	
+   <resultMap id="portalSystemMessage" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.PortalSystemMessage" >
+    <result column="MSG_ID" property="msgId" jdbcType="DECIMAL" />
+    <result column="MODULE_NAME" property="module_name" jdbcType="VARCHAR" />    
+    <result column="ADMIN" property="admin" jdbcType="CHAR" />
+    <result column="PRF_DE" property="prf_de" jdbcType="CHAR" />
+    <result column="OOC_INQ" property="ooc_inq" jdbcType="CHAR" />
+    <result column="DNLTC_INQ" property="dnltc_inq" jdbcType="CHAR" />
+    <result column="SNP_ID" property="snp_id" jdbcType="CHAR" />
+    <result column="AIRS_EPI" property="airs_epi" jdbcType="CHAR" />
+    <result column="START_DATE" property="start_date" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="end_date" jdbcType="VARCHAR" />    
+   	<result column="DISPLAY_MSG" property="display_msg" jdbcType="VARCHAR" />
+   	<result column="FLAG_DELETED" property="flag_deleted" jdbcType="CHAR" />
+    <result column="CREATE_BY" property="create_by" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="create_date" jdbcType="VARCHAR" />
+    <result column="UPDATE_BY" property="update_by" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="update_date" jdbcType="VARCHAR" />    
+  </resultMap>
+	
+	<select id="getActivePortalSystemMessages" resultMap="portalSystemMessage">
+		SELECT MSG_ID, 
+		CASE 
+	        WHEN ADMIN = 'Y' THEN 'ADMIN'
+	        WHEN PRF_DE = 'Y' THEN 'PRF_DE'
+	        WHEN OOC_INQ = 'Y' THEN 'OOC_INQ'
+	        WHEN DNLTC_INQ = 'Y' THEN 'DNLTC_INQ'
+	        WHEN SNP_ID = 'Y' THEN 'SNP_ID'
+	        WHEN AIRS_EPI = 'Y' THEN 'AIRS_EPI'
+	        ELSE ' '
+    	END MODULE_NAME,
+		ADMIN, PRF_DE, OOC_INQ, DNLTC_INQ, SNP_ID, AIRS_EPI, TO_CHAR(START_DATE, 'MM/DD/YYYY HH:MI:SS AM') START_DATE, 
+	        TO_CHAR(END_DATE, 'MM/DD/YYYY HH:MI:SS AM') END_DATE, DISPLAY_MSG, FLAG_DELETED, CREATE_BY, TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') CREATE_DATE,
+	        COALESCE(UPDATE_BY, ' ') UPDATE_BY, TO_CHAR(UPDATE_DATE, 'MM/DD/YYYY') UPDATE_DATE
+		FROM PORTAL_MODULE_OUTAGE
+		WHERE FLAG_DELETED = 'N' 
+<!-- 		AND SYSDATE > START_DATE -->
+		AND (END_DATE is null or END_DATE > SYSDATE) 
+	</select>	
+	
+	<select id="getPortalModuleNames" resultType="org.json.simple.JSONObject">
+		select PP_MODULE_CD, PP_MODULE_NAME from PROVIDER_PORTAL_MODULES order by PP_MODULE_CD
+	</select>
+	
+  	 <insert id="savePortalSystemMessageDetails" parameterType="java.util.Map">
+		 insert into PORTAL_MODULE_OUTAGE (ADMIN, PRF_DE, OOC_INQ, DNLTC_INQ, SNP_ID, AIRS_EPI, START_DATE, END_DATE, DISPLAY_MSG, CREATE_BY, CREATE_DATE, UPDATE_BY, UPDATE_DATE)
+		  values (#{ADMIN}, #{PRF_DE}, #{OOC_INQ}, #{DNLTC_INQ}, #{SNP_ID}, #{AIRS_EPI}, #{startDate}, #{endDate}, #{displayMsg}, #{create_by}, SYSDATE, #{update_by}, SYSDATE)
+	</insert>
+
+	<update id="updatePortalSystemMessageDetails" parameterType="java.util.Map">
+		<choose>
+			<when test="flagDeleted == 'N'">
+		        UPDATE PORTAL_MODULE_OUTAGE SET ADMIN = #{ADMIN}, PRF_DE = #{PRF_DE}, OOC_INQ = #{OOC_INQ}, DNLTC_INQ = #{DNLTC_INQ}, SNP_ID = #{SNP_ID}, AIRS_EPI = #{AIRS_EPI}, 
+    			START_DATE = #{startDate}, END_DATE = #{endDate}, DISPLAY_MSG = #{displayMsg}, UPDATE_BY = #{update_by}, UPDATE_DATE = SYSDATE WHERE MSG_ID = #{msgId} 
+			</when>
+			<otherwise>
+			    UPDATE PORTAL_MODULE_OUTAGE SET UPDATE_BY = #{update_by}, UPDATE_DATE = SYSDATE , FLAG_DELETED = #{flagDeleted} WHERE MSG_ID = #{msgId} 
+			</otherwise>
+		</choose>
+    </update>	
+    
+	<select id="getInActivePortalSystemMessages" resultMap="portalSystemMessage">
+        SELECT MSG_ID, 
+        CASE 
+            WHEN ADMIN = 'Y' THEN 'ADMIN'
+            WHEN PRF_DE = 'Y' THEN 'PRF_DE'
+            WHEN OOC_INQ = 'Y' THEN 'OOC_INQ'
+            WHEN DNLTC_INQ = 'Y' THEN 'DNLTC_INQ'
+            WHEN SNP_ID = 'Y' THEN 'SNP_ID'
+            WHEN AIRS_EPI = 'Y' THEN 'AIRS_EPI'
+            ELSE ' '
+        END MODULE_NAME,
+        ADMIN, PRF_DE, OOC_INQ, DNLTC_INQ, SNP_ID, AIRS_EPI, TO_CHAR(START_DATE, 'MM/DD/YYYY HH:MI:SS AM') START_DATE, 
+            TO_CHAR(END_DATE, 'MM/DD/YYYY HH:MI:SS AM') END_DATE, DISPLAY_MSG, FLAG_DELETED, CREATE_BY, TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') CREATE_DATE,
+            COALESCE(UPDATE_BY, ' ') UPDATE_BY, TO_CHAR(UPDATE_DATE, 'MM/DD/YYYY') UPDATE_DATE
+        FROM PORTAL_MODULE_OUTAGE
+        WHERE (FLAG_DELETED = 'Y' or SYSDATE > END_DATE)
+	</select>	    
+    
+</mapper> 

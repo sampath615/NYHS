@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NonCaseDocumentDAO">
+
+	
+	<insert id="createNonCaseDocument" parameterType="java.util.Map">
+	 <![CDATA[
+						      
+		insert into DELETED_DOC_HISTORY(TRIGGERING_DOC_ID, CREATE_ID, CREATE_DATE, FLAG_ACTIVE, REASON_CODE, COMMENTS)
+		values(#{triggeringDocId}, #{workerId}, SYSDATE, 'Y', #{reason}, '<div class="nonCaseComment ">(<span class="nonCaseCreateId">' ||  #{workerFullName}   || '</span>            <span class="pL30 nonCaseCreateDate">' || TO_CHAR(SYSDATE, 'MM/DD/YYYY HH:MI:SS AM') || ')<span class="pL50 nonCaseComments">' ||  #{comments}  || '</span></div>')
+	]]>  
+	</insert>
+	
+	<select id="getNonCaseDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NonCaseDocVO">
+   	
+		    select TRIGGERING_DOC_ID, TO_CHAR(CREATE_DATE, 'MM/DD/YYYY HH:MI:SS AM') CREATE_DATE, FLAG_ACTIVE,  COMMENTS,
+        
+        coded.REASON_DESC,
+        PDOC.STATENO
+        
+        
+        from DELETED_DOC_HISTORY doc, CODED_NON_CASE_REASON coded,person_doc_association PDOC where TRIGGERING_DOC_ID = #{docId}
+        and doc.REASON_CODE = coded.REASON_CODE
+        and doc.TRIGGERING_DOC_ID = PDOC.document_id(+)
+        AND PDOC.dissassociation_date(+) IS NULL
+	
+	</select>
+	
+	
+	<update id="addCommentsToNonCaseDoc" parameterType="java.util.Map">
+	<![CDATA[
+		update DELETED_DOC_HISTORY set COMMENTS = COMMENTS || '<div class="nonCaseComment pT20">(<span class="nonCaseCreateId">' ||  #{workerFullName}   || '</span>            <span class="pL30 nonCaseCreateDate">' || TO_CHAR(SYSDATE, 'MM/DD/YYYY HH:MI:SS AM') || ')<span class="pL50 nonCaseComments">' ||  #{comments}  || '</span></div>' where TRIGGERING_DOC_ID = #{triggeringDocId}
+		]]>  
+	</update>
+	
+	
+	<update id="changeNonCaseActiveFlagStatus" parameterType="java.util.Map">
+		update DELETED_DOC_HISTORY set FLAG_ACTIVE =   #{flagActive},  LAST_UPDATE_DATE = SYSDATE, LAST_UPDATE_ID = #{workerId} where TRIGGERING_DOC_ID = #{triggeringDocId}
+  
+	</update>
+	
+	
+	<select id="getNonCaseReasons" resultType="java.util.Map">
+		select REASON_CODE, REASON_DESC, DELETE_FLAG FLAG, DOC_FLAG from CODED_NON_CASE_REASON where  DOC_FLAG != 'NON_CASE'
+	</select>
+	
+	<insert id="flagAsNonCase" parameterType="java.util.Map">
+		INSERT INTO NYEHMS_NONCASE_STATENOS(CURRENT_STATENO, FLAGGED_STATENO, REASON_CODE, FLAGGED_BY, FLAGGED_DATE, NON_CASE_FLAG, REQUEST_COMMENTS, EHARS_STATENO, NYC_STATENO, NYC_CITYNO) VALUES(#{p_stateno}, #{p_stateno}, #{p_reason}, #{p_flagged_by}, sysdate, 'Y', #{p_request_comments}, #{p_eharsStateno,jdbcType=VARCHAR}, #{p_nycStateno,jdbcType=VARCHAR}, #{p_cityno,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="unflagAsNonCase" parameterType="java.util.Map">
+		UPDATE NYEHMS_NONCASE_STATENOS  SET CURRENT_STATENO = #{p_current_stateno}, NON_CASE_FLAG = 'N', REVIEW_COMMENTS = #{p_review_comments}, LAST_UPDATED_BY=#{p_worker_id}, LAST_UPDATED_DATE = sysdate WHERE CURRENT_STATENO = #{p_flagged_stateno} AND NON_CASE_FLAG = 'Y'
+	</update>
+	
+	<select id="checkForActiveNonCaseStateno" parameterType="String" resultType="int">
+		select count(*) from NYEHMS_NONCASE_STATENOS where NON_CASE_FLAG = 'Y' and PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO(CURRENT_STATENO) = #{stateno}
+	</select>
+	
+	<update id="updateNonCaseStatusInPDOC" parameterType="java.util.Map" >
+			update  PERSON_DOC_ASSOCIATION set DISCARD_STATUS = #{flagActive},
+			
+			surv_assess_status = case when surv_assess_status = 2 then 3 else  surv_assess_status end 
+			 where DOCUMENT_ID = #{triggeringDocId} and DISSASSOCIATION_DATE is null
+	</update>
+	
+	<insert id="discardNonCaseDocument" parameterType="java.util.Map">
+	 <![CDATA[
+						      
+		insert into DELETED_DOC_HISTORY(TRIGGERING_DOC_ID, CREATE_ID, CREATE_DATE, FLAG_ACTIVE, REASON_CODE, COMMENTS, NYEHMS_STATENO, EHARS_STATENO, NYC_STATENO, NYC_CITYNO)
+		values(#{triggeringDocId}, #{workerId}, SYSDATE, 'Y', #{reason}, #{comments}, #{NYEHMS_STATENO,jdbcType=VARCHAR}, #{EHARS_STATENO,jdbcType=VARCHAR}, #{NYC_STATENO,jdbcType=VARCHAR}, #{NYC_CITYNO,jdbcType=VARCHAR})
+	]]>  
+	</insert>
+	
+	<select id="getNonCaseDocHistory" parameterType="String" resultType="java.util.Map">
+		SELECT 
+		CURRENT_STATENO CURRENT_STATENO,
+		FLAGGED_STATENO ACTUAL_STATENO,
+       	REASON_DESC,
+       (SELECT FULL_NAME FROM NYEHMS_USERS_VW WHERE WORKER_ID = nonCase.FLAGGED_BY) FLAGGED_BY,
+       TO_CHAR (FLAGGED_DATE, 'MM/DD/YYYY') FLAGGED_DATE,
+       REQUEST_COMMENTS,
+       REVIEW_COMMENTS,
+       (SELECT FULL_NAME FROM NYEHMS_USERS_VW WHERE WORKER_ID = nonCase.LAST_UPDATED_BY) LAST_UPDATED_BY,
+       TO_CHAR (LAST_UPDATED_DATE, 'MM/DD/YYYY') LAST_UPDATED_DATE,
+       EHARS_STATENO, NYC_STATENO, NYC_CITYNO
+	       
+	  FROM NYEHMS_NONCASE_STATENOS nonCase, CODED_NON_CASE_REASON nonCaseReason
+	 WHERE PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO(nonCase.CURRENT_STATENO) = #{stateno}  and nonCase.REASON_CODE = nonCaseReason.REASON_CODE(+)  order by nonCase.FLAGGED_DATE desc
+	</select>
+
+	<select id="getDocDelDiscardHistory" parameterType="int" resultType="java.util.Map">
+        select TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') CREATE_DATE, COMMENTS, coded.REASON_DESC,
+	        CASE 
+	            WHEN coded.DELETE_FLAG = 'Y' THEN 'Deleted' ELSE 'Discarded'
+	        END DEL_DISCARD,
+            (SELECT FULL_NAME FROM NYEHMS_USERS_VW WHERE WORKER_ID = nu.WORKER_ID) CREATE_ID
+        from DELETED_DOC_HISTORY doc, CODED_NON_CASE_REASON coded, nyehms_users nu
+        where doc.TRIGGERING_DOC_ID = #{documentId} and DOC.FLAG_ACTIVE = 'Y'
+        and doc.REASON_CODE = coded.REASON_CODE
+        and nu.WORKER_ID = DOC.CREATE_ID
+	</select>	
+	
+	
+	<select id="getNonCaseEharsStatenos" resultType="java.util.Map" parameterType="java.util.Map">
+		select
+CURRENT_STATENO, usr.LAST_NAME || ', ' || usr.FIRST_NAME FLAGGED_BY, TO_CHAR(FLAGGED_DATE, 'MM/DD/YYYY') FLAGGED_DATE, REQUEST_COMMENTS, ehars.EHARS_STATENO, REASON_DESC
+  FROM nyehms_noncase_statenos a, xmltable(('"'||Replace(a.ehars_stateno, ', ', '","')||'"')), NYEHMS_EHARS_STATENO_MAP ehars, CODED_NON_CASE_REASON reason, nyehms_users usr
+ WHERE (column_value).getstringval() = ehars.EHARS_STATENO and NON_CASE_FLAG = 'Y' and reason.REASON_CODE = a.REASON_CODE and usr.worker_id = FLAGGED_BY
+ 
+ <choose>
+ 	<when test='p_nonCasePernitalExpOnly == "Yes"'>
+ 			and reason.reason_code in ('29', '30')
+ 	</when>
+ 	<otherwise>
+ 			and reason.reason_code not in ('29', '30')	
+ 	</otherwise>
+ 
+ </choose>
+ 
+ 
+ 
+ 
+	</select>
+	
+	<select id="getNonCaseFlaggedHistory" resultType="java.util.Map" parameterType="java.util.Map">
+	
+	   SELECT CURRENT_STATENO "stateno",
+       EHARS_STATENO,
+       NYC_STATENO,
+       NYC_CITYNO,
+       NON_CASE_FLAG,
+       REASON_DESC,
+       REQUEST_COMMENTS,
+       usr1.LAST_NAME || ', ' || usr1.FIRST_NAME FLAGGED_BY,
+       TO_CHAR(FLAGGED_DATE, 'MM/DD/YYYY') FLAGGED_DATE,
+       REVIEW_COMMENTS,
+       case when noncase.LAST_UPDATED_BY is not null then  usr2.LAST_NAME || ', ' || usr2.FIRST_NAME 
+        else null end LAST_UPDATED_BY,
+       TO_CHAR(noncase.LAST_UPDATED_DATE, 'MM/DD/YYYY') LAST_UPDATED_DATE
+  FROM NYEHMS_NONCASE_STATENOS noncase, CODED_NON_CASE_REASON reason, NYEHMS_USERS usr1, NYEHMS_USERS usr2 
+  where noncase.reason_code = reason.reason_code
+  and noncase.flagged_by = usr1.worker_id(+)
+  and noncase.last_updated_by = usr2.worker_id(+)
+  and NON_CASE_FLAG = #{ACTIVE_FLAG}
+  
+  <if test="FROM_DATE != null and FROM_DATE != ''">
+  and FLAGGED_DATE between FN_TO_DATE(#{FROM_DATE}, 'MM/DD/YYYY') and FN_TO_DATE(#{TO_DATE}, 'MM/DD/YYYY')+1
+  </if>
+  
+  order by CURRENT_STATENO, flagged_Date asc
+  
+	</select>
+	
+	<select id="getReasonCodeForNonCase" resultType="java.util.Map" parameterType="String">
+		select  REASON_CODE, DOC_FLAG NON_CASE_FLAG from CODED_ACTIVITY_TYPE,  CODED_NON_CASE_REASON  where activity_type_code = #{colsureCategory} and reason_desc like '%' || activity_type_description
+	</select>
+</mapper>

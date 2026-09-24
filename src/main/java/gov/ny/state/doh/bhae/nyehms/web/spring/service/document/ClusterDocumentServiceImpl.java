@@ -1,0 +1,1136 @@
+package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClusterDocumentDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.RecordSearchReviewDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocPSMessageVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocReportVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterIdReportDataVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterIdReportVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterTemplateVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClustereHARSImportFlagVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+
+@Service
+public class ClusterDocumentServiceImpl implements ClusterDocumentService {
+	
+	private static Logger log = LoggerFactory.getLogger(ClusterDocumentServiceImpl.class);
+
+	
+	@Autowired
+	private ClusterDocumentDAO clusterDocumentDAO;
+	
+	@Autowired
+	DocumentDAO documentDAO;
+	
+	@Autowired
+	private CommonExceptionHandler commonExceptionHandler;
+	
+	@Autowired CommonDocumentService commonDocumentService;
+	
+	@Autowired FileUploadDAO fileUploadDAO;
+	
+	@Autowired SendEmail sendEmail;
+	
+	@Autowired private RecordSearchReviewDAO recordSearchReviewDAO;	
+	
+	@Autowired
+	private CommonDocLabsDAO commonDocLabsDAO;
+	
+	@Autowired CommonService commonService;
+	
+	@Autowired ConnectionDAO connectionDAO;
+	
+	@Autowired DateUtil dateUtil;
+	
+	List<String> statenoNotFoundInEhars = new ArrayList<String>();
+	
+	@Autowired	CommonUtil commonUtil;
+
+	@Override
+	public ClusterDocVO getClusterDocVO(int documentId, BindingResult result, UserObject userObject) {
+		
+		String docClusterType = clusterDocumentDAO.getDocumentClusterType(documentId);
+		
+		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		
+		inputData.put("documentId", documentId);
+		inputData.put("docClusterType", docClusterType);
+		
+		ClusterDocVO clusterDocVO = clusterDocumentDAO.getClusterDoc(inputData);
+		
+		if(CommonUtil.isNotNullAndEmpty(clusterDocVO.getCLUSTER_TYPE()) ) {
+
+			clusterDocVO.setCLUSTER_TYPE_DESC(getClusterTypeDesc(clusterDocVO.getCLUSTER_TYPE()));
+		}
+		
+		if (CommonUtil.isNotNullAndEmpty(clusterDocVO.getSTATUS_FLAG())) {
+			
+			clusterDocVO.setSTATUS_FLAG(getStatusFlagDesc(clusterDocVO.getSTATUS_FLAG()));
+		}
+
+		if (CommonUtil.isNotNullAndEmpty(clusterDocVO.getNYC_STATUS_FLAG())) {
+			
+			clusterDocVO.setNYC_STATUS_FLAG(getStatusFlagDesc(clusterDocVO.getNYC_STATUS_FLAG()));
+		}
+		
+		if (CommonUtil.isNotNullAndEmpty(clusterDocVO.getUPLOAD_NYEHMS_STATENO()) && clusterDocVO.getUPLOAD_NYEHMS_STATENO().equals("Manual_Add")) {
+			clusterDocVO.setCREATE_DATE(clusterDocVO.getCREATE_DATE() + " : Manual Add : " + clusterDocVO.getADDED_BY_USER()); 
+		} else {
+			clusterDocVO.setCREATE_DATE(clusterDocVO.getCREATE_DATE() + " : Bulk Upload : " + clusterDocVO.getADDED_BY_USER()); 
+		}
+		
+		String isResRecord = clusterDocumentDAO.isResistanceRecord(clusterDocVO.getSTATENO());
+				clusterDocVO.setIS_RES_RECORD(isResRecord);
+		
+		if(clusterDocVO.getSTATENO() != null && !"-1".equals(clusterDocVO.getSTATENO())) {
+			List<ClusterDocPSMessageVO> clusterDocPSMessageList = clusterDocumentDAO.getClusterPSMessageInfo(clusterDocVO.getSTATENO());
+			clusterDocVO.setClusterDocPSMessageList(clusterDocPSMessageList);
+		}
+		
+		return clusterDocVO;
+	}
+/*
+	@Override
+	public void updateClusterDocument(Map<String, String> inputData, int documentId, String documentType, String SOFT_ERROR_ONLY, BindingResult bindingResult, UserObject userObject) {
+		
+		boolean isError = false;
+		try{
+	//		ClusterDocVO clusterDocVO = clusterDocumentDAO.getClusterDoc(documentId);
+			
+			if (CommonUtil.isNotNullAndEmpty(clusterDocVO.getCLUSTER_DISPOSITION_CODE()) && CommonUtil.isNotNullAndEmpty(clusterDocVO.getCLUSTER_DISPOSITION_COMMENTS())) {
+				
+				List<Map<String, String>> stdToRawColumnsList = commonDocLabsDAO.getStdToRawColumnList(LabCommonUtils.getDocumentType(documentType));   
+				
+				if(stdToRawColumnsList == null || stdToRawColumnsList.size() == 0){
+					
+					commonExceptionHandler.inspectDBTransacionResult(-1, "Edit document is not implemented for this document.", bindingResult);
+					
+				}
+				
+				Map<String, String> documentColumnMappingObj = LabCommonUtils.convertColumnListMapObj(stdToRawColumnsList);
+				
+				documentTransactionHelper.storeEditedRawAndStdDocument(documentId, documentType, inputData, documentColumnMappingObj, SOFT_ERROR_ONLY, bindingResult, userObject);
+				
+			} else {
+				
+				inputData.put("workerId", Integer.toString(userObject.getWorkerId()));
+				
+				clusterDocumentDAO.updateClusterDocument(inputData);
+				
+				commonExceptionHandler.inspectDBTransacionResult(0, "Document successfully edited. ", bindingResult);
+			}
+			
+		//	documentTransactionHelper.storeEditedRawAndStdDocument(documentId, documentType, inputData, documentColumnMappingObj, SOFT_ERROR_ONLY, bindingResult, userObject);
+			
+		} catch (DataAccessException e) {
+			isError = true;
+			log.error("Document Id   "+documentId);
+			log.error(nyehmsLog+" Failed while storing the edited document " + e.getMessage());
+			commonExceptionHandler.handleException(e, userObject, userObject.getSessionId());
+		} catch (Exception e) {
+			isError = true;
+			log.error("Document Id   "+documentId);
+			log.error(nyehmsLog+"  Failed while storing the edited document  " + e.getMessage());
+			commonExceptionHandler.handleException(e, userObject, userObject.getSessionId());
+		}
+		
+		if(isError  && (bindingResult.getAllErrors() == null || bindingResult.getAllErrors().size() == 0) ){
+			
+			commonExceptionHandler.inspectDBTransacionResult(-1, "Error while saving document, please contact the Helpline. ", bindingResult);
+
+		}
+		
+	}
+*/
+	@Override
+	public List<JSONObject> getClusterIdsByType(String clusterType) {
+		
+		List<JSONObject> fileNamesObj = clusterDocumentDAO.getClusterIdsByType(clusterType);
+		
+		return fileNamesObj;
+	}
+
+	@Override
+	public List<JSONObject> getExistingClusterIdsByType(String clusterType) {
+		
+		Map<String, String> existingClusterType = new HashMap<String, String>();
+		
+		existingClusterType.put("clusterType", clusterType);
+		
+		List<JSONObject> fileNamesObj = clusterDocumentDAO.getExistingClusterIdsByType(existingClusterType);
+		
+		return fileNamesObj;
+	}
+
+	@Override
+	public List<ClusterDocReportVO> getClusterReportsByTypeAndId(String clusterType, String clusterId, BindingResult bindingResult, UserObject userObject) {
+
+		Map<String, String> reportInputData = new HashMap<String, String>();
+		
+		reportInputData.put("clusterType", clusterType);
+		reportInputData.put("clusterId", clusterId);
+		
+		List<ClusterDocReportVO> clusterReportObj = clusterDocumentDAO.getClusterReportsByTypeAndId(reportInputData);
+
+		return clusterReportObj;
+	}
+
+	@Override
+	public Map<String, String> getClusterTypeList() {
+		
+		Map<String, String> clusterTypeList = new HashMap<String, String>();
+
+		clusterTypeList.put("BHAE_M", "BHAE Molecular");
+		clusterTypeList.put("BHAE_TS", "BHAE Space - Time");
+		clusterTypeList.put("CDC_M", "CDC Molecular");
+		
+		return clusterTypeList;
+	}
+	
+	@Override
+	public void insertIntoRawCluster(Map<String, Object> clusterDetailsMap, UserObject userObject) {
+		
+		String documentType = getSubDocumentType(clusterDetailsMap.get("clusterType").toString());
+		
+		clusterDetailsMap.put("currrentProcessStatus", 5);
+		clusterDocumentDAO.insertDataIntoClusterRaw(clusterDetailsMap);
+		
+		commonDocumentService.writeDocumentTestType(Integer.parseInt(clusterDetailsMap.get("documentId").toString()), documentType);
+		
+	}
+		
+	@Override
+	public void insertIntoStdCluster(Map<String, Object> clusterDetailsMap, ClusterDocVO currentDemoInfo, UserObject userObject, BindingResult bindingResult) {
+		
+			clusterDetailsMap.put("currrentProcessStatus", 5);
+			clusterDetailsMap.put("firstName", currentDemoInfo.getFIRST_NAME());
+			clusterDetailsMap.put("middleName", currentDemoInfo.getMIDDLE_NAME());
+			clusterDetailsMap.put("lastName", currentDemoInfo.getLAST_NAME());
+			clusterDetailsMap.put("dob", currentDemoInfo.getDOB());
+			clusterDetailsMap.put("demo_data_src", currentDemoInfo.getDEMO_DATA_SOURCE());
+			clusterDetailsMap.put("nyehmsStateno", currentDemoInfo.getCURRENT_NYEHMS_STATENO());
+			clusterDetailsMap.put("eharsStateno", currentDemoInfo.getEHARS_STATENO());
+			clusterDetailsMap.put("cityno", currentDemoInfo.getCITYNO());
+			clusterDetailsMap.put("demoDocumentId", clusterDetailsMap.get("demoDocumentId"));
+			
+			clusterDocumentDAO.insertDataIntoClusterStd(clusterDetailsMap);
+			
+			if (clusterDetailsMap.get("clusterType").toString().equals("BHAE_TS")) {
+				checkAndUpdateRecordSearch(currentDemoInfo.getCURRENT_NYEHMS_STATENO(), userObject, bindingResult);
+			}	
+		
+	}
+	
+	
+	@Override
+	public int getClusterDocumentID() {
+		
+		Map<Object,Object> map = new HashMap<Object,Object>();
+		int newDocId=0;
+		
+		map.put("p_document_type","CLUSTER");
+		map.put("p_new_doc_id", "");
+		
+		try{			
+			commonDocumentService.getNewDocId(map);
+			newDocId=(Integer)map.get("p_new_doc_id");
+		}catch (DataAccessException e) {
+			
+			throw new DataRetrievalFailureException("Failed to create a new Cluster document for "+newDocId+" :  "+e.getMessage());
+			
+		}
+		
+		return newDocId;
+	}
+	
+	public String getSubDocumentType (String clusterType) {
+		String subDocType = null;
+		if (clusterType.equals("CDC_M")) {
+			subDocType = "CLUST_CDC_MOL";
+		} else if (clusterType.equals("BHAE_M")) {
+			subDocType = "CLUST_BHAE_MOL";			
+		} else if (clusterType.equals("BHAE_TS")) {
+			subDocType = "CLUST_BHAE_TS";			
+		}
+		
+		return subDocType;
+	}
+/*	
+	@Override
+	public ClusterDocVO getStatenoDemographicInfo(String clusterType, String uploadedStateno, String clusterId) {
+		
+		ClusterDocVO statenoDemoInfo = getDemographicFromEhars(clusterType, uploadedStateno);
+	
+		if ( (clusterType.equals("CDC_M") || clusterType.equals("BHAE_M")) && statenoDemoInfo == null) {
+			
+				statenoNotFoundInEhars.add(uploadedStateno);
+			
+				statenoDemoInfo = fileUploadDAO.getDemographicByFirstResistance(uploadedStateno);
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}
+				
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+
+			if(statenoDemoInfo == null) {
+				statenoDemoInfo = fileUploadDAO.getDemographicByMostRecentLab(uploadedStateno);
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+			}
+			
+		} else if (clusterType.equals("BHAE_TS") && statenoDemoInfo == null) {
+			
+				statenoNotFoundInEhars.add(uploadedStateno);
+			
+				statenoDemoInfo = fileUploadDAO.getDemographicByMostRecentLab(uploadedStateno);
+				
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+		}
+			
+		return statenoDemoInfo;
+	}
+	*/
+	public ClusterDocVO checkforValidDemoInfo(ClusterDocVO statenoDemoInfo) {
+		
+		if( CommonUtil.isNullOrEmpty(statenoDemoInfo.getFIRST_NAME()) || CommonUtil.isNullOrEmpty(statenoDemoInfo.getLAST_NAME()) || CommonUtil.isNullOrEmpty(statenoDemoInfo.getDOB()) ) {
+			statenoDemoInfo = null;
+		}
+		
+		return statenoDemoInfo;
+	}
+/*	
+	@Override
+	public ClusterDocVO getStatenoDemographicInfoToaddCluster(String clusterType, String stateno, String clusterId) {
+		
+		ClusterDocVO statenoDemoInfo = fileUploadDAO.checkNyehmsStatenoInNysEharsNyehms(stateno);
+		
+		if(statenoDemoInfo != null ) {
+			statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+		}	
+		
+		if (statenoDemoInfo == null ) { 
+			statenoDemoInfo = fileUploadDAO.checkNyehmsStatenoInNycEharsNyehms(stateno);
+		}	
+		
+		if(statenoDemoInfo != null ) {
+			statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+		}	
+		
+		if ( (clusterType.equals("CDC_M") || clusterType.equals("BHAE_M")) && statenoDemoInfo == null) {
+			
+//				if (clusterType.equals("BHAE_M")) {
+					statenoNotFoundInEhars.add(stateno);
+//				}
+			
+				statenoDemoInfo = fileUploadDAO.getDemographicByFirstResistance(stateno);
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}	
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+
+			if(statenoDemoInfo == null) {
+				statenoDemoInfo = fileUploadDAO.getDemographicByMostRecentLab(stateno);
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}	
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+			}
+			
+		} else if (clusterType.equals("BHAE_TS") && statenoDemoInfo == null) {
+			
+				statenoNotFoundInEhars.add(stateno);
+			
+				statenoDemoInfo = fileUploadDAO.getDemographicByMostRecentLab(stateno);
+				
+				if(statenoDemoInfo != null ) {
+					statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+				}	
+				
+				if (statenoDemoInfo != null && CommonUtil.isNotNullAndEmpty(statenoDemoInfo.getDEMO_DATA_SOURCE()) ) {
+					statenoDemoInfo.setDEMO_DATA_SOURCE(statenoDemoInfo.getDEMO_DATA_SOURCE() + "_" + statenoDemoInfo.getDOCUMENT_ID());
+				}
+		}
+			
+		return statenoDemoInfo;
+	}*/
+
+	
+/*	
+	@Override
+	public ClusterDocVO getDemographicFromEhars(String clusterType, String uploadedStateno) {
+		
+		ClusterDocVO statenoDemoInfo = null;
+			
+		statenoDemoInfo = fileUploadDAO.checkNyehmsStatenoInNysEharsNyehms(uploadedStateno);
+		
+		if(statenoDemoInfo != null ) {
+			statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+		}	
+		if(statenoDemoInfo == null ) {
+			statenoDemoInfo = fileUploadDAO.checkNyehmsStatenoInNycEharsNyehms(uploadedStateno);
+
+			if(statenoDemoInfo != null ) {
+				statenoDemoInfo = checkforValidDemoInfo(statenoDemoInfo);
+			}					
+		}	
+				
+		return statenoDemoInfo;
+	}*/
+	
+/*	@Override
+	public String checkEharsStatenoValidity(String uploadedStateno) {
+		
+			String nyehmsStateno = fileUploadDAO.getNyehmsStatenoFromNYSehars(uploadedStateno);
+			
+			if (CommonUtil.isNullOrEmpty(nyehmsStateno)) {
+				
+				nyehmsStateno = fileUploadDAO.getNyehmsStatenoFromNYCehars(uploadedStateno);
+			}
+			
+		return nyehmsStateno;
+	}*/
+	
+/*	@Override
+	public void sendEmailNotificationToClusterUsers(String clusterId){
+		
+		if (statenoNotFoundInEhars.size() > 0) {
+		
+		String content = "Following STATENO has been identified as a member of Cluster ID <b>" + clusterId + "</b>. But it is not found in NYS eHARS or NYC eHARS. Please followup. <br><br>" ;
+		
+		content += statenoNotFoundInEhars.toString();
+		
+		try {
+			String subject = EnvironmentProperties.envProperties.getProperty("EMAIL_CLUSTER_DOCUMENT_SUBJECT");
+			String[] recipientEmailAddressesTo = EnvironmentProperties.envProperties.getProperty("EMAIL_CLUSTER_DOCUMENT_TO").split(",");
+			String[] recipientEmailAddressesCC = null;
+			
+			String ccList = EnvironmentProperties.envProperties.getProperty("EMAIL_CLUSTER_DOCUMENT_CC");
+			
+			if(CommonUtil.isNotNullAndEmpty(ccList)){
+				recipientEmailAddressesCC = ccList.split(",");
+			}
+			
+			if (recipientEmailAddressesTo.length > 0) {
+				sendEmail.sendSSLMessage(
+						recipientEmailAddressesTo,
+						subject, content,
+						 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
+						CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
+			} else {
+				log.error(content);
+			}
+		} catch (MessagingException messagingException) {
+			
+			log.error(nyehmsLog + "   Failed to send the Email notification to Cluster Users .");
+			
+			log.error(ExceptionUtils.getStackFrames(messagingException));
+			
+			throw new DataRetrievalFailureException(content);
+		}
+		
+		statenoNotFoundInEhars.clear();
+	  }
+	}		*/
+	
+	@Override
+	public void moveStdDocumentToDocAttrTables(long documentId, UserObject userObject){
+		
+		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		
+		if (documentId == 0) {
+			
+			inputOutputParameterMap.put("p_stateno", null);
+			inputOutputParameterMap.put("p_user_id", 900);
+			inputOutputParameterMap.put("p_documentId", null);
+			inputOutputParameterMap.put("p_document_type", "CLUSTER");
+			inputOutputParameterMap.put("p_called_from", null);
+			
+		} else {
+			
+			inputOutputParameterMap.put("p_stateno", null);
+			inputOutputParameterMap.put("p_user_id", userObject.getWorkerId());
+			inputOutputParameterMap.put("p_documentId", documentId);
+			inputOutputParameterMap.put("p_document_type", "CLUSTER");
+			inputOutputParameterMap.put("p_called_from", null);
+		}
+		
+		
+		commonDocLabsDAO.moveStdDocumentToDocAttrTables(inputOutputParameterMap);
+		
+		Integer statusCode=(Integer)inputOutputParameterMap.get("p_code_out");
+		
+		if(statusCode != 0){
+			
+			log.error("Exception occured while inserting Std document in Person tables : {}",inputOutputParameterMap.get("p_msg_out"));
+			
+			throw new DataRetrievalFailureException("Failed while associating the CLUSTER documents.");
+		}
+		
+	}
+	
+	
+/*
+	@Override
+	public void updateClustEharsNyehmsStateno(Map<String, Object> clusterDetailsMap, ClusterDocVO currentDemoInfo, UserObject userObject, BindingResult bindingResult) {
+		
+		String clusterType = clusterDetailsMap.get("clusterType").toString();
+	//	String uploadedEharsStateno = clusterDetailsMap.get("uploadedEharsStateno").toString();
+	//	String uploadedNyehmsStateno = clusterDetailsMap.get("nyehmsStateno").toString();
+		long documentId = Long.parseLong(clusterDetailsMap.get("documentId").toString());
+		
+				Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+	
+				inOutParameterMap.put("p_documentId", documentId);
+				inOutParameterMap.put("p_worker_id", userObject.getWorkerId());
+				
+				if (currentDemoInfo != null) {
+					inOutParameterMap.put("currrentProcessStatus", 5);
+				} else{
+					inOutParameterMap.put("currrentProcessStatus", 40);
+				}
+
+					inOutParameterMap.put("p_newNyehmsStateno", clusterDetailsMap.get("uploadNyehmsStateno").toString());
+					fileUploadDAO.updateNewNyehmsStateno(inOutParameterMap);							
+	}	
+	
+	*/
+	
+	public void checkAndUpdateRecordSearch(String stateNo, UserObject userObject, BindingResult bindingResult) {
+		
+		String transactionMessage = null;
+		
+		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		String requestComments = "CLUST_BHAE_TS";
+		
+		inOutParameterMap.put("p_stateno", stateNo);
+
+		int resultCount = recordSearchReviewDAO.checkForExistingRecordSearchStateno(inOutParameterMap);
+		
+		if(resultCount > 0){
+			
+			Map<String, String> inOutParameters = new HashMap<String, String>();
+			
+			inOutParameters.put("p_requestComments", requestComments);
+			inOutParameters.put("STATENO", stateNo);
+
+			recordSearchReviewDAO.updateAutoRecordSearchEntry(inOutParameters);
+			
+		}else{
+			inOutParameterMap.put("FLAG_ORIGIN", "Automatic");
+			inOutParameterMap.put("p_workerId", userObject.getWorkerId());
+			
+			inOutParameterMap.put("p_requestComments", requestComments);
+			
+			resultCount = recordSearchReviewDAO.addRecordSearchFlagStatusEntry(inOutParameterMap);
+			
+			if(resultCount == 0){
+				
+				transactionMessage = "Unsuccessfully flagged for Record Search.  Please contact the helpline.";
+			}
+			
+		}
+		
+		log.error(transactionMessage);
+		commonExceptionHandler.inspectDBTransacionResult(-1, transactionMessage, bindingResult);
+		
+	}
+	
+	
+	@Override
+	public void insertNyehmsUploadCluster(ClusterUploadVO clusterUploadVO, BindingResult bindingResult,UserObject userObject, HttpSession session) {
+		
+		String clusterId = clusterUploadVO.getClusterId();
+		String clusterType = clusterUploadVO.getClusterType();
+		String clusterFileName = clusterUploadVO.getUploadClusterFile();
+		String uploadType = clusterUploadVO.getUploadType();
+		String tsUpdateRetire = clusterUploadVO.getTsUpdateRetire(); 
+		
+		clusterUploadVO.setClusterCountiesCds(getCodesPipeSep(clusterUploadVO.getClusterCountiesList()));
+		clusterUploadVO.setTransmissionRiskCds(getCodesPipeSep(clusterUploadVO.getTransmissionRiskList()));
+		clusterUploadVO.setRaceCds(getCodesPipeSep(clusterUploadVO.getRaceList()));
+		
+		int workerId = userObject.getWorkerId();
+		
+		if(uploadType.equalsIgnoreCase("E")) {
+			clusterId = clusterUploadVO.getExistingClusterId();
+		}
+		
+		Map<String, Object> nyehmsUploadClusterMap = new HashMap<String, Object>();
+		
+		nyehmsUploadClusterMap.put("clusterId", clusterId);
+		nyehmsUploadClusterMap.put("clusterType", clusterType);
+		nyehmsUploadClusterMap.put("clusterFileName", clusterFileName);
+		nyehmsUploadClusterMap.put("clusterCounties", clusterUploadVO.getClusterCountiesCds());
+		nyehmsUploadClusterMap.put("workerId", workerId);
+		nyehmsUploadClusterMap.put("uploadType", uploadType);
+		nyehmsUploadClusterMap.put("description", clusterUploadVO.getDescription());
+		nyehmsUploadClusterMap.put("relatedness", clusterUploadVO.getRelatedness());
+		nyehmsUploadClusterMap.put("moleTimeFrame", clusterUploadVO.getMoleTimeFrame());
+		nyehmsUploadClusterMap.put("spaceTimeDxStartDate", clusterUploadVO.getSpaceTimeDxStartDate());
+		nyehmsUploadClusterMap.put("spaceTimeDxEndDate", clusterUploadVO.getSpaceTimeDxEndDate());
+		
+		nyehmsUploadClusterMap.put("transmissionRisk", clusterUploadVO.getTransmissionRiskCds());
+		nyehmsUploadClusterMap.put("birthSex", clusterUploadVO.getBirthSex());
+		nyehmsUploadClusterMap.put("race", clusterUploadVO.getRaceCds());
+		nyehmsUploadClusterMap.put("ethnicity", clusterUploadVO.getEthnicity());
+		nyehmsUploadClusterMap.put("ageRangeFrom", clusterUploadVO.getAgeRangeFrom());
+		nyehmsUploadClusterMap.put("ageRangeTo", clusterUploadVO.getAgeRangeTo());
+		
+		if (tsUpdateRetire.equals("U")) {
+			nyehmsUploadClusterMap.put("tsUpdateRetire", 1);
+		} else if (tsUpdateRetire.equals("R")) {
+			nyehmsUploadClusterMap.put("tsUpdateRetire", 2);
+		}
+		
+		if(clusterType.equalsIgnoreCase("BHAE_M") || clusterType.equalsIgnoreCase("CDC_M") ) {
+			nyehmsUploadClusterMap.put("clusterIdentifyDate", clusterUploadVO.getClusterIdentifyDate());
+		} else {
+			nyehmsUploadClusterMap.put("clusterIdentifyDate", "");
+		}
+		
+		if(uploadType.equalsIgnoreCase("N")) {
+			clusterDocumentDAO.insertNyehmsUploadCluster(nyehmsUploadClusterMap);
+		}
+		int clusterIdPk = clusterDocumentDAO.getClusterPkNumber(clusterId);
+		
+		nyehmsUploadClusterMap.put("clusterIdPk", clusterIdPk);
+		clusterUploadVO.setClusterIdPk(clusterIdPk);
+		
+		if(clusterType.equalsIgnoreCase("BHAE_M") || clusterType.equalsIgnoreCase("CDC_M") ) {
+			clusterDocumentDAO.insertNyehmsUploadClusterFiles(nyehmsUploadClusterMap);
+		} else if( (uploadType.equalsIgnoreCase("N") && clusterType.equalsIgnoreCase("BHAE_TS")) || (uploadType.equalsIgnoreCase("E") && clusterType.equalsIgnoreCase("BHAE_TS") && tsUpdateRetire.equals("A"))) {
+			clusterDocumentDAO.insertNyehmsTimeSpaceCriteria(nyehmsUploadClusterMap);
+		} else if(uploadType.equalsIgnoreCase("E") && clusterType.equalsIgnoreCase("BHAE_TS") && tsUpdateRetire.equals("U")) {
+			clusterDocumentDAO.retireNyehmsTimeSpaceCluster(nyehmsUploadClusterMap);
+			clusterDocumentDAO.insertNyehmsTimeSpaceCriteria(nyehmsUploadClusterMap);
+		} else if(uploadType.equalsIgnoreCase("E") && clusterType.equalsIgnoreCase("BHAE_TS") && tsUpdateRetire.equals("R")) {
+			clusterDocumentDAO.retireNyehmsTimeSpaceCluster(nyehmsUploadClusterMap);
+		}
+			
+	}
+	
+
+	@Override
+	public void insertIntoRawStdCluster(List<Map<String, Object>> clusterDataList,ClusterUploadVO clusterUploadVO, BindingResult bindingResult,UserObject userObject, HttpSession session) {
+		
+		String clusterType = clusterUploadVO.getClusterType();
+		String documentType = getSubDocumentType(clusterType);
+		String clusterId = clusterUploadVO.getClusterId();
+		int clusterIdPk = clusterUploadVO.getClusterIdPk();
+		
+		String uploadType = clusterUploadVO.getUploadType();
+		
+		List<ClusterTemplateVO> currentOfAlreadyUploadedStatenosDataList = new ArrayList<ClusterTemplateVO>() ;
+		
+		if (uploadType.equals("E")) {
+			clusterId = clusterUploadVO.getExistingClusterId();
+			List<ClusterTemplateVO> alreadyUploadedStatenosDataList = clusterDocumentDAO.getAlreadyUploadedClusterData(clusterIdPk);
+			
+			for (ClusterTemplateVO alreadyuploadedStatenoData : alreadyUploadedStatenosDataList) {
+				String currentOfalreadyUploadedStateno = commonService.getCurrentActiveStateNo(alreadyuploadedStatenoData.getNyehmsStateno());
+				
+				if (CommonUtil.isNotNullAndEmpty(currentOfalreadyUploadedStateno) && !currentOfalreadyUploadedStateno.equals("-1")) {
+					alreadyuploadedStatenoData.setNyehmsStateno(currentOfalreadyUploadedStateno);
+				}
+				currentOfAlreadyUploadedStatenosDataList.add(alreadyuploadedStatenoData);
+			}
+		}
+		
+		ClusterDocVO currentDemoInfo = null;
+		
+		Map<String, String> countyMap=commonService.getCountyCodes(bindingResult, userObject, session.getId());
+		clusterUploadVO.setClusterCountiesCds(getCountyCodesPipeSep(clusterUploadVO, countyMap));
+		
+		Map<String, Object> inputParameter = null;
+		int documentId = 0;
+		String currentNyehmsStateno = null;
+		String identificationMethodCode =  null;
+		boolean isStatenoIdentificationMethodAlreadyUploaded = false;
+		int dupStatenoCount = 0;
+		
+			for (Map<String, Object> map : clusterDataList) {
+				
+				inputParameter = new HashMap<String, Object>();
+				currentDemoInfo = null;
+				
+				documentId = getClusterDocumentID();
+				
+				inputParameter.put("documentId", documentId);
+				inputParameter.put("clusterId", clusterId);
+				inputParameter.put("clusterIdPk", clusterIdPk);
+				inputParameter.put("clusterType", clusterType);
+				
+				inputParameter.put("uploadNyehmsStateno", (String)map.get("NYEHMS_STATENO"));
+				identificationMethodCode =  (String)map.get("IDENTIFICATION_METHOD_CODE");
+				inputParameter.put("identificationMethodCode", identificationMethodCode);
+				inputParameter.put("identificationDate", (String)map.get("IDENTIFICATION_DATE"));
+				currentNyehmsStateno = (String)map.get("CURRENT_NYEHMS_STATENO");
+									
+				if (CommonUtil.isNotNullAndEmpty(currentNyehmsStateno) && !currentNyehmsStateno.equals("-1")) {
+					
+					if (uploadType.equalsIgnoreCase("E") ) {
+						
+						for (ClusterTemplateVO alreadyuploadedStatenoData : currentOfAlreadyUploadedStatenosDataList) {
+							if (currentNyehmsStateno.equals(alreadyuploadedStatenoData.getNyehmsStateno()) &&
+									( CommonUtil.isNotNullAndEmpty(identificationMethodCode) && identificationMethodCode.equals(alreadyuploadedStatenoData.identificationMethod) )) {
+								isStatenoIdentificationMethodAlreadyUploaded = true;
+								break;
+							} else {
+								isStatenoIdentificationMethodAlreadyUploaded = false;
+							}
+						}
+						
+					}
+					inputParameter.put("nyehmsStateno", currentNyehmsStateno);
+					
+					if(!isStatenoIdentificationMethodAlreadyUploaded) {
+						
+						long demoDocumentId = Long.parseLong((String)map.get("DOCUMENT_ID"));
+						inputParameter.put("demoDocumentId", demoDocumentId);
+						currentDemoInfo = clusterDocumentDAO.getStatenoDemographic(inputParameter);
+						if (currentDemoInfo == null) {
+							inputParameter.put("currrentProcessStatus", 40);
+						} else {
+							inputParameter.put("currrentProcessStatus", 5);
+						}
+					} else {
+						inputParameter.put("currrentProcessStatus", 45);
+						dupStatenoCount++;
+					}
+				} else {
+					inputParameter.put("currrentProcessStatus", 39);
+				}
+					
+				inputParameter.put("userId", Integer.toString(userObject.getWorkerId()));
+				
+				clusterDocumentDAO.insertDataIntoClusterRaw(inputParameter);
+				
+				commonDocumentService.writeDocumentTestType(documentId, documentType);
+				
+				if (currentDemoInfo != null) {
+				
+					insertIntoStdCluster(inputParameter, currentDemoInfo, userObject, bindingResult);
+				}
+				
+			}
+			clusterUploadVO.setDupStatenoCount(dupStatenoCount);
+	}
+	
+	
+	private String getCountyCodesPipeSep(ClusterUploadVO clusterUploadVO, Map<String,String> countyMap){
+		String countyCds = "";
+
+		if(clusterUploadVO.getClusterCountiesList() != null){
+			for(String county: clusterUploadVO.getClusterCountiesList()){
+				if(CommonUtil.isNotNullAndEmpty(county)) {
+					countyCds += "|" + county;
+				}
+			}
+			countyCds = countyCds.startsWith("|") ? countyCds.substring(1) : countyCds;
+		}
+		return countyCds;
+	}
+	
+	private String getCodesPipeSep(List<String> allListValues){
+		String listCds = "";
+
+		if(allListValues != null){
+			for(String listVal: allListValues){
+				if(CommonUtil.isNotNullAndEmpty(listVal)) {
+					listCds += "|" + listVal;
+				}
+			}
+			listCds = listCds.startsWith("|") ? listCds.substring(1) : listCds;
+		}
+		return listCds;
+	}	
+	
+	@Override
+	@Transactional
+	public ClusterIdReportVO getClusterIdReports(String clusterType, String clusterId, String showDocuments, BindingResult bindingResult, UserObject userObject) {			
+		
+		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		inOutParameterMap.put("p_cluster_id", clusterId);
+		
+		clusterDocumentDAO.getClusterIdReport(inOutParameterMap);
+		
+//		@SuppressWarnings("unchecked")
+//		List<ClusterIdReportHeaderVO> clusterIdReportHeaderList = (List<ClusterIdReportHeaderVO>)inOutParameterMap.get("p_clust_head_data");
+		
+		@SuppressWarnings("unchecked")
+		List<ClusterIdReportDataVO> clusterIdReportDataList = (List<ClusterIdReportDataVO>)inOutParameterMap.get("p_clust_data");
+		
+	//	ClusterIdReportHeaderVO clusterIdReportHeaderDetails = clusterIdReportHeaderList.get(0);
+	//	clusterIdReportHeaderDetails.setCluster_create_date(clusterIdReportDataList.get(0).getCluster_date());
+//		clusterIdReportHeaderDetails.setCluster_rpt_date(dateUtil.getCurrentDate());
+//		clusterIdReportHeaderDetails.setCluster_type_desc(getClusterTypeDesc(clusterType));
+		
+		ClusterIdReportVO clusterIdReportVO = new ClusterIdReportVO();
+		
+//		clusterIdReportVO.setClusterIdReportHeaderDetails(clusterIdReportHeaderDetails);
+		
+		for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+			if (CommonUtil.isNotNullAndEmpty(rptRow.getSort_ehars_hiv_dx_dt())) {
+				rptRow.setSort_ehars_hiv_dx_dt(rptRow.getSort_ehars_hiv_dx_dt().replace("..","01"));
+			}
+			if (CommonUtil.isNotNullAndEmpty(rptRow.getSort_ehars_aids_dx_dt())) {
+				rptRow.setSort_ehars_aids_dx_dt(rptRow.getSort_ehars_aids_dx_dt().replace("..","01"));
+			}
+			if (CommonUtil.isNotNullAndEmpty(rptRow.getSort_identification_date())) {
+				rptRow.setSort_identification_date(rptRow.getSort_identification_date().replace("..","01"));
+			}
+			if (CommonUtil.isNotNullAndEmpty(rptRow.getStatus_flag())) {
+				rptRow.setStatus_flag(getStatusFlagDesc(rptRow.getStatus_flag()));
+			}
+			if (rptRow.getStateno().equals("-1")) {
+				rptRow.setStateno("");
+			}
+			
+		}
+		
+		List<ClusterIdReportDataVO> showDataReportList = new ArrayList<ClusterIdReportDataVO>() ; 
+		if (showDocuments.equals("I")) {
+			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+				if (CommonUtil.isNotNullAndEmpty(rptRow.getDissassociation_date()) )
+					showDataReportList.add(rptRow);
+			}
+		} else if (showDocuments.equals("C")) {
+			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+				if (!clusterType.equals("BHAE_TS")) {
+					if (CommonUtil.isNotNullAndEmpty(rptRow.getEhars_hiv_dx_dt()) && rptRow.getIdentification_method().equalsIgnoreCase("Through analysis/notification") ) {
+						showDataReportList.add(rptRow);
+					}
+				} else {
+					if (CommonUtil.isNullOrEmpty(rptRow.getDissassociation_date()) && 
+							CommonUtil.isNotNullAndEmpty(rptRow.getEhars_hiv_dx_dt()) && rptRow.getIdentification_method().equalsIgnoreCase("Through analysis/notification") ) {
+						showDataReportList.add(rptRow);
+					}
+				}
+			}
+		} else if (showDocuments.equals("R")) {
+			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+				if (!clusterType.equals("BHAE_TS")) {				
+					if (CommonUtil.isNullOrEmpty(rptRow.getEhars_hiv_dx_dt()) || CommonUtil.isNullOrEmpty(rptRow.getStateno())) {
+						showDataReportList.add(rptRow);
+					}
+				} else {
+					if (CommonUtil.isNullOrEmpty(rptRow.getDissassociation_date()) && (CommonUtil.isNullOrEmpty(rptRow.getEhars_hiv_dx_dt()) || CommonUtil.isNullOrEmpty(rptRow.getStateno())) ) {
+						showDataReportList.add(rptRow);
+					}
+				}
+			}
+		} else if (showDocuments.equals("T")) {
+			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+				if (!clusterType.equals("BHAE_TS")) {				
+					if (CommonUtil.isNotNullAndEmpty(rptRow.getEhars_hiv_dx_dt()) && rptRow.getIdentification_method().equalsIgnoreCase("Through investigation")) {
+						showDataReportList.add(rptRow);
+					}
+				} else {
+					if (CommonUtil.isNullOrEmpty(rptRow.getDissassociation_date()) && 
+							CommonUtil.isNotNullAndEmpty(rptRow.getEhars_hiv_dx_dt()) && rptRow.getIdentification_method().equalsIgnoreCase("Through investigation")  ) {
+						showDataReportList.add(rptRow);
+					}
+				}
+			}
+		} else {
+			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
+				if (CommonUtil.isNullOrEmpty(rptRow.getDissassociation_date()) ) {
+					showDataReportList.add(rptRow);
+				}
+			}
+		}
+		clusterIdReportVO.setClusterIdReportDataList(showDataReportList);
+		
+		return clusterIdReportVO;
+
+	}	
+	
+	public String getClusterTypeDesc(String clusterType) {
+		
+		String clusterTypeDesc = "";
+		if (clusterType.equals("CDC_M")) {
+			clusterTypeDesc = "CDC Molecular";
+		} else if (clusterType.equals("BHAE_M")) {
+			clusterTypeDesc = "BHAE Molecular";
+		} else if (clusterType.equals("BHAE_TS")) {
+			clusterTypeDesc = "BHAE Space - Time";
+		}
+		
+		return clusterTypeDesc;
+	}
+
+	public String getStatusFlagDesc(String statusFlag) {
+		
+		String statusFlagDesc = "";
+		if (statusFlag.equals("W")) {
+			statusFlagDesc = "Warning";
+		} else if (statusFlag.equals("R")) {
+			statusFlagDesc = "Required Var Missing";
+		} else if (statusFlag.equals("A")) {
+			statusFlagDesc = "Active";
+		} else if (statusFlag.equals("E")) {
+			statusFlagDesc = "Error";
+		} else if (statusFlag.equals("D")) {
+			statusFlagDesc = "Deleted";
+		}
+		
+		return statusFlagDesc;
+	}
+	
+	@Override
+	public List<String> getRelatednessData() {
+		return clusterDocumentDAO.getRelatednessData();
+	}
+	
+	@Override
+	public JSONObject getClusterData(String clusterId) {
+		return clusterDocumentDAO.getClusterData(clusterId);
+	}
+	
+	@Override
+	public Map<String, String> getMoleTimeFrameData() {
+		Map<String, String> moleTimeFrameCodes=new LinkedHashMap<String, String>();
+
+		List<Map<String, String>> getMoleTimeFrameDataList = clusterDocumentDAO.getMoleTimeFrameData();
+		for(Map<String, String> moleTimeFrameMap : getMoleTimeFrameDataList){
+			moleTimeFrameCodes.put(moleTimeFrameMap.get("code").trim(), moleTimeFrameMap.get("value").trim());
+		}
+
+		return moleTimeFrameCodes;
+	}
+/*	
+	@Override
+	public List<String> getManualAddedStatenosTSClusterIds() {
+		
+		return clusterDocumentDAO.getManualAddedStatenosTSClusterIds();
+	}
+	
+	@Override
+	public List<ClusterTSManualAddedStatenoVO> getManualAddedStatenosTSClusterInfo(String clusterId, BindingResult bindingResult, UserObject userObject) {
+		
+		List<ClusterTSManualAddedStatenoVO> statenoList  = clusterDocumentDAO.getManualAddedStatenosTSClusterInfo(clusterId);
+		
+		return statenoList;
+	}
+	
+	@Override
+	@Transactional
+	public void updateTSManualAddedStateno(String clusterId, String[] statenos, UserObject userObject, BindingResult bindingResult) {
+		
+		Map<String, Object> manaulAddedStatenoMap = new HashMap<String, Object>();
+		
+		manaulAddedStatenoMap.put("clusterId", clusterId);
+		manaulAddedStatenoMap.put("workerId", userObject.getWorkerId());
+		
+		for (String stateno : statenos) {
+			manaulAddedStatenoMap.put("stateno", stateno);
+			clusterDocumentDAO.updateTSManualAddedStateno(manaulAddedStatenoMap);
+		}
+
+	}
+	*/
+		
+	@Override
+	public void bhaeTSCriteriaProcess(ClusterUploadVO clusterUploadVO) {
+		
+		clusterDocumentDAO.bhaeTSCriteriaProcess(Integer.toString(clusterUploadVO.getClusterIdPk()));
+		
+	}
+	
+	@Override
+	public List<Map<String, String>> getClusterIDentificationMethod() {
+		return clusterDocumentDAO.getClusterIDentificationMethod();
+	}
+
+	@Override
+	@Transactional
+	public void updateClustereHARSImportFlag(int[] clusterIdPks, UserObject userObject, BindingResult bindingResult) {
+		
+		Map<String, Object> eHARSImportFlagMap = new HashMap<String, Object>();
+		
+		eHARSImportFlagMap.put("workerId", userObject.getWorkerId());
+		
+		for (long clusterIdPk : clusterIdPks) {
+			
+			eHARSImportFlagMap.put("clusterIdPk", clusterIdPk);
+			clusterDocumentDAO.updateClustereHARSImportFlag(eHARSImportFlagMap);
+			
+		}
+	}	
+	
+	@Override
+	public List<ClustereHARSImportFlagVO> geteHARSImportFlagData(UserObject userObject, BindingResult bindingResult) {
+		
+		return clusterDocumentDAO.geteHARSImportFlagData();
+	}
+	
+	@Override
+	public JSONObject getClusterDisplayInfo(String clusterId) {
+		return clusterDocumentDAO.getClusterDisplayInfo(clusterId);
+	}
+	
+	@Override
+	public List<JSONObject> getMolClusterDemoDocumentIds(String stateNo, String identificationCd, String notAssocClusterDetails) {
+		
+		Map<String, Object> demoDocumentIDsMap = new HashMap<String, Object>();
+		
+		String clusterType = "";
+		if (CommonUtil.isNotNullAndEmpty(notAssocClusterDetails) && notAssocClusterDetails.contains("BHAE_M")) {
+			clusterType = "BHAE_M";
+		} else {
+			clusterType = "CDC_M";
+		}
+		
+		demoDocumentIDsMap.put("stateno", stateNo);
+		demoDocumentIDsMap.put("identificationCd", identificationCd);
+		demoDocumentIDsMap.put("clusterType", clusterType);
+		
+		List<JSONObject> demoDocumentsIds = clusterDocumentDAO.getMolClusterDemoDocumentIds(demoDocumentIDsMap);
+		
+		if (clusterType.equals("CDC_M") && identificationCd.equals("1") && demoDocumentsIds.size() == 0) {
+			
+			demoDocumentsIds = clusterDocumentDAO.getCDCMolClusterRecordSearchRIDRDemoDocumentIds(demoDocumentIDsMap);
+		}
+		
+		return demoDocumentsIds;
+		
+	}
+	@Override
+	public List<Integer> getLinkedMolClusterGenoTypeDocuments(int documentId) {
+		
+		List<Integer> linkedDocIds = clusterDocumentDAO.getLinkedMolClusterGenoTypeDocuments(documentId);
+		
+		return linkedDocIds;
+	}
+	@Override
+	public Map<String, String> getTransmissionCategoryData() {
+		
+		Map<String, String> transCategCodes=new LinkedHashMap<String, String>();
+
+		List<Map<String, String>> transCategDataList = clusterDocumentDAO.getTransmissionCategoryData();
+		for(Map<String, String> transCategMap : transCategDataList){
+			transCategCodes.put(transCategMap.get("CATEGORY_CODE").trim(), transCategMap.get("CATEG_DESC_SHORT").trim());
+		}
+
+		return transCategCodes;
+	}
+	
+	@Override
+	public Map<String, String> getEharsRaceValues() {
+		Map<String, String> eharsRaceCodes=new LinkedHashMap<String, String>();
+
+		List<Map<String, String>> eharsRaceDataList = clusterDocumentDAO.getEharsRaceData();
+		for(Map<String, String> eharsRaceMap : eharsRaceDataList){
+			eharsRaceCodes.put(eharsRaceMap.get("EHARS_RACE_CODE").trim(), eharsRaceMap.get("EHARS_RACE_DESC").trim());
+		}
+
+		return eharsRaceCodes;
+	}
+	
+	@Override
+	public Map<String, String> getEharsEthnicityValues() {
+		Map<String, String> eharsEthnicityCodes=new LinkedHashMap<String, String>();
+
+		List<Map<String, String>> eharsEthnicityDataList = clusterDocumentDAO.getEharsEthnicityData();
+		for(Map<String, String> eharsEthnicityMap : eharsEthnicityDataList){
+			eharsEthnicityCodes.put(eharsEthnicityMap.get("EHARS_ETH_CODE").trim(), eharsEthnicityMap.get("EHARS_ETH_DESC").trim());
+		}
+
+		return eharsEthnicityCodes;
+	}
+	
+	
+	@Override
+	public void validateStatenoWithCluster(Map<String, Object> inputParameterMap, BindingResult bindingResult) {
+		int resultCount = clusterDocumentDAO.isStatenoActive(inputParameterMap);
+		
+		if(resultCount == 0) {
+			throw new DataRetrievalFailureException("This stateno("+(String)inputParameterMap.get("p_stateno")+") is not active");
+		}
+		
+		List<String> statenoList = clusterDocumentDAO.isEharsStatenoExist(inputParameterMap);
+		
+		if(statenoList == null || statenoList.size() == 0) {
+			throw new DataRetrievalFailureException("This stateno("+(String)inputParameterMap.get("p_stateno")+") does not exist in eHARS");
+		}
+		
+		int clusterIdPk = clusterDocumentDAO.getClusterPkNumber((String)inputParameterMap.get("p_clusterId"));
+		
+		inputParameterMap.put("clusterIdPk", clusterIdPk);
+		
+		resultCount = clusterDocumentDAO.isStatenoWithCluster(inputParameterMap);
+		
+		if(resultCount > 0) {
+			throw new DataRetrievalFailureException("This stateno("+(String)inputParameterMap.get("p_stateno")+") is already associated with this cluster");
+		}
+	}
+	
+	
+	@Override
+	@Transactional
+	public void associateStatenoToCluster(Map<String, Object> inputParameterMap, BindingResult bindingResult ) {
+		
+		int resultCount = clusterDocumentDAO.associateStatenoWithCluster(inputParameterMap);
+		
+		if(resultCount == 0) {
+			throw new DataRetrievalFailureException("Failed to associate stateno with the Cluster, please contact helpline");
+		}
+		
+		clusterDocumentDAO.bhaeTSCriteriaProcess((String)inputParameterMap.get("clusterIdPk").toString());
+		
+	}
+}

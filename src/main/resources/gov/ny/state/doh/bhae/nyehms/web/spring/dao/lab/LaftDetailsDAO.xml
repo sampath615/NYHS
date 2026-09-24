@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LaftDetailsDAO">
+
+		
+	<select id="getValidationFailedLabDocumentDetails"  parameterType="java.util.Map" 
+		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO">
+		<![CDATA[
+		
+		
+		SELECT DOCUMENT_ID documentId, #{documentType} documentType,
+        ERROR_DESC errorDesc, NOTES notes, CREATEID createdBy, CREATE_DATE createdDate, PROCESS_STATUS processStatus, 
+              PREVIOUS_STATUS previousStatus, OBRACCESSIONNUM obraccessionnum, MSHSENDINGFACILITYCLIA mshsendingfacilityclia,  
+              MSHFILENAME mshFileName,MSHLABPFI  mshLabPfi, OBXLOINCCODE loincCode, CNT_REPRISED count, MAX_REPRISED_DATE lastReprisedDate, provAddress, provLname, provFname, provMname, provSuffix, providerName, provPhone, provNPI  FROM (
+		WITH main_sql AS (
+		SELECT /* + INDEX( E LAB_DOC_LAFT_PROCES_IDX ) */ 
+		           E.document_id,E.ERROR_DESC,E.CREATEID,E.CREATE_DATE,E.PREVIOUS_STATUS,E.NOTES,E.PROCESS_STATUS,D.OBRACCESSIONNUM ,D.MSHSENDINGFACILITYCLIA 
+		             ,D.MSHFILENAME ,D. MSHLABPFI  ,D.OBXLOINCCODE,
+		             D.ZLRPROVIDERADDRESSLINE1 || ' ' || D.ZLRPROVIDERADDRESSLINE2 || ', ' || D.ZLRPROVIDERCITY || ', ' || D.ZLRPROVIDERSTATE || ', ' || D.ZLRPROVIDERZIPCODE provAddress,
+		             D.OBRPROVIDERLASTNAME provLname,
+		             D.OBRPROVIDERFIRSTNAME provFname,
+		             D.OBRPROVIDERMIDDLENAME provMname,
+		             D.OBRPROVIDERNAMESUFFIX provSuffix,
+		             D.OBRCALLBACKPHONE provPhone,
+		             pkg_trk_common.fn_get_fullname (D.OBRPROVIDERLASTNAME,
+                                            D.OBRPROVIDERFIRSTNAME,
+                                            D.OBRPROVIDERMIDDLENAME,
+                                            D.OBRPROVIDERNAMESUFFIX) as providerName, 
+		             D.OBRPROVIDERID provNPI
+		 FROM NYEHMS_PROCESS_ERRORS  E , ${rawTableName} D
+		WHERE E.document_id=D.document_id
+		AND  DOCUMENT_TYPE='HIV_LAB'
+		AND  ACTIVE_FLAG ='Y'
+		AND PROCESS_STATUS IN (4,7,30)
+		                    )
+		SELECT C.*, SUM(CASE WHEN M.PREVIOUS_STATUS IN (6,15,11) THEN 1 ELSE 0 END) OVER (PARTITION BY M.document_id) cnt_reprised,
+		            MAX(CASE WHEN M.PROCESS_STATUS IN (6,15,11) THEN M.UPDATE_DATE ELSE NULL END) OVER (PARTITION BY C.document_id) MAX_reprised_date,		            
+		            ROW_NUMBER () OVER (PARTITION BY M.document_id ORDER BY M.CREATE_DATE ) rwnum
+		FROM  NYEHMS_PROCESS_ERRORS M , main_sql C
+		WHERE M.document_id=C.document_id 
+		 )
+		WHERE rwnum = 1
+		ORDER BY CREATE_DATE DESC
+        
+        ]]>
+	</select>
+	
+	<select id="getValidationFailedAIRSDocumentDetails"   parameterType="java.util.Map"
+		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO">
+		<![CDATA[
+	               
+        SELECT DOCUMENT_ID documentId, #{documentType} documentType,
+        ERROR_DESC errorDesc, NOTES notes, CREATEID createdBy, CREATE_DATE createdDate, PROCESS_STATUS processStatus, PREVIOUS_STATUS previousStatus, CNT_REPRISED count, MAX_REPRISED_DATE lastReprisedDate  FROM (
+		WITH main_sql AS (
+		SELECT /* + INDEX( E LAB_DOC_LAFT_PROCES_IDX ) */ 
+		           E.document_id,E.ERROR_DESC,E.CREATEID,E.CREATE_DATE,E.PREVIOUS_STATUS,E.NOTES,E.PROCESS_STATUS
+		             
+		 FROM NYEHMS_PROCESS_ERRORS  E , ${rawTableName} D
+		WHERE E.document_id=D.document_id
+		AND  DOCUMENT_TYPE=#{documentType} 
+		AND  ACTIVE_FLAG ='Y'
+		AND PROCESS_STATUS IN (4,25,26,27,28,29,32)
+		                    )
+		SELECT C.*, SUM(CASE WHEN M.PREVIOUS_STATUS IN (6,15) THEN 1 ELSE 0 END) OVER (PARTITION BY M.document_id) cnt_reprised,
+		            MAX(CASE WHEN M.PROCESS_STATUS IN (6,15) THEN M.UPDATE_DATE ELSE NULL END) OVER (PARTITION BY C.document_id) MAX_reprised_date,
+		            ROW_NUMBER () OVER (PARTITION BY M.document_id ORDER BY M.CREATE_DATE ) rwnum
+		FROM  NYEHMS_PROCESS_ERRORS M , main_sql C
+		WHERE M.document_id=C.document_id 
+		 )
+		WHERE rwnum = 1
+		ORDER BY CREATE_DATE DESC
+		
+		
+        ]]>
+	</select>
+	
+	
+	<select id="getValidationFailedDeletedLabDocumentDetails"   parameterType="java.util.Map"
+		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO">
+		<![CDATA[
+		
+		
+		SELECT DOCUMENT_ID documentId, #{documentType} documentType,
+        COMMENTS errorDesc, NOTES notes, CREATEID createdBy, CREATE_DATE createdDate, PROCESS_STATUS processStatus, PREVIOUS_STATUS previousStatus, OBRACCESSIONNUM obraccessionnum, MSHSENDINGFACILITYCLIA mshsendingfacilityclia,  MSHFILENAME mshFileName,MSHLABPFI  mshLabPfi, OBXLOINCCODE loincCode, CNT_REPRISED count, MAX_REPRISED_DATE lastReprisedDate  FROM (
+		WITH main_sql AS (
+		SELECT /* + INDEX( E LAB_DOC_LAFT_PROCES_IDX ) */ 
+		           E.document_id,E.COMMENTS,E.CREATEID,E.CREATE_DATE,E.PREVIOUS_STATUS,E.NOTES,E.PROCESS_STATUS,D.OBRACCESSIONNUM ,D.MSHSENDINGFACILITYCLIA 
+		             ,D.MSHFILENAME ,D. MSHLABPFI  ,D.OBXLOINCCODE 
+		             
+		 FROM NYEHMS_PROCESS_ERRORS  E , ${rawTableName} D
+		WHERE E.document_id=D.document_id
+		AND  DOCUMENT_TYPE='HIV_LAB'
+		AND  ACTIVE_FLAG ='N'
+		AND PROCESS_STATUS IN (33)
+		                    )
+		SELECT C.*, SUM(CASE WHEN M.PREVIOUS_STATUS IN (6,15,11) THEN 1 ELSE 0 END) OVER (PARTITION BY M.document_id) cnt_reprised,
+		            MAX(CASE WHEN M.PROCESS_STATUS IN (6,15,11) THEN M.UPDATE_DATE ELSE NULL END) OVER (PARTITION BY C.document_id) MAX_reprised_date,
+		            ROW_NUMBER () OVER (PARTITION BY M.document_id ORDER BY M.CREATE_DATE ) rwnum                    
+		FROM  NYEHMS_PROCESS_ERRORS M , main_sql C
+		WHERE M.document_id=C.document_id 
+		 )
+		WHERE rwnum = 1
+		ORDER BY CREATE_DATE DESC
+        
+        ]]>
+	</select>
+	
+	
+	<select id="getValidationFailedDeletedAIRSDocumentDetails"   parameterType="java.util.Map"
+		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO">
+		<![CDATA[
+	               
+        SELECT DOCUMENT_ID documentId, #{documentType} documentType,
+        COMMENTS errorDesc, NOTES notes, CREATEID createdBy, CREATE_DATE createdDate, PROCESS_STATUS processStatus, PREVIOUS_STATUS previousStatus, CNT_REPRISED count, MAX_REPRISED_DATE lastReprisedDate  FROM (
+		WITH main_sql AS (
+		SELECT /* + INDEX( E LAB_DOC_LAFT_PROCES_IDX ) */ 
+		           E.document_id,E.COMMENTS,E.CREATEID,E.CREATE_DATE,E.PREVIOUS_STATUS,E.NOTES,E.PROCESS_STATUS
+		             
+		 FROM NYEHMS_PROCESS_ERRORS  E , ${rawTableName} D
+		WHERE E.document_id=D.document_id
+		AND  DOCUMENT_TYPE=#{documentType} 
+		AND  ACTIVE_FLAG ='N'
+		AND PROCESS_STATUS IN (33)
+		                    )
+		SELECT C.*, SUM(CASE WHEN M.PREVIOUS_STATUS IN (6,15) THEN 1 ELSE 0 END) OVER (PARTITION BY M.document_id) cnt_reprised,
+		            MAX(CASE WHEN M.PROCESS_STATUS IN (6,15) THEN M.UPDATE_DATE ELSE NULL END) OVER (PARTITION BY C.document_id) MAX_reprised_date,
+		            ROW_NUMBER () OVER (PARTITION BY M.document_id ORDER BY M.CREATE_DATE ) rwnum                    
+		FROM  NYEHMS_PROCESS_ERRORS M , main_sql C
+		WHERE M.document_id=C.document_id 
+		 )
+		WHERE rwnum = 1
+		ORDER BY CREATE_DATE DESC
+		
+		
+        ]]>
+	</select>
+	
+
+	<select id="getDocumentWithTheSpecificStatusCode" parameterType="java.util.Map"
+		resultType="Long">
+	             select DOCUMENT_ID from NYEHMS_PROCESS_ERRORS where PROCESS_STATUS = #{statusCode} 
+	                and <choose>
+	                      <when test="statusCode == 33 ">
+	                            ACTIVE_FLAG = 'N'
+	                      </when>
+	                      <otherwise>
+	                            ACTIVE_FLAG = 'Y'
+	                      </otherwise>
+	                   </choose> 
+	               and DOCUMENT_ID in 
+	                   <foreach item="documentId" index="index" collection="documentIds" open="(" separator="," close=")">
+						        	#{documentId}
+					   </foreach>
+	</select>
+	
+	
+	
+	<select id="deleteErrorDocuments" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_delete(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_current_status,jdbcType=INTEGER,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_document_type,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+
+		)}
+	</select>
+	
+	<select id="undeleteErrorDocuments" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_undelete(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_current_status,jdbcType=INTEGER,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_document_type,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+
+		)}
+	</select>
+		
+
+
+
+	<update id="updateLabNotes" parameterType="java.util.Map">
+	   UPDATE NYEHMS_PROCESS_ERRORS set NOTES =  #{p_notes}, UPDATEID = #{p_worker_id}, UPDATE_DATE = SYSDATE where DOCUMENT_ID = #{p_documentId} and 
+	   ((PROCESS_STATUS in (4, 7, 25, 26, 27, 28, 29, 30, 32) and ACTIVE_FLAG = 'Y') or (PROCESS_STATUS in (33) and ACTIVE_FLAG = 'N')) 
+    </update>
+
+
+    <update id="addNotesToProcessErrors" parameterType="java.util.Map">
+	   UPDATE NYEHMS_PROCESS_ERRORS set NOTES =  #{p_notes}, UPDATEID = #{p_worker_id}, UPDATE_DATE = SYSDATE where 
+	        ((PROCESS_STATUS in (4, 7, 25, 26, 27, 28, 29, 30, 32) and ACTIVE_FLAG = 'Y') or (PROCESS_STATUS in (33) and ACTIVE_FLAG = 'N')) and DOCUMENT_ID in 
+	   		<foreach item="documentId" index="index" collection="p_documentIds" open="(" separator="," close=")">
+					#{documentId}
+			</foreach>
+    </update>	
+
+	<select id="repriseErrorDocuments" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_reprise(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_current_status,jdbcType=INTEGER,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_document_type,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<select id="updateStatusToDonotReport" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_do_not_report(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_current_status,jdbcType=INTEGER,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_document_type,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	
+	
+	<select id="holdLabDocuments" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_hold(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_current_status,jdbcType=INTEGER,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<select id="unholdLabDocuments" parameterType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		pkg_hiv_load_process.pr_process_doc_unhold(
+		#{p_document_list,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
+		#{p_user_id,jdbcType=VARCHAR,mode=IN},
+		#{p_comments,jdbcType=VARCHAR,mode=IN},
+		#{p_code_out,jdbcType=INTEGER,mode=OUT},
+		#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+
+	
+	<select id="getHEDStatusDocuments"
+		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO">
+	select S.DOCUMENT_ID documentId, 'HIV_LAB' documentType, PS.PROCESSES_STATUS_DESC processStatusDesc, PS.PROCESSES_STATUS_CODE processStatus from STD_HIV_ECLRS_DOC  S, CODED_LAB_PROCESSES_STATUS PS 
+        where PS.PROCESSES_STATUS_CODE = S.CURRENT_PROCESS_STATUS and S.CURRENT_PROCESS_STATUS in (7, 8, 9, 10)
+   	</select>
+   	
+   	
+	<select id="getAddressSameAsEntries"
+		resultType="org.json.simple.JSONObject">
+			<![CDATA[
+			select ADDRESS_ID,  ADDRESS, FLAG_ACTIVE ,  FILTER_TYPE, TO_CHAR(CREATE_DATE, 'MM/DD/YYYY') CREATE_DATE, TO_CHAR(END_DATE, 'MM/DD/YYYY') END_DATE from RAW_ADDR_CANBE_RES
+			]]>
+   	</select>
+	
+	<insert id="addRawProviderFacilityAddressSameAsResidence" parameterType="java.util.Map">
+	   insert into RAW_ADDR_CANBE_RES(ADDRESS, FLAG_ACTIVE, FILTER_TYPE, CREATE_UID, CREATE_DATE) values(upper(trim(#{p_address})), 'Y', #{p_filterType}, #{p_workerId}, SYSDATE) 
+    </insert>	
+	
+	
+	
+	<update id="updateAddressSameAsStatus" parameterType="java.util.Map">
+	   update RAW_ADDR_CANBE_RES set FLAG_ACTIVE = #{flag_active}, END_DATE = SYSDATE, LAST_UPDATED_BY = #{p_workerId} where ADDRESS_ID = #{addressId} 
+    </update>	
+	
+	
+	
+	<select id="getErrorMessage" parameterType="int" resultType="String">
+		<![CDATA[
+			select ERROR_DESC from NYEHMS_PROCESS_ERRORS where document_id = #{docId} and ACTIVE_FLAG ='Y' and rownum < 2
+			]]>
+   	</select>	
+		
+		
+	<select id="checkCanBeResidenceAddressAlreadyAdded" parameterType="java.util.Map" resultType="int">
+			select count(*) from RAW_ADDR_CANBE_RES where FLAG_ACTIVE = 'Y' and ADDRESS = upper(trim(#{p_address})) and FILTER_TYPE =#{p_filterType}
+	</select>	
+	
+	
+	<select id="getLabErrorReportsByType" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT  c.ERROR_CATEGORY, c.ERROR_TYPE, c.ERROR_DESC, COUNT(a.document_id) COUNT
+    FROM nyehms_owner.nyehms_process_errors a, nyehms_owner.nyehms_process_errors_detail b, nyehms_owner.coded_process_errors c
+   WHERE a.error_id = b.error_id
+     AND b.error_code = c.error_code
+     AND a.ACTIVE_FLAG = 'Y'
+     and PROCESS_STATUS in (4 , 7, 30)
+<!--      a.create_date BETWEEN To_Date(#{fromDate}, 'MM/DD/YYYY') AND To_Date(#{toDate}, 'MM/DD/YYYY')+1 -->
+GROUP BY  c.ERROR_CATEGORY, c.ERROR_TYPE, c.ERROR_DESC ORDER BY 1
+	</select>
+	
+	
+	
+	<select id="getLabErrorReportsByFacilityName"  parameterType="java.util.Map" resultType="java.util.Map">
+			select l.laft_staff, raw1.mshsendingfacilityclia CLIA, raw1.mshlabpfi PFI, l.lab_name LAB_NAME, COUNT(*) COUNT from raw_hiv_Eclrs_Doc raw1,  lab_physical_facility l where exists (
+select 1 from nyehms_process_errors where 
+
+<!-- create_Date between To_Date(#{fromDate}, 'MM/DD/YYYY') AND To_Date(#{toDate}, 'MM/DD/YYYY')+1 -->
+
+  ACTIVE_FLAG = 'Y'
+     and PROCESS_STATUS in (4 , 7, 30)
+
+and error_desc is not null and document_type = 'HIV_LAB' and raw1.document_id = document_id
+) and  raw1.mshlabpfi = To_Char(l.pfi(+)) group by l.laft_staff, raw1.mshsendingfacilityclia,  raw1.mshlabpfi,  l.lab_name order by  l.lab_name
+	</select>
+	
+	<select id="getLabErrorStatusReportByLab"  parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT L.LAB_NAME, r.mshsendingfacilityclia CLIA, r.mshlabpfi PFI, usr.LEGACY_UID UPDATEID,
+			        Sum(CASE WHEN PROCESS_STATUS IN (6,15) THEN 1 ELSE 0 END) REPRISE_CNT,
+                    Sum(CASE WHEN PROCESS_STATUS IN (33) THEN 1 ELSE 0 END) DELETE_CNT,
+                    Sum(CASE WHEN PROCESS_STATUS IN (20) THEN 1 ELSE 0 END) EDIT_CNT
+			FROM nyehms_users usr, RAW_HIV_ECLRS_DOC R, NYEHMS_PROCESS_ERRORS N, LAB_PHYSICAL_FACILITY L
+			WHERE R.document_id = N.document_id
+			AND R.MSHLABPFI = TO_CHAR(l.PFI(+))  
+			and n.UPDATEID = usr.worker_id 
+			and N.PROCESS_STATUS IN (6,15,33,20)
+			and UPDATE_DATE between To_Date(#{fromDate}, 'MM/DD/YYYY') AND To_Date(#{toDate}, 'MM/DD/YYYY')+1
+			group by  L.LAB_NAME, r.mshsendingfacilityclia , r.mshlabpfi , usr.LEGACY_UID 
+			order by LAB_NAME asc
+
+	</select>
+	
+	
+	
+	<select id="getLabErrorReportsByStatus" parameterType="java.util.Map" resultType="java.util.Map">
+            SELECT CREATE_DATE, case when mon_name = 'DEC' and week = '01' then to_number(Year) + 1 else to_number(year) end 
+        || week YEAR_WEEK, MON_NAME, DAY_NAME, REPRISE_DELETE, UPDATEID, TO_CHAR(count(*)) COUNT
+  FROM (
+SELECT to_char(n.UPDATE_DATE, 'MM/DD/YYYY') CREATE_DATE,
+            to_char(n.UPDATE_DATE, 'YYYY') YEAR, 
+            to_char(n.UPDATE_DATE, 'IW') WEEK,    
+            to_char(n.UPDATE_DATE, 'MON') MON_NAME, 
+            to_char(n.UPDATE_DATE, 'DAY') DAY_NAME,
+            CASE WHEN PROCESS_STATUS IN (6,15) THEN 'REPRISE' WHEN PROCESS_STATUS IN (20) then 'EDIT' ELSE 'DELETE' END REPRISE_DELETE,
+            usr.LEGACY_UID UPDATEID
+            --TO_CHAR(count(*)) COUNT
+            
+            FROM  NYEHMS_PROCESS_ERRORS N, nyehms_users usr
+            WHERE
+            n.UPDATEID = usr.worker_id and 
+            N.PROCESS_STATUS IN (6,15,33,20) and
+            n.document_Type = 'HIV_LAB' and 
+            usr.LEGACY_UID not in ('SKA03', 'NYEHMS', 'JAS22', 'JLC16','VZG03') and
+            UPDATE_DATE between To_Date(#{fromDate}, 'MM/DD/YYYY') AND To_Date(#{toDate}, 'MM/DD/YYYY')+1
+)
+	group by  create_date,  case when mon_name = 'DEC' and week = '01' then to_number(Year) + 1 else to_number(year) end 
+	        || week, mon_name , day_name, REPRISE_DELETE, UPDATEID
+	order by to_date(create_date, 'MM/DD/YYYY')
+
+	
+	</select>	
+
+	<select id="getDocumentLabErrorsByCategory" parameterType="String" resultType="java.util.Map">
+		select errDtl.ERROR_ID, errDtl.ERROR_CODE, codedErr.error_Desc from NYEHMS_PROCESS_ERRORS err, NYEHMS_PROCESS_ERRORS_DETAIL errDtl, CODED_PROCESS_ERRORS codedErr where err.document_id = #{documentId} and err.error_id = errDtl.error_id and active_flag= 'Y' and process_Status = 4
+and codedErr.error_code = errDtl.ERROR_CODE	
+	</select>	
+	
+	<update id="byPassDocumentError" >
+	
+	 update NYEHMS_PROCESS_ERRORS_DETAIL set  BYPASS_ERROR = 'Y' where error_code in 
+	 <foreach item="errorCode" index="index" collection="errorCodeList" open="(" separator="," close=")">
+						        	#{errorCode}
+						  		 </foreach>
+	 
+	 and error_id in (select error_id from NYEHMS_PROCESS_ERRORS where document_id = #{documentId} and active_flag='Y' and process_status = 4)
+
+	
+	
+	</update>
+							
+</mapper>

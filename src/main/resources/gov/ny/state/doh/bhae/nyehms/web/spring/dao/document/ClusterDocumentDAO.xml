@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClusterDocumentDAO">
+
+	    <select id="getClusterDoc" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+	 	<![CDATA[
+		  WITH nys_ehars AS
+		(
+		            SELECT a.*, ROW_NUMBER() OVER (PARTITION BY a.nyehms_stateno ORDER BY a.ehars_stateno) nysrn
+		              FROM nyehms_ehars_stateno_map a
+		), nyc_ehars AS
+		(
+		            SELECT a.*, ROW_NUMBER() OVER (PARTITION BY a.nyehms_stateno ORDER BY a.cityno) nycrn
+		              FROM ehars_person_nyc a
+		), data AS
+		(
+		SELECT s_cluster.DOCUMENT_ID,
+			s_cluster.DEMO_DOCUMENT_ID,
+		   u_cluster.CLUSTER_ID,
+		   u_cluster.CLUSTER_TYPE,
+		   CASE
+		               WHEN u_cluster.CLUSTER_TYPE = 'BHAE_TS' THEN to_char(u_cluster.CREATE_DATE, 'MM/DD/YYYY')
+		               ELSE u_cluster.CLUSTER_IDENTIFY_DATE
+		   END CLUSTER_DATE,
+		   u_cluster.RELATEDNESS,
+		   mt.TIMEFRAME_DESC TIMEFRAME,
+		   (SELECT REFERENCE_FILE_NAME FROM NYEHMS_UPLOAD_CLUSTER_FILES WHERE CLUSTER_ID_PK = u_cluster.CLUSTER_ID_PK and UPLOAD_TYPE = 'N') REFERENCE_FILE_NAME,
+		   ts_cluster.DX_START_DATE,
+		   ts_cluster.DX_END_DATE,
+		   to_char(ts_cluster.CLUST_END_DATE, 'MM/DD/YYYY') CLUSTER_END_DATE,
+		   s_cluster.INACTIVE_FLAG, to_char(s_cluster.INACTIVE_DATE, 'MM/DD/YYYY') INACTIVE_DATE,           
+		  (SELECT LISTAGG(c.county_name,', ') WITHIN GROUP (ORDER BY 1)
+		  FROM xmltable(('"'||Replace(ts_cluster.cluster_counties, '|', '","')||'"')), coded_county c
+		  WHERE (column_value).getstringval() = c.county_fips_code) CLUSTER_COUNTIES,           
+		   CASE
+		               WHEN u_cluster.CLUSTER_TYPE = 'BHAE_TS' THEN ts_cluster.CLUSTER_DESC
+		               ELSE (SELECT DESCRIPTION FROM NYEHMS_UPLOAD_CLUSTER_FILES WHERE CLUSTER_ID_PK = u_cluster.CLUSTER_ID_PK 
+		                            and UPLOAD_DATE = (SELECT max(UPLOAD_DATE) FROM NYEHMS_UPLOAD_CLUSTER_FILES WHERE CLUSTER_ID_PK = u_cluster.CLUSTER_ID_PK))
+		   END CLUSTER_DESC,           
+		   s_cluster.EHARS_STATENO_AT_UPLOAD,
+		   s_cluster.NYEHMS_STATENO_AT_UPLOAD,
+		   s_cluster.FIRST_NAME, 
+		   s_cluster.MIDDLE_NAME, 
+		   s_cluster.LAST_NAME, 
+		   to_char(s_cluster.DOB, 'MM/DD/YYYY') DOB,
+		   to_char(s_cluster.CREATE_DATE, 'MM/DD/YYYY') CREATE_DATE,
+		   nvl(PDOC.STATENO, PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO( s_cluster.NYEHMS_STATENO_AT_UPLOAD)) STATENO,
+		   PDOC.DISCARD_STATUS,
+		   D.PARENT_DOCUMENT_ID,
+		   r_cluster.UPLOAD_NYEHMS_STATENO,
+		   u.LEGACY_UID ADDED_BY_USER                         
+		           ,c1.IDENTIFICATION_METHOD_DESC IDENTIFICATION_METHOD
+		            ,s_cluster.IDENTIFICATION_DATE
+		            ,s_cluster.EHARS_IMPORT_DATE
+		            , ROW_NUMBER() OVER (PARTITION BY u_cluster.cluster_id ORDER BY ts_cluster.clust_end_date DESC nulls first) rn
+		            
+		FROM RAW_CLUSTER_DOC r_cluster
+		            INNER JOIN STD_CLUSTER_DOC s_cluster
+		            ON (s_cluster.DOCUMENT_ID = r_cluster.DOCUMENT_ID and s_cluster.DOCUMENT_ID = #{documentId})
+		            INNER JOIN NYEHMS_UPLOAD_CLUSTER u_cluster
+		            ON (u_cluster.CLUSTER_ID_PK = r_cluster.CLUSTER_ID_PK)
+		            LEFT OUTER JOIN CODED_CLUST_MOL_TIMEFRAME mt
+		            ON (u_cluster.TIMEFRAME_CODE = mt.TIMEFRAME_CODE)                    
+		            LEFT OUTER JOIN BHAE_TS_CLUSTER_CRITERIA ts_cluster
+		            ON (ts_cluster.CLUSTER_ID_PK = r_cluster.CLUSTER_ID_PK )                
+		            LEFT OUTER JOIN CODED_CLUSTER_IDENTIFICATION_METHOD c1
+		            ON (s_cluster.identification_method_code = c1.identification_method_code)
+		            LEFT OUTER JOIN NYEHMS_USERS u
+		            ON (s_cluster.CREATE_UID =  u.WORKER_ID )  
+		            INNER JOIN document_locator D
+		            ON (s_cluster.DOCUMENT_ID = D.document_id)
+		            LEFT OUTER JOIN person_doc_association PDOC
+		            ON (s_cluster.document_id = PDOC.document_id
+		                AND PDOC.dissassociation_date IS NULL) 
+		    )
+		    SELECT a.*,
+		            nyehms_ehars_map.NYEHMS_STATENO CURRENT_NYEHMS_STATENO, 
+		           nyehms_ehars_map.RSH_COUNTY_FIPS, 
+		           nyehms_ehars_map.RSH_STATE_CD,
+		           nyehms_ehars_map.CUR_COUNTY_FIPS, 
+		           nyehms_ehars_map.CUR_STATE_CD,
+		           nvl2(nyehms_ehars_map.HIV_DX_DT, substr(rpad(nyehms_ehars_map.HIV_DX_DT,8,'.'),5,2)||'/'||substr(rpad(replace(nyehms_ehars_map.HIV_DX_DT,'.',''),8,'.'),7,2)||'/'||substr(rpad(replace(nyehms_ehars_map.HIV_DX_DT,'.',''),8,'.'),1,4), null) HIV_DX_DT,       
+		           nvl2(nyehms_ehars_map.AIDS_DX_DT, substr(rpad( nyehms_ehars_map.AIDS_DX_DT,8,'.'),5,2)||'/'||substr(rpad(replace( nyehms_ehars_map.AIDS_DX_DT,'.',''),8,'.'),7,2)||'/'||substr(rpad(replace( nyehms_ehars_map.AIDS_DX_DT,'.',''),8,'.'),1,4), null) AIDS_DX_DT,           
+		           nyehms_ehars_map.HIV_AIDS_CDC_ELIG,           
+		           nyehms_ehars_map.STATUS_FLAG,
+		           CASE
+		                        WHEN nyehms_ehars_map.race1 IS NOT NULL OR nyehms_ehars_map.race2 IS NOT NULL OR nyehms_ehars_map.race3 IS NOT NULL OR nyehms_ehars_map.race4 IS NOT NULL OR nyehms_ehars_map.race5 IS NOT NULL
+		                        THEN RTrim(LTrim(fn_get_ehars_race(nyehms_ehars_map.race1)||','||fn_get_ehars_race(nyehms_ehars_map.race2)||','||fn_get_ehars_race(nyehms_ehars_map.race3)||','||fn_get_ehars_race(nyehms_ehars_map.race4)||','||fn_get_ehars_race(nyehms_ehars_map.race5), ','), ',')
+		                        ELSE NULL 
+		            END race,
+		            CASE
+		                        WHEN nyehms_ehars_map.ethnicity1 IS NOT NULL
+		                        THEN fn_get_ehars_ethnicity(nyehms_ehars_map.ethnicity1)
+		                        ELSE NULL
+		            END ethnicity,
+		            ehars_nyc.cityno CITYNO,
+		           ehars_nyc.RSH_COUNTY_FIPS NYC_RSH_COUNTY_FIPS, 
+		           ehars_nyc.RSH_STATE_CD  NYC_RSH_STATE_CD,
+		           ehars_nyc.CUR_COUNTY_FIPS NYC_CUR_COUNTY_FIPS, 
+		           ehars_nyc.CUR_STATE_CD NYC_CUR_STATE_CD,         
+		           nvl2(ehars_nyc.hiv_dx_dt, substr(rpad(ehars_nyc.HIV_DX_DT,8,'.'),5,2)||'/'||substr(rpad(replace(ehars_nyc.HIV_DX_DT,'.',''),8,'.'),7,2)||'/'||substr(rpad(replace(ehars_nyc.HIV_DX_DT,'.',''),8,'.'),1,4), null) NYC_HIV_DX_DT,       
+		           nvl2(ehars_nyc.AIDS_DX_DT, substr(rpad( ehars_nyc.AIDS_DX_DT,8,'.'),5,2)||'/'||substr(rpad(replace( ehars_nyc.AIDS_DX_DT,'.',''),8,'.'),7,2)||'/'||substr(rpad(replace( ehars_nyc.AIDS_DX_DT,'.',''),8,'.'),1,4), null) NYC_AIDS_DX_DT,           
+		           ehars_nyc.HIV_AIDS_CDC_ELIG NYC_HIV_AIDS_CDC_ELIG,           
+		           ehars_nyc.STATUS_FLAG NYC_STATUS_FLAG      
+		           ,CASE
+		                                WHEN ehars_nyc.race1 IS NOT NULL OR ehars_nyc.race2 IS NOT NULL OR ehars_nyc.race3 IS NOT NULL OR ehars_nyc.race4 IS NOT NULL OR ehars_nyc.race5 IS NOT NULL
+		                                THEN RTrim(LTrim(fn_get_ehars_race(ehars_nyc.race1)||','||fn_get_ehars_race(ehars_nyc.race2)||','||fn_get_ehars_race(ehars_nyc.race3)||','||fn_get_ehars_race(ehars_nyc.race4)||','||fn_get_ehars_race(ehars_nyc.race5), ','), ',')
+		                                ELSE NULL 
+		                    END nyc_race
+		           ,CASE
+		                        WHEN ehars_nyc.ethnicity1 IS NOT NULL
+		                        THEN fn_get_ehars_ethnicity(ehars_nyc.ethnicity1)
+		                        ELSE NULL
+		            END nyc_ethnicity
+		      FROM data a
+		      LEFT OUTER JOIN nys_ehars nyehms_ehars_map
+		      ON (a.stateno =  nyehms_ehars_map.nyehms_stateno and nysrn = 1 and  nyehms_ehars_map.nyehms_stateno != '-1')
+		      LEFT OUTER JOIN nyc_ehars ehars_nyc
+		      ON (a.stateno = ehars_nyc.nyehms_stateno and nycrn = 1 and ehars_nyc.nyehms_stateno != '-1')
+		     WHERE rn = 1
+		]]>	
+    </select>	
+		
+		<select id="getClusterIdsByType" parameterType="String" resultType="org.json.simple.JSONObject">
+			SELECT distinct up.CLUSTER_ID FROM NYEHMS_UPLOAD_CLUSTER up, STD_CLUSTER_DOC std WHERE up.CLUSTER_TYPE = #{clusterType} and std.CLUSTER_ID_PK = up.CLUSTER_ID_PK order by up.CLUSTER_ID
+		</select>
+		
+		<select id="getExistingClusterIdsByType" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+				<choose>
+					<when test="clusterType == 'BHAE_TS'">
+                        SELECT distinct CLUSTER_ID FROM NYEHMS_UPLOAD_CLUSTER up, BHAE_TS_CLUSTER_CRITERIA ts
+                        WHERE up.CLUSTER_TYPE =  #{clusterType} and UP.CLUSTER_ID_PK = TS.CLUSTER_ID_PK order by CLUSTER_ID
+					</when>
+				    <otherwise>
+				    	SELECT distinct CLUSTER_ID FROM NYEHMS_UPLOAD_CLUSTER up WHERE up.CLUSTER_TYPE =  #{clusterType} order by CLUSTER_ID
+				    </otherwise>
+				</choose>
+				
+		</select>
+
+		<select id="getDocumentClusterType" parameterType="int" resultType="String">
+			SELECT upload.CLUSTER_TYPE from STD_CLUSTER_DOC std, NYEHMS_UPLOAD_CLUSTER upload WHERE std.DOCUMENT_ID = #{documentId} and std.CLUSTER_ID_PK = upload.CLUSTER_ID_PK
+		</select>		
+		
+		<select id="isResistanceRecord" parameterType="String" resultType="String">
+			SELECT Distinct 'Y' FROM person_doc_association a WHERE STATENO = #{stateno} AND dissassociation_date is null AND EXISTS (
+							                    SELECT 1 FROM document_locator b WHERE b.document_id = a.document_id AND b.document_type_code = 'HIV_LAB' AND b.test_type_cd = 'RESISTANCE')
+		</select>		
+	
+		<insert id="insertDataIntoClusterRaw" parameterType="java.util.Map">
+           INSERT INTO RAW_CLUSTER_DOC (DOCUMENT_ID,UPLOAD_NYEHMS_STATENO,UPLOAD_CURRENT_NYEHMS_STATENO,IDENTIFICATION_METHOD_CODE,IDENTIFICATION_DATE,CURRENT_PROCESS_STATUS,CREATE_UID,CREATE_DATE,PROCESS_DATE,CLUSTER_ID_PK,DEMO_DOCUMENT_ID) 
+            	values(#{documentId, jdbcType=DECIMAL}, #{uploadNyehmsStateno, jdbcType=VARCHAR}, #{nyehmsStateno, jdbcType=VARCHAR}, #{identificationMethodCode, jdbcType=VARCHAR}, #{identificationDate, jdbcType=VARCHAR}, #{currrentProcessStatus,jdbcType=DECIMAL}, #{userId, jdbcType=VARCHAR}, SYSDATE,SYSDATE,#{clusterIdPk, jdbcType=DECIMAL},#{demoDocumentId, jdbcType=DECIMAL})</insert>
+    
+		<insert id="insertDataIntoClusterStd" parameterType="java.util.Map">
+			INSERT INTO STD_CLUSTER_DOC (DOCUMENT_ID,NYEHMS_STATENO_AT_UPLOAD,IDENTIFICATION_METHOD_CODE,IDENTIFICATION_DATE,FIRST_NAME,MIDDLE_NAME,LAST_NAME,DOB,CURRENT_PROCESS_STATUS,DEMO_DATA_SOURCE,CREATE_UID,CREATE_DATE,PROCESS_DATE,CLUSTER_ID_PK,EHARS_STATENO,CITYNO,DEMO_DOCUMENT_ID)
+				 values(#{documentId, jdbcType=DECIMAL}, #{nyehmsStateno, jdbcType=VARCHAR}, #{identificationMethodCode, jdbcType=VARCHAR}, #{identificationDate, jdbcType=VARCHAR}, #{firstName, jdbcType=VARCHAR}, #{middleName, jdbcType=VARCHAR}, #{lastName, jdbcType=VARCHAR}, FN_TO_DATE(#{dob,jdbcType=DATE},'MM/DD/YYYY'), #{currrentProcessStatus,jdbcType=DECIMAL}, #{demo_data_src, jdbcType=VARCHAR}, #{userId, jdbcType=VARCHAR}, SYSDATE,SYSDATE,#{clusterIdPk, jdbcType=DECIMAL}, #{eharsStateno, jdbcType=VARCHAR}, #{cityno, jdbcType=VARCHAR},#{demoDocumentId, jdbcType=DECIMAL})		
+		</insert>	
+
+		<insert id="insertNyehmsUploadCluster" parameterType="java.util.Map">
+            INSERT into NYEHMS_UPLOAD_CLUSTER (CLUSTER_ID,CLUSTER_TYPE,RELATEDNESS,TIMEFRAME_CODE,CREATE_DATE,CLUSTER_IDENTIFY_DATE) 
+                 values(#{clusterId, jdbcType=VARCHAR}, #{clusterType, jdbcType=VARCHAR}, #{relatedness, jdbcType=VARCHAR},#{moleTimeFrame, jdbcType=VARCHAR},SYSDATE,#{clusterIdentifyDate, jdbcType=VARCHAR})
+		</insert>
+
+		<insert id="insertNyehmsUploadClusterFiles" parameterType="java.util.Map">
+			INSERT into NYEHMS_UPLOAD_CLUSTER_FILES (CLUSTER_ID_PK,REFERENCE_FILE_NAME,UPLOAD_UID,UPLOAD_DATE,UPLOAD_TYPE,DESCRIPTION ) 
+                 values(#{clusterIdPk, jdbcType=DECIMAL}, #{clusterFileName, jdbcType=VARCHAR}, #{workerId, jdbcType=VARCHAR}, SYSDATE, #{uploadType, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR})  
+		</insert>		 
+ 
+ 		<insert id="insertNyehmsTimeSpaceCriteria" parameterType="java.util.Map">
+			INSERT into BHAE_TS_CLUSTER_CRITERIA (CLUSTER_ID_PK,CLUSTER_COUNTIES,DX_START_DATE,DX_END_DATE,CLUSTER_DESC,CRITERIA_CREATE_UID,CRITERIA_CREATE_DATE, TRANS_RISK, BIRTH_SEX, RACE, ETHNICITY, AGE_FROM, AGE_TO) 
+                 values(#{clusterIdPk, jdbcType=DECIMAL}, #{clusterCounties, jdbcType=VARCHAR}, #{spaceTimeDxStartDate, jdbcType=VARCHAR}, #{spaceTimeDxEndDate, jdbcType=VARCHAR},
+                 				#{description, jdbcType=VARCHAR}, #{workerId, jdbcType=VARCHAR}, SYSDATE, 
+                 				#{transmissionRisk, jdbcType=VARCHAR}, #{birthSex, jdbcType=VARCHAR}, #{race, jdbcType=VARCHAR}, #{ethnicity, jdbcType=VARCHAR}, #{ageRangeFrom, jdbcType=VARCHAR}, #{ageRangeTo, jdbcType=VARCHAR})
+		</insert>
+	    
+	 	<update id="retireNyehmsTimeSpaceCluster" parameterType="java.util.Map">
+	 		<choose>
+	 			<when test=" tsUpdateRetire == 1">
+	 				UPDATE BHAE_TS_CLUSTER_CRITERIA set CLUST_END_DATE = SYSDATE, CLUST_END_UID = #{workerId} where CLUSTER_ID_PK = #{clusterIdPk} and CLUST_END_DATE is null
+	 			</when>
+	 			<otherwise>
+	 				UPDATE BHAE_TS_CLUSTER_CRITERIA set CLUST_END_DATE = SYSDATE, CLUSTER_DESC = #{description}, CLUST_END_UID = #{workerId} where CLUSTER_ID_PK = #{clusterIdPk} and CLUST_END_DATE is null
+	 			</otherwise>
+	 		</choose>
+	    </update>
+ 
+		<select id="getClusterPSMessageInfo" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocPSMessageVO">
+	 	<![CDATA[		
+			SELECT /*+ parallel(d,4) */ Nvl(d.test_type_cd, d.document_type_code) document_type, v.DOCUMENT_ID, v.TRIGGER_DOC_ID, 
+					TO_CHAR(v.MESSAGE_ENTERED_DATE, 'MM/DD/YYYY') SEND_DATE, TO_CHAR(v.RETURN_MESSAGE_ENTERED_DATE, 'MM/DD/YYYY') RETURN_DATE, Nvl(v.latest_disposition_desc,v.return_disposition_desc) RECENT_RETURN_DISPO
+			  FROM all_std_sent_recv_msg_vw v, document_locator d
+				WHERE v.current_stateno = #{stateno}
+			   AND v.TRIGGER_DOC_ID = d.document_id
+			   AND d.is_active = 'Y'
+		]]>				   
+		</select>
+		
+ 	 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterIdReportDataVO" id="clusterIdReport"> 
+		 	<result property="stateno" column="stateno"   jdbcType="VARCHAR"/>
+		 	<result property="cluster_date" column="cluster_create_date"   jdbcType="VARCHAR"/>
+		 	<result property="dob" column="dob"   jdbcType="VARCHAR"/>
+		 	<result property="race" column="race"   jdbcType="VARCHAR"/>
+		 	<result property="ethnicity" column="ethnicity"   jdbcType="VARCHAR"/>
+		 	<result property="birth_sex" column="birth_sex"   jdbcType="VARCHAR"/>
+		 	<result property="current_gender" column="current_gender"   jdbcType="VARCHAR"/>
+		 	<result property="transmission_risk" column="transmission_category"   jdbcType="VARCHAR"/>
+		 	<result property="dissassociation_date" column="dissassociation_date"   jdbcType="VARCHAR"/>		 	
+		 	<result property="ehars_hiv_dx_dt" column="ehars_hiv_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="ehars_aids_dx_dt" column="ehars_aids_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="status_flag" column="status_flag"   jdbcType="VARCHAR"/>
+		 	<result property="cityno" column="cityno"   jdbcType="VARCHAR"/>
+		 	<result property="vital_status" column="vital_status"   jdbcType="VARCHAR"/>
+		 	<result property="cur_county" column="cur_county"   jdbcType="VARCHAR"/>
+		 	<result property="rsh_county" column="rsh_county"   jdbcType="VARCHAR"/>
+		 	<result property="hf_county" column="hf_county"   jdbcType="VARCHAR"/>
+		 	<result property="test_result1" column="test_result1"   jdbcType="VARCHAR"/>
+		 	<result property="calc_collection_date1" column="calc_collection_date1"   jdbcType="VARCHAR"/>
+		 	<result property="test_result2" column="test_result2"   jdbcType="VARCHAR"/>
+		 	<result property="calc_collection_date2" column="calc_collection_date2"   jdbcType="VARCHAR"/>
+		 	<result property="recent_surv_assign_dt" column="recent_surv_assign_dt"   jdbcType="VARCHAR"/>
+		 	<result property="surv_closure_message" column="surv_closure_message"   jdbcType="VARCHAR"/>		 	
+		 	<result property="recent_ps_message_sent_dt" column="recent_ps_message_sent_dt"   jdbcType="VARCHAR"/>
+		 	<result property="ps_dispo_desc" column="ps_dispo_desc"   jdbcType="VARCHAR"/>
+		 	<result property="sort_ehars_hiv_dx_dt" column="ehars_hiv_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="sort_ehars_aids_dx_dt" column="ehars_aids_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="identification_method" column="identification_method"   jdbcType="VARCHAR"/>
+		 	<result property="identification_date" column="identification_date"   jdbcType="VARCHAR"/>
+		 	<result property="sort_identification_date" column="identification_date"   jdbcType="VARCHAR"/>
+		 	<result property="demo_document_id" column="demo_document_id"   jdbcType="VARCHAR"/>
+		 	<result property="demo_doc_type" column="document_type_code"   jdbcType="VARCHAR"/>		 
+		 	<result property="partnerReviewed" column="partner_reviewed"   jdbcType="VARCHAR"/>
+		 	<result property="ageAtHIVDx" column="age_at_hiv_dx"   jdbcType="VARCHAR"/>
+		 	<result property="clusterId" column="cluster_id_pk"   jdbcType="VARCHAR"/>
+		 		
+	 	</resultMap>
+	 	
+<!-- 	 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterIdReportHeaderVO" id="clusterIdReportHeader">
+	 	
+		 	<result property="lst_dx_dt" column="lst_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="grt_dx_dt" column="grt_dx_dt"   jdbcType="VARCHAR"/>
+		 	<result property="l_nyehms_stateno" column="l_nyehms_stateno"   jdbcType="VARCHAR"/>
+		 	<result property="l_ehars_stateno" column="l_ehars_stateno"   jdbcType="VARCHAR"/>
+		 	<result property="l_cityno" column="l_cityno"   jdbcType="VARCHAR"/>
+		 	<result property="g_nyehms_stateno" column="g_nyehms_stateno"   jdbcType="VARCHAR"/>
+		 	<result property="g_ehars_stateno" column="g_ehars_stateno"   jdbcType="VARCHAR"/>
+		 	<result property="g_cityno" column="g_cityno"   jdbcType="VARCHAR"/>
+		 	<result property="cluster_desc" column="clust_desc"   jdbcType="VARCHAR"/>
+	 	
+	 	</resultMap> -->
+
+	<select id="getClusterIdReport" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call pr_get_cluster_data(
+			#{p_cluster_id,jdbcType=VARCHAR,mode=IN},
+			#{p_clust_data,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=clusterIdReport}
+	<!-- 		#{p_clust_head_data,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=clusterIdReportHeader} -->
+		)}  
+	</select> 
+	
+	<select id="getClusterPkNumber" parameterType="String" resultType="int">
+		SELECT CLUSTER_ID_PK FROM NYEHMS_UPLOAD_CLUSTER WHERE CLUSTER_ID = #{clusterId}
+	</select>	
+	
+	<select id="getRelatednessData" resultType="String">	
+		SELECT RELATEDNESS FROM CODED_CLUST_MOL_RELATEDNESS
+	</select>	
+	
+	<select id="getClusterData" parameterType="String" resultType="org.json.simple.JSONObject">
+		SELECT cluster_id, last_upload_date, cluster_identify_date, relatedness, timeframe, reference_file_name, description,cluster_counties, dx_start_date, dx_end_date, clust_end_date
+				, trans_risk, birth_sex, race, ethnicity, age_from, age_to
+		  FROM (  
+		SELECT CASE
+		          WHEN uc.cluster_type = 'BHAE_TS' THEN uc.create_date
+		          ELSE ucf.upload_date
+		       END last_upload_date
+		       , uc.cluster_identify_date 
+		       , uc.relatedness
+		       , timeframe_code timeframe
+		       , ucf.reference_file_name
+		       , CASE
+		            WHEN uc.cluster_type = 'BHAE_TS' THEN b.cluster_desc
+		            ELSE ucf.description
+		         END description, uc.cluster_id
+		       , b.cluster_counties, b.dx_start_date, b.dx_end_date, to_char( b.clust_end_date, 'MM/DD/YYYY') clust_end_date
+		       , b.trans_risk, b.birth_sex, b.race, b.ethnicity, b.age_from, b.age_to
+		       , ROW_NUMBER() OVER (PARTITION BY uc.cluster_id ORDER BY b.clust_end_date DESC nulls first) rn
+		  FROM nyehms_upload_cluster uc, nyehms_upload_cluster_files ucf, bhae_ts_cluster_criteria b
+		WHERE uc.cluster_id_pk = ucf.cluster_id_pk(+)
+		   AND uc.cluster_id_pk = b.cluster_id_pk(+) 
+		   AND uc.cluster_id = #{clusterId})
+		WHERE rn = 1		
+	</select>
+	
+	<resultMap type="java.util.Map" id="moleTimeFrameMap"> 	
+ 	  	<result property="code"  column="TIMEFRAME_CODE"   jdbcType="VARCHAR" javaType="String"/>
+		<result property="value" column="TIMEFRAME_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getMoleTimeFrameData" resultMap="moleTimeFrameMap">
+		SELECT TIMEFRAME_CODE, TIMEFRAME_DESC FROM CODED_CLUST_MOL_TIMEFRAME order by TIMEFRAME_CODE
+	</select>		
+	
+	<select id="bhaeTSCriteriaProcess" parameterType="String" statementType="CALLABLE">
+   		{call process_timespace_clusters(
+			#{clusterIdPk,  		 jdbcType=VARCHAR, mode=IN}
+<!-- 			#{p_err_code,  			 jdbcType=INTEGER, mode=OUT},
+			#{p_err_desc,   		 jdbcType=VARCHAR, mode=OUT}	 -->
+		)} 
+	</select>
+		
+	<select id="getManualAddedStatenosTSClusterIds" resultType="String">
+		SELECT DISTINCT up.cluster_id 
+		FROM nyehms_upload_cluster up, bhae_ts_cluster_criteria ts, raw_cluster_doc r, std_cluster_doc s 
+		WHERE up.cluster_type = 'BHAE_TS'
+		AND up.cluster_id_pk = ts.cluster_id_pk and ts.clust_end_date is null
+        AND up.cluster_id_pk = r.cluster_id_pk and r.upload_nyehms_stateno = 'Manual_Add'
+        AND r.cluster_id_pk = s.cluster_id_pk and s.inactive_flag is null order by up.cluster_id
+	</select>	
+
+	
+	<select id="getManualAddedStatenosTSClusterInfo" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterTSManualAddedStatenoVO">
+		SELECT up.cluster_id, (SELECT LISTAGG(c.county_name,', ') WITHIN GROUP (ORDER BY 1)
+		          FROM xmltable(('"'||Replace(ts.cluster_counties, '|', '","')||'"')), coded_county c
+		         WHERE (column_value).getstringval() = c.county_fips_code) cluster_counties
+		        , ts.dx_start_date
+		        , ts.dx_end_date
+		        , ts.cluster_desc
+		        , To_Char(up.create_date, 'MM/DD/YYYY') clust_create_date
+		        , s.nyehms_stateno_at_upload stateno
+		        , first_name
+		        , last_name
+		        , dob
+		        , (SELECT CASE WHEN m.rsh_state_cd IS NOT NULL AND m.rsh_state_cd = 'NY' THEN c1.county_name
+		                       WHEN m.rsh_state_cd IS NOT NULL AND m.rsh_state_cd != 'NY' THEN 'Out Of State'
+		                       ELSE 'Unknown'
+		                  END rsh_county
+		           FROM nyehms_ehars_stateno_map m, coded_county c1
+		          WHERE m.nyehms_stateno = s.nyehms_stateno_at_upload
+		            AND m.rsh_county_fips IS NOT NULL
+		            AND m.rsh_county_fips = c1.county_fips_code
+		            AND ROWNUM = 1) rsh_county
+		       ,(SELECT fn_to_date(Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),5,2)||'/'||Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),7,2)||'/'||Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),1,4),'MM/DD/YYYY')                
+		           FROM nyehms_ehars_stateno_map m
+		          WHERE m.nyehms_stateno = s.nyehms_stateno_at_upload
+		            AND m.hiv_dx_dt IS NOT NULL
+		            AND ROWNUM = 1) hiv_dx_dt
+		FROM nyehms_upload_cluster up, bhae_ts_cluster_criteria ts, std_cluster_doc s 
+		WHERE up.cluster_type = 'BHAE_TS'
+		AND up.cluster_id_pk = ts.cluster_id_pk and ts.clust_end_date is null
+		AND EXISTS (SELECT 1 
+		              FROM raw_cluster_doc r
+		             WHERE up.cluster_id_pk = r.cluster_id_pk 
+		               AND r.upload_nyehms_stateno = 'Manual_Add')
+		AND up.cluster_id_pk = s.cluster_id_pk and s.inactive_flag is null
+		AND up.cluster_id = #{clusterId}
+	</select>		
+			
+ 	<update id="updateTSManualAddedStateno" parameterType="java.util.Map">
+	   UPDATE STD_CLUSTER_DOC SET INACTIVE_FLAG = 'Y', INACTIVE_DATE = SYSDATE, INACTIVE_UID = #{workerId} 
+	   WHERE CLUSTER_ID_PK = #{clusterIdPk} and INACTIVE_FLAG is null and NYEHMS_STATENO_AT_UPLOAD = #{stateno}	   
+    </update>	
+    
+   <select id="getClusterIDentificationMethod" resultType="java.util.Map">
+		SELECT IDENTIFICATION_METHOD_CODE, IDENTIFICATION_METHOD_DESC FROM CODED_CLUSTER_IDENTIFICATION_METHOD
+	</select>
+	
+	<select id="getAlreadyUploadedClusterData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterTemplateVO">
+		SELECT DISTINCT UPLOAD_NYEHMS_STATENO as nyehmsStateno, IDENTIFICATION_METHOD_CODE as identificationMethod, IDENTIFICATION_DATE as identificationDate FROM RAW_CLUSTER_DOC WHERE CLUSTER_ID_PK = #{clusterIdPk}
+	</select>
+	
+ 	<update id="updateClustereHARSImportFlag" parameterType="java.util.Map">
+	   update NYEHMS_UPLOAD_CLUSTER set EHARS_IMPORT_FLAG = 'Y', EHARS_IMPORT_FLAG_SET_ID = #{workerId}, EHARS_IMPORT_FLAG_SET_DATE = SYSDATE WHERE CLUSTER_ID_PK = #{clusterIdPk} and EHARS_IMPORT_FLAG is null
+    </update>		
+    
+	<select id="geteHARSImportFlagData" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClustereHARSImportFlagVO" >
+        SELECT cluster_id_pk clusterIdPk,
+               uc.cluster_id clusterName,
+               CASE
+                    WHEN uc.cluster_type = 'CDC_M' THEN 'CDC Molecular'
+                    WHEN uc.cluster_type = 'BHAE_M' THEN 'BHAE Molecular'   
+                    ELSE 'BHAE Space - Time'         
+               END clusterType,
+                CASE
+                      WHEN uc.cluster_type = 'BHAE_TS' THEN 
+                            (SELECT cluster_desc FROM bhae_ts_cluster_criteria WHERE cluster_id_pk = uc.cluster_id_pk 
+                                            and criteria_create_date = (SELECT max(criteria_create_date) FROM bhae_ts_cluster_criteria WHERE cluster_id_pk = uc.cluster_id_pk)) 
+                      ELSE (SELECT description FROM nyehms_upload_cluster_files WHERE cluster_id_pk = uc.cluster_id_pk 
+                                            and upload_date = (SELECT max(upload_date) FROM nyehms_upload_cluster_files WHERE cluster_id_pk = uc.cluster_id_pk))
+                END clusterDesc,  
+               to_char(uc.create_date, 'MM/DD/YYYY')  createDate,       
+               ehars_import_flag eHARSImportFlag, 
+               nu.first_name || ' ' || nu.middle_name || ' ' || nu.last_name as  flagSetBy,       
+               to_char(uc.ehars_import_flag_set_date, 'MM/DD/YYYY')  flagSetDate
+        FROM nyehms_upload_cluster uc
+        LEFT OUTER JOIN nyehms_users nu
+         ON (uc.ehars_import_flag_set_id =  nu.worker_id )
+        ORDER by uc.cluster_id_pk
+	</select>    
+	
+	<select id="getClusterDisplayInfo" parameterType="String" resultType="org.json.simple.JSONObject">
+          
+    WITH data AS
+        (    SELECT uc.cluster_id_pk, 
+             ts.dx_start_date,
+             ts.dx_end_date,
+               CASE
+                  WHEN uc.cluster_type = 'BHAE_TS' THEN ts.cluster_desc
+                  ELSE ucf.description
+               END cluster_desc,
+               CASE
+                  WHEN uc.cluster_type = 'BHAE_TS' THEN ts.criteria_create_date
+                  ELSE ucf.upload_date
+               END latest_date,               
+               to_char(uc.create_date, 'MM/DD/YYYY') create_date,
+               to_char(ts.clust_end_date, 'MM/DD/YYYY') clust_end_date,
+                CASE 
+                    WHEN uc.cluster_type = 'BHAE_TS' and ts.clust_end_date is null then 'Yes'
+                    WHEN uc.cluster_type = 'BHAE_TS' and ts.clust_end_date is not null then 'No'
+                    ELSE ''
+                END cluster_active,
+        (SELECT LISTAGG(c.county_name,', ') WITHIN GROUP (ORDER BY 1)
+              FROM xmltable(('"'||Replace(ts.cluster_counties, '|', '","')||'"')), coded_county c	
+              WHERE (column_value).getstringval() = c.county_fips_code) cluster_counties,
+        (SELECT LISTAGG(c.categ_desc_short,', ') WITHIN GROUP (ORDER BY 1)
+              FROM xmltable(('"'||Replace(ts.trans_risk, '|', '","')||'"')), coded_transmission_category  c
+              WHERE (column_value).getstringval() = c.category_code) trans_risk,
+        (SELECT LISTAGG(c.ehars_race_desc,', ') WITHIN GROUP (ORDER BY 1)
+              FROM xmltable(('"'||Replace(ts.race, '|', '","')||'"')), coded_ehars_race c
+              WHERE (column_value).getstringval() = c.ehars_race_code ) race,
+              s.sex_description, e.ehars_eth_desc, ts.age_from, ts.age_to
+              ,  CASE 
+                    WHEN uc.ehars_import_flag = 'Y' then 'Yes'
+                    ELSE 'No'
+                END ehars_import_flag              
+              ,to_char(uc.ehars_import_flag_set_date , 'MM/DD/YYYY') ehars_import_flag_set_date
+               ,ROW_NUMBER() OVER (PARTITION BY uc.cluster_id ORDER BY 
+              CASE
+                  WHEN uc.cluster_type = 'BHAE_TS' THEN ts.criteria_create_date
+                  ELSE ucf.upload_date
+               END DESC nulls first) rn
+            FROM bhae_ts_cluster_criteria ts, nyehms_upload_cluster uc, nyehms_upload_cluster_files ucf, CODED_SEX_AT_BIRTH s, CODED_EHARS_ETHNICITY  e
+            WHERE uc.cluster_id = #{clusterId} 
+                AND uc.cluster_id_pk = ts.cluster_id_pk(+)
+                AND uc.cluster_id_pk = ucf.cluster_id_pk(+)    
+                AND ts.birth_sex = s.sex_code (+) 
+                AND ts.ethnicity = e.ehars_eth_code (+)                
+            ORDER BY ts.criteria_create_date desc
+         )
+     SELECT * FROM data where rn =1
+               
+	</select>
+	
+	<select id = "validateClusterDocumentId" parameterType="java.util.Map" resultType="int">
+	   SELECT count(*) FROM document_locator d, person_doc_association c
+	 	WHERE d.is_active = 'Y' 
+	 		AND ((d.document_type_code = 'HIV_LAB' AND d.test_type_cd = 'RESISTANCE' AND #{IDENTIFICATION_METHOD_CODE} = 1) OR (d.document_type_code in ('HIV_LAB', 'CLUST_PART') ))
+	  		AND c.stateno = #{CURRENT_NYEHMS_STATENO}
+	  		AND d.document_id = c.document_id 
+	  		AND c.dissassociation_date IS NULL
+	  		AND c.document_id = #{DOCUMENT_ID}
+	
+	</select>
+	
+	<select id = "getStatenoDemographic" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO">
+		WITH person_demo AS 
+		(
+		    SELECT first_name, last_name, to_char(nvl(DATE_OF_BIRTH, FN_TO_DATE(DOB_TEXT, 'MM/DD/YYYY')), 'MM/DD/YYYY') as dob, #{nyehmsStateno} stateno
+		      FROM document_person_attr 
+		     WHERE document_id = #{demoDocumentId} 
+		), nys_ehars AS 
+		(
+		    SELECT nyehms_stateno, ehars_stateno, cityno 
+		      FROM nyehms_ehars_stateno_map 
+		     WHERE nyehms_stateno = #{nyehmsStateno}
+		       AND ROWNUM = 1
+		), nyc_ehars AS
+		(
+		    SELECT nyehms_stateno, ehars_stateno, cityno 
+		      FROM ehars_person_nyc 
+		     WHERE nyehms_stateno = #{nyehmsStateno}
+		       AND ROWNUM = 1
+		) 
+		SELECT first_name, last_name, dob, p.stateno current_nyehms_stateno
+		       , CASE WHEN s.nyehms_stateno IS NOT NULL THEN s.ehars_stateno ELSE c.ehars_stateno END ehars_stateno
+		       , CASE WHEN s.nyehms_stateno IS NOT NULL THEN s.cityno ELSE c.cityno END cityno
+		       , CASE WHEN s.nyehms_stateno IS NOT NULL THEN 'NYS_eHARS' ELSE 'NYC_eHARS' END demo_data_source
+		  FROM person_demo p
+		  LEFT OUTER JOIN nys_ehars s
+		  ON (p.stateno = s.nyehms_stateno)
+		  LEFT OUTER JOIN nyc_ehars c
+		  ON (p.stateno = c.nyehms_stateno)
+	
+	</select>	
+	
+	<select id="getMolClusterDemoDocumentIds" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+		SELECT pdoc.document_id, pdoc.document_id || ' ' || 
+				CASE 
+	                WHEN d.document_type_code = 'HIV_LAB' THEN d.test_type_cd
+	                ELSE d.document_type_code
+	            END || ' '
+        	  || dpa.first_name || ' ' || dpa.last_name || ' ' ||  dpa.dob_text document_details
+		FROM document_locator d, person_doc_association pdoc, document_person_attr dpa
+		WHERE d.is_active = 'Y'
+		
+			<if test="identificationCd == 1 ">
+				AND d.document_type_code = 'HIV_LAB' AND d.test_type_cd = 'RESISTANCE'
+			</if>
+			<if test="identificationCd == 2 ">
+				AND d.document_type_code in ('HIV_LAB', 'PRF', 'NYC_PRF')
+			</if>
+		
+		AND pdoc.stateno = #{stateno} AND d.document_id = pdoc.document_id and pdoc.document_id = dpa.document_id and pdoc.dissassociation_date IS NULL order by pdoc.document_id desc
+		
+	</select>	
+
+	<select id="getLinkedMolClusterGenoTypeDocuments" parameterType="int" resultType="int">
+			SELECT document_id
+			  FROM (
+			            SELECT demo.document_id
+			              FROM std_cluster_doc clust, std_cluster_doc demo
+			            WHERE clust.document_id = #{documentId}
+			               AND clust.demo_document_id = demo.demo_document_id
+			            UNION
+			            SELECT document_id
+			              FROM (
+			            SELECT Distinct resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3
+			              FROM std_ras_doc ras, std_cluster_doc clust
+			            WHERE clust.document_id = #{documentId}
+			               AND (ras.resistance_doc_id_1 = clust.demo_document_id 
+			                    OR ras.resistance_doc_id_2 = clust.demo_document_id 
+			                    OR ras.resistance_doc_id_3 = clust.demo_document_id))
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3))
+			            UNION
+			            SELECT a.document_id
+			              FROM (
+			            SELECT ras.resistance_doc_id_1, ras.resistance_doc_id_2, ras.resistance_doc_id_3
+			              FROM std_ras_doc ras
+			             WHERE ras.resistance_doc_id_1 = #{documentId}
+			                    OR ras.resistance_doc_id_2 = #{documentId}
+			                    OR ras.resistance_doc_id_3 = #{documentId})
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3)) a
+			            LEFT OUTER JOIN std_cluster_doc clust
+			            ON (clust.demo_document_id = a.document_id)
+			            UNION
+			            SELECT clust.document_id
+			              FROM (
+			            SELECT ras.resistance_doc_id_1, ras.resistance_doc_id_2, ras.resistance_doc_id_3
+			              FROM std_ras_doc ras
+			            WHERE ras.resistance_doc_id_1 = #{documentId}
+			                    OR ras.resistance_doc_id_2 = #{documentId}
+			                    OR ras.resistance_doc_id_3 = #{documentId})
+			            UNPIVOT (document_id FOR data IN (resistance_doc_id_1, resistance_doc_id_2, resistance_doc_id_3)) a, std_cluster_doc clust
+			            WHERE a.document_id = clust.demo_document_id
+			        )
+			WHERE document_id != #{documentId}
+			UNION
+			SELECT demo_document_id from std_cluster_doc where document_id = #{documentId}
+            UNION  
+            SELECT document_id from std_cluster_doc where demo_document_id = #{documentId}	
+	</select>	
+	
+	<select id="getCDCMolClusterRecordSearchRIDRDemoDocumentIds" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+          SELECT std.document_id, std.document_id||' '|| d.test_type_cd || ' '
+                   || dpa.first_name||' '||dpa.last_name||' '||dpa.dob_text || ' Same As ' || ridr.STATE_CD || ' ' || ridr.STATENO document_details
+          FROM raw_acrf_ridr_info ridr, std_acrf_doc std, person_doc_association pdoc, document_locator d, document_person_attr dpa
+          WHERE ridr.duplicate_status = 1 AND d.document_id = pdoc.document_id AND pdoc.document_id = dpa.document_id 
+		   AND ridr.acrf_doc_id = std.document_id
+		   AND pdoc.stateno = #{stateno}
+		   AND pdoc.document_id = std.document_id
+		   AND pdoc.dissassociation_date IS NULL order by pdoc.document_id desc
+		
+	</select>		
+	
+	<select id="getTransmissionCategoryData" resultType="java.util.Map">
+		select CATEGORY_CODE, CATEG_DESC_SHORT from CODED_TRANSMISSION_CATEGORY order by CATEGORY_CODE
+	</select>	
+		
+	<select id="getEharsRaceData" resultType="java.util.Map">
+		select EHARS_RACE_CODE, EHARS_RACE_DESC from CODED_EHARS_RACE order by EHARS_RACE_CODE
+	</select>	
+		
+	<select id="getEharsEthnicityData" resultType="java.util.Map">
+		select EHARS_ETH_CODE, EHARS_ETH_DESC from CODED_EHARS_ETHNICITY order by EHARS_ETH_CODE
+	</select>	
+		
+	<select id="isEharsStatenoExist" parameterType="java.util.Map" resultType="String">
+			SELECT nyehms_stateno
+			  FROM nyehms_ehars_stateno_map
+			WHERE nyehms_stateno = #{p_stateno,jdbcType=VARCHAR}
+			UNION
+			SELECT nyehms_stateno
+			  FROM ehars_person_nyc
+			WHERE nyehms_stateno = #{p_stateno,jdbcType=VARCHAR}
+	</select>
+	
+	
+	<select id="isStatenoWithCluster" parameterType="java.util.Map" resultType="int">
+		SELECT count(*) FROM STD_CLUSTER_doc where  pkg_consolidation.fn_give_current_stateno(NYEHMS_STATENO_AT_UPLOAD) = pkg_consolidation.fn_give_current_stateno(#{p_stateno,jdbcType=VARCHAR}) and  CLUSTER_id_PK = #{clusterIdPk,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="associateStatenoWithCluster" parameterType="java.util.Map">
+		insert into BHAE_TS_CLUSTER_MANUAL(CLUSTER_ID_PK, STATENO, CREATE_UID, CREATE_DATE, USER_COMMENT) values(#{clusterIdPk,jdbcType=VARCHAR}, #{p_stateno,jdbcType=VARCHAR}, #{p_workerId,jdbcType=VARCHAR}, SYSDATE, #{p_requestComments,jdbcType=VARCHAR})
+	
+	</insert>
+	
+	<select id="isStatenoAssociated" parameterType="java.util.Map" resultType="int">
+		SELECT count(*) FROM BHAE_TS_CLUSTER_MANUAL where  pkg_consolidation.fn_give_current_stateno(STATENO) = pkg_consolidation.fn_give_current_stateno(#{p_stateno,jdbcType=VARCHAR}) and  CLUSTER_id_PK = #{clusterIdPk,jdbcType=VARCHAR}
+	</select>
+	
+		
+	<select id="isStatenoActive" parameterType="java.util.Map" resultType="int">
+		select count(*) from dual where pkg_consolidation.fn_give_current_stateno(#{p_stateno,jdbcType=VARCHAR}) = #{p_stateno,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

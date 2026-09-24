@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.SubProviderDAO">
+
+  <resultMap id="subProviderResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO" >
+    <id 	column="PROVIDER_ID" 	 property="providerId" 	   jdbcType="DECIMAL" />
+    <result column="PROVIDER_FNAME"  property="providerFname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_MNAME"  property="providerMname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_LNAME"  property="providerLname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_SUFFIX" property="providerSuffix" jdbcType="VARCHAR" />
+    <result column="TOTAL_SUB_PROVIDER_ADDRESS" property="totalSubProviderAddress" jdbcType="DECIMAL" />
+    <result column="INPUT_PROV_ADDR_ID" property="inputProvAddrId" jdbcType="DECIMAL" />
+  </resultMap>
+
+ <select id="getSubProviderList" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO" resultMap="subProviderResult">
+    SELECT 
+			PROVIDER_ID, PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX, 
+			COUNT(DISTINCT SUBPROVADRS.SUB_PROVIDER_ADDRESS_ID) AS TOTAL_SUB_PROVIDER_ADDRESS
+			
+    FROM    SUB_PROVIDER SUBPROV  LEFT OUTER JOIN SUB_PROVIDER_ADDRESS SUBPROVADRS USING (PROVIDER_ID)
+       
+	WHERE   (SUBPROVADRS.RETIRED_DATE IS NULL OR SUBPROVADRS.RETIRED_DATE > SYSDATE)
+		      <if test="providerFname != null and providerFname != ''" >
+		        AND UPPER(PROVIDER_FNAME) LIKE UPPER(#{providerFname,jdbcType=VARCHAR})  || '%' 
+		      </if>
+		      <if test="providerMname != null and providerMname != ''" >
+		        AND UPPER(PROVIDER_MNAME) LIKE UPPER(#{providerMname,jdbcType=VARCHAR})  || '%' 
+		      </if>
+		      <if test="providerLname != null and providerLname != ''" >
+		        AND UPPER(PROVIDER_LNAME) LIKE UPPER(#{providerLname,jdbcType=VARCHAR})  || '%' 
+		      </if>
+		      <if test="providerSuffix != null and providerSuffix != ''" >
+		        AND UPPER(PROVIDER_SUFFIX) LIKE UPPER(#{providerSuffix,jdbcType=VARCHAR})  || '%' 
+		      </if>
+    GROUP BY PROVIDER_ID, PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX
+  </select>
+  
+  <select id="getSubProvidersListForSubProvAdrsIds" parameterType="java.util.Map" statementType="CALLABLE">
+	{CALL PKG_STANDARDIZATION.PR_SUB_PROV_BY_SUB_PR_ADDRESS(
+		#{subProvAdrsIds,jdbcType=VARCHAR,mode=IN},
+		#{subProvRefCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=subProviderResult}
+	)}
+  </select>
+  
+  
+    <select id="addNewProvider" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call PKG_STANDARDIZATION.pr_add_provider_name(
+		    #{p_provider_fname,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_mname,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_lname,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_suffix,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_id_out,javaType=LONG,jdbcType=NUMERIC,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<select id="getActiveProviders" resultMap="activeProviderDetails" parameterType="String">
+		select PROVIDER_ID, PROVIDER_FULLNAME from nyehms_provider_names_list_vw where PROVIDER_FNAME like #{providerName} or PROVIDER_LNAME like #{providerName} 
+	</select>
+	
+  	<resultMap type="java.util.Map" id="activeProviderDetails"> 	
+ 	  	<result property="value"  column="PROVIDER_ID"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="label" column="PROVIDER_FULLNAME" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	 <update id="unableStandardizeRawProviderRecord" parameterType="java.util.Map">
+		update RAW_PROVIDER_ADDRESS set SUB_PROVIDER_ADDRESS_ID  = 0, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{userId}  where RAW_PROVIDER_ADDRESS_ID = #{recordId} 
+	</update>
+	
+	<update id="unableStandardizeProviderAddressRecord" parameterType="java.util.Map">
+		update SUB_PROVIDER_ADDRESS set PROVIDER_ID  = 0, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{userId}  where SUB_PROVIDER_ADDRESS_ID = #{recordId} 
+	</update>
+</mapper>

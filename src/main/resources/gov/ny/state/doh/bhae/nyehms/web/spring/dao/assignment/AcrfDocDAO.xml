@@ -1,0 +1,1217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocDAO">
+	
+		<select id="getRawACRFDoc" parameterType="String"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO">  
+		<![CDATA[
+		
+			                
+                SELECT             
+                rw.DOCUMENT_ID documentId,
+                rw.FNAME fname,
+                rw.MNAME mname,
+                rw.LNAME lname,
+                rw.NAME_TYPE_CODE nameTypeCode,
+                rw.ALT_FNAME altFname,
+                rw.ALT_MNAME altMname,
+                rw.ALT_LNAME altLname,
+                rw.ADDRESS_TYPE_CODE addressTypeCode,
+                rw.HIV_ADDRESS_TYPE_CODE hivAddressTypeCode,
+				rw.AIDS_ADDRESS_TYPE_CODE aidsAddressTypeCode,
+                rw.ADDRESS address,
+                rw.CITY city,
+                rw.STATE state,
+                rw.ZIPCODE zipcode,
+                rw.PLUS4 plus4,
+                rw.COUNTY_FIPS countyFips,
+                rw.COUNTRY country,
+                rw.TELEPHONE telephone,
+                rw.MED_RECORD_NUMBER medRecordNumber,
+                rw.ID_TYPE_CODE idTypeCode,
+                rw.OTHER_ID_NUMBER otherIdNumber,
+                TO_CHAR(rw.RECEIVED_DATE, 'MM/DD/YYYY') receivedDate ,
+                rw.EHARS_DOC_ID eharsDocId,
+                rw.STATENO stateno,
+                rw.DOCUMENT_SOURCE documentSource,
+                rw.SURVEILLANCE_METHOD_CODE surveillanceMethodCode,
+                rw.NEW_CASE_CODE newCaseCode,
+                rw.REPORT_MEDIUM_CODE reportMediumCode,
+                rw.PROVIDING_FACILITY_NAME providingFacilityName,
+                rw.PROVIDING_FACILITY_ADDRESS providingFacilityAddress,
+                rw.PROVIDING_FACILITY_CITY providingFacilityCity,
+                rw.PROVIDING_FACILITY_STATE providingFacilityState,
+                rw.PROVIDING_FACILITY_COUNTRY providingFacilityCountry,
+                rw.PROVIDING_FACILITY_ZIPCODE providingFacilityZipcode,
+                rw.PROVIDING_FACILITY_PLUS4 providingFacilityPlus4,
+                rw.PROVIDING_FACILITY_COUNTY_FIPS  providingFacilityCountyFips,
+                rw.PROVIDING_FACILITY_PHONE providingFacilityPhone,
+                rw.PROVIDING_FACILITY_TYPE_CODE providingFacilityTypeCode,
+                rw.PROVIDING_FACILTY_TYPE_OTHER providingFacilityTypeOther,
+                TO_CHAR(rw.DATE_COMPLETED, 'MM/DD/YYYY') dateCompleted ,
+                rw.PERSON_COMPLETING personCompleting,
+                rw.WORKER_PHONE workerPhone,
+                rw.BIRTH_SEX birthSex,
+                rw.BIRTH_COUNTRY birthCountry,
+                rw.BIRTH_COUNTRY_OTHER birthCountryOther,
+                rw.DATE_OF_BIRTH dateOfBirth,
+                rw.ALIAS_DATE_OF_BIRTH aliasDateOfBirth,
+                rw.VITAL_STATISTICS_CODE vitalStatisticsCode,
+                rw.DATE_OF_DEATH dateOfDeath,
+                rw.STATE_OF_DEATH stateOfDeath,
+                rw.GENDER_CODE genderCode,
+                rw.ADDITIONAL_GENDER additionalGender,
+                rw.ETHNICITY_CODE ethnicityCode,
+                rw.EXPANDED_ETHNICITY  expandedEthnicity,
+                rw.RACE_INDIAN raceIndian,
+                rw.RACE_ASIAN raceAsian,
+                rw.RACE_BLACK raceBlack,
+                rw.RACE_PACIFIC racePacific,
+                rw.RACE_WHITE raceWhite,
+                rw.RACE_UNKNOWN raceUnknown,
+                rw.EXPANDED_RACE expandedRace,
+                rw.RES_HIV_DX resHivDx,
+                rw.RES_AIDS_DX resAidsDx,
+                rw.RES_DX_SAME_AS_CURRENT resDxSameAsCurrent,
+                rw.RES_DX_SAME_AS_CURRENT_AIDS resDxSameAsCurrentAids,
+                rw.RES_HIV_ADDRESS resHivAddress,
+                rw.RES_HIV_CITY resHivCity,
+                rw.RES_HIV_STATE resHivState,
+                rw.RES_HIV_COUNTRY resHivCountry,
+                rw.RES_HIV_ZIPCODE resHivZipcode,
+                rw.RES_HIV_PLUS4 resHivPlus4,
+                rw.RES_HIV_COUNTY_FIPS resHivCountyFips,
+                rw.RES_AIDS_ADDRESS resAidsAddress,
+                rw.RES_AIDS_CITY resAidsCity,
+                rw.RES_AIDS_STATE resAidsState,
+                rw.RES_AIDS_COUNTRY resAidsCountry,
+                rw.RES_AIDS_ZIPCODE resAidsZipcode,
+                rw.RES_AIDS_PLUS4 resAidsPlus4,
+                rw.RES_AIDS_COUNTY_FIPS resAidsCountyFips,
+                rw.SL_PROVIDER_LNAME slProviderLname,
+                rw.SL_PROVIDER_FNAME slProviderFname,
+                rw.SL_PROVIDER_MNAME slProviderMname,
+                rw.SL_PROVIDER_SUFFIX slProviderSuffix,
+                rw.SL_PROVIDER_PHONE slProviderPhone,
+                rw.SL_MED_RECORD_NUM slMedRecordNum,
+                rw.SL_FACILITY_NAME slFacilityName,
+                rw.SL_PERSON_COMPLETING slWorkerUid,
+                rw.SL_WORKER_PHONE slWorkerPhone,
+                rw.FACILITY_DX_HIV facilityDxHiv,
+                rw.FACILITY_DX_AIDS facilityDxAids,
+                rw.FACILITY_DX_SAME_AS_PROVIDING facilityDxSameAsProviding,
+                rw.FAC_DX_SAMEAS_PROVIDING_AIDS facilityDxSameAsProvidingAids,
+                rw.FACILITY_NAME_HIV_DX facilityHivDxName,
+                rw.FACILITY_ADDRESS_HIV_DX facilityAddressHivDx,
+                rw.FACILITY_CITY_HIV_DX facilityCityHivDx,
+                rw.FACILITY_STATE_HIV_DX facilityStateHivDx,
+                rw.FACILITY_COUNTRY_HIV_DX facilityCountryHivDx,
+                rw.FACILITY_ZIPCODE_HIV_DX facilityZipcodeHivDx,
+                rw.FACILITY_PLUS4_HIV_DX facilityPlus4HivDx,
+                rw.FACILITY_COUNTY_FIPS_HIV_DX facilityCountyFipsHivDx,
+                rw.FACILITY_PHONE_HIV_DX facilityPhoneHivDx,
+                rw.FACILITY_TYPE_CODE_HIV_DX facilityHivDxTypeCode,
+                rw.FACILITY_TYPE_OTHER_HIV_DX facilityHivDxTypeOther,
+                rw.PROVIDER_FNAME_HIV_DX providerFnameHivDx,
+                rw.PROVIDER_MNAME_HIV_DX providerMnameHivDx,
+                rw.PROVIDER_LNAME_HIV_DX providerLnameHivDx,
+                rw.PROVIDER_SUFFIX_HIV_DX providerSuffixHivDx,
+                rw.PROVIDER_PHONE_HIV_DX providerPhoneHivDx,
+                rw.PROVIDER_SPECIALTY providerSpecialty,
+                rw.FACILITY_NAME_AIDS_DX facilityAidsDxName,
+                rw.FACILITY_ADDRESS_AIDS_DX facilityAddressAidsDx,
+                rw.FACILITY_CITY_AIDS_DX facilityCityAidsDx,
+                rw.FACILITY_STATE_AIDS_DX facilityStateAidsDx,
+                rw.FACILITY_COUNTRY_AIDS_DX facilityCountryAidsDx,
+                rw.FACILITY_ZIPCODE_AIDS_DX facilityZipcodeAidsDx,
+                rw.FACILITY_PLUS4_AIDS_DX facilityPlus4AidsDx,
+                rw.FACILITY_COUNTY_FIPS_AIDS_DX facilityCountyFipsAidsDx,
+                rw.FACILITY_PHONE_AIDS_DX facilityPhoneAidsDx,
+                rw.FACILITY_TYPE_CODE_AIDS_DX facilityAidsDxTypeCode,
+                rw.FACILITY_TYPE_OTHER_AIDS_DX facilityAidsDxTypeOther,
+                rw.PROVIDER_FNAME_AIDS_DX providerFnameAidsDx,
+                rw.PROVIDER_MNAME_AIDS_DX providerMnameAidsDx,
+                rw.PROVIDER_LNAME_AIDS_DX providerLnameAidsDx,
+                rw.PROVIDER_SUFFIX_AIDS_DX providerSuffixAidsDx,
+                rw.PROVIDER_PHONE_AIDS_DX providerPhoneAidsDx,
+                rw.PROVIDER_SPECIALTY_AIDS_DX providerSpecialtyAidsDx,
+                rw.PEDIATRIC_RISK pediatricRisk,
+                rw.SEX_WITH_MALE sexWithMale,
+                rw.SEX_WITH_FEMALE sexWithFemale,
+                rw.IDU idu,
+                rw.RECV_CLOTTING_FACTOR recvClottingFactor,
+                rw.CLOTTING_FACTOR_RECV clottingFactorRecv,
+                rw.DATE_RECV_CLOTTING_FACTOR dateRecvClottingFactor,
+                rw.HETEROSEX_WITH_IDU heterosexWithIdu,
+                rw.HETEROSEX_WITH_MSM heterosexWithMsm,
+                rw.HETEROSEX_WITH_HEMOPHILIAC heterosexWithHemophiliac,
+                rw.HETEROSEX_WITH_TRANSFUSION heterosexWithTransfusion,
+                rw.HETEROSEX_WITH_TRANSPLANT heterosexWithTransplant,
+                rw.HETEROSEX_WITH_HIV heterosexWithHiv,
+                rw.RECV_BLOOD_TRANSFUSION recvBloodTransfusion,
+                rw.FIRST_DATE_RECV_BLOOD firstDateRecvBlood,
+                rw.LAST_DATE_RECV_BLOOD lastDateRecvBlood,
+                rw.RECV_TRANSPLANT recvTransplant,
+                rw.HEALTHCARE_WORKER healthcareWorker,
+                rw.OCCUPATION occupation,
+                rw.OTHER_RISK otherRisk,
+                rw.OTHER_RISK_DETAILS otherRiskDetails,
+                rw.LAST_NEG_HIV_DATE lastNegHivDate,
+                rw.LAST_NEG_HIV_TEST lastNegHivTest,
+                rw.HIV_DIAGNOSIS_BY_PHYSICIAN hivDiagnosisByPhysician,
+                rw.PHYISICIAN_DIAGNOSIS_DATE phyisicianDiagnosisDate,
+                rw.CANDIDIASIS_BRONCHI_DATE candidiasisBronchiDate ,
+                rw.CANDIDIASIS_ESOPH_DATE candidiasisEsophDate ,
+                rw.CARCINOMA_DATE carcinomaDate ,
+                rw.COCCIDIODOMYCOSIS_DATE coccidiodomycosisDate ,
+                rw.CRYPTOCOCCOSIS_DATE cryptococcosisDate ,
+                rw.CRYPTOSPORIDIOSIS_DATE cryptosporidiosisDate ,
+                rw.CYTOMEGALO_DISEASE_DATE cytomegaloDiseaseDate ,
+                rw.CYTOMEGALO_RETINITIS_DATE cytomegaloRetinitisDate ,
+                rw.HIV_ENCEPH_DATE hivEncephDate ,
+                rw.HERPES_DATE herpesDate ,
+                rw.HISTOPLASMOSIS_DATE histoplasmosisDate ,
+                rw.ISOSPORIASIS_DATE isosporiasisDate ,
+                rw.KAPOSIS_SARCOMA_DATE kaposisSarcomaDate ,
+                rw.LYMPHOMA_BURKITTS_1 lymphomaBurkitts1 ,
+                rw.LYMPHOMA_IMMUNO_DATE lymphomaImmunoDate ,
+                rw.LYMPHOMA_BRAIN_DATE lymphomaBrainDate ,
+                rw.M_AVIUM_OR_KANSASII_DATE MAviumOrKansasiiDate ,
+                rw.TB_PULMONARY_1 tbPulmonary1 ,
+                rw.TB_EXTRAPULMONARY_DATE tbExtrapulmonaryDate ,
+                rw.MYCOBACTERIUM_OTHER_DATE mycobacteriumOtherDate ,
+                rw.PNUEMOCYSTIS_DATE pnuemocystisDate ,
+                rw.PNEUMONIA_RECURRENT_DATE pneumoniaRecurrentDate ,
+                rw.PML_DATE  pmlDate ,
+                rw.SALMONELLA_SEPTIC_DATE salmonellaSepticDate ,
+                rw.TOXOPLASMOSIS_BRAIN_DATE  toxoplasmosisBrainDate ,
+                rw.WASTING_SYNDROME_DATE  wastingSyndromeDate ,
+                rw.TB_RVCT_CASE_NUMBER tbRvctCaseNumber,
+                rw.INFORMED_OF_HIV informedOfHiv,
+                rw.PARTNERS_NOTIFIED_BY partnersNotifiedBy,
+                rw.REFFERED_FOR_OBGYN refferedForObgyn,
+                rw.CURRENTLY_PREGNANT currentlyPregnant,
+                rw.LIVE_BIRTH liveBirth,
+                rw.MAIN_TTH_SOURCE AS testTreatmentHistorySource,
+                rw.PT_INTERVIEW_DATE AS dateReported,
+                rw.EVER_HAD_POS AS prevPosHivTest,
+                rw.FIRST_HIV_TEST_EVER AS dateFirstPosHivTest,
+                rw.EVER_HAD_NEG AS negHivTest,
+                rw.LAST_NEG_DATE AS dateLastNegHivTest,
+                rw.RESP_HIV_TEST_2YRS AS numNegTestUnkRef,
+                rw.COUNT_HIV_TEST_2YRS AS numNegTestBeforePos,
+                rw.PT_ARV_6_MO AS takenArvs,
+                rw.PT_ARV_NAME AS arvMeds,
+                rw.PT_ARV_START_DATE AS dateArvsBegan,
+                rw.PT_ARV_END_DATE AS dateLastUsedArvs,
+                rw.COMMENTS comments,
+                rw.ACRF_SRC_ID acrfSrcId,
+                rw.LOCAL_OPTIONAL_FIELDS localOptionalFields,
+                rw.CHILD_NAME childName,
+                rw.CHILD_SOUNDEX childSoundex,
+                rw.CHILD_DOB childDob,
+                rw.CHILD_CODED_ID childCodedId,
+                rw.CHILD_STATENO childStateno,
+                rw.CHILD_FACILITY_NAME childrenFacilityName,
+                rw.CHILD_FACILITY_PHONE childrenFacilityPhone,
+                rw.CHILD_FACILITY_ZIP_CODE childrenFacilityZipCode,
+                rw.CHILD_FACILITY_STREET_ADDRESS childrenFacilityStreetAddress,
+                rw.CHILD_FACILITY_CITY childrenFacilityCity,
+                rw.CHILD_FACILITY_COUNTY childrenFacilityCounty,
+                rw.CHILD_FACILITY_CNTRY childrenFacilityCountry,
+				rw.CHILD_FACILITY_ID childrenFacilityId,
+				rw.CHILD_FACILITY_EHARS_UID childrenFacilityEharsUid,
+				rw.CHILD_FACILITY_TYPE childrenFacilityType,
+				rw.CHILD_FACILITY_STATE childrenFacilityState,
+				rw.LAB_RESULT_MEET_HIV_DIAG_CRIT labResultMeetHivDiagCriteria,
+                rw.DATE_EARLIEST_POSITIVE dateEarliestPositive,
+                rw.REPT_HEALTH_DEPT_CITY_COUNTY reportingHealthDeptCityCounty,
+                rw.CITY_COUNTY_NUMBER cityCountyNumber,
+                rw.LNAME_SOUNDEX lastnameSoundex,
+                rw.DX_ALGORITHM dxAlgorithm,
+                rw.DX_ALGORITHM_DATE dxAlgorithmDate,
+                rw.CURRENT_ARVS1 currentArvs, 
+                rw.FACILITY_ID_HIV_DX facilityHivDxId,
+                rw.FACILITY_EHARS_UID_HIV_DX facilityHivDxEharsUid,
+                rw.FACILITY_ID_AIDS_DX facilityAidsDxId,
+                rw.FACILITY_EHARS_UID_AIDS_DX facilityAidsDxEharsUid,
+                rw.PROVIDING_FACILITY_ID providingFacilityId,
+                rw.PROVIDING_EHARS_FACILITY_UID providingEharsFacilityEharsUid,
+                rw.RES_AIDS_ADDRESS_DATE  resAidsAddressDate,
+				rw.RES_HIV_ADDRESS_DATE  resHivAddressDate,
+				rw.ADDRESS_DATE  patientAddressDate   ,
+				rw.MAIN_ARV_SOURCE  mainARVSource,
+				rw.PT_ARV_DATE_REPORTED  arvPatientDateReported,
+ 				rw.OLD_ACRF  isOldAcrf,
+				rw.ACRF_REVISION acrfRevison,
+				rw.SUSPECT_AHI  suspectAhi,
+				rw.AHI_SYMPTOMS  ahiSymptoms,
+				rw.AHI_SYMPTOMS_DATE  ahiSymptomsDate,
+				rw.AHI_EVIDENCE  ahiEvidence,
+				rw.AHI_EVIDENCE_NOTES ahiEvidenceNotes,
+				rw.AHI_EVIDENCE_DATE  ahiEvidenceDate,
+				rw.NON_LAB_MED_CARE  nonLabMedCare,
+				rw.NON_LAB_MED_CARE_DATE  nonLabMedCareDate,
+				
+				rw.GENDER_IDEN_DATE genderIdentifiedDate,
+	   			rw.SEX_ORN sexOrientation,
+			    rw.SEX_ORN_ADD additionalsexOrientation,
+			    rw.SEX_ORN_DATE   sexOrientationDate,
+			    rw.RESP_POS_SELF_TEST_BY_PAT   posHivTestSelfTest,
+			    rw.NEG_HIV_BY_SELF_TEST negHivTestSelfTest,
+			    rw.COUNT_NEG_BY_SELF_TEST numNegTestBySelfTest,
+			    rw.NEG_BY_SELF_TEST_UNK numNegTestBySelfTestUnkRef,
+			    rw.RAPID_TEST_TYPE rapidTestType,
+				rw.OTHER_RISK_BEFORE_DIAG otherRiskBeforeDiag,
+				rw.C_BREASTFED_NON_BP breastfedNonBp, 
+		        rw.C_PRECHEWED_FOOD_NON_BP prechewedFoodNonBp, 
+				rw.C_BREASTFED_BP childBreastfedBp ,
+				rw.C_PRECHEWED_FOOD_BP childPrechewedFoodBp ,
+				rw.SEX_WITH_FEMALE_BEFORE_DIAG sexWithFemaleBeforeDiag,
+				rw.SEX_WITH_MALE_BEFORE_DIAG sexWithMaleBeforeDiag,
+				rw.RECV_TRANSPLANT_BEFORE_DIAG recvTransplantBeforeDiag,
+				rw.RECV_BLOOD_TRANSFUSION_BEFORE_DIAG recvBloodTransfusionBeforeDiag,
+				rw.LAST_RECV_BLOOD_BEFORE_DIAG_DATE lastRecvBloodBeforeDiagDate,
+				rw.FIRST_RECV_BLOOD_BEFORE_DIAG_DATE firstRecvBloodBeforeDiagDate,
+				rw.RECV_CLOTTING_FACTOR_BEFORE_DIAG recvClottingFactorBeforeDiag,
+				rw.CLOTTING_FACTOR_BEFORE_DIAG_RECV_DATE clottingFactorBeforeDiagRecvDate,
+				rw.CLOTTING_FACTOR_RECV_BEFORE_DIAG clottingFactorRecvBeforeDiag,
+				rw.IDU_BEFORE_DIAG iduBeforeDiag,
+				rw.MOM_RECV_TRANSPLANT motherRecvTransplant,
+				rw.MOM_RECV_BLOOD_TRANSFUSION motherRecvBloodTransfusion,
+				rw.MOM_LAST_RECV_BLOOD_DATE motherLastRecvBloodDate,
+				rw.MOM_FIRST_RECV_BLOOD_DATE motherFirstRecvBloodDate,
+				rw.MOM_HETEROSEX_WITH_HIV motherHeterosexWithHiv,
+				rw.MOM_HETEROSEX_WITH_TRANSPLANT motherHeterosexWithTransplant,
+				rw.MOM_HETEROSEX_WITH_TRANSFUSION motherHeterosexWithTransfusion,
+				rw.MOM_HETEROSEX_WITH_HEMOPHILIAC motherHeterosexWithHemophiliac,
+				rw.MOM_HETEROSEX_WITH_BISEX motherHeterosexWithMsm,
+				rw.MOM_HETEROSEX_WITH_IDU motherHeterosexWithIdu,
+				rw.MOM_IDU motherIdu,
+				rw.MOM_PERINATAL_HIV_INFECTION motherPerinatalHivInfection,
+				rw.CHILD_MOM_HIV_INFECTION_STATUS childMomHivInfectionStatus,
+				rw.MOTHER_FIRST_POS_TEST_DATE motherFirstPosTestDate,
+				rw.C_BREASTFED_BP_START_DATE childBreastfedStartDate,
+				rw.C_BREASTFED_BP_STOP_DATE childBreastfedStopDate,
+				
+				
+				
+				pdoc.stateno MATCHED_STATENO,
+				TO_CHAR(std.EHARS_IMPORT_DATE, 'MM/DD/YYYY') EHARS_IMPORT_DATE
+				
+				from raw_acrf_doc rw, std_acrf_doc std, person_doc_association pdoc
+             where rw.document_id = std.document_id(+)
+             and rw.document_id = pdoc.document_id(+)
+             and pdoc.DISSASSOCIATION_DATE(+) is null
+             and rw.document_id =#{documentId}
+
+		]]>
+	
+	</select>
+
+
+
+
+
+
+<select id="addRawACRFDoc" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO">
+	<![CDATA[	
+	INSERT INTO RAW_ACRF_DOC(DOCUMENT_ID
+							, FNAME
+							, MNAME
+							, LNAME
+							, NAME_TYPE_CODE
+							, ALT_FNAME
+							, ALT_MNAME
+							, ALT_LNAME
+							, ADDRESS_TYPE_CODE
+							, HIV_ADDRESS_TYPE_CODE
+							, AIDS_ADDRESS_TYPE_CODE
+							, ADDRESS
+							, CITY
+							, STATE
+							, ZIPCODE
+							, PLUS4
+							, COUNTY_FIPS
+							, COUNTRY
+							, TELEPHONE
+							, MED_RECORD_NUMBER
+							, ID_TYPE_CODE
+							, OTHER_ID_NUMBER
+							, RECEIVED_DATE
+							, EHARS_DOC_ID
+							, STATENO
+							, DOCUMENT_SOURCE
+							, SURVEILLANCE_METHOD_CODE
+							, NEW_CASE_CODE
+							, REPORT_MEDIUM_CODE
+							, PROVIDING_FACILITY_NAME
+							, PROVIDING_FACILITY_ADDRESS
+							, PROVIDING_FACILITY_CITY
+							, PROVIDING_FACILITY_STATE
+							, PROVIDING_FACILITY_COUNTRY
+							, PROVIDING_FACILITY_ZIPCODE
+							, PROVIDING_FACILITY_PLUS4
+							, PROVIDING_FACILITY_COUNTY_FIPS
+							, PROVIDING_FACILITY_PHONE
+							, PROVIDING_FACILITY_TYPE_CODE
+							, PROVIDING_FACILTY_TYPE_OTHER
+							, DATE_COMPLETED
+							, PERSON_COMPLETING
+							, WORKER_PHONE
+							, BIRTH_SEX
+							, BIRTH_COUNTRY
+							, BIRTH_COUNTRY_OTHER
+							, DATE_OF_BIRTH
+							, ALIAS_DATE_OF_BIRTH
+							, VITAL_STATISTICS_CODE
+							, DATE_OF_DEATH
+							, STATE_OF_DEATH
+							, GENDER_CODE
+							, ADDITIONAL_GENDER
+							, ETHNICITY_CODE
+							, EXPANDED_ETHNICITY
+							, RACE_INDIAN
+							, RACE_ASIAN
+							, RACE_BLACK
+							, RACE_PACIFIC
+							, RACE_WHITE
+							, RACE_UNKNOWN
+							, EXPANDED_RACE
+							, RES_HIV_DX
+							, RES_AIDS_DX
+							, RES_DX_SAME_AS_CURRENT
+							, RES_DX_SAME_AS_CURRENT_AIDS
+							, RES_HIV_ADDRESS
+							, RES_HIV_CITY
+							, RES_HIV_STATE
+							, RES_HIV_COUNTRY
+							, RES_HIV_ZIPCODE
+							, RES_HIV_PLUS4
+							, RES_HIV_COUNTY_FIPS
+							, RES_AIDS_ADDRESS
+							, RES_AIDS_CITY
+							, RES_AIDS_STATE
+							, RES_AIDS_COUNTRY
+							, RES_AIDS_ZIPCODE
+							, RES_AIDS_PLUS4
+							, RES_AIDS_COUNTY_FIPS							
+							, SL_PROVIDER_LNAME
+							, SL_PROVIDER_FNAME
+							, SL_PROVIDER_MNAME
+							, SL_PROVIDER_SUFFIX
+							, SL_PROVIDER_PHONE
+							, SL_MED_RECORD_NUM
+							, SL_FACILITY_NAME
+							, SL_PERSON_COMPLETING
+							, SL_WORKER_PHONE							
+							, FACILITY_DX_HIV
+							, FACILITY_DX_AIDS
+							, FACILITY_DX_SAME_AS_PROVIDING
+							, FAC_DX_SAMEAS_PROVIDING_AIDS
+							, FACILITY_NAME_HIV_DX
+							, FACILITY_ADDRESS_HIV_DX
+							, FACILITY_CITY_HIV_DX
+							, FACILITY_STATE_HIV_DX
+							, FACILITY_COUNTRY_HIV_DX
+							, FACILITY_ZIPCODE_HIV_DX
+							, FACILITY_PLUS4_HIV_DX
+							, FACILITY_COUNTY_FIPS_HIV_DX
+							, FACILITY_PHONE_HIV_DX
+							, FACILITY_TYPE_CODE_HIV_DX
+							, FACILITY_TYPE_OTHER_HIV_DX							
+							, PROVIDER_FNAME_HIV_DX
+							, PROVIDER_MNAME_HIV_DX
+							, PROVIDER_LNAME_HIV_DX
+							, PROVIDER_SUFFIX_HIV_DX							
+							, PROVIDER_PHONE_HIV_DX
+							, PROVIDER_SPECIALTY
+							, FACILITY_NAME_AIDS_DX
+							, FACILITY_ADDRESS_AIDS_DX
+							, FACILITY_CITY_AIDS_DX
+							, FACILITY_STATE_AIDS_DX
+							, FACILITY_COUNTRY_AIDS_DX
+							, FACILITY_ZIPCODE_AIDS_DX
+							, FACILITY_PLUS4_AIDS_DX
+							, FACILITY_COUNTY_FIPS_AIDS_DX
+							, FACILITY_PHONE_AIDS_DX
+							, FACILITY_TYPE_CODE_AIDS_DX
+							, FACILITY_TYPE_OTHER_AIDS_DX							
+							, PROVIDER_FNAME_AIDS_DX
+							, PROVIDER_MNAME_AIDS_DX
+							, PROVIDER_LNAME_AIDS_DX
+							, PROVIDER_SUFFIX_AIDS_DX
+							, PROVIDER_PHONE_AIDS_DX
+							, PROVIDER_SPECIALTY_AIDS_DX
+							, PEDIATRIC_RISK
+							, SEX_WITH_MALE
+							, SEX_WITH_FEMALE
+							, IDU
+							, RECV_CLOTTING_FACTOR
+							, CLOTTING_FACTOR_RECV
+							, DATE_RECV_CLOTTING_FACTOR
+							, HETEROSEX_WITH_IDU
+							, HETEROSEX_WITH_MSM
+							, HETEROSEX_WITH_HEMOPHILIAC
+							, HETEROSEX_WITH_TRANSFUSION
+							, HETEROSEX_WITH_TRANSPLANT
+							, HETEROSEX_WITH_HIV
+							, RECV_BLOOD_TRANSFUSION
+							, FIRST_DATE_RECV_BLOOD
+							, LAST_DATE_RECV_BLOOD
+							, RECV_TRANSPLANT
+							, HEALTHCARE_WORKER
+							, OCCUPATION
+							, OTHER_RISK
+							, OTHER_RISK_DETAILS
+							, LAST_NEG_HIV_DATE
+							, LAST_NEG_HIV_TEST
+							, HIV_DIAGNOSIS_BY_PHYSICIAN
+							, PHYISICIAN_DIAGNOSIS_DATE
+							, CANDIDIASIS_BRONCHI_DATE
+							, CANDIDIASIS_ESOPH_DATE
+							, CARCINOMA_DATE
+							, COCCIDIODOMYCOSIS_DATE
+							, CRYPTOCOCCOSIS_DATE
+							, CRYPTOSPORIDIOSIS_DATE
+							, CYTOMEGALO_DISEASE_DATE
+							, CYTOMEGALO_RETINITIS_DATE
+							, HIV_ENCEPH_DATE
+							, HERPES_DATE
+							, HISTOPLASMOSIS_DATE
+							, ISOSPORIASIS_DATE
+							, KAPOSIS_SARCOMA_DATE
+							, LYMPHOMA_BURKITTS_1
+							, LYMPHOMA_IMMUNO_DATE
+							, LYMPHOMA_BRAIN_DATE
+							, M_AVIUM_OR_KANSASII_DATE
+							, TB_PULMONARY_1
+							, TB_EXTRAPULMONARY_DATE
+							, MYCOBACTERIUM_OTHER_DATE
+							, PNUEMOCYSTIS_DATE
+							, PNEUMONIA_RECURRENT_DATE
+							, PML_DATE
+							, SALMONELLA_SEPTIC_DATE
+							, TOXOPLASMOSIS_BRAIN_DATE
+							, WASTING_SYNDROME_DATE
+							, TB_RVCT_CASE_NUMBER
+							, INFORMED_OF_HIV
+							, PARTNERS_NOTIFIED_BY
+							, REFFERED_FOR_OBGYN
+							, CURRENTLY_PREGNANT
+							, LIVE_BIRTH
+							, COMMENTS
+							, LOCAL_OPTIONAL_FIELDS
+							, CHILD_NAME
+							, CHILD_SOUNDEX
+							, CHILD_DOB
+							, CHILD_CODED_ID
+							, CHILD_STATENO
+							, CHILD_FACILITY_NAME
+							, CHILD_FACILITY_PHONE
+							, CHILD_FACILITY_ZIP_CODE
+							, CHILD_FACILITY_STREET_ADDRESS
+							, CHILD_FACILITY_CITY
+							, CHILD_FACILITY_COUNTY
+							, CHILD_FACILITY_CNTRY
+							, CHILD_FACILITY_ID
+							, CHILD_FACILITY_EHARS_UID 
+							, CHILD_FACILITY_TYPE
+							, CHILD_FACILITY_STATE
+							, LAB_RESULT_MEET_HIV_DIAG_CRIT
+							, DATE_EARLIEST_POSITIVE
+							, REPT_HEALTH_DEPT_CITY_COUNTY
+							, CITY_COUNTY_NUMBER
+							, LNAME_SOUNDEX
+							, MAIN_TTH_SOURCE 
+							, EVER_HAD_POS
+							, PT_INTERVIEW_DATE 
+							, FIRST_HIV_TEST_EVER	 
+							, EVER_HAD_NEG 
+							, LAST_NEG_DATE 
+							, RESP_HIV_TEST_2YRS 
+							, COUNT_HIV_TEST_2YRS 
+							, PT_ARV_6_MO 
+							, PT_ARV_NAME 
+							, PT_ARV_START_DATE 
+							, PT_ARV_END_DATE
+							, DX_ALGORITHM
+							, DX_ALGORITHM_DATE
+							, CURRENT_ARVS1
+							, FACILITY_ID_HIV_DX
+							, FACILITY_EHARS_UID_HIV_DX
+							, FACILITY_ID_AIDS_DX
+							, FACILITY_EHARS_UID_AIDS_DX
+							, PROVIDING_FACILITY_ID
+							, PROVIDING_EHARS_FACILITY_UID
+							, RES_AIDS_ADDRESS_DATE
+							, RES_HIV_ADDRESS_DATE
+							, ADDRESS_DATE 
+							, MAIN_ARV_SOURCE
+							, PT_ARV_DATE_REPORTED
+							, OLD_ACRF
+							, ACRF_REVISION
+							, CURRENT_PROCESS_STATUS
+							,SUSPECT_AHI  		
+							, AHI_SYMPTOMS  		
+							, AHI_SYMPTOMS_DATE  	
+							, AHI_EVIDENCE  		
+							, AHI_EVIDENCE_DATE  	
+							, AHI_EVIDENCE_NOTES
+							, NON_LAB_MED_CARE  	
+							, NON_LAB_MED_CARE_DATE
+							, GENDER_IDEN_DATE
+							, SEX_ORN 
+						    , SEX_ORN_ADD 
+						    , SEX_ORN_DATE   
+						    , RESP_POS_SELF_TEST_BY_PAT   
+						    , NEG_HIV_BY_SELF_TEST 
+						    , COUNT_NEG_BY_SELF_TEST 
+						    , NEG_BY_SELF_TEST_UNK
+						    , RAPID_TEST_TYPE 
+						    , ENTERED_BY
+						    , ENTERED_DATE
+						    , OTHER_RISK_BEFORE_DIAG
+							, C_BREASTFED_BP
+							, C_PRECHEWED_FOOD_BP
+							, C_BREASTFED_NON_BP  
+		  					, C_PRECHEWED_FOOD_NON_BP 
+							, SEX_WITH_FEMALE_BEFORE_DIAG
+							, SEX_WITH_MALE_BEFORE_DIAG
+							, RECV_TRANSPLANT_BEFORE_DIAG
+							, RECV_BLOOD_TRANSFUSION_BEFORE_DIAG
+							, LAST_RECV_BLOOD_BEFORE_DIAG_DATE
+							, FIRST_RECV_BLOOD_BEFORE_DIAG_DATE
+							, RECV_CLOTTING_FACTOR_BEFORE_DIAG
+							, CLOTTING_FACTOR_BEFORE_DIAG_RECV_DATE
+							, CLOTTING_FACTOR_RECV_BEFORE_DIAG
+							, IDU_BEFORE_DIAG
+							, MOM_RECV_TRANSPLANT
+							, MOM_RECV_BLOOD_TRANSFUSION
+							, MOM_LAST_RECV_BLOOD_DATE
+							, MOM_FIRST_RECV_BLOOD_DATE
+							, MOM_HETEROSEX_WITH_HIV
+							, MOM_HETEROSEX_WITH_TRANSPLANT
+							, MOM_HETEROSEX_WITH_TRANSFUSION
+							, MOM_HETEROSEX_WITH_HEMOPHILIAC
+							, MOM_HETEROSEX_WITH_BISEX
+							, MOM_HETEROSEX_WITH_IDU
+							, MOM_IDU
+							, MOM_PERINATAL_HIV_INFECTION
+							, CHILD_MOM_HIV_INFECTION_STATUS
+							, MOTHER_FIRST_POS_TEST_DATE
+							, C_BREASTFED_BP_START_DATE
+							, C_BREASTFED_BP_STOP_DATE
+						    )  
+							
+							VALUES
+							
+							( 	#{documentId} 
+								, trim(upper(#{fname})) 
+								, trim(upper(#{mname})) 
+								, trim(upper(#{lname}))
+								, #{nameTypeCode}
+								, trim(upper(#{altFname}))
+								, trim(upper(#{altMname}))
+								, trim(upper(#{altLname}))
+								, #{addressTypeCode}
+								, #{hivAddressTypeCode}
+								, #{aidsAddressTypeCode}
+								, trim(upper(#{address}))
+								, trim(upper(#{city}))
+								, trim(upper(#{state}))
+								, trim(upper(#{zipcode}))
+								, trim(upper(#{plus4}))
+								, trim(upper(#{countyFips}))
+								, #{country}
+								, trim(upper(#{telephone}))
+								, #{medRecordNumber}
+								, #{idTypeCode}
+								, trim(upper(#{otherIdNumber}))
+								, TO_DATE(#{receivedDate:DATE}, 'MM/DD/YYYY')   
+								, #{eharsDocId} 
+								, #{stateno} 
+								, #{documentSource} 
+								, #{surveillanceMethodCode}
+								, #{newCaseCode}
+								, #{reportMediumCode}
+								, trim(upper(#{providingFacilityName}))
+								, trim(upper(#{providingFacilityAddress}))
+								, trim(upper(#{providingFacilityCity}))
+								, trim(upper(#{providingFacilityState}))
+								, trim(upper(#{providingFacilityCountry}))
+								, trim(upper(#{providingFacilityZipcode}))
+								, trim(upper(#{providingFacilityPlus4}))
+								, trim(upper(#{providingFacilityCountyFips}))
+								, trim(upper(#{providingFacilityPhone}))
+								, trim(upper(#{providingFacilityTypeCode}))
+								, trim(upper(#{providingFacilityTypeOther}))
+								, to_date(#{dateCompleted:DATE}, 'MM/DD/YYYY')  
+								, #{personCompleting}
+								, trim(upper(#{workerPhone}))
+								, #{birthSex}
+								, #{birthCountry}
+								, #{birthCountryOther}
+								, trim(upper(#{dateOfBirth,jdbcType=VARCHAR}))
+								, trim(upper(#{aliasDateOfBirth}))
+								, #{vitalStatisticsCode}
+								, #{dateOfDeath} 
+								, #{stateOfDeath}
+								, #{genderCode}
+								, trim(upper(#{additionalGender}))
+								, #{ethnicityCode} 
+								, #{expandedEthnicity}
+								, #{raceIndian} 
+								, #{raceAsian} 
+								, #{raceBlack} 
+								, #{racePacific} 
+								, #{raceWhite} 
+								, #{raceUnknown} 
+								, trim(upper(#{expandedRace}))
+								, #{resHivDx}
+								, #{resAidsDx}
+								, #{resDxSameAsCurrent}
+								, #{resDxSameAsCurrentAids}
+								, trim(upper(#{resHivAddress}))
+								, trim(upper(#{resHivCity}))
+								, trim(upper(#{resHivState}))
+								, trim(upper(#{resHivCountry}))
+								, trim(upper(#{resHivZipcode}))
+								, trim(upper(#{resHivPlus4}))
+								, trim(upper(#{resHivCountyFips}))
+								, trim(upper(#{resAidsAddress}))
+								, trim(upper(#{resAidsCity}))
+								, trim(upper(#{resAidsState}))
+								, trim(upper(#{resAidsCountry}))
+								, trim(upper(#{resAidsZipcode}))
+								, trim(upper(#{resAidsPlus4}))
+								, trim(upper(#{resAidsCountyFips}))																
+								, trim(upper(#{slProviderLname}))
+								, trim(upper(#{slProviderFname}))
+								, trim(upper(#{slProviderMname}))
+								, trim(upper(#{slProviderSuffix}))
+								, trim(upper(#{slProviderPhone}))
+								, trim(upper(#{slMedRecordNum}))
+								, trim(upper(#{slFacilityName}))
+								, trim(upper(#{slWorkerUid}))
+								, trim(upper(#{slWorkerPhone}))
+								, #{facilityDxHiv}
+								, trim(upper(#{facilityDxAids}))
+								, #{facilityDxSameAsProviding}
+								, trim(upper(#{facilityDxSameAsProvidingAids}))
+								, trim(upper(#{facilityHivDxName}))
+								, trim(upper(#{facilityAddressHivDx}))
+								, trim(upper(#{facilityCityHivDx}))
+								, trim(upper(#{facilityStateHivDx}))
+								, trim(upper(#{facilityCountryHivDx}))
+								, trim(upper(#{facilityZipcodeHivDx}))
+								, trim(upper(#{facilityPlus4HivDx}))
+								, trim(upper(#{facilityCountyFipsHivDx}))
+								, trim(upper(#{facilityPhoneHivDx}))
+								, trim(upper(#{facilityHivDxTypeCode}))
+								, trim(upper(#{facilityHivDxTypeOther}))
+								, trim(upper(#{providerFnameHivDx}))
+								, trim(upper(#{providerMnameHivDx}))
+								, trim(upper(#{providerLnameHivDx}))
+								, trim(upper(#{providerSuffixHivDx}))
+								, trim(upper(#{providerPhoneHivDx}))
+								, trim(upper(#{providerSpecialty}))
+								, trim(upper(#{facilityAidsDxName}))
+								, trim(upper(#{facilityAddressAidsDx}))
+								, trim(upper(#{facilityCityAidsDx}))
+								, trim(upper(#{facilityStateAidsDx}))
+								, trim(upper(#{facilityCountryAidsDx}))
+								, trim(upper(#{facilityZipcodeAidsDx}))
+								, trim(upper(#{facilityPlus4AidsDx}))
+								, trim(upper(#{facilityCountyFipsAidsDx}))
+								, trim(upper(#{facilityPhoneAidsDx}))
+								, trim(upper(#{facilityAidsDxTypeCode}))
+								, trim(upper(#{facilityAidsDxTypeOther}))
+								, trim(upper(#{providerFnameAidsDx}))
+								, trim(upper(#{providerMnameAidsDx}))
+								, trim(upper(#{providerLnameAidsDx}))
+								, trim(upper(#{providerSuffixAidsDx}))
+								, trim(upper(#{providerPhoneAidsDx}))
+								, #{providerSpecialtyAidsDx}
+								, trim(upper(#{pediatricRisk,jdbcType=VARCHAR}))
+								, #{sexWithMale,jdbcType=VARCHAR}
+								, #{sexWithFemale,jdbcType=VARCHAR}
+								, #{idu,jdbcType=VARCHAR}
+								, #{recvClottingFactor,jdbcType=VARCHAR}
+								, trim(upper(#{clottingFactorRecv,jdbcType=VARCHAR}))
+								, #{dateRecvClottingFactor,jdbcType=VARCHAR}
+								, #{heterosexWithIdu,jdbcType=VARCHAR}
+								, #{heterosexWithMsm,jdbcType=VARCHAR}
+								, #{heterosexWithHemophiliac,jdbcType=VARCHAR}
+								, #{heterosexWithTransfusion,jdbcType=VARCHAR}
+								, #{heterosexWithTransplant,jdbcType=VARCHAR}
+								, #{heterosexWithHiv,jdbcType=VARCHAR}
+								, #{recvBloodTransfusion,jdbcType=VARCHAR}
+								, trim(upper(#{firstDateRecvBlood}))
+								, trim(upper(#{lastDateRecvBlood}))
+								, trim(upper(#{recvTransplant}))
+								, trim(upper(#{healthcareWorker}))
+								, #{occupation}
+								, trim(upper(#{otherRisk}))
+								, trim(upper(#{otherRiskDetails}))
+								, trim(upper(#{lastNegHivDate}))
+								, trim(upper(#{lastNegHivTest}))
+								, #{hivDiagnosisByPhysician}
+								, trim(upper(#{phyisicianDiagnosisDate}))
+								, trim(upper(#{candidiasisBronchiDate}))
+								, trim(upper(#{candidiasisEsophDate}))
+								, trim(upper(#{carcinomaDate}))
+								, trim(upper(#{coccidiodomycosisDate} ))
+								, trim(upper(#{cryptococcosisDate}))
+								, trim(upper(#{cryptosporidiosisDate}))
+								, trim(upper(#{cytomegaloDiseaseDate} ))
+								, trim(upper(#{cytomegaloRetinitisDate}  ))
+								, trim(upper(#{hivEncephDate}))
+								, trim(upper(#{herpesDate} ))
+								, trim(upper(#{histoplasmosisDate}))
+								, trim(upper(#{isosporiasisDate} ))
+								, trim(upper(#{kaposisSarcomaDate} ))
+								, trim(upper(#{lymphomaBurkitts1} ))
+								, trim(upper(#{lymphomaImmunoDate}))
+								, trim(upper(#{lymphomaBrainDate} ))
+								, trim(upper(#{MAviumOrKansasiiDate} ))
+								, trim(upper(#{tbPulmonary1} ))
+								, trim(upper(#{tbExtrapulmonaryDate} ))
+								, trim(upper(#{mycobacteriumOtherDate} ))
+								, trim(upper(#{pnuemocystisDate}))
+								, trim(upper(#{pneumoniaRecurrentDate} ))
+								, trim(upper(#{pmlDate}))
+								, trim(upper(#{salmonellaSepticDate}))
+								, trim(upper(#{toxoplasmosisBrainDate}))
+								, trim(upper(#{wastingSyndromeDate}))
+								, trim(upper(#{tbRvctCaseNumber}))
+								, #{informedOfHiv}
+								, #{partnersNotifiedBy}
+								, #{refferedForObgyn}
+								, #{currentlyPregnant}
+								, #{liveBirth}
+								, trim(upper(#{comments:CLOB}))
+								, trim(upper(#{localOptionalFields}))
+								, trim(upper(#{childName}))
+								, trim(upper(#{childSoundex}))
+								, trim(upper(#{childDob}))
+								, trim(upper(#{childCodedId,jdbcType=VARCHAR}))
+								, trim(upper(#{childStateno}))
+								, trim(upper(#{childrenFacilityName,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityPhone,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityZipCode,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityStreetAddress,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityCity,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityCounty,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityCountry,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityId,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityEharsUid,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityType,jdbcType=VARCHAR}))
+								, trim(upper(#{childrenFacilityState,jdbcType=VARCHAR}))
+								, trim(upper(#{labResultMeetHivDiagCriteria}))
+								, trim(upper(#{dateEarliestPositive}))
+								, trim(upper(#{reportingHealthDeptCityCounty}))
+								, trim(upper(#{cityCountyNumber}))
+								, trim(upper(#{lastnameSoundex}))
+								, #{testTreatmentHistorySource}
+								, #{prevPosHivTest}
+								, trim(upper(#{dateReported}))
+								, trim(upper(#{dateFirstPosHivTest}))
+								, #{negHivTest}
+								, trim(upper(#{dateLastNegHivTest}))
+								, #{numNegTestUnkRef}
+								, #{numNegTestBeforePos,jdbcType=DECIMAL}
+								, #{takenArvs}
+								, #{arvMeds}
+								, trim(upper(#{dateArvsBegan}))
+								, trim(upper(#{dateLastUsedArvs}	))
+								, #{dxAlgorithm}
+								, trim(upper(#{dxAlgorithmDate}	))
+								, trim(upper(#{currentArvs}))							
+								, trim(upper(#{facilityHivDxId}	))
+								, #{facilityHivDxEharsUid}	
+								, trim(upper(#{facilityAidsDxId}))	
+								, trim(upper(#{facilityAidsDxEharsUid}))	
+								, trim(upper(#{providingFacilityId}))	
+								, #{providingEharsFacilityEharsUid}
+								, trim(upper(#{resAidsAddressDate,jdbcType=VARCHAR}))
+								, trim(upper(#{resHivAddressDate,jdbcType=VARCHAR}))
+								, trim(upper(#{patientAddressDate,jdbcType=VARCHAR}))
+								, trim(upper(#{mainARVSource,jdbcType=VARCHAR}))
+								, trim(upper(#{arvPatientDateReported,jdbcType=VARCHAR}))
+								, 'N'
+								, 2023
+								, 1
+								, trim(upper(#{suspectAhi,jdbcType=VARCHAR}))
+								, trim(upper(#{ahiSymptoms,jdbcType=VARCHAR}))
+								, trim(upper(#{ahiSymptomsDate,jdbcType=VARCHAR}))
+								, trim(upper(#{ahiEvidence,jdbcType=VARCHAR}))
+								, trim(upper(#{ahiEvidenceDate,jdbcType=VARCHAR}))
+								, trim(upper(#{ahiEvidenceNotes,jdbcType=VARCHAR}))
+								, trim(upper(#{nonLabMedCare,jdbcType=VARCHAR}))
+								, trim(upper(#{nonLabMedCareDate,jdbcType=VARCHAR}))
+								
+								, trim(upper(#{genderIdentifiedDate,jdbcType=VARCHAR}))
+								, trim(upper(#{sexOrientation,jdbcType=VARCHAR}))
+								, trim(upper(#{additionalsexOrientation,jdbcType=VARCHAR}))
+								, trim(upper(#{sexOrientationDate,jdbcType=VARCHAR}))
+								, trim(upper(#{posHivTestSelfTest,jdbcType=VARCHAR}))
+								, trim(upper(#{negHivTestSelfTest,jdbcType=VARCHAR}))
+								, trim(upper(#{numNegTestBySelfTest,jdbcType=VARCHAR}))
+								, trim(upper(#{numNegTestBySelfTestUnkRef,jdbcType=VARCHAR}))
+								, trim(upper(#{rapidTestType,jdbcType=VARCHAR}))
+								, trim(upper(#{workerId,jdbcType=VARCHAR}))
+								, sysdate
+								, trim(upper(#{otherRiskBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{childBreastfedBp,jdbcType=VARCHAR}))
+								, trim(upper(#{childPrechewedFoodBp,jdbcType=VARCHAR}))
+								, trim(upper(#{breastfedNonBp,jdbcType=VARCHAR})) 
+		  					    , trim(upper(#{prechewedFoodNonBp,jdbcType=VARCHAR})) 
+								, trim(upper(#{sexWithFemaleBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{sexWithMaleBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{recvTransplantBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{recvBloodTransfusionBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{lastRecvBloodBeforeDiagDate,jdbcType=VARCHAR}))
+								, trim(upper(#{firstRecvBloodBeforeDiagDate,jdbcType=VARCHAR}))
+								, trim(upper(#{recvClottingFactorBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{clottingFactorBeforeDiagRecvDate,jdbcType=VARCHAR}))
+								, trim(upper(#{clottingFactorRecvBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{iduBeforeDiag,jdbcType=VARCHAR}))
+								, trim(upper(#{motherRecvTransplant,jdbcType=VARCHAR}))
+								, trim(upper(#{motherRecvBloodTransfusion,jdbcType=VARCHAR}))
+								, trim(upper(#{motherLastRecvBloodDate,jdbcType=VARCHAR}))
+								, trim(upper(#{motherFirstRecvBloodDate,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithHiv,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithTransplant,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithTransfusion,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithHemophiliac,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithMsm,jdbcType=VARCHAR}))
+								, trim(upper(#{motherHeterosexWithIdu,jdbcType=VARCHAR}))
+								, trim(upper(#{motherIdu,jdbcType=VARCHAR}))
+								, trim(upper(#{motherPerinatalHivInfection,jdbcType=VARCHAR}))
+								, trim(upper(#{childMomHivInfectionStatus,jdbcType=VARCHAR}))
+								, trim(upper(#{motherFirstPosTestDate,jdbcType=VARCHAR}))
+								, trim(upper(#{childBreastfedStartDate,jdbcType=VARCHAR}))
+								, trim(upper(#{childBreastfedStopDate,jdbcType=VARCHAR}))
+							)
+		
+		]]>
+
+	</select>
+ 
+
+	<select id="updateRawACRFDoc" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO">	
+	<![CDATA[
+	UPDATE RAW_ACRF_DOC	
+		SET  
+					FNAME = trim(upper(#{fname} ))
+		,   MNAME = trim(upper(#{mname}))
+		,   LNAME = trim(upper(#{lname}))
+		,   NAME_TYPE_CODE = #{nameTypeCode}
+		,   ALT_FNAME = trim(upper(#{altFname}))
+		,   ALT_MNAME = trim(upper(#{altMname}))
+		,   ALT_LNAME = trim(upper(#{altLname}))
+		,   ADDRESS_TYPE_CODE = #{addressTypeCode}
+		,   HIV_ADDRESS_TYPE_CODE = #{hivAddressTypeCode}
+		,   AIDS_ADDRESS_TYPE_CODE = #{aidsAddressTypeCode}
+		,   ADDRESS = trim(upper(#{address}))
+		,   CITY = trim(upper(#{city}))
+		,   STATE = trim(upper(#{state}))
+		,   ZIPCODE = trim(upper(#{zipcode}))
+		,   PLUS4 = trim(upper(#{plus4}))
+		,   COUNTY_FIPS = trim(upper(#{countyFips}))
+		,   COUNTRY = #{country}
+		,   TELEPHONE = trim(upper(#{telephone}))
+		,   MED_RECORD_NUMBER = trim(upper(#{medRecordNumber}))
+		,   ID_TYPE_CODE = #{idTypeCode}
+		,   OTHER_ID_NUMBER = trim(upper(#{otherIdNumber}))
+		,   RECEIVED_DATE = TO_DATE(#{receivedDate:DATE}, 'MM/DD/YYYY') 
+		,   EHARS_DOC_ID = #{eharsDocId} 
+		,   STATENO = #{stateno} 
+		,   DOCUMENT_SOURCE = #{documentSource} 
+		,   SURVEILLANCE_METHOD_CODE = #{surveillanceMethodCode}
+		,   NEW_CASE_CODE = #{newCaseCode}
+		,   REPORT_MEDIUM_CODE = #{reportMediumCode}
+		,   PROVIDING_FACILITY_NAME = trim(upper(#{providingFacilityName}))
+		,   PROVIDING_FACILITY_ADDRESS = trim(upper(#{providingFacilityAddress}))
+		,   PROVIDING_FACILITY_CITY = trim(upper(#{providingFacilityCity}))
+		,   PROVIDING_FACILITY_STATE = trim(upper(#{providingFacilityState}))
+		,   PROVIDING_FACILITY_COUNTRY = trim(upper(#{providingFacilityCountry} ))
+		,   PROVIDING_FACILITY_ZIPCODE = trim(upper(#{providingFacilityZipcode}))
+		,   PROVIDING_FACILITY_PLUS4 = trim(upper(#{providingFacilityPlus4}))
+		,   PROVIDING_FACILITY_COUNTY_FIPS = trim(upper(#{providingFacilityCountyFips}))
+		,   PROVIDING_FACILITY_PHONE = trim(upper(#{providingFacilityPhone}))
+		,   PROVIDING_FACILITY_TYPE_CODE = trim(upper(#{providingFacilityTypeCode}))
+		,   PROVIDING_FACILTY_TYPE_OTHER = trim(upper(#{providingFacilityTypeOther}))
+		,   DATE_COMPLETED = TO_DATE(#{dateCompleted:DATE}, 'MM/DD/YYYY')  
+		,   PERSON_COMPLETING = #{personCompleting}
+		,   WORKER_PHONE = trim(upper(#{workerPhone}))
+		,   BIRTH_SEX = #{birthSex} 
+		,   BIRTH_COUNTRY = #{birthCountry}
+		,   BIRTH_COUNTRY_OTHER = #{birthCountryOther}
+		,   DATE_OF_BIRTH = #{dateOfBirth,jdbcType=VARCHAR} 
+		,   ALIAS_DATE_OF_BIRTH = trim(upper(#{aliasDateOfBirth}))
+		,   VITAL_STATISTICS_CODE = #{vitalStatisticsCode}
+		,   DATE_OF_DEATH = #{dateOfDeath} 
+		,   STATE_OF_DEATH = #{stateOfDeath}
+		,   GENDER_CODE = #{genderCode}
+		,   ADDITIONAL_GENDER = trim(upper(#{additionalGender}))
+		,   ETHNICITY_CODE = #{ethnicityCode}
+		,   EXPANDED_ETHNICITY = #{expandedEthnicity}
+		,   RACE_INDIAN = #{raceIndian} 
+		,   RACE_ASIAN = #{raceAsian} 
+		,   RACE_BLACK = #{raceBlack} 
+		,   RACE_PACIFIC = #{racePacific}
+		,   RACE_WHITE = #{raceWhite} 
+		,   RACE_UNKNOWN = #{raceUnknown} 
+		,   EXPANDED_RACE = #{expandedRace} 
+		,   RES_HIV_DX = #{resHivDx}
+		,   RES_AIDS_DX = #{resAidsDx}
+		,   RES_DX_SAME_AS_CURRENT = #{resDxSameAsCurrent}
+		,   RES_DX_SAME_AS_CURRENT_AIDS = #{resDxSameAsCurrentAids}
+		,   RES_HIV_ADDRESS = trim(upper(#{resHivAddress}))
+		,   RES_HIV_CITY = trim(upper(#{resHivCity}))
+		,   RES_HIV_STATE = trim(upper(#{resHivState}))
+		,   RES_HIV_COUNTRY = trim(upper(#{resHivCountry}))
+		,   RES_HIV_ZIPCODE = trim(upper(#{resHivZipcode}))
+		,   RES_HIV_PLUS4 = trim(upper(#{resHivPlus4}))
+		,   RES_HIV_COUNTY_FIPS = trim(upper(#{resHivCountyFips}))
+		,   RES_AIDS_ADDRESS = trim(upper(#{resAidsAddress}))
+		,   RES_AIDS_CITY = trim(upper(#{resAidsCity}))
+		,   RES_AIDS_STATE = trim(upper(#{resAidsState}))
+		,   RES_AIDS_COUNTRY = trim(upper(#{resAidsCountry}))
+		,   RES_AIDS_ZIPCODE = trim(upper(#{resAidsZipcode}))
+		,   RES_AIDS_PLUS4 = trim(upper(#{resAidsPlus4}))
+		,   RES_AIDS_COUNTY_FIPS = trim(upper(#{resAidsCountyFips}))
+		,   SL_PROVIDER_LNAME = trim(upper(#{slProviderLname}))
+		,   SL_PROVIDER_FNAME = trim(upper(#{slProviderFname}))
+		,   SL_PROVIDER_MNAME = trim(upper(#{slProviderMname}))
+		,   SL_PROVIDER_SUFFIX = trim(upper(#{slProviderSuffix}))
+		,   SL_PROVIDER_PHONE = trim(upper(#{slProviderPhone}))
+		,   SL_MED_RECORD_NUM = trim(upper(#{slMedRecordNum}))
+		,   SL_FACILITY_NAME = trim(upper(#{slFacilityName}))
+		,   SL_PERSON_COMPLETING = trim(upper(#{slWorkerUid}))
+		,   SL_WORKER_PHONE = trim(upper(#{slWorkerPhone}))
+		,   FACILITY_DX_HIV = #{facilityDxHiv}
+		,   FACILITY_DX_AIDS = trim(upper(#{facilityDxAids}))
+		,   FACILITY_DX_SAME_AS_PROVIDING = #{facilityDxSameAsProviding}
+		,   FAC_DX_SAMEAS_PROVIDING_AIDS = trim(upper(#{facilityDxSameAsProvidingAids}))
+		,   FACILITY_NAME_HIV_DX = trim(upper(#{facilityHivDxName} ))
+		,   FACILITY_ADDRESS_HIV_DX = trim(upper(#{facilityAddressHivDx} ))
+		,   FACILITY_CITY_HIV_DX = trim(upper(#{facilityCityHivDx} ))
+		,   FACILITY_STATE_HIV_DX = trim(upper(#{facilityStateHivDx})) 
+		,   FACILITY_COUNTRY_HIV_DX = trim(upper(#{facilityCountryHivDx}))
+		,   FACILITY_ZIPCODE_HIV_DX = trim(upper(#{facilityZipcodeHivDx})) 
+		,   FACILITY_PLUS4_HIV_DX = trim(upper(#{facilityPlus4HivDx})) 
+		,   FACILITY_COUNTY_FIPS_HIV_DX = trim(upper(#{facilityCountyFipsHivDx}))  
+		,   FACILITY_PHONE_HIV_DX = trim(upper(#{facilityPhoneHivDx})) 
+		,   FACILITY_TYPE_CODE_HIV_DX = trim(upper(#{facilityHivDxTypeCode})) 
+		,   FACILITY_TYPE_OTHER_HIV_DX = trim(upper(#{facilityHivDxTypeOther}))		
+		,   PROVIDER_FNAME_HIV_DX = trim(upper(#{providerFnameHivDx}))
+		,   PROVIDER_MNAME_HIV_DX = trim(upper(#{providerMnameHivDx}))
+		,   PROVIDER_LNAME_HIV_DX = trim(upper(#{providerLnameHivDx}))
+		,   PROVIDER_SUFFIX_HIV_DX = trim(upper(#{providerSuffixHivDx}))		
+		,   PROVIDER_PHONE_HIV_DX = trim(upper(#{providerPhoneHivDx}))
+		,   PROVIDER_SPECIALTY = trim(upper(#{providerSpecialty})) 
+		,   FACILITY_NAME_AIDS_DX = trim(upper(#{facilityAidsDxName}))
+		,   FACILITY_ADDRESS_AIDS_DX = trim(upper(#{facilityAddressAidsDx})) 
+		,   FACILITY_CITY_AIDS_DX = trim(upper(#{facilityCityAidsDx})) 
+		,   FACILITY_STATE_AIDS_DX = trim(upper(#{facilityStateAidsDx})) 
+		,   FACILITY_COUNTRY_AIDS_DX = trim(upper(#{facilityCountryAidsDx}))
+		,   FACILITY_ZIPCODE_AIDS_DX = trim(upper(#{facilityZipcodeAidsDx})) 
+		,   FACILITY_PLUS4_AIDS_DX = trim(upper(#{facilityPlus4AidsDx})) 
+		,   FACILITY_COUNTY_FIPS_AIDS_DX = trim(upper(#{facilityCountyFipsAidsDx})) 
+		,   FACILITY_PHONE_AIDS_DX = trim(upper(#{facilityPhoneAidsDx})) 
+		,   FACILITY_TYPE_CODE_AIDS_DX = trim(upper(#{facilityAidsDxTypeCode})) 
+		,   FACILITY_TYPE_OTHER_AIDS_DX = trim(upper(#{facilityAidsDxTypeOther}))
+		,   PROVIDER_FNAME_AIDS_DX = trim(upper(#{providerFnameAidsDx}))
+		,   PROVIDER_MNAME_AIDS_DX = trim(upper(#{providerMnameAidsDx}))
+		,   PROVIDER_LNAME_AIDS_DX = trim(upper(#{providerLnameAidsDx}))
+		,   PROVIDER_SUFFIX_AIDS_DX = trim(upper(#{providerSuffixAidsDx}))
+		,   PROVIDER_PHONE_AIDS_DX = trim(upper(#{providerPhoneAidsDx}))
+		,   PROVIDER_SPECIALTY_AIDS_DX = #{providerSpecialtyAidsDx} 
+		,   PEDIATRIC_RISK = trim(upper(#{pediatricRisk,jdbcType=VARCHAR})) 
+		,   SEX_WITH_MALE = trim(upper(#{sexWithMale,jdbcType=VARCHAR})) 
+		,   SEX_WITH_FEMALE = trim(upper(#{sexWithFemale,jdbcType=VARCHAR}))
+		,   IDU = trim(upper(#{idu,jdbcType=VARCHAR})) 
+		,   RECV_CLOTTING_FACTOR = trim(upper(#{recvClottingFactor,jdbcType=VARCHAR})) 
+		,   CLOTTING_FACTOR_RECV = trim(upper(#{clottingFactorRecv,jdbcType=VARCHAR})) 
+		,   DATE_RECV_CLOTTING_FACTOR = trim(upper(#{dateRecvClottingFactor,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_IDU = trim(upper(#{heterosexWithIdu,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_MSM = trim(upper(#{heterosexWithMsm,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_HEMOPHILIAC = trim(upper(#{heterosexWithHemophiliac,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_TRANSFUSION = trim(upper(#{heterosexWithTransfusion,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_TRANSPLANT = trim(upper(#{heterosexWithTransplant,jdbcType=VARCHAR})) 
+		,   HETEROSEX_WITH_HIV = trim(upper(#{heterosexWithHiv,jdbcType=VARCHAR})) 
+		,   RECV_BLOOD_TRANSFUSION = trim(upper(#{recvBloodTransfusion,jdbcType=VARCHAR})) 
+		,   FIRST_DATE_RECV_BLOOD = trim(upper(#{firstDateRecvBlood,jdbcType=VARCHAR})) 
+		,   LAST_DATE_RECV_BLOOD = trim(upper(#{lastDateRecvBlood})) 
+		,   RECV_TRANSPLANT = trim(upper(#{recvTransplant})) 
+		,   HEALTHCARE_WORKER = trim(upper(#{healthcareWorker})) 
+		,   OCCUPATION = #{occupation} 
+		,   OTHER_RISK = trim(upper(#{otherRisk})) 
+		,   OTHER_RISK_DETAILS = trim(upper(#{otherRiskDetails})) 
+		,   LAST_NEG_HIV_DATE = trim(upper(#{lastNegHivDate})) 
+		,   LAST_NEG_HIV_TEST = trim(upper(#{lastNegHivTest})) 
+		,   HIV_DIAGNOSIS_BY_PHYSICIAN = #{hivDiagnosisByPhysician} 
+		,   PHYISICIAN_DIAGNOSIS_DATE = trim(upper(#{phyisicianDiagnosisDate})) 
+		,   CANDIDIASIS_BRONCHI_DATE = trim(upper(#{candidiasisBronchiDate})) 
+		,   CANDIDIASIS_ESOPH_DATE = trim(upper(#{candidiasisEsophDate})) 
+		,   CARCINOMA_DATE = trim(upper(#{carcinomaDate})) 
+		,   COCCIDIODOMYCOSIS_DATE = trim(upper(#{coccidiodomycosisDate} )) 
+		,   CRYPTOCOCCOSIS_DATE = trim(upper(#{cryptococcosisDate})) 
+		,   CRYPTOSPORIDIOSIS_DATE = trim(upper(#{cryptosporidiosisDate})) 
+		,   CYTOMEGALO_DISEASE_DATE = trim(upper(#{cytomegaloDiseaseDate} )) 
+		,   CYTOMEGALO_RETINITIS_DATE = trim(upper(#{cytomegaloRetinitisDate}))   
+		,   HIV_ENCEPH_DATE = trim(upper(#{hivEncephDate})) 
+		,   HERPES_DATE = trim(upper(#{herpesDate}))  
+		,   HISTOPLASMOSIS_DATE = trim(upper(#{histoplasmosisDate}))  
+		,   ISOSPORIASIS_DATE = trim(upper(#{isosporiasisDate}))  
+		,   KAPOSIS_SARCOMA_DATE = trim(upper(#{kaposisSarcomaDate}))  
+		,   LYMPHOMA_BURKITTS_1 = trim(upper(#{lymphomaBurkitts1}))  
+		,   LYMPHOMA_IMMUNO_DATE = trim(upper(#{lymphomaImmunoDate}))  
+		,   LYMPHOMA_BRAIN_DATE = trim(upper(#{lymphomaBrainDate}))  
+		,   M_AVIUM_OR_KANSASII_DATE = trim(upper(#{MAviumOrKansasiiDate}))  
+		,   TB_PULMONARY_1 = trim(upper(#{tbPulmonary1}))  
+		,   TB_EXTRAPULMONARY_DATE = trim(upper(#{tbExtrapulmonaryDate}))  
+		,   MYCOBACTERIUM_OTHER_DATE = trim(upper(#{mycobacteriumOtherDate}))  
+		,   PNUEMOCYSTIS_DATE = trim(upper(#{pnuemocystisDate}))  
+		,   PNEUMONIA_RECURRENT_DATE = trim(upper(#{pneumoniaRecurrentDate} )) 
+		,   PML_DATE = trim(upper(#{pmlDate})) 
+		,   SALMONELLA_SEPTIC_DATE = trim(upper(#{salmonellaSepticDate})) 
+		,   TOXOPLASMOSIS_BRAIN_DATE = trim(upper(#{toxoplasmosisBrainDate})) 
+		,   WASTING_SYNDROME_DATE = trim(upper(#{wastingSyndromeDate})) 
+		,   TB_RVCT_CASE_NUMBER = trim(upper(#{tbRvctCaseNumber})) 
+		,   INFORMED_OF_HIV = #{informedOfHiv} 
+		,   PARTNERS_NOTIFIED_BY = #{partnersNotifiedBy} 
+		,   REFFERED_FOR_OBGYN = #{refferedForObgyn} 
+		,   CURRENTLY_PREGNANT = #{currentlyPregnant} 
+		,   LIVE_BIRTH = #{liveBirth} 
+		,   COMMENTS = trim(upper(#{comments:CLOB}))
+		,   LOCAL_OPTIONAL_FIELDS = trim(upper(#{localOptionalFields}))
+		,   CHILD_NAME = trim(upper(#{childName}))
+		,   CHILD_SOUNDEX = trim(upper(#{childSoundex}))
+		,   CHILD_DOB = trim(upper(#{childDob}))
+		,   CHILD_CODED_ID = trim(upper(#{childCodedId,jdbcType=VARCHAR}))
+		,   CHILD_STATENO = trim(upper(#{childStateno}))
+		,   CHILD_FACILITY_NAME = trim(upper(#{childrenFacilityName,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_PHONE = trim(upper(#{childrenFacilityPhone,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_ZIP_CODE = trim(upper(#{childrenFacilityZipCode,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_STREET_ADDRESS = trim(upper(#{childrenFacilityStreetAddress,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_CITY = trim(upper(#{childrenFacilityCity,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_COUNTY = trim(upper(#{childrenFacilityCounty,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_CNTRY = trim(upper(#{childrenFacilityCountry,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_ID = trim(upper(#{childrenFacilityId,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_EHARS_UID = trim(upper(#{childrenFacilityEharsUid,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_TYPE = trim(upper(#{childrenFacilityType,jdbcType=VARCHAR}))
+		,   CHILD_FACILITY_STATE = trim(upper(#{childrenFacilityState,jdbcType=VARCHAR}))
+		,   LAB_RESULT_MEET_HIV_DIAG_CRIT = trim(upper(#{labResultMeetHivDiagCriteria}))
+		,   DATE_EARLIEST_POSITIVE = trim(upper(#{dateEarliestPositive}))
+		,   REPT_HEALTH_DEPT_CITY_COUNTY = trim(upper(#{reportingHealthDeptCityCounty}))
+		,   CITY_COUNTY_NUMBER = trim(upper(#{cityCountyNumber}))
+		,   LNAME_SOUNDEX = trim(upper(#{lastnameSoundex}))
+		,	MAIN_TTH_SOURCE = #{testTreatmentHistorySource}
+		,	PT_INTERVIEW_DATE = trim(upper(#{dateReported}))
+		,	EVER_HAD_POS = #{prevPosHivTest}
+		,	FIRST_HIV_TEST_EVER = trim(upper(#{dateFirstPosHivTest}))
+		,	EVER_HAD_NEG = #{negHivTest}
+		,	LAST_NEG_DATE = trim(upper(#{dateLastNegHivTest}))
+		,	RESP_HIV_TEST_2YRS = #{numNegTestUnkRef}
+		,	COUNT_HIV_TEST_2YRS = #{numNegTestBeforePos,jdbcType=DECIMAL}
+		,	PT_ARV_6_MO = #{takenArvs}
+		,	PT_ARV_NAME = #{arvMeds}
+		,	PT_ARV_START_DATE = trim(upper(#{dateArvsBegan}))
+		,	PT_ARV_END_DATE = trim(upper(#{dateLastUsedArvs}))
+		,	DX_ALGORITHM = #{dxAlgorithm}
+		,	DX_ALGORITHM_DATE = trim(upper(#{dxAlgorithmDate}))
+		,   CURRENT_ARVS1 = trim(upper(#{currentArvs}))
+		,   FACILITY_ID_HIV_DX = trim(upper(#{facilityHivDxId}))
+        ,   FACILITY_EHARS_UID_HIV_DX = #{facilityHivDxEharsUid}
+        ,   FACILITY_ID_AIDS_DX = trim(upper(#{facilityAidsDxId}))
+        ,   FACILITY_EHARS_UID_AIDS_DX = trim(upper(#{facilityAidsDxEharsUid}))
+        ,   PROVIDING_FACILITY_ID = trim(upper(#{providingFacilityId}))
+        ,   PROVIDING_EHARS_FACILITY_UID = #{providingEharsFacilityEharsUid}
+		, 	RES_AIDS_ADDRESS_DATE = trim(upper(#{resAidsAddressDate,jdbcType=VARCHAR}))
+		, 	RES_HIV_ADDRESS_DATE = trim(upper(#{resHivAddressDate,jdbcType=VARCHAR}))  
+		, 	ADDRESS_DATE =trim(upper(#{patientAddressDate,jdbcType=VARCHAR}))   
+		,	MAIN_ARV_SOURCE = trim(upper(#{mainARVSource,jdbcType=VARCHAR}))
+		,	PT_ARV_DATE_REPORTED = trim(upper(#{arvPatientDateReported,jdbcType=VARCHAR}))
+		, 	OLD_ACRF = 'N'
+		,	SUSPECT_AHI = trim(upper(#{suspectAhi,jdbcType=VARCHAR}))
+		,	AHI_SYMPTOMS = trim(upper(#{ahiSymptoms,jdbcType=VARCHAR}))
+		,	AHI_SYMPTOMS_DATE = trim(upper(#{ahiSymptomsDate,jdbcType=VARCHAR}))
+		,	AHI_EVIDENCE = trim(upper(#{ahiEvidence,jdbcType=VARCHAR}))
+		,	AHI_EVIDENCE_DATE = trim(upper(#{ahiEvidenceDate,jdbcType=VARCHAR}))
+		,	AHI_EVIDENCE_NOTES = trim(upper(#{ahiEvidenceNotes,jdbcType=VARCHAR}))
+		,	NON_LAB_MED_CARE = trim(upper(#{nonLabMedCare,jdbcType=VARCHAR}))
+		,	NON_LAB_MED_CARE_DATE = trim(upper(#{nonLabMedCareDate,jdbcType=VARCHAR}))
+		
+		,	GENDER_IDEN_DATE = trim(upper(#{genderIdentifiedDate,jdbcType=VARCHAR}))
+	    ,	SEX_ORN  = trim(upper(#{sexOrientation,jdbcType=VARCHAR}))
+	    ,	SEX_ORN_ADD  = trim(upper(#{additionalsexOrientation,jdbcType=VARCHAR}))
+	    ,	SEX_ORN_DATE    = trim(upper(#{sexOrientationDate,jdbcType=VARCHAR}))
+	    ,	RESP_POS_SELF_TEST_BY_PAT    = trim(upper(#{posHivTestSelfTest,jdbcType=VARCHAR}))
+	    ,	NEG_HIV_BY_SELF_TEST  = trim(upper(#{negHivTestSelfTest,jdbcType=VARCHAR}))
+	    ,	COUNT_NEG_BY_SELF_TEST  = trim(upper(#{numNegTestBySelfTest,jdbcType=VARCHAR}))
+	    ,	NEG_BY_SELF_TEST_UNK  = trim(upper(#{numNegTestBySelfTestUnkRef,jdbcType=VARCHAR}))
+	    ,	RAPID_TEST_TYPE  = trim(upper(#{rapidTestType,jdbcType=VARCHAR}))
+	    ,	ENTERED_BY  = trim(upper(#{workerId,jdbcType=VARCHAR}))
+	    ,	ENTERED_DATE  = SYSDATE
+	    
+	    
+	    ,	OTHER_RISK_BEFORE_DIAG = trim(upper(#{otherRiskBeforeDiag,jdbcType=VARCHAR}))
+	    ,   C_BREASTFED_NON_BP = trim(upper(#{breastfedNonBp,jdbcType=VARCHAR})) 
+		,	C_PRECHEWED_FOOD_NON_BP = trim(upper(#{prechewedFoodNonBp,jdbcType=VARCHAR})) 
+		,	C_BREASTFED_BP = trim(upper(#{childBreastfedBp,jdbcType=VARCHAR})) 
+		,	C_PRECHEWED_FOOD_BP = trim(upper(#{childPrechewedFoodBp,jdbcType=VARCHAR})) 
+		,	SEX_WITH_FEMALE_BEFORE_DIAG = trim(upper(#{sexWithFemaleBeforeDiag,jdbcType=VARCHAR}))
+		,	SEX_WITH_MALE_BEFORE_DIAG = trim(upper(#{sexWithMaleBeforeDiag,jdbcType=VARCHAR}))
+		,	RECV_TRANSPLANT_BEFORE_DIAG = trim(upper(#{recvTransplantBeforeDiag,jdbcType=VARCHAR}))
+		,	RECV_BLOOD_TRANSFUSION_BEFORE_DIAG = trim(upper(#{recvBloodTransfusionBeforeDiag,jdbcType=VARCHAR}))
+		,	LAST_RECV_BLOOD_BEFORE_DIAG_DATE = trim(upper(#{lastRecvBloodBeforeDiagDate,jdbcType=VARCHAR}))
+		,	FIRST_RECV_BLOOD_BEFORE_DIAG_DATE = trim(upper(#{firstRecvBloodBeforeDiagDate,jdbcType=VARCHAR}))
+		,	RECV_CLOTTING_FACTOR_BEFORE_DIAG = trim(upper(#{recvClottingFactorBeforeDiag,jdbcType=VARCHAR}))
+		,	CLOTTING_FACTOR_BEFORE_DIAG_RECV_DATE = trim(upper(#{clottingFactorBeforeDiagRecvDate,jdbcType=VARCHAR}))
+		,	CLOTTING_FACTOR_RECV_BEFORE_DIAG = trim(upper(#{clottingFactorRecvBeforeDiag,jdbcType=VARCHAR}))
+		,	IDU_BEFORE_DIAG = trim(upper(#{iduBeforeDiag,jdbcType=VARCHAR}))
+		,	MOM_RECV_TRANSPLANT = trim(upper(#{motherRecvTransplant,jdbcType=VARCHAR}))
+		,	MOM_RECV_BLOOD_TRANSFUSION = trim(upper(#{motherRecvBloodTransfusion,jdbcType=VARCHAR}))
+		,	MOM_LAST_RECV_BLOOD_DATE = trim(upper(#{motherLastRecvBloodDate,jdbcType=VARCHAR}))
+		,	MOM_FIRST_RECV_BLOOD_DATE = trim(upper(#{motherFirstRecvBloodDate,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_HIV = trim(upper(#{motherHeterosexWithHiv,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_TRANSPLANT = trim(upper(#{motherHeterosexWithTransplant,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_TRANSFUSION = trim(upper(#{motherHeterosexWithTransfusion,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_HEMOPHILIAC = trim(upper(#{motherHeterosexWithHemophiliac,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_BISEX = trim(upper(#{motherHeterosexWithMsm,jdbcType=VARCHAR}))
+		,	MOM_HETEROSEX_WITH_IDU = trim(upper(#{motherHeterosexWithIdu,jdbcType=VARCHAR}))
+		,	MOM_IDU = trim(upper(#{motherIdu,jdbcType=VARCHAR}))
+		,	MOM_PERINATAL_HIV_INFECTION = trim(upper(#{motherPerinatalHivInfection,jdbcType=VARCHAR}))
+		,	CHILD_MOM_HIV_INFECTION_STATUS = trim(upper(#{childMomHivInfectionStatus,jdbcType=VARCHAR}))
+		,	MOTHER_FIRST_POS_TEST_DATE = trim(upper(#{motherFirstPosTestDate,jdbcType=VARCHAR}))
+		,	C_BREASTFED_BP_START_DATE = trim(upper(#{childBreastfedStartDate,jdbcType=VARCHAR}))
+		,	C_BREASTFED_BP_STOP_DATE = trim(upper(#{childBreastfedStopDate,jdbcType=VARCHAR}))
+	    								
+		WHERE		
+		DOCUMENT_ID=#{documentId}
+		]]>
+
+	</select>
+	
+	
+	<select id="getArvUserTypeList" resultType="String">
+		select ARV_USE_TYPE from CODED_ACRF_ARVS where END_DATE is null or END_DATE > SYSDATE
+	</select>
+	
+	
+	<select id="getAcrfFormDataFromAcrf" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO">
+		<![CDATA[
+		select FIRST_NAME fname, MIDDLE_NAME mname, LAST_NAME lname, soundex(LAST_NAME) lastnameSoundex, To_char(fn_to_date(DOB, 'MM/DD/YYYY'), 'MM/DD/YYYY') dateOfBirth from NYEHMS_EHARS_STATENO_MAP where NYEHMS_STATENO = #{stateNo} 
+
+and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P') and rownum < 2
+
+   
+		]]>
+	</select>
+</mapper>
