@@ -3,9 +3,6 @@
 <mapper
 	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CCDDocumentDAO">
 
-	<select id="getDAOAccess">
-		alter session set current_schema=nyehms_owner
-	</select>
 
 	<insert id="insertRawCcdDocData"
 		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDPersonDocVO">
@@ -806,24 +803,6 @@
 		</association>
 	</resultMap>
 
-	<select id="getCCDEncounterList" parameterType="int" resultMap="encounterMap">
-		 		<![CDATA[
-		 			SELECT ENCOUNTER_DOC_ID,
-						   CCD_DOC_ID,
-  						   START_DATE_TEXT,
-  						   END_DATE_TEXT,
-  						   ENCOUNTER_TYPE,
-  						   PROVIDER_FNAME,
-  						   PROVIDER_MNAME,
-  					       PROVIDER_LNAME,
-  					       FACILITY_NAME,	
-  					       FACILITY_DEPT,
-  				           ENCOUNTER_ID,
-  						   ADMISSION_TYPE 
-					FROM RAW_CCD_ENCOUNTER
-					WHERE CCD_DOC_ID =  #{CCD_DOC_ID}
-		 		]]>
-	</select>
 	<!-- <resultMap type="RawCCDLabVO" id="LabMap"> <result property="labId" 
 		column="LAB_ID" /> <result property="ccdDocID" column="CCD_DOC_ID" /> <result 
 		property="testDescription" column="TEST_DESCRIPTION" /> <result property="testDate" 
@@ -854,26 +833,6 @@
 		</association>
 	</resultMap>
 
-	<select id="getCCDMedList" parameterType="int" resultMap="medMap">
-		 		<![CDATA[
-		 			SELECT MED_ID,
-  						   CCD_DOC_ID,
-  					       ORDERED_MEDICATION_NAME,
-  						   START_DATE_TEXT,
-    	 	 	 	 	   STOP_DATE_TEXT,
-  	 	 	 	 	 	   DOSAGE_VALUE,
-  	 	 	 	 	 	   DOSAGE_UNIT,
-  	 	 	 	 	       FILLED_MEDICATION_NAME,
-  		 	 	 	 	   CURRENT_MEDICATION,		
-  	 	 	 	 	 	   ORDERING_PROV_FNAME,
-  	 	 	 		 	   ORDERING_PROV_MNAME,
-  	 	 	 	 	 	   ORDERING_PROV_LNAME,
-  					 	   FREQUENCY 
-					FROM RAW_CCD_MED 
-					WHERE CCD_DOC_ID =  #{CCD_DOC_ID}
-				
-		 		]]>
-	</select>
 
 	<resultMap
 		type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProviderVO"
@@ -901,27 +860,6 @@
 		</association>
 	</resultMap>
 
-	<select id="getCCDProviderList" parameterType="int" resultMap="providerMap">
-		 		<![CDATA[
-		 			SELECT PROVIDER_ID,
-  						   CCD_DOC_ID,
-  						   PROVIDER_TYPE_CODE,
-  						   PROVIDER_TYPE_DESCRIPTION,
-     		               PROVIDER_LNAME,
-  						   PROVIDER_FNAME,
-   		 	 	 	 	   PROVIDER_MNAME,
-  						   PROVIDER_ADDRESS_1,
-  						   PROVIDER_ADDRESS_2,
-  						   PROVIDER_CITY,
-  						   PROVIDER_STATE,
-  					       PROVIDER_ZIP,
-  						   PROVIDER_PHONE,
-  						   START_DATE_TEXT,
-  						   END_DATE_TEXT 
-					 FROM RAW_CCD_PROVIDER 
-					WHERE CCD_DOC_ID = #{CCD_DOC_ID}
-		 		]]>
-	</select>
 
 
 	<resultMap
@@ -985,52 +923,6 @@
 
 	</resultMap>
 
-	<select id="getCCDPayerList" parameterType="int" resultMap="payerMap">
-		 		<![CDATA[
-		 			SELECT PAYER_ID,
-						   CCD_DOC_ID,
-						   POLICY_ID,
-						   POLICY_NAME,
-						   POLICY_ADDRESS1,
-						   POLICY_ADDRESS2,
-						   POLICY_CITY,
-						   POLICY_STATE,
-						   POLICY_ZIPCODE,
-						   POLICY_COUNTRY,
-						   POLICY_COUNTY,
-						   POLICY_PHONE,
-						   MEMBER_ID,
-						   MEMBER_FNAME,
-						   MEMBER_MNAME,
-						   MEMBER_LNAME,
-						   MEMBER_ADDRESS1,
-						   MEMBER_ADDRESS2,
-						   MEMBER_CITY,
-						   MEMBER_STATE,
-						   MEMBER_ZIPCODE,
-						   MEMBER_COUNTRY,
-						   MEMBER_COUNTY,
-						   MEMBER_PHONE,
-						   MEMBER_DOB_TEXT,
-						   HOLDER_ID,
-						   HOLDER_ADDRES1,
-						   HOLDER_ADDRESS2,
-						   HOLDER_CITY,
-						   HOLDER_STATE,
-						   HOLDER_ZIPCODE,
-						   HOLDER_COUNTRY,
-						   HOLDER_COUNTY,
-						   HOLDER_PHONE,
-						   HOLDER_DOB_TEXT,
-						   START_DATE_TEXT,
-						   END_DATE_TEXT,
-						   HOLDER_FNAME,
-						   HOLDER_MNAME,
-						   HOLDER_LNAME
-					FROM RAW_CCD_PAYER
- 					WHERE CCD_DOC_ID =  #{CCD_DOC_ID}
-		 			]]>
-	</select>
 
 	<select id="getStdCCDDoc" parameterType="int"
 		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.StdCCDDocVo">

@@ -197,10 +197,6 @@
 	
 	
 			
-	<select id="getOpenAssignmentsForDocument" parameterType="int" resultType="Integer">
-		select DOCUMENT_ID from  SURVEILLANCE_ASSIGNMENT where TRIGGERING_DOC_ID =  #{documentId} and CURRENT_ASSIGNMENT_STATUS not in ('CLOSED', 'CLS_ADM')
-
-	</select>	
 	
 		
 		

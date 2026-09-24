@@ -8,10 +8,8 @@ import java.util.Map;
 public interface SubProviderDAO {
 	
 	// get the Sub Provider List
-	public List<SubProviderVO> getSubProviderList(SubProviderVO subProviderVO );
 	
 	// get the Sub Provider List using Sub Provider Address Id's 
-	public List<SubProviderVO> getSubProvidersListForSubProvAdrsIds(Map<Object, Object> map);
 	
 	//Adding New Provider Address
     public void addNewProvider(Map<Object, Object> map);

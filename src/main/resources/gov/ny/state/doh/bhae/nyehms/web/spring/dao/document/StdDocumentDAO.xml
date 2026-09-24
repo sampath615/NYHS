@@ -131,18 +131,12 @@
 		</select>	
 		
 		
-	<update id="deleteStandardDocument" parameterType="int">
-		delete from STD_HIV_ECLRS_DOC where DOCUMENT_ID = #{document_ID}
-	</update>
 	
 		
 	<update id="deleteEntryInPersonDocAssociation" parameterType="int">
 		delete from person_doc_association where DOCUMENT_ID = #{document_ID}
 	</update>
 	
-	<update id="deleteEntryInDocumentPersonAttribute" parameterType="int">
-		delete from DOCUMENT_PERSON_ATTR where DOCUMENT_ID = #{document_ID}
-	</update>
 	
 	<update id="deleteEntryInDocumentRace" parameterType="int">
 		delete from document_race where DOCUMENT_ID = #{currentDocumentId}
@@ -157,24 +151,9 @@
 	
 	
 	
-	 <select id="runMetaDataToAssociateDocumentToStateno" parameterType="java.util.Map"  statementType="CALLABLE" >
-		{call  pkg_consolidation.pr_reconfig_attr_metadata(
-		    #{stateNo,jdbcType=VARCHAR,mode=IN},
-			#{p_code_out,jdbcType=INTEGER,mode=OUT},
-			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
-		)}
-	</select>
-	
-	<insert id="createEntryInDocumentPersonAttribute" parameterType="int" >
-		INSERT INTO document_person_attr (county_fips, date_of_birth, din, dob_text,document_id,dod_text,ethnicity_code,first_name,gender_code,home_phone,insurance_number,insurance_type_code,last_name,middle_name,nysid,ssn,suffix,address_zipcode,address_latitude,birth_sex,tract_suffix_census,birth_country,med_record_number,address_tract_census,plus4,address,address_state,address_longitude,work_phone)
-          select person_county,fn_to_date (dob_text, 'mm/dd/yyyy'),din,dob_text,document_id,dob_text,ethnicity,fname,gender,person_phone,insurance_number,insurance_cd,lname,mname,nysid,ssn,suffix,person_zip,person_latitude,gender,person_census_tract,birth_country,med_record_number,person_census_tract,person_plus4,person_address,person_state,person_longitude,person_phone from std_hiv_eclrs_doc where DOCUMENT_ID = #{document_ID}
-	</insert>
 	
 	
-	<insert id="createEntryInDocumentRace" parameterType="int" >
-		INSERT INTO document_race (race_indian,race_multiple,race_other,race_pacific,race_asian,race_white,race_black,document_id,race_unknown)
-          select race_indian,race_multiple,race_other,race_pacific,race_asian,race_white,race_black,document_id,race_unknown from std_hiv_eclrs_doc where DOCUMENT_ID = #{document_ID}
-	</insert>
+	
 	
 	
 

@@ -1022,13 +1022,6 @@ update RIA_PROVIDER_FOLLOW_UP_CALL set END_DATE = SYSDATE, UPDATED_BY = #{WORKER
 	</select>
 	
 	
-		<select id="addNewRiaDocumentsForReview"  >
-		<![CDATA[		      begin
-						      COMMIT;
-						      END;
-						      ]]>
-		
-	</select>
 		
 	<select id="statenosFlaggedForRia" parameterType="java.util.Map" resultType="int">
 		select count(*) from nyehms_ria_Doc where CURR_NYEHMS_STATENO in (#{stateno1}, #{stateno2}) and (complete_date is null and merged_ria_stateno is null)

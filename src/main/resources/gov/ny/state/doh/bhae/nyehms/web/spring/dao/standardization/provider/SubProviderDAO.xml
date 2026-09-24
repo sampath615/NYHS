@@ -13,35 +13,7 @@
     <result column="INPUT_PROV_ADDR_ID" property="inputProvAddrId" jdbcType="DECIMAL" />
   </resultMap>
 
- <select id="getSubProviderList" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO" resultMap="subProviderResult">
-    SELECT 
-			PROVIDER_ID, PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX, 
-			COUNT(DISTINCT SUBPROVADRS.SUB_PROVIDER_ADDRESS_ID) AS TOTAL_SUB_PROVIDER_ADDRESS
-			
-    FROM    SUB_PROVIDER SUBPROV  LEFT OUTER JOIN SUB_PROVIDER_ADDRESS SUBPROVADRS USING (PROVIDER_ID)
-       
-	WHERE   (SUBPROVADRS.RETIRED_DATE IS NULL OR SUBPROVADRS.RETIRED_DATE > SYSDATE)
-		      <if test="providerFname != null and providerFname != ''" >
-		        AND UPPER(PROVIDER_FNAME) LIKE UPPER(#{providerFname,jdbcType=VARCHAR})  || '%' 
-		      </if>
-		      <if test="providerMname != null and providerMname != ''" >
-		        AND UPPER(PROVIDER_MNAME) LIKE UPPER(#{providerMname,jdbcType=VARCHAR})  || '%' 
-		      </if>
-		      <if test="providerLname != null and providerLname != ''" >
-		        AND UPPER(PROVIDER_LNAME) LIKE UPPER(#{providerLname,jdbcType=VARCHAR})  || '%' 
-		      </if>
-		      <if test="providerSuffix != null and providerSuffix != ''" >
-		        AND UPPER(PROVIDER_SUFFIX) LIKE UPPER(#{providerSuffix,jdbcType=VARCHAR})  || '%' 
-		      </if>
-    GROUP BY PROVIDER_ID, PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX
-  </select>
   
-  <select id="getSubProvidersListForSubProvAdrsIds" parameterType="java.util.Map" statementType="CALLABLE">
-	{CALL PKG_STANDARDIZATION.PR_SUB_PROV_BY_SUB_PR_ADDRESS(
-		#{subProvAdrsIds,jdbcType=VARCHAR,mode=IN},
-		#{subProvRefCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=subProviderResult}
-	)}
-  </select>
   
   
     <select id="addNewProvider" parameterType="java.util.Map"  statementType="CALLABLE" >

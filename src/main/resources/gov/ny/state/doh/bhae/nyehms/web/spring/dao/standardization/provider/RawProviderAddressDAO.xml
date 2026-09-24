@@ -137,40 +137,6 @@
 		
 	</select>
 	
-	<select id="getRawProvAdrsIdsForSearch" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO"  resultType="Long">
-    select 
-			RAW_PROVIDER_ADDRESS_ID
-    from    RAW_PROVIDER_ADDRESS
-	where    <trim prefix="" suffix="" prefixOverrides="AND" >
-	              <if test="rawProviderFname != null and rawProviderFname != ''" >
-			        AND UPPER(PROVIDER_FNAME) LIKE UPPER(#{providerFname,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="rawProviderMname != null and rawProviderMname !=''" >
-			        AND UPPER(PROVIDER_MNAME) LIKE UPPER(#{providerMname,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="rawProviderLname != null and rawProviderLname !=''" >
-			        AND UPPER(PROVIDER_LNAME) LIKE UPPER(#{providerLname,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="address != null and address != ''" >
-			        AND UPPER(ADDRESS) LIKE UPPER(#{address,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="city != null and city != ''" >
-			        AND UPPER(CITY) LIKE UPPER(#{city,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="state != null and state != ''" >
-			        AND UPPER(STATE) LIKE UPPER(#{state,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="zipcode != null and  zipcode != ''" >
-			        AND ZIPCODE LIKE #{zipcode,jdbcType=VARCHAR}  || '%' 
-			      </if>
-			       <if test="countyFips != null and countyFips != ''" >
-		            AND COUNTY_FIPS LIKE #{countyFips,jdbcType=VARCHAR}  || '%' 
-		           </if>
-			       <if test="phone != null and phone != ''" >
-			        AND PHONE LIKE #{phone,jdbcType=VARCHAR}  || '%' 
-			      </if>
-			</trim>       
-  </select>
   
    <select id="getRawProvAdrsListBySubprovAdrsId" parameterType="java.util.Map"  statementType="CALLABLE">
 	   {CALL PKG_STANDARDIZATION.PR_RAW_PROV_ADDRESSES_BY_SUB(

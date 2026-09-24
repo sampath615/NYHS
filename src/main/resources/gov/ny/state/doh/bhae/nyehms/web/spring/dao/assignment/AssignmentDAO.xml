@@ -17,41 +17,7 @@
     		REGION_DESCRIPTION
   </select>
   
-   <select id="getAssignmentWorkerTallyList" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerTallyListVO">  
-  	SELECT 
-  		ALL_OPEN_COUNT         AS allOpenCount, 
-  		NON_SUBMITTED_ACRF     AS nonSubmittedAcrf,
-  		ALL_REOPEN_COUNT       AS allReopenCount, 
-  		ALL_REJECTED_COUNT     AS allRejectedCount, 
-  		PENDING_REASSIGN_COUNT AS pendingReassignCount, 
-		PENDING_ACRF_RVW_COUNT AS pendingAcrfRvwCount,
-		NEW_COUNT              AS newCount,
-		ADMIN_CLOSED_COUNT     AS adminClosedCount  
-	FROM  
-		NYEHMS_ASSGN_WORKER_TALLY_VW
-	WHERE
-		WORKER_ID=#{p_workerId} AND
-		WORKER_REGION_ID=#{p_workerRegionId}
-   </select>  
   
-   <select id="getAssignmentSuperTallyList" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentSuperTallyListVO">  
-  	SELECT 
-  		ALL_OPEN_TOTAL            AS allOpenTotal, 
-  		MY_OPEN_TOTAL			  AS myOpenTotal,
-  		MY_NON_SUBMITTED_ACRF     AS myNonSubmittedAcrf,
-		ALL_REJECTED_TOTAL		  AS allRejectedTotal,	
-		REASSIGN_REQUESTED_TOTAL  AS reassignRequestedTotal,
-		PENDING_ACRF_RVW_TOTAL	  AS pendingAcrfRvwTotal,
-		MY_PENDING_ACRF_RVW		  AS myPendingAcrfRvw,
-		NEEDS_ASSIGN_TOTAL		  AS needsAssignTotal,
-		ADMIN_CLOSED_TOTAL		  AS adminClosedTotal,
-		MY_ADMIN_CLSD			  AS myAdminClsd
-	FROM  
-		NYEHMS_ASSGN_SUPER_TALLY_VW
-	WHERE
-		WORKER_ID=#{p_workerId} AND
-		WORKER_REGION_ID=#{p_workerRegionId}
-    </select>
   
     <!-- Worker Names for Supervisor's View -->
     <resultMap type="java.util.Map" id="workerNamesByRegion"> 	

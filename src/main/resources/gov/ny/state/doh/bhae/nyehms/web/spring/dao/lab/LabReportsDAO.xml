@@ -408,16 +408,6 @@
 	</insert>
 
 	
-    <select id="updateLoincCodesToLoclCode" parameterType="java.util.Map"  statementType="CALLABLE" >
-		{call  pkg_lab_maintenance.pr_merge_lab_localcd_loincs(
-		    #{localCodeMapId,jdbcType=INTEGER,mode=IN},
-			#{loincMapIds,jdbcType=ARRAY,typeHandler=org.apache.ibatis.type.ArrayTypeHandler,mode=IN},
-			#{lastUpdatedBy,jdbcType=VARCHAR,mode=IN},
-			#{p_code_out,jdbcType=INTEGER,mode=OUT},
-			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
-			
-		)}
-	</select>
 	
 	
 	<select id="getSelectedLoincCodesOfLocalCode" parameterType="long" resultType="long">
@@ -443,9 +433,6 @@
 		from LAB_INTERACTION_HISTORY lih join NYEHMS_USERS u on lih.INTERACTION_BY = u.worker_id where INTERACTION_ID = #{labInteractionId}
 	</select>
 	
-	<select id="getContactNamesOfPFI" parameterType="String" resultType="String">
-		SELECT CONTACT_NAME FROM LAB_ALTERNATIVE_CONTACTS where PFI = #{pfi} and RETIRED_DATE IS NULL ORDER BY CONTACT_NAME 
-	</select>
 	
 	<insert id="addLabInteractionNotes" parameterType="java.util.Map">	
 		 insert into LAB_INTERACTION_HISTORY(PFI, INTERACTION_DATE,  INTERACTION_BY,  COMMUNICATION_TYPE, INTERACTION_NOTES) VALUES (#{pfi}, SYSDATE, #{p_lastUpdatedBy}, #{interactionContactType}, #{interactionNotes,jdbcType=CLOB})
@@ -502,9 +489,6 @@
 		<result property="REPORTING_STATUS_DESCRIPTION" column="REPORTING_STATUS_DESCRIPTION"  javaType="String"/>
  	</resultMap>
  		
-	<select id="getBhaeReportingStatusDetails" resultMap="reportingStatusMap">
-		select REPORTING_STATUS_CODE , REPORTING_STATUS_DESCRIPTION from CODED_BHAE_REPORTING_STATUS ORDER BY SORT_ORDER
-	</select>
 	
 	
 	<insert id="addNewContactToFacility"  parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabNewContactVO" useGeneratedKeys="true" keyProperty="CONTACTID" keyColumn="CONTACT_ID">

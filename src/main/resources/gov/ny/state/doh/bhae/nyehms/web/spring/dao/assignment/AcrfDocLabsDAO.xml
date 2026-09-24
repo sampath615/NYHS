@@ -148,9 +148,6 @@
 		]]>
 	</select>	
 		
-	<select id="getSeqNoForRawACRFLabsTbl" resultType="String">  
-		SELECT  RAW_ACRF_LABS_SEQ.NEXTVAL FROM DUAL
-	</select>	
 	
 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfLabsVO" id="acrfLabsRawTblResult">
 		<result property="labSrcId" column="LAB_SRC_ID"/>

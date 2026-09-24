@@ -89,11 +89,6 @@
   </select>
   
   <!-- TODO May be removed -->
-  <select id="getMasterfacilityID" parameterType="Long" resultType="Long"> 
-     select MASTER_FACILITY_ID 
-     from   SUB_FACILITY 
-     WHERE SUB_FACILITY_ID = #{subFacilityId}
-  </select> 
   
     <select id="getSubFacilityId" parameterType="String" resultType="String">
     <![CDATA[ 

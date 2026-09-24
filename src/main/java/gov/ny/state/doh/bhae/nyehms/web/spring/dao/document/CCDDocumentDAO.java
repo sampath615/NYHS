@@ -57,13 +57,9 @@ public interface CCDDocumentDAO {
 
 	public StdCCDDocVo getStdCCDDoc(int docId);
 
-	public List<RawCCDProviderVO> getCCDProviderList(int docId);
 
-	public List<RawCCDEncounterVO> getCCDEncounterList(int docId);
 
-	public List<RawCCDMedVO> getCCDMedList(int docId);
 
-	public List<RawCCDPayerVO> getCCDPayerList(int docId);
 
 	public List<Map<String, Object>> getChildEntryData(Map<String, Object> args);
 

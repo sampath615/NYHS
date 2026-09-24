@@ -1519,18 +1519,6 @@ and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P') and rownum < 2
        select 'PREG_OUTCOME' subStanceName, PREG_OUTCOME pregOutcome, PREG_OUTCOME_YEAR pregOutcomeYear from RAW_PCRF_DETAILS  where PCRF_SECTION(+) = 'PREG_OUTCOME' and document_id(+) = #{documentId}
 	</select>
 	
-	<select id="getBpPregOutcomeDefaultList" parameterType="String"
-		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.PcrfSubstanceDocVO">
-
-        with substanceColumns as (
-        select * from coded_acrf_ref_Data where ref_column = 'PREG_OUTCOME' order by lookup_cd asc)
-
-        select LOOKUP_NAME subStanceName, LOOKUP_CD
-        refCd, PREG_OUTCOME pregOutcome, PREG_OUTCOME_YEAR pregOutcomeYear from RAW_PCRF_DETAILS
-        substanceData, substanceColumns where
-        substanceColumns.lookup_cd = PREG_OUTCOME(+) and PCRF_SECTION(+) = 'PREG_OUTCOME' and
-        document_id(+) = #{documentId}
-	</select>
 
 	<delete id="deleteSubStance" parameterType="java.util.Map">
 		delete from RAW_PCRF_DETAILS where DOCUMENT_ID =

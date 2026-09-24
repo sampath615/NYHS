@@ -13,9 +13,7 @@ import java.util.Set;
  */
 public class CommonConstants {
 	
-	public static final String SCHEDULER_RAW_HIV_CLEAN = "runRawRecordsCleanerJob";
 	
-	public static final String SCHEDULER_QUALITY_STAGE = "runQualityStageLoaderJob";
 	/**
 	 * Common failure exception message
 	 */
@@ -23,25 +21,21 @@ public class CommonConstants {
 	/**
 	 * Subject for Scheduler job status 
 	 */
-	public static final String RAW_HIV_RECORDS_CLEANEDUP_STATUS_SUBJECT = "HIV Raw records duplication status";
 	
 	
 	/**
 	 * Subject for Scheduler job status 
 	 */
-	public static final String STD_HIV_RECORDS_QUALITY_STAGE_STATUS_SUBJECT = "HIV Std records quality stage update";
 	
 	
 	/**
 	 * Subject for Scheduler job status 
 	 */
-	public static final String STORE_QUALITY_STAGE_MATCH_RESULTS = "storing quality stage match results";
 	
 	
 	/**
 	 * Subject for doing Scheduler job manually 
 	 */
-	public static final String RAW_HIV_RECORDS_CLEANEDUP_MANUALLY_SUBJECT = "Changing the Scheduler job status Manually";
 	/**
 	 * Response Content Type : plain text 
 	 */
@@ -68,7 +62,6 @@ public class CommonConstants {
 	 */
 	public static final String TRIGGER_RESUME = "resume scheduler job";
 	
-	public static final String TRIGGER_STOP = "stop scheduler job";
 	
 	
 	
@@ -94,17 +87,14 @@ public class CommonConstants {
 	
 	public static final int DOCUMENT_DELETED_PROCESS_STATUS = 9;
 	
-	public static final int RAW_RECORD_QUALITY_STAGED_PROCESS_STATUS = 10;
 	
 	public static final int RAW_RECORD_MULTI_RECORDS_PROCESS_STATUS = 11;
 	
-	public static final int RAW_PRF_REVIEW_RECORD_PROCESS_STATUS = 16;
 	
 	public static final int STOPPED_AT_RAW_LAYER_PROCESS_STATUS = 18;
 	
 	public static final int STOPPED_AT_RAW_NOT_HAVING_SUFFICIENT_INFO = 43;
 	
-	public static final int STOPPED_AT_STD_LAYER_PROCESS_STATUS = 17;
 	
 	public static final int RAW_RECORD_MULTISTEP_DELETED_PROCESS_STATUS = 19;
 	
@@ -132,7 +122,6 @@ public class CommonConstants {
 	
 	public static final String DEFAULT_PFI = "-999";
 	
-	public static final int DEFAULT_CLIA = -9999;
 	
 	public static final String TEST_TYPE_RESISTANCE = "RESISTANCE";
 	
@@ -140,17 +129,11 @@ public class CommonConstants {
 	
 	public static final String TEST_TYPE_VL = "VL";
 	
-	public static final String TEST_TYPE_WB = "WB";
 	
-	public static final String TEST_TYPE_HIV_SCREENING = "SCREEN";
 	
-	public static final String TEST_TYPE_HIV_DIFFERENTIATING = "DIFFERENTIATING";
 	
-	public static final String TEST_TYPE_CULTURE = "CULTURE";
 	
-	public static final String TEST_TYPE_P24 = "P24";
 	
-	public static final String TEST_TYPE_IFA = "IFA";
 	
 	public static final String STD_NO_RESULTS = "NO RESULT";
 	
@@ -160,11 +143,8 @@ public class CommonConstants {
 	
 	public static final String STD_RESULTS_NEGATIVE = "NEG";
 	
-	public static final String STD_RESULTS_UNDIFFERENTIATED = "UNDIFFERENTIATED";
 	
-	public static final String STD_RESULTS_HIV1 = "HIV-1";
 	
-	public static final String STD_RESULTS_HIV2 = "HIV-2";
 	
 	public static final String STD_RESULTS_INDETERMINATE = "IND";
 	
@@ -174,15 +154,11 @@ public class CommonConstants {
 	
 	public static final String STD_RESULTS_INTERPRETATION_GREATER = ">";
 	
-	public static final String OBX_RESULTKEY = "OBX";
 	
-	public static final String OBR_REQUESTKEY = "OBR";
 	
-	public static final int QS_MATCH_DATA_FIELDS_COUNT = 46;
 	
 	public static final int QS_DUPLICATED_DATA_FIELDS_COUNT = 4;
 	
-	public static final int QS_MATCH_DATA_CHARACTERS_LENGTH = 692;
 	
 	public static final int QS_PROVIDER_MAPPING_RECORD_LENGTH = 850;
 	
@@ -274,13 +250,10 @@ public class CommonConstants {
 	
 	public static final String OBXOBSERVATIONRESULTKEY = "OBXOBSERVATIONRESULTKEY";
 	
-	public static final String NEW_LINE = "\n";
 	
 	public static final String NEW_HIV_ECLRS_DATA = "HIV ECLRS Data";
 	
-	public static final String NEW_HIT_CCD_DATA = "HIT CCD Data";
 	
-	public static final String NEW_HIE_DTH_DATA = "HIE DTH Data";
 	
 	public static final String NEW_STD_ECLRS_DATA = "STD ECLRS Data";
 	

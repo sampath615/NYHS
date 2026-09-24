@@ -20,8 +20,6 @@ public interface DocumentDAO {
 	 * @throws DataAccessException
 	 */
 	@Transactional
-	public void getAccess()
-			throws DataAccessException;
 
     /**
      * This function is used to generate new doc id.
@@ -33,26 +31,8 @@ public interface DocumentDAO {
     public void getNewDocId(Map<Object, Object> map)
     		throws DataAccessException;
 
-    /**
-     * This method deletes the given doc no.
-     *
-     * @param map
-     * @throws DataAccessException
-     */
-    public void deleteDocId(Map<Object, Object> map)
-    		throws DataAccessException;
 
-    /**
-     * This function will call procedure to associate edited doc to state no.
-     *
-     * @param map
-     * @throws DataAccessException
-     */
-    public void associateEditedDoc(Map<Object, Object> theMap)
-    		throws DataAccessException;
     
-    public Map<Object, Object> getProcessValidationReport(Map<Object, Object> theMap)
-    		throws DataAccessException;
     
     
 

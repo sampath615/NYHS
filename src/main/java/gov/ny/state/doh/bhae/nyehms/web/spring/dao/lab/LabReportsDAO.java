@@ -70,7 +70,6 @@ public interface LabReportsDAO {
 	
 	public int linkLoincCodesToLoclCode(Map<Object,Object> map)throws DataAccessException;
 	
-	public void updateLoincCodesToLoclCode(Map<Object,Object> map)throws DataAccessException;
 	
 	public List<Long> getSelectedLoincCodesOfLocalCode(Long localCodeMapId)throws DataAccessException;
 	
@@ -83,7 +82,6 @@ public interface LabReportsDAO {
 	
 	public LabInteractionHistoryVO getLabCommunication(String interactionId) throws DataAccessException;
 	
-	public List<String> getContactNamesOfPFI(String pfi)throws DataAccessException;
 	
 	public int addLabInteractionNotes(Map<Object,Object> map)throws DataAccessException;
 	
@@ -101,7 +99,6 @@ public interface LabReportsDAO {
 	
 	public String checkPFIExistence(String pfi)throws DataAccessException;
 	
-	public List<Map<String, String>> getBhaeReportingStatusDetails()throws DataAccessException;
 	
 	public int addNewLabContactsToPFI(Map<Object,Object> inOutParameterMap);
 	

@@ -130,35 +130,7 @@
        ]]>
 	</insert>
 
-	<insert id="insertRawHL7ADT"
-		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ADTVO">
-		<![CDATA[
-			insert into raw_hl7_adt (
-				document_id,
-				evn_1_event_type_code,
-				dg1_count
-			) values (
-				#{documentId, jdbcType=INTEGER},
-				#{eventTypeCode, jdbcType=INTEGER},
-				#{dg1Count, jdbcType=INTEGER}
-			)
-		]]>
-	</insert>
 
-	<insert id="insertRawHL7ORU"
-		parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7ORUVO">
-		<![CDATA[
-			insert into raw_hl7_oru (
-				document_id,
-				obr_count,
-				obx_count
-			) values (
-				#{documentId, jdbcType=INTEGER},
-				#{obrCount, jdbcType=INTEGER},
-				#{obxCount, jdbcType=INTEGER}
-			)
-		]]>
-	</insert>
 	<!-- <insert id="insertRawHL7OBR" parameterType="java.util.Map"> INSERT 
 		INTO RAW_HL7_LAB_TEST ( LAB_TEST_ID,HL7_DOC_ID,UPHN_TRANX_IN_ID,OBRSETID,OBRACCESSIONNUM,OBRCALLBACKPHONE,OBRCOLLECTIONDATE, 
 		OBROBSERVATIONDATE,OBRPROVIDERFIRSTNAME, OBRPROVIDERLASTNAME, OBRPROVIDERMIDDLENAME, 

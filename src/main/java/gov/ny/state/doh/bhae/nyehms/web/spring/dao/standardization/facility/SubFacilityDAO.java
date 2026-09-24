@@ -11,7 +11,6 @@ public interface SubFacilityDAO {
 	
 	public void insertNewStdFacility(Map<Object, Object> map);
 	
-	public long getMasterfacilityID(long subFacilityId);
 	
 	public List<SubFacilityForRawFacilityVO> getStdIdsForRawIds(Map<Object, Object> map);
 

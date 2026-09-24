@@ -63,47 +63,5 @@ AND  RAW1.NYCPRF_DOCUMENT_ID = #{docId}
   </select>
   
   
-  <insert id="insertNycPRFPartner" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO" >
-    INSERT INTO RAW_PRF_PARTNER 
-    		  (PARTNER_ID, DOCUMENT_ID, FNAME, 
-		      MNAME, LNAME, ALIAS_FNAME, 
-		      ALIAS_MNAME, ALIAS_LNAME, ADDRESS, 
-		      CITY, STATE, ZIP, PLUS4, 
-		      COUNTY, HOME_PHONE, CELL_PHONE, 
-		      PAGER, EMAIL, DOB_TEXT, 
-		      AGE, GENDER, ETHNICITY, 
-		      RACE_WHITE, RACE_BLACK, RACE_ASIAN, 
-		      RACE_INDIAN, RACE_PACIFIC, RACE_UNKNOWN, 
-		      RACE_OTHER, RACE_OTHER_TEXT, COMPLEXION, 
-		      HAIR, HEIGHT, WEIGHT, 
-		      OTHER_CHARACTERISTICS, PLACE_OF_EMPLOYMENT, 
-		      WORK_HOURS, WORK_PHONE, WORK_PHONE_EXT, 
-		      MARITAL_STATUS, PREGNANT, SPOUSE, 
-		      DV_SCREEN, DV_RISK, PARTNER_ASSISTANCE_STATUS, 
-		      PARTNER_NOTIFIED_DATE, PARTNER_STATUS, PARTNER_TEST_DATE, 
-		      IDENTIFIED_BY_HD_PS, CREATE_ID, CREATE_DATE, 
-		      ENTRY_REVIEW_ID, ENTRY_REVIEW_DATE, HIGH_PRIORITY, 
-		      ELICITED_BY_PNAP, ELICITED_BY_ACT)
-    VALUES 
-    		  (SEQ_PRF_PARTNER.NEXTVAL, #{documentId,jdbcType=DECIMAL}, #{fname,jdbcType=VARCHAR}, 
-		      #{mname,jdbcType=VARCHAR}, #{lname,jdbcType=VARCHAR}, #{aliasFname,jdbcType=VARCHAR}, 
-		      #{aliasMname,jdbcType=VARCHAR}, #{aliasLname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-		      #{city,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{zip,jdbcType=VARCHAR}, #{plus4,jdbcType=VARCHAR}, 
-		      #{county,jdbcType=VARCHAR}, #{homePhone,jdbcType=VARCHAR}, #{cellPhone,jdbcType=VARCHAR}, 
-		      #{pager,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{dobText,jdbcType=VARCHAR}, 
-		      #{age,jdbcType=DECIMAL}, #{gender,jdbcType=VARCHAR}, #{ethnicity,jdbcType=VARCHAR}, 
-		      #{raceWhite,jdbcType=VARCHAR}, #{raceBlack,jdbcType=VARCHAR}, #{raceAsian,jdbcType=VARCHAR}, 
-		      #{raceIndian,jdbcType=VARCHAR}, #{racePacific,jdbcType=VARCHAR}, #{raceUnknown,jdbcType=VARCHAR}, 
-		      #{raceOther,jdbcType=VARCHAR}, #{raceOtherText,jdbcType=VARCHAR}, #{complexion,jdbcType=VARCHAR}, 
-		      #{hair,jdbcType=VARCHAR}, #{height,jdbcType=VARCHAR}, #{weight,jdbcType=VARCHAR}, 
-		      #{otherCharacteristics,jdbcType=VARCHAR}, #{placeOfEmployment,jdbcType=VARCHAR}, 
-		      #{workHours,jdbcType=VARCHAR}, #{workPhone,jdbcType=VARCHAR}, #{workPhoneExt,jdbcType=VARCHAR}, 
-		      #{maritalStatus,jdbcType=VARCHAR}, #{pregnant,jdbcType=VARCHAR}, #{spouse,jdbcType=VARCHAR}, 
-		      #{dvScreen,jdbcType=VARCHAR}, #{dvRisk,jdbcType=VARCHAR}, #{partnerAssistanceStatus,jdbcType=VARCHAR}, 
-		      #{partnerNotifiedDate,jdbcType=VARCHAR}, #{partnerStatus,jdbcType=VARCHAR}, #{partnerTestDate,jdbcType=VARCHAR}, 
-		      #{identifiedByHdPs,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, TO_DATE(#{createDate}, 'MM/DD/YYYY'),  
-		      #{entryReviewId,jdbcType=VARCHAR}, TO_DATE(#{entryReviewDate}, 'MM/DD/YYYY'),  #{highPriority,jdbcType=VARCHAR}, 
-		      #{elicitedByPnap,jdbcType=VARCHAR}, #{elicitedByAct,jdbcType=VARCHAR})
-  </insert>
   
 </mapper>

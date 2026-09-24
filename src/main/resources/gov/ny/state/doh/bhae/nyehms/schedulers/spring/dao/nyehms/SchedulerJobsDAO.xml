@@ -1025,10 +1025,6 @@ WHERE b.current_process_status = 1
 		SELECT count(*)  FROM LAB_LOINC_MAPPING where PFI = #{pfi} and LOINC_CD = #{loincCode} and #{collectionDate} >= START_DATE  and (END_DATE is null or END_DATE >= #{collectionDate})
 	</select>
 	
-	<select id="getSubFacilitiesListForThePatientAddress" parameterType="String"  resultType="java.util.Map">
-		SELECT MAX(s.SUB_FACILITY_ID) SUB_FACILITY_ID, MAX(CAN_BE_RES) CAN_BE_RES  FROM RAW_FACILITY r, SUB_FACILITY s 
-		WHERE r.ADDRESS =#{patientAddress} AND r.SUB_FACILITY_ID =s.SUB_FACILITY_ID
-	</select>
 	
 	<update id="updateReAssignDocProcessedStatus" parameterType="java.util.Map">
 		update LAB_ECLRS_REASSIGN set PROCESS_DATE = SYSDATE   where SRC_ID in (#{OBXOBSERVATIONRESULTKEY}, #{OBROBSERVATIONREQUESTKEY})
@@ -1049,9 +1045,6 @@ WHERE b.current_process_status = 1
 		update LAB_ECLRS_LOAD_LOG set NO_OF_ERRORS = #{failedDocumentIdsCount} where OBX_MAX = #{OBXOBSERVATIONRESULTKEY}
 	</update>
 	
-	<select id="getMatchesForRaceCode" parameterType="java.util.Map"  resultType="String">
-		SELECT TRANSLATED_RACE_CD FROM LAB_LOAD_RACE_MAPPING where PFI = #{pfi} and RAW_RACE_CD  = #{pid_race_cd}
-	</select>
 	
 	<select id="getMatchesForEthnicityCode" parameterType="java.util.Map"  resultType="String">
 		SELECT distinct(TRANSLATED_ETHNICITY_CD) FROM LAB_LOAD_ETHNICITY_MAPPING where PFI = #{pfi} and (UPPER(RAW_ETHNICITY_CD)  = UPPER(#{pid_ethnic_cd}) or UPPER(TRANSLATED_ETHNICITY_CD)  = UPPER(#{pid_ethnic_cd}))
@@ -1100,14 +1093,7 @@ WHERE b.current_process_status = 1
 	
 	
 	
-	<select id="getStandardInterpretationCode" parameterType="java.util.Map"  resultType="String">
-		SELECT HIGHER_BOUND FROM LOINC_RESULT_INTERPRET_RULES where LOINC_CD = #{loincCode} and #{oBXOBSERVATIONRESULTTEXT} between  LOWER_BOUND and HIGHER_BOUND and FLAG_ACTIVE = 'Y' 
-	</select>
 		
-	<select id="getSubProvidersListForThePatientAddress" parameterType="String"  resultType="java.util.Map">
-		SELECT MAX(s.SUB_PROVIDER_ADDRESS_ID) SUB_PROVIDER_ADDRESS_ID, MAX(CAN_BE_RES) CAN_BE_RES FROM RAW_PROVIDER_ADDRESS r, sub_provider_address s 
-			WHERE r.ADDRESS =#{patientAddress} AND r.SUB_PROVIDER_ADDRESS_ID =s.SUB_PROVIDER_ADDRESS_ID and FLIPPED_TO_FACILITY_DATE is null
-	</select>
 	
 	<update id="makeDocumentAsInactivate" parameterType="int">
 		update DOCUMENT_LOCATOR set IS_ACTIVE = 'N' where DOCUMENT_ID = #{documentId}
@@ -1121,23 +1107,6 @@ WHERE b.current_process_status = 1
 	</select>
 	
 	
-	<select id="checkForExistingProcessFilterMatch" parameterType="java.util.Map"  resultType="java.util.Map">
-		SELECT   DISTINCT lptf.FILTER_NUMBER,  lptf.FILTER_TYPE 
-       FROM lab_process_pfi pfi,
-            LAB_PROCESS_TEST_FILTERS lptf 
-      WHERE     pfi.filter_number = lptf.filter_number
-            and pfi.pfi in 
-            <foreach item="pfi" index="index" collection="pfiList"
-            open="(" separator="," close=")">
-            	#{pfi}
-        	</foreach>   
-              and  pfi.FLAG_ACTIVE = 'Y' and lptf.FLAG_ACTIVE = 'Y' and lptf.FILTER_TYPE in 
-        <foreach item="filterType" index="index" collection="filterTypes"
-            open="(" separator="," close=")">
-            #{filterType}
-        </foreach>  
-        
-   </select>
 	
 	
 	
@@ -1184,11 +1153,6 @@ WHERE b.current_process_status = 1
 	
 	
 	
-	<select id="getCountyNameByCity" parameterType="String"  resultType="String">
-	<![CDATA[
-		select NVL(MAX(COUNTY_FIPS_CD), '999') COUNTY_FIPS_CD from NYEHMS_COUNTY_REFERENCE where CITY = #{_city} and NUM_CITY = 1 and rownum < 2
-		]]>
-	</select>
 
 
 <resultMap id="duplicationMap" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MailStatusVO" >
@@ -2342,93 +2306,11 @@ WHERE ROWID IN (SELECT rwid
 	</insert>
 	
 	
-	<select id="checkForSTDConfirmDocuments" resultType="Integer">
-		<![CDATA[
-			select 1 from RAW_DOCUMENT_MATCH_RESULTS where document_type_Code = 'STD_CONF' and rownum < 2
-		]]> 
-	</select>
-	
-	<update id="updateTheMatchCuttoffForSTDConfClericals">
-	<![CDATA[
-		UPDATE raw_document_match_results
-   		SET match_cd =    CASE
-                        WHEN match_pass = 3 AND match_weight >= 65.2 THEN 'M'
-                        WHEN match_pass = 3 AND match_weight >= 18.98 AND match_weight < 65.2 THEN 'C'
-                        WHEN match_pass = 3 AND match_weight < 18.98 THEN 'N'
-                        WHEN match_pass = 4 AND match_weight >= 34.4 THEN 'M'
-                        WHEN match_pass = 4 AND match_weight > 30.33 AND match_weight < 34.4 THEN 'C'
-                        WHEN match_pass = 4 AND match_weight <= 30.33 THEN 'N'
-                        WHEN match_pass = 5 AND match_weight >= 68.74 THEN 'M'
-                        WHEN match_pass = 5 AND match_weight >= 55.21 AND match_weight < 68.74 THEN 'C'
-                        WHEN match_pass = 5 AND match_weight < 55.21 THEN 'N'
-                        WHEN match_pass = 6 AND match_weight >= 60 THEN 'C'
-                        WHEN match_pass = 6 AND match_weight < 60 THEN 'N'
-                        ELSE match_cd
-                    END
-		WHERE document_type_code = 'STD_CONF'
-		and match_Cd in ('C', 'M')
-
-		
-	]]> 
-	
-	</update>
-	
-	<select id="getNonMatchMatchListWithRegistry" resultType="java.util.Map">
-		<![CDATA[
-				WITH raw_std_conf_match_results AS
-				(
-				SELECT Distinct r.qs_parent_doc_id
-				  FROM raw_document_match_results r
-				WHERE r.document_type_code = 'STD_CONF'
-				   AND r.match_cd = 'N'
-				   AND NOT EXISTS (SELECT 1 
-				                     FROM raw_document_match_results s 
-				                    WHERE s.document_id = r.document_id 
-				                      AND s.match_cd IN ('M','C', 'D'))
-				), data AS
-				(
-				    SELECT  r.qs_parent_doc_id, c.STATENO, ROW_NUMBER() OVER (PARTITION BY  r.qs_parent_doc_id ORDER BY c.stateno) rn      
-				      FROM std_std_confirmed_doc a, document_person_attr b, person_doc_association c, raw_std_conf_match_results r
-				     WHERE a.qs_parent_doc_id = r.qs_parent_doc_id
-				       AND a.fname = b.first_name
-				       AND a.lname = b.last_name
-				       AND TO_CHAR(a.dob,'MM/DD/YYYY') = TO_CHAR(b.date_of_birth,'MM/DD/YYYY')
-				       AND b.document_id = c.document_id
-				       AND c.dissassociation_date IS NULL
-				       AND c.stateno NOT IN (SELECT stateno 
-				                               FROM nyehms_new_flagged_badmerge_vw)
-				)
-				SELECT qs_parent_doc_id DOCUMENT_ID, STATENO
-				  FROM data
-				WHERE rn = 1
-								
-		]]> 
-	</select>
 	
 	
-	<update id="updateTheStatenoForSTDConfNonMatches" parameterType="java.util.Map">
 	
-		update RAW_DOCUMENT_MATCH_RESULTS set MATCH_CD = 'C' ,  POT_STATENO = #{STATENO} where document_id = #{DOCUMENT_ID} and MATCH_PASS = 5
-	</update>
 	
-	<update id="updateMatchCodeForLabDeathRecords" parameterType="java.util.Map">
 	
-		UPDATE raw_document_match_results a
-			   SET match_cd = 'P'
-			WHERE a.match_res_id IN ( 
-			SELECT r.match_res_id
-			  FROM raw_document_match_results r, document_person_attr d, person_doc_association p, ${stdTableName} a
-			WHERE r.document_type_code = #{documentType}
-			  AND r.match_cd = 'M'
-			   AND d.date_of_death IS NOT NULL 
-			   AND d.document_id = p.document_id 
-			   AND p.stateno = r.pot_stateno
-			   AND p.dissassociation_date IS NULL
-			   AND r.document_id = a.document_id
-			   AND a.collection_date - d.date_of_death > 7)
-		
-	
-	</update>
 	
 	<select id="getDataFluxQSMatchSummary" resultType="java.util.Map" >
 select DOC_TYPE, MATCH_CD, to_char(count(*)) DATA_FLUX from nyehms_sasdb_owner.er_person_clusters_Stage group by DOC_TYPE, MATCH_CD order by DOC_TYPE, MATCH_CD

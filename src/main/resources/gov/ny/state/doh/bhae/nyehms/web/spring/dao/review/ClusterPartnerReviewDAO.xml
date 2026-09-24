@@ -179,15 +179,6 @@ when matched
 	</choose>
 	
 	</select>
-	<select id="getClusterDocumentAsPerson" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-	
-		select
-FIRST_NAME FNAME, MIDDLE_NAME MNAME, LAST_NAME LNAME, '' SUFFIX, '' GENDER, BIRTH_SEX birthSex, TO_CHAR(DATE_OF_DEATH, 'MM/DD/YYYY') dateOfDeath, '' SSN, NYSID, DIN, MEDRECNO MED_RECORD_NUMBER, '' MEDICAID_NUMBER, '' INSURANCE_NUMBER, to_char(DATE_OF_BIRTH) DOB, '' BIRTH_COUNTRY, ETHNICITY_DESCRIPTION ETHNICITY, STREET PERSON_ADDRESS, STATE PERSON_STATE, CITY PERSON_CITY,COUNTY_NAME PERSON_COUNTY, ZIPCODE PERSON_ZIP, '' PERSON_PLUS4, HOME_PHONE homePhone, CELL_PHONE cellPhone, '' workPhone from nyehms_cluster_partners  s , CODED_COUNTY c ,CODED_ETHNICITY e
-where
- s.COUNTY = c.COUNTY_FIPS_CODE(+)
-AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.PARTNER_ID = #{documentId}
-		
-	</select>
 	
 	
 

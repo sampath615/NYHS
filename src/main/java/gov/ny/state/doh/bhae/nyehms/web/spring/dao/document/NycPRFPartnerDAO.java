@@ -11,6 +11,5 @@ public interface NycPRFPartnerDAO {
 	
 	public LinkedList<NycPRFPartnerVO> getNycPRFPartner(int docId)throws DataAccessException;
 	@Transactional	
-	public void insertNycPRFPartner(NycPRFPartnerVO stdPRFPartnerVO)throws DataAccessException;
 
 }

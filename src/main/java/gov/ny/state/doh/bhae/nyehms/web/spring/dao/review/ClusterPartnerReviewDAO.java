@@ -31,7 +31,6 @@ public interface ClusterPartnerReviewDAO {
 //	int checkForExistingMatches(Map<String, Object> inOutParameterMap);
 	
 
-	public PersonViewVO getClusterDocumentAsPerson(int documentId);
 
 	public ClusterPartnerDocVO getClusterPartnerDocData(int documentId);
 

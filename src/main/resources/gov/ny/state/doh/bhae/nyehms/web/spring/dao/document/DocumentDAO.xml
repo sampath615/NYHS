@@ -4,11 +4,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO">
 
-	<update id="getAccess">
-		<![CDATA[
-			alter session set current_schema = nyehms_owner
-		]]>
-	</update>
 		
     <select id="getNewDocId" parameterType="java.util.Map" statementType="CALLABLE" >	
         {call PKG_DOCUMENT_MANAGEMENT.SP_GENERATE_NEW_DOC(
@@ -22,121 +17,11 @@
         )}  
     </select> 
 	
-    <delete id="deleteDocId" parameterType="java.util.Map" statementType="CALLABLE">
-        {call PKG_DOCUMENT_MANAGEMENT.SP_UNDO_NEW_DOC(
-        #{p_parent_doc_id,jdbcType=INTEGER,mode=IN},
-        #{p_new_doc_id,jdbcType=INTEGER,mode=IN},
-        #{p_return_code,jdbcType=INTEGER,mode=OUT},
-        #{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
-        )}
-    </delete>
   
         
-    <select id="associateEditedDoc" parameterType="java.util.Map"  statementType="CALLABLE" >
-        {  call  pkg_document_management.pr_associate_edited_document(
-        #{p_new_document_id,jdbcType=VARCHAR,mode=IN}, 
-        #{p_worker_id,jdbcType=VARCHAR,mode=IN},
-        #{p_code_out,jdbcType=INTEGER,mode=OUT},
-        #{p_msg_out,jdbcType=VARCHAR,mode=OUT}
-        )}
-    </select>
     
-    <select id="changeSchema">
-    	alter session set current_schema=NYEHMS_OWNER
-    </select>
     
-     <select id="getProcessValidationReport"  resultType="java.util.Map" parameterType="java.util.Map">
-<![CDATA[
-
- with dl as (select dl.document_id, trunc(dl.received_date) received_date
-from document_locator dl
-where trunc(received_date) >= SYSDATE-${startDate}
-and trunc(received_date) <= SYSDATE
-and is_active = 'Y'
-and document_type_code = ${documentTypeCode} )
-
-, raw_dl as (select dl.document_id, dl.received_date, raw_tab.current_process_status rstat
-from dl left outer join ${rawTableName} raw_tab
-on dl.document_id = raw_tab.document_id)
-
-, std_dl as (select dl.document_id, dl.received_date, std.current_process_status sstat,
-  std.flux_match_cd s_match
-from dl left outer join ${stdTableName} std
-on dl.document_id = std.document_id)
-      
-, pda_dl as (select dl.document_id, dl.received_date, pda.document_id pda_docid
-from dl left outer join person_doc_association pda
-on dl.document_id = pda.document_id
-where pda.dissassociation_date is null)
-
-, dpa_dl as (select dl.document_id, dl.received_date, dpa.document_id dpa_docid
-from dl left outer join document_person_attr dpa
-on dl.document_id = dpa.document_id)
-
-, combined as
-(select dl.document_id, dl.received_date, raw_dl.rstat, std_dl.sstat, std_dl.s_match,
-case when pda_docid is null then '(null)' else 'Present' end pda_stat,
-case when dpa_docid is null then '(null)' else 'Present' end dpa_stat
-from dl, raw_dl , std_dl, pda_dl, dpa_dl
-where dl.document_id = raw_dl.document_id  and dl.document_id = std_dl.document_id and
-      dl.document_id = pda_dl.document_id and dl.document_id = dpa_dl.document_id
-)
----------- The Payoff!
-select to_char(received_date, 'YYYY-MM-DD') as "DATE",
- count(*) as "COUNT", rstat, sstat, s_match, pda_stat, dpa_stat
-from combined
-group by received_date, rstat, sstat, s_match, pda_stat, dpa_stat
-order by received_date desc, rstat, sstat
-]]>
- </select>
  
- <select id="getProcessValidationReportWithFileName"  resultType="java.util.Map" parameterType="java.util.Map">
-<![CDATA[
-
- with dl as (select dl.document_id, trunc(dl.received_date) received_date
-from document_locator dl
-where trunc(received_date) >= SYSDATE-${startDate}
-and trunc(received_date) <= SYSDATE
-and is_active = 'Y'
-and document_type_code = ${documentTypeCode} )
-
-, raw_dl as (select dl.document_id, dl.received_date,
- raw_tab.${file_name} as file_name,
- raw_tab.current_process_status rstat
-from dl left outer join ${rawTableName} raw_tab
-on dl.document_id = raw_tab.document_id)
-
-, std_dl as (select dl.document_id, dl.received_date, std.current_process_status sstat,
-  std.flux_match_cd s_match
-from dl left outer join ${stdTableName} std
-on dl.document_id = std.document_id)
-      
-, pda_dl as (select dl.document_id, dl.received_date, pda.document_id pda_docid
-from dl left outer join person_doc_association pda
-on dl.document_id = pda.document_id
-where pda.dissassociation_date is null)
-
-, dpa_dl as (select dl.document_id, dl.received_date, dpa.document_id dpa_docid
-from dl left outer join document_person_attr dpa
-on dl.document_id = dpa.document_id)
-
-, combined as
-(select dl.document_id, dl.received_date, raw_dl.file_name, raw_dl.rstat,
-std_dl.sstat, std_dl.s_match,
-case when pda_docid is null then '(null)' else 'Present' end pda_stat,
-case when dpa_docid is null then '(null)' else 'Present' end dpa_stat
-from dl, raw_dl , std_dl, pda_dl, dpa_dl
-where dl.document_id = raw_dl.document_id  and dl.document_id = std_dl.document_id and
-      dl.document_id = pda_dl.document_id and dl.document_id = dpa_dl.document_id
-)
----------- The Payoff!
-select to_char(received_date, 'YYYY-MM-DD') as "DATE",
-file_name, count(*) as "COUNT", rstat, sstat, s_match, pda_stat, dpa_stat
-from combined
-group by received_date, file_name, rstat, sstat, s_match, pda_stat, dpa_stat
-order by file_name desc, rstat, sstat
-]]>
- </select>
 
 	
 	

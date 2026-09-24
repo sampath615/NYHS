@@ -604,9 +604,6 @@
 	
 	</insert>
 	
-	<select id="isStatenoAssociated" parameterType="java.util.Map" resultType="int">
-		SELECT count(*) FROM BHAE_TS_CLUSTER_MANUAL where  pkg_consolidation.fn_give_current_stateno(STATENO) = pkg_consolidation.fn_give_current_stateno(#{p_stateno,jdbcType=VARCHAR}) and  CLUSTER_id_PK = #{clusterIdPk,jdbcType=VARCHAR}
-	</select>
 	
 		
 	<select id="isStatenoActive" parameterType="java.util.Map" resultType="int">

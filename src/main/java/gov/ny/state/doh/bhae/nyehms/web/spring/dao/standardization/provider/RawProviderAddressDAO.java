@@ -25,7 +25,6 @@ public interface RawProviderAddressDAO {
 	public void linkRawProvAddressesToSubProvAddrs(Map<Object, Object> inOutParameterMap);
 	
 	// get the  Raw Provider Address Id's 	
-	public List<Long> getRawProvAdrsIdsForSearch(RawProviderAddressVO rawProviderAddressVO);
 	
 	//SubGrid of Sub Grid of Sub Provider i.e Raw Provider Address Id. getting the Raw Provider Addresses Using Sub Provider Address Id
 	public List<RawProviderAddressVO> getRawProvAdrsListBySubprovAdrsId(Map<Object, Object> map);

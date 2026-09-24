@@ -20,48 +20,7 @@
     <result column="ADDRESS_COUNT" property="totalSubProviderAddress" jdbcType="VARCHAR" />
   </resultMap>
   
-  <select id="getSrchSubProvAddressList" parameterType="java.util.Map"  statementType="CALLABLE">
-   {call PKG_STANDARDIZATION.pr_sub_provider_search (
-		 #{p_provider_fname,jdbcType=VARCHAR,mode=IN},
-			#{p_provider_lname,jdbcType=VARCHAR,mode=IN},
-			#{p_provider_mname,jdbcType=VARCHAR,mode=IN},
-			#{p_address,jdbcType=VARCHAR,mode=IN},
-			#{p_city,jdbcType=VARCHAR,mode=IN},
-			#{p_state,jdbcType=VARCHAR,mode=IN},
-			#{p_zipcode,jdbcType=VARCHAR,mode=IN},
-			#{p_county_fips,jdbcType=VARCHAR,mode=IN},
-			#{p_phone,jdbcType=VARCHAR,mode=IN},
-			#{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getSubProvAddrssResult}
-		)}
-		    	     
-  </select>
   
-  <select id="getProvAddressListByProvId" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO" resultMap="getSubProvAddrssResult" >
-    SELECT PROVIDER_ID, SUB_PROVIDER_ADDRESS_ID, COUNTY_FIPS, ADDRESS, CITY, STATE, 
-    	   ZIPCODE, PLUS4, PHONE    
-    FROM   SUB_PROVIDER_ADDRESS 
-    WHERE  <trim prefix="" suffix="" prefixOverrides="AND" >
-			      <if test="providerId != 0 and providerId != ''" >
-			        AND PROVIDER_ID LIKE #{providerId,jdbcType=DECIMAL}  || '%' 
-			      </if>
-			      <if test="address != null and address != ''" >
-			        AND UPPER(ADDRESS) LIKE UPPER(#{address,jdbcType=VARCHAR})  || '%'  
-			      </if>
-			      <if test="city != null and city != ''" >
-			        AND UPPER(CITY) LIKE UPPER(#{city,jdbcType=VARCHAR})  || '%' 
-			      </if>
-			      <if test="state != null and state != ''" >
-			        AND UPPER(STATE) LIKE UPPER(#{state,jdbcType=VARCHAR}) || '%' 
-			      </if>
-			      <if test="zipcode != null and  zipcode != ''" >
-			        AND ZIPCODE LIKE #{zipcode,jdbcType=VARCHAR}  || '%' 
-			      </if>
-			       <if test="phone != null and phone != ''" >
-			        AND PHONE LIKE #{phone,jdbcType=VARCHAR}  || '%' 
-			      </if>
-		    </trim>
-    
-  </select>
   
   <select id="addNewSubProvAddrs" parameterType="java.util.Map"  statementType="CALLABLE" >
 		{call PKG_STANDARDIZATION.pr_add_sub_provider(

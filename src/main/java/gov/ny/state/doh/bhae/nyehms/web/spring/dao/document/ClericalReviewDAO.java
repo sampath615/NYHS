@@ -67,7 +67,6 @@ public interface ClericalReviewDAO {
 
 	public void updateMatchDetailsInStageTable(Map<String, Object> inOutParameterMap);
 
-	public void updateMatchDetailsInClustersTable(Map<String, Object> inOutParameterMap);
 
 	public void updateNotaMatchDetailsInStageTable(Map<String, Object> inOutParameterMap);
 

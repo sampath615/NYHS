@@ -248,12 +248,6 @@ AND med.ETHNICITY = e.ETHNICITY_CODE (+)
     where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+)
 	</select>  	 
 	
-	<select id="getICCRDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-         select std.DOCUMENT_ID documentId,  #{documentType}  as documentType, std.FNAME firstName, std.LNAME lastName, DOB  dateOfBirth, 
-      std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address, std.PROV_ADDRESS || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP AS providerAddress, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, std.PROV_NAME as providerName 
-    from STD_ICCR_DOC std, DOCUMENT_LOCATOR doc_locator
-    where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId}
-	</select>  	 
 	
 	<select id="getTBDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
 		 select std.DOCUMENT_ID documentId,  'TB'  as documentType, std.FNAME firstName, std.LNAME lastName, DOB_TEXT  dateOfBirth, DOD_TEXT dateOfDeath, e.ETHNICITY_DESCRIPTION ethnicity, 

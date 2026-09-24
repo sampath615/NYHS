@@ -97,6 +97,5 @@ public interface ClusterDocumentDAO {
 
 	public int isStatenoActive(Map<String, Object> inputParameterMap);
 
-	public int isStatenoAssociated(Map<String, Object> inputParameterMap);
 
 }

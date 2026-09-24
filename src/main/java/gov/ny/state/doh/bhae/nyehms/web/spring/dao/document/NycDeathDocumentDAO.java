@@ -29,7 +29,6 @@ public interface NycDeathDocumentDAO {
     
     public PersonViewVO getNycStdDeathDocumentForClericalReview(int documentId);
     
-    public String getProvName(String inst);
     
     public int insertNycRawDTHDocument(Map<Object, Object> rawDocData);
 
@@ -39,6 +38,5 @@ public interface NycDeathDocumentDAO {
     
 //    public Map<Object, Object> getNycFacilityInfoFromPFIorNycFacCode(Map<Object, Object> params);
     
-    public String getNycFipsCounty(String nycGazCounty);
     
 }

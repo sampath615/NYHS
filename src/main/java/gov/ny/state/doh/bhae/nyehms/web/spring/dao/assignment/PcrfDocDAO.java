@@ -22,7 +22,6 @@ public interface PcrfDocDAO {
 	public void addSubStanceList(Map<String, Object> inputParameterMap);
 	public void addConditionsList(Map<String, Object> inputParameterMap);
 	public List<PcrfSubstanceDocVO> getBpPregOutcomeList(String docId);
-	public List<PcrfSubstanceDocVO> getBpPregOutcomeDefaultList(String docId);
 	public void addPregOutcomeList(Map<String, Object> inputParameterMap);
 	
 }

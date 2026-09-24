@@ -50,15 +50,11 @@ public interface SchedulerJobsDAO {
 	
 	public int checkForExistingCliaAndPFIMatches(Map<Object, Object> inputOutputParamters);
 	
-	public List<Map<String, String>> checkForExistingProcessFilterMatch(Map<Object, Object> inputOutputParamters);
 	
 	public int checkForLoincAndPfiMapping(Map<Object, Object> inputOutputParamters);
 	
-	public Map<Object, Object> getSubFacilitiesListForThePatientAddress(String patientAddress);
 	
-	public Map<Object, Object> getSubProvidersListForThePatientAddress(String patientAddress);
 	
-	public List<String> getMatchesForRaceCode(Map<Object, Object> inputOutputParamters);
 	
 	public List<String> getMatchesForEthnicityCode(Map<Object, Object> inputOutputParamters);
 	
@@ -95,7 +91,6 @@ public interface SchedulerJobsDAO {
 	
 	public List<String> getStandardizedUnitsOfMeasurement(String unitsOfMeasurement);
 	
-	public String getStandardInterpretationCode(Map<Object, Object> inputOutputParamters);
 	
 	public List<EcrlsReAssignDocs> getReAssignDocList(String recordType);
 	
@@ -157,7 +152,6 @@ public interface SchedulerJobsDAO {
 			Map<Object, Object> inputOutputParameterMap);
 	public String checkSpecimenSourceNameExistance(String specimenSourceName);
 	
-	public String getCountyNameByCity(String _city);
 	
 	public int writeRawStdRecordDataToStdTable(EcrlsStdDocVO ecrlsStdDocVO);
 	public int updateTheRawStdRecordToStandardize(int document_ID);
@@ -250,12 +244,6 @@ public interface SchedulerJobsDAO {
 	public void addFileNameToAssignmentReportsTable(Map<String, String> inputParameterMap);
 	public int storeDocumentMatchResultsToSTDConfStdTable(
 			Map<String, Object> documentMatchData);
-	public Integer checkForSTDConfirmDocuments();
-	public void updateTheMatchCuttoffForSTDConfClericals();
-	public List<Map<String, Object>> getNonMatchMatchListWithRegistry();
-	public void updateTheStatenoForSTDConfNonMatches(
-			Map<String, Object> documentDetails);
-	public void updateMatchCodeForLabDeathRecords(Map<String, String> inputParameters);
 	public int storeDocumentMatchResultsToHL7StdTable(Map<String, Object> documentMatchData);
 	public int storeDocumentMatchResultsToCOPHIStdTable(Map<String, Object> documentMatchData);
 	public List<Map<String, String>> getDataFluxQSMatchSummary();

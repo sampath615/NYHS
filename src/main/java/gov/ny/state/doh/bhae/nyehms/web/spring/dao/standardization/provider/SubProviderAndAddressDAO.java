@@ -19,7 +19,6 @@ public interface SubProviderAndAddressDAO {
 	
 	
 	//get the providerAddress for given ProviderID
-    public List<SubProviderAndAddressVO> getProvAddressListByProvId(SubProviderAndAddressVO subProviderAndAddressVO);
 	
     //Add New Sub Provider Address
     @Transactional

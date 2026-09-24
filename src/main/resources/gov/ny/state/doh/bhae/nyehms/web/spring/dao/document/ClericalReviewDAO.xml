@@ -458,9 +458,6 @@ WHERE document_id = #{documentId}
 	
 	
 
-	<update id="updateMatchDetailsInClustersTable" parameterType="java.util.Map">
-		update nyehms_Sasdb_owner.ER_PERSON_CLUSTERS set MATCHED_STATENO = #{stateno}, match_cd = 'C_M', current_process_Status = 46, REVIEW_UID = #{worker_id}, REVIEW_DATE = sysdate  where fuzzy_cluster_id = #{fuzzyClusterId}  and match_Cd = 'C' and current_process_Status=17
-	</update>
 	
 	
 		<update id="updateNotaMatchDetailsInStageTable" parameterType="java.util.Map">

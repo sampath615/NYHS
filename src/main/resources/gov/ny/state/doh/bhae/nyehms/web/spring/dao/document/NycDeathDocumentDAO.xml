@@ -100,11 +100,6 @@
 		]]>
     </select>	
 	
-    <select id="getProvName" parameterType="String" resultType="String">
-			SELECT INS_DESCRIPTION
-      FROM CODED_INSTITUTE
-      WHERE #{inst} between INS_CODE_START and INS_CODE_END 
-	</select>
 	
 	<select id="getFacilityInfoFromPFI" parameterType="String" resultType="java.util.Map">
 SELECT
@@ -310,11 +305,6 @@ WHERE
 	]]>			
     </select>
     
-   	<select id="getNycFipsCounty" parameterType="String" resultType="String">
-   	<![CDATA[
-			SELECT COUNTY_FIPS_CODE FROM CODED_COUNTY WHERE COUNTY_CD = #{nycGazCounty} and rownum < 2
-		]]>		
-	</select>
     
 <insert id="insertNycRawDTHDocument" parameterType="java.util.Map" >
   	 insert into RAW_NYC_DEATH_DOC(
