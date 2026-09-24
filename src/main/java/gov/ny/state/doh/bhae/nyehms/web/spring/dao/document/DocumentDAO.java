@@ -15,13 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface DocumentDAO {
 	
 	/**
-	 * For use after connecting to the database from outside of Spring,
-	 * for instance from a stand-alone Java application.
-	 * @throws DataAccessException
-	 */
-	@Transactional
-
-    /**
      * This function is used to generate new doc id.
      *
      * @param map
