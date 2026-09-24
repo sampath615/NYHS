@@ -1,1 +1,0 @@
-<center> This is Footer Section </center>
