@@ -110,7 +110,6 @@ public interface SchedulerJobsDAO {
 	
 	public void loadDocumentMatchSummary();
 	
-	public void clearMatchResultsTable();
 	
 	public List<Map<String, String>> getSchedulerMetaData();
 	
@@ -192,13 +191,9 @@ public interface SchedulerJobsDAO {
 	public int storeDocumentMatchResultsToICCRStdTable(Map<String, Object> documentMatchData);
 	
 	
-	/*CCD and HIE_DTH data*/
-	public long getLastInsertedCCDRecordId(String recordType);
 	
 	
-	public List<Map<Object, Object>> getNewRawDiagnosisList();
 	
-	public List<Map<Object, Object>> getRawReviewedDiagnosisList();
 	
 	/**/
 	public String getUnderCustodyForDinDoccs(

@@ -27,7 +27,6 @@ public interface LaftFollowupDocumentDAO {
 	
 	public int resolveLaftFollowupDocuments(Map<String, Object> resolveLaftFollowupDocumentsMap);	
 	
-	public String getDocumentReviewComment(int documentId) throws DataAccessException;
 	
 	public int LaftFollowupCommentsUpdate(Map<String, Object> inputParameterMap);
 	

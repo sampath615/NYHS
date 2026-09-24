@@ -93,7 +93,6 @@ public interface RecordSearchReviewDAO {
 
 	public Integer getRecordSearchSentSeq(Map<String, Object> inputParameterMap);
 
-	public void updateNoReturnSequences(Map<String, Object> inputParameterMap);
 
 	public void updateRecordsWorkedPreviously();
 

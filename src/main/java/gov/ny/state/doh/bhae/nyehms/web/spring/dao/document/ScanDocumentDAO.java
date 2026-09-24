@@ -14,7 +14,6 @@ public interface ScanDocumentDAO {
 
 	public void addStdScanEntry(Map<Object, Object> docIdMap);
 	
-	public String getDocDetails(String documentId);
 	public int deleteDocumentInPersonDocAssociation(Map<String, Object> inputParameterMap);
 	public int deleteDocumentInDocumentPersonAttribute(Map<String, Object> inputParameterMap);
 	public int deleteDocumentInDocumentLocator(Map<String, Object> inputParameterMap);

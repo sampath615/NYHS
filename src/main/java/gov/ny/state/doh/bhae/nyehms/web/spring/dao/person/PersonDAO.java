@@ -76,8 +76,6 @@ public interface PersonDAO {
 
 	public List<PersonDocHistoryVO> getDocumentDetails(Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getPrfDocumentDetails(
-			Map<Object, Object> map);
 
 	public List<PersonDocHistoryVO> getLabDocumentDetails(
 			Map<Object, Object> map);
@@ -91,47 +89,23 @@ public interface PersonDAO {
 
 	public String checkStatenoIsActive(String stateNo);
 
-	public List<PersonDocHistoryVO> getAIRSDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getMEDDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getADAPDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getDTHDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getNycDTHDocumentDetails(
-			Map<Object, Object> map);
 	
-	public List<PersonDocHistoryVO> getCASADocumentDetails(Map<Object, Object> map);
 	
-	public List<PersonDocHistoryVO> getSYPHDocumentDetails(Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getNycPrfDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getEPRFOOCDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getSSDMDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getNycIJRDocumentDetails(
-			Map<Object, Object> map);
 
 	public List<String> getTriggeredMessageTypesForDocument(Map<Object, Object> inputParameterMap);
 
 	public void triggerPsMessage(Map<Object, Object> inOutParameterMap);
 
-	public List<PersonDocHistoryVO> getDinDoccDocumentDetails(
-			Map<Object, Object> map);
 
-	public List<PersonDocHistoryVO> getTBDocumentDetails(Map<Object, Object> map);
 	
-	public List<PersonDocHistoryVO> getCCDDocumentDetails(Map<Object, Object> map);
 
 	public List<Integer> checkForExistingUpdatedMessageDocIds(
 			Map<String, Object> inputParameterMap);
@@ -139,15 +113,11 @@ public interface PersonDAO {
 	public List<Integer> getReturnDocIdNotExistInTable(
 			Map<String, Object> inputParameterMap);
 
-	public void insertUpdatedReturnMessage(
-			UpdatedDispositionsVO updatedDispositionsVO);
 
 	public List<Map<String, Object>> checkExistingDateOfDeathForMessageDocIds(
 			Map<String, Object> inputParameterMap);
 
 
-	public List<PersonDocHistoryVO> getADAPNYCDocumentDetails(
-			Map<Object, Object> map);
 
 	public int checkForDuplicateDispositionCode(
 			UpdatedDispositionsVO updatedDispositionsVO);
@@ -156,8 +126,6 @@ public interface PersonDAO {
 	
 	public List<ClusterUploadVO> getStatenoClusterAssociation(String stateNo);
 
-	public List<PersonDocHistoryVO> getSTDConfDocumentDetails(
-			Map<Object, Object> map);
 
 	public void deletePendingPSMessageDocuments(Map<String, Object> inputParameterMap);
 

@@ -40,11 +40,6 @@
 		
 	
 	
-	<select id="getDocDetails" parameterType="String" resultType="String">
-		
-		select TEST_TYPE_CD from document_locator where document_id = #{documentId}
-	
-	</select>
 	
 	<update id="deleteDocumentInPersonDocAssociation" parameterType="java.util.Map">
 		delete from person_doc_association where DOCUMENT_ID = #{DOCUMENT_ID} 

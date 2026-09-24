@@ -193,165 +193,27 @@
 	</select>  	 
 	
 	
-	<select id="getSSDMDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select std.DOCUMENT_ID documentId,   #{documentType} as documentType, std.FNAME firstName, std.LNAME lastName, std.DOB_TEXT  dateOfBirth, std.DOD_TEXT dateOfDeath,  std.SSN ssn, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate   from  ${tableName} std,  DOCUMENT_LOCATOR doc_locator where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId}
-		 
-	</select>  	 
-	
-	
-	<select id="getEPRFOOCDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select std.DOCUMENT_ID documentId,  #{documentType}  as documentType, std.FNAME firstName, std.LNAME lastName, DOB  dateOfBirth, std.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity, 
-      std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address, std.PROV_ADDRESS || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP AS providerAddress, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, pkg_trk_common.fn_get_fullname (std.PROV_LNAME,
-                                            std.PROV_FNAME,
-                                            NULL,
-                                            NULL) as providerName, std.FILE_TYPE_CD fileType, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race    
-    from STD_EPRF_OOC_UPLOAD std, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e 
-    where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+) 
-	</select>  	 
 	
 	
 	
-	<select id="getDTHDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		select std_dth.DOCUMENT_ID documentId,  #{documentType}  as documentType, std_dth.FNAME firstName, std_dth.LNAME lastName, DOB_TEXT  dateOfBirth, DOD_TEXT  dateOfDeath, std_dth.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  
-std_dth.PERSON_ADDRESS || ', ' || std_dth.PERSON_CITY || ', ' || std_dth.PERSON_STATE || ', ' || std_dth.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from STD_DEATH_DOC std_dth, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std_dth.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std_dth.DOCUMENT_ID = #{documentId}
- AND std_dth.ETHNICITY = e.ETHNICITY_CODE (+) 
-	</select>  	 
+	
+	
   
-  <select id="getNycDTHDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-    select std_nyc_dth.DOCUMENT_ID documentId,  #{documentType}  as documentType, std_nyc_dth.FNAME firstName, std_nyc_dth.LNAME lastName, DOB_TEXT  dateOfBirth, DOD_TEXT  dateOfDeath, std_nyc_dth.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  
-      std_nyc_dth.PERSON_ADDRESS || ', ' || std_nyc_dth.PERSON_CITY || ', ' || std_nyc_dth.PERSON_STATE || ', ' || std_nyc_dth.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race 
-    from STD_NYC_DEATH_DOC std_nyc_dth, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e
-    where  std_nyc_dth.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std_nyc_dth.DOCUMENT_ID = #{documentId} AND std_nyc_dth.ETHNICITY = e.ETHNICITY_CODE (+)
-  </select>    
 
-	<select id="getCASADocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	select std_casa.DOCUMENT_ID documentId, #{documentType}  as documentType, std_casa.FNAME firstName, std_casa.LNAME lastName, DOB_TEXT  dateOfBirth, std_casa.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  std_casa.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race 
-	from STD_CASA_DOC std_casa, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std_casa.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std_casa.DOCUMENT_ID = #{documentId} 
-	AND std_casa.ETHNICITY = e.ETHNICITY_CODE (+)
-	</select>  	 	
 	
 	
-	<select id="getMEDDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select med.DOCUMENT_ID documentId,  #{documentType}  as documentType, med.FNAME firstName, med.LNAME lastName, med.DOB_TEXT dateOfBirth, med.DOD_TEXT dateOfDeath, e.ETHNICITY_DESCRIPTION ethnicity, 
-med.PERSON_ADDRESS || ', ' || med.PERSON_CITY || ', ' || med.PERSON_STATE || ', ' || med.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, providers.PROV_NAME as providerName, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from STD_MEDICAID_DOC med, DOCUMENT_LOCATOR doc_locator, STD_MEDICAID_DOC_PROVIDERS providers, CODED_ETHNICITY e where  med.DOCUMENT_ID = doc_locator.DOCUMENT_ID and med.DOCUMENT_ID = providers.MEDICAID_DOC_ID(+) and  med.DOCUMENT_ID = #{documentId}
-AND med.ETHNICITY = e.ETHNICITY_CODE (+)                                            
-	</select>
-	
-	<select id="getNycIJRDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select std.DOCUMENT_ID documentId,  #{documentType}  as documentType, std.FNAME firstName, std.LNAME lastName, DOB_TEXT  dateOfBirth, std.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity, 
-      std.CUR_PERSON_ADDRESS || ', ' || std.CUR_PERSON_CITY || ', ' || std.CUR_PERSON_STATE || ', ' || std.CUR_PERSON_ZIP address, std.PROV_ADDRESS || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP AS providerAddress, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, std.PROV_NAME as providerName  , DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race 
-    from STD_NYCIJR_DOC std, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e
-    where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+)
-	</select>  	 
 	
 	
-	<select id="getTBDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select std.DOCUMENT_ID documentId,  'TB'  as documentType, std.FNAME firstName, std.LNAME lastName, DOB_TEXT  dateOfBirth, DOD_TEXT dateOfDeath, e.ETHNICITY_DESCRIPTION ethnicity, 
-      std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address, std.PROV_ADDRESS || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP AS providerAddress,  pkg_trk_common.fn_get_fullname (std.PROV_LNAME,
-                                            std.PROV_FNAME,
-                                            NULL,
-                                            NULL) as providerName  , DECODE( RACE_INDIAN , 1 , 'IND/' ,NULL) || DECODE(  RACE_BLACK , 1 , 'BLK/' ,NULL) || DECODE(  RACE_ASIAN , 1 , 'ASI/' ,NULL) || DECODE(  RACE_PACIFIC , 1 , 'PAC/' ,NULL) || DECODE(  RACE_WHITE , 1 , 'WHT/' ,NULL) || DECODE(  RACE_OTHER , 1 , 'OTH/' ,NULL) || DECODE(  RACE_UNKNOWN , 1 , 'UNK' ,NULL) race, TO_CHAR(std.RECEIVED_DATE,'MM/DD/YYYY') recievedDate   
-    from STD_TB_DOC std, CODED_ETHNICITY e
-    where   std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+)
-   </select> 
+	
    
-    <select id="getSYPHDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-        select std.DOCUMENT_ID documentId, 'SYPH' as documentType, 
-               std.FNAME firstName, std.LNAME lastName, TO_CHAR(DOB,'MM/DD/YYYY') dateOfBirth, TO_CHAR(DOD, 'MM/DD/YYYY') dateOfDeath, e.ETHNICITY_DESCRIPTION ethnicity,  
-               std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address, 
-               std.PROV_ADDRESS || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP AS providerAddress,  
-               pkg_trk_common.fn_get_fullname (std.PROV_LNAME, std.PROV_FNAME, NULL, NULL) as providerName, 
-               DECODE( RACE_INDIAN , 1 , 'IND/' ,NULL) || DECODE(  RACE_BLACK , 1 , 'BLK/' ,NULL) || DECODE(  RACE_ASIAN , 1 , 'ASI/' ,NULL) || DECODE(  RACE_PACIFIC , 1 , 'PAC/' ,NULL) || DECODE(  RACE_WHITE , 1 , 'WHT/' ,NULL) || DECODE(  RACE_OTHER , 1 , 'OTH/' ,NULL) || DECODE(  RACE_UNKNOWN , 1 , 'UNK' ,NULL) race, 
-               TO_CHAR(std.RECEIVED_DATE,'MM/DD/YYYY') recievedDate   
-        from STD_SYPHILIS_DOC std, CODED_ETHNICITY e
-        where std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+)
-    </select> 
    	
-	<select id="getCCDDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-		 select std.DOCUMENT_ID documentId,  
-		        'CCD'  as documentType, 
-				std.FNAME firstName, 
-				std.LNAME lastName, 
-				DOB_TEXT  dateOfBirth, 
-				e.ETHNICITY_DESCRIPTION ethnicity, 
-                std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address,  
-				DECODE( RACE_INDIAN , 1 , 'IND/' ,NULL) || DECODE(  RACE_BLACK , 1 , 'BLK/' ,NULL) || DECODE(  RACE_ASIAN , 1 , 'ASI/' ,NULL) || DECODE(  RACE_PACIFIC , 1 , 'PAC/' ,NULL) || DECODE(  RACE_WHITE , 1 , 'WHT/' ,NULL) || DECODE(  RACE_OTHER , 1 , 'OTH/' ,NULL) || DECODE(  RACE_UNKNOWN , 1 , 'UNK' ,NULL) race  
-    from STD_CCD_DOC std, CODED_ETHNICITY e
-    where   std.DOCUMENT_ID = #{documentId} AND std.ETHNICITY = e.ETHNICITY_CODE (+)
-   </select>
 	
 	
-		<select id="getSTDConfDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	<![CDATA[
-	    select DOCUMENT_ID documentId,   #{documentType} as documentType, FNAME firstName, LNAME lastName, TO_CHAR(DOB, 'MM/DD/YYYY') dateOfBirth, TO_CHAR(DATE_OF_DEATH, 'MM/DD/YYYY') dateOfDeath, e.ETHNICITY_DESCRIPTION ethnicity,  PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP address,  PROV_ADDRESS || ', ' || PROV_CITY || ', ' || PROV_STATE || ', ' || PROV_ZIP 
-               AS providerAddress, pkg_trk_common.fn_get_fullname (PROV_LNAME,
-                                            PROV_FNAME,
-                                            NULL,
-                                            NULL) as providerName, TO_CHAR(UPLOAD_DT,'MM/DD/YYYY') recievedDate , DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from STD_STD_CONFIRMED_DOC  , CODED_ETHNICITY e where  DOCUMENT_ID = #{documentId}  AND ETHNICITY = e.ETHNICITY_CODE (+)    	     			]]>
-		
-	</select> 
 	
-		<select id="getDinDoccDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	<![CDATA[
-		
-select * from (select std_din.DOCCS_DOC_ID documentId,  'DOCCS'  as documentType, std_din.FNAME firstName, std_din.LNAME lastName, std_din.DOB_TEXT  dateOfBirth, DOD_TEXT dateOfDeath, std_din.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  
-std_din.PERSON_ADDRESS || ', ' || std_din.PERSON_CITY || ', ' || std_din.PERSON_STATE || ', ' || std_din.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) ||  DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from STD_DIN_DOCCS_DOC std_din, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std_din.DOCUMENT_ID = doc_locator.DOCUMENT_ID   AND std_din.ETHNICITY = e.ETHNICITY_CODE (+) and  std_din.DOCCS_DOC_ID = (SELECT DOCCS_DOC_ID FROM STD_DIN_DOCCS_DOC WHERE document_id = #{documentId})  ORDER BY TO_DATE(std_din.ADMIN_DATE_TEXT, 'MM/DD/YYYY' ) desc)
-WHERE rownum < 2
-	     			]]>
-		
-	</select>  
 	
     
-	<select id="getADAPDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-    <![CDATA[
-	    select std.DOCUMENT_ID documentId,   #{documentType} as documentType, std.FNAME firstName, std.LNAME lastName, std.DOB_TEXT dateOfBirth, std.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  std.PERSON_ADDRESS || ', ' || std.PERSON_CITY || ', ' || std.PERSON_STATE || ', ' || std.PERSON_ZIP address,  
-	     
-               
-                CASE
-                    WHEN FLAG_CHOSEN_PROVIDER = 'PCP' THEN std.PCP_PROV_ADDRESS || ', ' || std.PCP_PROV_CITY || ', ' || std.PCP_PROV_STATE || ', ' || std.PCP_PROV_ZIP 
-                    WHEN FLAG_CHOSEN_PROVIDER = 'CERT' THEN std.CERT_PROV_ADDRESS || ', ' || std.CERT_PROV_CITY || ', ' || std.CERT_PROV_STATE || ', ' || std.CERT_PROV_ZIP 
-                    ELSE std.RX_PROV_ADDRESS || ', ' || std.RX_PROV_CITY || ', ' || std.RX_PROV_STATE || ', ' || std.RX_PROV_ZIP 
-                 END providerAddress,
-                 
-               CASE
-                    WHEN FLAG_CHOSEN_PROVIDER = 'PCP' THEN pkg_trk_common.fn_get_fullname (std.PCP_PROV_LNAME,
-                                            std.PCP_PROV_FNAME,
-                                            std.PCP_PROV_MNAME,
-                                            NULL)
-                    WHEN FLAG_CHOSEN_PROVIDER = 'CERT' THEN pkg_trk_common.fn_get_fullname (std.CERT_PROV_LNAME,
-                                            std.CERT_PROV_FNAME,
-                                            std.CERT_PROV_MNAME,
-                                            NULL)
-                    ELSE pkg_trk_common.fn_get_fullname (std.RX_PROV_LNAME,
-                                            std.RX_PROV_FNAME,
-                                            std.RX_PROV_MNAME,
-                                            NULL)
-                 END providerName,
-                                            
-                                             TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race     from STD_ADAP_DOC std, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std.DOCUMENT_ID = #{documentId} AND std.ETHNICCD = e.ETHNICITY_CODE (+)
-	     			]]>
-		
-	</select> 
 	
 	
-	<select id="getADAPNYCDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-    <![CDATA[
-	    
-          select std.STDRPTS_ID documentId,   'ADAP_NYC' as documentType, std.FNAME firstName, std.LNAME lastName, std.DOB dateOfBirth, std.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  std.ADDRESS || ', ' || std.CITY || ', ' || std.STATE || ', ' || std.ZIP address,  
-        std.PROV_ADDRE || ', ' || std.PROV_CITY || ', ' || std.PROV_STATE || ', ' || std.PROV_ZIP  
-               AS providerAddress, 
-               
-              pkg_trk_common.fn_get_fullname (std.PROV_LNAME,
-                                 
-                                            std.PROV_FNAME,
-                                            std.PROV_MNAME,
-                                            NULL) providerName,
-                                            
-                                             TO_CHAR(doc_locator.RECEIVED_DATE ,'MM/DD/YYYY') recievedDate, DECODE( RACE_IND , 1 , 'IND/' ,NULL) || DECODE(  RACE_BLA , 1 , 'BLK/' ,NULL) || DECODE(  RACE_ASI , 1 , 'ASI/' ,NULL) || DECODE(  RACE_PAC , 1 , 'PAC/' ,NULL) || DECODE(  RACE_WHI , 1 , 'WHT/' ,NULL) || DECODE(  RACE_MUL , 1 , 'MUL/' ,NULL) || DECODE(  RACE_OTH , 1 , 'OTH/' ,NULL) || DECODE(  RACE_UNK , 1 , 'UNK' ,NULL) race     from NYEHMS_ADAP_NYC_FEEDBACK  std, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std.STDRPTS_ID  = doc_locator.DOCUMENT_ID and  std.STDRPTS_ID = #{documentId} and   std.ETHNICCD = e.ETHNICITY_CODE (+)
-                       
-	     			]]>
-		
-	</select> 
 	
 	
 	<select id="getDocumentDetailsFromStageTable" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
@@ -440,38 +302,9 @@ nyehms_cluster_partners stage, CODED_ETHNICITY e where  stage.partner_id = #{doc
 		
 	</select> 
 	
-	<select id="getNycPrfDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	<![CDATA[
-	    select DOCUMENT_ID documentId,   #{documentType} as documentType, FNAME firstName, LNAME lastName, TO_CHAR(DOB,'MM/DD/YYYY')  dateOfBirth, DOD_TEXT dateOfDeath,SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP address,  PROV_ADDRESS || ', ' || PROV_CITY || ', ' || PROV_STATE || ', ' || PROV_ZIP 
-               AS providerAddress, pkg_trk_common.fn_get_fullname (PROV_LNAME,
-                                            PROV_FNAME,
-                                            PROV_MI,
-                                            NULL) as providerName, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from  ${tableName}, CODED_ETHNICITY e where  DOCUMENT_ID = #{documentId}     AND ETHNICITY = e.ETHNICITY_CODE (+)
-	     			]]>
-		
-	</select> 
 	 
 	
-		<select id="getPrfDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	<![CDATA[
-		
-select std_prf.DOCUMENT_ID documentId,  #{documentType}  as documentType, std_prf.FNAME firstName, std_prf.LNAME lastName, std_prf.DOB_TEXT dateOfBirth, e.ETHNICITY_DESCRIPTION ethnicity, 
-std_prf.PERSON_ADDRESS || ', ' || std_prf.PERSON_CITY || ', ' || std_prf.PERSON_STATE || ', ' || std_prf.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, pkg_trk_common.fn_get_fullname (PROV_LNAME,
-                                            PROV_FNAME,
-                                            PROV_MI,
-                                            NULL) as providerName   from STD_PRF_DOC std_prf, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std_prf.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std_prf.DOCUMENT_ID = #{documentId} AND std_prf.ETHNICITY = e.ETHNICITY_CODE (+)
-	     			]]>
-		
-	</select>  
 	
-	<select id="getAIRSDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
-	<![CDATA[
-		
-select std_airs.DOCUMENT_ID documentId,  #{documentType}  as documentType, std_airs.FNAME firstName, std_airs.LNAME lastName, TO_CHAR(std_airs.DOB,'MM/DD/YYYY')  dateOfBirth, DOD_TEXT dateOfDeath, std_airs.SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  
-std_airs.PERSON_ADDRESS || ', ' || std_airs.PERSON_CITY || ', ' || std_airs.PERSON_STATE || ', ' || std_airs.PERSON_ZIP address, TO_CHAR(doc_locator.RECEIVED_DATE,'MM/DD/YYYY') recievedDate, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) ||  DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from STD_AIRS_DOC std_airs, DOCUMENT_LOCATOR doc_locator, CODED_ETHNICITY e where  std_airs.DOCUMENT_ID = doc_locator.DOCUMENT_ID and  std_airs.DOCUMENT_ID = #{documentId}  AND std_airs.ETHNICITY = e.ETHNICITY_CODE (+)
-	     			]]>
-		
-	</select>  	 
 	
 	
 	
@@ -666,10 +499,6 @@ AND DISSASSOCIATION_DATE IS NULL
 		select count(*) from UPDATE_PS_RETURN_MESSAGE where DOCUMENT_ID = #{DOCUMENT_ID, jdbcType=DECIMAL} and NVL(DATE_OF_DEATH, '01-Jan-1900') = NVL(#{DATE_OF_DEATH, jdbcType=DATE}, '01-Jan-1900') and NVL(LATEST_DISPOSITION_CODE, '999') = NVL(#{LATEST_DISPOSITION_CODE, jdbcType=INTEGER}, '999')	and NVL(FIELDNOTES, 'XX') = NVL(#{FIELDNOTES, jdbcType=VARCHAR}, 'XX')
 	</select>
 	
-	<insert id="insertUpdatedReturnMessage" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UpdatedDispositionsVO">
-		insert into ${TABLE_NAME}(DOCUMENT_ID, DATE_OF_DEATH, LATEST_DISPOSITION_CODE, FIELDNOTES, CREATE_UID, CREATE_DATE)
-			 values(#{DOCUMENT_ID, jdbcType=DECIMAL}, #{DATE_OF_DEATH, jdbcType=DATE}, #{LATEST_DISPOSITION_CODE, jdbcType=INTEGER}, #{FIELDNOTES, jdbcType=VARCHAR}, #{CREATE_UID, jdbcType=VARCHAR}, SYSDATE)
-	</insert>
 	
 	<select id="getStatenoClusterAssociation" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO">
         WITH stateno_in_clust AS

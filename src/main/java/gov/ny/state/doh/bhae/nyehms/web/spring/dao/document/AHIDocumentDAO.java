@@ -27,7 +27,6 @@ public interface AHIDocumentDAO {
     public List<AHICiStiVO> getCiStiConditionData(int documentId) throws DataAccessException;
     public List<AHINegInd900TestHistoryVO> getNegInd900TestHistoryData(int documentId) throws DataAccessException;
 	public int validateAHIDataWithACRF(Map<String, Object> inputParameterMap);
-	public int checkAhiFlagEligibility(int assignmentId);
 
 	public List<AhiAlertTrackingVO> getAhiFlaggedStatenoData() throws DataAccessException;
 	public List<Map<String, String>> getAhiAlertSrc();
