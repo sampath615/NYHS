@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Configuration>
+	 
+	<Appenders>
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%d{dd/MMM/yyyy HH:mm:ss,SSS} %5p %c{1}:%L:%M() - %m%n" />
+		</Console>
+
+		<!-- Rolling File Appender -->
+		<RollingFile name="File"
+			fileName="/ctrlacc/logs/Applications/nyehms/application.log"
+			filePattern="/ctrlacc/logs/Applications/nyehms/application-%d{yyyy-MM-dd-hh}-%i.log.zip">
+			<PatternLayout>
+				<Pattern>%d{dd/MMM/yyyy HH:mm:ss,SSS} %5p %c{1}:%L:%M() - %m%n</Pattern>
+			</PatternLayout>
+			<Policies>
+				<SizeBasedTriggeringPolicy size="7680KB" />
+			</Policies>
+			<DefaultRolloverStrategy max="4" />
+		</RollingFile>
+
+	</Appenders>
+
+  	<Loggers> <!-- we can define the logger to use the logging level to particular package 
+			level -->
+	    <Root level="ERROR">
+			<!-- <AppenderRef ref="STDOUT" /> -->
+			<AppenderRef ref="File" />
+		
+		</Root>
+	</Loggers>
+
+</Configuration>

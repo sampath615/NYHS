@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE serviceInvocationConfigs [
+	<!ELEMENT serviceInvocationConfigs (groupConfig|serviceConfig)+>
+	<!ELEMENT groupConfig EMPTY >
+	<!ELEMENT serviceConfig EMPTY >
+	<!ATTLIST groupConfig groupName CDATA #REQUIRED>
+	<!ATTLIST groupConfig invocationType CDATA #REQUIRED>
+	<!ATTLIST serviceConfig groupName CDATA #REQUIRED>
+	<!ATTLIST serviceConfig serviceName CDATA #REQUIRED>
+	<!ATTLIST serviceConfig invocationType CDATA #REQUIRED>
+]>	
+<serviceInvocationConfigs>
+	<groupConfig groupName="PERSONINFO" invocationType="REMOTE_WEBSERVICE" />
+	<groupConfig groupName="SYSTEMACCESSINFO" invocationType="REMOTE_WEBSERVICE" />
+</serviceInvocationConfigs>

@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AssignmentDAO">
+ 
+  
+  <select id="getAssignmentWorkerRegions" parameterType="String"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerRegionsVO">
+    	SELECT DISTINCT  WORKERREGIONID, WORKERID, REGION_DESCRIPTION WORKERREGIONDESCRIPTION, ROLE_CODE WORKERROLECODE,
+    		   REGION_CODE REGIONCODE, ROLE_DESC WORKERROLEDESCRIPTION
+    	FROM 
+    		NYEHMS_WORKER_REGIONS_VW
+    	WHERE    		 
+    		WORKERID = #{workerId} AND (WR_END_DATE IS NULL OR WR_END_DATE > SYSDATE)
+    	ORDER BY	    	
+    		REGION_DESCRIPTION
+  </select>
+  
+   <select id="getAssignmentWorkerTallyList" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentWorkerTallyListVO">  
+  	SELECT 
+  		ALL_OPEN_COUNT         AS allOpenCount, 
+  		NON_SUBMITTED_ACRF     AS nonSubmittedAcrf,
+  		ALL_REOPEN_COUNT       AS allReopenCount, 
+  		ALL_REJECTED_COUNT     AS allRejectedCount, 
+  		PENDING_REASSIGN_COUNT AS pendingReassignCount, 
+		PENDING_ACRF_RVW_COUNT AS pendingAcrfRvwCount,
+		NEW_COUNT              AS newCount,
+		ADMIN_CLOSED_COUNT     AS adminClosedCount  
+	FROM  
+		NYEHMS_ASSGN_WORKER_TALLY_VW
+	WHERE
+		WORKER_ID=#{p_workerId} AND
+		WORKER_REGION_ID=#{p_workerRegionId}
+   </select>  
+  
+   <select id="getAssignmentSuperTallyList" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentSuperTallyListVO">  
+  	SELECT 
+  		ALL_OPEN_TOTAL            AS allOpenTotal, 
+  		MY_OPEN_TOTAL			  AS myOpenTotal,
+  		MY_NON_SUBMITTED_ACRF     AS myNonSubmittedAcrf,
+		ALL_REJECTED_TOTAL		  AS allRejectedTotal,	
+		REASSIGN_REQUESTED_TOTAL  AS reassignRequestedTotal,
+		PENDING_ACRF_RVW_TOTAL	  AS pendingAcrfRvwTotal,
+		MY_PENDING_ACRF_RVW		  AS myPendingAcrfRvw,
+		NEEDS_ASSIGN_TOTAL		  AS needsAssignTotal,
+		ADMIN_CLOSED_TOTAL		  AS adminClosedTotal,
+		MY_ADMIN_CLSD			  AS myAdminClsd
+	FROM  
+		NYEHMS_ASSGN_SUPER_TALLY_VW
+	WHERE
+		WORKER_ID=#{p_workerId} AND
+		WORKER_REGION_ID=#{p_workerRegionId}
+    </select>
+  
+    <!-- Worker Names for Supervisor's View -->
+    <resultMap type="java.util.Map" id="workerNamesByRegion"> 	
+ 	  	<result property="workerId" column="WORKERID" jdbcType="VARCHAR" javaType="String"/>
+		<result property="fullName" column="FULL_NAME" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getWorkerNamesByRegion" parameterType="String" resultMap="workerNamesByRegion">
+		  SELECT   DISTINCT WORKERID, FULL_NAME 
+		  FROM     NYEHMS_WORKER_REGIONS_VW  
+		  WHERE    REGION_CODE = #{regionCode} AND ROLE_CODE IN (2, 1) and (END_DATE is NULL or END_DATE > SYSDATE) and (WR_END_DATE is NULL or WR_END_DATE > SYSDATE) 
+		  ORDER BY FULL_NAME ASC
+	</select>
+	
+	<select id="getReabstractionWorkerNamesByRegion" parameterType="String" resultMap="workerNamesByRegion">
+		  SELECT   DISTINCT WORKERID, FULL_NAME 
+		  FROM     NYEHMS_WORKER_REGIONS_VW  wr, NYEHMS_WORKER_PERMISSION_VW wp
+		  WHERE    wr.WORKERID = wp.WORKER_ID and wp.permission_id = 148 and
+		  		   wr.REGION_CODE = #{regionCode} AND wr.ROLE_CODE IN (2, 1, 4) and (wr.END_DATE is NULL or wr.END_DATE > SYSDATE) and (wr.WR_END_DATE is NULL or wr.WR_END_DATE > SYSDATE) 
+		  ORDER BY FULL_NAME ASC
+	</select>
+	
+	<!-- Assignment Type -->
+	<resultMap type="java.util.Map" id="assignmentTypeByRole"> 	
+ 	  	<result property="code" column="STATUS_CD" jdbcType="VARCHAR" javaType="String"/>
+		<result property="desc" column="STATUS_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getAssignmentStatusByRole" parameterType="java.util.Map" resultMap="assignmentTypeByRole">
+		  SELECT   STATUS_CD, STATUS_DESCRIPTION 
+		  FROM     CODED_ASSIGNMENT_STATUS 
+		  where STATUS_CD NOT IN('REJECT', 'SUB_ACRF'
+          <if test="roleCode == 2">
+			 , 'OPEN_ND'
+		  </if>
+		  )
+		  ORDER BY SORT_ORDER
+	</select>
+		
+	<select id="loadClosedAssignmentsForReview" resultMap="assignmentsList" parameterType="java.util.Map">
+	<![CDATA[
+	SELECT s.stateno,
+                      S.DOCUMENT_ID,
+                      s.triggering_doc_id AS TRIGG_DOC,
+                   DECODE(D.DOCUMENT_TYPE_CODE,'HIV_LAB',D.TEST_TYPE_CD,D.DOCUMENT_TYPE_CODE) AS TRIGG_DOC_TYPE,
+                      to_char (W.START_DATE, 'MM/DD/YYYY')
+                         AS WORKER_ASSIGNED_DATE,
+                      v.provider_facility_name AS PROVIDER_FACILITY_NAME,
+                      v.provider_facility_addr AS ASSIGN_ADDRESS,
+                      to_char (S.CREATE_DATE, 'MM/DD/YYYY') AS CREATE_DATE,
+                      A.STATUS_DESCRIPTION CURRENT_ASSIGNMENT_STATUS,
+                      pkg_trk_common.fn_get_fullname (nu.LAST_NAME,
+                                                      nu.FIRST_NAME,
+                                                      nu.MIDDLE_NAME,
+                                                      NULL)
+                         WORKER_NAME,
+                      S.ACRF_DOCUMENT_ID AS ACRF_DOC_ID,
+                      S.PCRF_DOCUMENT_ID AS ACRF_DOC_ID,
+                     doc.LAST_NAME ,
+                     doc.FIRST_NAME ,
+                     to_char (DOC.DATE_OF_BIRTH  , 'MM/DD/YYYY') AS DATE_OF_BIRTH  ,
+                   v.provider_facility_county,
+                   v.provider_facility_phone,
+                   CURRENT_ACTIVITY_TYPE_CODE 
+                     FROM SURVEILLANCE_ASSIGNMENT S ,
+                        worker_assignment W , 
+                         nyehms_users nu ,
+                         user_region U2,
+                         TABLE(pkg_assignment.fn_assignment_address (s.document_id,s.ASSIGN_ADDRESS_TYPE )) v,
+                         CODED_ASSIGNMENT_STATUS a,
+                         DOCUMENT_LOCATOR D
+                         ,DOCUMENT_PERSON_ATTR doc
+             WHERE   CURRENT_ASSIGNMENT_STATUS  ='CLOSED' 
+             ]]>
+             
+             <choose>
+             	<when test="closureCategory == 'OOJ'">
+             		AND REVIEW_CATEGORY like '%OOJ%'
+             	</when>
+             	<otherwise>
+             		AND CURRENT_ACTIVITY_TYPE_CODE =#{closureCategory}	
+             		and REVIEW_CATEGORY like '%REFLEX%'
+             	</otherwise>
+             	</choose>
+             	
+             
+              
+             <choose>
+             	<when test="closureCategory == 'ACL62'">
+             		and S.CLOSED_DATE >= TO_DATE('11/01/2015', 'MM/DD/YYYY')
+             	</when>
+             	<otherwise>
+             		and S.CLOSED_DATE >= TO_DATE('01/01/2015', 'MM/DD/YYYY')
+             	</otherwise>
+             </choose>
+             
+             <![CDATA[ 
+             AND    S.current_worker_assignment_id = W.worker_assignment_id
+             AND     W.WORKER_REGION_ID = U2.WORKER_REGION_ID
+             AND   U2.WORKER_ID = nu.WORKER_ID
+             AND   S.DOCUMENT_ID = V.DOCUMENT_ID (+)
+             AND  S.CURRENT_ASSIGNMENT_STATUS = A.STATUS_CD
+              AND s.triggering_doc_id = D.DOCUMENT_ID and s.REVIEW_DATE is null 
+             AND s.triggering_doc_id =doc.document_id 
+             and D.document_type_code IN (SELECT *
+                             FROM TABLE(get_user_permissions(#{p_module_id}, #{p_worker_id})))
+             AND
+             NOT EXISTS
+                (SELECT 1
+                   FROM coded_master_setup m
+                  WHERE     m.variable_name = 'DOC_TYPE_EXCLUDE_VIEW_R'
+                        AND m.variable_code = D.document_type_code)
+	]]> 
+	
+	</select>	
+	
+	
+	
+  	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentsListVO" id="assignmentsList"> 	
+ 	  	<result property="workerId" 			column="WORKER_ID"/>
+ 	  	<result property="workerShortName" 		column="WORKER_SHORT_NAME"/>
+		<result property="workerName" 			column="WORKER_NAME"/>
+		<result property="workerRegionId" 		column="WORKER_REGION_ID"/>
+		<result property="assignmentId" 		column="DOCUMENT_ID"/>
+		<result property="stateNo"              column="STATENO"/>
+		<result property="assignmentActivityCd"   column="CURRENT_ACTIVITY_TYPE_CODE"/>
+		<result property="statenoActiveStatus"   column="STATENO_ACTIVE"/>
+		<result property="assignmentStatus"     column="CURRENT_ASSIGNMENT_STATUS"/>
+		<result property="createDate"           column="CREATE_DATE"/>
+		<result property="workerAssignedDate"   column="WORKER_ASSIGNED_DATE"/>
+		<result property="assignAddress"        column="ASSIGN_ADDRESS"/>
+		<result property="providerFacilityName" column="PROVIDER_FACILITY_NAME"/>	
+		<result property="acrfDocId" 			column="ACRF_DOC_ID"/>
+		<result property="pcrfDocId" 			column="PCRF_DOC_ID"/>
+		<result property="lastActivityDate" 	column="LAST_ACTIVITY_DATE"/>
+		<result property="lastActivityDesc" 	column="LAST_ACTIVITY_DESC"/>
+		<result property="activityDoneBy" 		column="ACTIVITY_DONE_BY"/>
+		<result property="lastReopenDate" 		column="LAST_REOPEN_DATE"/>
+		<result property="lastClosedDate" 		column="LAST_CLOSED_DATE"/>
+		<result property="rejectionDate" 		column="REJECTION_DATE"/>
+		<result property="rejectionReason" 		column="REJECTION_REASON"/>
+		<result property="comments" 			column="COMMENTS"/>
+		<result property="closureDate" 			column="CLOSURE_DATE"/>
+		<result property="closureCategoryCd" 	column="CLOSURE_CATEGORY_CD"/>
+		<result property="closureActivity" 		column="CLOSURE_ACTIVITY"/>
+		<result property="currentWorker" 		column="CURRENT_WORKER"/>
+		<result property="currentStatus" 		column="CURRENT_STATUS"/>
+		<result property="location" 		column="LOCATION"/>
+		<result property="address" 		column="ADDRESS"/>
+		<result property="eventDate" 		column="EVENT_DATE"/>
+		<result property="documentId" 		column="TRIGG_DOC"/>
+		<result property="documentType" 		column="TRIGG_DOC_TYPE"/>
+		<result property="triggeringDocumentFirstName" 		column="FIRST_NAME"/>
+		<result property="triggeringDocumentLastName" 		column="LAST_NAME"/>
+		<result property="triggeringDocumentDob" 		column="DATE_OF_BIRTH"/>
+		<result property="documentStatus" 		column="DOCUMENT_STATUS"/>
+		<result property="ahiFlag" 		column="AHI_FLAG"/>
+		<result property="crfDiffs" 		column="CRF_DIFFS"/>
+		<result property="closedBy" 		column="closed_by"/>
+                      
+	</resultMap>
+
+      
+      
+	<select id="getAssignmentsListForViewerOrCoordinatiorRole" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.pr_co_surv_assignment_list(
+			#{p_workerId,jdbcType=INTEGER,mode=IN},
+			#{p_roleCode,jdbcType=INTEGER,mode=IN},
+			#{p_regionCode,jdbcType=VARCHAR,mode=IN},
+			#{p_assignmentType,jdbcType=VARCHAR,mode=IN},
+			#{p_startDate,jdbcType=DATE,mode=IN},
+			#{p_endDate,jdbcType=DATE,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsList},
+			#{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_access_user_id,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	<select id="getAssignmentsList" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_assignment.SP_assignment_list(
+			#{p_workerId,jdbcType=VARCHAR,mode=IN},
+			#{p_workerRegionId,jdbcType=VARCHAR,mode=IN},
+			#{p_assignmentType,jdbcType=VARCHAR,mode=IN},
+			#{p_startDate,jdbcType=DATE,mode=IN},
+			#{p_endDate,jdbcType=DATE,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsList},
+			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN},
+			#{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_access_user_id,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	<select id="getAssignmentsListOfReabstract" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_assignment.sp_build_assign_list(
+			#{p_regionCode,jdbcType=VARCHAR,mode=IN},
+			#{p_workerId,jdbcType=INTEGER,mode=IN},
+			#{p_roleCode,jdbcType=INTEGER,mode=IN},
+			#{p_assignmentType,jdbcType=VARCHAR,mode=IN},
+			#{p_startDate,jdbcType=DATE,mode=IN},
+			#{p_endDate,jdbcType=DATE,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsList},
+			#{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_access_user_id,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+		
+ 	
+	<select id="requestReassign" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.PR_REQUEST_REASSIGN(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="revokeReassign" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.pr_revoke_reassign(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>
+	
+	
+	
+	<select id="makeAssignments" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.PR_MAKE_ASSIGNMENTS(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_supervisor_region_id,jdbcType=INTEGER,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="rejectReassign" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.PR_REJECT_REASSIGN(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_supervisor_region_id,jdbcType=INTEGER,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>	
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentDetailsVO" id="assignmentsDetails"> 	
+ 	  	<result property="assignmentId" 		   column="DOCUMENT_ID"/>
+		<result property="stateno" 				   column="STATENO"/>
+		<result property="currentAssignmentStatus" column="CURRENT_STATUS"/>
+		<result property="assignmentStatusDesc"    column="STATUS_DESC"/>
+		<result property="workerName"              column="ASSIGNED_TO"/>
+		<result property="regionDescription" 	   column="REGION"/>
+		<result property="supervisorName" 		   column="SUPERVISOR_NAME"/>
+		<result property="assignedDate" 		   column="ASSIGNMENT_CREATE_DATE"/>
+		<result property="missingVariables" 	   column="MISSING_VARIABLES"/>		
+		<result property="crfDocId" 			   column="CRF_DOC_ID"/>		
+		<result property="closedDate" 			   column="CLOSED_DATE"/>		
+		<result property="closureCategory" 		   column="CLOSURE_CATEGORY"/>
+		<result property="crfDateCompleted" 		   column="DATE_COMPLETED"/>
+		<result property="crfDocType" 		   column="CRF_DOC_TYPE"/>
+		<result property="supervisorRegionId" 		   column="SUPERVISOR_REGION_ID"/>
+		<result property="ahiFlag" 		   column="AHI_FLAG"/>
+		<result property="ahiDocId" 		column="AHI_DOC_ID"/>
+		
+		<result property="reabWorkerName" 			column="REAB_ASSIGNED_TO"/>
+		<result property="reabSupervisorName" 		column="REAB_ASSIGNED_BY"/>		
+		<result property="reabAssignedDate" 		column="REAB_ASSIGNED_DATE"/>
+		<result property="reabCurrentStatus" 		column="CURRENT_REAB_STATUS"/>
+		<result property="reabCurrentStatusDesc" 	column="CURRENT_REAB_STATUS_DESC"/>
+		<result property="reabCurrentActivity" 		column="CURRENT_REAB_ACTIVITY"/>
+		<result property="reabCurrentActivityDesc"	column="CURRENT_REAB_ACTIVITY_DESC"/>
+		<result property="reabCrfDocId" 			column="REAB_CRF_DOCUMENT_ID"/>
+		<result property="reabCrfCompletedDate" 	column="REAB_COMPLETED_DATE"/>
+		<result property="reabCrfDocType" 			column="REAB_CRF_DOC_TYPE"/>
+		<result property="reabClosureCategory" 		column="REAB_CURRENT_ACTIVITY_TYPE_CODE"/>
+		<result property="eharsImportDate" 			column="ehars_import_date"/>
+		<result property="reabReviewBy" 			column="REAB_REVIEW_BY"/>
+		<result property="reabReviewDate" 			column="REAB_REVIEW_DATE"/>
+		<result property="reabReviewComments" 		column="REAB_REVIEW_COMMENTS"/>		
+		<result property="ahiReviewed" 		column="AHI_REVIEWED"/>		
+		
+ 	</resultMap>
+ 		
+ 	<resultMap type="String" id="assignmentsDocsList"> 	
+ 	  	<result property="documentId"   column="DOCUMENT_ID" />
+	</resultMap>
+ 	
+ 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentActivityVO" id="assignmentsActivityList"> 	
+ 	  	<result property="activityDate"    column="ACTIVITY_DATE"/>
+		<result property="doneBY"          column="DONE_BY"/>
+		<result property="doneBYShortName" column="DONE_BY_SHORT_NAME"/>
+		<result property="activityDesc"    column="ACTIVITY_DESCRIPTION"/>
+		<result property="comments"        column="comments"/>
+ 	</resultMap>
+ 
+ 	<select id="getAssignmentDetails" parameterType="java.util.Map" statementType="CALLABLE">
+            {call PKG_ASSIGNMENT.pr_getassignmentdetails(
+            	#{assignmentId, mode=IN, jdbcType=INTEGER}, 
+            	#{workerId, mode=IN, jdbcType=INTEGER}, 
+            	#{details,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsDetails},
+            	#{docs,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsDocsList},
+            	#{activity,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=assignmentsActivityList}
+            )}
+ 	</select>
+ 	
+ 	<resultMap type="java.util.Map" id="assignmentsClosureStatus"> 	
+ 	  	<result property="code" column="ACTIVITY_TYPE_CODE" jdbcType="VARCHAR" javaType="String"/>
+		<result property="desc" column="ACTIVITY_TYPE_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+		<result property="needAcrf" column="NEED_ACRF" jdbcType="VARCHAR" javaType="String"/>
+		<result property="count" column="COUNT" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+ 	<select id="getReviewActivityTypeCodes" resultMap="assignmentsClosureStatus" parameterType="java.util.Map">
+ 	
+ 	select ACTIVITY_TYPE_DESCRIPTION, ACTIVITY_TYPE_CODE, COUNT from (
+SELECT ACTIVITY_TYPE_DESCRIPTION, ACTIVITY_TYPE_CODE, act.end_Date, SUM(CASE WHEN assignment.document_id IS NULL THEN 0 ELSE 1 END) COUNT
+  FROM coded_activity_type act
+  LEFT OUTER JOIN SURVEILLANCE_ASSIGNMENT assignment ON
+  (act.activity_type_code =assignment.current_activity_type_code
+   AND CURRENT_ASSIGNMENT_STATUS = 'CLOSED' 
+   And REVIEW_CATEGORY like '%REFLEX%' 
+   and REVIEW_DATE is null)
+  WHERE act.access_level = 'R'
+group by ACTIVITY_TYPE_DESCRIPTION, ACTIVITY_TYPE_CODE, act.end_date order by ACTIVITY_TYPE_CODE asc) where END_DATE is null or count > 0
+ 	
+ 	</select>
+ 	
+ 	
+	<select id="getAssignmentClosureStatus" resultMap="assignmentsClosureStatus" parameterType="java.util.Map">
+		  SELECT ACTIVITY_TYPE_CODE, ACTIVITY_TYPE_DESCRIPTION, NEED_ACRF     	  FROM CODED_ACTIVITY_TYPE
+          WHERE activity_category_code = 'ACLS' 
+          
+          
+          <if test="includeAllClosureStatus == false">
+           AND assignment_type_cd='SURV' 
+          	AND end_date IS NULL 
+          	
+          		<choose >
+          			<when test="closureStatusCategoryType == 'ALL'">
+          				and ACCESS_LEVEL in ('A', 'R')
+          			
+          			</when>
+          			<otherwise>
+          				and ACCESS_LEVEL = #{closureStatusCategoryType}
+          			
+          			</otherwise>
+          		
+          		</choose>
+          		
+          		
+          	
+          	
+          	
+          </if>
+          
+          
+           
+          order by ACTIVITY_TYPE_DESCRIPTION
+	</select>  
+	
+	<select id="getCurrentAssignmentStatus" parameterType="long" resultType="String">
+		select CURRENT_ASSIGNMENT_STATUS from SURVEILLANCE_ASSIGNMENT where document_id = #{assignmentId}
+	</select>
+	
+	
+	<select id="updateAssignment" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.pr_update_assignment(
+			#{p_document_id,jdbcType=BIGINT,javaType=LONG,mode=IN},
+			#{p_user_id,jdbcType=INTEGER,mode=IN},
+			#{p_closure_category,jdbcType=VARCHAR,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_reab_yn,jdbcType=VARCHAR,mode=IN},			
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>
+	
+	
+	
+	<select id="getAssignmentEditActionCommentDetails" parameterType="java.util.Map" resultMap="assignmentsActivityList">
+	
+	  SELECT TO_CHAR(activity_date,'MM/DD/YYYY HH:MI:SS AM') ACTIVITY_DATE,
+	  		 activity_date activity_date_format,
+	         activity_done_by DONE_BY,
+	         activity_done_by_short_name DONE_BY_SHORT_NAME,
+	         activity_type_description ACTIVITY_DESCRIPTION,
+	         comments
+	    FROM nyehms_assgn_all_activity_vw
+	   WHERE document_id = #{assignmentId} and ACTIVITY_TYPE_CODE != 'AG01' 
+	   <choose>
+			<when test="reabstract == 0 ">
+				and ACTIVITY_TYPE_CODE not like '%AREAB%' 
+			</when>	  
+		</choose> 
+		ORDER BY activity_date_format Desc
+	</select>
+	
+	<select id="getAssignmentViewedCommentDetails" parameterType="long" resultMap="assignmentsActivityList">
+	
+		
+	  SELECT TO_CHAR(activity_date,'MM/DD/YYYY HH:MI:SS AM') ACTIVITY_DATE,
+	  		 activity_date activity_date_format,
+	         activity_done_by DONE_BY,
+	         activity_done_by_short_name DONE_BY_SHORT_NAME,
+	         activity_type_description ACTIVITY_DESCRIPTION,
+	         comments
+	    FROM nyehms_assgn_all_activity_vw
+	   WHERE document_id = #{assignmentId} and ACTIVITY_TYPE_CODE = 'AG01'
+	ORDER BY activity_date_format Desc
+	</select>
+	
+	 <resultMap type="java.util.Map" id="userRoleCodes"> 	
+ 	  	<result property="ROLE_CODE" column="ROLE_CODE" jdbcType="VARCHAR" javaType="String"/>
+		<result property="ROLE_DESC" column="ROLE_DESC" jdbcType="VARCHAR" javaType="String"/>
+	</resultMap>
+		
+	<select id="getUserRoleCodes" parameterType="int" resultMap="userRoleCodes">
+		select ROLE_CODE, ROLE_DESC  from NYEHMS_WORKER_REGIONS_VW where  WORKERID = #{workerId} and (WR_END_DATE is NULL or WR_END_DATE > SYSDATE) and ROLE_CODE in (1,2,3,4,5)
+	</select>	
+	
+	
+	<resultMap type="java.util.Map" id="userRegionsFortheRoleCode"> 	
+ 	  	<result property="workerRegionId" column="WORKERREGIONID" jdbcType="VARCHAR"  javaType="String"/>
+		<result property="regionDescription" column="REGION_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+		<result property="regionCode" column="REGION_CODE" jdbcType="VARCHAR" javaType="String"/>
+	</resultMap>
+	
+	<select id="getRegionsMapForSelectedRole" parameterType="java.util.Map" resultMap="userRegionsFortheRoleCode">
+		select WORKERREGIONID, REGION_DESCRIPTION, REGION_CODE  from NYEHMS_WORKER_REGIONS_VW where  WORKERID = #{workerId} and (WR_END_DATE is NULL or WR_END_DATE > SYSDATE) and ROLE_CODE = #{roleCode} ORDER BY REGION_DESCRIPTION
+	</select>	
+	
+	
+	
+	<select id="getAllRegionsList" parameterType="java.util.Map" resultMap="userRegionsFortheRoleCode">
+		  SELECT U.WORKER_REGION_ID as WORKERREGIONID, R.REGION_CODE, R.REGION_DESCRIPTION
+        FROM USER_REGION U,CODED_REGION R
+         WHERE  U.WORKER_ID = #{workerId} and (U.END_DATE is NULL or U.END_DATE > SYSDATE) and (R.END_DATE is NULL or R.END_DATE > SYSDATE) and U.ROLE_CODE = #{roleCode} and ASSIGNMENT_TYPE_CODE = 'SURV' ORDER BY R.REGION_DESCRIPTION 
+         	
+	</select>
+	
+	
+	<select id="reOpenAssignments" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.PR_REOPEN_ASSIGNMENTS(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_supervisor_region_id,jdbcType=INTEGER,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT},
+			#{p_review,jdbcType=VARCHAR,mode=IN},
+			#{p_workerId,jdbcType=VARCHAR,mode=IN},
+			#{p_deleted_crf,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	
+	<select id="changeAssignmentAddressDetails" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.PR_CHANGE_ASSIGNMENT_ADDRESS(
+			#{p_document_id,javaType=INTEGER,mode=IN},
+			#{p_assign_address_type,jdbcType=VARCHAR,mode=IN},
+			#{p_prov_fac_person_id,jdbcType=INTEGER,mode=IN},
+			#{p_county_code,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_Call_From,jdbcType=VARCHAR,mode=IN},
+			#{p_closure_category,jdbcType=VARCHAR,mode=IN},
+			#{p_supervisor_region_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select>
+	
+	
+		
+	<select id="getAssignmentAndAddressDetails" parameterType="int" resultType="java.util.Map">
+		
+	 <![CDATA[
+		SELECT S.TRIGGERING_DOC_ID,S.ASSIGN_ADDRESS_TYPE  ,V.PROVIDER_FACILITY_NAME,PROVIDER_FACILITY_ADDR, PROVIDER_FACILITY_COUNTY, PROVIDER_FACILITY_PHONE, 
+       TO_CHAR(S.CREATE_DATE,'MM/DD/YYYY') ASSIGN_CREATE_DATE,
+       NU.LEGACY_UID WORKER_NAME,
+       TO_CHAR(W.START_DATE,'MM/DD/YYYY') WORKER_ASSIGN_DATE
+  FROM SURVEILLANCE_ASSIGNMENT S,
+  TABLE(PKG_ASSIGNMENT.FN_ASSIGNMENT_ADDRESS (S.DOCUMENT_ID,S.ASSIGN_ADDRESS_TYPE )) V,
+       WORKER_ASSIGNMENT W,
+       USER_REGION U,
+       NYEHMS_USERS NU
+WHERE  S.document_id=v.document_id(+)   
+       AND S.CURRENT_WORKER_ASSIGNMENT_ID = W.WORKER_ASSIGNMENT_ID
+       AND W.WORKER_REGION_ID = U.WORKER_REGION_ID
+       AND U.WORKER_ID = NU.WORKER_ID
+       AND TRIGGERING_DOC_ID IS NOT NULL and S.DOCUMENT_ID = #{assignmentId} and rownum < 2
+             ]]>   	
+	</select>
+	
+		
+	<select id="getunknownOutOfStateProviderDocuments" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO" parameterType="java.util.Map">
+			
+	 <![CDATA[
+SELECT     /*+  INDEX (P RAW_PROV_ADDR_SEARCH_IDX)*/  
+            t.document_id documentId,
+            p.stateno stateno, 
+           CASE
+               WHEN d.document_type_code = 'HIV_LAB' THEN d.test_type_cd
+               ELSE d.document_type_code
+            END
+              AS documentType,
+            TO_CHAR (association_date, 'MM/DD/YYYY') associationDate,
+            first_name firstName,
+            last_name lastName,
+            TO_CHAR (date_of_birth, 'MM/DD/YYYY') dateOfBirth,
+            ssn ssn,
+            pkg_person.fn_get_eth_desc (t.ethnicity_code) AS ethnicity,
+            pkg_person.fn_getrace_abbrev (d.document_id) race,
+               t.address
+            || ', '
+            || t.address_city
+            || ', '
+            || t.address_state
+            || ', '
+            || t.address_zipcode
+            || ' '
+            || t.plus4
+               AS address
+            ,TO_CHAR (D.RECEIVED_DATE, 'MM/DD/YYYY') recievedDate,
+            pkg_trk_common.fn_get_fullname (R.PROVIDER_LNAME,
+                                            R.PROVIDER_FNAME,
+                                            R.PROVIDER_MNAME,
+                                            NULL)
+               providerName,
+            R.address || ', ' || R.city || ', ' || R.state || ', ' || R.zipcode
+               AS providerAddress,
+               F.FACILITY_NAME facilityName,
+               F.address || ', ' || F.city || ', ' || F.state || ', ' || F.zipcode as facilityAddress 
+       FROM document_person_attr t, document_locator d,person_doc_association p,RAW_PROVIDER_ADDRESS R, RAW_FACILITY F 
+      WHERE  t.document_id = d.document_id
+      AND  t.document_id = p.document_id
+      AND T.PROVIDER_ID = R.RAW_PROVIDER_ADDRESS_ID(+)
+      AND T.FACILITY_ID = F.RAW_SUB_FACILITY_ID(+)
+      AND p.dissassociation_date IS NULL 
+      AND DOCUMENT_TYPE_CODE =#{documentType} 
+       and P.SURV_ASSESS_STATUS = #{processCode}     
+              ORDER BY p.association_date DESC
+
+
+     ]]> 
+	</select>  	 
+		
+		
+	<update id="updateTheReviewStatusInSurvAssignment"  parameterType="java.util.Map">
+		update SURVEILLANCE_ASSIGNMENT set REVIEW_ID =#{workerId}, REVIEW_DATE = SYSDATE where DOCUMENT_ID = #{assignmentId}
+	</update>
+	
+	<update id="updateReviewedDateForAllClosedAssignments"  parameterType="java.util.Map">
+		update SURVEILLANCE_ASSIGNMENT set REVIEW_ID =#{p_workerId}, REVIEW_DATE = SYSDATE where TRIGGERING_DOC_ID = #{p_document_id} and REVIEW_DATE is null and CURRENT_ASSIGNMENT_STATUS in ('CLOSED', 'CLS_ADM')
+	</update>
+	
+	
+	
+	<insert id="addAssignmentActivity" parameterType="java.util.Map">
+		insert into ASSIGNMENT_ACTIVITY(ASSIGNMENT_ACTIVITY_ID, ACTIVITY_TYPE_CODE, COMMENTS, ACTIVITY_DATE, ACTIVITY_DONE_BY, DOCUMENT_ID) values(assignment_activity_seq.NEXTVAL, #{activityType}, #{comments,jdbcType=VARCHAR}, SYSDATE, #{workerId}, #{assignmentId})
+	</insert>
+	
+	<select id="triggerSurvAssignment" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_CREATE_ASSINGMENT_MANUAL.pr_create_assingment_manual(
+			#{p_document_id,jdbcType=INTEGER,mode=IN},
+			#{p_document_type_code,jdbcType=VARCHAR,mode=IN},
+			#{p_USER_INPUT,jdbcType=VARCHAR,mode=IN},
+			#{p_code,jdbcType=INTEGER,mode=OUT},
+			#{p_msg,jdbcType=VARCHAR,mode=OUT},
+			#{p_AHI_FLAG,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>		
+	
+	<select id="getOpenAssignmentIdByTrgDoc" parameterType="int" resultType="Integer">
+		select document_id from SURVEILLANCE_ASSIGNMENT where  TRIGGERING_DOC_ID = #{documentId} and CLOSED_DATE is null
+	</select>
+	
+	<select id="getOpenAssignmentIdByAhiDoc" parameterType="int" resultType="Integer">
+		select document_id from SURVEILLANCE_ASSIGNMENT where  AHI_DOC_ID = #{documentId} and CLOSED_DATE is null
+	</select>
+	
+
+	<select id="getStatenoForAssignment" parameterType="long" resultType="String">
+		select PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (stateno) stateno from SURVEILLANCE_ASSIGNMENT where  DOCUMENT_ID = #{documentId}
+	</select>
+	
+		
+	<update id="updateAssignmentWithAHIDocument" parameterType="java.util.Map">
+			update SURVEILLANCE_ASSIGNMENT set AHI_DOC_ID = #{ahiDocumentId,jdbcType=VARCHAR}, AHI_UPDATE_UID = #{workerId}, AHI_UPDATE_DATE = SYSDATE where DOCUMENT_ID = #{assignmentIdOfAHI}
+	
+	</update>
+	
+	<update id="updateAssignmentWithEditAHIDocument" parameterType="java.util.Map">
+			update SURVEILLANCE_ASSIGNMENT set AHI_DOC_ID = #{ahiDocumentId,jdbcType=VARCHAR}, AHI_UPDATE_UID = #{workerId}, AHI_UPDATE_DATE = SYSDATE where AHI_DOC_ID = #{parentDocumentId}
+	
+	</update>
+	
+	<select id="getTriggeringDocumentDetails" parameterType="int" resultType="java.util.Map">
+		select DOCUMENT_ID, DOCUMENT_TYPE_CODE from DOCUMENT_LOCATOR where document_id in (select TRIGGERING_DOC_ID from SURVEILLANCE_ASSIGNMENT where DOCUMENT_ID = #{assignmentId})
+	</select>
+	
+	<select id="getPriorityAssignmentsList" parameterType="java.util.Map" resultMap="assignmentsList">
+	
+				
+	 <![CDATA[
+	SELECT s.STATENO,
+       s.DOCUMENT_ID,
+       s.triggering_doc_id TRIGG_DOC,
+       Nvl2(d.test_type_cd, d.test_type_cd, d.document_type_code) as TRIGG_DOC_TYPE,
+       to_char(w.start_date,'MM/DD/YYYY') WORKER_ASSIGNED_DATE,
+       v.provider_facility_name LOCATION,
+       v.provider_facility_addr ADDRESS,
+       to_char (s.create_date, 'MM/DD/YYYY') EVENT_DATE,
+       a.status_description CURRENT_ASSIGNMENT_STATUS,
+       pkg_trk_common.fn_get_fullname(nu.LAST_NAME,
+                                        nu.FIRST_NAME,
+                                        nu.MIDDLE_NAME,
+                                        NULL) WORKER_NAME,
+       s.acrf_document_id ACRF_DOC_ID,
+       s.pcrf_document_id PCRF_DOC_ID,
+       doc.LAST_NAME,
+       doc.FIRST_NAME,
+       to_char(doc.date_of_birth, 'MM/DD/YYYY') DATE_OF_BIRTH,
+       v.PROVIDER_FACILITY_COUNTY,
+       v.PROVIDER_FACILITY_PHONE,
+       s.CURRENT_ACTIVITY_TYPE_CODE,
+       (SELECT flag_active 
+          FROM person 
+         WHERE stateno = s.stateno) STATENO_ACTIVE,
+       d.is_active  DOCUMENT_STATUS,
+       s.AHI_FLAG
+  FROM surveillance_assignment s,
+       worker_assignment w,
+       user_region r,
+       TABLE(pkg_assignment.fn_assignment_address (s.document_id,s.assign_address_type)) v,
+       coded_assignment_status a
+       ,document_locator d
+       ,document_person_attr doc
+       ,std_hiv_eclrs_doc hiv
+       ,nyehms_ehars_stateno_map m
+       ,nyehms_users nu
+WHERE r.worker_region_id(+) = w.worker_region_id
+   AND w.worker_assignment_id(+) = s.current_worker_assignment_id
+   AND w.document_id = v.document_id(+)
+   AND s.current_assignment_status = a.status_cd
+   AND s.triggering_doc_id = d.document_id
+   AND s.triggering_doc_id = doc.document_id
+   AND s.triggering_doc_id = hiv.document_id(+)
+   AND s.stateno = m.nyehms_stateno(+)
+  AND r.worker_id = nu.worker_id(+)
+  AND s.current_assignment_status = #{p_assignmentType}
+   AND hiv.test_result(+) NOT IN ('NEG',
+                                'NO RESULT',
+                                'HIV NEGATIVE',
+                                '0')
+   AND hiv.test_result(+) NOT LIKE '<%'
+   AND d.document_type_code IN ('HIV_LAB','PRF')
+   AND (m.hiv_cdc = 'Y' OR m.aids_cdc = 'Y')
+   
+   
+   AND ((SUBSTR (m.hiv_aids_dx_dt, 1, 4) in (
+   ]]>
+   
+   <choose>
+   		<when test="priorityType == 'C_P'">
+   			#{currentYear}
+   		</when>
+   		<when test="priorityType == 'P_P'">
+   			#{previousYear}
+   		</when>
+   		<otherwise>
+   			#{currentYear},  #{previousYear}
+   		</otherwise>
+   </choose>
+   
+   
+	 
+   )) OR (m.hiv_aids_dx_dt IS NULL))
+
+AND s.CURRENT_REGION_CD = ${p_regionCode}
+
+	
+	
+      
+		<if test="p_workerId != -1">
+       AND r.worker_id = #{p_workerId}
+   </if>
+	</select>
+		
+	<update id="discardAcrfDocIdFromSurveillanceAssignment" parameterType="java.util.Map">
+		UPDATE SURVEILLANCE_ASSIGNMENT set  ACRF_DOCUMENT_ID = null , PCRF_DOCUMENT_ID = null, LAST_UPDATED_BY = #{lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE where DOCUMENT_ID = #{documentId}
+	</update>
+
+	<update id="discardReabAcrfDocIdFromSurveillanceAssignment" parameterType="java.util.Map">
+		UPDATE SURVEILLANCE_ASSIGNMENT set  REAB_CRF_DOCUMENT_ID = null where DOCUMENT_ID = #{documentId}
+	</update>
+	
+	<update id="updateDocumentFileDisplayName" parameterType="java.util.Map" >
+	
+		update CODED_DISPLAY_FILE_NAME set DISPLAY_NAME = #{displayName}, LAST_UPDATED_BY = #{workerId}, LAST_UPDATED_DATE = SYSDATE where FILE_NAME = #{fileName} and DOCUMENT_TYPE_CODE = #{documentType}
+	</update>	
+
+	<resultMap type="java.util.Map" id="userCORoleCodes"> 	
+		<result property="desc" column="ROLE_DESC" jdbcType="VARCHAR" javaType="String"/>
+		<result property="code" column="ROLE_CODE" jdbcType="VARCHAR" javaType="String"/>
+	</resultMap>
+		
+	<select id="getUserCORoleCodes" parameterType="int" resultMap="userCORoleCodes">
+		select ROLE_CODE, ROLE_DESC  from NYEHMS_WORKER_REGIONS_VW where  WORKERID = #{workerId} and (WR_END_DATE is NULL or WR_END_DATE > SYSDATE) and ROLE_CODE in (1,2,4) and REGION_CODE = 9
+	</select>	
+	
+ 	<select id="getWorkerCORegionId" parameterType="java.util.Map" resultType="String">
+		  SELECT   WORKERREGIONID
+		  FROM     NYEHMS_WORKER_REGIONS_VW  
+		  WHERE    REGION_CODE = 9 AND WORKERID = #{workerId} and ROLE_CODE = #{roleCode} 
+		  			and (END_DATE is NULL or END_DATE > SYSDATE) and (WR_END_DATE is NULL or WR_END_DATE > SYSDATE) 
+	</select>
+	
+	<select id="getReabstractAssignmentStatusByRole" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+		  SELECT   REAB_STATUS_CODE, REAB_STATUS_CODE_DESC 
+		  FROM     CODED_REAB_STATUS 
+		   <if test="roleCode == 2">
+		   	WHERE REAB_STATUS_CODE NOT IN ('REAB_R')
+		   </if>
+		   <if test="roleCode == 0">
+		   	WHERE 1=2
+		   </if>	
+		   	order by SORT_ORDER   
+	</select>	
+	
+	<select id="reabAssignAssignments" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ASSIGNMENT.pr_reabstraction_activity(
+			#{p_assignment_list,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_activity_type_cd,jdbcType=VARCHAR,mode=IN},			
+			#{p_reab_status_cd,jdbcType=VARCHAR,mode=IN},	
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_activity_done_by,jdbcType=INTEGER,mode=IN},		
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+ 	<resultMap type="java.util.Map" id="reabActivities"> 	
+ 	  	<result property="code" column="ACTIVITY_TYPE_CODE" jdbcType="VARCHAR" javaType="String"/>
+		<result property="desc" column="ACTIVITY_TYPE_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getReabActivities" resultMap="reabActivities">
+		  SELECT ACTIVITY_TYPE_CODE, ACTIVITY_TYPE_DESCRIPTION
+		  FROM CODED_ACTIVITY_TYPE
+          WHERE activity_category_code = 'AREAB' 
+	        AND activity_type_code not in ('AREAB01', 'AREAB07', 'AREAB08') 
+          	AND end_date IS NULL 
+          order by activity_type_code
+	</select>  	
+	
+		
+	<update id="updateReabStatus"  parameterType="java.util.Map">
+		<choose>
+			<when test="reabStatus == 'REAB_CR'">
+				update SURVEILLANCE_ASSIGNMENT set REAB_STATUS_CODE =#{reabStatus} where DOCUMENT_ID = #{assignmentId}
+			</when>
+			<otherwise>
+				update SURVEILLANCE_ASSIGNMENT set REAB_STATUS_CODE =#{reabStatus}, REAB_CURRENT_ACTIVITY_TYPE_CODE =#{reabClosureCategory}, REAB_COMPLETED_DATE = #{reabCompletedDate} where DOCUMENT_ID = #{assignmentId}
+			</otherwise>
+		</choose>
+	</update>	
+ 	
+ 	<select id="getReabComparingVariables" parameterType="String" resultType="String">
+	
+		SELECT COLUMN_NAME columnName
+		    FROM reab_crf_compare_cols
+		WHERE table_name = #{tableName}
+			
+	</select>
+	
+ 	<select id="getRawCRFDocData" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ${selectColumns}
+		    FROM ${tableName}
+		WHERE ${document_id} = #{documentId}
+			
+	</select>	
+	
+	 <select id="getRawCRFData" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ${selectColumns}
+		    FROM ${tableName}
+		WHERE ${document_id} = #{documentId}
+			
+	</select>	
+	
+	 <select id="getRawCRFDataObj" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT ${selectColumns}
+		    FROM ${tableName}
+		WHERE ${document_id} = #{documentId}
+			
+	</select>	
+
+	<insert id="saveFsReabCRFDiff" parameterType="java.util.Map">
+		INSERT into CO_ACRF_REAB_COL(ASSIGNMENT_ID, DIFFERENT_COLUMN_NAMES, TAB_NAME, ARV_USE_TYPE, SRC_ID_MAIN, SRC_ID_SEC, SAME_VALUES) 
+			values(#{assignmentId}, #{diffFields,jdbcType=VARCHAR}, #{tabName,jdbcType=VARCHAR}, #{arvUseType,jdbcType=VARCHAR}, #{fsSrcId}, #{reabSrcId}, #{sameValues})
+	</insert>
+
+	<select id="getLabFullDiffSrcId" parameterType="java.util.Map" resultType="String">
+	
+		SELECT * FROM ${tableName} lab1 WHERE  document_id = #{documentId1} 
+ 		AND NOT EXISTS (SELECT 1 FROM ${tableName} WHERE lab1.PARENT_TEST_TYPE=PARENT_TEST_TYPE 
+   		AND lab1.${docType}_TEST_CODE=${docType}_TEST_CODE AND NVL(lab1.${docType}_RESULT_CODE, 'X') = NVL(${docType}_RESULT_CODE, 'X')  AND document_id = #{documentId2})
+   		
+	</select>
+	
+	<select id="getLabPartialDiffSrcId" parameterType="java.util.Map" resultType="java.util.Map">
+	
+		SELECT * FROM (
+			SELECT 
+				<foreach collection="columnNames" item="columnName">
+					CASE WHEN  NVL(lab1.${columnName}, 'X') != NVL(lab2.${columnName}, 'X') THEN 'false' ELSE 'true' END ${columnName},
+				</foreach>
+				lab1.lab_Src_id lab_Src_id1, lab2.lab_Src_id lab_Src_id2
+				
+			FROM ${tableName} lab1 , ${tableName} lab2 WHERE lab1.document_id in (#{documentId2})
+			<if test="fsLabSrcIds != null and !fsLabSrcIds.isEmpty()">
+				and	lab1.lab_Src_id not in 
+					<foreach item="srcId" index="index" collection="fsLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND lab2.document_id IN (#{documentId1})
+			<if test="reabLabSrcIds != null and !reabLabSrcIds.isEmpty()">
+				and	lab2.lab_Src_id not in 
+					<foreach item="srcId" index="index" collection="reabLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND lab1.PARENT_TEST_TYPE=lab2.PARENT_TEST_TYPE AND lab1.${docType}_TEST_CODE=lab2.${docType}_TEST_CODE 
+				AND NVL(lab1.${docType}_RESULT_CODE, 'X') = NVL(lab2.${docType}_RESULT_CODE, 'X')
+		) WHERE 
+					<foreach collection="columnNames" item="columnName" open="(" separator="or" close=")">
+						${columnName} = 'false' 
+					</foreach>
+				
+	</select>
+	
+	
+	<select id="getCD4FullDiffSrcId" parameterType="java.util.Map" resultType="String">
+	
+		SELECT * FROM ${tableName} cd4_1 WHERE  document_id = #{documentId1} AND COLLECTION_DATE != '../../....'
+ 		AND NOT EXISTS (SELECT 1 FROM ${tableName} WHERE COLLECTION_DATE != '../../....' AND cd4_1.CLOSEST_TO_CURRENT_DX = CLOSEST_TO_CURRENT_DX 
+ 														AND NVL(cd4_1.COLLECTION_DATE, 'X') = NVL(COLLECTION_DATE, 'X')  AND document_id = #{documentId2})
+	</select>
+	
+	<select id="getCD4PartialDiffSrcId" parameterType="java.util.Map" resultType="java.util.Map">
+	
+		SELECT * FROM (
+			SELECT 
+				<foreach collection="columnNames" item="columnName">
+					CASE WHEN  NVL(cd4_1.${columnName}, '0') != NVL(cd4_2.${columnName}, '0') THEN 'false' ELSE 'true' END ${columnName},
+				</foreach>
+				
+				cd4_1.CD4_SRC_ID CD4_SRC_ID1, cd4_2.CD4_SRC_ID CD4_SRC_ID2
+				
+			FROM ${tableName} cd4_1 , ${tableName} cd4_2 WHERE cd4_1.document_id in (#{documentId2})
+			<if test="fsLabSrcIds != null and !fsLabSrcIds.isEmpty()">
+				and	cd4_1.CD4_SRC_ID not in 
+					<foreach item="srcId" index="index" collection="fsLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND cd4_2.document_id IN (#{documentId1})
+			<if test="reabLabSrcIds != null and !reabLabSrcIds.isEmpty()">
+				and	cd4_2.CD4_SRC_ID not in 
+					<foreach item="srcId" index="index" collection="reabLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND cd4_1.CLOSEST_TO_CURRENT_DX = cd4_2.CLOSEST_TO_CURRENT_DX AND NVL(cd4_1.COLLECTION_DATE, 'X') = NVL(cd4_2.COLLECTION_DATE, 'X')
+		) WHERE 
+					<foreach collection="columnNames" item="columnName" open="(" separator="or" close=")">
+						${columnName} = 'false' 
+					</foreach>
+				
+	</select>
+<!-- 	
+	<select id="getARVFullDiffUseType" parameterType="java.util.Map" resultType="String">
+	
+		SELECT arv1.ARV_USE_TYPE FROM RAW_ACRF_ARVS arv1 WHERE  ACRF_DOC_ID = #{documentId1} 
+ 		AND NOT EXISTS (SELECT 1 FROM RAW_ACRF_ARVS WHERE arv1.ARV_USE_TYPE = ARV_USE_TYPE  AND ACRF_DOC_ID = #{documentId2})
+   		
+	</select>
+	
+	<select id="getARVPartialDiffUseType" parameterType="java.util.Map" resultType="java.util.Map">
+	
+		SELECT * FROM (
+			SELECT 
+				<foreach collection="columnNames" item="columnName">
+					CASE WHEN  NVL(arv1.${columnName}, 'X') != NVL(arv2.${columnName}, 'X') THEN 'false' ELSE 'true' END ${columnName},
+				</foreach>
+				
+				arv1.ARV_USE_TYPE ARV_USE_TYPE1, arv2.ARV_USE_TYPE ARV_USE_TYPE2
+				
+			FROM RAW_ACRF_ARVS arv1 , RAW_ACRF_ARVS arv2 WHERE arv1.ACRF_DOC_ID in (#{documentId2})
+			<if test="fsLabSrcIds != null and fsLabSrcIds != '[]'">
+				and	arv1.ARV_USE_TYPE not in 
+					<foreach item="srcId" index="index" collection="fsLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND arv2.ACRF_DOC_ID IN (#{documentId1})
+			<if test="reabLabSrcIds != null and reabLabSrcIds != '[]'">
+				and	arv2.ARV_USE_TYPE not in 
+					<foreach item="srcId" index="index" collection="reabLabSrcIds" open="(" separator="," close=")">
+						        	#{srcId}
+					</foreach>
+			</if>
+			AND arv1.ARV_USE_TYPE = arv2.ARV_USE_TYPE
+		) WHERE 
+					<foreach collection="columnNames" item="columnName" open="(" separator="or" close=")">
+						${columnName} = 'false' 
+					</foreach>
+				
+	</select>
+	
+ -->	
+ 
+ 	 <select id="getReabAssignmentClosureCategories" parameterType="int" resultType="java.util.Map">
+		select STATENO, CASE WHEN ACRF_DOCUMENT_ID IS NOT NULL THEN 'ACRF' ELSE 'PCRF' END document_type ,
+		       COALESCE (ACRF_DOCUMENT_ID, PCRF_DOCUMENT_ID) FS_DOCUMENT_ID,
+		       CURRENT_ACTIVITY_TYPE_CODE, ca.ACTIVITY_TYPE_DESCRIPTION FS_CLOSURE_CATEGORY, 
+		       REAB_CRF_DOCUMENT_ID, REAB_CURRENT_ACTIVITY_TYPE_CODE, ca2.ACTIVITY_TYPE_DESCRIPTION REAB_CLOSURE_CATEGORY
+		       
+		from SURVEILLANCE_ASSIGNMENT sa,  CODED_ACTIVITY_TYPE ca, CODED_ACTIVITY_TYPE ca2
+		where document_id =  #{assignmentId}
+		        and sa.CURRENT_ACTIVITY_TYPE_CODE = ca.ACTIVITY_TYPE_CODE
+		        and sa.REAB_CURRENT_ACTIVITY_TYPE_CODE = ca2.ACTIVITY_TYPE_CODE
+	</select>	
+	
+	<select id="getAssignmentCompareData" parameterType="int" resultType="java.util.Map">
+		select TAB_NAME, ARV_USE_TYPE, nvl(SRC_ID_MAIN, 0) fs_Src_id, nvl(SRC_ID_SEC, 0) reab_Src_id, SAME_VALUES, DIFFERENT_COLUMN_NAMES
+		 from CO_ACRF_REAB_COL where  ASSIGNMENT_ID = #{assignmentId}
+	</select>
+	
+	<select id="getReabstractionDiffData" parameterType="int" resultType="org.json.simple.JSONObject">
+		select TAB_NAME, ARV_USE_TYPE, nvl(SRC_ID_MAIN, 0) fs_Src_id, nvl(SRC_ID_SEC, 0) reab_Src_id, SAME_VALUES, DIFFERENT_COLUMN_NAMES
+		 from CO_ACRF_REAB_COL where  ASSIGNMENT_ID = #{assignmentId}
+	</select>	
+	
+	<select id="getOpenCaseloadSummaryDataReport" resultType="org.json.simple.JSONObject">
+			select * from field_staff_caseload_summary
+	</select>
+	
+	<select id="getAssignmentStatusByACRF" parameterType="int" resultType="java.util.Map">
+	<![CDATA[
+		select CURRENT_ASSIGNMENT_STATUS, CURRENT_ACTIVITY_TYPE_CODE from SURVEILLANCE_ASSIGNMENT where ACRF_DOCUMENT_ID = #{acrfDocId} and rownum < 2
+	]]> 
+	</select>
+	
+	
+	<select id="checkForNonCaseClosureCateogory" parameterType="String" resultType="String">
+			SELECT is_closure_category_noncase (#{closureCategory}) nonCase from DUAL
+	</select>
+	
+	<select id="getVlDocumentReviewCategories" resultType="java.util.Map">
+	        select REVIEW_ACTION, REVIEW_DESC from CODED_VL_ASSIGN_REVIEW where drop_down = 'Y' order by SORT_ORDER
+	</select>
+	
+	<select id="getVlStatenosToReview" resultType="org.json.simple.JSONObject" parameterType="java.util.Map">
+			select stateno "stateno", to_char(flagged_date, 'MM/DD/YYYY') "flaggedDate"
+			<if test="reviewCategory == null || reviewCategory == ''">
+			 , to_char(review_date, 'MM/DD/YYYY') "reviewDate", REVIEW_DESC "reviewDesc" 
+
+			, Trim(pkg_trk_common.fn_get_fullname (usr.last_name,
+				                                           usr.first_name,
+				                                           usr.middle_name,
+				                                           NULL)) "reviewBy"
+			</if>
+			from NYEHMS_VL_ASSIGN_REVIEW review, CODED_VL_ASSIGN_REVIEW coded, nyehms_users usr where 
+			review.REVIEW_ACTION = coded.REVIEW_ACTION(+)
+			and usr.worker_id(+) = review.REVIEW_BY  
+			<if test="reviewCategory != null and reviewCategory == 'Review'">
+				and review_date is null	
+			</if>
+		
+	</select>
+	
+	<update id="updateVlDocumentStatus"  parameterType="java.util.Map">
+		update NYEHMS_VL_ASSIGN_REVIEW set REVIEW_BY =#{workerId}, REVIEW_DATE = SYSDATE, REVIEW_COMMENTS = #{requestComments}, REVIEW_ACTION = #{reviewCategory} where STATENO = #{stateno}
+	</update>	
+	 						
+	<select id="eharsPersonViewQuery" parameterType="java.util.Map" statementType="CALLABLE">
+		{call pr_nyehms_ehars_person_view(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_ehars_sql,jdbcType=VARCHAR,mode=OUT}	 
+		)}
+	</select> 
+</mapper>

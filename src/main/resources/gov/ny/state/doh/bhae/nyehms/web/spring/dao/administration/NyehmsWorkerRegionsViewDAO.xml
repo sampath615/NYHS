@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.administration.NyehmsWorkerRegionsViewDAO">
+
+   <resultMap id="getUsersResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.NyehmsWorkerRegionsViewVO" >
+    <result column="WORKERREGIONID" property="workerRegionId" jdbcType="DECIMAL" />
+    <result column="WORKER_ID" property="workerId" jdbcType="DECIMAL" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="DECIMAL" />
+    <result column="ROLE_DESC" property="roleDescription" jdbcType="VARCHAR" />
+    <result column="REGION_CODE" property="regionCode" jdbcType="VARCHAR" />
+    <result column="REGION_DESCRIPTION" property="regionDescription" jdbcType="VARCHAR" />
+    <result column="FULL_NAME" property="fullName" jdbcType="VARCHAR" />
+    <result column="FIRST_NAME" property="firstName" jdbcType="VARCHAR" />
+    <result column="LAST_NAME" property="lastName" jdbcType="VARCHAR" />
+    <result column="MIDDLE_NAME" property="middleName" jdbcType="VARCHAR" />
+    <result column="LEGACY_UID" property="legacyUid" jdbcType="VARCHAR" />
+    
+    
+    <result column="BUREAU_START_DATE" property="bureauStartDate" jdbcType="VARCHAR" />
+    <result column="POSITION_START_DATE" property="positionStartDate" jdbcType="VARCHAR" />
+    <result column="PC_ACCESS_AT_LOCATION" property="pcAccessAtLocation" jdbcType="VARCHAR" />
+    <result column="BUREAU_NAME" property="bureauName" jdbcType="VARCHAR" />
+    <result column="REMOTE_TERMINAL_ACCESS" property="remoteTerminalAccess" jdbcType="VARCHAR" />
+    
+    <result column="TELECOMMUTE_TRNG_ATTEST_REC" property="tlcmmtTrngAtstn" jdbcType="VARCHAR" />
+    <result column="CONF_SECURITY_TRNG_ATTEST_REC" property="cnfSecTrngAtstn" jdbcType="VARCHAR" />
+    <result column="TELECOMMUTE_TRNG_BY" property="tlcmmtTrngBy" jdbcType="VARCHAR" />
+    <result column="CONF_SECURITY_TRNG_BY" property="cnfSecTrngBy" jdbcType="VARCHAR" /> 	
+    
+    <result column="CREATED_DATE" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="WR_START_DATE" property="wrStartDate" jdbcType="TIMESTAMP" />
+    <result column="WR_END_DATE" property="wrEndDate" jdbcType="TIMESTAMP" />
+    <result column="EMAIL_ADDR" property="emailAddress" jdbcType="VARCHAR" />
+    <result column="START_DATE" property="effectiveStartDate" jdbcType="TIMESTAMP" />
+    <result column="LAST_CONF_SECURITY_TRNG_DATE" property="lastConfidentialityAndSecurityTrainingDate" jdbcType="TIMESTAMP"  />
+    <result column="LAST_LOGIN_DATE" property="lastLoginDate" jdbcType="TIMESTAMP" />
+    <result column="IS_LOCKED" property="isLocked" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+ <select id="getUsersList" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_user_search(
+			#{p_fname,    jdbcType=VARCHAR, mode=IN},
+			#{p_lname,    jdbcType=VARCHAR, mode=IN},
+			#{p_mname,    jdbcType=VARCHAR, mode=IN},
+			#{p_shortname,jdbcType=VARCHAR, mode=IN},
+			#{p_email,    jdbcType=VARCHAR, mode=IN},
+			#{p_region_cd,    jdbcType=VARCHAR, mode=IN},
+			#{p_role_cd,    jdbcType=INTEGER, mode=IN},
+			#{p_users_out,jdbcType=CURSOR,  mode=OUT, javaType=java.sql.ResultSet, resultMap=getUsersResult}
+		)}
+  </select>
+ 
+ 
+  <resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.NyehmsRole" id="getCodedRoleResult">
+	<result property="roleCode" column="ROLE_CODE" jdbcType="DECIMAL" /> 
+	<result property="roleDescription" column="ROLE_DESCRIPTION" jdbcType="VARCHAR" />
+	<result property="isExpandable" column="IS_EXPANDABLE" jdbcType="CHAR" />
+  </resultMap>
+
+  <select id="getSearchRoleDescription" resultMap="getCodedRoleResult">
+     SELECT  ROLE_CODE, ROLE_DESCRIPTION, IS_EXPANDABLE 
+	     FROM CODED_ROLE ORDER BY ROLE_DESCRIPTION
+  </select>
+
+  <resultMap type="java.util.Map" id="getCodedRegionResult">
+	  <result property="regionCode" column="REGION_CODE" jdbcType="VARCHAR" javaType="String" /> 
+	  <result property="regionDescription" column="REGION_DESCRIPTION" jdbcType="VARCHAR" javaType="String" />
+  </resultMap>
+
+  <select id="getSearchRegionDescription" resultMap="getCodedRegionResult">
+	  SELECT REGION_CODE, REGION_DESCRIPTION
+        FROM CODED_REGION where ASSIGNMENT_TYPE_CODE = 'SURV' and (END_DATE is NULL or END_DATE > SYSDATE)  ORDER BY REGION_DESCRIPTION 
+  </select>
+
+   
+ <select id="getSearchstatusDescription"  resultType="String">
+    SELECT PARAM_VALUE FROM NYEHMS_PARAMETER WHERE PARAM_NAME = 'USER_STATUS'
+ </select>
+  
+  <select id="getRegionRoleByUserIdList" parameterType="long" resultMap="getRegionRoleDetails">
+ select 
+    		WORKERREGIONID worker_region_id,  ROLE_DESC,  
+		    REGION_DESCRIPTION, TO_CHAR(WR_START_DATE, 'MM/DD/YYYY') START_DATE, TO_CHAR(WR_END_DATE, 'MM/DD/YYYY') END_DATE 
+    from    NYEHMS_WORKER_REGIONS_VW 
+    where   WORKERID = #{workerId} ORDER BY  END_DATE NULLS FIRST 
+    
+  </select>
+  
+  <select id="isUserExists" parameterType="String" resultType="String">
+    select WORKER_ID 
+    from    NYEHMS_USERS_VW 
+    where   UPPER(LEGACY_UID) = UPPER(#{legacyUid}) and (end_date is null or end_date > sysdate)
+  </select>
+  
+<select id="creatingNewUser" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_add_new_user(
+			#{p_legacy_uid,jdbcType=VARCHAR,mode=IN},
+			#{p_first_name,jdbcType=VARCHAR,mode=IN},
+			#{p_last_name,jdbcType=VARCHAR,mode=IN},
+			#{p_middle_name,jdbcType=VARCHAR,mode=IN},
+			#{p_start_date,jdbcType=DATE, mode=IN},
+			#{p_email_addr,jdbcType=VARCHAR,mode=IN},
+			#{p_last_conf_secure_trng_date,jdbcType=DATE, mode=IN},
+			#{p_mac_address,jdbcType=VARCHAR,mode=IN},
+			#{p_region_code,jdbcType=VARCHAR,mode=IN},
+			#{p_role_code, jdbcType=INTEGER,mode=IN},
+			#{p_created_by,jdbcType=INTEGER,mode=IN},
+			#{p_permissions_list,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT},
+			#{p_vpn,jdbcType=VARCHAR,mode=IN},
+			#{p_vpn_approve_date,jdbcType=DATE,mode=IN},
+			#{p_telecommute,jdbcType=VARCHAR,mode=IN},
+			#{p_telecommute_trng_date,jdbcType=DATE,mode=IN},
+			#{p_user_type,jdbcType=VARCHAR,mode=IN},
+			#{p_facility_group_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_bureau_start_date,jdbcType=VARCHAR,mode=IN},
+			#{p_position_start_date,jdbcType=VARCHAR,mode=IN},
+			#{p_pc_access_at_location,jdbcType=VARCHAR,mode=IN},
+			#{p_bureau_name,jdbcType=VARCHAR,mode=IN},
+			#{p_remote_terminal_access,jdbcType=VARCHAR,mode=IN},
+			#{p_comments,jdbcType=VARCHAR,mode=IN},
+			#{p_tlcmmtTrngAtstn,jdbcType=VARCHAR,mode=IN},
+			#{p_cnfSecTrngAtstn,jdbcType=VARCHAR,mode=IN},
+			#{p_tlcmmtTrngBy,jdbcType=VARCHAR,mode=IN},
+			#{p_cnfSecTrngBy,jdbcType=VARCHAR,mode=IN},
+			#{p_reg_office,jdbcType=VARCHAR,mode=IN}
+		)}
+	</select>
+	
+	<select id="addingNewRegionRole" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_add_user_region_role(
+			#{p_user_id,jdbcType=INTEGER,mode=IN},
+			#{p_region_code,jdbcType=VARCHAR,mode=IN},
+			#{p_role_code, jdbcType=INTEGER,mode=IN},
+			#{p_created_by,jdbcType=INTEGER,mode=IN},
+			#{p_permissions_list,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+
+    
+    <update id="saveUserDetails" parameterType="java.util.Map">
+    
+       UPDATE NYEHMS_USERS set FIRST_NAME = #{firstName}, LAST_NAME= #{lastName}, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{lastUpdatedBy}, EMAIL_ADDR = #{emailAddress},  
+       VPN = #{vpnAccess} , TELECOMMUTE = #{telecommute},
+       BUREAU_START_DATE = #{bureauStartDate,jdbcType=VARCHAR}, 
+	   POSITION_START_DATE = #{positionStartDate,jdbcType=VARCHAR},
+	   PC_ACCESS_AT_LOCATION = #{pcAccessAtLocation,jdbcType=VARCHAR},
+	   BUREAU_NAME = #{bureauName,jdbcType=VARCHAR},
+	   REMOTE_TERMINAL_ACCESS = #{remoteTerminalAccess,jdbcType=VARCHAR},
+	   TELECOMMUTE_TRNG_ATTEST_REC = #{p_tlcmmtTrngAtstn,jdbcType=VARCHAR},
+	   CONF_SECURITY_TRNG_ATTEST_REC = #{p_cnfSecTrngAtstn,jdbcType=VARCHAR},
+	   TELECOMMUTE_TRNG_BY = #{p_tlcmmtTrngBy,jdbcType=VARCHAR},
+	   CONF_SECURITY_TRNG_BY = #{p_cnfSecTrngBy,jdbcType=VARCHAR},
+	   ADMIN_COUNTY_REGION_CD = #{regOffice,jdbcType=VARCHAR},
+       
+       <choose>
+			<when test="lastConfidentialityAndSecurityTrainingDate == null || lastConfidentialityAndSecurityTrainingDate == ''">
+						LAST_CONF_SECURITY_TRNG_DATE = '',		    
+			</when>
+			<otherwise>
+				LAST_CONF_SECURITY_TRNG_DATE = to_date(#{lastConfidentialityAndSecurityTrainingDate}, 'MM/DD/YYYY'),
+			</otherwise>
+		</choose>					    
+       <choose>
+			<when test="vpnApproveDate == null || vpnApproveDate == ''">
+						VPN_APPROVE_DATE = '',		    
+			</when>
+			<otherwise>
+				VPN_APPROVE_DATE = to_date(#{vpnApproveDate}, 'MM/DD/YYYY'),
+			</otherwise>
+		</choose>					    
+       <choose>
+			<when test="telecommuteTrainingDate == null || telecommuteTrainingDate == ''">
+						TELECOMMUTE_TRNG_DATE = '',		    
+			</when>
+			<otherwise>
+				TELECOMMUTE_TRNG_DATE = to_date(#{telecommuteTrainingDate}, 'MM/DD/YYYY'),
+			</otherwise>
+		</choose>					    
+						  IS_LOCKED = #{isLocked}  where WORKER_ID =#{workerId} and END_DATE is NULL
+    
+    </update>
+
+	
+	<select id="terminateUser" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_terminate_user(
+			#{p_user_id,jdbcType=INTEGER,mode=IN},
+			#{p_terminated_by,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+		
+	<select id="getUsersMacAddressAndRegionDetails" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_get_user_profile(
+			#{p_worker_id,jdbcType=BIGINT,javaType=LONG,mode=IN},
+			#{p_user_basic_out,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=getNyehmsUserDetails},
+<!-- 			#{p_mac_addresses_out,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet,  resultMap=gov.ny.state.doh.bhae.nyehms.web.spring.dao.administration.UserMacAssociationDAO.getUsersMacResult},  -->
+			#{p_region_roles_out,jdbcType=CURSOR,mode=OUT, javaType=java.sql.ResultSet, resultMap=getRegionRoleDetails}
+		)}
+	</select>	
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.UserRegionVO" id="getRegionRoleDetails">
+		<result property="workerRegionId" column="worker_region_id" jdbcType="DECIMAL" /> 
+		<result property="roleDescription" column="ROLE_DESC" jdbcType="VARCHAR" />
+		<result property="regionDescription" column="REGION_DESCRIPTION" jdbcType="VARCHAR" />
+		<result property="startDate" column="START_DATE" jdbcType="TIMESTAMP" />
+		<result property="endDate" column="END_DATE" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.NyehmsUsersVO" id="getNyehmsUserDetails">
+		<result property="workerId" column="WORKER_ID" jdbcType="DECIMAL" /> 
+		<result property="firstName" column="FIRST_NAME" jdbcType="VARCHAR" />
+		<result property="lastName" column="LAST_NAME" jdbcType="VARCHAR" />
+		<result property="middleName" column="MIDDLE_NAME" jdbcType="VARCHAR" />
+		<result property="legacyUid" column="LEGACY_UID" jdbcType="VARCHAR" />
+		<result property="emailAddress" column="EMAIL_ADDR" jdbcType="VARCHAR" />
+		<result property="isLocked" column="IS_LOCKED" jdbcType="VARCHAR" />
+		<result column="LAST_CONF_SECURITY_TRNG_DATE" property="lastConfidentialityAndSecurityTrainingDate" jdbcType="TIMESTAMP" />
+		<result property="vpnAccess" column="VPN" jdbcType="VARCHAR" /> 		
+		<result column="VPN_APPROVE_DATE" property="vpnApproveDate" jdbcType="TIMESTAMP" />
+		<result property="telecommute" column="TELECOMMUTE" jdbcType="VARCHAR" /> 		
+		<result column="TELECOMMUTE_TRNG_DATE" property="telecommuteTrainingDate" jdbcType="TIMESTAMP" />
+		<result property="userType" column="USER_TYPE" jdbcType="VARCHAR" /> 		
+		<result property="userFacilityGroupCode" column="FACILITY_GROUP_CD" jdbcType="VARCHAR" />
+		
+    
+	   
+	    <result column="BUREAU_START_DATE" property="bureauStartDate" jdbcType="VARCHAR" />
+	    <result column="POSITION_START_DATE" property="positionStartDate" jdbcType="VARCHAR" />
+	    <result column="PC_ACCESS_AT_LOCATION" property="pcAccessAtLocation" jdbcType="VARCHAR" />
+	    <result column="BUREAU_NAME" property="bureauName" jdbcType="VARCHAR" />
+	    <result column="ADMIN_COUNTY_REGION_CD" property="regOffice" jdbcType="VARCHAR" />
+	    <result column="REMOTE_TERMINAL_ACCESS" property="remoteTerminalAccess" jdbcType="VARCHAR" /> 		
+	    <result column="TELECOMMUTE_TRNG_ATTEST_REC" property="tlcmmtTrngAtstn" jdbcType="VARCHAR" />
+	    <result column="CONF_SECURITY_TRNG_ATTEST_REC" property="cnfSecTrngAtstn" jdbcType="VARCHAR" />
+	    <result column="TELECOMMUTE_TRNG_BY" property="tlcmmtTrngBy" jdbcType="VARCHAR" />
+	    <result column="CONF_SECURITY_TRNG_BY" property="cnfSecTrngBy" jdbcType="VARCHAR" />
+	    
+	    <result column="TELECOMMUTE_TRNG_ATTEST_REC" property="tlcmmtTrngAtstn" jdbcType="VARCHAR" />
+	    <result column="CONF_SECURITY_TRNG_ATTEST_REC" property="cnfSecTrngAtstn" jdbcType="VARCHAR" />
+	    <result column="TELECOMMUTE_TRNG_BY" property="tlcmmtTrngBy" jdbcType="VARCHAR" />
+	    <result column="CONF_SECURITY_TRNG_BY" property="cnfSecTrngBy" jdbcType="VARCHAR" /> 	
+	    
+	    
+	    
+	</resultMap>
+	
+	<select id="editUserPermissions" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_edit_user_region_perms(
+			#{p_worker_region_id,jdbcType=INTEGER,mode=IN},
+			#{p_updated_by,jdbcType=INTEGER,mode=IN},
+			#{p_permissions_list,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<select id="retireRegionRole" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_ADMINISTRATION.pr_end_user_region(
+			#{p_user_region_id,jdbcType=INTEGER,mode=IN},
+			#{P_END_DATE,jdbcType=DATE,mode=IN},
+			#{p_terminated_by,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+		)}
+	</select>
+	
+	<resultMap type="java.util.Map" id="getUserTypesResult">
+	  <result property="userTypeCode" column="USER_TYPE_CODE" jdbcType="VARCHAR" javaType="String" /> 
+	  <result property="userTypeDesc" column="USER_TYPE_DESC" jdbcType="VARCHAR" javaType="String" />
+  	</resultMap>
+
+  	<select id="getUserTypes" resultMap="getUserTypesResult">
+		select USER_TYPE_CODE, USER_TYPE_DESC   from CODED_NYEHMS_USER_TYPE
+  	</select>
+
+	<resultMap type="java.util.Map" id="getUserFacilityDetails">
+	  <result property="userFacilityGroupCode" column="FACILITY_GROUP_CD" jdbcType="VARCHAR" javaType="String" /> 
+	  <result property="userFacilityGroupDesc" column="FACILITY_DISP_NAME" jdbcType="VARCHAR" javaType="String" />
+  	</resultMap>
+
+  	<select id="getUserFacilityNames" resultMap="getUserFacilityDetails">
+		select FACILITY_GROUP_CD, FACILITY_DISP_NAME   from coded_nyehms_user_facility_vw
+  	</select>
+
+	<select id="getAdminModuleReportData" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+	<![CDATA[
+	WITH data AS
+	(
+	  SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	  FROM nyehms_users_activity a
+	  LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	), final_notes AS
+	(
+	  SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	    FROM data
+	GROUP BY worker_id
+	)
+	SELECT a.worker_id, legacy_uid,
+	     pkg_trk_common.fn_get_fullname (last_name,
+	                                    first_name,
+	                                    middle_name,
+	                                    NULL) user_name, last_name, first_name, email_addr, bureau_name,
+	    last_login_date, is_locked, end_date, TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') SNC_TRNG_DT, CONF_SECURITY_TRNG_BY, CONF_SECURITY_TRNG_ATTEST_REC,
+	    telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') TELE_TRNG_DT, TELECOMMUTE_TRNG_BY, TELECOMMUTE_TRNG_ATTEST_REC,
+	     user_type, vpn,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpn_approve_date, pc_access_at_location, remote_terminal_access,
+	     CASE
+	         WHEN is_locked = 'Y'  and user_type = 'APP'
+	          THEN 'User_Inactive'   
+	         WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) <= TRUNC(SYSDATE)
+	         THEN 'C&S_Due_Now'                                          
+	         WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 30 < TRUNC(SYSDATE)
+	         THEN 'C&S_Due_In_30Days'
+	         WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 60 < TRUNC(SYSDATE)
+	         THEN 'C&S_Due_In_60Days'
+	         WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 90 < TRUNC(SYSDATE)
+	         THEN 'C&S_Due_In_90Days'
+	         ELSE 'Active'                                       
+	     END snc_due_in_days,
+	     b.notes,
+	     a.admin_county_region_cd, c.admin_county_region_desc county_region
+	FROM nyehms_users a
+	LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	LEFT JOIN coded_admin_county_region c ON (c.admin_county_region_cd = a.admin_county_region_cd)
+	WHERE a.END_DATE is null AND
+		(Trunc(last_conf_security_trng_date) BETWEEN To_Date(#{p_from_date}, 'MM/DD/YYYY') AND To_Date(#{p_to_date}, 'MM/DD/YYYY')
+		
+		or
+		
+		Add_Months(TRUNC(last_conf_security_trng_date), 12) - sysdate < 90 )
+		
+		ORDER BY 
+		CASE WHEN snc_due_in_days = 'User_Inactive' THEN '5'
+			 WHEN snc_due_in_days = 'C&S_Due_In_30Days' THEN '2'
+			 WHEN snc_due_in_days = 'C&S_Due_In_60Days' THEN '3'
+			 WHEN snc_due_in_days = 'C&S_Due_In_90Days' THEN '4'
+			 WHEN snc_due_in_days = 'C&S_Due_Now' THEN '1'
+		 END, 
+		last_conf_security_trng_date desc
+	]]> 
+	</select>
+	
+	<select id="getTrainingAttstData" resultType="org.json.simple.JSONObject">
+	<![CDATA[
+	WITH data AS
+	(
+	  SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	  FROM nyehms_users_activity a
+	  LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	), final_notes AS
+	(
+	  SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	    FROM data
+	GROUP BY worker_id
+	)
+	SELECT a.worker_id, legacy_uid,
+	     pkg_trk_common.fn_get_fullname (last_name,
+	                                    first_name,
+	                                    middle_name,
+	                                    NULL) user_name, last_name, first_name, email_addr, bureau_name,
+	    last_login_date, is_locked, end_date, TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') SNC_TRNG_DT, CONF_SECURITY_TRNG_BY, CONF_SECURITY_TRNG_ATTEST_REC,
+	    telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') TELE_TRNG_DT, TELECOMMUTE_TRNG_BY, TELECOMMUTE_TRNG_ATTEST_REC,
+	     user_type, vpn,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpn_approve_date, pc_access_at_location, remote_terminal_access,
+	     b.notes
+	FROM nyehms_users a
+	LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	WHERE a.END_DATE is null AND nvl(CONF_SECURITY_TRNG_ATTEST_REC, 'N') = 'N' 
+		order by 
+		user_name asc
+		]]> 
+	</select>
+	
+	<select id="getTeleworkAttstData" resultType="org.json.simple.JSONObject">
+	<![CDATA[
+	WITH data AS
+	(
+	  SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	  FROM nyehms_users_activity a
+	  LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	), final_notes AS
+	(
+	  SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	    FROM data
+	GROUP BY worker_id
+	)
+	SELECT a.worker_id, legacy_uid,
+	     pkg_trk_common.fn_get_fullname (last_name,
+	                                    first_name,
+	                                    middle_name,
+	                                    NULL) user_name, last_name, first_name, email_addr, bureau_name,
+	    last_login_date, is_locked, end_date, TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') SNC_TRNG_DT, CONF_SECURITY_TRNG_BY, CONF_SECURITY_TRNG_ATTEST_REC,
+	    telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') TELE_TRNG_DT, TELECOMMUTE_TRNG_BY, TELECOMMUTE_TRNG_ATTEST_REC,
+	     user_type, vpn,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpn_approve_date, pc_access_at_location, remote_terminal_access,
+	     b.notes,
+	     a.admin_county_region_cd, c.admin_county_region_desc county_region
+	FROM nyehms_users a
+	LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	LEFT JOIN coded_admin_county_region c ON (c.admin_county_region_cd = a.admin_county_region_cd)
+	WHERE a.END_DATE is null AND nvl(TELECOMMUTE_TRNG_ATTEST_REC, 'N') = 'N' 
+	and nvl(telecommute, 'X') = 'Y'
+	and Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) - sysdate < 0 
+		order by 
+		user_name asc
+		]]> 
+	</select>
+	
+	<select id="getTeleCommuteReportData" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+	<![CDATA[
+	WITH data AS
+	(
+	  SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	  FROM nyehms_users_activity a
+	  LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	), final_notes AS
+	(
+	  SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	    FROM data
+	GROUP BY worker_id
+	)
+	SELECT a.worker_id, legacy_uid,
+	     pkg_trk_common.fn_get_fullname (last_name,
+	                                    first_name,
+	                                    middle_name,
+	                                    NULL) user_name, last_name, first_name, email_addr, bureau_name,
+	    last_login_date, is_locked, end_date, TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') SNC_TRNG_DT, CONF_SECURITY_TRNG_BY, CONF_SECURITY_TRNG_ATTEST_REC,
+	    telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') TELE_TRNG_DT, TELECOMMUTE_TRNG_BY, TELECOMMUTE_TRNG_ATTEST_REC,
+	     user_type, vpn,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpn_approve_date, pc_access_at_location, remote_terminal_access,
+	     CASE
+	         WHEN is_locked = 'Y'  
+	          THEN 'User_Inactive'   
+	         WHEN Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) <= TRUNC(SYSDATE)
+	         THEN 'Due_Now'                                          
+	         WHEN Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) - 30 < TRUNC(SYSDATE)
+	         THEN 'Due_In_30Days'
+	         WHEN Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) - 60 < TRUNC(SYSDATE)
+	         THEN 'Due_In_60Days'
+	         WHEN Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) - 90 < TRUNC(SYSDATE)
+	         THEN 'Due_In_90Days'
+	         ELSE 'Active'                                       
+	     END snc_due_in_days,
+	     b.notes,
+	     a.admin_county_region_cd, c.admin_county_region_desc county_region
+	FROM nyehms_users a
+	LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	LEFT JOIN coded_admin_county_region c ON (c.admin_county_region_cd = a.admin_county_region_cd)
+	WHERE a.END_DATE is null AND
+	    nvl(TELECOMMUTE, 'X') = 'Y' and 
+		(Trunc(TELECOMMUTE_TRNG_DATE) BETWEEN To_Date(#{p_from_date}, 'MM/DD/YYYY') AND To_Date(#{p_to_date}, 'MM/DD/YYYY')
+		or
+		
+		Add_Months(TRUNC(TELECOMMUTE_TRNG_DATE), 12) - sysdate < 90 )
+		
+		ORDER BY 
+		CASE WHEN snc_due_in_days = 'User_Inactive' THEN '5'
+			 WHEN snc_due_in_days = 'Due_In_30Days' THEN '2'
+			 WHEN snc_due_in_days = 'Due_In_60Days' THEN '3'
+			 WHEN snc_due_in_days = 'Due_In_90Days' THEN '4'
+			 WHEN snc_due_in_days = 'Due_Now' THEN '1'
+		 END, 
+		TELECOMMUTE_TRNG_DATE desc
+	]]> 
+	</select>
+	
+	<select id="getNonTeleCommuteReportData" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+	<![CDATA[
+	WITH data AS
+	(
+	  SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	  FROM nyehms_users_activity a
+	  LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	), final_notes AS
+	(
+	  SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	    FROM data
+	GROUP BY worker_id
+	)
+	SELECT a.worker_id, legacy_uid,
+	     pkg_trk_common.fn_get_fullname (last_name,
+	                                    first_name,
+	                                    middle_name,
+	                                    NULL) user_name, last_name, first_name, email_addr, bureau_name,
+	    last_login_date, is_locked, end_date, TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') SNC_TRNG_DT, CONF_SECURITY_TRNG_BY, CONF_SECURITY_TRNG_ATTEST_REC,
+	    telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') TELE_TRNG_DT, TELECOMMUTE_TRNG_BY, TELECOMMUTE_TRNG_ATTEST_REC,
+	     user_type, vpn,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpn_approve_date, pc_access_at_location, remote_terminal_access,
+	     b.notes,
+	     a.admin_county_region_cd, c.admin_county_region_desc county_region
+	FROM nyehms_users a
+	LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	LEFT JOIN coded_admin_county_region c ON (c.admin_county_region_cd = a.admin_county_region_cd)
+	WHERE a.END_DATE is null AND
+		nvl(TELECOMMUTE, 'X') != 'Y'
+		
+	]]> 
+	</select>
+	
+	
+	<select id="getUserDetailsData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.NyehmsUsersVO">
+    <![CDATA[    
+	    WITH data AS
+	    (
+	      SELECT a.worker_id, activity_date, To_Char(a.activity_date,'MM/DD/YYYY HH:MI:SS AM') || ' - '||
+	            Nvl(Trim(pkg_trk_common.fn_get_fullname (b.last_name,
+	                                           b.first_name,
+	                                           b.middle_name,
+	                                           NULL)), a.activity_by)
+	            ||' - '|| a.comments notes
+	      FROM nyehms_users_activity a
+	      LEFT JOIN nyehms_users b ON (b.legacy_uid = a.activity_by AND b.end_date IS NULL)
+	      WHERE a.worker_id = #{workerId}
+	    ), final_notes AS
+	    (
+	      SELECT worker_id, LISTAGG(notes, chr(10)) WITHIN GROUP (ORDER BY activity_date) notes
+	        FROM data
+	    GROUP BY worker_id
+	    )
+	    SELECT a.worker_id workerId, legacy_uid legacyUid , last_name lastName, first_name firstName,
+	         pkg_trk_common.fn_get_fullname (last_name,
+	                                        first_name,
+	                                        middle_name,
+	                                        NULL) user_name, email_addr emailAddress, bureau_name bureauName,
+	        last_login_date lastLoginDate, is_locked, end_date, 
+	        TO_CHAR(last_conf_security_trng_date, 'MM/DD/YYYY') lastConfidentialityAndSecurityTrainingDate, CONF_SECURITY_TRNG_BY cnfSecTrngBy,
+	        telecommute, TO_CHAR(telecommute_trng_date, 'MM/DD/YYYY') telecommuteTrainingDate, TELECOMMUTE_TRNG_BY tlcmmtTrngBy,
+	        user_type userType, vpn vpnAccess,  TO_CHAR(vpn_approve_date, 'MM/DD/YYYY') vpnApproveDate, pc_access_at_location pcAccessAtLocation, 
+	        remote_terminal_access remoteTerminalAccess, CONF_SECURITY_TRNG_ATTEST_REC cnfSecTrngAtstn, TELECOMMUTE_TRNG_ATTEST_REC tlcmmtTrngAtstn,
+	         CASE
+	             WHEN is_locked = 'Y'  
+	              THEN 'User_inactive'   
+	             WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) <= TRUNC(SYSDATE)
+	             THEN 'SnC_due_now'                                          
+	             WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 30 < TRUNC(SYSDATE)
+	             THEN 'SnC_due_in_30days'
+	             WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 60 < TRUNC(SYSDATE)
+	             THEN 'SnC_due_in_60days'
+	             WHEN Add_Months(TRUNC(last_conf_security_trng_date), 12) - 90 < TRUNC(SYSDATE)
+	             THEN 'SnC_due_in_90days'
+	             ELSE 'Active'                                       
+	         END snc_due_in_days,
+	         b.notes userComments
+	    FROM nyehms_users a
+	    LEFT JOIN final_notes b ON (b.worker_id = a.worker_id)
+	    WHERE a.worker_id = #{workerId}
+	]]> 
+	</select>		
+  	
+ </mapper>  
