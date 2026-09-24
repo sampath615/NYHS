@@ -43,10 +43,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabTestMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import oracle.jdbc.OracleConnection;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
@@ -76,11 +74,7 @@ public class LabReportsServiceImpl implements LabReportsService {
 	LabReportsTransactionHelper labReportsTransactionHelper;
 	
 
-	@Autowired
-	RemoteServerUtil remoteServer;
 	
-	@Autowired
-	SendEmail sendEmail;
 	
 	private static Logger log = LoggerFactory.getLogger(LabReportsServiceImpl.class);
 	

@@ -28,7 +28,6 @@ public class DateUtil {
 	
 	
 	private static java.util.Date dt =null;
-	private static String strDt=null;
 	
 	
 	public java.util.Date getNyehmsDateFromString(String date){

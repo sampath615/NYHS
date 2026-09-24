@@ -23,8 +23,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 public class SYPHDocumentServiceImpl implements SYPHDocumentService {
 	
 	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
 	SYPHDocumentDAO	syphDocumentDAO;
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

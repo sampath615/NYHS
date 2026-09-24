@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.initialize;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CryptoController {
 
 	private static Logger log = LoggerFactory.getLogger(CryptoController.class);
-    private String nyehmsDebugLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
     private CommonService commonService;

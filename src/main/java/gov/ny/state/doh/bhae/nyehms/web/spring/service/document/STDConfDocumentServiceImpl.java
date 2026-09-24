@@ -14,7 +14,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.STDConfDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -31,12 +30,8 @@ public class STDConfDocumentServiceImpl implements STDConfDocumentService {
     @Autowired
     STDConfDocumentDAO stdConfDocumentDAO;
     @Autowired
-    CommonExceptionHandler commonExceptionHandler;
-    @Autowired
     CommonDocumentService commonDocumentService;
     
-    @Autowired
-    CommonUtil commonUtil;
     private Map<String, String> drugListMap = new HashMap<String, String>();
     
     @Override

@@ -19,7 +19,6 @@ import org.springframework.validation.ObjectError;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.AHIDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AHICiStiVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AHIDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AHINegInd900TestHistoryVO;
@@ -45,8 +44,6 @@ public class AHIDocumentServiceImpl implements AHIDocumentService {
 	@Autowired SendEmail sendEmail;
 	@Autowired CommonService commonService;
 	
-	@Autowired
-	CommonDocLabsDAO commonDocLabsDAO;
 	
 	private static Logger log = LoggerFactory.getLogger(AHIDocumentServiceImpl.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();

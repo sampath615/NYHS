@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.FlaggedStatenoVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RecordSearchReviewService;
@@ -48,7 +47,6 @@ public class MergeUnMergePersonTransactionHelper {
 
 	private static Logger log = LoggerFactory.getLogger(MergeUnMergePersonTransactionHelper.class);
 
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	@Transactional
 	public void createNewStatenoAndLinkDocuments(String stateno_from, String documentIds, String doccsDocumentList, BindingResult result, 

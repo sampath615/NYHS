@@ -32,8 +32,6 @@ public class ClericalReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
-	@Autowired
-	GetGridObject getGridObject;
 	
 	@Autowired
 	ClericalReviewService clericalReviewService;

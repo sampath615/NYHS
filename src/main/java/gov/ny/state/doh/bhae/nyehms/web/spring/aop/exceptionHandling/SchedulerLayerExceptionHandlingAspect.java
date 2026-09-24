@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 /*
  * Spring AOP based Aspect class for managing exception handling on behalf of the service layer business methods. 
@@ -29,18 +28,12 @@ public class SchedulerLayerExceptionHandlingAspect {
 	/*
 	 * Reference to SendEmail Java Mail component
 	 */
-	@Autowired
-	SendEmail sendEmail;
 	/*
 	 * Reference to CommonExceptionHandler
 	 */
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
 	/*
 	 * Reference to CommonDAO
 	 */
-	@Autowired
-	CommonDAO commonDAO;
 	
 	
 	/*

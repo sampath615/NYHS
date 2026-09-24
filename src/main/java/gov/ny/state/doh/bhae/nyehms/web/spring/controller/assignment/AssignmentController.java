@@ -50,15 +50,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SearchManageProfileService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentTransactionHelper;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ADAPDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
@@ -76,14 +73,11 @@ public class AssignmentController {
 
 	private static Logger log = LoggerFactory.getLogger(AssignmentController.class);
 	
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	@Autowired
 	private AssignmentService assignmentService;
 	
 	@Autowired private NonCaseDocumentService nonCaseDocumentService;
-	@Autowired
-	private ACRFDocumentService acrfFDocumentService;
 	
 	
 	@Autowired
@@ -108,8 +102,6 @@ public class AssignmentController {
 	CommonDocumentService commonDocumentService;
 	@Autowired
 	private DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
-	private AssignmentTransactionHelper assignmentTransactionHelper;	
 	
 	@Autowired 
 	private LaftFollowupDocumentService laftFollowupDocumentService;

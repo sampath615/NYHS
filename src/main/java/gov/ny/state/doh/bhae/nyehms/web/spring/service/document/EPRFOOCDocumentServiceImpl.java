@@ -26,7 +26,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUp
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.FileByConclusionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -51,8 +50,6 @@ public class EPRFOOCDocumentServiceImpl implements EPRFOOCDocumentService {
 	@Autowired
 	CommonExceptionHandler commonExceptionHandler;
 
-	@Autowired
-	CommonService commonService;
 	
 	@Autowired
 	SendEmail sendEmail;

@@ -66,11 +66,7 @@ public class ACRFDocumentServiceImpl implements ACRFDocumentService{
 	@Autowired
 	private ConnectionDAO connectionDAO;
 	
-	@Autowired
-	TTHDocumentService tthDocumentService;
 	
-	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
 	
 	@Autowired
 	NyehmsWorkerRegionsViewDAO nyehmsWorkerRegionsViewDAO;

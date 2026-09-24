@@ -25,8 +25,6 @@ public class CancerDocReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
-	@Autowired
-	GetGridObject getGridObject;
 	
 	@Autowired
 	CancerDocumentService cancerDocumentService;

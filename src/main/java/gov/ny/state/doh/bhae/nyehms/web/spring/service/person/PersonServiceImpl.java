@@ -79,7 +79,6 @@ public class PersonServiceImpl implements PersionService {
 	@Autowired
 	DateUtil dateUtil;
 
-	private final static String DELETE_DOCUMENT_SUCCESS_MESSAGE = "Document deleted successfully ";
 
 	/**
 	 * {@inheritDoc}

@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
@@ -29,7 +27,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.QuartzSchedulerTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -46,32 +43,18 @@ public class LabDocumentServiceImpl implements LabDocumentService {
 	@Autowired
 	LabDocumentDAO labDocumentDAO;
 	@Autowired
-	CommonDocLabsDAO commonDocLabsDAO;
-	@Autowired
-	CommonService commonService;
-	@Autowired 
-	DocumentDAO documentDAO;	
-	@Autowired
 	CommonDocumentService commonDocumentService;
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;	
 	@Autowired
 	private QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
 	
-	private final String[] GEENIUS_MAYO_PFI_LIST = {"3263"};
-	
-	private final String[] GEENIUS_PFI_LIST = {"2502", "2017", "3130", "2079"};
-	
-	private final String[] MULTI_SPOT_LOINC_LIST = {"30361-0","29893-5", "25835-0","69353-1"};
-	private final String[] GEENIUS_MAYO_LOINC_LIST = {"68961-2", "81641-3"};
-	private final String[] GEENIUS_LOINC_LIST = {"68961-2", "81641-3", "80203-3"};
-	private final String[] BIOPLEX_LOINC_LIST = {"56888-1", "18396-2", "29893-5" , "30361-0"};
 	
 	
 	
-	private final String[] ELECSYS_PFI_LIST = {"2354"};
 	
-	private final String[] ELECSYS_LOINC_LIST = {"56888-1","31201-7","18396-2"};
+	
+	
 	
 	private final String OOS_CLIA = "33DHIVMAIL";
 

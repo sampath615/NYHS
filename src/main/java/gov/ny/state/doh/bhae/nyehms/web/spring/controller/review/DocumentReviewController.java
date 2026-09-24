@@ -8,7 +8,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.LabDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
@@ -62,8 +61,6 @@ public class DocumentReviewController {
 	@Autowired
 	LabDocumentService labDocumentService;
 	
-	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
 
 	
 	@RequestMapping("/getPRFReview")

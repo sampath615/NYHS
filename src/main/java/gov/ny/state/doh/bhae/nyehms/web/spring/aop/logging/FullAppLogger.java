@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.aop.logging;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,7 +22,6 @@ import org.springframework.util.StopWatch;
 public class FullAppLogger {
 	
 	private static Logger log = LoggerFactory.getLogger(FullAppLogger.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Around("execution(* gov.ny.state.doh.bhae.nyehms.web.spring..*.*(..))")
 	public Object AppLogger(ProceedingJoinPoint joinPoint) throws Throwable {

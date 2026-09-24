@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -34,15 +33,9 @@ public class TBDocumentServiceImpl implements TBDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     TBDocumentDAO tbDocumentDAO;
     @Autowired
-    DocumentDAO documentDAO;
-    @Autowired
     CommonExceptionHandler commonExceptionHandler;
-    @Autowired
-    CommonUtil commonUtil;
     
     private final static Map<String, String> stateCodeMap = new HashMap<String, String>();
     

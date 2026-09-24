@@ -36,11 +36,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.S
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.exception.NyehmsException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.TTHDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RecordSearchReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.FacilityService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.ProviderService;
@@ -81,8 +79,6 @@ public class AssignmentTransactionHelper {
 	@Autowired
 	SendEmail sendEmail;
 	
-	@Autowired
-	TTHDocumentService tthDocumentService;
 	
 	@Autowired
 	CommonDocumentService commonDocumentService;
@@ -93,8 +89,6 @@ public class AssignmentTransactionHelper {
 	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;
 	
-	@Autowired
-	CommonService commonService;
 	
 	@Autowired
 	private AssignmentDAO assignmentDAO;

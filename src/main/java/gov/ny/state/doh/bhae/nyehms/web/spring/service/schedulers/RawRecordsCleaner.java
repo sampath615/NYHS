@@ -22,7 +22,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.LabDocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMatchHITSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
@@ -39,8 +38,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 public class RawRecordsCleaner {
 
 	private static Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);
-	@Autowired
-	SendEmail sendEmail;
 	@Autowired
 	QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
 	@Autowired

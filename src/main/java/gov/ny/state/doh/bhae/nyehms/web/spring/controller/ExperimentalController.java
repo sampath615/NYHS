@@ -27,7 +27,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 @Controller
@@ -39,8 +38,6 @@ public class ExperimentalController {
 	CCDDocumentDAO ccdDocumentDAO;
 	@Autowired
 	HITCommonDocumentService hitCommonDocumentService;
-	@Autowired
-	GetGridObject getGridObject;
 
 	private static Logger log = LoggerFactory.getLogger(ExperimentalController.class);
 

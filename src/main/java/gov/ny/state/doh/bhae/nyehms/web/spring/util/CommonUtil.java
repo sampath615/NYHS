@@ -33,7 +33,6 @@ public class CommonUtil {
 	private static final Pattern cinPattern = Pattern.compile("[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][A-Z]");
 	private static final String ZIP_ZEROS = "00000";
 	private static final String ZIP_NINES = "99999";
-	private static final String defaultDateFormat = "../../...";
 
 	public String trimCounty(String county) {
 		if (county != null && county.toUpperCase().endsWith(" CO.")) {

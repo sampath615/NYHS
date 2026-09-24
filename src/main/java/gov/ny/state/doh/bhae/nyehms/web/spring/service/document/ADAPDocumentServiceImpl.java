@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ADAPDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ADAPDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRisksVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -52,11 +51,7 @@ public class ADAPDocumentServiceImpl implements ADAPDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     ADAPDocumentDAO aDAPDocumentDAO;
-    @Autowired
-    DocumentDAO documentDAO;
     @Autowired
     private CommonExceptionHandler commonExceptionHandler;
     @Autowired

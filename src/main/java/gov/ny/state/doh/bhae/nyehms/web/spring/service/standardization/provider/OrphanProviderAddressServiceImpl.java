@@ -49,7 +49,6 @@ public class OrphanProviderAddressServiceImpl implements OrphanProviderAddressSe
 	 * by selecting an existing provider
 	 * Used inside {@link #linkRawToOrphanProviderAddress(long  providerAddressId, long  providerId,long rawProviderAddressId,BindingResult bindingResult,UserObject userObject,String sessionId)} 
 	 */
-	private static final String LINK_RAW_TO_ORPHAN_AND_PROVIDER_SUCCESS_MESSAGE="Orphan address has been linked to the provider and Raw address has been linked to the address";
 	/*
 	 * Operation success message used while linking a raw provider address to an orphan provider address
 	 * by creating a new provider

@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TTHDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RawTTHDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -27,11 +26,7 @@ public class TTHDocumentServiceImpl implements TTHDocumentService {
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;	
-	@Autowired
 	TTHDocumentDAO tTHDocumentDAO;
-	@Autowired 
-	DocumentDAO documentDAO;	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;	
 	

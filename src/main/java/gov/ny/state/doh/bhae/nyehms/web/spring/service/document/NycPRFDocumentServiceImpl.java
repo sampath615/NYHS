@@ -8,9 +8,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPrfFormVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.SexOrn;
-import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -33,11 +31,7 @@ public class NycPRFDocumentServiceImpl implements NycPRFDocumentService{
 	@Autowired
 	NycPRFPartnerDAO nycPRFPartnerDAO;
 	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
-	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;	
-	@Autowired
-	UserAuthorization userAuthorization;
 	
 	
 	

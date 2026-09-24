@@ -24,7 +24,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.DatafluxUploadServiceImpl;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Controller
@@ -34,8 +33,6 @@ public class DatafluxUploadController {
 	@Autowired
 	private DatafluxUploadServiceImpl datafluxUploadServiceImpl;
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 	
 	
 	@RequestMapping(value = "/loadExcelData")

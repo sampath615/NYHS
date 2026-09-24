@@ -1,12 +1,10 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidOldDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidOldDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,15 +21,9 @@ public class MedicaidOldDocumentServiceImpl implements MedicaidOldDocumentServic
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     MedicaidOldDocumentDAO medicaidOldDocumentDAO;
     @Autowired
-    DocumentDAO documentDAO;
-    @Autowired
     CommonExceptionHandler commonExceptionHandler;
-    @Autowired
-    CommonUtil commonUtil;
 
         /**
      * This function will return the TB document for a given docId

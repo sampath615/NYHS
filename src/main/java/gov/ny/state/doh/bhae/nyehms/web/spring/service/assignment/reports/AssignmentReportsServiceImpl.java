@@ -25,35 +25,25 @@ import org.springframework.validation.BindingResult;
  */
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.reports.AssignmentReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentReportsService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 @Service
 public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 
 	private static final Logger log = LoggerFactory.getLogger(AssignmentReportsServiceImpl.class);
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	private static final String PIPE_SYMBOL = "|";
 	
-	private static final String SPLIT_PIPE_REGEX = "\\|";
 	
 	@Autowired
 	private AssignmentReportsDAO assignmentReportsDAO;
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 
 	@Autowired
 	private ConnectionDAO connectionDAO;
 
-	@Autowired
-	DateUtil dateUtil;
 
 
 	@Override

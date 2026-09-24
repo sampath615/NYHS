@@ -28,7 +28,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.RecordSearchResults
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UpdatedDispositionsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -48,8 +47,6 @@ public class RecordSearchReviewServiceImpl implements RecordSearchReviewService 
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired
-	private CommonService commonService;
 	
 	@Autowired
 	private SendEmail sendEmail;

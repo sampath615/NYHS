@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SSDMDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -35,11 +34,7 @@ public class SSDMDocumentServiceImpl implements SSDMDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     SSDMDocumentDAO ssdmDocumentDAO;
-    @Autowired
-    DocumentDAO documentDAO;
     @Autowired
     private CommonExceptionHandler commonExceptionHandler;
 

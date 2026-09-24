@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NDIDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDICauseDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDIDocumentVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class NDIDocumentServiceImpl implements NDIDocumentService {
 
     //private Log log = LogFactory.getLog(this.getClass());
  
-    @Autowired
-    private CommonExceptionHandler commonExceptionHandler;
  
     @Autowired
     NDIDocumentDAO nDIDocumentDAO;

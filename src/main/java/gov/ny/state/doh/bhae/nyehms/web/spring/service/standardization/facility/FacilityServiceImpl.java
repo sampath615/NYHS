@@ -72,9 +72,6 @@ public class FacilityServiceImpl implements FacilityService {
 	private static final String STANDARDIZE_RAW_TO_SUB_FACILITY_SUCCESS_MESSAGE = "Raw facility has been standardized with the sub facility";
 	private static final String ADD_NEW_SUB_FACILITY_AND_LINK_TO_RAW_SUCCESS_MESSAGE="Raw facility has been linked with the newly created sub facility";
 	private static final String ADD_NEW_MASTER_FACILITY_SUCCESS_MESSAGE="New master facility has been created";
-	private static final String STANDARDIZE_FACILITY_SUCCESS_MESSAGE="Facility has been standardized";
-	private static final String RETIRE_MASTER_FACILITY_SUCCESS_MESSAGE="Master facilities have been retired";
-	private static final String RETIRE_SUB_FACILITY_SUCCESS_MESSAGE="Sub facilities have been retired";
 	private static final String UNLINK_FACILITY_SUCCESS_MESSAGE = "Facilities have been unlinked";
 	private static final String MERGE_SUB_FACILITIES_SUCCESS_MESSAGE = "Sub facilities have been merged";
 	private static final String MERGE_MASTER_FACILITIES_SUCCESS_MESSAGE = "Master facilities have been merged";

@@ -27,12 +27,10 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.FlaggedStatenoVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRaceVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 
 /*
  * Author 	: Sampath Kumar
@@ -43,7 +41,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService {
 
 	private static Logger log = LoggerFactory.getLogger(MergeUnMergePersonServiceImpl.class);
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	@Autowired
 	private MergeUnMergePersonDAO mergeUnMergePersonDAO;
@@ -58,14 +55,10 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
-	@Autowired
-	DateUtil dateUtil;
 	
 	@Autowired private PersionService personService;
 
 	private final String FLAG_STATE_NOS_SAME = "STATENOs flagged succesfully";
-	private final String MERGE_STATE_NOS_SUCCESS = "STATENOs merged succesfully";
-	private final String REJECT_STATENOS_FLAG_SUCCESS = "STATENOs flag rejected succesfully";
 	private final String FETCH_PERSON_VIEW_OBJECT_RESPONSE_SUCCESS = "Fethced Person view response succesfully";
 	private final String FLAG_AS_BAD_MERGE = "STATENO has been flagged as a bad merge and is currently pending review";
 	private final String UNFLAG_AS_BAD_MERGE = "Unflagged as Bad Merge";

@@ -20,8 +20,6 @@ public class ProviderStandardizationTransactionHelper {
 	/*
 	 * Spring dependency injected reference to CommonExceptionHandler
 	 */
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
 	/*
 	 * Spring dependency injected reference to ProviderService
 	 */

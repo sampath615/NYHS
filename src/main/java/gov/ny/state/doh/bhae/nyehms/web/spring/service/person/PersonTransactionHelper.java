@@ -21,7 +21,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.FlaggedStatenoVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
@@ -45,7 +44,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 public class PersonTransactionHelper {
 
 	private static Logger log = LoggerFactory.getLogger(PersonTransactionHelper.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
     @Autowired
 	private PersionService personService;

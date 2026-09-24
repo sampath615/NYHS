@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.MergeAndUnlinkProvDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.ProviderDetailsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.RawProviderAddressDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.SubProviderAndAddressDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.SubProviderDAO;
@@ -57,11 +56,7 @@ public class ProviderServiceImpl implements ProviderService {
 	@Autowired
 	private MergeAndUnlinkProvDAO mergeAndUnlinkDAO;
 	
-	@Autowired
-	ProviderDetailsDAO providerDetailsDAO;
 	
-	@Autowired
-	CommonUtil commonUtil;
 	
 	@Autowired
 	CommonService commonService;

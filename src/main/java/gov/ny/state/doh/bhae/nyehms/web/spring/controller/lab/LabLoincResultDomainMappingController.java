@@ -31,7 +31,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.AcceptedTestResultDomainVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LabReportsTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LoincResultDomainMappingService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.transaction.TransactionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
@@ -43,8 +42,6 @@ public class LabLoincResultDomainMappingController {
 
 	@Autowired
 	private LoincResultDomainMappingService loincResultDomainMappingService;
-	@Autowired
-	private LabReportsTransactionHelper labReportsTransactionHelper;
 	
 	@Autowired
 	GetGridObject getGridObject;

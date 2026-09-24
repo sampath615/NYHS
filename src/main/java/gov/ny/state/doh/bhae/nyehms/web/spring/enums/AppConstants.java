@@ -2,9 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.enums;
 
 public enum AppConstants {
 
-	//These fields are from the search engine page of the application.
-	searchPersonViewSearchFields("STATENO,FIRST_NAME,LAST_NAME,DATE_OF_BIRTH,SSN,DIN,NYSID,DATE_OF_DEATH"), 
-	stateNoTblField("STATENO"),
 	nyehmLogDebugString("****---NYEHMS LOG--****"),
 	nyehmLogErrorString("****@@@--NYEHMS ERROR--@@@****"),
 	//we show a friendly message to the user when an error occurs

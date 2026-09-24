@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.transaction;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabFacilitiesVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LabReportsTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 
@@ -30,14 +29,10 @@ public class TransactionServiceImpl implements TransactionService {
 	@Autowired
 	LabReportsTransactionHelper labReportsTransactionHelper;
 	
-	@Autowired
-	AdministrationTransactionHelper administrationTransactionHelper;
 	
 	/*
 	 * Spring dependency injected reference to CommonExceptionHandler
 	 */
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
 	
 	private static Logger log = LoggerFactory.getLogger(TransactionServiceImpl.class);
 	

@@ -19,7 +19,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LoincResultDomainMappingD
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.AcceptedTestResultDomainVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 
 
@@ -46,10 +45,7 @@ public class LoincResultDomainMappingServiceImpl implements LoincResultDomainMap
 	@Autowired
 	LabReportsTransactionHelper labReportsTransactionHelper;
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
 	
-	private final String CONCAT_IND = "|";
 
 	@Autowired
 	SchedulerJobsDAO schedulerJobsDAO;

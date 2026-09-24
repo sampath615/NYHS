@@ -44,8 +44,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 public class DatafluxUploadServiceImpl {
 	
 	@Autowired
-	FileUploadTransactionHelper fileUploadTransactionHelper;
-	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 	
 	@Autowired PersonDAO personDAO;

@@ -18,7 +18,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.ClusterPartnerReviewDA
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterPartnerDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PartnerInvestigationVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -29,7 +28,6 @@ public class ClusterPartnerReviewServiceImpl implements ClusterPartnerReviewServ
 	
 	private static Logger log = LoggerFactory.getLogger(ClusterPartnerReviewServiceImpl.class);
 
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

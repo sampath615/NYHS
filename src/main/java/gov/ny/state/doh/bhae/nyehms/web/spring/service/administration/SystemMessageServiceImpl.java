@@ -34,8 +34,6 @@ public class SystemMessageServiceImpl implements SystemMessageService {
 	/*
 	 * Reference to DateUtil
 	 */
-	@Autowired
-	private DateUtil dateUtil;
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

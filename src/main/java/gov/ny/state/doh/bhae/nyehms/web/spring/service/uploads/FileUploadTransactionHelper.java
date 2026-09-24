@@ -7,7 +7,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejec
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RecordSearchReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -48,8 +47,6 @@ public class FileUploadTransactionHelper {
 	@Autowired
 	RecordSearchReviewService recordSearchReviewService;
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
 	
 	@Autowired
 	CommonService commonService;

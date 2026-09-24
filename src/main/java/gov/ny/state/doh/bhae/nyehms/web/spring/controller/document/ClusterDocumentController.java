@@ -9,7 +9,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,8 +44,6 @@ public class ClusterDocumentController {
 	
 	@Autowired	DocumentTransactionHelper documentTransactionHelper;
 	
-	@Autowired	
-	DateUtil dateUtil;
 	
 	@RequestMapping(value = "/getClusterForm.html")
 	public String getClusterDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)

@@ -13,7 +13,6 @@ import com.jcraft.jsch.SftpException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @Component
 public class DocumentsScanHelper {
@@ -27,8 +26,6 @@ public class DocumentsScanHelper {
 	@Autowired
 	private DocumentsScanService documentsScanService;
 	
-	@Autowired
-	SendEmail sendEmail;
 	
 	@Transactional
 	public void saveScanDocumentToStateNoSFTP(String stateNo, String documentType, CommonsMultipartFile scannedFile,

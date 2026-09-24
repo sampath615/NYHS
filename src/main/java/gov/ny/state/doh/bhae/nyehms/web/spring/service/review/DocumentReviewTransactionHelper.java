@@ -23,14 +23,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUp
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.FileByConclusionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.FlaggedStatenoVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.AhiAlertTrackingVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ADAPDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.AHIDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CancerDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClericalReviewService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.EPRFOOCDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentService;
@@ -38,13 +36,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @Service
 public class DocumentReviewTransactionHelper {
 	
 	private static Logger log = LoggerFactory.getLogger(DocumentReviewTransactionHelper.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	EPRFOOCDocumentService ePRFOOCDocumentService;
@@ -65,8 +61,6 @@ public class DocumentReviewTransactionHelper {
 	@Autowired
 	CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
 	
 	@Autowired
 	ADAPDocumentService aDAPDocumentService;
@@ -83,8 +77,6 @@ public class DocumentReviewTransactionHelper {
 	@Autowired
 	CancerDocumentService cancerDocumentService;
 	
-	@Autowired
-	SendEmail sendEmail;
 	@Autowired 
 	NonCaseDocumentService nonCaseDocumentService;
 	@Autowired private PersionService personService;

@@ -28,13 +28,10 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentSe
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.FileUploadService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 @Controller
 public class FileUploadController {
 	
-	@Autowired
-	GetGridObject getGridObject;
 
 	@Autowired
 	private FileUploadService fileUploadService;

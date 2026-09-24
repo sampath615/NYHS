@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.NBSReviewDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -26,7 +25,6 @@ public class NBSReviewServiceImpl implements NBSReviewService{
 	
 	
 	private static Logger log = LoggerFactory.getLogger(NBSReviewServiceImpl.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

@@ -21,7 +21,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.ProviderReportService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 /**
  * 
@@ -36,8 +35,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 @Controller
 public class ProviderReportController {
 	
-	@Autowired
-	GetGridObject getGridObject;
 
 	@Autowired
 	private ProviderReportService providerReportService;

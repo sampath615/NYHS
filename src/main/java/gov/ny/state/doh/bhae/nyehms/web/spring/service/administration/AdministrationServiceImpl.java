@@ -46,7 +46,6 @@ public class AdministrationServiceImpl implements AdministrationService {
 	private static final String APP_NAME_ABBREVATION = "nyehms";
 	private static final String WEB_SERVICE_PERMCODE = "ehmsuser";
 	private static final String ADD_NEW_REGION_ROLE_SUCCESS_MESSAGE = "New region role has been added";
-	private static final String ADD_NEW_MAC_ADDRESS_SUCCESS_MESSAGE = "New Mac address has been added";
 	private final String CREATE_USER_SUCCESS_MESSAGE="User created succesfully";
 	private static final String TERMINATE_USER_SUCCESS_MESSAGE = "User has been terminated successfully";
 	private static final String UPDATE_REGION_PERMISSIONS_SUCCESS_MESSAGE = "Successfully updated the permissions";

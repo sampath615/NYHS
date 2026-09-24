@@ -6,7 +6,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.M
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.util.ArrayList;
@@ -25,8 +24,6 @@ public class SearchManageFacilityServiceImpl implements SearchManageFacilityServ
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages
 	 */
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 	/*
 	 * Reference to MasterFacilityDetailsDAO by Spring dependency injection
 	 */

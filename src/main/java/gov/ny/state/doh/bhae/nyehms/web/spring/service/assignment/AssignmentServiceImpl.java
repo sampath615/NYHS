@@ -69,9 +69,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 	private static final Logger log = LoggerFactory.getLogger(AssignmentServiceImpl.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	private static final String PIPE_SYMBOL = "|";
 	
-	private static final String SPLIT_PIPE_REGEX = "\\|";
 	
 	@Autowired
 	private AssignmentDAO assignmentDAO;

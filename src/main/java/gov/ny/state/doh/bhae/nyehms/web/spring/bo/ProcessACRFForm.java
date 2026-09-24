@@ -11,10 +11,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfLabsV
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.exception.NyehmsException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
@@ -33,10 +31,6 @@ import org.springframework.validation.BindingResult;
 @Component
 public class ProcessACRFForm {
 
-	@Autowired
-	private AssignmentService assignmentService;
-	@Autowired
-	private DocumentTransactionHelper documentIdHelper;
 	// @Autowired
 	// private CommonUtil commonUtil;
 	@Autowired

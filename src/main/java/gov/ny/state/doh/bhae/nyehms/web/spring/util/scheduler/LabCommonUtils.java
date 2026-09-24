@@ -67,7 +67,6 @@ public class LabCommonUtils {
     private static final Map<String, String> rawEprfOOCColumnReferances = new HashMap<String, String>();
     private static final Map<String, String> stdEprfOOCColumnReferances = new HashMap<String, String>();
     private static final Map<String, String> rawQualCareColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdQualCareColumnReferances = new HashMap<String, String>();
     
     private static final Map<String, String> rawNycIJRColumnReferances = new HashMap<String, String>();
     private static final Map<String, String> stdNycIJRColumnReferances = new HashMap<String, String>();

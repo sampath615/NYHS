@@ -108,11 +108,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7XpnVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.StdHL7DocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.StdHL7RaceVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonFieldVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -129,7 +127,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 
 	private static Logger log = LoggerFactory.getLogger(HL7DocumentServiceImpl.class);
 	
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	@Autowired
 	private HITCommonDocumentService hitCommonDocumentService;
@@ -137,8 +134,6 @@ public class HL7DocumentServiceImpl implements HL7DocumentService {
 	CommonService commonService;
 	@Autowired
 	private HL7DocumentDAO hl7DocumentDAO;
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 	@Autowired
 	HITDocumentDAO hitDocumentDAO;
 	@Autowired

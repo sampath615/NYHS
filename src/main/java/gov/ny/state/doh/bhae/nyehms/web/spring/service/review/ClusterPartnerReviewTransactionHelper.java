@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
@@ -23,7 +20,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 public class ClusterPartnerReviewTransactionHelper {
 	
 	private static Logger log = LoggerFactory.getLogger(ClusterPartnerReviewTransactionHelper.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	ClusterPartnerReviewService clusterPartnerReviewService;
@@ -31,11 +27,7 @@ public class ClusterPartnerReviewTransactionHelper {
 	@Autowired
 	CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
 	
-	@Autowired
-	DocumentTransactionHelper documentTransactionHelper; 
 	
 	
 	

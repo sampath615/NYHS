@@ -58,7 +58,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentService;
@@ -121,7 +120,6 @@ public class FileUploadServiceImpl implements FileUploadService {
 	@Autowired STDConfDocumentService stdConfDocumentService;
 	
 	private static Logger log = LoggerFactory.getLogger(FileUploadServiceImpl.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 //	@Override
 //	public Map<Object, Object> uploadUpdatedDispositionsFile(MultipartFile updatedDispositionFile,

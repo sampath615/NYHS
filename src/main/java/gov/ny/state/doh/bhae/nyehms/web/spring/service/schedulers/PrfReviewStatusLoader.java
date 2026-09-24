@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
@@ -33,8 +32,6 @@ public class PrfReviewStatusLoader{
 	@Autowired
 	ManualQuartzJobService manualQuartzJobService;
 	
-	@Autowired
-	CommonService commonService;
 	
 	@Autowired
 	SendEmail sendEmail;

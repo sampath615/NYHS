@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocProvidersVO;
@@ -35,15 +34,9 @@ public class MedicaidDocumentServiceImpl implements MedicaidDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     MedicaidDocumentDAO medicaidDocumentDAO;
     @Autowired
-    DocumentDAO documentDAO;
-    @Autowired
     CommonExceptionHandler commonExceptionHandler;
-    @Autowired
-    CommonUtil commonUtil;
 
         /**
      * This function will return the TB document for a given docId

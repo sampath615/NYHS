@@ -40,8 +40,6 @@ import org.springframework.validation.BindingResult;
 public class NycDeathDocumentServiceImpl implements NycDeathDocumentService {
 
 	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
 	NycDeathDocumentDAO nycDeathDocumentDAO;
 	@Autowired
 	private SchedulerJobsDAO schedulerJobsDAO;

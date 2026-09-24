@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
-import org.apache.ibatis.session.SqlSessionFactory;
 
 /*
  * Author 	: Srikar Kummamuri
@@ -8,7 +7,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
  */
 
 public class GetSQLSession {	
-	private SqlSessionFactory sqlSessionFactory;
 	private org.apache.ibatis.session.SqlSession sqlSession;
 
 

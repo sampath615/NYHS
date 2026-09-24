@@ -29,8 +29,6 @@ public class NBSReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
-	@Autowired
-	GetGridObject getGridObject;
 	
 	@Autowired
 	NBSReviewService nbsReviewService;

@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CancerDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClericalReviewDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentReviewTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -28,7 +27,6 @@ public class ClericalReviewServiceImpl implements ClericalReviewService{
 	
 	
 	private static Logger log = LoggerFactory.getLogger(ClericalReviewServiceImpl.class);
-	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

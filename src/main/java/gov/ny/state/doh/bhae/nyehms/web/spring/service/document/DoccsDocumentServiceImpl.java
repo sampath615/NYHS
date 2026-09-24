@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -35,8 +34,6 @@ public class DoccsDocumentServiceImpl implements DoccsDocumentService{
 	DoccsDocumentDAO doccsDocumentDAO;	
 	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;		
-	@Autowired 
-	DocumentDAO documentDAO;	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 

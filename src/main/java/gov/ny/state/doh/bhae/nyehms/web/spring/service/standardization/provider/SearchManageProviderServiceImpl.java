@@ -6,7 +6,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.R
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.util.ArrayList;
@@ -28,8 +27,6 @@ public class SearchManageProviderServiceImpl implements SearchManageProviderServ
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages
 	 */
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 
 	/**
 	 * This method will pass the Provider details as input(Search criteria) to the My Batis sql map

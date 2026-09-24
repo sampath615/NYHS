@@ -78,7 +78,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -119,8 +118,6 @@ public class ManualQuartzJobServiceImpl implements ManualQuartzJobService {
 	@Autowired
 	private CommonDocumentService commonDocumentService;
 	
-	@Autowired
-	RemoteServerUtil remoteServer;
 	
 	private static final long serialVersionUID = 1L;
 

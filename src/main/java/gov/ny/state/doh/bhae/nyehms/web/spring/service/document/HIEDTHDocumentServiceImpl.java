@@ -5,7 +5,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.exp.RawHIEDTHDocV
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.exp.StdHIEDTHDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.CommonSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.io.BufferedReader;
@@ -48,8 +47,6 @@ public class HIEDTHDocumentServiceImpl implements HIEDTHDocumentService {
 	@Autowired
 	CommonDocumentService commonDocumentService;
 
-	@Autowired
-	CommonSchedulerHelper commonSchedulerHelper;
 
 	@Override
 	public String convertBlobtoEncryptedEncodedString(Blob blob) {

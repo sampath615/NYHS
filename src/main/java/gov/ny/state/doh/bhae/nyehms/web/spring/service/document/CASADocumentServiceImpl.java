@@ -1,9 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CASADocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CASADocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -27,13 +25,7 @@ import org.springframework.validation.BindingResult;
 public class CASADocumentServiceImpl implements CASADocumentService {
 	
 	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
 	CASADocumentDAO	casaDocumentDAO;
-	@Autowired
-	private SchedulerJobsDAO schedulerJobsDAO;
-	@Autowired
-	private DocumentDAO documentDAO;
 	@Autowired
 	private ManualQuartzJobService manualQuartzJobService; 
 	@Autowired

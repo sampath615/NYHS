@@ -26,8 +26,6 @@ public class OldCaseDocumentServiceImpl implements OldCaseDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    DocumentTransactionHelper documentTransactionHelper;
-    @Autowired
     OldCasesDocumentDAO oldCasesDocumentDAO;
     @Autowired
     CommonExceptionHandler commonExceptionHandler;
