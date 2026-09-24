@@ -1412,21 +1412,8 @@
 	</select>
 	
 	
-	<select id="getArvUserTypeList" resultType="String">
-		select ARV_USE_TYPE 
-		from CODED_ACRF_ARVS where END_DATE is null or END_DATE > SYSDATE
-	</select>
 	
 	
-	<select id="getAcrfFormDataFromAcrf" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfDocVO">
-		<![CDATA[
-		select FIRST_NAME fname, MIDDLE_NAME mname, LAST_NAME lname, soundex(LAST_NAME) lastnameSoundex, To_char(fn_to_date(DOB, 'MM/DD/YYYY'), 'MM/DD/YYYY') dateOfBirth from NYEHMS_EHARS_STATENO_MAP where NYEHMS_STATENO = #{stateNo} 
-
-and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P') and rownum < 2
-
-   
-		]]>
-	</select>
 
 
 

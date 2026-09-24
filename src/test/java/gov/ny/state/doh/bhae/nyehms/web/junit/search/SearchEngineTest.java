@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.bo.GetTblNameMap;
 import gov.ny.state.doh.bhae.nyehms.web.spring.controller.person.PersonController;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -27,9 +26,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
 
-//import org.hibernate.SessionFactory;
-//import org.hibernate.cfg.Configuration;
-//import org.hibernate.Session;
 
 /*
  * Author : Srikar Kummamuri
@@ -66,8 +62,6 @@ public class SearchEngineTest {
 	@Autowired
 	private PersonController personController;
 	
-	@Autowired
-	private GetTblNameMap getTblNameMap;
 	
 	@Autowired
 	SearchService searchService;

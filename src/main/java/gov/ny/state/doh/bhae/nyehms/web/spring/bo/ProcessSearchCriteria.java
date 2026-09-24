@@ -22,8 +22,6 @@ public class ProcessSearchCriteria {
 	@Autowired
 	GetGridObject getGridObject;
 	
-	@Autowired
-	private GetTblNameMap getTblNameMap;
 	
 	@Autowired
 	CommonUtil commonUtil;

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.bo.GetTblNameMap;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.MergeUnMergePersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.BadlyMergedStatenosVO;
@@ -57,8 +56,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;
 	
-	@Autowired
-	GetTblNameMap getTblNameMap;
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 	@Autowired
@@ -125,8 +122,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 				transactionMessage, bindingResult);
 
 		return duplicationId;
-		//if (statusCode != 0)
-			//throw new DataRetrievalFailureException(transactionMessage);
 
 	}
 
@@ -236,8 +231,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 		
 	
 
-		//if (statusCode != 0)
-			//throw new DataRetrievalFailureException(transactionMessage);
 		
 		return statusCode;
 	}
@@ -274,8 +267,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 		commonExceptionHandler.inspectDBTransacionResult(statusCode,
 				transactionMessage, bindingResult);
 
-		//if (statusCode != 0)
-			//throw new DataRetrievalFailureException(transactionMessage);
 
 	}
 	@Override
@@ -306,8 +297,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 		commonExceptionHandler.inspectDBTransacionResult(statusCode,
 				transactionMessage, bindingResult);
 
-		//if (statusCode != 0)
-			//throw new DataRetrievalFailureException(transactionMessage);
 
 	}
 
@@ -553,18 +542,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 					personVO.setStatenoHistory(statenoHistoryData);
 				}
 				
-//				
-//				eHARSNysStatenoHistoryData = personDAO.geteHARSNysStatenoHistory(cursorSet[2]);
-//				
-//				if (eHARSNysStatenoHistoryData != null && eHARSNysStatenoHistoryData.size() > 0) {
-//					personVO.seteHARSNysStatenoHistory(eHARSNysStatenoHistoryData);
-//				}
-//				
-//				eHARSNycStatenoHistoryData = personDAO.geteHARSNycStatenoHistory(cursorSet[2]);
-//				
-//				if (eHARSNycStatenoHistoryData != null && eHARSNycStatenoHistoryData.size() > 0) {
-//					personVO.seteHARSNycStatenoHistory(eHARSNycStatenoHistoryData);
-//				}
 				
 				personViewList.add(personVO);
 			}
@@ -572,8 +549,6 @@ public class MergeUnMergePersonServiceImpl implements MergeUnMergePersonService 
 
 		
 
-		//if (statusCode != 0)
-			//throw new DataRetrievalFailureException(transactionMessage);
 
 		return personViewList;
 

@@ -236,19 +236,6 @@
 		 		
 	 	</resultMap>
 	 	
-<!-- 	 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterIdReportHeaderVO" id="clusterIdReportHeader">
-	 	
-		 	<result property="lst_dx_dt" column="lst_dx_dt"   jdbcType="VARCHAR"/>
-		 	<result property="grt_dx_dt" column="grt_dx_dt"   jdbcType="VARCHAR"/>
-		 	<result property="l_nyehms_stateno" column="l_nyehms_stateno"   jdbcType="VARCHAR"/>
-		 	<result property="l_ehars_stateno" column="l_ehars_stateno"   jdbcType="VARCHAR"/>
-		 	<result property="l_cityno" column="l_cityno"   jdbcType="VARCHAR"/>
-		 	<result property="g_nyehms_stateno" column="g_nyehms_stateno"   jdbcType="VARCHAR"/>
-		 	<result property="g_ehars_stateno" column="g_ehars_stateno"   jdbcType="VARCHAR"/>
-		 	<result property="g_cityno" column="g_cityno"   jdbcType="VARCHAR"/>
-		 	<result property="cluster_desc" column="clust_desc"   jdbcType="VARCHAR"/>
-	 	
-	 	</resultMap> -->
 
 	<select id="getClusterIdReport" parameterType="java.util.Map" statementType="CALLABLE">	
 		{call pr_get_cluster_data(
@@ -309,57 +296,9 @@
 		)} 
 	</select>
 		
-	<select id="getManualAddedStatenosTSClusterIds" resultType="String">
-		SELECT DISTINCT up.cluster_id 
-		FROM nyehms_upload_cluster up, bhae_ts_cluster_criteria ts, raw_cluster_doc r, std_cluster_doc s 
-		WHERE up.cluster_type = 'BHAE_TS'
-		AND up.cluster_id_pk = ts.cluster_id_pk and ts.clust_end_date is null
-        AND up.cluster_id_pk = r.cluster_id_pk and r.upload_nyehms_stateno = 'Manual_Add'
-        AND r.cluster_id_pk = s.cluster_id_pk and s.inactive_flag is null order by up.cluster_id
-	</select>	
 
 	
-	<select id="getManualAddedStatenosTSClusterInfo" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterTSManualAddedStatenoVO">
-		SELECT up.cluster_id, (SELECT LISTAGG(c.county_name,', ') WITHIN GROUP (ORDER BY 1)
-		          FROM xmltable(('"'||Replace(ts.cluster_counties, '|', '","')||'"')), coded_county c
-		         WHERE (column_value).getstringval() = c.county_fips_code) cluster_counties
-		        , ts.dx_start_date
-		        , ts.dx_end_date
-		        , ts.cluster_desc
-		        , To_Char(up.create_date, 'MM/DD/YYYY') clust_create_date
-		        , s.nyehms_stateno_at_upload stateno
-		        , first_name
-		        , last_name
-		        , dob
-		        , (SELECT CASE WHEN m.rsh_state_cd IS NOT NULL AND m.rsh_state_cd = 'NY' THEN c1.county_name
-		                       WHEN m.rsh_state_cd IS NOT NULL AND m.rsh_state_cd != 'NY' THEN 'Out Of State'
-		                       ELSE 'Unknown'
-		                  END rsh_county
-		           FROM nyehms_ehars_stateno_map m, coded_county c1
-		          WHERE m.nyehms_stateno = s.nyehms_stateno_at_upload
-		            AND m.rsh_county_fips IS NOT NULL
-		            AND m.rsh_county_fips = c1.county_fips_code
-		            AND ROWNUM = 1) rsh_county
-		       ,(SELECT fn_to_date(Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),5,2)||'/'||Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),7,2)||'/'||Substr(Rpad(Replace(m.hiv_dx_dt,'.',''),8,'01'),1,4),'MM/DD/YYYY')                
-		           FROM nyehms_ehars_stateno_map m
-		          WHERE m.nyehms_stateno = s.nyehms_stateno_at_upload
-		            AND m.hiv_dx_dt IS NOT NULL
-		            AND ROWNUM = 1) hiv_dx_dt
-		FROM nyehms_upload_cluster up, bhae_ts_cluster_criteria ts, std_cluster_doc s 
-		WHERE up.cluster_type = 'BHAE_TS'
-		AND up.cluster_id_pk = ts.cluster_id_pk and ts.clust_end_date is null
-		AND EXISTS (SELECT 1 
-		              FROM raw_cluster_doc r
-		             WHERE up.cluster_id_pk = r.cluster_id_pk 
-		               AND r.upload_nyehms_stateno = 'Manual_Add')
-		AND up.cluster_id_pk = s.cluster_id_pk and s.inactive_flag is null
-		AND up.cluster_id = #{clusterId}
-	</select>		
 			
- 	<update id="updateTSManualAddedStateno" parameterType="java.util.Map">
-	   UPDATE STD_CLUSTER_DOC SET INACTIVE_FLAG = 'Y', INACTIVE_DATE = SYSDATE, INACTIVE_UID = #{workerId} 
-	   WHERE CLUSTER_ID_PK = #{clusterIdPk} and INACTIVE_FLAG is null and NYEHMS_STATENO_AT_UPLOAD = #{stateno}	   
-    </update>	
     
    <select id="getClusterIDentificationMethod" resultType="java.util.Map">
 		SELECT IDENTIFICATION_METHOD_CODE, IDENTIFICATION_METHOD_DESC FROM CODED_CLUSTER_IDENTIFICATION_METHOD

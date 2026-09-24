@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.bo.GetTblNameMap;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CancerDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClusterDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
@@ -56,8 +55,6 @@ public class PersonServiceImpl implements PersionService {
 	@Autowired
 	private PersonDAO personDAO;
 
-	@Autowired
-	GetTblNameMap getTblNameMap;
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 
@@ -234,46 +231,7 @@ public class PersonServiceImpl implements PersionService {
 		}
 
 		
-//		if ("PRF".equals(documentType)) {
-//			return personDAO.getPrfDocumentDetails(map);
-//		} else if ("NYC_PRF".equals(documentType)) {
-//			return personDAO.getNycPrfDocumentDetails(map);
-//		} else if ("STD_LAB".equals(documentType)) {
-//			return personDAO.getLabDocumentDetails(map);
-//		} else if ("AIRS".equals(documentType)) {
-//			return personDAO.getAIRSDocumentDetails(map);
-//		} else if ("MED".equals(documentType) || "INS".equals(documentType)) {
 //			// Change INS here
-//			return personDAO.getMEDDocumentDetails(map);
-//		} else if ("ADAP".equals(documentType)) {
-//			return personDAO.getADAPDocumentDetails(map);
-//		} else if ("ADAP_NYC".equals(documentType)) {
-//			return personDAO.getADAPNYCDocumentDetails(map);
-//		}else if ("DIN_DOCCS".equals(documentType)) {
-//			return personDAO.getDinDoccDocumentDetails(map);
-//		} else if ("DTH".equals(documentType)) {
-//			return personDAO.getDTHDocumentDetails(map);
-//		} else if ("NYC_DTH".equals(documentType)) {
-//			return personDAO.getNycDTHDocumentDetails(map);
-//		} else if ("CASA".equals(documentType)) {
-//			return personDAO.getCASADocumentDetails(map);
-//		} else if ("SYPH".equals(documentType)) {
-//			return personDAO.getSYPHDocumentDetails(map);	
-//		} else if ("EPRF_OOC".equals(documentType)) {
-//			return personDAO.getEPRFOOCDocumentDetails(map);
-//		} else if ("SSDM".equals(documentType)) {
-//			return personDAO.getSSDMDocumentDetails(map);
-//		} else if ("NYC_IJR".equals(documentType)) {
-//			return personDAO.getNycIJRDocumentDetails(map);
-//		} else if ("TB".equals(documentType)) {
-//			return personDAO.getTBDocumentDetails(map);
-//		} else if ("CCD".equals(documentType)) {
-//			return personDAO.getCCDDocumentDetails(map);
-//		} else if ("STD_CONF".equals(documentType)) {
-//			return personDAO.getSTDConfDocumentDetails(map);
-//		} else {
-//			return personDAO.getLabDocumentDetails(map);
-//		}
 
 	}
 
@@ -508,10 +466,6 @@ public class PersonServiceImpl implements PersionService {
 		 List<String> eharsStatenoDetails = null;
 		try {
 			eharsStatenoDetails = personDAO.getEharsStateno(stateNo);
-			// if(eharsStateno == null || "".equals(eharsStateno)){
-			// throw new DataRetrievalFailureException("Ehars stateno doesn't
-			// exist for NYEHMS Stateno :"+stateNo);
-			// }
 		} catch (DataAccessException e) {
 			log.error(nyehmsLog + " SQL Exception Thrown while getting Ehars Stateno details" + e.getMessage());
 			commonExceptionHandler.handleException(e, userObject, userObject.getSessionId());
@@ -591,19 +545,6 @@ public class PersonServiceImpl implements PersionService {
 		return p_stateno_hist;
 	}
 
-//	public List<String> geteHARSNysStatenoHistory(String stateNo, BindingResult bindingResult, UserObject userObject) {
-//
-//		List<String> p_stateno_hist = personDAO.geteHARSNysStatenoHistory(stateNo);
-//
-//		return p_stateno_hist;
-//	}
-//
-//	public List<String> geteHARSNycStatenoHistory(String stateNo, BindingResult bindingResult, UserObject userObject) {
-//
-//		List<String> p_stateno_hist = personDAO.geteHARSNycStatenoHistory(stateNo);
-//
-//		return p_stateno_hist;
-//	}
 
 	@SuppressWarnings("unchecked")
 	public JSONObject getEharsStatenosMapping(String[] statenos, BindingResult bindingResult, UserObject userObject) {
