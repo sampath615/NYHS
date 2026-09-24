@@ -30,7 +30,6 @@ public interface NonCaseDocumentDAO {
 
 	public List<Map<String, String>> getNonCaseDocHistory(String stateNo);
 
-	public String hasEharsStatenoPopulated(String stateno1);
 	
 	public Map<String, String> getDocDelDiscardHistory(int documentId);
 

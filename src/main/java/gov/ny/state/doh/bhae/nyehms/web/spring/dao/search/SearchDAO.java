@@ -10,7 +10,6 @@ import org.springframework.dao.DataAccessException;
 public interface SearchDAO {
 	public List<SearchPersonCriteriaVO> searchPersonFields(Map<Object,Object> map) throws DataAccessException;
 	
-	public void searchBackGroundResult(Map<Object,Object> map) throws DataAccessException;
 	
 	public Map<String, String> getTheActiveStateNo(String _stateno) throws DataAccessException;
 

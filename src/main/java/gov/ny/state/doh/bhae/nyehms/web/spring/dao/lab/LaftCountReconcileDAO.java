@@ -18,7 +18,6 @@ public interface LaftCountReconcileDAO {
 	
 	public void updateLabReconcileData(Map<Object, Object> map) throws DataAccessException;
 	
-	public void updateJSONData(Map<Object, Object> map);
 	
 	public int insertEditSurveyData(Map<String, Object> map) throws DataAccessException;
 

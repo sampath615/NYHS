@@ -28,11 +28,6 @@ public interface SchedulerJobsDAO {
 	 * parameter in the LAB_SCHEDULER_PARAMETERS table; 0 if not.
 	 */
 	public int havingPermissionsForAccessingQuarzScheduler(String userId);
-	/**
-	 * Get the Raw HIV list which needs to be clean
-	 * @return List of Raw HIV Records
-	 */
-	public List<EcrlsLabDocVO> getRawEclrsDocsList();
 	
 	/**
 	 * This method is used to get all the Active Coordinators available in the region.
@@ -89,19 +84,14 @@ public interface SchedulerJobsDAO {
 	
 	public List<EcrlsLabDocVO> getRawStdDocsList();
 		
-	public Map<String, String> getCodeTestTypesForLoinc(Map<Object, Object>  inputOutputParamters);
 	
-	public List<String> getStandardLivePeopleData(Map<Object, Object> inputOutputParameterMap);
 	
-	public List<String> getStandardDeathRecordsData(Map<Object, Object> inputOutputParameterMap);
 	
-	public List<String> getStandardCasaRecords(Map<Object, Object> inputOutputParameterMap);
 	
 	public int insertSchedulerLog(Map<Object, Object>  inOutParameterMap);
 	
 	public List<MailStatusVO> getDocumentDuplicatedStatus();
 	
-	public List<String> getLatestAllJaroData();
 	
 	public List<String> getStandardizedUnitsOfMeasurement(String unitsOfMeasurement);
 	
@@ -205,15 +195,12 @@ public interface SchedulerJobsDAO {
 	public int storeDocumentMatchResultsToNycIJRStdTable(
 			Map<String, Object> documentMatchData);
 	public int checkAddressIsCanBeRes(Map<String, String> inputParamters);
-	public List<String> getStandardSSDMRecordsData(
-			Map<Object, Object> inputOutputParameterMap);
 	public int storeDocumentMatchResultsToICCRStdTable(Map<String, Object> documentMatchData);
 	
 	
 	/*CCD and HIE_DTH data*/
 	public long getLastInsertedCCDRecordId(String recordType);
 	
-	public long getLastInsertedHIEDTHRecordId(String recordType);
 	
 	public List<Map<Object, Object>> getNewRawDiagnosisList();
 	

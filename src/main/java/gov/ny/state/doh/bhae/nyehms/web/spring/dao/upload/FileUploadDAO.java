@@ -50,7 +50,6 @@ public interface FileUploadDAO {
 	
 	public void moveSTDConfirmFromTempToRaw() throws DataAccessException;
 	
-	public int insertPSConfirmedSTDDataRow(UploadPSConfirmedSTDVO psConfirmedSTDDataRow);
 	
 	public int insertNYCSurvRejectDataRow(UploadNYCSurvRejectVO nycSurvRejectRow);
 

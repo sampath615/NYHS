@@ -54,8 +54,6 @@ public interface DocumentDAO {
     public Map<Object, Object> getProcessValidationReport(Map<Object, Object> theMap)
     		throws DataAccessException;
     
-    public Map<Object, Object> getProcessValidationReporttWithFileName(Map<Object, Object> theMap)
-    		throws DataAccessException;
     
 
 	public int writeDocumentTestType(Map<Object, Object> inputOutputParameterMap);

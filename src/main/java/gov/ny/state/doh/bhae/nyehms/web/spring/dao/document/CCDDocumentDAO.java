@@ -37,11 +37,9 @@ public interface CCDDocumentDAO {
 
 	public void insertRawCcdEncounter(RawCCDEncounterVO theEncounterVO) throws DataAccessException;
 
-	public void insertRawCcdDiagnosis(RawCCDDiagnosisVO theDiagnosisVO) throws DataAccessException;
 
 	public void insertRawCcdMed(RawCCDMedVO theMedVO) throws DataAccessException;
 
-	public void insertRawCcdProblem(RawCCDProblemVO theProblemVO) throws DataAccessException;
 
 	public RawCCDPersonDocVO getCCDDoc(int docId);
 

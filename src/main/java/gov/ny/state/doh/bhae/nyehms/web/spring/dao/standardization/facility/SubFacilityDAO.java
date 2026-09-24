@@ -8,7 +8,6 @@ import java.util.Map;
 
 public interface SubFacilityDAO {
 	
-	public List<SubFacilityVO> getSubFacilityList(Map<Object, Object> map);
 	
 	public void insertNewStdFacility(Map<Object, Object> map);
 	

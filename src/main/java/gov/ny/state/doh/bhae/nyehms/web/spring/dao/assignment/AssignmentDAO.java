@@ -260,9 +260,7 @@ public interface AssignmentDAO {
 	
 	public List<Map<String, Object>> getCD4PartialDiffSrcId(Map<String, Object> map);
 	
-	public List<String> getARVFullDiffUseType(Map<String, Object> map) throws DataAccessException;
 	
-	public List<Map<String, Object>> getARVPartialDiffUseType(Map<String, Object> map);
 	
 	public Map<String, Object> getReabAssignmentClosureCategories(int assignmentId);
 	

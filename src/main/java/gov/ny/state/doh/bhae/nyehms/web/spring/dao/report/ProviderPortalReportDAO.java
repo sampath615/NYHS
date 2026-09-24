@@ -16,6 +16,5 @@ public interface ProviderPortalReportDAO {
 	
 	public List<ProvPortalSubmissionReportVO> getProvPortalOOCDNLTCReportData(Map<Object,Object> map);	
 	
-	public List<ProvPortalSubmissionCareStatusVO> getProvPortalCareStatusReportData(Map<Object,Object> map);	
 
 }

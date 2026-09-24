@@ -33,7 +33,6 @@ public interface HITDocumentDAO {
 	
 	public int getMaxUphnTranxInIdCheckedFromLog(String recordType) throws DataAccessException;
 	
-	public List<UphnTranxInVo> getUphnExpRowsAsVO (Map<String, String> parameters) throws DataAccessException;
 	
 	public int insertCodedRace(Map<String, Object> inputParameters);
 	

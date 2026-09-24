@@ -36,7 +36,6 @@ public interface ADAPDocumentDAO {
 
 	public int insertRawADAPDocument(Map<Object, Object> rawDocData);
 
-	public int updateFlagChoosenProvider(Map<Object, Object> stdDocData);
 
 	public List<String> getFileNames();
 

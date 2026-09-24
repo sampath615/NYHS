@@ -40,6 +40,5 @@ public interface LoincResultDomainMappingDAO {
 
 	public int verifyForMayoLabDocuments(Map<String, Integer[]> inputParameterMap);
 
-	public int changeLoinc(Map<Object, Object> inOutParameterMap);
 }
  
