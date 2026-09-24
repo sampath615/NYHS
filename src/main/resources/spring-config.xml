@@ -222,19 +222,6 @@
 	
 	
 	
-<!-- 	<bean id="allJaroLoader" class="gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.AllJaroLoader" /> -->
-	
-<!-- 	<bean name="runAllJaroLoaderJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"> -->
-
-<!-- 		<property name="jobClass" value="gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.RunAllJaroLoaderJob" /> -->
-		
-<!-- 		<property name="jobDataAsMap"> -->
-<!-- 			<map> -->
-<!-- 				<entry key="allJaroLoader" value-ref="allJaroLoader" /> -->
-<!-- 			</map> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-	
 	
 	<bean id="prfReviewStatusLoader" class="gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.PrfReviewStatusLoader" />
 	
@@ -394,14 +381,6 @@
 		<property name="cronExpression" value="0 05 10 ? * MON-SUN" />
 	</bean>
 
-<!-- 	  Loads the ALLJARO data required for Quality stage match -->
-<!-- 	<bean id="allJaroCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"> -->
-
-<!-- 		<property name="jobDetail" ref="runAllJaroLoaderJob" /> -->
-<!-- 		<property name="cronExpression" value="0 06 17 ? * SUN-THU" /> -->
-
-<!-- 	</bean> -->
-
 <!-- 	 	Moving Raw to Std and calls the Quality stage process  -->
 	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 
@@ -458,7 +437,6 @@
 			<list>
 				<ref bean="cronTrigger" />
 				<ref bean="qsCronTrigger" />
-<!-- 				<ref bean="allJaroCronTrigger" /> -->
 				<ref bean="prfReviewStatusCronTrigger" />
 				<ref bean="hl7RecordsProcessCronTrigger" />
 				<ref bean="documentFileReminderCronTrigger" />

@@ -41,62 +41,6 @@
 		<table class="clearBoth">
 		<tr>
 		<td>
-		<table >
-			<tbody>
-				<tr>
-					<th class="bg-black" scope="colgroup" colspan="2">
-				</th>
-				<tr>
-					<th scope="colgroup" colspan="2"> </th>
-				</tr>
-	            <tr>
-	            	<th class="bg-black" scope="colgroup" colspan="2">Create AllJaro</th>
-	            </tr>      
-	            
-	            <tr >
-	                                <td width="175px" scope="row">
-		                                <strong>
-												Trigger AllJaro Scheduler
-		                                </strong>
-	                                </td>
-	                                <td>
-	                                	<img src="${staticPath}/images/buttons/submit_button.png" id="startCreatingAllJaro" class="schedulerEvent"  schedulerName="runAllJaroLoaderJob" event="trigger scheduler job"/>	
-	                                </td>
-	                         </tr>    
-	                         
-	                          <tr >
-	                                <td width="175px" scope="row">
-		                                <strong>
-												Pause AllJaro Scheduler
-		                                </strong>
-	                                </td>
-	                                <td>
-	                                	<img src="${staticPath}/images/buttons/submit_button.png" id="pauseCreatingAllJaro" class="schedulerEvent"  schedulerName="runAllJaroLoaderJob" event="pause scheduler job"/>	
-	                                </td>
-	                         </tr>
-	               <tr >
-	                                <td width="175px" scope="row">
-		                                <strong>
-												Resume AllJaro Scheduler
-		                                </strong>
-	                                </td>
-	                                <td>
-	                                	<img src="${staticPath}/images/buttons/submit_button.png" id="resumeCreatingAllJaro" class="schedulerEvent"  schedulerName="runAllJaroLoaderJob" event="resume scheduler job"/>	
-	                                </td>
-	                                
-	                            <tr >
-	                                <td width="175px" scope="row">
-		                                <strong>
-												Stop AllJaro Scheduler
-		                                </strong>
-	                                </td>
-	                                <td>
-	                                	<img src="${staticPath}/images/buttons/submit_button.png" id="stopCreatingAllJaro" class="schedulerEvent"  schedulerName="runAllJaroLoaderJob" event="stop scheduler job"/>	
-	                                </td>
-	                         </tr>        
-	        </tbody>
-		</table>
-	
 		<table style="margin-top:20px">
 			<tbody>
 				<tr>
