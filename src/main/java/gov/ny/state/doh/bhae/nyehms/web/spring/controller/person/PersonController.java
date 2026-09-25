@@ -101,10 +101,9 @@ public class PersonController {
 			Map<String, Object> pMap,
 			@RequestParam String stateNo,
 			@RequestParam String endDate,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog+" stateNo is {} :: End Date is ::: {}", stateNo,endDate);
@@ -139,10 +138,9 @@ public class PersonController {
 			Map<String, Object> pMap,
 			@RequestParam String stateNo,
 			@RequestParam(required = false) String startDate,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog+ " stateNo is {}  :: Date is ::: {}",stateNo,startDate);
@@ -173,9 +171,8 @@ public class PersonController {
 	 */
 	@RequestMapping(value="/getPersonDocumentDetails.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	List<PersonDocHistoryVO> getDocumentDetails(@RequestParam String stateNo, HttpServletRequest request )
+	List<PersonDocHistoryVO> getDocumentDetails(@RequestParam String stateNo, HttpServletRequest request , UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
@@ -198,9 +195,8 @@ public class PersonController {
 	 */
 	@RequestMapping(value="/getHIVDocumentDetails.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	List<PersonDocHistoryVO> getHIVDocumentDetails(@RequestParam String stateNo, HttpServletRequest request )
+	List<PersonDocHistoryVO> getHIVDocumentDetails(@RequestParam String stateNo, HttpServletRequest request , UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
@@ -228,9 +224,8 @@ public class PersonController {
 			@RequestParam String stateNo,
 			@RequestParam String fieldName,
 			@RequestParam String callingAppName,
-			HttpServletRequest request )
+			HttpServletRequest request , UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
@@ -256,9 +251,8 @@ public class PersonController {
 			@RequestParam String fieldName,
 			@RequestParam String fieldVal,
 			@RequestParam String callingAppName,
-			HttpServletRequest request )
+			HttpServletRequest request , UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
@@ -286,9 +280,8 @@ public class PersonController {
 			@RequestParam String comments,
 			@RequestParam String stateno,
 			@RequestParam(required = false) String deleteFlag,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -338,9 +331,8 @@ public class PersonController {
 	@RequestMapping(value="/updateStdDocument.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateStdDocument(
 			@RequestParam Map<String, String> params,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.updateStdDocument(params, bindingResult, userObject);
@@ -361,9 +353,8 @@ public class PersonController {
 			@RequestParam String testType,
 			HttpServletRequest request,
 			Map<String, Object> map,
-			@RequestParam String stateno)
+			@RequestParam String stateno, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String acrfReferenceRowId = request.getParameter("acrfReferenceRowId");
@@ -393,9 +384,8 @@ public class PersonController {
 			@RequestParam(required = false) String reason, 
 			@RequestParam(required = false) String otherReason,
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.triggerPsMessage(documentId, stateno, documentType, messageType, psMessageForce, softErrorCode, addressFieldVO, reason, otherReason, bindingResult, userObject);
@@ -415,9 +405,8 @@ public class PersonController {
 			@RequestParam int documentId,
 			@RequestParam String stateno,
 			@RequestParam String documentType,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.getPsMessageType(documentId, stateno, documentType, bindingResult, userObject);
@@ -439,10 +428,9 @@ public class PersonController {
 			@RequestParam int DOCUMENT_ID,
 			@RequestParam String DOCUMENT_TYPE_CODE,
 			@RequestParam String SOFT_ERROR_ONLY,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
 		//, @RequestParam int DOCUMENT_ID, @RequestParam String DOCUMENT_TYPE_CODE
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		commonDocumentEditService.storeEditRawAndStdDocument(allRequestParams, DOCUMENT_ID, DOCUMENT_TYPE_CODE, SOFT_ERROR_ONLY, bindingResult, userObject);
@@ -450,10 +438,8 @@ public class PersonController {
 	}
 	
 	@RequestMapping(value="/getNotAssociatedClusterIds.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getNotAssociatedClusterIds(HttpServletRequest request, String stateno) {
+	public @ResponseBody List<String> getNotAssociatedClusterIds(HttpServletRequest request, String stateno, UserObject userObject) {
 		
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -465,10 +451,8 @@ public class PersonController {
 	
 	
 	@RequestMapping("/addStatenoToCluster")
-	public @ResponseBody Map<Object, Object> addStatenoToCluster(HttpServletRequest request, String stateno, String clusterDetails, String identificationMethod, String identificationDate, long demoDocumentId) {
+	public @ResponseBody Map<Object, Object> addStatenoToCluster(HttpServletRequest request, String stateno, String clusterDetails, String identificationMethod, String identificationDate, long demoDocumentId, UserObject userObject) {
 		
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -485,9 +469,8 @@ public class PersonController {
 	 * @return
 	 */
 	@RequestMapping("/eHarsPersonViewTab.html")
-	public String geteHarsPersonViewData(@RequestParam("stateno") String stateno,@RequestParam("nyehmsStateNo")  String nyehmsStateNo, HttpServletRequest request, Map<String, Object> map) {
+	public String geteHarsPersonViewData(@RequestParam("stateno") String stateno,@RequestParam("nyehmsStateNo")  String nyehmsStateNo, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 

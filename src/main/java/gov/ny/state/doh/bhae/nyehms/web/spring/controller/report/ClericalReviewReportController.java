@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,10 +40,8 @@ public class ClericalReviewReportController {
 	@Autowired         GetGridObject getGridObject;
 	
 	@RequestMapping(value = "/getclericalReviewReportbyStaff")
-	public String getclericalReviewReportbyStaff(Map<String, Object> map, HttpServletRequest request) {
+	public String getclericalReviewReportbyStaff(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 		
@@ -56,10 +53,8 @@ public class ClericalReviewReportController {
 	
 	
 	@RequestMapping(value = "/getclericalDeathReviewReportbyStaff")
-	public String getclericalDeathReviewReportbyStaff(Map<String, Object> map, HttpServletRequest request) {
+	public String getclericalDeathReviewReportbyStaff(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 		map.put("reportType", "Clerical Death Review");
@@ -75,9 +70,7 @@ public class ClericalReviewReportController {
 	}
 	
 	@RequestMapping(value="/clericalNonMatchReportData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject clericalNonMatchReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject clericalNonMatchReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -95,10 +88,8 @@ public class ClericalReviewReportController {
 	
 	@RequestMapping(value = "/getclericalReportsByStaffData.html", method = RequestMethod.POST)
 	public String getclericalDeathReportsByStaffData(@RequestParam String fromDate, @RequestParam String toDate,
-			@RequestParam String reportType, HttpServletRequest request, Map<String, Object> map) {
+			@RequestParam String reportType, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 
 		Map<String, Map<String, Map<String, BigInteger>>> clericalReportsByDailyStaff = clericalReportService
 				.getclericalReportByStaff(fromDate, toDate, reportType, userObject, map);
@@ -115,15 +106,13 @@ public class ClericalReviewReportController {
 	
 	@RequestMapping(value ="/generateClericalReport.xlsx",  method=RequestMethod.GET)
 	public ModelAndView generateClericalReport(@RequestParam String fromDate,@RequestParam String toDate, @RequestParam String reportType,
-			HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
+			HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject) {
 				
 		Cookie myCookie = new Cookie("filedownload", "false");		
 		response.addCookie(myCookie);		
 		boolean isError = false;		
 		ModelAndView mav = null;	
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<String, Map<String, Map<String, BigInteger>>> clericalReportsByDailyStaff = clericalReportService
 				.getclericalReportByStaff(fromDate, toDate, reportType, userObject, map);
@@ -158,10 +147,8 @@ public class ClericalReviewReportController {
 	}
 	
 	@RequestMapping(value = "/getscanningReportbyStaff")
-	public String getscanningReportbyStaff(Map<String, Object> map, HttpServletRequest request) {
+	public String getscanningReportbyStaff(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -171,10 +158,8 @@ public class ClericalReviewReportController {
 	
 	@RequestMapping(value ="/getscanningReportsByStaffData.html", method = RequestMethod.POST)
 	public String getscanningReportsByStaffData(@RequestParam String fromDate, @RequestParam String toDate,
-									HttpServletRequest request, Map<String, Object> map) {
+									HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<String, Map<String, Map<String, BigInteger>>> scanningReportsByDailyStaff = clericalReportService
 				.getscanningReportByStaff(fromDate, toDate, userObject, map);
@@ -186,14 +171,12 @@ public class ClericalReviewReportController {
 	//create scanning report by staff as an excel file
 	@RequestMapping(value="/generateScanningReport.xlsx", method=RequestMethod.GET)
 	public ModelAndView generateScanningReport(@RequestParam String fromDate,@RequestParam String toDate,
-			HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
+			HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject) {
 		Cookie myCookie = new Cookie("filedownload", "false");		
 		response.addCookie(myCookie);		
 		boolean isError = false;		
 		ModelAndView mav = null;	
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<String, Map<String, Map<String, BigInteger>>> scanningReportsByDailyStaff = clericalReportService
 				.getscanningReportByStaff(fromDate, toDate, userObject, map);

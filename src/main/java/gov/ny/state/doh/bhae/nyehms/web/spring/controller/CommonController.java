@@ -180,9 +180,8 @@ public class CommonController {
 			@RequestParam String county,
 			@RequestParam String state,
 			@RequestParam String zip,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		AddressFieldVO addressFieldVO= new AddressFieldVO();				
@@ -234,9 +233,8 @@ public class CommonController {
 	@RequestMapping(value="/getAddressFieldsCombination.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> getAddressFieldsCombination(
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		commonService.getAddressFieldsCombination(addressFieldVO, bindingResult, userObject);

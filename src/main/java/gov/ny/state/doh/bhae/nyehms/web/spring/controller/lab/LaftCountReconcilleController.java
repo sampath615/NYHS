@@ -44,10 +44,8 @@ public class LaftCountReconcilleController {
 	}
 	
 	@RequestMapping(value="/loadReconcileDashboardData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getReconcileDashboardData(HttpServletRequest request, @RequestParam String reconcileId){
+	public @ResponseBody GridObject getReconcileDashboardData(HttpServletRequest request, @RequestParam String reconcileId, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -58,10 +56,8 @@ public class LaftCountReconcilleController {
 	
 	
 	@RequestMapping(value="/getCurOpenSurvey.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getCurOpenSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String userId, String labReconciled){
+	public @ResponseBody GridObject getCurOpenSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String userId, String labReconciled, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -71,10 +67,8 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/getLabReportedSurveyData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody Map<String, Object> getLabReportedSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String pfi){
+	public @ResponseBody Map<String, Object> getLabReportedSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String pfi, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -85,10 +79,8 @@ public class LaftCountReconcilleController {
 	}
 
 	@RequestMapping(value="/updateLabReconcileData", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String updateLabReconcileData(HttpServletRequest request){
+	public @ResponseBody String updateLabReconcileData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -121,10 +113,8 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/loadSendSurveyEmailData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getSendSurveyEmailData(HttpServletRequest request){
+	public @ResponseBody GridObject getSendSurveyEmailData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -134,10 +124,8 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/sendSurveyEmailToLab", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String sendSurveyEmailToLab(HttpServletRequest request) throws MessagingException, ParseException{
+	public @ResponseBody String sendSurveyEmailToLab(HttpServletRequest request, UserObject userObject) throws MessagingException, ParseException{
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
         if (request.getParameter("surveyEmailData") == null) {
             return ("surveyEmailData is null");
@@ -160,10 +148,9 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/uploadLaftSurveyResponseFile", method = RequestMethod.POST)
-	public String  uploadLaftSurveyResponseFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  uploadLaftSurveyResponseFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		session.removeAttribute("resultMap");
@@ -194,10 +181,8 @@ public class LaftCountReconcilleController {
 	
 	
 	@RequestMapping(value="/getAccessionList.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject downloadAccessionList(HttpServletRequest request) throws MessagingException, ParseException {
+	public @ResponseBody GridObject downloadAccessionList(HttpServletRequest request, UserObject userObject) throws MessagingException, ParseException {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
         String reconId = request.getParameter("reconId");
         String pfi = request.getParameter("pfi");
@@ -207,10 +192,8 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/refreshNyehmsLabCount", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String refreshNyehmsLabCount(HttpServletRequest request) throws MessagingException, ParseException{
+	public @ResponseBody String refreshNyehmsLabCount(HttpServletRequest request, UserObject userObject) throws MessagingException, ParseException{
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
         String reconId = request.getParameter("reconId");
         String pfi = request.getParameter("pfi");
@@ -230,10 +213,8 @@ public class LaftCountReconcilleController {
 	}	
 	
 	@RequestMapping(value="/saveAddReconcilePFI", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody Map<String, Object> saveAddReconcilePFI(HttpServletRequest request){
+	public @ResponseBody Map<String, Object> saveAddReconcilePFI(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -249,10 +230,8 @@ public class LaftCountReconcilleController {
 	}	
 
 	@RequestMapping(value="/deleteReconcilePFI", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody Map<Object, Object> deleteReconcilePFI(HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> deleteReconcilePFI(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

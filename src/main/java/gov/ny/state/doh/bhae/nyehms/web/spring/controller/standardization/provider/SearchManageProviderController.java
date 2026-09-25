@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,11 +40,9 @@ public class SearchManageProviderController {
 	 */ 
 	
 	@RequestMapping(value="/getProviderDetailsByProvider.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getProviderDetailsByProvider(@ModelAttribute("providerVO") SubProviderVO providerVO , HttpServletRequest request){
+	public @ResponseBody GridObject  getProviderDetailsByProvider(@ModelAttribute("providerVO") SubProviderVO providerVO , HttpServletRequest request, UserObject userObject){
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, String> targetMap = new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Provider Search Criteria
@@ -64,11 +61,9 @@ public class SearchManageProviderController {
 	 * @return GridObject Having the search resulted data   
 	 */ 
 	@RequestMapping(value="/getProviderDetailsByProviderAddress.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getProviderDetailsByProviderAddress(@ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO , HttpServletRequest request){
+	public @ResponseBody GridObject  getProviderDetailsByProviderAddress(@ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO , HttpServletRequest request, UserObject userObject){
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -87,10 +82,8 @@ public class SearchManageProviderController {
 	 * @return GridObject Having the search resulted data   
 	 */ 
 	@RequestMapping(value="/getProviderDetailsByRawProviderAddress.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getProviderDetailsByRawProviderAddress(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO , HttpServletRequest request){
+	public @ResponseBody GridObject  getProviderDetailsByRawProviderAddress(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO , HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -102,9 +95,7 @@ public class SearchManageProviderController {
 	
 	
 	@RequestMapping(value="/getRawProviderDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getRawProviderDetails(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO , HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getRawProviderDetails(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO , HttpServletRequest request, UserObject userObject){
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();

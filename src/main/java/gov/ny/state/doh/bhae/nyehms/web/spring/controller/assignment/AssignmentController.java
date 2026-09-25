@@ -148,11 +148,9 @@ public class AssignmentController {
 	 */
 	@RequestMapping("/getAssignmentsTally")
 	public String getAssignmentsAsHTML(HttpServletRequest request,
-			Map<String, Object> map) {
+			Map<String, Object> map, UserObject userObject) {
 
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -182,14 +180,12 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAssignmentReports")	
-	public String getAssignmentReports(HttpServletRequest request, Map<String, Object> map) {
+	public String getAssignmentReports(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		Map<String, String> dummyMindingMap = new HashMap<String, String>();
 		BindingResult dummyBindingResult = new MapBindingResult(
 				dummyMindingMap, "Sample");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<String, String> regionsList = administrationService.getSrchregionTypes(dummyBindingResult, userObject);
 		
@@ -231,12 +227,11 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/unknownOutOfStateProviders")	
-	public String unknownOutOfStateProviders(HttpServletRequest request, Map<String, Object> map) {
+	public String unknownOutOfStateProviders(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		
 		List<String> documentTypes = commonDocumentService.getDocumentTypes(userObject);
 		
@@ -252,12 +247,11 @@ public class AssignmentController {
 	
 
 	@RequestMapping(value="/oosProviderFollowUp")	
-	public String oosProviderFollowUp(HttpServletRequest request, Map<String, Object> map) {
+	public String oosProviderFollowUp(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		List<String> documentTypes = commonDocumentService.getDocumentTypes(userObject);
 		
 		map.put("documentTypes", documentTypes);
@@ -272,9 +266,8 @@ public class AssignmentController {
 	
 	@RequestMapping(value="/getunknownOutOfStateProviderDocuments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	List<PersonDocHistoryVO> getunknownOutOfStateProviderDocuments(HttpServletRequest request, @RequestParam String documentType, @RequestParam String  processCode) {
+	List<PersonDocHistoryVO> getunknownOutOfStateProviderDocuments(HttpServletRequest request, @RequestParam String documentType, @RequestParam String  processCode, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
@@ -292,9 +285,8 @@ public class AssignmentController {
 	
 	@RequestMapping(value="/processAssignmentdocument.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<Object, Object> processAssignmentdocument(HttpServletRequest request, @RequestParam int documentId, @RequestParam String survAssessStatus, @RequestParam String documentType) {
+	Map<Object, Object> processAssignmentdocument(HttpServletRequest request, @RequestParam int documentId, @RequestParam String survAssessStatus, @RequestParam String documentType, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -309,9 +301,8 @@ public class AssignmentController {
 	
 	@RequestMapping(value="/followUpOOSDocument.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<Object, Object> followUpOOSDocument(HttpServletRequest request, @RequestParam int documentId, @RequestParam String documentType) {
+	Map<Object, Object> followUpOOSDocument(HttpServletRequest request, @RequestParam int documentId, @RequestParam String documentType, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -326,9 +317,8 @@ public class AssignmentController {
 	
 	@RequestMapping(value="/getAssignmentStatusByACRF.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<String, String> getAssignmentStatusByACRF(HttpServletRequest request, @RequestParam int acrfDocId) {
+	Map<String, String> getAssignmentStatusByACRF(HttpServletRequest request, @RequestParam int acrfDocId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -352,10 +342,9 @@ public class AssignmentController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping("/getAssignmentsList")
 	public String getAssignmentsList(Map<String, Object> map,
-			HttpServletRequest request) {
+			HttpServletRequest request, UserObject userObject) {
 		// Home page --> Assignment Landing Page
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -619,10 +608,9 @@ public class AssignmentController {
 	@RequestMapping("/getAssignmentsDetails")
 	public String getAssignmentsDetails(
 			@RequestParam("assignmentId") long assignmentId, @RequestParam(required = false) String workerRoleCode,
-			@RequestParam(required = false) String reabstract, Map<String, Object> map, HttpServletRequest request) {
+			@RequestParam(required = false) String reabstract, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -677,10 +665,8 @@ public class AssignmentController {
 	@RequestMapping("/getAssignmentsDetailsInDialog")
 	public String getAssignmentsDetailsInDialog(
 			@RequestParam("assignmentId") long assignmentId, @RequestParam(required = false) String reabstract, 
-			Map<String, Object> map, HttpServletRequest request) {
+			Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -798,10 +784,8 @@ public class AssignmentController {
 	
 
 	@RequestMapping(value="/getAssignmentReportMatrix.html", method = RequestMethod.POST)
-	public String  getAssignmentReportMatrix(@RequestParam String region, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public String  getAssignmentReportMatrix(@RequestParam String region, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		List<String> regionNames = new ArrayList<String>();
@@ -913,10 +897,8 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAssignmentReportByDocumentMatrix.html", method = RequestMethod.POST)
-	public String  getAssignmentReportByDocumentMatrix(@RequestParam String fileName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, HttpServletRequest request, Map<String, Object> map){
+	public String  getAssignmentReportByDocumentMatrix(@RequestParam String fileName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -938,10 +920,8 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAHIAssignmentsByRegionAndCategory.html", method = RequestMethod.POST)
-	public String  getAHIAssignmentsByRegionAndCategory(@RequestParam String regionId, @RequestParam String assignmentStatus, @RequestParam String documentType, @RequestParam String ahiFlag, HttpServletRequest request, Map<String, Object> map){
+	public String  getAHIAssignmentsByRegionAndCategory(@RequestParam String regionId, @RequestParam String assignmentStatus, @RequestParam String documentType, @RequestParam String ahiFlag, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -962,10 +942,8 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAssignmentDocumentsByStatusByDocumentByCategory.html", method = RequestMethod.POST)
-	public String  getAssignmentDocumentsByStatusByDocumentByCategoryInHtml(@RequestParam String regionId, @RequestParam String assignmentStatus, @RequestParam String fileName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, @RequestParam String eharsStatus, @RequestParam String category, @RequestParam String documentName, HttpServletRequest request, Map<String, Object> map){
+	public String  getAssignmentDocumentsByStatusByDocumentByCategoryInHtml(@RequestParam String regionId, @RequestParam String assignmentStatus, @RequestParam String fileName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, @RequestParam String eharsStatus, @RequestParam String category, @RequestParam String documentName, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -985,7 +963,7 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAssignmentDocumentsByStatusByDocumentByCategory.pdf", method = RequestMethod.POST, produces="application/pdf")
-	public ModelAndView  getAssignmentDocumentsByStatusByDocumentByCategoryInPdf(@RequestParam String documentName, @RequestParam String regionId, @RequestParam String regionName, @RequestParam String assignmentStatusDisplayName, @RequestParam String assignmentStatus, @RequestParam String fileName, @RequestParam String fileDisplayName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, @RequestParam String eharsStatus, @RequestParam String category, HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  getAssignmentDocumentsByStatusByDocumentByCategoryInPdf(@RequestParam String documentName, @RequestParam String regionId, @RequestParam String regionName, @RequestParam String assignmentStatusDisplayName, @RequestParam String assignmentStatus, @RequestParam String fileName, @RequestParam String fileDisplayName, @RequestParam String fromDate, @RequestParam String toDate, @RequestParam String documentType, @RequestParam String eharsStatus, @RequestParam String category, HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= Assignment Report");
@@ -993,8 +971,6 @@ public class AssignmentController {
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		List<Map<String, String>> assignmentDocuments =  assignmentReportsService.getAssignmentDocumentsByStatusByDocumentByRegion(regionId, assignmentStatus, fromDate, toDate, fileName, documentType, eharsStatus, category, dummyBindingResult, userObject);
@@ -1312,13 +1288,11 @@ public class AssignmentController {
 	
 	
 	@RequestMapping(value="/getAssignmentsClosureStatusReport")	
-	public String getAssignmentsClosureStatusReport(HttpServletRequest request, Map<String, Object> map) {
+	public String getAssignmentsClosureStatusReport(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		Map<String, String> dummyMindingMap = new HashMap<String, String>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<String, String> regionsList = administrationService.getSrchregionTypes(dummyBindingResult, userObject);
 		map.put("regionsList", regionsList);
@@ -1327,9 +1301,7 @@ public class AssignmentController {
 	}	
 	
 	@RequestMapping(value="/getAssignmentClosureStatusReportData.json", method = RequestMethod.POST,  produces = "application/json")
-	public @ResponseBody List<JSONObject> getAssignmentClosureStatusReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String regionCode, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<JSONObject> getAssignmentClosureStatusReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String regionCode, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -1339,10 +1311,9 @@ public class AssignmentController {
 	}
 	
 	@RequestMapping(value="/getReabstractAssignments")	
-	public String getReabstractAssignments(HttpServletRequest request, Map<String, Object> map) {
+	public String getReabstractAssignments(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 		
@@ -1369,9 +1340,8 @@ public class AssignmentController {
 	}	
 	
 	@RequestMapping(value = "/getReabstractAssignmentStatusByRole.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getReabstractAssignmentStatusByRole(@RequestParam int roleCode, HttpServletRequest request) {
+	public @ResponseBody List<JSONObject> getReabstractAssignmentStatusByRole(@RequestParam int roleCode, HttpServletRequest request, UserObject userObject) {
 		
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1384,9 +1354,8 @@ public class AssignmentController {
 	}		
 	
 	@RequestMapping(value = "/getReabstractAssignmentWorkersList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Integer, String> getReabstractAssignmentWorkersList(@RequestParam int roleCode, HttpServletRequest request) {
+	public @ResponseBody Map<Integer, String> getReabstractAssignmentWorkersList(@RequestParam int roleCode, HttpServletRequest request, UserObject userObject) {
 		
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1412,9 +1381,8 @@ public class AssignmentController {
 
 	@RequestMapping(value = "/assignReabstract.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<String, String> requestAssignReabstract(
-			@ModelAttribute("reabAssignVO") ReabAssignmentsAssignVO reabAssignVO, Map<String, Object> map, HttpServletRequest request) {
+			@ModelAttribute("reabAssignVO") ReabAssignmentsAssignVO reabAssignVO, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1434,9 +1402,8 @@ public class AssignmentController {
 		
 	@RequestMapping(value = "/updateReabActivityNStatus.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<String, String> updateReabActivityNStatus(@RequestParam String assignmentId, @RequestParam String newReabActivity, @RequestParam String reabCrfDocId, 
-		@RequestParam String crfDocId, @RequestParam String documentType, @RequestParam String reabClosureCategory, Map<String, Object> map, HttpServletRequest request) {
+		@RequestParam String crfDocId, @RequestParam String documentType, @RequestParam String reabClosureCategory, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1457,9 +1424,8 @@ public class AssignmentController {
 	
 	@RequestMapping(value = "/getCRFDiffSummary.html", method = RequestMethod.POST)
 	public String getCRFDiffSummary(@RequestParam String documentType, @RequestParam String stateNo, @RequestParam int assignmentId, 
-			@RequestParam int fsCRFDocId, @RequestParam int reabCRFDocId, @RequestParam int workerRole, HttpServletRequest request, Map<String, Object> map) {
+			@RequestParam int fsCRFDocId, @RequestParam int reabCRFDocId, @RequestParam int workerRole, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1501,9 +1467,8 @@ public class AssignmentController {
 	}
 	
 	@RequestMapping(value = "/getAssignmentCompareData.json", method = RequestMethod.POST)
-	public @ResponseBody List<JSONObject> getAssignmentCompareData(@RequestParam int assignmentId, HttpServletRequest request, Map<String, Object> map) {
+	public @ResponseBody List<JSONObject> getAssignmentCompareData(@RequestParam int assignmentId, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 		
@@ -1514,9 +1479,8 @@ public class AssignmentController {
 	}
 	
 	@RequestMapping(value = "/saveReabReviewComments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> saveReabReviewComments(@RequestParam String assignmentId, @RequestParam String reviewComments, Map<String, Object> map, HttpServletRequest request) {
+	public @ResponseBody Map<String, String> saveReabReviewComments(@RequestParam String assignmentId, @RequestParam String reviewComments, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1536,9 +1500,8 @@ public class AssignmentController {
 	@RequestMapping(value = "/deleteCRFNReopenAssign.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
 	Map<String, String> deleteCRFNReopenAssign(@ModelAttribute("assignReassignVO") AssignmentsAssignReassignVO assignReassignVO, @RequestParam int documentId, @RequestParam String documentType, 
-					@RequestParam String stateno, Map<String, Object> map, HttpServletRequest request) {
+					@RequestParam String stateno, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -1569,9 +1532,7 @@ public class AssignmentController {
 	// getOpenCaseloadSummaryData.json
 	// write another function to call the view query and send it to
 	@RequestMapping(value = "/getOpenCaseloadSummaryData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody List<JSONObject> getOpenCaseloadSummaryData(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public @ResponseBody List<JSONObject> getOpenCaseloadSummaryData(HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 

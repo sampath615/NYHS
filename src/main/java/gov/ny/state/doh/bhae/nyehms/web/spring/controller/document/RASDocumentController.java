@@ -32,11 +32,10 @@ public class RASDocumentController {
 	
 	
 	@RequestMapping(value = "/getRASForm.html")
-	public String getRASDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getRASDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
 		log.debug(nyehmsLog + "  incoming RAS Doc ID is {}",docId);
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -54,11 +53,10 @@ public class RASDocumentController {
 	}
 	
 	@RequestMapping(value = "/getSierraRASForm.html")
-	public String getSierraRASForm(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getSierraRASForm(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
 		log.debug(nyehmsLog + "  incoming RAS Doc ID is {}",docId);
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -81,9 +79,8 @@ public class RASDocumentController {
 
 	@RequestMapping(value="/getLinkedResistanceDocuments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<Object, Object> getLinkedResistanceDocuments(HttpServletRequest request, @RequestParam int documentId) {
+	Map<Object, Object> getLinkedResistanceDocuments(HttpServletRequest request, @RequestParam int documentId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();

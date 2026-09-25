@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,10 +41,8 @@ public class SearchManageProfileController {
 	 * @return List of ModuleAndPermissionsVO instances
 	 */
 	@RequestMapping(value="/getModuleAndPermissions.json", method = RequestMethod.POST)
-	public  String getModuleAndPermissions(@RequestParam long roleCode, Map<String, Object> resultMap, HttpServletRequest request){
+	public  String getModuleAndPermissions(@RequestParam long roleCode, Map<String, Object> resultMap, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		BindingResult bindingResult = new MapBindingResult(resultMap, "resultMap");
@@ -58,10 +55,8 @@ public class SearchManageProfileController {
 	}
 
 	@RequestMapping(value="/getModuleAndPermissionsByWorkerRegionId.json", method = RequestMethod.POST)
-	public  @ResponseBody GridObject getModuleAndPermissionsByWorkerRegionId(@RequestParam long workerRegionId, Map<String, Object> resultMap, HttpServletRequest request){
+	public  @ResponseBody GridObject getModuleAndPermissionsByWorkerRegionId(@RequestParam long workerRegionId, Map<String, Object> resultMap, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		BindingResult bindingResult = new MapBindingResult(resultMap, "resultMap");
@@ -73,10 +68,8 @@ public class SearchManageProfileController {
 	
 	
 	@RequestMapping(value="/getModuleAndPermissionsHTMLContentWorkerRegionId.json", method = RequestMethod.POST)
-	public  String  getModuleAndPermissionsHTMLContentWorkerRegionId(@RequestParam long workerRegionId, Map<String, Object> resultMap, HttpServletRequest request){
+	public  String  getModuleAndPermissionsHTMLContentWorkerRegionId(@RequestParam long workerRegionId, Map<String, Object> resultMap, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		BindingResult bindingResult = new MapBindingResult(resultMap, "resultMap");

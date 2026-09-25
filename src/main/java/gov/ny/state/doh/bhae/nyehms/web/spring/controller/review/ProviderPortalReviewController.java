@@ -93,12 +93,10 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping("/generateSNPFile")
-	public String generateSNPFile(Map<String, Object> map, HttpServletRequest request) {
+	public String generateSNPFile(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		List<Map<String, String>> snpFiles = ePRFOOCDocumentService.getSNPFileNames();
 		
@@ -112,10 +110,8 @@ public class ProviderPortalReviewController {
 
 	
 	@RequestMapping(value="/getOOCDocumentsToReview.json", method = RequestMethod.POST)
-	public @ResponseBody List<Map<String, Object>> getOOCDocumentsToReview(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName, @RequestParam String documentFileType){
+	public @ResponseBody List<Map<String, Object>> getOOCDocumentsToReview(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName, @RequestParam String documentFileType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -128,10 +124,8 @@ public class ProviderPortalReviewController {
 	}
 	
 	@RequestMapping(value="/updateOOCDocumentReviewStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateOOCDocumentReviewStatus(HttpServletRequest request, @RequestParam String documentFileName, @RequestParam String documentFileType, @RequestParam int processStatus, @RequestParam String facilityCategory){
+	public @ResponseBody Map<Object, Object> updateOOCDocumentReviewStatus(HttpServletRequest request, @RequestParam String documentFileName, @RequestParam String documentFileType, @RequestParam int processStatus, @RequestParam String facilityCategory, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -144,10 +138,9 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/loadSNPData.html", method = RequestMethod.POST)
-	public String loadSNPData(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName){
+	public String loadSNPData(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName, UserObject userObject){
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -182,11 +175,10 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/snpFeedbackFile.xlsx", method = RequestMethod.GET)
-	public ModelAndView  snpFeedbackFile(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  snpFeedbackFile(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		
@@ -207,10 +199,8 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/updateEprfFollowUpData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateEprfFollowUpData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO ) {
+	public @ResponseBody Map<Object, Object> updateEprfFollowUpData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO , UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -225,10 +215,8 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/updateEprfFollowUpFileData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateEprfFollowUpFileData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO ) {
+	public @ResponseBody Map<Object, Object> updateEprfFollowUpFileData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO , UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -246,10 +234,8 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/sendEmailToBureauDirector.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> sendEmailToBureauDirector(HttpServletRequest request, @RequestParam String message, @RequestParam String documentFileName) {
+	public @ResponseBody Map<Object, Object> sendEmailToBureauDirector(HttpServletRequest request, @RequestParam String message, @RequestParam String documentFileName, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -265,10 +251,8 @@ public class ProviderPortalReviewController {
 	
 	
 	@RequestMapping(value="/generateEPRFSummarySpreadsheet.xlsx", method = RequestMethod.GET)
-	public ModelAndView  generateEPRFSummarySpreadsheet(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String documentFileName){
+	public ModelAndView  generateEPRFSummarySpreadsheet(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String documentFileName, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		

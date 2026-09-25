@@ -36,10 +36,8 @@ public class DatafluxUploadController {
 	
 	
 	@RequestMapping(value = "/loadExcelData")
-	public String loadExcelData(HttpServletRequest request, Map<String, Object> map) {
+	public String loadExcelData(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -49,11 +47,10 @@ public class DatafluxUploadController {
 	}
 	
 	@RequestMapping(value="/uploadDatafluxMatchingData", method = RequestMethod.POST)
-	public String getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam Map<String, String> data, @RequestParam("fileData") MultipartFile fileData) throws ParseException, JsonParseException, JsonMappingException, IOException{
+	public String getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam Map<String, String> data, @RequestParam("fileData") MultipartFile fileData, UserObject userObject) throws ParseException, JsonParseException, JsonMappingException, IOException{
 		
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<String, String> targetMap = new HashMap<String, String>();
 		
@@ -73,14 +70,13 @@ public class DatafluxUploadController {
 
 	
 	@RequestMapping(value="/readFileColumnNames", method = RequestMethod.POST)
-	public String  readFileColumnNames(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, Map<String, Object> map){
+	public String  readFileColumnNames(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 		Map<String, String> targetMap = new HashMap<String, String>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		

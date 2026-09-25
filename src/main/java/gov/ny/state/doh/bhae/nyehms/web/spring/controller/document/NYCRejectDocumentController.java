@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +27,9 @@ public class NYCRejectDocumentController {
 	@Autowired NYCRejectDocumentService nycRejectDocumentService;
 	
 	@RequestMapping(value = "/getNYCRejectDoc.html")
-	public String getNYCRejectDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNYCRejectDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -45,10 +43,8 @@ public class NYCRejectDocumentController {
 	}
 	
 	@RequestMapping(value="/updateNYCRejectDocumentComments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateNYCRejectDocumentComments(HttpServletRequest request, @RequestParam int documentId, @RequestParam String comments){
+	public @ResponseBody Map<Object, Object> updateNYCRejectDocumentComments(HttpServletRequest request, @RequestParam int documentId, @RequestParam String comments, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		

@@ -63,10 +63,9 @@ public class DocumentsScanController {
 	
 	@RequestMapping(value="/saveScanDocumentToStateNo.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> saveScanDocumentToStateNo(
-			HttpServletRequest request, @RequestParam String stateNo, @RequestParam String documentType, @RequestParam("RemoteFile") CommonsMultipartFile RemoteFile)
+			HttpServletRequest request, @RequestParam String stateNo, @RequestParam String documentType, @RequestParam("RemoteFile") CommonsMultipartFile RemoteFile, UserObject userObject)
 	{
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//searchService.saveScanDocumentToStateNo(stateNo, bindingResult, userObject);
@@ -87,9 +86,8 @@ public class DocumentsScanController {
 	}
 	
 	@RequestMapping(value="/getEncryptedScannedDoc.pdf", method = RequestMethod.GET, produces="application/pdf" )
-	public @ResponseBody byte[] getEncryptedScannedDoc(@RequestParam int docId, @RequestParam String documentType, Map<String, Object> map, HttpServletRequest request)
+	public @ResponseBody byte[] getEncryptedScannedDoc(@RequestParam int docId, @RequestParam String documentType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 		return documentsScanService.getEncryptedScannedDoc(docId, documentType, dummyBindingResult, userObject);
 

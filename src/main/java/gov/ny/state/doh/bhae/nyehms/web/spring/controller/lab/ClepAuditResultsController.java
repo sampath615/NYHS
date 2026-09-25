@@ -40,9 +40,8 @@ public class ClepAuditResultsController {
 	@Autowired	GetGridObject getGridObject;
 	
     @RequestMapping("/submitLabRptResults")
-    public String getLabProficiencyDetails(Map<String, Object> map, HttpServletRequest request) {
+    public String getLabProficiencyDetails(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
     	
-    	UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
     	
     	CLEPLabResultVO clepLabResultVO = new CLEPLabResultVO();
     	
@@ -78,10 +77,8 @@ public class ClepAuditResultsController {
     
 	@RequestMapping(value="/saveCLEPLabResultForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveCLEPLabResultForm(
-			@ModelAttribute("submitClepLabResultData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result){
+			@ModelAttribute("submitClepLabResultData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -93,9 +90,8 @@ public class ClepAuditResultsController {
 	}
 	
 	@RequestMapping("/reviewClepLabRptResults")
-	public String reviewClepLabRptResults(Map<String, Object> map, HttpServletRequest request) {
+	public String reviewClepLabRptResults(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-    	UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
     	
     	CLEPLabResultVO clepLabResultVO = new CLEPLabResultVO();
     	
@@ -114,10 +110,8 @@ public class ClepAuditResultsController {
 	}	
 	
 	@RequestMapping(value="/loadClepLabResultForReview.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getClepLabResultForReview(HttpServletRequest request){
+	public @ResponseBody GridObject getClepLabResultForReview(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -129,10 +123,8 @@ public class ClepAuditResultsController {
 	}	
 	
 	@RequestMapping("/getClepSurveyData.html")
-	public String getClepSurveyData(@RequestParam("surveyNo") int surveyNo, Map<String, Object> map, HttpServletRequest request) {
+	public String getClepSurveyData(@RequestParam("surveyNo") int surveyNo, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		CLEPLabResultVO CLEPLabSurveyData = clepAuditResultsService.getClepSurveyData(surveyNo, userObject);
 		
@@ -149,10 +141,9 @@ public class ClepAuditResultsController {
 	
 	
 	@RequestMapping(value="/uploadHIVSurveysFile", method = RequestMethod.POST)
-	public String  uploadHIVSurveysFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  uploadHIVSurveysFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		session.removeAttribute("resultMap");
@@ -178,10 +169,8 @@ public class ClepAuditResultsController {
 	}
 	
 	@RequestMapping("/followupHIVSurvey")
-	public String followupHIVSurvey(Map<String, Object> map, HttpServletRequest request) {
+	public String followupHIVSurvey(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -192,10 +181,8 @@ public class ClepAuditResultsController {
 	}		
 	
 	@RequestMapping(value="/getUploadedHIVSurveyData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getUploadedHIVSurveyData(@RequestParam String uploadedFilename, HttpServletRequest request){
+	public @ResponseBody GridObject getUploadedHIVSurveyData(@RequestParam String uploadedFilename, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -207,10 +194,8 @@ public class ClepAuditResultsController {
 	}	
 	
 	@RequestMapping("/getClepSurveyUploadData.html")
-	public String getClepSurveyUploadData(@RequestParam("uploadNo") int uploadNo, Map<String, Object> map, HttpServletRequest request) {
+	public String getClepSurveyUploadData(@RequestParam("uploadNo") int uploadNo, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		CLEPUploadSurveyVO clepUploadSurveyVO = clepAuditResultsService.getClepSurveyUploadData(uploadNo, userObject);
 		
@@ -221,10 +206,8 @@ public class ClepAuditResultsController {
 	
 	@RequestMapping(value="/saveFollowupHIVSurveyData", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveFollowupHIVSurveyData(
-			@ModelAttribute("submitClepSurveyFollowupData") CLEPUploadSurveyVO clepUploadSurveyVO, HttpServletRequest request, BindingResult result){
+			@ModelAttribute("submitClepSurveyFollowupData") CLEPUploadSurveyVO clepUploadSurveyVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -236,18 +219,15 @@ public class ClepAuditResultsController {
 	}	
 	
 	@RequestMapping("/labRecruitmentAssessment")
-	public String labRecruitmentAssessment(Map<String, Object> map, HttpServletRequest request) {
+	public String labRecruitmentAssessment(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-    	UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
     	
 		return "lab/LabRecruitmentAssessment";
 	}	
 	
 	@RequestMapping(value="/loadLabRecruitmentAssessmentData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getloadLabRecruitmentAssessmentData(HttpServletRequest request){
+	public @ResponseBody GridObject getloadLabRecruitmentAssessmentData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -259,10 +239,8 @@ public class ClepAuditResultsController {
 	}	
 	
 	@RequestMapping("/getLabRecruitmentAssessmentData.html")
-	public String getLabRecruitmentAssessmentData(@RequestParam("surveyNo") int surveyNo, Map<String, Object> map, HttpServletRequest request) {
+	public String getLabRecruitmentAssessmentData(@RequestParam("surveyNo") int surveyNo, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		CLEPLabResultVO clepLabResultVO = clepAuditResultsService.getLabRecruitmentAssessmentData(surveyNo, userObject);
 		
@@ -275,10 +253,8 @@ public class ClepAuditResultsController {
 	
 	@RequestMapping(value="/saveRecruitAssessFollowupData", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveRecruitAssessFollowupData(
-			@ModelAttribute("submitLabRecruitmentAssessmentFollowupData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result){
+			@ModelAttribute("submitLabRecruitmentAssessmentFollowupData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -290,21 +266,17 @@ public class ClepAuditResultsController {
 	}		
 	
 	@RequestMapping(value="/clepSurveyAuditReport")	
-	public String getSurveyAuditReport(HttpServletRequest request, Map<String, Object> map) {
+	public String getSurveyAuditReport(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		Map<String, String> dummyMindingMap = new HashMap<String, String>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		return "lab/CLEPSurveyAuditReport";
 	}		
 	
 	@RequestMapping(value="/getSurveyAuditReportData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject  getSurveyAuditReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getSurveyAuditReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		

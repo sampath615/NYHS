@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +51,8 @@ public class AdminController {
 	@RequestMapping("/getAdminPage")
 	public String getAdminPage(
 			Map<String, Object> map,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{	
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO =new NyehmsWorkerRegionsViewVO();
 		map.put("nyehmsWorkerRegionsViewVO", nyehmsWorkerRegionsViewVO);
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -92,10 +89,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody GridObject getSearchUsersList(
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
@@ -108,10 +103,8 @@ public class AdminController {
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody List<JSONObject> getUserCommentsList(@RequestParam String workerId,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return 
@@ -134,10 +127,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody GridObject getRegionRoleByUserIdList(
 			@RequestParam long  workerId,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
@@ -158,10 +149,8 @@ public class AdminController {
 			method = RequestMethod.POST,
 			produces = "application/json")
 	public @ResponseBody GridObject getManageRegionRoleList(
-			@RequestParam long  workerId, HttpServletRequest request)
+			@RequestParam long  workerId, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
@@ -182,10 +171,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody Map<Object, Object> addingNewRegionRole(
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.addingNewRegionRole(
@@ -204,10 +191,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody Map<Object, Object> retireRegionRole(
 			@ModelAttribute("userRegionVO") UserRegionVO userRegionVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.updateOrRetireRegionRole(userRegionVO , bindingResult, userObject);
@@ -225,10 +210,8 @@ public class AdminController {
 	 */
 	@RequestMapping("/getNewUserPage")
 	public String getNewUserPage(
-			Map<String, Object> map, HttpServletRequest request)
+			Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{	
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO =new NyehmsWorkerRegionsViewVO();
@@ -266,10 +249,8 @@ public class AdminController {
 	public String getManageProfile (
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
 			Map<String, Object> map,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{	
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Map<String, String> regionTypes = administrationService.getSrchregionTypes(bindingResult, userObject);
@@ -292,10 +273,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody Map<String, Object> validateUser(
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.validateUser(nyehmsWorkerRegionsViewVO , bindingResult, userObject);
@@ -335,10 +314,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody Map<String, Object> creatingNewUser(
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, Object> targetMap= new HashMap<String, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.creatingNewUserInHcsAndNyehms(
@@ -357,10 +334,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody Map<String, Object> saveUserDetails(
 			@ModelAttribute("nyehmsUsersVO") NyehmsUsersVO nyehmsUsersVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, Object> targetMap= new HashMap<String, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.saveUserDetails(nyehmsUsersVO , bindingResult, userObject);
@@ -380,10 +355,8 @@ public class AdminController {
 	public @ResponseBody Map<String, Object> terminateUser(
 			@RequestParam long workerId,
 			@RequestParam String legacyUid,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, Object> targetMap= new HashMap<String, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.terminateUserFromHCSAndDB(
@@ -402,10 +375,8 @@ public class AdminController {
 			produces = "application/json")
 	public @ResponseBody GridObject getUsersMacAddressAndRegionDetails(
 			@RequestParam long workerId,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, Object> targetMap= new HashMap<String, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
@@ -430,10 +401,8 @@ public class AdminController {
 			produces = "text/html")
 	public String getEmailNotificationList(
 			@RequestParam String ACTION_NAME, Map<String, Object> map,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<Map<String, String>> notificationList = administrationService.getEmailNotificationList(ACTION_NAME , bindingResult, userObject);
@@ -458,10 +427,8 @@ public class AdminController {
 	
 	
 	@RequestMapping(value="/getUsersEmailList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getUsersEmailList(Map<String, Object> map, HttpServletRequest request) {
+	public @ResponseBody List<String> getUsersEmailList(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -472,10 +439,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/getWorkerId.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> getWorkerId(Map<String, Object> map, HttpServletRequest request, @RequestParam String emailAddress) {
+	public @ResponseBody Map<String, String> getWorkerId(Map<String, Object> map, HttpServletRequest request, @RequestParam String emailAddress, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -486,10 +451,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/saveUpdatedNotifications.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> saveUpdatedNotifications(Map<String, Object> map, HttpServletRequest request, @RequestParam String COLUMN_NAME, @RequestParam(required=false)  String TO_LIST, @RequestParam(required=false)  String CC_LIST) {
+	public @ResponseBody Map<Object, Object> saveUpdatedNotifications(Map<String, Object> map, HttpServletRequest request, @RequestParam String COLUMN_NAME, @RequestParam(required=false)  String TO_LIST, @RequestParam(required=false)  String CC_LIST, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -502,10 +465,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/getUserShortNameList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getUserShortNameList(Map<String, Object> map, HttpServletRequest request) {
+	public @ResponseBody List<String> getUserShortNameList(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -527,9 +488,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/getTrainingAttstData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getTrainingAttstData(HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getTrainingAttstData(HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -545,9 +504,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/getTeleworkAttstData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getTeleworkAttstData(HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getTeleworkAttstData(HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -559,9 +516,7 @@ public class AdminController {
 	
 	
 	@RequestMapping(value="/getSCReportData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject  getSCReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getSCReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -571,9 +526,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/getTeleCommuteReportData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject  getTeleCommuteReportData(@RequestParam String teleCommute, @RequestParam(required=false) String fromDate, @RequestParam(required=false) String toDate, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getTeleCommuteReportData(@RequestParam String teleCommute, @RequestParam(required=false) String fromDate, @RequestParam(required=false) String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -583,10 +536,8 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/getUserDetailsData.html")
-	public String getUserDetailsData(@RequestParam("workerId") int workerId, Map<String, Object> map, HttpServletRequest request) {
+	public String getUserDetailsData(@RequestParam("workerId") int workerId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		NyehmsUsersVO userDetailsVO = administrationService.getUserDetailsData(workerId, userObject);
 		map.put("userDetailsVO", userDetailsVO);

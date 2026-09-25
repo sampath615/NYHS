@@ -80,13 +80,11 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/getLabFacilityDetailsPage")
-	public String getLabFacilityDetailsPage(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, @RequestParam String clia) {
+	public String getLabFacilityDetailsPage(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, @RequestParam String clia, UserObject userObject) {
 		
 		LabFacilitiesVO labFacilitiesVO = new LabFacilitiesVO();
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -103,10 +101,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/getLastImportedEclrsDate")
-	public @ResponseBody String getLastImportedEclrsDate(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public @ResponseBody String getLastImportedEclrsDate(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -167,11 +163,9 @@ public class LabReportsController {
 	
 	
 	@RequestMapping("/addLabPermit")
-	public String addLabPermit(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public String addLabPermit(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -190,11 +184,9 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/editLabPermit")
-	public String editLabPermit(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("assignReassignVO") LabPermitsVO labPermitVO) {
+	public String editLabPermit(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("assignReassignVO") LabPermitsVO labPermitVO, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -219,9 +211,7 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/addLabCommunication")
-	public String addLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {	
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public String addLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {	
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");	
@@ -236,9 +226,7 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/updateLabCommunication")
-	public String updateLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String labInteractionId) {
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public String updateLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String labInteractionId, UserObject userObject) {
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");	
@@ -254,11 +242,9 @@ public class LabReportsController {
 	
 	
 	@RequestMapping("/addLabInstrument")
-	public String addLabInstrument(Map<String, Object> map, HttpServletRequest request, @RequestParam long labPermitId, @RequestParam String permitDescription, @RequestParam String permitCode) {
+	public String addLabInstrument(Map<String, Object> map, HttpServletRequest request, @RequestParam long labPermitId, @RequestParam String permitDescription, @RequestParam String permitCode, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -281,11 +267,9 @@ public class LabReportsController {
 	
 	
 	@RequestMapping("/addLabLoinc")
-	public String addLabLoinc(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public String addLabLoinc(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -310,11 +294,9 @@ public class LabReportsController {
 	
 	
 	@RequestMapping("/editLabLoinc")
-	public String editLabLoinc(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public String editLabLoinc(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -338,10 +320,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/addLabLocalCode")
-	public String addLabLocalCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public String addLabLocalCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -370,10 +350,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/addLabLocalTestCode")
-	public String addLabLocalTestCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public String addLabLocalTestCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -404,10 +382,8 @@ public class LabReportsController {
 	
 	@RequestMapping(value="/getFeedbackMedicalReport.html", method = RequestMethod.POST)
 	public String getFeedbackMedicalReport(@RequestParam String  providerId,@RequestParam String  startDate, 
-			@RequestParam String  endDate, HttpServletRequest request, Map<String, Object> map){
+			@RequestParam String  endDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -422,10 +398,8 @@ public class LabReportsController {
 
 
 	@RequestMapping("/getWorkerMetricsReport")
-	public String getWorkerMetricsReport(Map<String, Object> map, HttpServletRequest request) {
+	public String getWorkerMetricsReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -440,10 +414,8 @@ public class LabReportsController {
 
 	
 	@RequestMapping(value="/getMatchedProviderDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getMatchedProviderDetails(Map<String, Object> map, HttpServletRequest request,@RequestParam  String providerName) {
+	public @ResponseBody GridObject getMatchedProviderDetails(Map<String, Object> map, HttpServletRequest request,@RequestParam  String providerName, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -458,10 +430,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/changeCliaForPfi.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> changeCliaForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String clia, @RequestParam String pfi) {
+	public @ResponseBody Map<Object, Object> changeCliaForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String clia, @RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -475,10 +445,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/getLoincsForPfi.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getLoincsForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String pfi) {
+	public @ResponseBody List<String> getLoincsForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -490,10 +458,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/getLoincReferenceValues.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody JSONObject getLoincReferenceValues(Map<String, Object> map, HttpServletRequest request,@RequestParam  String loincCode) {
+	public @ResponseBody JSONObject getLoincReferenceValues(Map<String, Object> map, HttpServletRequest request,@RequestParam  String loincCode, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -509,10 +475,9 @@ public class LabReportsController {
 	
 	
 	@RequestMapping("/getLabReports")
-	public String getLabReports(Map<String, Object> map, HttpServletRequest request) {
+	public String getLabReports(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -547,10 +512,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/getClinicalLaboratoriesWithFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getClinicalLaboratoriesWithFacilities(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO, @RequestParam String clia) {
+	public @ResponseBody GridObject getClinicalLaboratoriesWithFacilities(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO, @RequestParam String clia, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -565,10 +528,9 @@ public class LabReportsController {
 
 	
 	@RequestMapping(value="/getLabDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody LabDetailsVO getLabDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public @ResponseBody LabDetailsVO getLabDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -592,10 +554,8 @@ public class LabReportsController {
 	}
 
 	@RequestMapping(value="/updateLabPermitDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabPermitDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO) {
+	public @ResponseBody Map<Object, Object> updateLabPermitDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -611,10 +571,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addNewContactToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewContactToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO) {
+	public @ResponseBody Map<Object, Object> addNewContactToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -631,10 +589,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/addNewSubmissionTypeToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewSubmissionTypeToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO) {
+	public @ResponseBody Map<Object, Object> addNewSubmissionTypeToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -651,10 +607,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/updateLabSubmissionTypeDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabSubmissionTypeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO) {
+	public @ResponseBody Map<Object, Object> updateLabSubmissionTypeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -670,10 +624,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/updateLabContactDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabContactDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO) {
+	public @ResponseBody Map<Object, Object> updateLabContactDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -689,10 +641,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/updateLabCommunicationDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabCommunicationDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO) {
+	public @ResponseBody Map<Object, Object> updateLabCommunicationDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -703,10 +653,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/loadPFIContacts.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> loadPFIContacts(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public @ResponseBody List<JSONObject> loadPFIContacts(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -722,10 +670,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/loadPFISubmissionTypesDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> loadPFISubmissionTypesDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public @ResponseBody List<JSONObject> loadPFISubmissionTypesDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -744,10 +690,8 @@ public class LabReportsController {
 	
 
 	@RequestMapping(value="/updateLabInstrumentDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabInstrumentDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInstrumentDetailsVO") LabInstrumentDetailsVO labInstrumentDetailsVO) {
+	public @ResponseBody Map<Object, Object> updateLabInstrumentDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInstrumentDetailsVO") LabInstrumentDetailsVO labInstrumentDetailsVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -763,10 +707,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/updateLabLoincCodeDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabLoincCodeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public @ResponseBody Map<Object, Object> updateLabLoincCodeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -784,10 +726,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/updateLabLocalCodeDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabLocalCodeDetails(@ModelAttribute("labLocalCodesMappingVO") LabLocalCodesMappingVO labLocalCodesMappingVO, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> updateLabLocalCodeDetails(@ModelAttribute("labLocalCodesMappingVO") LabLocalCodesMappingVO labLocalCodesMappingVO, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -803,10 +743,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/updateLabLocalCodeLoincDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabLocalCodeLoincDetails(@ModelAttribute("labLocalCodesMappingVO") LabLoincMappingVO labLoincMappingVO, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> updateLabLocalCodeLoincDetails(@ModelAttribute("labLocalCodesMappingVO") LabLoincMappingVO labLoincMappingVO, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -821,10 +759,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/updateLabLocalCodeMappingDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabLocalCodeMappingDetails(@ModelAttribute("labTestMappingVO") LabTestMappingVO labTestMappingVO, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> updateLabLocalCodeMappingDetails(@ModelAttribute("labTestMappingVO") LabTestMappingVO labTestMappingVO, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -841,10 +777,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addNewPermitToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewPermitToFacility(HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO ) {
+	public @ResponseBody Map<Object, Object> addNewPermitToFacility(HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO , UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -859,10 +793,8 @@ public class LabReportsController {
 	}
 
 	@RequestMapping(value="/addNewCommunicationToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewCommunicationToFacility(HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO ) {
+	public @ResponseBody Map<Object, Object> addNewCommunicationToFacility(HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO , UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -874,10 +806,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/addNewInstrumentToPermit.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewInstrumentToPermit(@RequestParam long labPermitId,@RequestParam long instrumentId, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> addNewInstrumentToPermit(@RequestParam long labPermitId,@RequestParam long instrumentId, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -893,10 +823,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addNewLabLoincToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public @ResponseBody Map<Object, Object> addNewLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -908,10 +836,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/updateLabLoincToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public @ResponseBody Map<Object, Object> updateLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -923,10 +849,8 @@ public class LabReportsController {
 	}
 
 	@RequestMapping(value="/addNewLabTestToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewLabTestToFacility(@RequestParam long localCodeMapId, @RequestParam  String testDescription, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> addNewLabTestToFacility(@RequestParam long localCodeMapId, @RequestParam  String testDescription, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -939,10 +863,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addNewLabLocalCodeToFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewLabLocalCodeToFacility(@RequestParam String pfi,@RequestParam  String localCode,@RequestParam("loincCodes[]")  long[] loincCodes, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> addNewLabLocalCodeToFacility(@RequestParam String pfi,@RequestParam  String localCode,@RequestParam("loincCodes[]")  long[] loincCodes, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -959,10 +881,8 @@ public class LabReportsController {
 	
 
 	@RequestMapping(value="/updateLoincDetailsOfLocalCode.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLoincDetailsOfLocalCode(@RequestParam long localCodeMapId,@RequestParam  String pfi,@RequestParam("loincCodes[]")  long[] loincCodes, HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> updateLoincDetailsOfLocalCode(@RequestParam long localCodeMapId,@RequestParam  String pfi,@RequestParam("loincCodes[]")  long[] loincCodes, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -977,10 +897,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/saveLabFacilityDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> saveLabFacilityDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO) {
+	public @ResponseBody Map<Object, Object> saveLabFacilityDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -992,10 +910,8 @@ public class LabReportsController {
 	}
 
 	@RequestMapping(value="/getInteractionHistory.html", method = RequestMethod.POST)
-	public String getInteractionHistory(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public String getInteractionHistory(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1012,10 +928,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/getLabInteractionHistoryData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<LabInteractionHistoryVO> getLabInteractionHistoryData(HttpServletRequest request, @RequestParam String pfi){
+	public @ResponseBody List<LabInteractionHistoryVO> getLabInteractionHistoryData(HttpServletRequest request, @RequestParam String pfi, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1027,10 +941,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/getLabCommunicationHistoryData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<LabInteractionHistoryVO> getLabCommunicationHistoryData(HttpServletRequest request, @RequestParam String pfi){
+	public @ResponseBody List<LabInteractionHistoryVO> getLabCommunicationHistoryData(HttpServletRequest request, @RequestParam String pfi, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1043,10 +955,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addLabInteractionNotes.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addLabInteractionNotes(HttpServletRequest request, @RequestParam String pfi, @RequestParam String interactionNotes, @RequestParam String interactionContactType){
+	public @ResponseBody Map<Object, Object> addLabInteractionNotes(HttpServletRequest request, @RequestParam String pfi, @RequestParam String interactionNotes, @RequestParam String interactionContactType, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1056,10 +966,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/addNewAlternativeContact.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewAlternativeContact(HttpServletRequest request, @RequestParam String pfi, @RequestParam String alternativeContactName, @RequestParam String alternativeContactPhone, @RequestParam String alternativeContactEmail, @RequestParam String alternativeContactFax){
+	public @ResponseBody Map<Object, Object> addNewAlternativeContact(HttpServletRequest request, @RequestParam String pfi, @RequestParam String alternativeContactName, @RequestParam String alternativeContactPhone, @RequestParam String alternativeContactEmail, @RequestParam String alternativeContactFax, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1072,10 +980,8 @@ public class LabReportsController {
 	
 
 	@RequestMapping(value="/addLabDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addLabDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia) {
+	public @ResponseBody Map<Object, Object> addLabDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1102,10 +1008,8 @@ public class LabReportsController {
 
 	
 	@RequestMapping(value="/getClinicalLabarotories.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getClinicalLabarotories(Map<String, Object> map, HttpServletRequest request) {
+	public @ResponseBody GridObject getClinicalLabarotories(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1120,10 +1024,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/getFacilitiesDataForClia.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getFacilitiesDataForClia(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia) {
+	public @ResponseBody GridObject getFacilitiesDataForClia(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1139,10 +1041,8 @@ public class LabReportsController {
 	
 
 	@RequestMapping(value="/checkPFIExistence.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> checkPFIExistence(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi) {
+	public @ResponseBody Map<Object, Object> checkPFIExistence(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1154,10 +1054,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/deleteContactForPFI.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> deleteContactForPFI(Map<String, Object> map, HttpServletRequest request, @RequestParam String contactId) {
+	public @ResponseBody Map<Object, Object> deleteContactForPFI(Map<String, Object> map, HttpServletRequest request, @RequestParam String contactId, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1171,10 +1069,8 @@ public class LabReportsController {
 
 	@RequestMapping(value="/deleteSubmissionType.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> deleteSubmissionType(Map<String, Object> map, HttpServletRequest request, @RequestParam String submissionTypeId, 
-			@RequestParam String pfi) {
+			@RequestParam String pfi, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1197,10 +1093,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/loadMultiSpotDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<Map<String, Object>> loadMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, @RequestParam String loincs) {
+	public @ResponseBody List<Map<String, Object>> loadMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, @RequestParam String loincs, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1211,10 +1105,8 @@ public class LabReportsController {
 	
 	
 	@RequestMapping(value="/processMultiSpotDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> processMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam("multiSpotDocuments[]")  int[] multiSpotDocuments, @RequestParam int retainDocumentId, @RequestParam int loincGroupId) {
+	public @ResponseBody Map<Object, Object> processMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam("multiSpotDocuments[]")  int[] multiSpotDocuments, @RequestParam int retainDocumentId, @RequestParam int loincGroupId, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1232,9 +1124,7 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping(value="/getNycNysLabCommReportData.json", method = RequestMethod.GET,  produces = "application/json")
-	public @ResponseBody List<LabOpsReportsVO> getNycNysLabCommReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String nycServiceFlag, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<LabOpsReportsVO> getNycNysLabCommReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String nycServiceFlag, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -1244,10 +1134,8 @@ public class LabReportsController {
 	}
 	
 	@RequestMapping("/labListByApprovalStatus")
-	public String labListByApprovalStatus(Map<String, Object> map, HttpServletRequest request) {
+	public String labListByApprovalStatus(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -1261,10 +1149,8 @@ public class LabReportsController {
 	}	
 	
 	@RequestMapping(value="/getLabListByApporvalStatusData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getLabListByApporvalStatusData(HttpServletRequest request, @RequestParam String approvalStatus){
+	public @ResponseBody GridObject getLabListByApporvalStatusData(HttpServletRequest request, @RequestParam String approvalStatus, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
@@ -1282,10 +1168,8 @@ public class LabReportsController {
 	}	
 	
 	@RequestMapping(value="/loadCountOfLabsByApporvalStatusData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getCountOfLabsByApporvalStatusData(HttpServletRequest request){
+	public @ResponseBody GridObject getCountOfLabsByApporvalStatusData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

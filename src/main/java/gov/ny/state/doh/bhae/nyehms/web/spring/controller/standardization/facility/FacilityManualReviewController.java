@@ -25,9 +25,7 @@ public class FacilityManualReviewController {
 	@Autowired
 	GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object,Object> matchRawFacility(long newRawFacilityId,long matchingRawFacilityId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object,Object> matchRawFacility(long newRawFacilityId,long matchingRawFacilityId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		facilityManualReviewService.matchRawFacility(newRawFacilityId, matchingRawFacilityId, bindingResult, userObject);
@@ -35,9 +33,7 @@ public class FacilityManualReviewController {
 	}
 	
 	@RequestMapping(value="/unMatchRawFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object,Object> unMatchRawFacility(long newRawFacilityId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object,Object> unMatchRawFacility(long newRawFacilityId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		facilityManualReviewService.unMatchRawFacility(newRawFacilityId, bindingResult, userObject);
@@ -45,9 +41,7 @@ public class FacilityManualReviewController {
 	}
 	
 	@RequestMapping(value="/getPotentialRawFacList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getPotentialRawFacList(long rawFacilityId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getPotentialRawFacList(long rawFacilityId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(facilityManualReviewService.getFacilityDetailsForManualReview(rawFacilityId, bindingResult, userObject));

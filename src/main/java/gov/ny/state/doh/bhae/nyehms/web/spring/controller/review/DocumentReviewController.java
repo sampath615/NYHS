@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,10 +87,8 @@ public class DocumentReviewController {
 	
 	
 	@RequestMapping("/getAssignmentsReview")
-	public String getAssignmentsReview(Map<String, Object> map, HttpServletRequest request) {
+	public String getAssignmentsReview(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -121,10 +118,8 @@ public class DocumentReviewController {
 	 * @return List of Document Ids
 	 */
 	@RequestMapping(value="/getprfReviewDocumentsData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getprfReviewDocumentsData(HttpServletRequest request){
+	public @ResponseBody List<JSONObject> getprfReviewDocumentsData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -136,10 +131,8 @@ public class DocumentReviewController {
 	
 
 	@RequestMapping(value="/getStatenoAndSourceCodeFromStdDocData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> getStatenoAndSourceCodeFromStdDocData(@RequestParam String documentType, @RequestParam int documentId, HttpServletRequest request){
+	public @ResponseBody Map<String, String> getStatenoAndSourceCodeFromStdDocData(@RequestParam String documentType, @RequestParam int documentId, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		return commonDocumentService.getStatenoAndSourceCodeFromStdDocData(documentType, documentId, userObject);
 
@@ -149,10 +142,8 @@ public class DocumentReviewController {
 	@RequestMapping(value = "/reviewAndUpdateAndFlagNonAsCaseTheStatusOfClosedAssignment.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> reviewAndUpdateAndFlagNonAsCaseTheStatusOfClosedAssignment(
 			@RequestParam int assignmentId, @RequestParam String status, @RequestParam String colsureCategory,
-			@RequestParam String stateNo, HttpServletRequest request) {
+			@RequestParam String stateNo, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -167,10 +158,8 @@ public class DocumentReviewController {
 	
 	
 	@RequestMapping(value="/agreeAndDeleteDocumentForClosedAssignment.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> agreeAndDeleteDocumentForClosedAssignment(@RequestParam int assignmentId,@RequestParam int documentId, @RequestParam String documentType, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> agreeAndDeleteDocumentForClosedAssignment(@RequestParam int assignmentId,@RequestParam int documentId, @RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -192,10 +181,8 @@ public class DocumentReviewController {
 	 * @return List of Document Ids
 	 */
 	@RequestMapping(value="/loadClosedAssignmentsForReview.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<AssignmentsListVO> loadClosedAssignmentsForReview(HttpServletRequest request, @RequestParam String closureCategory){
+	public @ResponseBody List<AssignmentsListVO> loadClosedAssignmentsForReview(HttpServletRequest request, @RequestParam String closureCategory, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -211,10 +198,8 @@ public class DocumentReviewController {
 	
 	
 	@RequestMapping(value="/updateRawPrfDocument.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateRawPrfDocument(HttpServletRequest request, @ModelAttribute("pRFDocumentVO") PRFDocumentVO pRFDocumentVO, @RequestParam boolean isValidationFailed ){
+	public @ResponseBody Map<Object, Object> updateRawPrfDocument(HttpServletRequest request, @ModelAttribute("pRFDocumentVO") PRFDocumentVO pRFDocumentVO, @RequestParam boolean isValidationFailed , UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -242,10 +227,8 @@ public class DocumentReviewController {
 	}
 	
 	@RequestMapping(value="/deleteRawPrfDoc.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> deleteRawPrfDoc(HttpServletRequest request, @RequestParam int  docId){
+	public @ResponseBody Map<Object, Object> deleteRawPrfDoc(HttpServletRequest request, @RequestParam int  docId, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -258,10 +241,8 @@ public class DocumentReviewController {
 	}
 	
 	@RequestMapping(value="/processRawPrfDoc.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> processRawPrfDoc(HttpServletRequest request, @RequestParam int  docId){
+	public @ResponseBody Map<Object, Object> processRawPrfDoc(HttpServletRequest request, @RequestParam int  docId, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -274,10 +255,8 @@ public class DocumentReviewController {
 	}
 	
 	@RequestMapping(value="/moveRawToStdByStateno.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> moveRawToStdByStateno(@RequestParam int documentId, String stateno, @RequestParam(required = false) String requestComments, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> moveRawToStdByStateno(@RequestParam int documentId, String stateno, @RequestParam(required = false) String requestComments, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -300,10 +279,8 @@ public class DocumentReviewController {
 	 * @return
 	 */
 	@RequestMapping(value="/deleteMultiSpotDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> deleteMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Long[] documentIds, @RequestParam String documentType){
+	public @ResponseBody Map<Object, Object> deleteMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Long[] documentIds, @RequestParam String documentType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -317,12 +294,11 @@ public class DocumentReviewController {
 	
 	
 	@RequestMapping(value="/vlReview")	
-	public String vlReview(HttpServletRequest request, Map<String, Object> map) {
+	public String vlReview(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		
 		
 		List<Map<String, String>> reviewCategories = documentsReviewService.getVlDocumentReviewCategories();
@@ -335,9 +311,8 @@ public class DocumentReviewController {
 	
 	@RequestMapping(value="/getVlStatenosToReview.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody
-	GridObject getVlStatenosToReview(HttpServletRequest request, @RequestParam(required = false) String reviewCategory) {
+	GridObject getVlStatenosToReview(HttpServletRequest request, @RequestParam(required = false) String reviewCategory, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
@@ -352,10 +327,8 @@ public class DocumentReviewController {
 	
 	@RequestMapping(value="/updateVlDocumentStatus.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateVlDocumentStatus(HttpServletRequest request, @RequestParam  String stateno, @RequestParam String reviewCategory,
-			@RequestParam String requestComments){
+			@RequestParam String requestComments, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

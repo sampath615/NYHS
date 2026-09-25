@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +45,11 @@ public class ProviderReportController {
 	private AssignmentService assignmentService;
 
 	@RequestMapping(value = "/getproviderReportsByYear")
-	public String getproviderReportsByYear(Map<String, Object> map, HttpServletRequest request) {
+	public String getproviderReportsByYear(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 		Map<String, String> dummyMindingMap = new HashMap<String, String>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 		
@@ -75,9 +72,7 @@ public class ProviderReportController {
 	
 	@RequestMapping(value = "/getProviderReportByYearData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody  List<JSONObject> getProviderReportByYearData(@RequestParam String caseType, @RequestParam String region,
-			@RequestParam String prfSubmitted, @RequestParam String fromYear, @RequestParam String toYear, @RequestParam String ahi, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String prfSubmitted, @RequestParam String fromYear, @RequestParam String toYear, @RequestParam String ahi, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -86,10 +81,8 @@ public class ProviderReportController {
 
 	
 	@RequestMapping(value = "/getProviderReportsByHivDxDate")
-	public String getProviderReportsByHivDxDate(Map<String, Object> map, HttpServletRequest request) {
+	public String getProviderReportsByHivDxDate(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -101,9 +94,7 @@ public class ProviderReportController {
 	
 	@RequestMapping(value = "/getProviderReportsByHivDxDateData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByHivDxDateData(@RequestParam String fromYear,
-			@RequestParam String toYear, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 
@@ -114,10 +105,8 @@ public class ProviderReportController {
 
 	
 	@RequestMapping(value = "/getProviderReportsByHivDxDateYearly")
-	public String getProviderReportsByHivDxDateYearly(Map<String, Object> map, HttpServletRequest request) {
+	public String getProviderReportsByHivDxDateYearly(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -128,9 +117,7 @@ public class ProviderReportController {
 	
 	@RequestMapping(value = "/getProviderReportsByHivDxDateDataYearly.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByHivDxDateDataYearly(@RequestParam String fromYear,
-			@RequestParam String toYear, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 
@@ -140,10 +127,8 @@ public class ProviderReportController {
 	}
 
 	@RequestMapping(value = "/getProviderReportsByPRFReceived")
-	public String getProviderReportsByPRFReceived(Map<String, Object> map, HttpServletRequest request) {
+	public String getProviderReportsByPRFReceived(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -158,9 +143,7 @@ public class ProviderReportController {
 	
 	@RequestMapping(value = "/getProviderReportsByPRFReceived.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByPRFReceivedData(@RequestParam String fromYear,
-			@RequestParam String toYear, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 
@@ -171,10 +154,8 @@ public class ProviderReportController {
 	}	
 	
 	@RequestMapping(value = "/getProviderReportsByPRFReceivedYearly")
-	public String getProviderReportsByPRFReceivedYearly(Map<String, Object> map, HttpServletRequest request) {
+	public String getProviderReportsByPRFReceivedYearly(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null)
 			userObject = new UserObject();
 
@@ -184,9 +165,7 @@ public class ProviderReportController {
 
 	@RequestMapping(value = "/getProviderReportsByPRFReceivedYearly.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByPRFReceivedYearlyData(@RequestParam String fromYear,
-			@RequestParam String toYear, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 

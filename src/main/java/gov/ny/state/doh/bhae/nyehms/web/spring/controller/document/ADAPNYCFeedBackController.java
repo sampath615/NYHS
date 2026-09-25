@@ -86,9 +86,7 @@ public class ADAPNYCFeedBackController {
 	}	
 	
 	@RequestMapping(value="/getADAPDocumentIdToReview.json",  produces = "application/json")
-	public @ResponseBody Map<String, Object> getADAPDocumentIdToReview(HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<String, Object> getADAPDocumentIdToReview(HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
@@ -98,9 +96,7 @@ public class ADAPNYCFeedBackController {
 	}
 	
 	@RequestMapping(value="/updateNYCADAPDocumentMatchStatus.json",  produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateNYCADAPDocumentMatchStatus(HttpServletRequest request, @RequestParam int documentId, @RequestParam String reviewCd, @RequestParam(required = false) String cityno, @RequestParam(required = false) String comments){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object, Object> updateNYCADAPDocumentMatchStatus(HttpServletRequest request, @RequestParam int documentId, @RequestParam String reviewCd, @RequestParam(required = false) String cityno, @RequestParam(required = false) String comments, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
@@ -110,9 +106,7 @@ public class ADAPNYCFeedBackController {
 	}
 	
 	@RequestMapping(value="/checkCityNoExists.json",  produces = "application/json")
-	public @ResponseBody Map<Object, Object> checkCityNoExists(HttpServletRequest request, @RequestParam String cityno){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object, Object> checkCityNoExists(HttpServletRequest request, @RequestParam String cityno, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
@@ -135,10 +129,9 @@ public class ADAPNYCFeedBackController {
 			Map<String, Object> pMap,
 			@RequestParam int documentId,
 			@RequestParam String origin,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -308,7 +301,7 @@ public class ADAPNYCFeedBackController {
 	public ModelAndView generateNYCFileSummary(
 			@RequestParam String fileName, 
 			HttpServletRequest request, 
-			HttpServletResponse response)
+			HttpServletResponse response, UserObject userObject)
 	{
 		
 		Cookie myCookie =
@@ -316,8 +309,6 @@ public class ADAPNYCFeedBackController {
 		
 		response.addCookie(myCookie);
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -388,10 +379,8 @@ public class ADAPNYCFeedBackController {
 	
 	
 	@RequestMapping(value="/uploadNYCReturnFileData", method = RequestMethod.POST)
-	public String  uploadNYCReturnFileData(HttpServletRequest request, @RequestParam("uploadedFile") MultipartFile uploadedFile, Map<Object, Object> map){
+	public String  uploadNYCReturnFileData(HttpServletRequest request, @RequestParam("uploadedFile") MultipartFile uploadedFile, Map<Object, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		

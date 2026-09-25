@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +52,8 @@ public class PSMessageController {
 	 */
 	@RequestMapping(value="/getPsMessageReviewDocuments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getPsMessageReviewDocuments(HttpServletRequest request, @RequestParam String RESOLVED_STATUS, @RequestParam String PARAMETER_NAME,
-			@RequestParam String MSG_TYPE_NAME){
+			@RequestParam String MSG_TYPE_NAME, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -69,10 +66,8 @@ public class PSMessageController {
 	
 	@RequestMapping(value="/updatePsMessageReviewStatus.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updatePsMessageReviewStatus(HttpServletRequest request, 
-			@RequestParam  long triggerDocId, @RequestParam String actionName, @RequestParam String comments){
+			@RequestParam  long triggerDocId, @RequestParam String actionName, @RequestParam String comments, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -83,10 +78,8 @@ public class PSMessageController {
 	}
 	
 	@RequestMapping(value="/savePSMessageComments.json", method = RequestMethod.POST, produces = "application/json")	
-	public @ResponseBody List<Map<String, String>> savePSMessageComments(HttpServletRequest request, @RequestParam String comments, @RequestParam Integer DOCUMENT_ID)
+	public @ResponseBody List<Map<String, String>> savePSMessageComments(HttpServletRequest request, @RequestParam String comments, @RequestParam Integer DOCUMENT_ID, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		List<Map<String, String>> psMessageCommentList = psMessageReviewService.savePSMessageComments(comments, DOCUMENT_ID, userObject);
 		
@@ -94,10 +87,8 @@ public class PSMessageController {
 	}
 
 	@RequestMapping(value="/saveLaftMessageComments.json", method = RequestMethod.POST, produces = "application/json")	
-	public @ResponseBody List<Map<String, String>> saveLAFTMessageComments(HttpServletRequest request, @RequestParam String comments, @RequestParam String reason, @RequestParam Integer document_id)
+	public @ResponseBody List<Map<String, String>> saveLAFTMessageComments(HttpServletRequest request, @RequestParam String comments, @RequestParam String reason, @RequestParam Integer document_id, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		List<Map<String, String>> laftMsgCommentReason = psMessageReviewService.saveLAFTMessageComments(comments, reason, document_id, userObject);
 		
@@ -118,10 +109,8 @@ public class PSMessageController {
 		
 		
 		@RequestMapping(value="/psMessageReport/{reportType}")
-	public String psDispositionReport(Map<String, Object> map, HttpServletRequest request, @PathVariable String reportType) {
+	public String psDispositionReport(Map<String, Object> map, HttpServletRequest request, @PathVariable String reportType, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -145,10 +134,8 @@ public class PSMessageController {
 	}
 	
 	@RequestMapping(value="/getPSDispositionReport.json", method = RequestMethod.POST)
-	public @ResponseBody List<Map<String, String>>  getPSDispositionReport(@RequestParam String messageType, @RequestParam String messageCounty, @RequestParam String messageDisposition, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody List<Map<String, String>>  getPSDispositionReport(@RequestParam String messageType, @RequestParam String messageCounty, @RequestParam String messageDisposition, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -159,10 +146,8 @@ public class PSMessageController {
 	}
 	
 	@RequestMapping(value="/getPSOOCExpsReport.json", method = RequestMethod.POST)
-	public @ResponseBody List<Map<String, String>>  getPSOOCExpsReport(@RequestParam String messageCounty,  @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody List<Map<String, String>>  getPSOOCExpsReport(@RequestParam String messageCounty,  @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -175,10 +160,8 @@ public class PSMessageController {
 	
 	
 	@RequestMapping(value="/getPSMessageReportMatrix.html", method = RequestMethod.POST)
-	public @ResponseBody String  getPSMessageReportMatrix(@RequestParam String reportType, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody String  getPSMessageReportMatrix(@RequestParam String reportType, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -189,10 +172,8 @@ public class PSMessageController {
 	}
 	
 	@RequestMapping(value="/generatePSMessageReportSpreadsheet.xlsx", method = RequestMethod.GET)
-	public ModelAndView  generatePSMessageReportSpreadsheet(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String reportType, @RequestParam String fromDate, @RequestParam String toDate){
+	public ModelAndView  generatePSMessageReportSpreadsheet(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String reportType, @RequestParam String fromDate, @RequestParam String toDate, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -211,10 +192,8 @@ public class PSMessageController {
 			@RequestParam String messageCounty, @RequestParam String fromDate, @RequestParam String toDate, 
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			Map<String, Object> map) {
+			Map<String, Object> map, UserObject userObject) {
 		
-			HttpSession session = request.getSession();
-			UserObject userObject=(UserObject)session.getAttribute("UserObj");
 			Map<Object, Object> targetMap= new HashMap<Object, Object>();
 			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 			

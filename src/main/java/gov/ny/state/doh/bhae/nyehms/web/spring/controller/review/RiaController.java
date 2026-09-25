@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/riaReport/{reportType}")	
-	public String riaEligiblityReport(HttpServletRequest request, Map<String, Object> map, @PathVariable String reportType) {
+	public String riaEligiblityReport(HttpServletRequest request, Map<String, Object> map, @PathVariable String reportType, UserObject userObject) {
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
@@ -75,8 +74,6 @@ public class RiaController {
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<String, String> countyMap=commonService.getCountyCodes(bindingResult, userObject, request.getSession().getId());
 		map.put("countyMap", countyMap);
@@ -93,7 +90,7 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/riaReportByFollowup")	
-	public String riaReportByFollowup(HttpServletRequest request, Map<String, Object> map) {
+	public String riaReportByFollowup(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
@@ -101,8 +98,6 @@ public class RiaController {
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<String, String> countyMap=commonService.getCountyCodes(bindingResult, userObject, request.getSession().getId());
 		map.put("countyMap", countyMap);
@@ -119,10 +114,8 @@ public class RiaController {
 	
 	
 	@RequestMapping(value = "/getRiaEligibilityReport.html")
-	public String getRiaEligibilityReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String reportType, Map<String, Object> map, HttpServletRequest request)
+	public String getRiaEligibilityReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String reportType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -135,10 +128,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value = "/getRiaFollowUpReport.html")
-	public String getRiaFollowUpReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request)
+	public String getRiaFollowUpReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -151,10 +142,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value = "/getRiaTreatmentReport.html")
-	public String getRiaTreatmentReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request)
+	public String getRiaTreatmentReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -177,10 +166,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/getRiaEligibilityRecordsByReport.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getRiaEligibilityRecordsByReport(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE){
+	public @ResponseBody List<JSONObject> getRiaEligibilityRecordsByReport(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -191,10 +178,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/getRiaReportByFollowup.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getRiaReportByFollowup(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE){
+	public @ResponseBody List<JSONObject> getRiaReportByFollowup(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -205,10 +190,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/getRiaReportByTreatment.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getRiaReportByTreatment(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE){
+	public @ResponseBody List<JSONObject> getRiaReportByTreatment(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -224,10 +207,8 @@ public class RiaController {
 	
 	
 	@RequestMapping(value="/getRiaRecordsForReview.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getRiaRecordsForReview(HttpServletRequest request, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE){
+	public @ResponseBody List<JSONObject> getRiaRecordsForReview(HttpServletRequest request, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -238,10 +219,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value = "/getRiaDoc.html")
-	public String getRiaDoc(@RequestParam int docId, @RequestParam(required=false) String actionType, Map<String, Object> map, HttpServletRequest request)
+	public String getRiaDoc(@RequestParam int docId, @RequestParam(required=false) String actionType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -298,9 +277,7 @@ public class RiaController {
 	public @ResponseBody
 	Map<Object, Object> updateRiaDocData(@RequestParam Map<String, String> data,  @RequestParam Integer DOCUMENT_ID,
 			@ModelAttribute("riaDocVO") RiaDocVO riaDocVO,
-			HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			HttpServletRequest request, UserObject userObject) {
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -314,11 +291,9 @@ public class RiaController {
 	public @ResponseBody
 	Map<Object, Object> closeRiaDoc(@RequestParam Integer DOCUMENT_ID,
 			@ModelAttribute("riaDocVO") RiaDocVO riaDocVO,
-			HttpServletRequest request) {
+			HttpServletRequest request, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -337,20 +312,16 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/verifyRiaActivity.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> verifyRiaActivity(@RequestParam Integer DOCUMENT_ID, HttpServletRequest request){
+	public @ResponseBody Map<String, String> verifyRiaActivity(@RequestParam Integer DOCUMENT_ID, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		return riaReviewService.verifyRiaActivity(DOCUMENT_ID, userObject);
 		
 	}
 	
 	@RequestMapping(value="/statenosFlaggedForRia.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, Object> statenosFlaggedForRia(@RequestParam String stateno1, @RequestParam String stateno2, HttpServletRequest request){
+	public @ResponseBody Map<String, Object> statenosFlaggedForRia(@RequestParam String stateno1, @RequestParam String stateno2, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		
 		return riaReviewService.statenosFlaggedForRia(stateno1, stateno2, userObject);
 		
@@ -361,10 +332,8 @@ public class RiaController {
 	@RequestMapping(value="/getRiaDocActivity.html", method = RequestMethod.POST)	
 	public String getRiaDocActivity(Map<String, Object> map,
 			@RequestParam Integer DOCUMENT_ID ,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -377,10 +346,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/riaActivityReport")
-	public String riaActivityReport(Map<String, Object> map, HttpServletRequest request) {
+	public String riaActivityReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		return "reports/ria/RiaActivityReport";
@@ -388,10 +355,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/getRiaActivityReportData.json", method = RequestMethod.GET)
-	public @ResponseBody List<Map<String, String>>  getRiaActivityReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody List<Map<String, String>>  getRiaActivityReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -402,10 +367,8 @@ public class RiaController {
 	}
 	
 	@RequestMapping(value="/generateRiaActivityReportData.xlsx", method = RequestMethod.GET)
-	public ModelAndView  generateRiaActivityReportData(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String fromDate, @RequestParam String toDate){
+	public ModelAndView  generateRiaActivityReportData(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, @RequestParam String fromDate, @RequestParam String toDate, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -442,10 +405,8 @@ public class RiaController {
 	
 	@RequestMapping(value = "/riaNoLinkedtoCareDataReport.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getRiaNoLinkedtoCareDataReport(@RequestParam String riaFlaggedFromDate,
-			@RequestParam String riaFlaggedToDate, HttpServletRequest request, Map<String, Object> map) {
+			@RequestParam String riaFlaggedToDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,24 +45,20 @@ public class UnStandardizedProviderController {
 	 * @return result after the transaction   
 	 */
 	@RequestMapping(value="/flagProviderDataAsFacilty.json", method=RequestMethod.POST,produces = "application/json") 
-	public @ResponseBody Map<Object,Object> flagProviderDataAsFacilty(@RequestParam long providerId,HttpServletRequest request){
+	public @ResponseBody Map<Object,Object> flagProviderDataAsFacilty(@RequestParam long providerId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		unStandardizedProviderService.flagProviderDataAsFacilty(providerId,bindingResult,userObject);
 		return targetMap;
 	}
 
 	@RequestMapping(value="/flagSelectedRawProviderAsFacilty.json", method=RequestMethod.POST,produces = "application/json") 
-	public @ResponseBody Map<Object,Object> flagSelectedRawProviderAsFacilty(@RequestParam("selectedRowIds[]") String[] selectedRowIds,HttpServletRequest request){
+	public @ResponseBody Map<Object,Object> flagSelectedRawProviderAsFacilty(@RequestParam("selectedRowIds[]") String[] selectedRowIds,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		unStandardizedProviderService.flagSelectedRawProviderAsFacilty(selectedRowIds,bindingResult,userObject);
 		return targetMap;
@@ -88,9 +83,7 @@ public class UnStandardizedProviderController {
 
 	@RequestMapping(value="/getSrchProviderDetailsWithAddressList.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getSrchProviderDetailsWithAddressList(@ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO 
-			,@RequestParam int searchFor, @RequestParam String searchFromNPI, HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+			,@RequestParam int searchFor, @RequestParam String searchFromNPI, HttpServletRequest request, UserObject userObject){
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,7 @@ public class ProviderPortalReportController {
 	}
 	
 	@RequestMapping(value="/getProvPortalSNPReportData.json", method = RequestMethod.GET,  produces = "application/json")
-	public @ResponseBody List<ProvPortalSubmissionReportVO> getProvPortalSNPReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String provId, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<ProvPortalSubmissionReportVO> getProvPortalSNPReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String provId, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
@@ -65,9 +62,7 @@ public class ProviderPortalReportController {
 	
 	@RequestMapping(value="/getProvPortalOOCDNLTCReportData.json", method = RequestMethod.GET)
 	public @ResponseBody ProvPortalReportVO getProvPortalOOCDNLTCReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String provId, 
-																			@RequestParam String portalFileType, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+																			@RequestParam String portalFileType, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		

@@ -104,12 +104,11 @@ public class SearchEngineController {
 			@RequestParam String sidx, 
 			@RequestParam String sord,
 			@ModelAttribute("searchPersonCriteriaVO") SearchPersonCriteriaVO searchPersonCriteriaVO,
-			@RequestParam int rows, @RequestParam int page)
+			@RequestParam int rows, @RequestParam int page, UserObject userObject)
 	{
 		boolean isExistingSearch  = false;
 		Random randomNumber = new Random();
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

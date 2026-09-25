@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,7 +177,7 @@ public class LabProficiencyController {
      */
     @RequestMapping(value = "/updateProficiencyFilterData", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    String updateProficiencyFilterData(HttpServletRequest request, @RequestParam String filterType) {
+    String updateProficiencyFilterData(HttpServletRequest request, @RequestParam String filterType, UserObject userObject) {
 
         String jsonStr = "";
         String filterActive = "";
@@ -194,8 +193,6 @@ public class LabProficiencyController {
         // get the workerID
 
         String workerId = "";
-        HttpSession session = request.getSession();
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         workerId = Integer.toString(userObject.getWorkerId());
 
         String result = "";
@@ -229,7 +226,7 @@ public class LabProficiencyController {
      */
     @RequestMapping(value = "/addProficiencyFilterData", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    String addProficiencyFilterData(HttpServletRequest request, @RequestParam String filterType) {
+    String addProficiencyFilterData(HttpServletRequest request, @RequestParam String filterType, UserObject userObject) {
 
         String jsonStr = "";
 
@@ -240,8 +237,6 @@ public class LabProficiencyController {
         // get the workerID
 
         String workerId = "";
-        HttpSession session = request.getSession();
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         workerId = Integer.toString(userObject.getWorkerId());
 
         String result = "";
@@ -257,10 +252,8 @@ public class LabProficiencyController {
     
     @RequestMapping(value = "/getProfieciencyFilteredata.json", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody
-    List<JSONObject> getProfieciencyFilteredata(HttpServletRequest request, @RequestParam  String pfi, @RequestParam String filterNumber) {
+    List<JSONObject> getProfieciencyFilteredata(HttpServletRequest request, @RequestParam  String pfi, @RequestParam String filterNumber, UserObject userObject) {
 
-        HttpSession session = request.getSession();
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
        
        
         
@@ -276,12 +269,10 @@ public class LabProficiencyController {
     
     @RequestMapping(value = "/getDataWithCustomProfieciencyFilter.json", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    List<JSONObject> getDataWithCustomProfieciencyFilter(HttpServletRequest request, @RequestParam String pfi) {
+    List<JSONObject> getDataWithCustomProfieciencyFilter(HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
     	
     	
-        HttpSession session = request.getSession();
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
        
         JsonParser parser = new JsonParser();
         JsonArray facilityDetails = (JsonArray)parser.parse(request.getParameter("filterCriteriaData"));

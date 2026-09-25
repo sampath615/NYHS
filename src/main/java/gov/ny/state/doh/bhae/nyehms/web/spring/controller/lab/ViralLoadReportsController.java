@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +43,8 @@ public class ViralLoadReportsController {
 
 	
 	@RequestMapping(value="/ndvlReport")
-	public String getNdvlReport(Map<String, Object> map, HttpServletRequest request) {
+	public String getNdvlReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
@@ -74,10 +71,8 @@ public class ViralLoadReportsController {
 			produces = "application/json")
 	public @ResponseBody List<JSONObject> getVLObxNotes(
 			@RequestParam String stateno ,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return viralLoadReportsService.getVLObxNotes(stateno, bindingResult, userObject);
@@ -85,10 +80,8 @@ public class ViralLoadReportsController {
 	
 	
 	@RequestMapping(value="/vlReport")
-	public String getVlReport(Map<String, Object> map, HttpServletRequest request) {
+	public String getVlReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		return "reports/lab/vlReport";
@@ -96,10 +89,8 @@ public class ViralLoadReportsController {
 	}
 	
 	@RequestMapping(value="/loadNdvlReportData.json", method = RequestMethod.POST)
-	public @ResponseBody List<JSONObject>  loadNdvlReportData(HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody List<JSONObject>  loadNdvlReportData(HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -110,10 +101,8 @@ public class ViralLoadReportsController {
 	}
 	
 	@RequestMapping(value="/generateLoadNdvlReportData.xlsx", method = RequestMethod.GET)
-	public ModelAndView  generateLoadNdvlReportData(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  generateLoadNdvlReportData(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -130,10 +119,8 @@ public class ViralLoadReportsController {
 	}
 	
 	@RequestMapping(value="/noAdditionalLabReport")
-	public String noAdditionalLabReport(Map<String, Object> map, HttpServletRequest request) {
+	public String noAdditionalLabReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		return "reports/lab/NoAdditionalLab";
@@ -141,10 +128,8 @@ public class ViralLoadReportsController {
 	}
 	
 	@RequestMapping(value="/getNoAdditionalReportData.json", method = RequestMethod.POST)
-	public @ResponseBody List<JSONObject>  getNoAdditionalReportData(@RequestParam String dateRange, HttpServletRequest request, Map<String, Object> map){
+	public @ResponseBody List<JSONObject>  getNoAdditionalReportData(@RequestParam String dateRange, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();

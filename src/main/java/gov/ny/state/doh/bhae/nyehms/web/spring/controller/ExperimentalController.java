@@ -42,9 +42,7 @@ public class ExperimentalController {
 	private static Logger log = LoggerFactory.getLogger(ExperimentalController.class);
 
 	@RequestMapping(value = "/experimentHome")
-	public String experimentHome(HttpServletRequest request, Map<String, String> map) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String experimentHome(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -66,9 +64,7 @@ public class ExperimentalController {
 	}
 
 	@RequestMapping(value = "/experiment1")
-	public String experiment1(HttpServletRequest request, Map<String, String> map) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String experiment1(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -87,9 +83,7 @@ public class ExperimentalController {
 	}
 
 	@RequestMapping(value = "/experiment2")
-	public String experiment2(HttpServletRequest request, HttpServletResponse response, Map<String, String> map) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String experiment2(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -124,10 +118,9 @@ public class ExperimentalController {
 	 */
 
 	@RequestMapping(value = "/hitracecodemapper")
-	public String hitracecodemapper(HttpServletRequest request, HttpServletResponse response, Map<String, String> map) {
+	public String hitracecodemapper(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -159,10 +152,9 @@ public class ExperimentalController {
 	}
 
 	@RequestMapping(value = "/hiterrorreprise")
-	public String hiterrorreprise(HttpServletRequest request, HttpServletResponse response, Map<String, String> map) {
+	public String hiterrorreprise(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -195,9 +187,7 @@ public class ExperimentalController {
 
 	@RequestMapping(value = "/getHitRaceValue.json") // , produces ="application/json")
 	public @ResponseBody Map<Object, Object> getHitRaceValue(HttpServletRequest request,
-			@RequestParam String parameterName) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String parameterName, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Integer statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -225,10 +215,8 @@ public class ExperimentalController {
 	@RequestMapping(value = "/updateHitRaceValue.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateHitRaceValue(HttpServletRequest request, Map<String, Object> map,
 			@RequestParam String parameterName, @RequestParam("parameterValue1[]")  String[] parameterValue1,//@RequestParam String parameterValue1,
-			@RequestParam String parameterValue2) {
+			@RequestParam String parameterValue2, UserObject userObject) {
 		String UserId = new String();
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if(userObject !=null) {
 			UserId = userObject.getUserId();
 		}
@@ -252,10 +240,8 @@ public class ExperimentalController {
 	}
 	
 	@RequestMapping(value="/updateHitDocumentsStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateHitDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam String documentType, @RequestParam String actionName, @RequestParam(value="notes", required = false) String notes){
+	public @ResponseBody Map<Object, Object> updateHitDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam String documentType, @RequestParam String actionName, @RequestParam(value="notes", required = false) String notes, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -265,10 +251,8 @@ public class ExperimentalController {
 	}
 	
 	@RequestMapping(value="/updateHitErrorComments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> updateHitErrorComments(HttpServletRequest request, @RequestParam long id, @RequestParam String NOTES){	
+	public @ResponseBody  Map<Object, Object> updateHitErrorComments(HttpServletRequest request, @RequestParam long id, @RequestParam String NOTES, UserObject userObject){	
 		System.out.println("Code is working here");
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");		
 		hitCommonDocumentService.updateHitErrorComments(id, NOTES, bindingResult, userObject);		
@@ -314,12 +298,10 @@ public class ExperimentalController {
 	}
 
 	@RequestMapping(value = "/getCcdTable.html")
-	public @ResponseBody String getCcdTableRows(HttpServletRequest request, Map<String, String> map) throws Exception {
+	public @ResponseBody String getCcdTableRows(HttpServletRequest request, Map<String, String> map, UserObject userObject) throws Exception {
 		log.error("Made it to /getCcdTable.html");
 		String docId = request.getParameter("docId");
 		String table = request.getParameter("table");
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -379,9 +361,7 @@ public class ExperimentalController {
 	}
 
 	@RequestMapping(value = "/experiment3")
-	public String experiment3(HttpServletRequest request, Map<String, String> map) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String experiment3(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -415,10 +395,8 @@ public class ExperimentalController {
 	 * @return the jsp path of the returned page.
 	 */
 	@RequestMapping(value = "/simplestManualQuartzJob")
-	public String simplestManualQuartzJob(HttpServletRequest request, Map<String, String> map) {
+	public String simplestManualQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions

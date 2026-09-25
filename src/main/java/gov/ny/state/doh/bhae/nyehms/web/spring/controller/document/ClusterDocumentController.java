@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,11 +45,10 @@ public class ClusterDocumentController {
 	
 	
 	@RequestMapping(value = "/getClusterForm.html")
-	public String getClusterDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getClusterDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
 		log.debug("{}  incoming Cluster Doc ID is {}",nyehmsLog ,docId);
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -120,10 +118,8 @@ public class ClusterDocumentController {
 	}	
 	
 	@RequestMapping(value = "/associateStatenoToCluster.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> associateStatenoToCluster(@RequestParam String clusterId, @RequestParam String stateno, @RequestParam String requestComments, HttpServletRequest request) {
+	public @ResponseBody Map<String, String> associateStatenoToCluster(@RequestParam String clusterId, @RequestParam String stateno, @RequestParam String requestComments, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> targetMap= new HashMap<String, String>();
@@ -150,10 +146,8 @@ public class ClusterDocumentController {
 	}	
 
 	@RequestMapping(value="/getClusterReportsByTypeAndId.json", method = RequestMethod.POST)
-	public @ResponseBody ClusterIdReportVO  getClusterReportsByTypeAndId(@RequestParam String clusterType, @RequestParam String clusterId, @RequestParam String showDocuments, HttpServletRequest request, Map<String, Object> map){		
+	public @ResponseBody ClusterIdReportVO  getClusterReportsByTypeAndId(@RequestParam String clusterType, @RequestParam String clusterId, @RequestParam String showDocuments, HttpServletRequest request, Map<String, Object> map, UserObject userObject){		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -167,10 +161,8 @@ public class ClusterDocumentController {
 	
 	
 	@RequestMapping(value = "/updateClustereHARSImportFlag.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateClustereHARSImportFlag(HttpServletRequest request, @RequestParam("clusterIdPks[]")  int[] clusterIdPks, Map<String, Object> map) {
+	public @ResponseBody Map<Object, Object> updateClustereHARSImportFlag(HttpServletRequest request, @RequestParam("clusterIdPks[]")  int[] clusterIdPks, Map<String, Object> map, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -187,10 +179,8 @@ public class ClusterDocumentController {
 	}
 	
 	@RequestMapping(value="/loadeHARSImportFlagData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject geteHARSImportFlagData(HttpServletRequest request){
+	public @ResponseBody GridObject geteHARSImportFlagData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -223,9 +213,8 @@ public class ClusterDocumentController {
 	
 	@RequestMapping(value="/getLinkedMolClusterGenoTypeDocuments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<Object, Object> getLinkedMolClusterGenoTypeDocuments(HttpServletRequest request, @RequestParam int documentId) {
+	Map<Object, Object> getLinkedMolClusterGenoTypeDocuments(HttpServletRequest request, @RequestParam int documentId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();

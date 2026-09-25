@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,10 +135,8 @@ public class LaftDetailsController {
 	 * @return List of Document Ids
 	 */
 	@RequestMapping(value="/loadValidationFailedLabDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject loadValidationFailedLabDocuments(@RequestParam String documentType, HttpServletRequest request){
+	public @ResponseBody GridObject loadValidationFailedLabDocuments(@RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -157,10 +154,8 @@ public class LaftDetailsController {
 	 * @return List of Document Ids
 	 */
 	@RequestMapping(value="/loadValidationFailedDeletedLabDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject loadValidationFailedDeletedLabDocuments(@RequestParam String documentType, HttpServletRequest request){
+	public @ResponseBody GridObject loadValidationFailedDeletedLabDocuments(@RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -177,10 +172,8 @@ public class LaftDetailsController {
 	
 	
 	@RequestMapping(value="/updateLabNotes.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> updateLabNotes(HttpServletRequest request, @RequestParam long id, @RequestParam String notes){
+	public @ResponseBody  Map<Object, Object> updateLabNotes(HttpServletRequest request, @RequestParam long id, @RequestParam String notes, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -192,10 +185,8 @@ public class LaftDetailsController {
 	}
 	
 	@RequestMapping(value="/byPassDocumentError.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> byPassDocumentError(HttpServletRequest request, @RequestParam String documentId, @RequestParam String errorCodes){
+	public @ResponseBody  Map<Object, Object> byPassDocumentError(HttpServletRequest request, @RequestParam String documentId, @RequestParam String errorCodes, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -214,10 +205,8 @@ public class LaftDetailsController {
 	 * @return list of documents
 	 */
 	@RequestMapping(value="/loadHEDDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject loadHEDDetails(HttpServletRequest request){
+	public @ResponseBody GridObject loadHEDDetails(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -239,10 +228,8 @@ public class LaftDetailsController {
 	 * @return
 	 */
 	@RequestMapping(value="/updateDocumentsStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String documentType, @RequestParam String actionName){
+	public @ResponseBody Map<Object, Object> updateDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String documentType, @RequestParam String actionName, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -253,10 +240,8 @@ public class LaftDetailsController {
 	}
 	
 	@RequestMapping(value="/addNotesToProcessErrors.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> addNotesToProcessErrors(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="notes", required = false) String notes){
+	public @ResponseBody  Map<Object, Object> addNotesToProcessErrors(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="notes", required = false) String notes, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -268,10 +253,8 @@ public class LaftDetailsController {
 	}
 	
 	@RequestMapping(value="/updateUnitsOfMeasure.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> updateUnitsOfMeasure(HttpServletRequest request, @RequestParam("documentIds[]")  int[] documentIds, @RequestParam(value="units", required = false) String units){
+	public @ResponseBody  Map<Object, Object> updateUnitsOfMeasure(HttpServletRequest request, @RequestParam("documentIds[]")  int[] documentIds, @RequestParam(value="units", required = false) String units, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -292,10 +275,8 @@ public class LaftDetailsController {
 			@RequestParam(value="middleName", required = false) String middleName,
 			@RequestParam(value="suffix", required = false) String suffix,
 			@RequestParam(value="phone", required = false) String phone,
-			@RequestParam(value="npi", required = false) String npi){
+			@RequestParam(value="npi", required = false) String npi, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -308,10 +289,8 @@ public class LaftDetailsController {
 	
 	@RequestMapping(value="/updateRawLabAddressDetails.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody  Map<Object, Object> updateRawLabAddressDetails(HttpServletRequest request, @RequestParam("documentIds[]")  int[] documentIds,
-			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO){
+			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -323,10 +302,8 @@ public class LaftDetailsController {
 	}
 	
 	@RequestMapping(value="/getAddressSameAsEntries.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  List<JSONObject> getAddressSameAsEntries(HttpServletRequest request){
+	public @ResponseBody  List<JSONObject> getAddressSameAsEntries(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -339,10 +316,8 @@ public class LaftDetailsController {
 	
 	
 	@RequestMapping(value="/addRawProviderFacilityAddressSameAsResidence.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> addRawProviderFacilityAddressSameAsResidence(HttpServletRequest request, @RequestParam String rawAddress, @RequestParam String addressFilterType){
+	public @ResponseBody  Map<Object, Object> addRawProviderFacilityAddressSameAsResidence(HttpServletRequest request, @RequestParam String rawAddress, @RequestParam String addressFilterType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -356,10 +331,8 @@ public class LaftDetailsController {
 	
 	
 	@RequestMapping(value="/updateAddressSameAsStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody  Map<Object, Object> updateAddressSameAsStatus(HttpServletRequest request, @RequestParam String id, @RequestParam String FLAG_ACTIVE){
+	public @ResponseBody  Map<Object, Object> updateAddressSameAsStatus(HttpServletRequest request, @RequestParam String id, @RequestParam String FLAG_ACTIVE, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -408,10 +381,8 @@ public class LaftDetailsController {
 
 	
 	@RequestMapping(value="/getlabErrorReports.html", method = RequestMethod.POST)
-	public String  getlabErrorReports(@RequestParam String category, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map){
+	public String  getlabErrorReports(@RequestParam String category, @RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -452,10 +423,8 @@ public class LaftDetailsController {
 	}
 	
 	@RequestMapping(value="/getDocumentLabErrorsByCategory.html", method = RequestMethod.POST)
-	public String  getDocumentLabErrorsByCategory(@RequestParam String documentId, HttpServletRequest request, Map<String, Object> map){
+	public String  getDocumentLabErrorsByCategory(@RequestParam String documentId, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 
 		Map<String, String> dummyMindingMap= new HashMap<String, String>();
@@ -478,7 +447,7 @@ public class LaftDetailsController {
 			@RequestParam String category, @RequestParam String fromDate, @RequestParam String toDate, 
 			HttpServletRequest request, 
 			HttpServletResponse response,
-			Map<String, Object> map)
+			Map<String, Object> map, UserObject userObject)
 	{
 		
 		Cookie myCookie =
@@ -490,8 +459,6 @@ public class LaftDetailsController {
 		
 		ModelAndView mav = null;
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		

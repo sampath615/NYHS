@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,10 +42,8 @@ public class PerinatalController {
 			@RequestParam String birthFirstQuarter,
 			@RequestParam String birthSecondYear,
 			@RequestParam String birthSecondQuarter
-			){
+			, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -62,10 +59,8 @@ public class PerinatalController {
 	public @ResponseBody Map<String, Object> loadPerinatalFacilityReport(HttpServletRequest request, @RequestParam String birthFirstYear,
 			@RequestParam String birthFirstQuarter,
 			@RequestParam String birthSecondYear,
-			@RequestParam String birthSecondQuarter, @RequestParam String facilityName, @RequestParam String letterDate){
+			@RequestParam String birthSecondQuarter, @RequestParam String facilityName, @RequestParam String letterDate, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

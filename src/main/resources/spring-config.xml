@@ -72,6 +72,9 @@
 				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
 				p:objectMapper-ref="jacksonObjectMapper" />
 		</mvc:message-converters>
+		<mvc:argument-resolvers>
+			<bean class="gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObjectArgumentResolver" />
+		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 	<!--  REST, Web Services Related declaration End -->
 	

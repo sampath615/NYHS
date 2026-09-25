@@ -210,10 +210,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCASADoc.html")
-	public String getCASADocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getCASADocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		CASADocVO stdCASADocVO = casaDocumentService.getCASADoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -232,10 +230,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getSYPHDoc.html")
-	public String getSYPHDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getSYPHDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		SYPHDocVO stdSYPHDocVO = syphDocumentService.getSYPHDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -254,10 +250,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getDeathDoc.html")
-	public String getDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		DeathDocVO stdDeathDocVO = deathDocumentSrvice.getDeathDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -276,10 +270,8 @@ public class DocumentController {
 	 * @return The identifier of the JSP for Spring to invoke
 	 */
 	@RequestMapping(value = "/getNycDeathDoc.html")
-	public String getNycDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNycDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		NycDeathDocVO stdNycDeathDocVO = nycDeathDocumentService.getNycDeathDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -298,10 +290,8 @@ public class DocumentController {
 	 * @return The identifier of the JSP for Spring to invoke
 	 */
 	@RequestMapping(value = "/getEPRFOOCDoc.html")
-	public String getEPRFOOCDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getEPRFOOCDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		EPRFOOCDocVO stdEPRFOOCDocVO = ePRFOOCDocumentService.getEPRFOOCDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -322,10 +312,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getTBDoc.html")
-	public String getTBDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getTBDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		TBDocVO tBDocVO = tbDocumentSrvice.getTBDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -344,10 +332,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNYCEHARS.html")
-	public String getNYCEHARSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNYCEHARSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		NYCEHARSDocVO nYCEHARSDocVO = commonDocumentService.getNycEHARSDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -374,10 +360,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNYCLab.html")
-	public String getNYCLabDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNYCLabDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		NYCLabDocVO nYCLabDocVO = commonDocumentService.getNycLabDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -405,10 +389,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getInsDeathDoc.html")
-	public String getInsDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request) {
+	public String getInsDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		InsDeathDocVO insDeathDocVO = medicaidDocumentSrvice.getInsDthDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -428,10 +410,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getTrkAddressDoc.html")
-	public String getTrkAddressDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getTrkAddressDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		TRKAddressDocVO trkAddressDocVO = trackingDocumentService.getTRKAddressDoc(docId, dummyBindingResult,
 				userObject, request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -451,10 +431,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getTrkAliasDoc.html")
-	public String getTrkAliasDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getTrkAliasDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		TRKAliasDocVO trkAliasDocVO = trackingDocumentService.getTRKAliasDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -472,10 +450,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getOldCasesDoc.html")
-	public String getOldCasesDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getOldCasesDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		OldCaseDocVO oldCaseDocVO = oldCaseDocumentService.getOldCaseDocVO(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -493,10 +469,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getMedicaidDoc.html")
-	public String getMedicaidDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getMedicaidDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		MedicaidDocVO medicaidDocVO = medicaidDocumentSrvice.getMedicaidDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -507,10 +481,8 @@ public class DocumentController {
 	}
 
 	@RequestMapping(value = "/getMedicaidOldDoc.html")
-	public String getMedicaidOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getMedicaidOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		MedicaidOldDocVO medicaidOldDocVO = medicaidOldDocumentSrvice.getMedicaidOldDoc(docId, dummyBindingResult,
 				userObject, request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -529,10 +501,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getDoccsDoc.html")
-	public String getDoccsDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getDoccsDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		DoccsDocVO stdDoccsDocVO = doccsDocumentService.getDoccsDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -550,10 +520,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getDoccsDocForDinDoc.html")
-	public String getDoccsDocForDinDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getDoccsDocForDinDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		DinDoccsDocVO dinDoccsDocVO = doccsDocumentService.getDinDoccsDocContent(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -573,10 +541,8 @@ public class DocumentController {
 	 */
 	@RequestMapping(value = "/getLabDoc.html")
 	public String getLabDocAsHTML(@RequestParam int docId, @RequestParam String documentType, Map<String, Object> map,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		StdEcrlsLabDocVO stdLabDocVO = labDocumentService.getLabDoc(docId, documentType, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -600,10 +566,8 @@ public class DocumentController {
 	 */
 	@RequestMapping(value = "/getDocumentData.json", method = RequestMethod.POST)
 	public @ResponseBody JSONObject getDocumentData(@RequestParam String documentId, @RequestParam String documentType,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		return commonService.getDocumentData(documentId, documentType, dummyBindingResult, userObject);
 	}
 
@@ -615,10 +579,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getHivLabDoc.html")
-	public String getHivLabDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getHivLabDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		EcrlsLabDocVO stdLabDocVO = labDocumentService.getHivLabDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		List<String> std_units = commonDocumentService.getUnitsOfMeasurement();
@@ -662,12 +624,10 @@ public class DocumentController {
 	@RequestMapping(value = "/editLabErrorDoc", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> editLabErrorDoc(
 			@ModelAttribute("ecrlsLabDocVO") EcrlsLabDocVO ecrlsLabDocVO, HttpServletRequest request,
-			Map<String, Object> map, @RequestParam String requestComments)
+			Map<String, Object> map, @RequestParam String requestComments, UserObject userObject)
 	{
 		String retPage = "document/LabDocument";
-		HttpSession session = request.getSession();
 		List<String> errors = new ArrayList<String>();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult result = new MapBindingResult(targetMap, "targetMap");
 		if (log.isDebugEnabled()) {
@@ -690,10 +650,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getSSDMDoc.html")
-	public String getSSDMDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getSSDMDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		SSDMDocVO stdSSDMDocVO = ssdmDocumentService.getSSDMDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -712,10 +670,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getADAPDoc.html")
-	public String getADAPDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getADAPDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		ADAPDocVO stdADAPDocVO = adapDocumentService.getADAPDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -726,10 +682,8 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/getADAPNYCDoc.html")
-	public String getADAPNYCDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getADAPNYCDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		ADAPDocVO stdADAPDocVO = adapDocumentService.getADAPNYCDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 
@@ -883,9 +837,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNycPrfDoc.html")
-	public String getNycPrfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNycPrfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		NycPRFDocVO nycPRFDocVO = nycPRFDocumentService.getNycPRFDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		map.put("nycPRFDocVO", nycPRFDocVO);
@@ -918,9 +871,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getSTDConfDoc.html")
-	public String getSTDConfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getSTDConfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		STDConfDocVO stdConfDocVO = stdConfDocumentService.getSTDConfDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		map.put("stdConfDocVO", stdConfDocVO);
@@ -952,9 +904,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getStdOldDoc.html")
-	public String getStdOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getStdOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		StdOldDocVO stdOldDocVO = labDocumentService.getStdOldDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		map.put("stdOldDocVO", stdOldDocVO);
@@ -1105,10 +1056,9 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getACRFForm.html")
-	public String getACRFFormAsHTML(@RequestParam String docId, Map<String, Object> map, HttpServletRequest request)
+	public String getACRFFormAsHTML(@RequestParam String docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		log.debug("{}  incoming ACRF Doc ID is {}",nyehmsLog, docId);
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		List<Map<String, String>> subFacilities = acrfFDocumentService.getStandardFacilityDetails();
 		List<Map<String, String>> manufacutrers = acrfFDocumentService.getCodedValues("MANUFACTURER");
 		List<Map<String, String>> ethnicities = acrfFDocumentService.getCodedValues("ETHNICITY");
@@ -1257,9 +1207,8 @@ public class DocumentController {
 	 */
 	@RequestMapping(value = "/getAcrfLabTsts.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody JsonObject getAcrfLabTestResultsAsJson(@RequestParam String pParentTestType,
-			@RequestParam String pAcrfTestCode, HttpServletRequest request)
+			@RequestParam String pAcrfTestCode, HttpServletRequest request, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		JsonObject jsonResponse = getGridObject.GetJsonObject(acrfFDocumentService.getCodedAcrfResultTypes(
 				pParentTestType, pAcrfTestCode, "yes", 0, dummyBindingResult, userObject, request.getSession().getId()));
 		return jsonResponse;
@@ -1277,10 +1226,9 @@ public class DocumentController {
 	public @ResponseBody Map<Object, Object> addACRFForm(@ModelAttribute("acrfFormVO") AcrfFormVO acrfFormVO,
 			HttpServletRequest request, Map<String, Object> map, @RequestParam boolean havingNoErrorsinForm,
 			@RequestParam String actionName,
-			@RequestParam(required = false) String closureCategory)
+			@RequestParam(required = false) String closureCategory, UserObject userObject)
 	{
 		Integer statusCode = 0;
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1338,9 +1286,8 @@ public class DocumentController {
 	 */
 	@RequestMapping(value = "/discardACRFForm.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> discardACRFForm(@RequestParam String assignmentId,
-			@RequestParam String acrfDocId, @RequestParam String reabstract, HttpServletRequest request, Map<String, Object> map)
+			@RequestParam String acrfDocId, @RequestParam String reabstract, HttpServletRequest request, Map<String, Object> map, UserObject userObject)
 	{
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -1364,14 +1311,13 @@ public class DocumentController {
 	@RequestMapping(value = "/saveACRFForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveACRFForm(@ModelAttribute("acrfFormVO") AcrfFormVO acrfFormVO,
 			BindingResult result, HttpServletRequest request, Map<String, Object> map,
-			@RequestParam boolean havingNoErrorsinForm, @RequestParam String actionName, @RequestParam(required = false) String closureCategory)
+			@RequestParam boolean havingNoErrorsinForm, @RequestParam String actionName, @RequestParam(required = false) String closureCategory, UserObject userObject)
 	{
 		Integer statusCode = 0;
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog + "  Updating ACRF VO with Doc ID {}", acrfFormVO.getRawAcrfDoc().getAcrfSrcId());
 		String retPage = "worker/ACRFForm";
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 		String documentType = request.getParameter("documentType");
 		
@@ -1421,10 +1367,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getAIRSForm.html")
-	public String getAIRSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getAIRSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		AIRSDocVO aIRSDocVO = aIRSDocumentService.getAIRSDocument(docId);
 		map.put("stdAIRSDocVO", aIRSDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1442,10 +1386,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCLIMSForm.html")
-	public String getCLIMSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getCLIMSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		CLIMSDocVO cLIMSDocVO = cLIMSDocumentService.getCLIMSDocument(docId);
 		map.put("stdCLIMSDocVO", cLIMSDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1463,10 +1405,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNYCIJRForm.html")
-	public String getNYCIJRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNYCIJRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		NycIJRDocVO nycIJRDocVO = nycIJRDocumentService.getNYCIJRDocument(docId);
 		map.put("stdNYCIJRDocVO", nycIJRDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1484,10 +1424,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getICCRForm.html")
-	public String getICCRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getICCRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		ICCRDocVO iccrDocVo = iccrDocumentService.getICCRDocument(docId);		
 		map.put("stdICCRDocVO", iccrDocVo);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1505,10 +1443,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNDIDoc.html")
-	public String getNDIDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNDIDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1531,10 +1467,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNDICauseDoc.html")
-	public String getNDICasueDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNDICasueDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1556,10 +1490,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getBlackBoxDoc.html")
-	public String getBlackBoxDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getBlackBoxDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1590,10 +1522,8 @@ public class DocumentController {
 	 */
 	@RequestMapping(value = "/getClericalDocumentAsPerson.html")
 	public String getClericalDocumentAsPerson(@RequestParam int documentId, @RequestParam String documentType,
-			Map<String, Object> map, HttpServletRequest request)
+			Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1821,10 +1751,8 @@ public class DocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getNonCaseDoc.html")
-	public String getNonCaseDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getNonCaseDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1841,10 +1769,8 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/loadAidaData.html")
-	public String loadAidaData(@RequestParam String tc_id, @RequestParam String parameterName, Map<String, Object> map, HttpServletRequest request)
+	public String loadAidaData(@RequestParam String tc_id, @RequestParam String parameterName, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1867,10 +1793,8 @@ public class DocumentController {
 	
 	@RequestMapping(value = "/getLAFTFollowupDetails.html", method = RequestMethod.POST, produces = "text/html")
 	public String getLAFTFollowupDetails(@RequestParam Integer docId, @RequestParam String documentType,
-			Map<String, Object> map, HttpServletRequest request)
+			Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1884,10 +1808,8 @@ public class DocumentController {
 		
 	
 	@RequestMapping(value = "/getQualCareDoc.html", method = RequestMethod.POST, produces = "text/html")
-	public String getQualCareDoc(@RequestParam Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getQualCareDoc(@RequestParam Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
@@ -1903,10 +1825,8 @@ public class DocumentController {
 	}
 	
 	@RequestMapping(value = "/getDocDelDiscardHistory.html")
-	public String getDocDelDiscardHistory(@RequestParam int documentId, Map<String, Object> map, HttpServletRequest request)
+	public String getDocDelDiscardHistory(@RequestParam int documentId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		

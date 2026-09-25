@@ -43,7 +43,7 @@ public class ClusterPartnerReviewController {
 	
 	
 	@RequestMapping("/getClusterPartnerReview")
-	public String getClusterPartnerReview(Map<String, Object> map, HttpServletRequest request) {
+	public String getClusterPartnerReview(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		HttpSession session = request.getSession();
 		
@@ -51,7 +51,6 @@ public class ClusterPartnerReviewController {
 		//session.setAttribute("FILTER_CRITERIA_FILE_NAME", null);
 		map.put("DOCUMENT_TYPE", "CLUST_PART");
 		
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -63,9 +62,7 @@ public class ClusterPartnerReviewController {
 	}
 	
 	@RequestMapping(value="/getClusterPartnerIdList.json",  produces = "application/json")
-	public @ResponseBody List<String> getClusterPartnerIdList(HttpServletRequest request, @RequestParam String statusCode){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<String> getClusterPartnerIdList(HttpServletRequest request, @RequestParam String statusCode, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
@@ -76,9 +73,7 @@ public class ClusterPartnerReviewController {
 	
 	@RequestMapping(value = "/getClusterPartnerReviewDoc.html")
 	public String getClusterPartnerReviewDoc(@RequestParam int docId,
-			Map<String, Object> map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		boolean isStdDocument = false;
 		
@@ -115,11 +110,9 @@ public class ClusterPartnerReviewController {
 
 	
 	@RequestMapping(value="/resolveClusterFiles")	
-	public String resolveClusterFiles(HttpServletRequest request, Map<String, Object> map) {
+	public String resolveClusterFiles(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
 		
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -132,10 +125,8 @@ public class ClusterPartnerReviewController {
 	
 	
 	@RequestMapping(value="/updateClusterFile", method = RequestMethod.POST)
-	public String updateClusterFile(HttpServletRequest request, Map<String, Object> map, @RequestParam String clusterPartnerId, @RequestParam String clusterFileResolveDate) {
+	public String updateClusterFile(HttpServletRequest request, Map<String, Object> map, @RequestParam String clusterPartnerId, @RequestParam String clusterFileResolveDate, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -158,9 +149,7 @@ public class ClusterPartnerReviewController {
 
 	@RequestMapping(value="/getClusterPartnerDocumentIdReviewDetails.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getClusterPartnerDocumentIdReviewDetails(HttpServletRequest request, //@RequestParam String qualityStageStatus,
-			@RequestParam String clusterPartnerId){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+			@RequestParam String clusterPartnerId, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -171,10 +160,8 @@ public class ClusterPartnerReviewController {
 	}
 	
 	@RequestMapping(value="/discardClericalReviewDocument.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> discardClericalReviewDocument(HttpServletRequest request, @RequestParam long documentId) {
+	public @ResponseBody Map<Object, Object> discardClericalReviewDocument(HttpServletRequest request, @RequestParam long documentId, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -187,10 +174,8 @@ public class ClusterPartnerReviewController {
 	
 	@RequestMapping(value="/processClusterPartnerDocument.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> processClusterPartnerDocument(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) String stateno,
-			String datafluxMatchCd, @RequestParam String INS_CLUSTER) {
+			String datafluxMatchCd, @RequestParam String INS_CLUSTER, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -205,10 +190,8 @@ public class ClusterPartnerReviewController {
 	
 	@RequestMapping(value="/triggerClusterPSMessage.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> triggerClusterPSMessage(HttpServletRequest request, @RequestParam long documentId, @RequestParam String reason, @RequestParam(required = false) String otherReason, 
-			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO) {
+			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -222,10 +205,8 @@ public class ClusterPartnerReviewController {
 	}
 	
 	@RequestMapping(value="/rejectClusterPSMessage.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> rejectClusterPSMessage(HttpServletRequest request, @RequestParam long documentId, @RequestParam String rejectReason, @RequestParam(required = false) String OtherRejectReason) {
+	public @ResponseBody Map<Object, Object> rejectClusterPSMessage(HttpServletRequest request, @RequestParam long documentId, @RequestParam String rejectReason, @RequestParam(required = false) String OtherRejectReason, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -268,10 +249,8 @@ public class ClusterPartnerReviewController {
 	
 	
 	@RequestMapping(value="/getClusterNoPSRecords.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<Map<String, Object>> getClusterNoPSRecords(HttpServletRequest request) {
+	public @ResponseBody List<Map<String, Object>> getClusterNoPSRecords(HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

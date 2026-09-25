@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,9 +71,7 @@ public class HITDocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getCCDDoc.html")
-	public String getCCDDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String getCCDDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		RawCCDDocVO rawCCDDocVO = ccdDocumentService.getCCDDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -140,9 +137,7 @@ public class HITDocumentController {
 	 * @return
 	 */
 	@RequestMapping(value = "/getEXPDoc.html")
-	public String getHIEDTHDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String getHIEDTHDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		StdHIEDTHDocVO stdExpDocVO = HIEDTHDocumentService.getHIEDTHDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -158,9 +153,7 @@ public class HITDocumentController {
 	// on CCD_DOCUMENT_ID
 	/* The Below section is for HL7 Document Viewer : Start */
 	@RequestMapping(value = "/getHL7Doc.html")
-	public String getHL7Doc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+	public String getHL7Doc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		RawHL7DocVO rawHL7DocVO = hl7DocumentService.getHL7Doc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -173,9 +166,7 @@ public class HITDocumentController {
 
 	@RequestMapping(value = "/getFilteredHL7Doc.html")
 	public String getFilteredHL7Doc(@RequestParam int documentID, Map<String, Object> map,
-			@RequestParam String startDate, @RequestParam String endDate, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String startDate, @RequestParam String endDate, HttpServletRequest request, UserObject userObject) {
 		RawHL7DocVO rawHL7DocVO = new RawHL7DocVO();
 		rawHL7DocVO = hl7DocumentService.getFilteredHL7Doc(documentID, startDate, endDate);
 		rawHL7DocVO.setCcdMatchDocId(documentID);
@@ -219,9 +210,7 @@ public class HITDocumentController {
 
 	@RequestMapping(value = "/getHL7LabData.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getHL7LabData(@RequestParam int documentID, @RequestParam String startDate,
-			@RequestParam String endDate, HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+			@RequestParam String endDate, HttpServletRequest request, UserObject userObject) {
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<RawHL7ObrVO> lstRawHL7ObrVO = hl7DocumentService.getHL7LabData(documentID, startDate, endDate);
@@ -232,8 +221,7 @@ public class HITDocumentController {
 	@RequestMapping(value = "/getHL7DemogrphicFieldMultiValues.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getFieldValsWithDistinct(@RequestParam int documentID,
 			@RequestParam String startDate, @RequestParam String endDate, @RequestParam String colsName,
-			HttpServletRequest request) {
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
+			HttpServletRequest request, UserObject userObject) {
 		if (userObject == null)
 			userObject = new UserObject();
 		GridObject jsonResponse = getGridObject

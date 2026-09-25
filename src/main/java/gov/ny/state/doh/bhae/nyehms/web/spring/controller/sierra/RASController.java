@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +39,8 @@ public class RASController {
 	}
 	
 	@RequestMapping(value="/loadFailedRasDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> loadFailedRasDocuments(HttpServletRequest request){
+	public @ResponseBody List<JSONObject> loadFailedRasDocuments(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -54,10 +51,8 @@ public class RASController {
 	}
 	
 	@RequestMapping(value="/runRasJob.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String runRasJob(@RequestParam Integer DOCUMENT_ID, HttpServletRequest request){
+	public @ResponseBody String runRasJob(@RequestParam Integer DOCUMENT_ID, HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -78,10 +73,8 @@ public class RASController {
 	
 	
 	@RequestMapping(value="/updateRASDocumentsStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateRASDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String actionName){
+	public @ResponseBody Map<Object, Object> updateRASDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String actionName, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

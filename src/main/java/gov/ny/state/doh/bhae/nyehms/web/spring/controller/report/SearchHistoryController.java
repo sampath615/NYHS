@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,9 +36,7 @@ public class SearchHistoryController {
 	
 	@RequestMapping(value="/getSearchHistoryReportData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject  getSearchHistoryReportData(@RequestParam String searchType, @RequestParam String fromDate,
-							@RequestParam String toDate, @RequestParam int worker, HttpServletRequest request, Map<String, Object> map){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+							@RequestParam String toDate, @RequestParam int worker, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		

@@ -62,10 +62,8 @@ public class ManualQuartzJobController {
 	 * @return the jsp path of the returned page.
 	 */
 	@RequestMapping(value = "/manualQuartzJob")
-	public String manualQuartzJob(HttpServletRequest request, Map<String, String> map) {
+	public String manualQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
@@ -97,10 +95,8 @@ public class ManualQuartzJobController {
 	
 	
 	@RequestMapping(value = "/scanningQuartzJob")
-	public String scanningQuartzJob(HttpServletRequest request, Map<String, String> map) {
+	public String scanningQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
@@ -145,10 +141,8 @@ public class ManualQuartzJobController {
 	 */
 	@RequestMapping(value = "/updateMetaDataValue.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateMetaDataValue(HttpServletRequest request, Map<String, Object> map,
-			@RequestParam String parameterName, @RequestParam String parameterValue) {
+			@RequestParam String parameterName, @RequestParam String parameterValue, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
@@ -181,10 +175,9 @@ public class ManualQuartzJobController {
 	}
 
 	@RequestMapping(value = "/schedulerMetaData")
-	public String schedulerMetaData(HttpServletRequest request, Map<String, Object> map) {
+	public String schedulerMetaData(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
@@ -217,10 +210,8 @@ public class ManualQuartzJobController {
 
 	@RequestMapping(value = "/getMetaDataValue.json", produces = "application/json")
 	public @ResponseBody Map<Object, Object> getMetaDataValue(HttpServletRequest request,
-			@RequestParam String parameterName) {
+			@RequestParam String parameterName, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Integer statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -258,11 +249,9 @@ public class ManualQuartzJobController {
 	 */
 	@RequestMapping(value = "/triggerSchedulerJobManually.json", produces = "application/json")
 	public @ResponseBody Map<Object, Object> triggerSchedulerJobManually(HttpServletRequest request,
-			@RequestParam String jobName, @RequestParam String actionName) {
+			@RequestParam String jobName, @RequestParam String actionName, UserObject userObject) {
 
 		log.error("jobName: {}; actionName: {}",jobName,actionName);
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		JobDataMap jobDataMap = new JobDataMap();
@@ -298,10 +287,8 @@ public class ManualQuartzJobController {
 	 * otherwise if stored procedure run normally in daily routine it will notify to the users who are included in the column name "NIGHTLY_JOB". 
 	 */
 	@RequestMapping(value = "/executeHl7CursorstoMatchAgainstCCD", produces = "application/json")
-	public @ResponseBody Map<Object, Object> executeHl7RematchingCursorsAgainstCCD(HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> executeHl7RematchingCursorsAgainstCCD(HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 		Map<Object, Object> targetMap = new HashMap<Object, Object>();
 		Map<String, String> statusObject = new LinkedHashMap<>();
 		// initiator

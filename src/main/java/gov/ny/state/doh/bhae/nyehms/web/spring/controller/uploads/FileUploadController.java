@@ -122,14 +122,13 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/getCurrentStatenoDataFile", method = RequestMethod.POST)
-	public ModelAndView  getCurrentStatenoDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response){
+	public ModelAndView  getCurrentStatenoDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, UserObject userObject){
 		
 		Map<String, String> targetMap = new HashMap<String, String>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		
@@ -166,14 +165,13 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/getSTATENOHistoryDataFile", method = RequestMethod.POST)
-	public ModelAndView  getSTATENOHistoryDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response){
+	public ModelAndView  getSTATENOHistoryDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, UserObject userObject){
 		
 		Map<String, String> targetMap = new HashMap<String, String>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		
@@ -210,10 +208,9 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/uploadRecordSearchSTATENOS", method = RequestMethod.POST)
-	public String  uploadRecordSearchSTATENOS(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  uploadRecordSearchSTATENOS(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		
@@ -253,10 +250,9 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/updatedHIVDataWithNYCData", method = RequestMethod.POST)
-	public String  updatedHIVDataWithNYCData(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  updatedHIVDataWithNYCData(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		
@@ -327,7 +323,7 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/updatedDispositionsResults.pdf", method = RequestMethod.GET, produces="application/pdf")
-	public ModelAndView  updatedDispositionsResults(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  updatedDispositionsResults(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= Updated Messages");
@@ -336,7 +332,6 @@ public class FileUploadController {
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		
@@ -357,14 +352,13 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/uploadedRecordSearchStatnos.pdf", method = RequestMethod.GET, produces="application/pdf")
-	public ModelAndView  uploadedRecordSearchStatnos(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  uploadedRecordSearchStatnos(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= Updated Messages");
 
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		
@@ -506,10 +500,9 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/uploadPSConfirmedStdsFile", method = RequestMethod.POST)
-	public String  uploadPSConfirmedStdsFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  uploadPSConfirmedStdsFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		session.removeAttribute("resultMap");
@@ -535,7 +528,7 @@ public class FileUploadController {
 	}
 	
 	@RequestMapping(value="/psConfirmedSTDDataErrors.pdf", method = RequestMethod.GET, produces="application/pdf")
-	public ModelAndView  psConfirmedSTDDataErrors(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map){
+	public ModelAndView  psConfirmedSTDDataErrors(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= PS Confirmed STDs Data Errors");
@@ -544,7 +537,6 @@ public class FileUploadController {
 		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> resultMap =  (Map<Object, Object>)session.getAttribute("resultMap");
@@ -568,10 +560,9 @@ public class FileUploadController {
 	
 	
 	@RequestMapping(value="/uploadNYCSurvRejectFile", method = RequestMethod.POST)
-	public String  uploadNYCSurvRejectFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map) throws IOException{
+	public String  uploadNYCSurvRejectFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, Map<Object, Object> map, UserObject userObject) throws IOException{
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		session.removeAttribute("resultMap");

@@ -42,10 +42,8 @@ public class FacilityController {
 	//controllers for New Page Raw Standard 	
 
 	@RequestMapping("/getFacilityStdznHome")
-	public String getFacilityStdznHome (Map<Object, Object> map, HttpServletRequest request) {		
+	public String getFacilityStdznHome (Map<Object, Object> map, HttpServletRequest request, UserObject userObject) {		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -61,13 +59,11 @@ public class FacilityController {
 	}
 	
 	@RequestMapping("/FacilityAddPage")
-	public String facilityAddPage(Map<String, Object> map, HttpServletRequest request) {
+	public String facilityAddPage(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		SubFacilityVO subFacilityVO= new SubFacilityVO();
 		map.put("subFacilityVO", subFacilityVO);
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -96,10 +92,8 @@ public class FacilityController {
 	
 	
 	@RequestMapping(value="/unableStandardizeFacilityRecord.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object>  unableStandardizeFacilityRecord(HttpServletRequest request, @RequestParam long recordId, @RequestParam String effectedTable ){
+	public @ResponseBody Map<Object, Object>  unableStandardizeFacilityRecord(HttpServletRequest request, @RequestParam long recordId, @RequestParam String effectedTable , UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -114,10 +108,8 @@ public class FacilityController {
 	 * Getting Raw Facilities to display it on New Page 
 	 */
 	@RequestMapping(value="/getRawSubFacilityList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getRawSubFacilityList(@RequestParam String  pageType, HttpServletRequest request, @RequestParam(value="_search", required = false) boolean _search){
+	public @ResponseBody GridObject getRawSubFacilityList(@RequestParam String  pageType, HttpServletRequest request, @RequestParam(value="_search", required = false) boolean _search, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -138,10 +130,8 @@ public class FacilityController {
 	
 	
 	@RequestMapping(value="/addNewStdFacility", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewStdFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request, BindingResult bindingResult){
+	public @ResponseBody Map<Object, Object> addNewStdFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request, BindingResult bindingResult, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		bindingResult=new MapBindingResult(targetMap, "targetMap");
 
@@ -151,10 +141,8 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(value="/getSubFacilityInfo.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> getSubFacilityInfo(@RequestParam String facilityId, HttpServletRequest request){
+	public @ResponseBody Map<String, String> getSubFacilityInfo(@RequestParam String facilityId, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult=new MapBindingResult(targetMap, "targetMap");
 
@@ -169,10 +157,8 @@ public class FacilityController {
 	 * Creating New Standardization facility
 	 */
 	@RequestMapping(value="/insertNewStdFacility", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> insertNewStdFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, @RequestParam long  rawSubFacilityId, HttpServletRequest request, BindingResult bindingResult){
+	public @ResponseBody Map<Object, Object> insertNewStdFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, @RequestParam long  rawSubFacilityId, HttpServletRequest request, BindingResult bindingResult, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		bindingResult=new MapBindingResult(targetMap, "targetMap");
 
@@ -185,10 +171,8 @@ public class FacilityController {
 	 * Linking the raw Facility to standard facility
 	 */
 	@RequestMapping(value="/updateStandardize", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateStandardize(@RequestParam long  subFacilityId, @RequestParam long  rawSubFacilityId, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> updateStandardize(@RequestParam long  subFacilityId, @RequestParam long  rawSubFacilityId, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -237,9 +221,7 @@ public class FacilityController {
 	//controllers for Main Search 	
 
 	@RequestMapping("/getMainSearchPage")
-	public String getMainSearchPage (Map<String, Object> map, HttpServletRequest request) {		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public String getMainSearchPage (Map<String, Object> map, HttpServletRequest request, UserObject userObject) {		
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -254,10 +236,9 @@ public class FacilityController {
 	
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/getRawListByStdFacilityId.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getRawListByStdFacilityId(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO, @RequestParam int  searchFor, HttpServletRequest request){
+	public @ResponseBody GridObject getRawListByStdFacilityId(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO, @RequestParam int  searchFor, HttpServletRequest request, UserObject userObject){
 
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -274,10 +255,8 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(value="/unlinkFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> unlinkFacilities(@RequestParam String  facWorkType, @RequestParam("facilityList[]") long[]  facilityList, @RequestParam long parentId, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> unlinkFacilities(@RequestParam String  facWorkType, @RequestParam("facilityList[]") long[]  facilityList, @RequestParam long parentId, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -290,10 +269,8 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(value="/mergeSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> mergeSubFacilities(@RequestParam("toBeMergedSubArray[]") long[]  toBeMergedSubArray, @RequestParam long selToBeMergedSub, @RequestParam long selToBeMergedParent, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> mergeSubFacilities(@RequestParam("toBeMergedSubArray[]") long[]  toBeMergedSubArray, @RequestParam long selToBeMergedSub, @RequestParam long selToBeMergedParent, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -306,10 +283,8 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(value="/mergeGrandFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> mergeGrandFacilities(@RequestParam("toBeMergedGrandArray[]") long[]  toBeMergedGrandArray, @RequestParam long selToBeMergedGrand, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> mergeGrandFacilities(@RequestParam("toBeMergedGrandArray[]") long[]  toBeMergedGrandArray, @RequestParam long selToBeMergedGrand, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -330,10 +305,8 @@ public class FacilityController {
 	 * @return Map containing transaction result message
 	 */
 	@RequestMapping(value="/addRawAndSubFacilityDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addRawAndSubProviderAddressDetails(@RequestParam long masterFacilityId, @ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addRawAndSubProviderAddressDetails(@RequestParam long masterFacilityId, @ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -350,10 +323,8 @@ public class FacilityController {
 	 * @return Map containing transaction result message
 	 */
 	@RequestMapping(value="/addFacilityDetails.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addProviderDetails(@ModelAttribute("masterFacilityVO")  MasterFacilityVO masterFacilityVO, @ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addProviderDetails(@ModelAttribute("masterFacilityVO")  MasterFacilityVO masterFacilityVO, @ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

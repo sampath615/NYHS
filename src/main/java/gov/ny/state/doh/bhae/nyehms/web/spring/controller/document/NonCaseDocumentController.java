@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,9 +37,8 @@ public class NonCaseDocumentController {
 			@RequestParam int triggeringDocId,
 			@RequestParam String comments,
 			@RequestParam int reason,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -55,9 +53,8 @@ public class NonCaseDocumentController {
 	public @ResponseBody Map<Object, Object> addCommentsToNonCaseDoc(
 			@RequestParam int triggeringDocId,
 			@RequestParam String comments,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -71,9 +68,8 @@ public class NonCaseDocumentController {
 	public @ResponseBody Map<Object, Object> changeNonCaseActiveFlagStatus(
 			@RequestParam int triggeringDocId,
 			@RequestParam boolean flagActive,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -102,10 +98,8 @@ public class NonCaseDocumentController {
 			produces = "application/json")
 	public @ResponseBody Map<Object, Object> flagAsNonCase(
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO, @RequestParam String reason,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		nonCaseDocumentService.flagAsNonCase(
@@ -127,10 +121,8 @@ public class NonCaseDocumentController {
 			produces = "application/json")
 	public @ResponseBody Map<Object, Object> unflagAsNonCase(
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String newStateno = nonCaseDocumentService.unflagAsNonCase(
@@ -152,10 +144,8 @@ public class NonCaseDocumentController {
 	public String getNonCaseDocHistory(
 			Map<String, Object> pMap,
 			@RequestParam String stateNo,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -170,10 +160,8 @@ public class NonCaseDocumentController {
 	@RequestMapping(value="/getNonCaseEharsStatenos")	
 	public String getNonCaseEharsStatenos(
 			Map<String, Object> pMap,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -190,10 +178,8 @@ public class NonCaseDocumentController {
 	@RequestMapping(value="/getNonCasePerinatalStatenos")	
 	public String getNonCasePerinatalStatenos(
 			Map<String, Object> pMap,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -210,10 +196,8 @@ public class NonCaseDocumentController {
 	@RequestMapping(value="/getNonCaseFlaggedHistory")	
 	public String getNonCaseFlaggedHistory(
 			Map<String, Object> pMap,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -224,10 +208,8 @@ public class NonCaseDocumentController {
 	@RequestMapping(value="/loadNoncaseFlaggedData.json" , method = RequestMethod.POST, produces = "application/json")	
 	public @ResponseBody List<Map<String, String>> loadNoncaseFlaggedData(
 			Map<String, Object> pMap,
-			HttpServletRequest request, @RequestParam(required=false) String FROM_DATE, @RequestParam(required=false) String TO_DATE, @RequestParam String ACTIVE_FLAG)
+			HttpServletRequest request, @RequestParam(required=false) String FROM_DATE, @RequestParam(required=false) String TO_DATE, @RequestParam String ACTIVE_FLAG, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

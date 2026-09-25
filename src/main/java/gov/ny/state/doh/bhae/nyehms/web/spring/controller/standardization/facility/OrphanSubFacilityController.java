@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,10 +38,8 @@ public class OrphanSubFacilityController {
 	 * @return GridObject the GridObject instance which holds the orphan addresses 
 	 */
 	@RequestMapping(value="/getOrphanSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getOrphanSubFacilities(HttpServletRequest request){
+	public @ResponseBody GridObject getOrphanSubFacilities(HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -59,10 +56,8 @@ public class OrphanSubFacilityController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/linkOrphanSubFacilityToMasterFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object,Object> linkOrphanSubFacilityToMasterFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,HttpServletRequest request){
+	public @ResponseBody Map<Object,Object> linkOrphanSubFacilityToMasterFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -85,10 +80,8 @@ public class OrphanSubFacilityController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/linkRawToMasterAndOrphanSubFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> linkRawToMasterAndOrphanSubFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,@RequestParam long  rawSubFacilityId, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> linkRawToMasterAndOrphanSubFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,@RequestParam long  rawSubFacilityId, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -103,10 +96,8 @@ public class OrphanSubFacilityController {
 	 * @return String transaction result message
 	 */
 	@RequestMapping(value="/addNewMasterFacilityAndLinkOrphanSubFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkOrphanSubFacility(@RequestParam long  subFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkOrphanSubFacility(@RequestParam long  subFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -130,10 +121,8 @@ public class OrphanSubFacilityController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/addNewMasterFacilityAndLinkRawToOrphanSubFacility.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkRawToOrphanSubFacility(@RequestParam long  subFacilityId, long rawSubFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkRawToOrphanSubFacility(@RequestParam long  subFacilityId, long rawSubFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

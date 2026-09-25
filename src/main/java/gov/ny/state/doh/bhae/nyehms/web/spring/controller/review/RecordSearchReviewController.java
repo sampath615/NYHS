@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +51,8 @@ public class RecordSearchReviewController {
 			@RequestParam String requestComments,
 			@RequestParam String flagStatus,
 			@RequestParam String flagRequired,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		if("Y".equals(flagRequired)){
@@ -71,10 +68,8 @@ public class RecordSearchReviewController {
 	public @ResponseBody Map<Object, Object> changeRecordSearchStatusForMultipleStatenos(
 			@RequestParam("statenoList[]")  String[] statenoList,
 			@RequestParam String requestComments,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		recordSearchReviewService.changeRecordSearchStatusForMultipleStatenos(statenoList, requestComments, bindingResult, userObject);
@@ -84,10 +79,8 @@ public class RecordSearchReviewController {
 	@RequestMapping(value="/discardCDCFeedbackRecords.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> discardCDCFeedbackRecords(
 			@RequestParam("cdcRecords[]")  String[] cdcRecords,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		recordSearchReviewService.discardCDCFeedbackRecords(cdcRecords, bindingResult, userObject);
@@ -102,7 +95,7 @@ public class RecordSearchReviewController {
 	public ModelAndView generateCDCFile(
 			@RequestParam String statenoList, @RequestParam String cdcFileName, 
 			HttpServletRequest request, 
-			HttpServletResponse response)
+			HttpServletResponse response, UserObject userObject)
 	{
 		
 		Cookie myCookie =
@@ -110,8 +103,6 @@ public class RecordSearchReviewController {
 		
 		response.addCookie(myCookie);
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -168,10 +159,8 @@ public class RecordSearchReviewController {
 
 	@RequestMapping(value="/downloadCDCReturnFile.xlsx", method = RequestMethod.GET)
 	public ModelAndView downloadCDCReturnFile(@RequestParam String cdcFileName, 
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -267,10 +256,8 @@ public class RecordSearchReviewController {
 	
 	@RequestMapping(value="/getCDCPendingReturnData.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<Map<String, String>> getCDCPendingReturnData(
-			HttpServletRequest request, @RequestParam String cdcFileName)
+			HttpServletRequest request, @RequestParam String cdcFileName, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getCDCPendingReturnData(cdcFileName, bindingResult, userObject);
@@ -280,10 +267,8 @@ public class RecordSearchReviewController {
 	
 	
 	@RequestMapping(value="/uploadCDCFileData", method = RequestMethod.POST)
-	public String  uploadCDCFileData(HttpServletRequest request, @RequestParam String inputFileName, @RequestParam("uploadedFile") MultipartFile  uploadedFile, Map<Object, Object> map){
+	public String  uploadCDCFileData(HttpServletRequest request, @RequestParam String inputFileName, @RequestParam("uploadedFile") MultipartFile  uploadedFile, Map<Object, Object> map, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");
 		
@@ -310,10 +295,8 @@ public class RecordSearchReviewController {
 	 */
 	@RequestMapping(value="/getRecordSearchStatenos.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getRecordSearchStatenos(
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getRecordSearchStatenos(bindingResult, userObject);
@@ -328,10 +311,8 @@ public class RecordSearchReviewController {
 	@RequestMapping(value="/getRecordSearchStatenoFlagHistory.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<Map<String, String>> getRecordSearchStatenoFlagHistory(
 			@RequestParam String stateno,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getRecordSearchStatenoFlagHistory(stateno, bindingResult, userObject);
@@ -340,10 +321,8 @@ public class RecordSearchReviewController {
 	@RequestMapping(value="/rejectCDCFile.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> rejectCDCFile(
 			@RequestParam String cdcFileName,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -359,10 +338,8 @@ public class RecordSearchReviewController {
 	public String getRecordSearchStatenoHistory(
 			Map<String, Object> pMap,
 			@RequestParam String stateNo,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session =request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

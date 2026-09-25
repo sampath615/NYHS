@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +49,9 @@ public class MessageBoxController {
      * @return
      */
     @RequestMapping(value = "/getAllMessages")
-    public String getAllMessages(Map<String, Object> map, HttpServletRequest request, @RequestParam String messageType) {
+    public String getAllMessages(Map<String, Object> map, HttpServletRequest request, @RequestParam String messageType, UserObject userObject) {
 
-        HttpSession session = request.getSession();
 
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         Map<String, String> targetMap = new HashMap<String, String>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
@@ -81,11 +78,9 @@ public class MessageBoxController {
      */
     @RequestMapping(value = "/setMessageRead", method = RequestMethod.POST)
     public @ResponseBody
-    Integer setMessageRead(HttpServletRequest request, @RequestParam String messageId) {
+    Integer setMessageRead(HttpServletRequest request, @RequestParam String messageId, UserObject userObject) {
 
-        HttpSession session = request.getSession();
 
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         Map<String, String> targetMap = new HashMap<String, String>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
@@ -105,11 +100,9 @@ public class MessageBoxController {
      */
     @RequestMapping(value = "/sendNewMessage", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    Map<String, String> sendNewMessage(HttpServletRequest request, @RequestParam String receiver, @RequestParam String messageBody) {
+    Map<String, String> sendNewMessage(HttpServletRequest request, @RequestParam String receiver, @RequestParam String messageBody, UserObject userObject) {
 
-        HttpSession session = request.getSession();
 
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         Map<String, String> targetMap = new HashMap<String, String>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
@@ -127,11 +120,9 @@ public class MessageBoxController {
      */
     @RequestMapping(value = "/deleteMessage", method = RequestMethod.POST, produces = "application/json")
     public @ResponseBody
-    Map<String, String> deleteMessage(HttpServletRequest request, @RequestParam String messageId) {
+    Map<String, String> deleteMessage(HttpServletRequest request, @RequestParam String messageId, UserObject userObject) {
 
-        HttpSession session = request.getSession();
 
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         Map<String, String> targetMap = new HashMap<String, String>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
@@ -149,11 +140,9 @@ public class MessageBoxController {
      */
     @RequestMapping(value = "/getNumUnreadMessages", method = RequestMethod.POST, produces = "application/text")
     public @ResponseBody
-    String getNumUnreadMessages(HttpServletRequest request) {
+    String getNumUnreadMessages(HttpServletRequest request, UserObject userObject) {
 
-        HttpSession session = request.getSession();
 
-        UserObject userObject = (UserObject) session.getAttribute("UserObj");
         Map<String, String> targetMap = new HashMap<String, String>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         

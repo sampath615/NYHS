@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,9 +33,8 @@ public class LaftFollowupController {
 			@RequestParam int triggeringDocId, @RequestParam String triggeringStateno,
 			@RequestParam String comments,
 			@RequestParam int reason,
-			HttpServletRequest request)
+			HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -47,9 +45,8 @@ public class LaftFollowupController {
 	
 	
 	@RequestMapping(value="/isLaftFollowupActive.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> isLaftFollowupActive(HttpServletRequest request, @RequestParam int documentId) {
+	public @ResponseBody Map<Object, Object> isLaftFollowupActive(HttpServletRequest request, @RequestParam int documentId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -72,10 +69,8 @@ public class LaftFollowupController {
 	}
 	
 	@RequestMapping(value="/loadflaggedLaftFollowupData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getFlaggedLaftFollowupData(HttpServletRequest request){
+	public @ResponseBody GridObject getFlaggedLaftFollowupData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -88,9 +83,8 @@ public class LaftFollowupController {
 	
 	@RequestMapping(value="/resolveLaftFollowupDocuments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> resolveLaftFollowupDocuments(@RequestParam("followupIdsPk[]")  int[] followupIdsPk,
-			@RequestParam String resolutionId, @RequestParam String resolutionComments, HttpServletRequest request)
+			@RequestParam String resolutionId, @RequestParam String resolutionComments, HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -100,10 +94,8 @@ public class LaftFollowupController {
 	}	
 	
 	@RequestMapping(value="/loadflaggedLaftResolvedData.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getFlaggedLaftResolvedData(HttpServletRequest request){
+	public @ResponseBody GridObject getFlaggedLaftResolvedData(HttpServletRequest request, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -115,9 +107,8 @@ public class LaftFollowupController {
 	}	
 	
 	@RequestMapping(value="/addInitialReviewComments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addInitialReviewComments(@RequestParam int followupId, @RequestParam String comments, HttpServletRequest request)
+	public @ResponseBody Map<Object, Object> addInitialReviewComments(@RequestParam int followupId, @RequestParam String comments, HttpServletRequest request, UserObject userObject)
 	{		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		

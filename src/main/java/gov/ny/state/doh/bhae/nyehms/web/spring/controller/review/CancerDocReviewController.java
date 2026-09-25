@@ -32,10 +32,8 @@ public class CancerDocReviewController {
 	
 	
 	@RequestMapping(value = "/getCancerDoc.html")
-	public String getCancerDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request)
+	public String getCancerDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		CancerDocVO cancerDocVO = cancerDocumentService.getCancerDoc(docId, bindingResult, userObject);

@@ -27,7 +27,7 @@ public class ControllerLayerInterceptingAspect {
 		HttpSession httpSession=null;
 		Object[] arguments=proceedingJoinPoint.getArgs();
 			for(int i=0;i<arguments.length;i++){
-				if(arguments[i].getClass()==ServletRequestImpl.class){
+				if(arguments[i] != null && arguments[i].getClass()==ServletRequestImpl.class){
 					httpServletRequest=(HttpServletRequest)arguments[i];
 					httpSession=httpServletRequest.getSession();
 					userObject=(UserObject)httpSession.getAttribute("UserObj");

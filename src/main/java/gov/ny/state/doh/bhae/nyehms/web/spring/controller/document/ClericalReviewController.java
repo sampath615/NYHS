@@ -64,12 +64,10 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping("/getDataFluxClericalReview")
-	public String getDataFluxClericalReview(Map<String, Object> map, HttpServletRequest request) {
+	public String getDataFluxClericalReview(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		String reviewType = "C";
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		
 		List<String> clericalReviewDocTypes = clericalReviewService.getDatafluxAvailabeDocumentTypes(reviewType, userObject);
@@ -204,10 +202,8 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/getDataFluxClericalReviewAvailabeDocumentTypes.json",  produces = "application/json")
-	public @ResponseBody List<String> getDataFluxClericalReviewAvailabeDocumentTypes(HttpServletRequest request, @RequestParam String reviewType){
+	public @ResponseBody List<String> getDataFluxClericalReviewAvailabeDocumentTypes(HttpServletRequest request, @RequestParam String reviewType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		List<String> clericalReviewDocTypes = clericalReviewService.getDatafluxAvailabeDocumentTypes(reviewType, userObject);
 		
@@ -215,9 +211,7 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/getDatafluxDocumentIdAndPotentialMatchesForStatenos.json",  produces = "application/json")
-	public @ResponseBody Map<String, Object> getDatafluxDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<String, Object> getDatafluxDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
@@ -227,10 +221,8 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/matchDocumentToStatenoInDataFlux.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> matchDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, @RequestParam(required = false) Long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, @RequestParam String documentType, @RequestParam(required = false) String comments) {
+	public @ResponseBody Map<Object, Object> matchDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, @RequestParam(required = false) Long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, @RequestParam String documentType, @RequestParam(required = false) String comments, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -244,10 +236,8 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/noMatchForDocumentToStatenoInDataFlux.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> noMatchForDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, String documentType) {
+	public @ResponseBody Map<Object, Object> noMatchForDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, String documentType, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -277,12 +267,10 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping("/getDatafluxClericalDeathReview")
-	public String getDatafluxClericalDeathReview(Map<String, Object> map, HttpServletRequest request) {
+	public String getDatafluxClericalDeathReview(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		String reviewType = "P";
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		List<String> clericalReviewDocTypes = clericalReviewService.getDatafluxAvailabeDocumentTypes(reviewType, userObject);
 		
@@ -421,9 +409,7 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenos.json",  produces = "application/json")
-	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
@@ -434,9 +420,7 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/getOOCDocumentFileNames.json",  produces = "application/json")
-	public @ResponseBody List<JSONObject> getOOCDocumentFileNames(HttpServletRequest request, @RequestParam String fileType, @RequestParam int processStatus){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<JSONObject> getOOCDocumentFileNames(HttpServletRequest request, @RequestParam String fileType, @RequestParam int processStatus, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
@@ -447,9 +431,7 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/getQualityStageStatusCodesForTheFileName.json",  produces = "application/json")
-	public @ResponseBody List<String> getQualityStageStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<String> getQualityStageStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
@@ -462,9 +444,8 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenosForQSReview.json",  produces = "application/json")
-	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForQSReview(HttpServletRequest request){
+	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForQSReview(HttpServletRequest request, UserObject userObject){
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -479,9 +460,8 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenosForDFReview.json",  produces = "application/json")
-	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForDFReview(HttpServletRequest request){
+	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForDFReview(HttpServletRequest request, UserObject userObject){
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -496,9 +476,7 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/getDFStatusCodesForTheFileName.json",  produces = "application/json")
-	public @ResponseBody List<String> getDFStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody List<String> getDFStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
@@ -526,10 +504,8 @@ public class ClericalReviewController {
 	
 	
 	@RequestMapping(value="/matchDocumentToStateno.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> matchDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno) {
+	public @ResponseBody Map<Object, Object> matchDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -541,10 +517,8 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/noMatchForDocumentToStateno.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> noMatchForDocumentToStateno(HttpServletRequest request, @RequestParam long documentId) {
+	public @ResponseBody Map<Object, Object> noMatchForDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -556,10 +530,8 @@ public class ClericalReviewController {
 	}
 	
 	@RequestMapping(value="/qualityStagedDocumentManualReview.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> qualityStagedDocumentManualReview(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) String stateno, @RequestParam String matchCode, @RequestParam String documentType) {
+	public @ResponseBody Map<Object, Object> qualityStagedDocumentManualReview(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) String stateno, @RequestParam String matchCode, @RequestParam String documentType, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

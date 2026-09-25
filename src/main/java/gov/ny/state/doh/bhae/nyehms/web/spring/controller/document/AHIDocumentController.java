@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +50,9 @@ public class AHIDocumentController {
 	@Autowired	private PersionService personService;
 
 	@RequestMapping(value = "/getAHIForm.html")
-	public String getAHIDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request)
+	public String getAHIDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		log.debug("{}  incoming AHI Doc ID is {}", nyehmsLog, docId);
-		UserObject userObject = (UserObject) request.getSession().getAttribute("UserObj");
 		
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -122,10 +120,8 @@ public class AHIDocumentController {
 	@RequestMapping(value="/saveAHIForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveAHIForm(
 			@ModelAttribute("aHIDocVO") AHIDocVO aHIDocVO, HttpServletRequest request, BindingResult result
-			){
+			, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -146,9 +142,8 @@ public class AHIDocumentController {
 	@RequestMapping(value="/changeAhiFlagStatus.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
 	Map<Object, Object> changeAhiFlagStatus(HttpServletRequest request, @RequestParam boolean ahiFlagStatus, @RequestParam int assignmentId, @RequestParam String comments, @RequestParam String documentType,
-			@RequestParam String ahiDocIdForAssignment, @RequestParam int ahiAlertSeqId) {
+			@RequestParam String ahiDocIdForAssignment, @RequestParam int ahiAlertSeqId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -165,9 +160,8 @@ public class AHIDocumentController {
 	
 	@RequestMapping(value="/validateAHIDataWithACRF.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody
-	Map<Object, Object> validateAHIDataWithACRF(HttpServletRequest request, @RequestParam int acrfDocId, @RequestParam int ahiDocId) {
+	Map<Object, Object> validateAHIDataWithACRF(HttpServletRequest request, @RequestParam int acrfDocId, @RequestParam int ahiDocId, UserObject userObject) {
 		
-		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
 		if(userObject==null) userObject= new UserObject();
 		
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
@@ -204,10 +198,8 @@ public class AHIDocumentController {
 	}
 
 	@RequestMapping(value="/loadAHIAlertData.json", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody GridObject getAHIAlertData(HttpServletRequest request, @RequestParam String dataType, @RequestParam String dataSubType){
+	public @ResponseBody GridObject getAHIAlertData(HttpServletRequest request, @RequestParam String dataType, @RequestParam String dataSubType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -219,10 +211,8 @@ public class AHIDocumentController {
 	}	
 	@RequestMapping(value="/saveAHIAlertTrackingForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveAHIAlertTrackingForm(
-			@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result) {
+			@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -252,10 +242,8 @@ public class AHIDocumentController {
 	}
 	
 	@RequestMapping(value="/updateAHIAlertStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateAHIAlertStatus(@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result) {
+	public @ResponseBody Map<Object, Object> updateAHIAlertStatus(@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

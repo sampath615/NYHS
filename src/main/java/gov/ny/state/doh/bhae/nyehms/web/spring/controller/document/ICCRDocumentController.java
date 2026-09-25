@@ -38,10 +38,9 @@ public class ICCRDocumentController {
 	@Autowired	ACRFDocumentService acrfFDocumentService;
 	
 	@RequestMapping("/dataEntryICCRDocument")
-	public String dataEntryICCRDoc(HttpServletRequest request, Map<String, Object> map) {
+	public String dataEntryICCRDoc(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		BindingResult bindingResult = new MapBindingResult(map, "targetMap");		
 		
 		ICCRDataEntryVO iccrDataEntryVO = new ICCRDataEntryVO();
@@ -66,10 +65,8 @@ public class ICCRDocumentController {
 	
 	@RequestMapping(value="/saveICCRDataForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveICCRDataForm(
-			@ModelAttribute("ICCRDataEntryVO") ICCRDataEntryVO iccrDataEntryVO, HttpServletRequest request, BindingResult result) {
+			@ModelAttribute("ICCRDataEntryVO") ICCRDataEntryVO iccrDataEntryVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

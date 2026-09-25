@@ -52,21 +52,17 @@ public class LabLoincResultDomainMappingController {
 	
 
 	@RequestMapping("/addNewLoinc.html")
-	public String addNewLoinc(Map<String, Object> map, HttpServletRequest request) {
+	public String addNewLoinc(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		
 		
 		return "reports/addNewLoinc";
 	}
 	
 	@RequestMapping(value="/getLoincDescriptionsForTestType.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam String testType){
+	public @ResponseBody List<String> getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam String testType, UserObject userObject){
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		List<String> loincDescriptionDetails =loincResultDomainMappingService.getLoincDescriptionsForTestType(userObject, testType);
 		
@@ -74,11 +70,9 @@ public class LabLoincResultDomainMappingController {
 	}
 	
 	@RequestMapping(value="/getLoincUnitOfMeasurementsForTestType.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<String> getLoincUnitOfMeasurementsForTestType(HttpServletRequest request, @RequestParam String loincDescription, @RequestParam String testType) {
+	public @ResponseBody List<String> getLoincUnitOfMeasurementsForTestType(HttpServletRequest request, @RequestParam String loincDescription, @RequestParam String testType, UserObject userObject) {
 		
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		List<String> loincDescriptionDetails = loincResultDomainMappingService.getLoincUnitOfMeasurementsForTestType(userObject, loincDescription, testType);
 		
@@ -87,11 +81,10 @@ public class LabLoincResultDomainMappingController {
 	
 	
 	@RequestMapping("/getLoincToDomainDetails")
-	public String getPersonMerge(Map<String, Object> map, HttpServletRequest request) {
+	public String getPersonMerge(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 		
 		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -122,10 +115,8 @@ public class LabLoincResultDomainMappingController {
 	}
 	
 	@RequestMapping(value="/getLoincAndDescriptionSearchResults.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<LabLoincMappingVO> getLoincAndDescriptionSearchResults(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public @ResponseBody List<LabLoincMappingVO> getLoincAndDescriptionSearchResults(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -137,10 +128,8 @@ public class LabLoincResultDomainMappingController {
 	}
 	
 	@RequestMapping(value="/getAtrDomainsAssoicatedToLoincCode.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getAtrDomainsAssoicatedToLoincCode(Map<String, Object> map, HttpServletRequest request,@RequestParam String loincCode) {
+	public @ResponseBody GridObject getAtrDomainsAssoicatedToLoincCode(Map<String, Object> map, HttpServletRequest request,@RequestParam String loincCode, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -152,10 +141,8 @@ public class LabLoincResultDomainMappingController {
 	}
 	
 	@RequestMapping(value="/addNewLabLoincDetailsToLookup.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewLabLoincDetailsToLookup(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO) {
+	public @ResponseBody Map<Object, Object> addNewLabLoincDetailsToLookup(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -171,10 +158,8 @@ public class LabLoincResultDomainMappingController {
 	
 	
 	@RequestMapping(value="/addNewAcceptableTestResults.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewAcceptableTestResults(@ModelAttribute("acceptedTestResultDomainVO") AcceptedTestResultDomainVO acceptedTestResultDomainVO,HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> addNewAcceptableTestResults(@ModelAttribute("acceptedTestResultDomainVO") AcceptedTestResultDomainVO acceptedTestResultDomainVO,HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -185,10 +170,8 @@ public class LabLoincResultDomainMappingController {
 	}
 	
 	@RequestMapping(value="/updateLoincAndTestResultsDomainStatus.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> updateLoincAndTestResultsDomainStatus(@RequestParam String flagActive, @RequestParam("loincAtrDomainMapId")  long loincAtrDomainMapId,HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> updateLoincAndTestResultsDomainStatus(@RequestParam String flagActive, @RequestParam("loincAtrDomainMapId")  long loincAtrDomainMapId,HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -201,10 +184,8 @@ public class LabLoincResultDomainMappingController {
 	
 	
 	@RequestMapping(value="/getLoincAndUnitsOfMeasurementCombination.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<String, String> getLoincAndUnitsOfMeasurementCombination(@RequestParam String loincCd, HttpServletRequest request) {
+	public @ResponseBody Map<String, String> getLoincAndUnitsOfMeasurementCombination(@RequestParam String loincCd, HttpServletRequest request, UserObject userObject) {
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -216,10 +197,8 @@ public class LabLoincResultDomainMappingController {
 	
 	
 	@RequestMapping(value="/changeLoincMultiSpotDocuments.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> changeLoincMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Integer[] documentIds, @RequestParam String documentType){
+	public @ResponseBody Map<Object, Object> changeLoincMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Integer[] documentIds, @RequestParam String documentType, UserObject userObject){
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

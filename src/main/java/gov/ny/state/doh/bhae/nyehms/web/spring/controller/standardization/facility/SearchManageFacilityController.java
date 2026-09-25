@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,9 +44,7 @@ public class SearchManageFacilityController {
 	 * @return GridObject GridObject which returns the search results   
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsByMasterFacility.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getFacilityDetailsByMasterFacility(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO , HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getFacilityDetailsByMasterFacility(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO , HttpServletRequest request, UserObject userObject){
 		Map<String, Object> targetMap = new HashMap<String, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Provider Search Criteria
@@ -62,9 +59,7 @@ public class SearchManageFacilityController {
 	 * @return GridObject GridObject which returns the search results   
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsBySubFacility.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getFacilityDetailsBySubFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO , HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getFacilityDetailsBySubFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO , HttpServletRequest request, UserObject userObject){
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsBySubFacility(subFacilityVO , bindingResult, userObject));
@@ -73,9 +68,7 @@ public class SearchManageFacilityController {
 	
 	
 	@RequestMapping(value="/getFacilityDetailsForAssignmentByRawFacility.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getFacilityDetailsForAssignmentBySubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getFacilityDetailsForAssignmentBySubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request, UserObject userObject){
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -93,9 +86,7 @@ public class SearchManageFacilityController {
 	 * @return GridObject GridObject which returns the search results   
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsByRawSubFacility.json", method=RequestMethod.POST,produces = "application/json")
-	public @ResponseBody GridObject  getFacilityDetailsByRawSubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject  getFacilityDetailsByRawSubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request, UserObject userObject){
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsByRawSubFacility(rawSubFacilityVO , bindingResult, userObject));

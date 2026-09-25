@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +56,7 @@ public class EmailController {
 	 * @return
 	 */
 	@RequestMapping(value = "/processEmail", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> processEmail(HttpServletRequest request) {
+	public @ResponseBody Map<Object, Object> processEmail(HttpServletRequest request, UserObject userObject) {
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -65,8 +64,6 @@ public class EmailController {
 		Integer statusCode = 0;
 		String transactionMessage = "Mail successfully sent to NYEHMS Helpdesk"; 
 		String[] cc = new String[1];
-		HttpSession session = request.getSession();
-		UserObject userObject = (UserObject) session.getAttribute("UserObj");
 
 		String[] sendTo = new String[1];
 		sendTo[0] = EnvironmentProperties.envProperties.getProperty("helpLineTo");

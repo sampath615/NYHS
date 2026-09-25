@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,13 +56,11 @@ public class PartnerServiceController {
      * @return
      */
     @RequestMapping(value="/getPSInvestigationData.html")
-    public String getPSInvestigationData(Map<String, Object> map, HttpServletRequest request, @RequestParam long docId) {
+    public String getPSInvestigationData(Map<String, Object> map, HttpServletRequest request, @RequestParam long docId, UserObject userObject) {
 
 
-        	HttpSession session = request.getSession();
 
         
-    	 UserObject userObject = (UserObject) session.getAttribute("UserObj");
          Map<Object, Object> targetMap = new HashMap<Object, Object>();
          BindingResult result = new MapBindingResult(targetMap, "targetMap");
          

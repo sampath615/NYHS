@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,10 +46,8 @@ public class OrphanProviderAddressController {
 	 * @return GridObject the GridObject instance which holds the orphan addresses 
 	 */
 	@RequestMapping(value="/getOrphanProvideraddresses.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getOrphanProviderAddressList(HttpServletRequest request){
+	public @ResponseBody GridObject getOrphanProviderAddressList(HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<String, String> targetMap= new HashMap<String, String>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -67,10 +64,8 @@ public class OrphanProviderAddressController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/linkOrphanAddressToProvider.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> linkOrphanAddressToProvider(@RequestParam long  providerAddressId, @RequestParam long  providerId,HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> linkOrphanAddressToProvider(@RequestParam long  providerAddressId, @RequestParam long  providerId,HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -95,10 +90,8 @@ public class OrphanProviderAddressController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/linkRawToOrphanProviderAddress.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> linkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, @RequestParam long  providerId,@RequestParam long  rawProviderAddressId, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> linkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, @RequestParam long  providerId,@RequestParam long  rawProviderAddressId, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -114,10 +107,8 @@ public class OrphanProviderAddressController {
 	 * @return Map containing transaction result message
 	 */
 	@RequestMapping(value="/addNewProviderAndLinkingOrphanAddress.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewProviderAndLinkingOrphanAddress(@RequestParam long  providerAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO, HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addNewProviderAndLinkingOrphanAddress(@RequestParam long  providerAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO, HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -141,10 +132,8 @@ public class OrphanProviderAddressController {
  	 * @return String the transaction result
 	 */
 	@RequestMapping(value="/addNewProviderAndlinkRawToOrphanProviderAddress.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> addNewProviderAndLinkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, long rawProviderAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO,HttpServletRequest request){
+	public @ResponseBody Map<Object, Object> addNewProviderAndLinkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, long rawProviderAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO,HttpServletRequest request, UserObject userObject){
 
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

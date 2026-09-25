@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,9 +24,7 @@ public class ProviderManualReviewController {
 	@Autowired
 	GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawProviderAddress.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object,Object> matchRawProviderAddress(long newRawProviderAddressId,long matchingRawProviderAddressId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object,Object> matchRawProviderAddress(long newRawProviderAddressId,long matchingRawProviderAddressId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		providerManualReviewService.matchRawProviderAddress(newRawProviderAddressId, matchingRawProviderAddressId, bindingResult, userObject);
@@ -35,9 +32,7 @@ public class ProviderManualReviewController {
 	}
 	
 	@RequestMapping(value="/unMatchRawProvider.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object,Object> unMatchRawProvider(long newRawProviderAddressId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object,Object> unMatchRawProvider(long newRawProviderAddressId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		providerManualReviewService.unMatchRawProviderAddress(newRawProviderAddressId, bindingResult, userObject);
@@ -45,9 +40,7 @@ public class ProviderManualReviewController {
 	}
 	
 	@RequestMapping(value="/getPotentialProviderDetailsListByRawProvider.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getPotentialProviderDetailsListByRawProvider(long rawProviderAddressId,HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getPotentialProviderDetailsListByRawProvider(long rawProviderAddressId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(providerManualReviewService.getPotentialProviderDetailsListByRawProvider(rawProviderAddressId, bindingResult, userObject));
@@ -56,9 +49,7 @@ public class ProviderManualReviewController {
 	
 	
 	@RequestMapping(value="/getClericalReviewRawProviderAddressList.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getClericalReviewRawProviderAddressList(HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getClericalReviewRawProviderAddressList(HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(providerManualReviewService.getClericalReviewRawProviderAddressDetailsList(bindingResult, userObject));

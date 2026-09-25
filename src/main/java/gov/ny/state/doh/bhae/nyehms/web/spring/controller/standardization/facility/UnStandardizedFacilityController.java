@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +46,10 @@ public class UnStandardizedFacilityController {
 	 * @return transaction success or failure message after the transaction   
 	 */
 	@RequestMapping(value="/flagFacilityAsProvider.json", method=RequestMethod.POST,produces = "application/json") 
-	public @ResponseBody Map<Object,Object> flagFacilityAsProvider(@RequestParam long facilityId,HttpServletRequest request){
+	public @ResponseBody Map<Object,Object> flagFacilityAsProvider(@RequestParam long facilityId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
 		unStandardizedFacilityService.flagFacilityAsProvider(facilityId,bindingResult,userObject);
 		return targetMap;
 	}
@@ -75,9 +72,7 @@ public class UnStandardizedFacilityController {
 	 */
 
 	@RequestMapping(value="/getMasterFacilitiesWithSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody GridObject getMasterFacilitiesWithSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam String searchFor, HttpServletRequest request){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody GridObject getMasterFacilitiesWithSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam String searchFor, HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject gridObject = getGridObject.GetGrid(unStandardizedFacilityService.getMasterFacilitiesWithSubFacilities(masterFacilityVO,subFacilityVO , searchFor, bindingResult, userObject));
@@ -92,9 +87,7 @@ public class UnStandardizedFacilityController {
 	 * @param request the HTTPRequest reference
 	 */
 	@RequestMapping(value="/standardizeRawByCreatingMasterAndSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody Map<Object, Object> standardizeRawByCreatingMasterAndSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam long  rawSubFacilityId, HttpServletRequest request, BindingResult result){
-		HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
+	public @ResponseBody Map<Object, Object> standardizeRawByCreatingMasterAndSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam long  rawSubFacilityId, HttpServletRequest request, BindingResult result, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<Object, Object>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		unStandardizedFacilityService.standardizeRawByCreatingMasterAndSubFacilities(masterFacilityVO, subFacilityVO, rawSubFacilityId, bindingResult, userObject);

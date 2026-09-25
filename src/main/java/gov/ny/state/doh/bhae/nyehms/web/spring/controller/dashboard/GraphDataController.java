@@ -6,7 +6,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.dashboard.GraphDataServic
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +35,11 @@ public class GraphDataController {
     
     
     @RequestMapping(value = "/getWorkerTallyCounts", method = RequestMethod.POST, produces = "application/json")
-    public @ResponseBody List<JSONObject> getWorkerTallyCounts(HttpServletRequest request) {
+    public @ResponseBody List<JSONObject> getWorkerTallyCounts(HttpServletRequest request, UserObject userObject) {
     	
     	
     	
     	
-    	HttpSession session = request.getSession();
-		UserObject userObject=(UserObject)session.getAttribute("UserObj");
     	
     	
     	return graphDataService.getWorkerTallyCounts(userObject);
