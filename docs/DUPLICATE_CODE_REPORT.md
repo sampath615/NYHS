@@ -113,6 +113,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
 - `GenerateMergeReportByDailyStaff` and `GenerateBadMergeReportByDailyStaff` share a 121-line block.
 - Three `buildPdfDocument()` methods have the same 33-line structure (`PSConfirmedSTDPdfView`, `UpdatedMessagesPdfView`, `UploadedRecordSearchStatnosPdfView`).
 - **Recommendation:** Add a shared export base class (styles, header row, column writer), or a report-builder service.
+- *Partly completed* (`198236f`): `AbstractKeyValuePdfView` replaces the three copied PDF views; `AbstractExcelReportView` (download headers, borders, solid fill, Calibri font) is the base of all 21 spreadsheet views. Still open: the 121-line block shared by the two daily-staff merge reports and the per-report row-writing code.
 
 #### F-09. Date formatting
 - **Impact:** Low to Medium. **Risk:** Low.
