@@ -20,6 +20,21 @@ Working rules: one small reviewable cleanup step per commit; no unrelated refact
 - **Testing status (important for modernization):** the project has **no automated tests** after the ninth pass. The removed suite was scratch-level (16 `@Test` methods needing a live database, never run by the build). Before the Java 21 / Tomcat / JPA work, plan for characterization or integration tests around the areas you will touch (e.g. the ~20 "easy JPA" document DAOs and the MyBatis mappers), and add `junit`/`spring-test` (or JUnit 5) back to the pom **with `test` scope** when you do.
 - **Working conventions used so far:** dry-run first, then apply; verify with comment-stripped diffs (zero added code lines), declaration-name diffs, brace balance using a character-level lexer to mask comments and strings (regex masks are unreliable — a 37,000-character string literal once defeated one), and XML well-formedness checks; commit code first, then a separate AGENTS.md commit that records the code commit hash.
 
+**Pending work (agreed with the project owner, to be done later — keep one small, verified step per commit):**
+
+| # | Item | Scope | Risk | Notes |
+|---|---|---|---|---|
+| P-1 | Scheduler loader base class | "Get server IP address" block copied in 7 loaders (13 files call `InetAddress.getLocalHost()`); `loadSchedulers` environment check in 13 files | Low | Report F-07. Quartz invokes the `RunXxxLoaderJob` classes by reflection, so keep class names and `spring-config.xml` entries unchanged. |
+| P-2 | Centralize date formats | 47 inline `new SimpleDateFormat(...)`, 21 of them `"MM/dd/yyyy"` | Low | Report F-09. `SimpleDateFormat` is not thread-safe: never share one instance in a field; use per-call instances (or `DateTimeFormatter` after the Java 21 upgrade). |
+| P-3 | Shared notification service | 24 services wrap `SendEmail` with their own `sendEmail*` methods (e.g. `sendEmailToBureauDirector` in `EPRFOOCDocumentServiceImpl` and `DocumentReviewTransactionHelper`) | Medium | Report F-11. |
+| P-4 | Shared upload helper | 7 controllers handle `MultipartFile`/`MultipartHttpServletRequest` independently; 3 upload endpoints have the same 15-line shape | Medium | Report F-12. |
+| P-5 | Service error-handling template | 225 identical `catch (DataAccessException ...)` blocks in 64 files; 490 `inspectDBTransacionResult` calls | Medium | Report F-06. Touches many services — one package per commit. |
+| P-6 | Fix `ControllerLayerInterceptingAspect` pointcut typo | `controller.reports..*` never matches (package is `controller.report`) | Behavior change | Fixing it makes report controllers start receiving the aspect — decide with the team. |
+| P-7 | Remove WebLogic coupling in `ControllerLayerInterceptingAspect` | Type check against `weblogic.servlet.internal.ServletRequestImpl` | Medium | Required before the Tomcat migration (the aspect silently does nothing on other containers). |
+| P-8 | Rotate the WebLogic deploy password | The value removed with `pom.properties` is still in Git history on GitHub | Security | Rotate wherever that account is used; history rewrite is optional (needs a force-push). |
+
+Other items still open are listed in `docs/DUPLICATE_CODE_REPORT.md` (phases 3–4) and in section 8 below.
+
 | Commit | Change | Left intentionally for later |
 |---|---|---|
 | `77b99f6` | Removed `AllJaroLoader.java`, `RunAllJaroLoaderJob.java`; removed the commented-out `allJaroLoader`/`runAllJaroLoaderJob`/`allJaroCronTrigger` XML in `spring-config.xml`; removed the "Create AllJaro" button table from `manualQuartzSchedulerJob.jsp`. | `CommonConstants.LOAD_ALLJARO_SCHEDULER` (now unused); `SchedulerJobsDAO.getLatestAllJaroData()` (no mapped SQL, no callers); commented-out AllJaro code in `QualityStageLoader`/`RawRecordsCleaner`; `ALLJARO_*`/`JAROT_*` entries in `SchedulerMetaData.properties` (JAROT settings are still used by live code); copy-pasted "started loading alljaro data" log line in `RunEharsDataLoaderJob`. |
