@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+
 public class RawProviderAddressVO {
 	
     private long rawProviderAddressId;
@@ -108,15 +110,7 @@ public class RawProviderAddressVO {
     }
 
     public void setPhone(String phone) {
-    	
-    	if("xxx-xxx-xxxx".equals(phone)){
-			phone = "";
-		}
-		else if(phone != null && (phone.indexOf('x') != -1 || phone.indexOf('-') != -1)){
-			phone = phone.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}
-    	
-        this.phone = phone;
+    	this.phone = CommonUtil.toPhoneSearchPattern(phone);
     }
 
     public String getRawProviderFname() {

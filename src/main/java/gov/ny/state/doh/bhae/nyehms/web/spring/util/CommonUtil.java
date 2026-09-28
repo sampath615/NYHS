@@ -90,21 +90,37 @@ public class CommonUtil {
 		return statusMessage.toString();
 	}
 
+	/*
+	 * Placeholder that search screens send when the phone field was left empty
+	 */
+	public static final String EMPTY_PHONE_MASK = "xxx-xxx-xxxx";
+
+	/**
+	 * Converts a phone number entered on a search screen into a position-level
+	 * search pattern: <code>-</code> is removed and <code>x</code>/<code>X</code>
+	 * become the single-character wildcard <code>?</code>. The masking is applied
+	 * only when the value contains a lower-case <code>x</code> or a <code>-</code>.
+	 *
+	 * @param phone the phone number as entered, may be <code>null</code>
+	 * @return an empty string for {@link #EMPTY_PHONE_MASK}, the masked pattern,
+	 *         or the value unchanged
+	 */
+	public static String toPhoneSearchPattern(String phone) {
+		if (EMPTY_PHONE_MASK.equals(phone)) {
+			return "";
+		}
+		if (phone != null && (phone.indexOf('x') != -1 || phone.indexOf('-') != -1)) {
+			return phone.replace("-", "").replace('x', '?').replace('X', '?');
+		}
+		return phone;
+	}
+
 	public static String getUnMaskedPhoneNumber(List<String> phoneNumberList) {
 		String phoneNumber = null;
 
 		if (phoneNumberList != null && phoneNumberList.size() == 1) {
 			phoneNumber = phoneNumberList.get(0);
-			/*
-			 * replacing the 'X' and '-' with ? to search the phone number at position level
-			 * These characters will come only while searching the data
-			 */
-			if ("xxx-xxx-xxxx".equals(phoneNumber)) {
-				return null;
-			} else if (phoneNumber != null && (phoneNumber.indexOf('x') != -1 || phoneNumber.indexOf('-') != -1)) {
-				phoneNumber = phoneNumber.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-			}
-			return phoneNumber;
+			return EMPTY_PHONE_MASK.equals(phoneNumber) ? null : toPhoneSearchPattern(phoneNumber);
 		} else {
 			return null;
 		}

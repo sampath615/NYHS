@@ -2,6 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility;
 
 import java.util.Date;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+
 public class RawSubFacilityVO {
     private long rawSubFacilityId;
     private long subFacilityId;
@@ -143,20 +145,7 @@ public class RawSubFacilityVO {
     }
 
     public void setPhone(String phone) {
-    	/*
-		replacing the 'X' and '-' with ? to search the phone number at position level
-		
-		These characters will come only while searching the data
-	
-		*/
-		if("xxx-xxx-xxxx".equals(phone)){
-			phone = "";
-		}
-		else if(phone != null && (phone.indexOf('x') != -1 || phone.indexOf('-') != -1)){
-			phone = phone.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}
-		this.phone = phone;
-	        
+    	this.phone = CommonUtil.toPhoneSearchPattern(phone);
     }
 
     public long getLegacySeqNumAddress() {

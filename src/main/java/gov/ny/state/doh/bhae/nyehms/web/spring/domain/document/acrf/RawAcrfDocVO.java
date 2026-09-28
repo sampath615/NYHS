@@ -3,6 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf;
 import java.io.Serializable;
 import java.util.List;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+
 public class RawAcrfDocVO implements Serializable{ 
 
 	
@@ -13,7 +15,6 @@ public class RawAcrfDocVO implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final String defaultPhoneNumber ="xxx-xxx-xxxx";
 	private int acrfSrcId;
 	private int documentId;
 	public String fname="";
@@ -622,17 +623,7 @@ public class RawAcrfDocVO implements Serializable{
 		return telephone;
 	}
 	public void setTelephone(String telephone) {
-		
-		if(defaultPhoneNumber.equals(telephone)){
-			this.telephone = "";
-		}
-		else if(telephone != null && (telephone.indexOf('x') != -1 || telephone.indexOf('-') != -1)){
-			this.telephone = telephone.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}else{
-			this.telephone = telephone;
-		}
-		
-		
+		this.telephone = CommonUtil.toPhoneSearchPattern(telephone);
 	}
 	public String getMedRecordNumber() {
 		return medRecordNumber;
@@ -776,15 +767,7 @@ public class RawAcrfDocVO implements Serializable{
 		return workerPhone;
 	}
 	public void setWorkerPhone(String workerPhone) {
-		
-		if(defaultPhoneNumber.equals(workerPhone)){
-			this.workerPhone = "";
-		}
-		else if(workerPhone != null && (workerPhone.indexOf('x') != -1 || workerPhone.indexOf('-') != -1)){
-			this.workerPhone = workerPhone.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}else{
-			this.workerPhone = workerPhone;
-		}
+		this.workerPhone = CommonUtil.toPhoneSearchPattern(workerPhone);
 	}
 	public String getBirthSex() {
 		return birthSex;
@@ -1030,17 +1013,7 @@ public class RawAcrfDocVO implements Serializable{
 		return slProviderPhone;
 	}
 	public void setSlProviderPhone(String slProviderPhone) {
-		
-		if(defaultPhoneNumber.equals(slProviderPhone)){
-			this.slProviderPhone = "";
-		}
-		else if(slProviderPhone != null && (slProviderPhone.indexOf('x') != -1 || slProviderPhone.indexOf('-') != -1)){
-			this.slProviderPhone = slProviderPhone.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}else{
-			this.slProviderPhone = slProviderPhone;
-		}
-		
-		
+		this.slProviderPhone = CommonUtil.toPhoneSearchPattern(slProviderPhone);
 	}
 	public String getSlMedRecordNum() {
 		return slMedRecordNum;
@@ -1181,17 +1154,7 @@ public class RawAcrfDocVO implements Serializable{
 		return providerPhoneHivDx;
 	}
 	public void setProviderPhoneHivDx(String providerPhoneHivDx) {
-		
-		
-		if(defaultPhoneNumber.equals(providerPhoneHivDx)){
-			this.providerPhoneHivDx = "";
-		}
-		else if(providerPhoneHivDx != null && (providerPhoneHivDx.indexOf('x') != -1 || providerPhoneHivDx.indexOf('-') != -1)){
-			this.providerPhoneHivDx = providerPhoneHivDx.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}else{
-			this.providerPhoneHivDx = providerPhoneHivDx;
-		}
-
+		this.providerPhoneHivDx = CommonUtil.toPhoneSearchPattern(providerPhoneHivDx);
 	}
 	public String getProviderSpecialty() {
 		return providerSpecialty;
@@ -1295,14 +1258,7 @@ public class RawAcrfDocVO implements Serializable{
 		return providerPhoneAidsDx;
 	}
 	public void setProviderPhoneAidsDx(String providerPhoneAidsDx) {
-		if(defaultPhoneNumber.equals(providerPhoneAidsDx)){
-			this.providerPhoneAidsDx = "";
-		}
-		else if(providerPhoneAidsDx != null && (providerPhoneAidsDx.indexOf('x') != -1 || providerPhoneAidsDx.indexOf('-') != -1)){
-			this.providerPhoneAidsDx = providerPhoneAidsDx.replaceAll("-", "").replaceAll("x", "?").replaceAll("X", "?");
-		}else{
-			this.providerPhoneAidsDx = providerPhoneAidsDx;
-		}
+		this.providerPhoneAidsDx = CommonUtil.toPhoneSearchPattern(providerPhoneAidsDx);
 	}
 	public String getProviderSpecialtyAidsDx() {
 		return providerSpecialtyAidsDx;
