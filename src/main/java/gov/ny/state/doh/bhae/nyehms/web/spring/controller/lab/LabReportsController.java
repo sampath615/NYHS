@@ -51,6 +51,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.LabDocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LabReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.ProviderService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.transaction.TransactionService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 
@@ -1125,8 +1126,7 @@ public class LabReportsController {
 	
 	@RequestMapping(value="/getNycNysLabCommReportData.json", method = RequestMethod.GET,  produces = "application/json")
 	public @ResponseBody List<LabOpsReportsVO> getNycNysLabCommReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String nycServiceFlag, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		List<LabOpsReportsVO> nycNysCommReportList  = reportsService.getNycNysCommReportData(fromDate, toDate, nycServiceFlag, dummyBindingResult, userObject) ;
 		

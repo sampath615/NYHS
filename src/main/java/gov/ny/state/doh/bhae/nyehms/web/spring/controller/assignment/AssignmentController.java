@@ -64,6 +64,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.MedicaidDocument
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
@@ -154,9 +155,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		// Get the Worker Regions List for logged in worker id.
 //		List<AssignmentWorkerRegionsVO> assignmentWorkerRegionsVOList = assignmentService
@@ -182,9 +181,7 @@ public class AssignmentController {
 	@RequestMapping(value="/getAssignmentReports")	
 	public String getAssignmentReports(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		
 		Map<String, String> regionsList = administrationService.getSrchregionTypes(dummyBindingResult, userObject);
@@ -270,8 +267,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		List<PersonDocHistoryVO> personDocHistoryList = null;
 		 
@@ -348,9 +344,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		int workerRoleCode = 0;
 
@@ -423,9 +417,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		// TODO more params handle (if super each worker or all) (if worker
 		// worker id's) and also accommodate for region change
@@ -448,9 +440,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		// TODO more params handle (if super each worker or all) (if worker
 		// worker id's) and also accommodate for region change
@@ -614,9 +604,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		AssignmentDetailsVO assignmentDetailsVO = assignmentService
 				.getAssignmentsDetails(assignmentId, dummyBindingResult,
@@ -670,9 +658,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		AssignmentDetailsVO assignmentDetailsVO = assignmentService
 				.getAssignmentsDetails(assignmentId, dummyBindingResult,
@@ -756,9 +742,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		Map<Integer, String> workers = assignmentService.getWorkerNamesByRegion(regionCode,
 				dummyBindingResult, userObject, request.getSession()
@@ -859,8 +843,7 @@ public class AssignmentController {
 		}
 		
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		Map<String, Map<String, Map<String, Map<String, Integer>>>> assignmentReportsMatrix =  assignmentReportsService.getAssignmentReportMatrix(completeFromDate, completeToDate, region, dummyBindingResult, userObject);
 		
@@ -901,8 +884,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<Map<String, String>> assignmentReportsMatrixByRegion =  assignmentReportsService.getAssignmentStatusReportByDocument(fromDate, toDate, fileName, documentType, dummyBindingResult, userObject);
 		
@@ -924,8 +906,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<Map<String, String>> assignmentDocuments =  assignmentReportsService.getAHIAssignmentsByRegionAndCategory(regionId, assignmentStatus, documentType, ahiFlag, dummyBindingResult, userObject);
 		
@@ -946,8 +927,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<Map<String, String>> assignmentDocuments =  assignmentReportsService.getAssignmentDocumentsByStatusByDocumentByRegion(regionId, assignmentStatus, fromDate, toDate, fileName, documentType, eharsStatus, category, dummyBindingResult, userObject);
 		
@@ -968,8 +948,7 @@ public class AssignmentController {
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= Assignment Report");
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		if(userObject==null) userObject= new UserObject();
 		
@@ -1090,9 +1069,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<AssignmentActivityVO> assignmentViewedCommentDetails = assignmentService
 				.getAssignmentViewedCommentDetails(assignmentId, dummyBindingResult,
@@ -1116,9 +1093,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		
 
@@ -1193,9 +1168,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<Map<String, String>> regionMapforSelectedRole = assignmentService
 				.getRegionsMapForSelectedRole(roleCode, dummyBindingResult,
@@ -1233,9 +1206,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(
-				dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		Map<Integer, String> workers = null;
 
@@ -1290,8 +1261,7 @@ public class AssignmentController {
 	@RequestMapping(value="/getAssignmentsClosureStatusReport")	
 	public String getAssignmentsClosureStatusReport(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		
 		Map<String, String> regionsList = administrationService.getSrchregionTypes(dummyBindingResult, userObject);
@@ -1302,8 +1272,7 @@ public class AssignmentController {
 	
 	@RequestMapping(value="/getAssignmentClosureStatusReportData.json", method = RequestMethod.POST,  produces = "application/json")
 	public @ResponseBody List<JSONObject> getAssignmentClosureStatusReportData(@RequestParam String fromDate, @RequestParam String toDate, @RequestParam String regionCode, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		List<JSONObject> jsonResponse  = assignmentReportsService.getAssignmentClosureStatusReport(fromDate, toDate, regionCode, dummyBindingResult, userObject);
 		
@@ -1317,8 +1286,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 		
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		map.put("userRoleCodes", assignmentService.getUserCORoleCodes(dummyBindingResult, userObject));
 		
@@ -1345,8 +1313,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> statusforSelectedRole = assignmentService.getReabstractAssignmentStatusByRole(roleCode, dummyBindingResult, userObject);
 		
@@ -1359,8 +1326,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		Map<Integer, String> workers = null;
 //		roleCode = 2;
@@ -1429,8 +1395,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		Map<String, Object> crfDiffEleMap = assignmentService.getCRFDiffSummary(assignmentId, documentType, fsCRFDocId, reabCRFDocId, 
 																						dummyBindingResult, userObject, request);
@@ -1533,8 +1498,7 @@ public class AssignmentController {
 	// write another function to call the view query and send it to
 	@RequestMapping(value = "/getOpenCaseloadSummaryData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getOpenCaseloadSummaryData(HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> res = (List<JSONObject>) assignmentService.getOpenCaseloadSummaryData(userObject,
 				dummyBindingResult);

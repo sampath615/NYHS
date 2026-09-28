@@ -26,6 +26,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftDetailsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.ProviderService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 /*
@@ -385,8 +386,7 @@ public class LaftDetailsController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		
 		if("ERROR".equals(category)){
@@ -427,8 +427,7 @@ public class LaftDetailsController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<Map<String, String>> labProcessErrors = laftDetailsService.getDocumentLabErrorsByCategory(documentId, dummyBindingResult, userObject);
 			

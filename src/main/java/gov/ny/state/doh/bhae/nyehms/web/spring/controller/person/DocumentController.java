@@ -116,6 +116,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.ClusterPartnerReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.NBSReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.FacilityService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -185,8 +186,7 @@ public class DocumentController {
 	// object to pass to service layer
 	// This done as all service layer depended on DAO accepts binding result and
 	// json calls dont have it.
-	Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-	BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+	BindingResult dummyBindingResult = BindingResults.newDummy();
 
 	/**
 	 * This is the common Validator for all methods in this controller. As we

@@ -4,6 +4,7 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.UnStandardizedProviderService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 import java.util.HashMap;
@@ -86,8 +87,7 @@ public class UnStandardizedProviderController {
 			,@RequestParam int searchFor, @RequestParam String searchFromNPI, HttpServletRequest request, UserObject userObject){
 		if(userObject==null) userObject= new UserObject();
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		//implemented new method to retrieve list of unique providers and Provider address map with search crietria
 		GridObject jsonResponse = getGridObject.GetGrid(unStandardizedProviderService.getSrchProviderDetailsWithAddressList(subProviderAndAddressVO , searchFor, searchFromNPI, dummyBindingResult, userObject));
 		return jsonResponse;

@@ -10,6 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.search.SearchService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
@@ -43,8 +44,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SearchEngineController {	
 	//Crate a dummy BindingResult for the JSON calls as they don't have that object to pass to service layer.
 	//This done as all service layer depended on DAO accepts binding result and json calls dont have it.
-	Map<Object,Object> dummyMindingMap= new HashMap<Object,Object>();
-	BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+	BindingResult dummyBindingResult = BindingResults.newDummy();
 	private static Logger log = LoggerFactory.getLogger(SearchEngineController.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 

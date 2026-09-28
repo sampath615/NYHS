@@ -8,6 +8,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.util.HashMap;
@@ -150,8 +151,7 @@ public class ClusterDocumentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult bindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult bindingResult = BindingResults.newDummy();
 		
 		ClusterIdReportVO clusterRptObj = clusterDocumentService.getClusterIdReports(clusterType, clusterId, showDocuments, bindingResult, userObject);		
 		

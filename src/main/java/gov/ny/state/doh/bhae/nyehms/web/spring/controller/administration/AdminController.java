@@ -26,6 +26,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.UserRegionV
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.transaction.TransactionService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
@@ -489,8 +490,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/getTrainingAttstData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject getTrainingAttstData(HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( administrationService.getTrainingAttstData(dummyBindingResult, userObject));
 		
@@ -505,8 +505,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/getTeleworkAttstData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject getTeleworkAttstData(HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( administrationService.getTeleworkAttstData(dummyBindingResult, userObject));
 		
@@ -517,8 +516,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/getSCReportData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject  getSCReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( administrationService.getSCReportData(fromDate, toDate, dummyBindingResult, userObject));
 		
@@ -527,8 +525,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/getTeleCommuteReportData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject  getTeleCommuteReportData(@RequestParam String teleCommute, @RequestParam(required=false) String fromDate, @RequestParam(required=false) String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( administrationService.getTeleCommuteReportData(teleCommute, fromDate, toDate, dummyBindingResult, userObject));
 		

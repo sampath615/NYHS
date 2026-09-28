@@ -19,6 +19,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentServ
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentEditService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
@@ -174,8 +175,7 @@ public class PersonController {
 	List<PersonDocHistoryVO> getDocumentDetails(@RequestParam String stateNo, HttpServletRequest request , UserObject userObject)
 	{
 		if(userObject==null) userObject= new UserObject();
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		String documentId = request.getParameter("documentId");
 		String documentType = request.getParameter("documentType");
 		List<PersonDocHistoryVO> personDocHistoryList = null;
@@ -198,8 +198,7 @@ public class PersonController {
 	List<PersonDocHistoryVO> getHIVDocumentDetails(@RequestParam String stateNo, HttpServletRequest request , UserObject userObject)
 	{
 		if(userObject==null) userObject= new UserObject();
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		List<PersonDocHistoryVO> personDocHistoryList = null;
 		if(stateNo != null && !"".equals(stateNo)){
 			personDocHistoryList = personService.getHIVDocumentDetails(
@@ -227,8 +226,7 @@ public class PersonController {
 			HttpServletRequest request , UserObject userObject)
 	{
 		if(userObject==null) userObject= new UserObject();
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		GridObject jsonResponse =  getGridObject.GetGrid(personService.getFieldValsWithBestIndicator(
 				stateNo, fieldName,  callingAppName, dummyBindingResult, userObject, request.getSession().getId()));
 		return jsonResponse;
@@ -254,8 +252,7 @@ public class PersonController {
 			HttpServletRequest request , UserObject userObject)
 	{
 		if(userObject==null) userObject= new UserObject();
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		GridObject jsonResponse =  getGridObject.GetGrid(personService.getFieldDocsWithBestIndicator(
 				stateNo, fieldName,  fieldVal, callingAppName, dummyBindingResult, userObject, request.getSession().getId()));
 		return jsonResponse;
@@ -474,8 +471,7 @@ public class PersonController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 	
 		Map<String, String> eharPersonDataObj = assignmentService.loadEharsPersonViewDetails(stateno,

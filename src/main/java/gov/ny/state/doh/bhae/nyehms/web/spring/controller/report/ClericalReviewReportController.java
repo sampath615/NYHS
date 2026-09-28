@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
 import java.math.BigInteger;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +28,7 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.ClericalReportService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 @Controller
@@ -71,8 +70,7 @@ public class ClericalReviewReportController {
 	
 	@RequestMapping(value="/clericalNonMatchReportData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject clericalNonMatchReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( clericalReportService.clericalNonMatchReportData(fromDate, toDate, dummyBindingResult, userObject));
 		

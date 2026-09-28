@@ -26,6 +26,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.FileUploadService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
@@ -328,8 +329,7 @@ public class FileUploadController {
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= Updated Messages");
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		HttpSession session = request.getSession();
 		if(userObject==null) userObject= new UserObject();
@@ -533,8 +533,7 @@ public class FileUploadController {
 		response.setContentType("application/pdf");
         response.setHeader("Content-disposition", "attachment; filename= PS Confirmed STDs Data Errors");
 
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		HttpSession session = request.getSession();
 		if(userObject==null) userObject= new UserObject();

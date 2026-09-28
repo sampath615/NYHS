@@ -23,6 +23,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.PSMessageReviewService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 /*
  * Spring controller class for system message
@@ -113,8 +114,7 @@ public class PSMessageController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult bindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult bindingResult = BindingResults.newDummy();
 
 		Map<String, String> countyMap=commonService.getCountyCodes(bindingResult, userObject, request.getSession().getId());
 		map.put("countyMap", countyMap);
@@ -138,8 +138,7 @@ public class PSMessageController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return psMessageReviewService.getPSDispositionReport(fromDate, toDate, messageType, messageCounty, messageDisposition, dummyBindingResult, userObject, null);
 		
@@ -150,8 +149,7 @@ public class PSMessageController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return psMessageReviewService.getPSOOCExpsReport(fromDate, toDate, messageCounty, dummyBindingResult, userObject, null);
 		
@@ -164,8 +162,7 @@ public class PSMessageController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return   psMessageReviewService.getPsMessageReport(fromDate, toDate, reportType, dummyBindingResult, userObject, null);
 		
@@ -176,8 +173,7 @@ public class PSMessageController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		ModelAndView mav = new ModelAndView("psMessageReportSpreadsheet");
 		

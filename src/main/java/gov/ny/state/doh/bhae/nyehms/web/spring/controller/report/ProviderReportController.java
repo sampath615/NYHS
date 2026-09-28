@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +9,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +18,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.ProviderReportService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 
 /**
  * 
@@ -47,8 +46,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getproviderReportsByYear")
 	public String getproviderReportsByYear(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		if (userObject == null)
 			userObject = new UserObject();
@@ -73,8 +71,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getProviderReportByYearData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody  List<JSONObject> getProviderReportByYearData(@RequestParam String caseType, @RequestParam String region,
 			@RequestParam String prfSubmitted, @RequestParam String fromYear, @RequestParam String toYear, @RequestParam String ahi, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		return providerReportService.getProviderReportByYear(caseType, region, prfSubmitted, fromYear, toYear, ahi, userObject, dummyBindingResult);
 	}
@@ -95,8 +92,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getProviderReportsByHivDxDateData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByHivDxDateData(@RequestParam String fromYear,
 			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> res = (List<JSONObject>) providerReportService.getProviderReportsByHivDxDate(fromYear, toYear, userObject, dummyBindingResult);
 		
@@ -118,8 +114,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getProviderReportsByHivDxDateDataYearly.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByHivDxDateDataYearly(@RequestParam String fromYear,
 			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> res = (List<JSONObject>) providerReportService.getProviderReportsByHivDxDateYearly(fromYear, toYear, userObject, dummyBindingResult);
 		
@@ -144,8 +139,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getProviderReportsByPRFReceived.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByPRFReceivedData(@RequestParam String fromYear,
 			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> res = (List<JSONObject>) providerReportService.getProviderReportsByPRFReceived(fromYear, toYear, userObject, dummyBindingResult);
 		
@@ -166,8 +160,7 @@ public class ProviderReportController {
 	@RequestMapping(value = "/getProviderReportsByPRFReceivedYearly.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody List<JSONObject> getProviderReportsByPRFReceivedYearlyData(@RequestParam String fromYear,
 			@RequestParam String toYear, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		List<JSONObject> res = (List<JSONObject>) providerReportService.getProviderReportsByPRFReceivedYearly(fromYear, toYear, userObject, dummyBindingResult);
 		

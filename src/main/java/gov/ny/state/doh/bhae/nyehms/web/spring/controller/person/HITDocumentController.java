@@ -36,6 +36,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CCDDocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HIEDTHDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HL7DocumentService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.DocumentValidator;
 
@@ -54,8 +55,7 @@ public class HITDocumentController {
 	HIEDTHDocumentService HIEDTHDocumentService;
 	@Autowired
 	GetGridObject getGridObject;
-	Map<Object, Object> dummyMindingMap = new HashMap<Object, Object>();
-	BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+	BindingResult dummyBindingResult = BindingResults.newDummy();
 
 	@InitBinder
 	protected void initBinder(WebDataBinder binder) {

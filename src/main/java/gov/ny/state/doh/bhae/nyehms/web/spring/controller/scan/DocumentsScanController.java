@@ -20,6 +20,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.DocumentsScanService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
@@ -28,8 +29,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 public class DocumentsScanController {	
 	//Crate a dummy BindingResult for the JSON calls as they don't have that object to pass to service layer.
 	//This done as all service layer depended on DAO accepts binding result and json calls dont have it.
-	Map<Object,Object> dummyMindingMap= new HashMap<Object,Object>();
-	BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+	BindingResult dummyBindingResult = BindingResults.newDummy();
 	private static Logger log = LoggerFactory.getLogger(DocumentsScanController.class);
 	
 	@Autowired DocumentsScanService documentsScanService;

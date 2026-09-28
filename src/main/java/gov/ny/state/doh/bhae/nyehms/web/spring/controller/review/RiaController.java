@@ -29,6 +29,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentSe
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RiaReviewService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 @Controller
@@ -359,8 +360,7 @@ public class RiaController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return riaReviewService.getRiaActivityReportData(fromDate, toDate, dummyBindingResult, userObject, null);
 		
@@ -371,8 +371,7 @@ public class RiaController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		ModelAndView mav = new ModelAndView("riaActivityReportSpreadsheet");
 		

@@ -12,6 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.LabDocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentsReviewService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 import java.util.HashMap;
@@ -315,8 +316,7 @@ public class DocumentReviewController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		 
 		GridObject jsonResponse = getGridObject.GetGrid( documentsReviewService.getVlStatenosToReview(reviewCategory, dummyBindingResult, userObject));
 		

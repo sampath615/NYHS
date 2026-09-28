@@ -23,6 +23,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.ViralLoadReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RiaReviewService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 
@@ -93,8 +94,7 @@ public class ViralLoadReportsController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return viralLoadReportsService.loadNdvlReportData(dummyBindingResult, userObject);
 		
@@ -105,8 +105,7 @@ public class ViralLoadReportsController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		ModelAndView mav = new ModelAndView("ndvlReportSpreadsheet");
 		
@@ -132,8 +131,7 @@ public class ViralLoadReportsController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> dummyMindingMap= new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 
 		return viralLoadReportsService.getNoAdditionalReportData(dateRange, dummyBindingResult, userObject, null);
 		

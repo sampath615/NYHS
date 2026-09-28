@@ -28,6 +28,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.CLEPUploadSurveyVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.ClepAuditResultsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.FileUploadService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 @Controller
@@ -268,8 +269,7 @@ public class ClepAuditResultsController {
 	@RequestMapping(value="/clepSurveyAuditReport")	
 	public String getSurveyAuditReport(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
-		Map<String, String> dummyMindingMap = new HashMap<String, String>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		
 		return "lab/CLEPSurveyAuditReport";
@@ -277,8 +277,7 @@ public class ClepAuditResultsController {
 	
 	@RequestMapping(value="/getSurveyAuditReportData.json", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody GridObject  getSurveyAuditReportData(@RequestParam String fromDate, @RequestParam String toDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
-		Map<Object, Object> dummyMindingMap= new HashMap<Object, Object>();
-		BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");
+		BindingResult dummyBindingResult = BindingResults.newDummy();
 		
 		GridObject jsonResponse = getGridObject.GetGrid( clepAuditResultsService.getSurveyAuditReportData(fromDate, toDate, dummyBindingResult, userObject));
 		
