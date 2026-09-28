@@ -143,7 +143,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
 | E-1 | `processClusterPartnerDocument()` | `ClusterPartnerReviewTransactionHelper`, `DocumentReviewTransactionHelper` | 37 lines, identical | *Completed* (`3728ace`): the `DocumentReviewTransactionHelper` copy had no callers and was removed |
 | E-2 | `isNameHavingSuffix()` | `CCDDocumentServiceImpl`, `HL7DocumentServiceImpl` | 15 lines, identical | *Completed* (`3728ace`): replaced by `util/PersonNameUtil.splitSuffix` |
 | E-3 | `newImage()` / `newFooterImage()` | `PerinatalServiceImpl` | 11 lines, identical | *Completed* (`3728ace`): one `newImage` taking a docx4j `Part` |
-| E-4 | Phone search-mask setters (`setPhone()` and similar) | `RawSubFacilityVO`, `SubProviderAndAddressVO`, `RawProviderAddressVO`, `RawAcrfDocVO` (5 setters) | 9 copies of the same logic | Open: planned as a shared `CommonUtil` method |
+| E-4 | Phone search-mask setters (`setPhone()` and similar) | `RawSubFacilityVO`, `SubProviderAndAddressVO`, `RawProviderAddressVO`, `RawAcrfDocVO` (5 setters) | 8 setters plus `CommonUtil.getUnMaskedPhoneNumber` | *Completed* (`83308aa`): replaced by `CommonUtil.toPhoneSearchPattern` |
 
 **Same structure, different identifiers** (14 groups, 31 redundant copies, about 440 lines):
 - 4 update/add methods in `LabReportsServiceImpl`.
@@ -152,7 +152,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
 - 3 methods each in `InitializeServiceImpl`, `NBSReviewServiceImpl` and `ManualQuartzJobController`/`ExperimentalController`.
 - The facility/provider `add*Details` and `unMatch*` families.
 
-**Recommendation:** Merge E-1 to E-4 into single shared methods (E-1 to E-3 are done). Refactor the same-structure groups into one parameterized method each, one group per change.
+**Recommendation:** Merge E-1 to E-4 into single shared methods (all four are done). Refactor the same-structure groups into one parameterized method each, one group per change.
 
 ### 4.4 SQL (mapper XML)
 
