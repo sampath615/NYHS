@@ -93,7 +93,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
 | Pattern | Occurrences | Assessment |
 |---|---:|---|
 | `Map targetMap = new HashMap(); BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");` | ~370 | **Not mechanically removable.** `targetMap` is the JSON response the controller returns, and services write into it through `bindingResult.getTarget()`. The fix is a typed response object (DTO or `ResponseEntity`) during modernization. |
-| `Map dummyMindingMap = new HashMap(); BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");` | 73 in 22 files | **Safe to consolidate.** Pure scaffolding to satisfy service signatures; the result is never read. It can be replaced with a one-line factory method. |
+| `Map dummyMindingMap = new HashMap(); BindingResult dummyBindingResult = new MapBindingResult(dummyMindingMap, "Sample");` | 73 in 22 files | **Safe to consolidate.** Pure scaffolding to satisfy service signatures; the result is never read. It can be replaced with a one-line factory method. *Completed* (`9876676`): 69 sites now call `BindingResults.newDummy()`; one site whose map is also the response was kept. |
 
 #### F-06. Service-layer error handling
 - **Impact:** High. **Risk:** Low to Medium.
@@ -164,7 +164,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
   - `RiaRecordsReviewDAO.xml` repeats a 24-line `CASE WHEN` expression four times.
   - `ClericalReportDAO.xml` repeats a 23-line block 14 times.
   - An 88-line search-criteria `<when>` chain is shared by `RawSubFacilityDAO.xml` and `RawProviderAddressDAO.xml`.
-- No mapper currently uses `<sql>`/`<include>` fragments.
+- *Partly completed* (`4e8f5e5`): 8 fragments extracted in `ADAPDocumentDAO.xml`, `SchedulerJobsDAO.xml` and `RiaRecordsReviewDAO.xml` (about 900 duplicated lines). MyBatis 3.3.0 has no `<include>` properties, so blocks that differ only by a table name (for example `ClericalReportDAO.xml`) need a MyBatis upgrade first; the `NyehmsWorkerRegionsViewDAO.xml` copies sit inside CDATA sections and cannot be included.
 - **Recommendation:** Extract `<sql>` fragments within each mapper. The generated SQL does not change, so these are good first changes to verify, for example by logging the generated SQL before and after.
 
 ### 4.5 JSP views
@@ -175,7 +175,7 @@ Each finding is rated for **Impact** (how much code it affects and what maintena
   - 17–21 identical directive and taglib lines open 22–25 pages.
   - `PrfDocument2016`, `PrfDocument2023` and `NycPrfDocument` share 202 lines.
   - Four `ClericalReview*` pages share 134 lines.
-  - The `buildDate` scriptlet is copied into 52 JSPs.
+  - The `buildDate` scriptlet was copied into 52 JSPs. *Completed* (`11a47a3`): the value is now published once as an application attribute by `NYEHMSAppServletContextListener`.
   - Most of the duplication is under `document/` and `worker/`.
 - The shared header, menu and footer includes are already well consolidated and are not part of this finding.
 - **Recommendation:** Move the directive header into one include. Set `buildDate` once, for example as an application attribute or through an interceptor. Split the PRF and clerical-review pages into shared fragments. Every step needs visual regression checks.
