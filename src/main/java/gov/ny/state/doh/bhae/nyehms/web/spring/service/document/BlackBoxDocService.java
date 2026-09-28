@@ -3,22 +3,41 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.BlackBoxDocDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.BlackBoxDocVO;
 
 /**
- * This interface provides methods to interact with Black Box document.
+ * This is implementation of BlackBoxDocService interface. This provides
+ * implementation of the methods to interact with Black Box document.
  *
- * @author SKA03
+ * @author ska03
  */
-public interface BlackBoxDocService {
+@Component
+public class BlackBoxDocService {
 
+    //private Log log = LogFactory.getLog(this.getClass());
+ 
+	@Autowired
+    BlackBoxDocDAO blackBoxDocDAO;
+ 
     /**
-     * This method will return the NDI document for a given document id.
+     * {@inheritDoc}
      *
      * @param documentId
      * @return
      */
-    public BlackBoxDocVO getBlackBoxDoc(int docId);
+    public BlackBoxDocVO getBlackBoxDoc(int docId) {
+    	BlackBoxDocVO blackBoxDocVO = blackBoxDocDAO.getBlackBoxDoc(docId);
+        
+        return blackBoxDocVO;
+    }
     
-	public List<Map<String, String>> getBlackBoxRefData();
+    
+	public List<Map<String, String>> getBlackBoxRefData(){
+		return blackBoxDocDAO.getBlackBoxRefData();
+	}
+
 }
