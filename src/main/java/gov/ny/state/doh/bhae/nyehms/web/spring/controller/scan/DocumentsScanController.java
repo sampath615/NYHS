@@ -27,9 +27,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 @Controller
 public class DocumentsScanController {	
-	//Crate a dummy BindingResult for the JSON calls as they don't have that object to pass to service layer.
-	//This done as all service layer depended on DAO accepts binding result and json calls dont have it.
-	BindingResult dummyBindingResult = BindingResults.newDummy();
 	private static Logger log = LoggerFactory.getLogger(DocumentsScanController.class);
 	
 	@Autowired DocumentsScanService documentsScanService;
@@ -89,7 +86,7 @@ public class DocumentsScanController {
 	public @ResponseBody byte[] getEncryptedScannedDoc(@RequestParam int docId, @RequestParam String documentType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		return documentsScanService.getEncryptedScannedDoc(docId, documentType, dummyBindingResult, userObject);
+		return documentsScanService.getEncryptedScannedDoc(docId, documentType, BindingResults.newDummy(), userObject);
 
 	}
 	
