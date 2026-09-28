@@ -12,25 +12,25 @@ public class AcrfFormVO {
 	private RawAcrfDocVO rawAcrfDoc;
 	private List<RawAcrfLabsVO> rawAcrfLabs;	
 	//Drop Down Lists for Lab Tests 
-	private List<CodedAcrfTestVO> hivABNonTypTstMap = new ArrayList<CodedAcrfTestVO>();
-	private List<CodedAcrfTestVO> hivABTypTstMap = new ArrayList<CodedAcrfTestVO>();
-	private List<CodedAcrfTestVO> hivQualitativeTypTstMap = new ArrayList<CodedAcrfTestVO>();
-	private List<CodedAcrfTestVO> hivQuantitativeTstMap = new ArrayList<CodedAcrfTestVO>();
-	private List<CodedAcrfTestVO> drugResistanceTstMap = new ArrayList<CodedAcrfTestVO>();
+	private List<CodedAcrfTestVO> hivABNonTypTstMap = new ArrayList<>();
+	private List<CodedAcrfTestVO> hivABTypTstMap = new ArrayList<>();
+	private List<CodedAcrfTestVO> hivQualitativeTypTstMap = new ArrayList<>();
+	private List<CodedAcrfTestVO> hivQuantitativeTstMap = new ArrayList<>();
+	private List<CodedAcrfTestVO> drugResistanceTstMap = new ArrayList<>();
 	
 	private Map<String, List<CodedAcrfTestVO>> labTestResultMap = new HashMap<>();
 	
 	
-	private List<CodedArvMedicationsVO> arvMedicationsList = new ArrayList<CodedArvMedicationsVO>();
+	private List<CodedArvMedicationsVO> arvMedicationsList = new ArrayList<>();
 	
-	private List<AcrfRidrVO> acrfRidrList = new ArrayList<AcrfRidrVO>();
+	private List<AcrfRidrVO> acrfRidrList = new ArrayList<>();
 	private String reabstract;
 	
 	
 		
 	private List<RawAcrfCd4TstVO> rawAcrfCd4Tst;
 	//Saved ACRF Forms will be sent back to user.
-	private Map<String, String> savedAcrfDocMap = new HashMap<String, String>();
+	private Map<String, String> savedAcrfDocMap = new HashMap<>();
 		
 	public RawAcrfDocVO getRawAcrfDoc() {
 		return rawAcrfDoc;

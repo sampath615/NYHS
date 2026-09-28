@@ -9,7 +9,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,7 +49,7 @@ public class OrphanProviderAddressController {
 	public @ResponseBody GridObject getOrphanProviderAddressList(HttpServletRequest request, UserObject userObject){
 
 
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		GridObject jsonResponse = getGridObject.GetGrid(orphanProviderAddressService.getOrphanProviderAddresses(bindingResult, userObject));
@@ -67,7 +67,7 @@ public class OrphanProviderAddressController {
 	public @ResponseBody Map<Object, Object> linkOrphanAddressToProvider(@RequestParam long  providerAddressId, @RequestParam long  providerId,HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		orphanProviderAddressService.linkOrphanAddressToProvider(providerAddressId,providerId, bindingResult, userObject);
@@ -93,7 +93,7 @@ public class OrphanProviderAddressController {
 	public @ResponseBody Map<Object, Object> linkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, @RequestParam long  providerId,@RequestParam long  rawProviderAddressId, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		orphanProviderAddressService.linkRawToOrphanProviderAddress(providerAddressId,providerId,rawProviderAddressId,bindingResult, userObject);
@@ -110,7 +110,7 @@ public class OrphanProviderAddressController {
 	public @ResponseBody Map<Object, Object> addNewProviderAndLinkingOrphanAddress(@RequestParam long  providerAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		orphanProviderAddressService.addNewProviderAndLinkingOrphanAddrs(providerAddressId, providerVO, bindingResult, userObject);
@@ -135,7 +135,7 @@ public class OrphanProviderAddressController {
 	public @ResponseBody Map<Object, Object> addNewProviderAndLinkRawToOrphanProviderAddress(@RequestParam long  providerAddressId, long rawProviderAddressId, @ModelAttribute("providerVO") SubProviderVO providerVO,HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		orphanProviderAddressService.addNewProviderAndLinkRawToOrphanProviderAddress(providerAddressId,rawProviderAddressId,providerVO,bindingResult, userObject);

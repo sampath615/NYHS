@@ -75,12 +75,12 @@ public class LaftCountReconcilleService {
 	@SuppressWarnings("unchecked")
 	public Map<String, String> getPFICollectionPeriods(String userEnteredPfi) {
 
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("userEnteredPfi", userEnteredPfi);
 
 		List<JSONObject> list = laftCountReconcileDAO.getPFICountCollectionPeriod(inputParameterMap);
 		
-		Map<String, String> collPeriodList = new LinkedHashMap<String, String>();
+		Map<String, String> collPeriodList = new LinkedHashMap<>();
 		
     	for (Map<String, String> period: list) {
     		collPeriodList.put(period.get("LAFT_RECON_ID"), period.get("COLLECTIONPERIOD"));
@@ -93,7 +93,7 @@ public class LaftCountReconcilleService {
 	public List<JSONObject> getReconcileDashboardData(UserObject userObject, BindingResult bindingResult,
 			String reconcileId) {
 
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_laft_recon_id", reconcileId);
 		inputData.put("p_pfi", null);
 
@@ -108,7 +108,7 @@ public class LaftCountReconcilleService {
 	public List<JSONObject> getCurOpenSurveysData(UserObject userObject, BindingResult bindingResult,
 			String reconcileId, String userId, String labReconciled) {
 
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_laft_recon_id", reconcileId);
 
 		if (userId.equals("undefined")) {
@@ -119,7 +119,7 @@ public class LaftCountReconcilleService {
 		laftCountReconcileDAO.getCurOpenSurveysData(inputData);
 
 		List<JSONObject> curOpenSurveyData = (List<JSONObject>) inputData.get("p_pfi_cur");
-		List<JSONObject> curLabData = new ArrayList<JSONObject>();
+		List<JSONObject> curLabData = new ArrayList<>();
 		
 		if (labReconciled.equals("O")) {
 			 for (JSONObject curObj : curOpenSurveyData) {
@@ -143,7 +143,7 @@ public class LaftCountReconcilleService {
 	public Map<String, Object> getLabReportedSurveyData(UserObject userObject, BindingResult bindingResult,
 			String reconcileId, String pfi) {
 
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_laft_recon_id", reconcileId);
 		inputData.put("p_pfi", pfi);
 
@@ -154,7 +154,7 @@ public class LaftCountReconcilleService {
 		List<JSONObject> surveyResponse = (List<JSONObject>) inputData.get("p_survey_response");
 		List<LAFT_LAB_RECON_BHAE_COMMENTS> bhaeCommentsList = (List<LAFT_LAB_RECON_BHAE_COMMENTS>) inputData.get("p_bhae_comments_cur");
 		
-		Map<String, Object> agGridData = new HashMap<String, Object>();
+		Map<String, Object> agGridData = new HashMap<>();
 		
 		agGridData.put("reconcileSummaryOut", reconcileSummaryOut);
 		agGridData.put("reconcileListPfis", reconcileListPfis);
@@ -175,7 +175,7 @@ public class LaftCountReconcilleService {
 		    Type listType = new TypeToken<List<LAFT_LAB_RECON_SUMM_REC>>() {}.getType();
 			List<LAFT_LAB_RECON_SUMM_REC> surveyList = gson.fromJson(dataAsJsonArr, listType);
 			
-			 List<LAFT_LAB_RECON_SUMM_REC> editSurveyDataList = new ArrayList<LAFT_LAB_RECON_SUMM_REC>();
+			 List<LAFT_LAB_RECON_SUMM_REC> editSurveyDataList = new ArrayList<>();
 			 
 			 for (LAFT_LAB_RECON_SUMM_REC curRec : surveyList) {
 				 if (curRec.getINITIAL_LAB_COUNT() != 0 || curRec.getCURRENT_LAB_COUNT() != 0 
@@ -192,7 +192,7 @@ public class LaftCountReconcilleService {
 				 }
 			 }
 			 
-			  Map<Object, Object> inputData = new HashMap<Object, Object>();
+			  Map<Object, Object> inputData = new HashMap<>();
 			  inputData.put("p_laft_recon_id", reconId);
 			  inputData.put("p_pfi", pfi); 
 			  inputData.put("p_bhae_comments", bhaeComments); 
@@ -207,7 +207,7 @@ public class LaftCountReconcilleService {
 
 	public void insertEditedSurveyData(List<LAFT_LAB_RECON_SUMM_REC> surveyDataList, Map<Object, Object> inputData, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("surveyEditDataList", surveyDataList);
 		
 		if (surveyDataList.size() !=0) {
@@ -223,7 +223,7 @@ public class LaftCountReconcilleService {
 	}
 
 	public List<JSONObject> getSendSurveyEmailData(BindingResult bindingResult, UserObject userObject) {
-		Map<String, Object> emailMap = new HashMap<String, Object>();
+		Map<String, Object> emailMap = new HashMap<>();
 		
 		laftCountReconcileDAO.getSurveyEmailRecipients(emailMap);
 		
@@ -268,8 +268,8 @@ public class LaftCountReconcilleService {
 
 		surveyCompDayText = new SimpleDateFormat("EEEE").format(surveyCompDt);
 		
-		List<String> surveyEmailList = new ArrayList<String>();
-		List<Integer > surveyTrackPkList = new ArrayList<Integer>();
+		List<String> surveyEmailList = new ArrayList<>();
+		List<Integer > surveyTrackPkList = new ArrayList<>();
 		
 		for (JSONObject surveyEmailDataObj : surveyEmailDataList) {
 			if (surveyEmailDataObj.get("EMAIL") != null && CommonUtil.isNotNullAndEmpty(surveyEmailDataObj.get("EMAIL").toString())) {
@@ -301,7 +301,7 @@ public class LaftCountReconcilleService {
 									        .map(i -> i.toString())
 									        .collect(Collectors.joining(", "));
         
-		Map<String, Object> surveyEmailSent = new HashMap<String, Object>();
+		Map<String, Object> surveyEmailSent = new HashMap<>();
 		surveyEmailSent.put("hcsUserId", hcsUserId);
 		surveyEmailSent.put("trackPkList", trackPkList.split(","));
 		
@@ -316,7 +316,7 @@ public class LaftCountReconcilleService {
 		String durationStr2 = surveyStMonth + "-" + surveyEndMonth + " " + surveyEndYear;
 		String surveyCompStr = "<b><u>" + surveyCompDayText + "," + surveyCompMonth + " " + surveyCompDay + ", " + surveyCompYear + "</u></b>";
 				
-		StringBuffer messageBody = new StringBuffer();
+		StringBuilder messageBody = new StringBuilder();
 		
 		String body =   "Dear Lab Liaison,<br><br>";
 		
@@ -371,8 +371,8 @@ public class LaftCountReconcilleService {
 		boolean isError = false; 
 		String transactionMessage = null;
 		
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String uploadFileName = uploadSurveyResponseFile.getOriginalFilename();
 		
 		CSVReader csvread = null;
@@ -425,7 +425,7 @@ public class LaftCountReconcilleService {
 				if (!isError) {
 					
 					for(int i=1; i<rowLists.size(); i++){
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						String[] recordRow = rowLists.get(i);
 	
 						// Check if row is null, then ignored
@@ -498,9 +498,9 @@ public class LaftCountReconcilleService {
 		int counter = 0;
 		String PFIString;
 		StringBuilder errorMessage = new StringBuilder();
-		Map<Object, Object> dataErrorMapList = new HashMap<Object, Object>();
+		Map<Object, Object> dataErrorMapList = new HashMap<>();
 		
-		List<String> pfiList = new ArrayList<String>();
+		List<String> pfiList = new ArrayList<>();
 		
 		for (Map<String, Object> dataRow : fileDataList) {
 			if ( dataRow.get("PFI") != null || CommonUtil.isNotNullAndEmpty(dataRow.get("PFI").toString()) ) {
@@ -602,7 +602,7 @@ public class LaftCountReconcilleService {
 			laftSurveyResponseData.put("userId", userId);
 		}
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("laftSurveyResponseDataList", laftSurveyResponseDataList);
 		int resCt = laftCountReconcileDAO.insertLaftSurveyResponseData(inputParameterMap);
 		
@@ -611,7 +611,7 @@ public class LaftCountReconcilleService {
 			throw new DataRetrievalFailureException("Error while uploading survey response data, please contact the Helpline.");
 		}
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_laft_recon_id", collectionPeriod);
 		inputData.put("p_survey_filename", fileName);
 		
@@ -621,7 +621,7 @@ public class LaftCountReconcilleService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getAccessionList(String reconId, String pfi) throws MessagingException, ParseException {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_laft_recon_id", reconId);
 		inputData.put("p_pfi", pfi);
 
@@ -634,7 +634,7 @@ public class LaftCountReconcilleService {
 
 	public String refreshNyehmsLabCount(String reconId, String pfi, String workerId) throws MessagingException, ParseException {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_recon_id", reconId);
 		inputData.put("p_pfi", pfi);
 		inputData.put("p_worker_id", workerId);
@@ -647,7 +647,7 @@ public class LaftCountReconcilleService {
 	public Map<String, Object> saveAddReconcilePFI(String reconId, String pfi, String laftUserId, String workerId,
 			BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("p_recon_id", reconId);
 		inputParameterMap.put("p_pfi", pfi);
 		inputParameterMap.put("p_laft_staff", laftUserId);
@@ -661,7 +661,7 @@ public class LaftCountReconcilleService {
 	public void deleteReconcilePFI(String reconId, String pfi, String workerId, BindingResult bindingResult,
 			UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("p_recon_id", reconId);
 		inputParameterMap.put("p_pfi", pfi);
 		inputParameterMap.put("p_worker_id", workerId);

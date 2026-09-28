@@ -73,7 +73,7 @@ public class ProviderService {
 	public List<RawProviderAddressVO> getRawProvAddrsList(BindingResult result, boolean _search, String searchField, String searchString, String searchOper, UserObject userObject){
 		
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 
 		inOutParameterMap.put("_search",_search);
@@ -86,7 +86,7 @@ public class ProviderService {
 		inOutParameterMap.put("searchOper",searchOper);
 		
 		
-		List<RawProviderAddressVO> rawProviderAddressList = new ArrayList<RawProviderAddressVO>();
+		List<RawProviderAddressVO> rawProviderAddressList = new ArrayList<>();
 		rawProviderAddressList = rawProviderAddressDAO.getRawProvAddrsList(inOutParameterMap);
 			
 		return rawProviderAddressList;
@@ -105,7 +105,7 @@ public class ProviderService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_raw_provider_address_id",rawProviderAddressId);
 		inOutParameterMap.put("p_sub_provider_address_id",providerAddressId);
@@ -195,7 +195,7 @@ public class ProviderService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_provider_fname",providerAndAddressVO.getProviderFname());
 		inOutParameterMap.put("p_provider_mname",providerAndAddressVO.getProviderMname());
 		inOutParameterMap.put("p_provider_lname",providerAndAddressVO.getProviderLname());
@@ -232,7 +232,7 @@ public class ProviderService {
 	public void addNewProvider(SubProviderVO providerVO, BindingResult bindingResult, UserObject userObject){
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_provider_fname",providerVO.getProviderFname());
 		inOutParameterMap.put("p_provider_mname",providerVO.getProviderMname());
@@ -325,7 +325,7 @@ public class ProviderService {
 				BindingResult bindingResult, UserObject userObject){
 			String transactionMessage=null;
 			Integer statusCode=null;
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			
 			inOutParameterMap.put("p_provider_id",providerId);
 			inOutParameterMap.put("p_county_fips",providerAndAddressVO.getCountyFips());
@@ -351,9 +351,9 @@ public class ProviderService {
 	@SuppressWarnings("unchecked")
 	public List<RawProviderAddressVO> getRawProvAdrsListBySubprovAdrsId(long subProviderAdrsId, BindingResult result, UserObject userObject){
 
-		List<RawProviderAddressVO> rawProvAdrsList = new ArrayList<RawProviderAddressVO>();
+		List<RawProviderAddressVO> rawProvAdrsList = new ArrayList<>();
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("subProviderAdrsId", subProviderAdrsId);
 		map.put("rawProvAdrsListRefCursor", rawProvAdrsList);
 
@@ -366,7 +366,7 @@ public class ProviderService {
 			UserObject userObject) {
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_tounlink_ids", commaSeparatedVals);
 		inOutParameterMap.put("p_parent_id", parentId);
 		inOutParameterMap.put("p_user_id",userObject.getWorkerId());
@@ -385,7 +385,7 @@ public class ProviderService {
 			BindingResult bindingResult, UserObject userObject) {
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_sub_prov_addrs_list", commaSeparatedVals);
 		inOutParameterMap.put("p_retained_sub_prov_addrs", selToBeMergedSubAddrs);
@@ -405,7 +405,7 @@ public class ProviderService {
 			UserObject userObject) {
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_sub_prov_list", commaSeparatedVals);
 		inOutParameterMap.put("p_retained_sub_prov", selToBeMergedSubProv);
@@ -437,7 +437,7 @@ public class ProviderService {
 		String transactionMessage = "Failed to mark as Unable to Standardize.";
 		Integer statusCode = -1;
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("recordId", recordId);
 		
 		
@@ -489,7 +489,7 @@ public class ProviderService {
 			SubProviderAndAddressVO providerAndAddressVO,
 			BindingResult bindingResult, UserObject userObject){
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			inOutParameterMap.put("p_provider_fname",providerAndAddressVO.getProviderFname());
 			inOutParameterMap.put("p_provider_mname",providerAndAddressVO.getProviderMname());
 			inOutParameterMap.put("p_provider_lname",providerAndAddressVO.getProviderLname());
@@ -550,13 +550,13 @@ public class ProviderService {
 
 	public List<RawProviderAddressVO> getRawProvAddrsNewList(BindingResult result, boolean selected, long[] selectedIds, UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 
 		inOutParameterMap.put("selected",selected);
 		inOutParameterMap.put("selectedIds",selectedIds);
 		
-		List<RawProviderAddressVO> rawProviderAddressList = new ArrayList<RawProviderAddressVO>();
+		List<RawProviderAddressVO> rawProviderAddressList = new ArrayList<>();
 		rawProviderAddressList = rawProviderAddressDAO.getRawProvAddrsNewList(inOutParameterMap);
 		
 		for (RawProviderAddressVO curData : rawProviderAddressList) {
@@ -583,7 +583,7 @@ public class ProviderService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_raw_provider_addr_id_list",String.join(",", rawProvSelectedAddresses));
 		inOutParameterMap.put("p_sub_provider_address_id",providerAddressId);

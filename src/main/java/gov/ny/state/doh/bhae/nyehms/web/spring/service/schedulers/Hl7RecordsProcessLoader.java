@@ -59,7 +59,7 @@ public class Hl7RecordsProcessLoader {
 
 				// schedulerStatusObject : is used to track the complete job
 				// status (SUCCESS/FAILURE)
-				List<JSONObject> schedulerStatusObject = new ArrayList<JSONObject>();
+				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table). Most of the Scheduler input parameters will be inputed from Metadata table
 				Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();

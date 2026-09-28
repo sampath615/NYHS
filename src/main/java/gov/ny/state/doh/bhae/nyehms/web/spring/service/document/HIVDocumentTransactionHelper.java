@@ -61,7 +61,7 @@ public class HIVDocumentTransactionHelper {
 		
 		String parentDocumentType = LabCommonUtils.getDocumentType(documentType);
 		
-		Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameters = new HashMap<>();
 		inputOutputParameters.put("p_document_type", parentDocumentType);
 		inputOutputParameters.put("p_new_doc_id", "");	
 		inputOutputParameters.put("p_parent_doc_id", documentId);
@@ -291,7 +291,7 @@ public class HIVDocumentTransactionHelper {
 			BigDecimal PS_ASSIGN_STATUS = (BigDecimal)personDocData.get("PS_ASSESS_STATUS");
 			BigDecimal SURV_ASSESS_STATUS = (BigDecimal)personDocData.get("SURV_ASSESS_STATUS");
 			BigDecimal SURV_ASSIGNMENT_ID = (BigDecimal)personDocData.get("SURV_ASSIGNMENT_ID");
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			if(PS_ASSIGN_STATUS != null && PS_ASSIGN_STATUS.intValue() != 0){
 				commonDocumentService.updateTriggeringDocumentIdInNyehmsMessage(documentId, newDocumentId);
 				inputParameterMap.put("PS_ASSIGN_STATUS", PS_ASSIGN_STATUS);

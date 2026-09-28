@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class RiaController {
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -96,7 +96,7 @@ public class RiaController {
 		AddressFieldVO addressFieldVO = new AddressFieldVO();
 		map.put("addressFieldVO", addressFieldVO);
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -118,7 +118,7 @@ public class RiaController {
 	public String getRiaEligibilityReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String reportType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, Integer> riaEligibilityReport = riaReviewService.getRiaEligibilityReport(riaFlaggedFromDate, riaFlaggedToDate, riaCounty, reportType, bindingResult, userObject);
@@ -132,7 +132,7 @@ public class RiaController {
 	public String getRiaFollowUpReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> riaFollowUpReport = riaReviewService.getRiaFollowUpReport(riaFlaggedFromDate, riaFlaggedToDate, bindingResult, userObject);
@@ -146,7 +146,7 @@ public class RiaController {
 	public String getRiaTreatmentReport(@RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> riaTreatmentReport = riaReviewService.getRiaTreatmentReport(riaFlaggedFromDate, riaFlaggedToDate, bindingResult, userObject);
@@ -170,7 +170,7 @@ public class RiaController {
 	public @ResponseBody List<JSONObject> getRiaEligibilityRecordsByReport(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate, @RequestParam("riaCounty[]") String[] riaCounty, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -182,7 +182,7 @@ public class RiaController {
 	public @ResponseBody List<JSONObject> getRiaReportByFollowup(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -194,7 +194,7 @@ public class RiaController {
 	public @ResponseBody List<JSONObject> getRiaReportByTreatment(HttpServletRequest request, @RequestParam String riaFlaggedFromDate, @RequestParam String riaFlaggedToDate,  @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -211,7 +211,7 @@ public class RiaController {
 	public @ResponseBody List<JSONObject> getRiaRecordsForReview(HttpServletRequest request, @RequestParam String PARAMETER_NAME, @RequestParam String PARAMETER_VALUE, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -223,7 +223,7 @@ public class RiaController {
 	public String getRiaDoc(@RequestParam int docId, @RequestParam(required=false) String actionType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		RiaDocVO riaDocVO = riaReviewService.getRiaDoc(docId, actionType, bindingResult, userObject,
@@ -280,7 +280,7 @@ public class RiaController {
 			@ModelAttribute("riaDocVO") RiaDocVO riaDocVO,
 			HttpServletRequest request, UserObject userObject) {
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		riaReviewService.updateRiaDocData(data, DOCUMENT_ID, riaDocVO.getFollowUpDocList(), riaDocVO.getRiaProviderFollowupList(), bindingResult, userObject);
@@ -296,7 +296,7 @@ public class RiaController {
 		
 		
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		riaReviewService.closeRiaDoc(riaDocVO, DOCUMENT_ID, bindingResult, userObject);
@@ -336,7 +336,7 @@ public class RiaController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 				
 		List<Map<String, String>> riaActivity = riaReviewService.getRiaDocActivity(DOCUMENT_ID,  bindingResult,  userObject);
@@ -407,7 +407,7 @@ public class RiaController {
 			@RequestParam String riaFlaggedToDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<JSONObject> rianoLinkedtoCareDataReport = riaReviewService

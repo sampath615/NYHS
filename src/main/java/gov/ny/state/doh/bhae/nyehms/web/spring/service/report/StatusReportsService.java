@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -99,7 +97,7 @@ public class StatusReportsService {
                throw new DataRetrievalFailureException("Remote server(Scchoit31) connection not established.");
         }
         
-        Map<String, String> inputMap = new HashMap<String, String>();
+        Map<String, String> inputMap = new HashMap<>();
 		
 		inputMap.put("SQL_QUERY", sqlQuery);
 		
@@ -107,19 +105,19 @@ public class StatusReportsService {
         
 		Map<String, Map<String, Map<String, Map<String, Number>>>> dataSetMap = new LinkedHashMap<String, Map<String, Map<String, Map<String, Number>>>>();
 		
-		Map<String, Map<String, Integer>> dataSetweeklyCount = new HashMap<String, Map<String, Integer>>();
+		Map<String, Map<String, Integer>> dataSetweeklyCount = new HashMap<>();
 		
 		//Map<String, Float> currentYearPercentageMap = new LinkedHashMap<String, Float>();
 		
 		parseReportsCount(labReportsCountList, dataSetMap, dataSetweeklyCount);
         
-		Map<String, Object> labReportData = new HashMap<String, Object>();
+		Map<String, Object> labReportData = new HashMap<>();
 		
 		labReportData.put("dataSetMap", dataSetMap);
 		labReportData.put("dataSetweeklyCount", dataSetweeklyCount);
 		//labReportData.put("currentYearPercentageMap", currentYearPercentageMap);
 		
-		Map<String, String> headerNotes = new HashMap<String, String>();
+		Map<String, String> headerNotes = new HashMap<>();
 		headerNotes.put("1", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET1"));
 		headerNotes.put("2", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET2"));
 		headerNotes.put("3", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET3"));
@@ -234,7 +232,7 @@ public class StatusReportsService {
 				weeklyMap = testTypeMap.get(testType);
 			}
 			
-			Map<String, Number> testTypeCountsByDate = new HashMap<String, Number>();
+			Map<String, Number> testTypeCountsByDate = new HashMap<>();
 			
 			testTypeCountsByDate.put("COUNT", count);
 			testTypeCountsByDate.put("PERCENTAGE", percentage);
@@ -303,7 +301,7 @@ public class StatusReportsService {
         
         
 
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		String[] initialColumns = null;
 		String sheetName = null;
@@ -324,24 +322,21 @@ public class StatusReportsService {
 		
 		Set<String> reportColumns = loincReportData.get(0).keySet();
 
-		List<String> columns = new ArrayList<String>(reportColumns);
+		List<String> columns = new ArrayList<>(reportColumns);
 		
 		String[] endingColumns = EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_COLUMNS2").split(",");
 		
 		columns.removeAll(Arrays.asList(initialColumns));
 		columns.removeAll(Arrays.asList(endingColumns));
 		
-		Collections.sort(columns, new Comparator<String>() {
-	        DateFormat f = new SimpleDateFormat(EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_DATEFORMAT"));
-	        @Override
-	        public int compare(String o1, String o2) {
-	            try {
-	                return f.parse(o1).compareTo(f.parse(o2));
-	            } catch (ParseException e) {
-	                throw new IllegalArgumentException(e);
-	            }
-	        }
-	    });
+		DateFormat columnDateFormat = new SimpleDateFormat(EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_DATEFORMAT"));
+		columns.sort((o1, o2) -> {
+			try {
+				return columnDateFormat.parse(o1).compareTo(columnDateFormat.parse(o2));
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(e);
+			}
+		});
 				
 		XSSFWorkbook workbook = new XSSFWorkbook(); 
     	
@@ -491,8 +486,8 @@ public class StatusReportsService {
                     
                     if (cellValue == null) {
                         cell.setCellValue("");
-                      } else if (cellValue instanceof BigDecimal) {
-                    	  cell.setCellValue(((BigDecimal) cellValue).doubleValue());
+                      } else if (cellValue instanceof BigDecimal decimal) {
+                    	  cell.setCellValue(decimal.doubleValue());
                       }else {
                     	  cell.setCellValue((String)cellValue);
                       }
@@ -507,8 +502,8 @@ public class StatusReportsService {
                     
                     if (cellValue == null) {
                         cell.setCellValue("");
-                      } else if (cellValue instanceof BigDecimal) {
-                    	  cell.setCellValue(((BigDecimal) cellValue).doubleValue());
+                      } else if (cellValue instanceof BigDecimal decimal) {
+                    	  cell.setCellValue(decimal.doubleValue());
                       }else {
                     	  cell.setCellValue((String)cellValue);
                       }
@@ -522,8 +517,8 @@ public class StatusReportsService {
                     
                     if (cellValue == null) {
                         cell.setCellValue("");
-                      } else if (cellValue instanceof BigDecimal) {
-                    	  cell.setCellValue(((BigDecimal) cellValue).doubleValue());
+                      } else if (cellValue instanceof BigDecimal decimal) {
+                    	  cell.setCellValue(decimal.doubleValue());
                       }else {
                     	  cell.setCellValue((String)cellValue);
                       }

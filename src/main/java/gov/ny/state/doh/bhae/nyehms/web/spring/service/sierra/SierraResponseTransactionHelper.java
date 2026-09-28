@@ -51,7 +51,7 @@ public class SierraResponseTransactionHelper {
 			return "<h2 class='errorTransactionMessage' style='font-weight:bold'>There is no more documents to Parse</h2>";
 		}
 		
-		Map<Integer, String> failedDocumentIds = new HashMap<Integer, String>();
+		Map<Integer, String> failedDocumentIds = new HashMap<>();
 		
 		Integer maxDocumentIdParsed =maxDocumentId;
 		Integer minDocumentIdParsed =null;
@@ -163,7 +163,7 @@ public class SierraResponseTransactionHelper {
 			
 			if(isError) {
 				
-				Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("DOCUMENT_ID", rasDocId);
 				inputParameterMap.put("ERROR_DESC", transactionMessage);

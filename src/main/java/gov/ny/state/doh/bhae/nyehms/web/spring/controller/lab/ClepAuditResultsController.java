@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +46,7 @@ public class ClepAuditResultsController {
     	
     	CLEPLabResultVO clepLabResultVO = new CLEPLabResultVO();
     	
-    	List<CLEPLabResultAccessionVO> clepAccessionList = new ArrayList<CLEPLabResultAccessionVO>();
+    	List<CLEPLabResultAccessionVO> clepAccessionList = new ArrayList<>();
     	for (int i=0; i<8; i++) {
     		CLEPLabResultAccessionVO cLEPLabResultAccessionVO = new CLEPLabResultAccessionVO();
     		cLEPLabResultAccessionVO.setLaftStaff(userObject.getUserId());
@@ -81,7 +81,7 @@ public class ClepAuditResultsController {
 			@ModelAttribute("submitClepLabResultData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -96,7 +96,7 @@ public class ClepAuditResultsController {
     	
     	CLEPLabResultVO clepLabResultVO = new CLEPLabResultVO();
     	
-    	List<CLEPLabResultAccessionVO> clepAccessionList = new ArrayList<CLEPLabResultAccessionVO>();
+    	List<CLEPLabResultAccessionVO> clepAccessionList = new ArrayList<>();
     	for (int i=0; i<8; i++) {
     		CLEPLabResultAccessionVO cLEPLabResultAccessionVO = new CLEPLabResultAccessionVO();
     		cLEPLabResultAccessionVO.setLaftStaff(userObject.getUserId());
@@ -114,7 +114,7 @@ public class ClepAuditResultsController {
 	public @ResponseBody GridObject getClepLabResultForReview(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(clepAuditResultsService.getClepLabResultForReview(bindingResult, userObject));
@@ -173,7 +173,7 @@ public class ClepAuditResultsController {
 	public String followupHIVSurvey(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		map.put("uploadedHIVSurveyFilenames", clepAuditResultsService.getUploadedHIVSurveyFilenames(userObject, bindingResult));
@@ -185,7 +185,7 @@ public class ClepAuditResultsController {
 	public @ResponseBody GridObject getUploadedHIVSurveyData(@RequestParam String uploadedFilename, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(clepAuditResultsService.getUploadedHIVSurveyData(uploadedFilename, bindingResult, userObject));
@@ -210,7 +210,7 @@ public class ClepAuditResultsController {
 			@ModelAttribute("submitClepSurveyFollowupData") CLEPUploadSurveyVO clepUploadSurveyVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -230,7 +230,7 @@ public class ClepAuditResultsController {
 	public @ResponseBody GridObject getloadLabRecruitmentAssessmentData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(clepAuditResultsService.getLabRecruitmentAssessmentForFollowup(bindingResult, userObject));
@@ -257,7 +257,7 @@ public class ClepAuditResultsController {
 			@ModelAttribute("submitLabRecruitmentAssessmentFollowupData") CLEPLabResultVO clepLabResultVO, HttpServletRequest request, BindingResult result, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		

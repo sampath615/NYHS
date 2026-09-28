@@ -139,7 +139,7 @@ public class ServiceLayerExceptionHandlingAspect {
 	 * @param throwable the Throwable reference
 	 */
 	private Map<Object,Object> prepareMessageParameterValues(UserObject userObject,Throwable throwable){
-		Map<Object, Object> messageParametersAndValues = new HashMap<Object, Object>();		
+		Map<Object, Object> messageParametersAndValues = new HashMap<>();		
 		messageParametersAndValues.put("p_log_date", new Timestamp(new Date().getTime()));
 		
 		if(userObject == null) {

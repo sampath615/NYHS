@@ -150,7 +150,7 @@ public class EPRFOOCDocumentService {
 	public List<JSONObject> getOOCDocumentFileNames(String fileType, int processStatus,
 			BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("fileType", fileType);
 		inputParameterMap.put("processStatus", processStatus);
@@ -192,7 +192,7 @@ public class EPRFOOCDocumentService {
 			throw new DataRetrievalFailureException("Invalid File type for document : "+documentId);
 		}
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("testType", document_type);
 		
@@ -209,7 +209,7 @@ public class EPRFOOCDocumentService {
 			BindingResult bindingResult, UserObject userObject){
 		
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("documentFileName", documentFileName);
 		inputParameterMap.put("documentFileType", documentFileType);
@@ -225,7 +225,7 @@ public class EPRFOOCDocumentService {
 			BindingResult bindingResult, UserObject userObject){
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		
 		inputParameterMap.put("documentFileType", documentFileType);
@@ -311,7 +311,7 @@ public class EPRFOOCDocumentService {
 	
 	public List<Map<String, String>> getOOCDNLTCFileNames(String origin){
 		
-		Map<String, String> inputParameter = new HashMap<String, String>();
+		Map<String, String> inputParameter = new HashMap<>();
 		
 		inputParameter.put("origin", origin);
 		

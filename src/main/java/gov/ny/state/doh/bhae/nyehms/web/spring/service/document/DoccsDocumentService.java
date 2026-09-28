@@ -40,7 +40,7 @@ public class DoccsDocumentService {
     @Autowired
     CommonService commonService;
 	
-	private Map<String, String> countyCodeReferenceMap = new HashMap<String, String>();
+	private Map<String, String> countyCodeReferenceMap = new HashMap<>();
 
 
 
@@ -58,7 +58,7 @@ public class DoccsDocumentService {
 			
 			if(stdDoccsDocVO != null){
 				
-				Map<String, Object> inputParemeterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParemeterMap = new HashMap<>();
 				
 				inputParemeterMap.put("byDoccsDocId", true);
 				inputParemeterMap.put("DoccsDocId", documentId);
@@ -90,7 +90,7 @@ public class DoccsDocumentService {
 			BindingResult dummyBindingResult, UserObject userObject, String id){
 		
 		
-		Map<String, Object> inputParemeterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParemeterMap = new HashMap<>();
 		
 		inputParemeterMap.put("byDoccsDocId", false);
 		inputParemeterMap.put("docId", docId);
@@ -352,7 +352,7 @@ public class DoccsDocumentService {
 	public int insertRawDinDoccsDataToStdTable(
 			List<Map<String, Object>> rawDinDoccsList){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("dinDoccsList", rawDinDoccsList);
 		

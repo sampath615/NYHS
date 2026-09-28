@@ -31,7 +31,7 @@ public class FullAppLogger {
 		Object returnObj = joinPoint.proceed();
 						
 		stopWatch.stop();
-		StringBuffer stringBuffer = new StringBuffer();
+		StringBuilder stringBuffer = new StringBuilder();
 		stringBuffer.append(joinPoint.getTarget().getClass().getName());
 		Object[] methodArrgs = joinPoint.getArgs();
 		for (int i = 0; i < methodArrgs.length; i++) {

@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -113,7 +113,7 @@ public class ProviderPortalReviewController {
 	public @ResponseBody List<Map<String, Object>> getOOCDocumentsToReview(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName, @RequestParam String documentFileType, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -127,7 +127,7 @@ public class ProviderPortalReviewController {
 	public @ResponseBody Map<Object, Object> updateOOCDocumentReviewStatus(HttpServletRequest request, @RequestParam String documentFileName, @RequestParam String documentFileType, @RequestParam int processStatus, @RequestParam String facilityCategory, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -142,7 +142,7 @@ public class ProviderPortalReviewController {
 		
 		HttpSession session = request.getSession();
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -162,7 +162,7 @@ public class ProviderPortalReviewController {
 	public String getOOCDNLTCReviewData(HttpServletRequest request, Map<String, Object> map, @RequestParam  String documentFileName, @RequestParam(required = false) String origin){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -202,7 +202,7 @@ public class ProviderPortalReviewController {
 	public @ResponseBody Map<Object, Object> updateEprfFollowUpData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO , UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -218,7 +218,7 @@ public class ProviderPortalReviewController {
 	public @ResponseBody Map<Object, Object> updateEprfFollowUpFileData(HttpServletRequest request, @ModelAttribute("ePRFFollowUpDocVO") EPRFFollowUpDocVO ePRFFollowUpDocVO , UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -237,7 +237,7 @@ public class ProviderPortalReviewController {
 	public @ResponseBody Map<Object, Object> sendEmailToBureauDirector(HttpServletRequest request, @RequestParam String message, @RequestParam String documentFileName, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		

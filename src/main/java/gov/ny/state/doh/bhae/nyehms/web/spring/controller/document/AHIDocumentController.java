@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class AHIDocumentController {
 		log.debug("{}  incoming AHI Doc ID is {}", nyehmsLog, docId);
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -72,11 +72,11 @@ public class AHIDocumentController {
 		if (docId == null) {
 			aHIDocVO = new AHIDocVO();
 			
-			List<AHICiStiVO> ahiCiStiList = new ArrayList<AHICiStiVO>();
+			List<AHICiStiVO> ahiCiStiList = new ArrayList<>();
 			
 			ahiCiStiList.add(new AHICiStiVO());
 			
-			List<AHINegInd900TestHistoryVO> ahiNegInd900TestHistoryList = new ArrayList<AHINegInd900TestHistoryVO>();
+			List<AHINegInd900TestHistoryVO> ahiNegInd900TestHistoryList = new ArrayList<>();
 			
 			ahiNegInd900TestHistoryList.add(new AHINegInd900TestHistoryVO());
 			
@@ -123,7 +123,7 @@ public class AHIDocumentController {
 			, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -146,7 +146,7 @@ public class AHIDocumentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		String stateNo = request.getParameter("stateNo");
@@ -164,7 +164,7 @@ public class AHIDocumentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		String documentType = request.getParameter("documentType");
@@ -201,7 +201,7 @@ public class AHIDocumentController {
 	public @ResponseBody GridObject getAHIAlertData(HttpServletRequest request, @RequestParam String dataType, @RequestParam String dataSubType, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(ahiDocumentService.getAhiAlertData(userObject, bindingResult, dataType, dataSubType));
@@ -214,7 +214,7 @@ public class AHIDocumentController {
 			@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		ahiDocumentService.saveAHIAlertTrackingForm(ahiAlertTrackingVO, bindingResult, userObject);
@@ -245,7 +245,7 @@ public class AHIDocumentController {
 	public @ResponseBody Map<Object, Object> updateAHIAlertStatus(@ModelAttribute("AhiAlertTrackingVO") AhiAlertTrackingVO ahiAlertTrackingVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		ahiDocumentService.updateAhiAlertStatus(ahiAlertTrackingVO, userObject, bindingResult);

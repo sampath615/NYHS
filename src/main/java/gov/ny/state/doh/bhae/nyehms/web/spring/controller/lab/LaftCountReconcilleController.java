@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody GridObject getReconcileDashboardData(HttpServletRequest request, @RequestParam String reconcileId, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(laftCountReconcilleService.getReconcileDashboardData(userObject, bindingResult, reconcileId));
@@ -59,7 +59,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody GridObject getCurOpenSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String userId, String labReconciled, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(laftCountReconcilleService.getCurOpenSurveysData(userObject, bindingResult, reconcileId,userId, labReconciled));
@@ -70,7 +70,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody Map<String, Object> getLabReportedSurveyData(HttpServletRequest request, @RequestParam String reconcileId, String pfi, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map <String, Object> map = laftCountReconcilleService.getLabReportedSurveyData(userObject, bindingResult, reconcileId, pfi);
@@ -82,7 +82,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody String updateLabReconcileData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 	//	String workerId = Integer.toString(userObject.getWorkerId());
 		
@@ -116,7 +116,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody GridObject getSendSurveyEmailData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(laftCountReconcilleService.getSendSurveyEmailData(bindingResult, userObject));
@@ -216,7 +216,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody Map<String, Object> saveAddReconcilePFI(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String workerId = Integer.toString(userObject.getWorkerId());
 		
@@ -233,7 +233,7 @@ public class LaftCountReconcilleController {
 	public @ResponseBody Map<Object, Object> deleteReconcilePFI(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String workerId = Integer.toString(userObject.getWorkerId());
 		

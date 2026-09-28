@@ -1164,7 +1164,7 @@ public class RiaDocVO extends NYEHMSDocVO {
 
 
 
-	private List<AcrfRidrVO> acrfRidrList = new ArrayList<AcrfRidrVO>();
+	private List<AcrfRidrVO> acrfRidrList = new ArrayList<>();
 	
 	public List<AcrfRidrVO> getAcrfRidrList() {
 		return acrfRidrList;
@@ -1173,7 +1173,7 @@ public class RiaDocVO extends NYEHMSDocVO {
 		this.acrfRidrList = acrfRidrList;
 	}
 	
-	private List<RiaFollowupDocVO> followUpDocList = new ArrayList<RiaFollowupDocVO>();
+	private List<RiaFollowupDocVO> followUpDocList = new ArrayList<>();
 
 
 	public List<RiaFollowupDocVO> getFollowUpDocList() {

@@ -32,7 +32,7 @@ public class HIEDocumentService {
 	HIEDTHDocumentDAO hieDTHDocumentDAO;
 	
 	public String convertBlobtoEncryptedEncodedString(Blob blob) {
-		StringBuffer strOut = new StringBuffer();
+		StringBuilder strOut = new StringBuilder();
 		String aux;
 		BufferedReader br;
 		try

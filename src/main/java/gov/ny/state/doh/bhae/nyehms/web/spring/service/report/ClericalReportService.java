@@ -23,7 +23,7 @@ public class ClericalReportService {
 	public Map<String, Map<String, Map<String, BigInteger>>> getclericalReportByStaff(String fromDate, String toDate,
 			String reportType, UserObject userObject, Map<String, Object> map) {
 
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 
 		inputParameterMap.put("fromDate", fromDate);
 		inputParameterMap.put("toDate", toDate);
@@ -46,7 +46,7 @@ public class ClericalReportService {
 	public Map<String, Map<String, Map<String, BigInteger>>> getscanningReportByStaff(String fromDate, String toDate,
 			UserObject userObject, Map<String, Object> map) {
 
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 
 		inputParameterMap.put("fromDate", fromDate);
 		inputParameterMap.put("toDate", toDate);
@@ -182,7 +182,7 @@ public class ClericalReportService {
 	public List<JSONObject> clericalNonMatchReportData(String fromDate, String toDate,
 			BindingResult dummyBindingResult, UserObject userObject){
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		

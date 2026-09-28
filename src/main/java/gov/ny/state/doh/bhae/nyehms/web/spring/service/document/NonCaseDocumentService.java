@@ -48,7 +48,7 @@ public class NonCaseDocumentService {
 	public void createNonCaseDocument(int triggeringDocId, String comments,
 			int reason, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("triggeringDocId", triggeringDocId);
 		inputParameterMap.put("flagActive", "Y");
@@ -87,7 +87,7 @@ public class NonCaseDocumentService {
 		try{
 			
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("triggeringDocId", triggeringDocId);
 			inputParameterMap.put("comments", comments);
@@ -122,7 +122,7 @@ public class NonCaseDocumentService {
 			UserObject userObject){
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("triggeringDocId", triggeringDocId);
 		inputParameterMap.put("flagActive", flagActive);
@@ -153,7 +153,7 @@ public class NonCaseDocumentService {
 
 		StringBuilder transactionMessage = new StringBuilder();
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", flaggedStatenoVO.getStateno1());
 		inOutParameterMap.put("p_flagged_by", userObject.getWorkerId());
@@ -252,7 +252,7 @@ public class NonCaseDocumentService {
 
 	public int unflagStatenoAsNonCase(FlaggedStatenoVO flaggedStatenoVO, UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_current_stateno", flaggedStatenoVO.getStateno2());
 		inOutParameterMap.put("p_flagged_stateno", flaggedStatenoVO.getStateno1());
@@ -331,7 +331,7 @@ public class NonCaseDocumentService {
 	
 	public List<Map<String, String>> getNonCaseEharsStatenos(String nonCasePernitalExpOnly, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_nonCasePernitalExpOnly", nonCasePernitalExpOnly);
 		
 		return nonCaseDocumentDAO.getNonCaseEharsStatenos(inputParameterMap);
@@ -340,7 +340,7 @@ public class NonCaseDocumentService {
 	}
 	
 	public List<Map<String, String>> getNonCaseFlaggedHistory(String FROM_DATE, String TO_DATE, String ACTIVE_FLAG, BindingResult bindingResult, UserObject userObject){
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("FROM_DATE", FROM_DATE);
 		inputParameterMap.put("TO_DATE", TO_DATE);
 		inputParameterMap.put("ACTIVE_FLAG", ACTIVE_FLAG);

@@ -102,7 +102,7 @@ public class ClepAuditResultsService {
 			List <CLEPLabResultAccessionVO> accessionNoList = clepLabResultVO.getClepLabResultAccessionList();
 			if (accessionNoList != null && accessionNoList.size() > 0) {
 				
-				List<CLEPLabResultAccessionVO> finalaccessionNoList = new ArrayList<CLEPLabResultAccessionVO>();
+				List<CLEPLabResultAccessionVO> finalaccessionNoList = new ArrayList<>();
 				for(CLEPLabResultAccessionVO accessionVO : accessionNoList) {
 					if (CommonUtil.isNotNullAndEmpty(accessionVO.getAccessionNo())) {
 						accessionVO.setAccessionSerialNo(accessionNoList.indexOf(accessionVO) + 1);
@@ -112,7 +112,7 @@ public class ClepAuditResultsService {
 				
 				if (finalaccessionNoList != null && finalaccessionNoList.size() > 0) {
 				
-					Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+					Map<String, Object> inputParameterMap  = new HashMap<>();
 					inputParameterMap.put("surveyNumber", clepLabResultVO.getSurveyNumber());
 					inputParameterMap.put("accessionNoList", finalaccessionNoList);
 					
@@ -134,8 +134,8 @@ public class ClepAuditResultsService {
 			List <CLEPLabResultAccessionVO> accessionNoList = clepLabResultVO.getClepLabResultAccessionList();
 			if (accessionNoList != null && accessionNoList.size() > 0) {
 				
-				List<CLEPLabResultAccessionVO> newDataAccessionNoList = new ArrayList<CLEPLabResultAccessionVO>();
-				List<CLEPLabResultAccessionVO> oldDataAccessionNoList = new ArrayList<CLEPLabResultAccessionVO>();
+				List<CLEPLabResultAccessionVO> newDataAccessionNoList = new ArrayList<>();
+				List<CLEPLabResultAccessionVO> oldDataAccessionNoList = new ArrayList<>();
 				for(CLEPLabResultAccessionVO accessionVO : accessionNoList) {
 					if (CommonUtil.isNotNullAndEmpty(accessionVO.getAccessionNo()) && accessionVO.getAccessionSerialNo() == 0) {
 						accessionVO.setAccessionSerialNo(accessionNoList.indexOf(accessionVO) + 1);
@@ -147,7 +147,7 @@ public class ClepAuditResultsService {
 				
 				if (newDataAccessionNoList != null && newDataAccessionNoList.size() > 0) {
 				
-					Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+					Map<String, Object> inputParameterMap  = new HashMap<>();
 					inputParameterMap.put("surveyNumber", clepLabResultVO.getSurveyNumber());
 					inputParameterMap.put("accessionNoList", newDataAccessionNoList);
 					
@@ -159,7 +159,7 @@ public class ClepAuditResultsService {
 				}
 				
 				if (oldDataAccessionNoList != null && oldDataAccessionNoList.size() > 0) {
-					Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+					Map<String, Object> inputParameterMap  = new HashMap<>();
 					inputParameterMap.put("surveyNumber", clepLabResultVO.getSurveyNumber());
 					
 					for (CLEPLabResultAccessionVO accessionVO : oldDataAccessionNoList ) {
@@ -176,7 +176,7 @@ public class ClepAuditResultsService {
 			}
 			
 			if (clepLabResultVO.isReviewCompletedClicked()) {
-				Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap  = new HashMap<>();
 				inputParameterMap.put("surveyNo", clepLabResultVO.getSurveyNumber());
 				inputParameterMap.put("surveyReviewedBy", clepLabResultVO.getClepUserId());	
 				int resCt = clepAuditResultsDAO.updateSurveyReviewComplete(inputParameterMap);
@@ -222,8 +222,8 @@ public class ClepAuditResultsService {
 		boolean isError = false; 
 		String transactionMessage = null;
 		
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String uploadFileName = uploadHIVSurveyFile.getOriginalFilename();
 		
 		CSVReader csvread = null;
@@ -265,7 +265,7 @@ public class ClepAuditResultsService {
 				if (!isError) {
 					
 					for(int i=1; i<rowLists.size(); i++){
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						String[] recordRow = rowLists.get(i);
 	
 						// Check if row is null, then ignored
@@ -347,7 +347,7 @@ public class ClepAuditResultsService {
 		int counter = 0;
 		String PFIString;
 		StringBuilder errorMessage;
-		Map<Object, Object> dataErrorMapList = new HashMap<Object, Object>();
+		Map<Object, Object> dataErrorMapList = new HashMap<>();
 		
 		for (Map<String, Object> dataRow : fileDataList) {
 			
@@ -400,7 +400,7 @@ public class ClepAuditResultsService {
 			clepHIVSurveyData.put("userId", userId);
 		}
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("clepHIVSurveyDataList", clepHIVSurveyDataList);
 		
 		clepAuditResultsDAO.insertCLEPHIVSurveyData(inputParameterMap);
@@ -409,7 +409,7 @@ public class ClepAuditResultsService {
 
 	public List<String> getUploadedHIVSurveyFilenames(UserObject userObject, BindingResult result) {
 		
-		List<String> filenameList = new ArrayList<String>();
+		List<String> filenameList = new ArrayList<>();
 		
 		List<JSONObject> filenameObjlist = clepAuditResultsDAO.getUploadedHIVSurveyFilenames();
 		
@@ -425,7 +425,7 @@ public class ClepAuditResultsService {
 		 String[] array = uploadedFilename.split(",");
 		 uploadedFilename = array[0];
 		 
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("uploadedFilename", uploadedFilename);
 		
 		List<JSONObject> list = clepAuditResultsDAO.getUploadedHIVSurveyData(inputParameterMap);
@@ -462,7 +462,7 @@ public class ClepAuditResultsService {
 			clepUploadSurveyVO.setSurveyCloseDate("");
 		}
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("uploadNumber", uploadNumber);
 		inputParameterMap.put("assignedStaffId", assignedStaffId);
 		inputParameterMap.put("assignedDate", clepUploadSurveyVO.getAssignedDate());
@@ -521,7 +521,7 @@ public class ClepAuditResultsService {
 			clepLabResultVO.setRecruitAssessDateComplete("");
 		}
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		inputParameterMap.put("surveyNumber", clepLabResultVO.getSurveyNumber());
 		inputParameterMap.put("recruitAssessStaffAssign", recruitAssessStaffAssign);
 		inputParameterMap.put("recruitAssessDateAssign", clepLabResultVO.getRecruitAssessDateAssign());
@@ -540,7 +540,7 @@ public class ClepAuditResultsService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getSurveyAuditReportData(String fromDate, String toDate, BindingResult dummyBindingResult,	UserObject userObject) {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		

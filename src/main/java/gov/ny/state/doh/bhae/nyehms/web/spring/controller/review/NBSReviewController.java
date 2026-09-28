@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class NBSReviewController {
 	@RequestMapping(value="/checkForClimsRecId.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<String, Boolean> checkForClimsRecId(@RequestParam String stateno, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.checkForClimsRecId(stateno, bindingResult, userObject);
 	}
@@ -44,7 +44,7 @@ public class NBSReviewController {
 	@RequestMapping(value="/getNbsMnemonicRecords.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getNbsMnemonicRecords(@RequestParam String BIRTH_YEAR, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.getNbsMnemonicRecords(BIRTH_YEAR, bindingResult, userObject);
 	}
@@ -53,7 +53,7 @@ public class NBSReviewController {
 	@RequestMapping(value="/getNonNbsMatchClimsRecords.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getNonNbsMatchClimsRecords(HttpServletRequest request, @RequestParam String BIRTH_YEAR, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.getNonNbsMatchClimsRecords(BIRTH_YEAR, bindingResult, userObject);
 	}
@@ -61,7 +61,7 @@ public class NBSReviewController {
 	@RequestMapping(value="/getNbsMatchReviewRecords.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getNbsMatchReviewRecords(HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.getNbsMatchReviewRecords(bindingResult, userObject);
 	}
@@ -69,7 +69,7 @@ public class NBSReviewController {
 	@RequestMapping(value="/getNbsIndRecords.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<JSONObject> getNbsIndRecords(@RequestParam String BIRTH_YEAR, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.getNbsIndRecords(BIRTH_YEAR, bindingResult, userObject);
 	}
@@ -78,7 +78,7 @@ public class NBSReviewController {
 	@RequestMapping(value = "/getNBSDoc.html")
 	public String getNBSDocAsHTML(@RequestParam int docId, @RequestParam(required = false) String reviewType, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		NBSDocVO nbsDocVO = nbsReviewService.getNBSDoc(docId, reviewType, bindingResult, userObject);
 //		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -91,7 +91,7 @@ public class NBSReviewController {
 	public @ResponseBody Map<Object, Object> matchNBSDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, @RequestParam String reviewComments, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.matchNBSDocumentToStateno(documentId, stateno, reviewComments, bindingResult, userObject);
@@ -104,7 +104,7 @@ public class NBSReviewController {
 	public @ResponseBody Map<Object, Object> matchClimsDocumentToNBS(HttpServletRequest request, @RequestParam(required = false) String patientId, @RequestParam long nbsDocumentId, @RequestParam String reviewComments, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.matchClimsDocumentToNBS(patientId, nbsDocumentId, reviewComments, bindingResult, userObject);
@@ -117,7 +117,7 @@ public class NBSReviewController {
 	public @ResponseBody Map<Object, Object> updateNBSExposureStatus(HttpServletRequest request, @RequestParam long documentId, @RequestParam String exposureStatus, @RequestParam String comments, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.updateNBSExposureStatus(documentId, exposureStatus, comments, bindingResult, userObject);
@@ -214,7 +214,7 @@ public class NBSReviewController {
 			, @RequestParam(required = false) String pfi, @RequestParam(required = false) String gender, @RequestParam(required = false) String weight
 			, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return nbsReviewService.getNBSSearchViewResults(labId, firstName, lastName, labNo, medRecordNumber, dateOfBirth, pfi, gender, weight, bindingResult, userObject);		
 	}
@@ -228,7 +228,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/getNBSDocumentDetailsForMatchReview.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getNBSDocumentDetailsForMatchReview(HttpServletRequest request, @RequestParam Integer documentId, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, Object> documentAndItsPotentialMatches = nbsReviewService.getNBSDocumentDetailsForMatchReview(documentId, bindingResult, userObject);
@@ -238,7 +238,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/getClimsDocumentDetailsForMatchReview.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getClimsDocumentDetailsForMatchReview(HttpServletRequest request, @RequestParam Integer documentId, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, Object> documentAndItsPotentialMatches = nbsReviewService.getClimsDocumentDetailsForMatchReview(documentId, bindingResult, userObject);
@@ -250,7 +250,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/updateHivFinalStatus.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> updateHivFinalStatus(HttpServletRequest request, @RequestParam Integer id, @RequestParam String HIV_FINAL_STATUS, @RequestParam String REVIEW_COMMENTS, UserObject userObject){
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.updateHivFinalStatus(id, HIV_FINAL_STATUS, REVIEW_COMMENTS, bindingResult, userObject);
@@ -260,7 +260,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/updateClimsReviewComments.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> updateClimsReviewComments(HttpServletRequest request, @RequestParam Integer id, @RequestParam String REVIEW_COMMENTS, UserObject userObject){
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.updateClimsReviewComments(id, REVIEW_COMMENTS, bindingResult, userObject);
@@ -270,7 +270,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/updateStdNbsReviewComments.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> updateStdNbsReviewComments(HttpServletRequest request, @RequestParam Integer id, @RequestParam String REVIEW_COMMENTS, UserObject userObject){
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.updateStdNbsReviewComments(id, REVIEW_COMMENTS, bindingResult, userObject);
@@ -284,7 +284,7 @@ public class NBSReviewController {
 	
 	@RequestMapping(value="/updateRawNBSData.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> updateRawNBSData(HttpServletRequest request, @RequestParam Integer id, @RequestParam String REVIEW_COMMENTS, UserObject userObject){
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nbsReviewService.updateRawNBSData(id, REVIEW_COMMENTS, bindingResult, userObject);

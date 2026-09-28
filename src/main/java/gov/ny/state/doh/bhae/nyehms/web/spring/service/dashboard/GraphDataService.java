@@ -46,7 +46,7 @@ public class GraphDataService {
 //		append("GROUP BY REGION_DESCRIPTION ");
     	
     	
-    	Map<String, Integer> inputParameterMap =new HashMap<String, Integer>();
+    	Map<String, Integer> inputParameterMap =new HashMap<>();
     	
     	Calendar calendar = Calendar.getInstance();
 		
@@ -60,7 +60,7 @@ public class GraphDataService {
     	List<Map<String, Object>> workerTallyGraphData = graphDataDAO.getWorkerTallyGraphData(inputParameterMap);
     	
     	
-    	List<JSONObject> allRegionsAndWorkersList = new ArrayList<JSONObject>();
+    	List<JSONObject> allRegionsAndWorkersList = new ArrayList<>();
     	
     	for (Map<String, Object> map : workerTallyGraphData) {
 			
@@ -76,7 +76,7 @@ public class GraphDataService {
     		
     		JSONObject regionAndWorkersList = new JSONObject();
     		
-    		List<Integer> assignmentCountsByRegion = new ArrayList<Integer>();
+    		List<Integer> assignmentCountsByRegion = new ArrayList<>();
     		
     		assignmentCountsByRegion.add(OPEN_CNT);
     		assignmentCountsByRegion.add(CNT_90);

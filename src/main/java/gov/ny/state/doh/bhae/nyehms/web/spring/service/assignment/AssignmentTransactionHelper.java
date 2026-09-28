@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -117,7 +117,7 @@ public class AssignmentTransactionHelper {
 			
 			List<AcrfRidrVO> duplicateReviewList = acrfFormVO.getAcrfRidrList();
 			
-			List<String> duplicateStatenos = new ArrayList<String>();
+			List<String> duplicateStatenos = new ArrayList<>();
 			
 			for (AcrfRidrVO acrfRidrVO : duplicateReviewList) {
 			
@@ -220,47 +220,47 @@ public class AssignmentTransactionHelper {
 		if("PCRF".equals(documentType)){
 
 			if("Y".equals(acrfDoc.getIduBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("injectedNonprescriptionDrugsText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("injectedNonprescriptionDrugsText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getRecvClottingFactorBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvClottingFactorText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvClottingFactorText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getRecvBloodTransfusionBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvBloodTransfusionText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvBloodTransfusionText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getRecvTransplantBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvTransplantChildText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvTransplantChildText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getSexWithMaleBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("sexualContactWithMaleText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("sexualContactWithMaleText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getSexWithFemaleBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("sexualContactWithMaleText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("sexualContactWithMaleText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			if("Y".equals(acrfDoc.getOtherRiskBeforeDiag())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("otherRiskText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("otherRiskText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			
 		}else {
 			
 			if("Y".equals(acrfDoc.getRecvBloodTransfusion())){
-				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvBloodTransfusionText", null, new Locale("en", "US")))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append((messageSource.getMessage("recvBloodTransfusionText", null, Locale.US))).append(_tempParagraphEnd);
 			}
 			
 			if("Y".equals(acrfDoc.getRecvTransplant())){
-				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("recvTransplantText", null, new Locale("en", "US"))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("recvTransplantText", null, Locale.US)).append(_tempParagraphEnd);
 			}
 			
 			if("Y".equals(acrfDoc.getHealthcareWorker())){
-				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("healthcareWorkerText", null, new Locale("en", "US"))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("healthcareWorkerText", null, Locale.US)).append(_tempParagraphEnd);
 			}
 			
 			if("Y".equals(acrfDoc.getOtherRisk())){
-				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("otherRiskText", null, new Locale("en", "US"))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("otherRiskText", null, Locale.US)).append(_tempParagraphEnd);
 			}
 			
 			if("Y".equals(acrfDoc.getRecvClottingFactor())){
-				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("recvClottingFactorText", null, new Locale("en", "US"))).append(_tempParagraphEnd);
+				riskSelected.append(_tempParagraphStart).append(messageSource.getMessage("recvClottingFactorText", null, Locale.US)).append(_tempParagraphEnd);
 			}
 			
 
@@ -398,7 +398,7 @@ public class AssignmentTransactionHelper {
 
 	
 	private void checkAndCreateRawFacilities(AcrfFormVO acrfFormVO, BindingResult result, UserObject userObject){
-		List<String> standardFacilityIds = new ArrayList<String>();
+		List<String> standardFacilityIds = new ArrayList<>();
 		
 		String providingFacilityName = acrfFormVO.getRawAcrfDoc().getProvidingFacilityId();
 		String facilityHivDxName = acrfFormVO.getRawAcrfDoc().getFacilityHivDxId();
@@ -434,7 +434,7 @@ public class AssignmentTransactionHelper {
 			
 			
 			
-			Map<Object, Object> map = new HashMap<Object, Object>();
+			Map<Object, Object> map = new HashMap<>();
 			
 			map.put("p_user_id", userObject.getWorkerId());
 			
@@ -573,7 +573,7 @@ public class AssignmentTransactionHelper {
 				String stateno = assignmentService.getStatenoForAssignment(assignmentId);
 				
 				
-				Map<String, String> targetMap = new HashMap<String, String>();
+				Map<String, String> targetMap = new HashMap<>();
 				BindingResult dummyBindingResult = new MapBindingResult(targetMap,
 						"Sample");
 				
@@ -610,7 +610,7 @@ public class AssignmentTransactionHelper {
 	public void discardACRFForm(String acrfDocId, String documentType,
 			String assignmentId, String reabstract, UserObject userObject, BindingResult bindingResult) {
 
-		Map<Object, Object> docIdMap = new HashMap<Object, Object>();
+		Map<Object, Object> docIdMap = new HashMap<>();
 		
 		docIdMap.put("documentId", assignmentId);
 		docIdMap.put("lastUpdatedBy", userObject.getWorkerId());
@@ -688,7 +688,7 @@ public class AssignmentTransactionHelper {
 			assignReassignVO.setDelCrf("P");
 		}
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_assignment_list", assignReassignVO.getAssignmentIds());
 		map.put("p_worker_id", assignReassignVO.getWorkerId());
 		map.put("p_comments", assignReassignVO.getComments());

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Tomcat context for NYEHMS (replaces the WebLogic data sources and weblogic.xml).
+
+  The ${...} values are read from system properties, e.g. $CATALINA_BASE/conf/catalina.properties:
+      nyehms.db.app.url=jdbc:oracle:thin:@//host:1521/SERVICE
+      nyehms.db.app.user=...
+      nyehms.db.app.password=...
+      (same for nyehms.db.urs.* and nyehms.db.ehars.*)
+  Keep credentials out of this file. The Oracle driver (ojdbc11.jar) must be in $CATALINA_HOME/lib.
+
+  The context path is taken from the WAR name, not from this file:
+  deploy as  doh2#applinks#nyehms.war  to keep the old context root /doh2/applinks/nyehms.
+-->
+<Context sessionCookiePath="/">
+
+	<!-- was WebLogic data source BHAE_NYEHMS_DS_ONE_GL (appDS: MyBatis + raw JDBC) -->
+	<Resource name="jdbc/BHAE_NYEHMS_DS_ONE_GL" auth="Container" type="javax.sql.DataSource"
+		driverClassName="oracle.jdbc.OracleDriver"
+		url="${nyehms.db.app.url}" username="${nyehms.db.app.user}" password="${nyehms.db.app.password}"
+		maxTotal="50" maxIdle="10" maxWaitMillis="30000"
+		validationQuery="select 1 from dual" testOnBorrow="true" />
+
+	<!-- was WebLogic data source BHAE_NYEHMS_URS (ursDS) -->
+	<Resource name="jdbc/BHAE_NYEHMS_URS" auth="Container" type="javax.sql.DataSource"
+		driverClassName="oracle.jdbc.OracleDriver"
+		url="${nyehms.db.urs.url}" username="${nyehms.db.urs.user}" password="${nyehms.db.urs.password}"
+		maxTotal="20" maxIdle="5" maxWaitMillis="30000"
+		validationQuery="select 1 from dual" testOnBorrow="true" />
+
+	<!-- was WebLogic data source BHAE_EHARS_DS_ONE (eharsDS: raw JDBC via ConnectionDAO.getSqlServerConnectionObj) -->
+	<Resource name="jdbc/BHAE_EHARS_DS_ONE" auth="Container" type="javax.sql.DataSource"
+		driverClassName="oracle.jdbc.OracleDriver"
+		url="${nyehms.db.ehars.url}" username="${nyehms.db.ehars.user}" password="${nyehms.db.ehars.password}"
+		maxTotal="20" maxIdle="5" maxWaitMillis="30000"
+		validationQuery="select 1 from dual" testOnBorrow="true" />
+
+</Context>

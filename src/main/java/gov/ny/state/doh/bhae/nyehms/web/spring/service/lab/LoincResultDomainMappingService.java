@@ -57,7 +57,7 @@ public class LoincResultDomainMappingService {
 	
 	public List<LabLoincMappingVO> getLoincAndDescriptionDetails(BindingResult bindingResult,UserObject userObject, LabLoincMappingVO labLoincMappingVO) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincCode", labLoincMappingVO.getLoincCode().replace("*", "%"));
 		inOutParameterMap.put("loincDescription", labLoincMappingVO.getLoincDescription().replace("*", "%"));
 		inOutParameterMap.put("testType", labLoincMappingVO.getTestType());
@@ -81,7 +81,7 @@ public class LoincResultDomainMappingService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincCode", loincCode);
 		inOutParameterMap.put("testTypeCode", testTypeCode);
 		
@@ -102,7 +102,7 @@ public class LoincResultDomainMappingService {
 	
 	public int addNewAcceptableTestResults(AcceptedTestResultDomainVO acceptedTestResultDomainVO, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("typeOfResult", acceptedTestResultDomainVO.getTypeOfResult());
 		inOutParameterMap.put("acceptedValue", acceptedTestResultDomainVO.getAcceptedValue());
 		inOutParameterMap.put("rangeLowerBound", acceptedTestResultDomainVO.getRangeLowerBound());
@@ -134,7 +134,7 @@ public class LoincResultDomainMappingService {
 	
 	public int checkLoincCodeAssociatedTestResults(String loincCode, List<Integer> testResultsAttributeIds, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincCode", loincCode);
 		inOutParameterMap.put("testResultsAttributeIds", testResultsAttributeIds);
 		
@@ -148,7 +148,7 @@ public class LoincResultDomainMappingService {
 		String transactionMessage = null;
 		Integer statusCode;
 				
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincCode", loincCode);
 		inOutParameterMap.put("attributeDomainId", attributeDomainId);
 		inOutParameterMap.put("standardResults", standardResults);
@@ -176,7 +176,7 @@ public class LoincResultDomainMappingService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincAtrDomainMapId", loincAtrDomainMapId);
 		inOutParameterMap.put("flagActive", flagActive);
 		inOutParameterMap.put("p_lastUpdatedBy", userObject.getWorkerId());
@@ -218,7 +218,7 @@ public class LoincResultDomainMappingService {
 	
 	public List<String> getLoincUnitOfMeasurementsForTestType(UserObject userObject, String loincDescription, String testType){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("loincDescription", loincDescription);
 		inOutParameterMap.put("testType", testType);
 		
@@ -276,7 +276,7 @@ public class LoincResultDomainMappingService {
 	public Map<String, String> getLoincAndUnitsOfMeasurementCombination(
 			String loincCd, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputParamters = new HashMap<>();
 		
 		inputParamters.put("loincCode", loincCd);
 		
@@ -290,7 +290,7 @@ public class LoincResultDomainMappingService {
 		boolean isError = false; 
 		try{
 			
-			Map<String, Integer[]> inputParameterMap = new HashMap<String, Integer[]>();
+			Map<String, Integer[]> inputParameterMap = new HashMap<>();
 			inputParameterMap.put("documentIds", documentIds);
 			
 			int resultCount = loincResultDomainMappingDAO.verifyForMayoLabDocuments(inputParameterMap);

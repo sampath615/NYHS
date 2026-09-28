@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class SchedulerNotificationVO{
 	
-	private List<String> schedulerStatusObj = new ArrayList<String>();
+	private List<String> schedulerStatusObj = new ArrayList<>();
 	
 	
 	public List<String> getSchedulerStatusObj(){

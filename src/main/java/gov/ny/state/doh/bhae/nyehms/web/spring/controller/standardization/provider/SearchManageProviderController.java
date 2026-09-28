@@ -12,7 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ public class SearchManageProviderController {
 	public @ResponseBody GridObject  getProviderDetailsByProvider(@ModelAttribute("providerVO") SubProviderVO providerVO , HttpServletRequest request, UserObject userObject){
 		
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Provider Search Criteria
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageProviderService.getProviderDetailsByProvider(providerVO , bindingResult, userObject));
@@ -66,7 +66,7 @@ public class SearchManageProviderController {
 		
 		
 
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Provider Address Search Criteria
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageProviderService.getProviderDetailsByProviderAddress(subProviderAndAddressVO , bindingResult, userObject));
@@ -86,7 +86,7 @@ public class SearchManageProviderController {
 	public @ResponseBody GridObject  getProviderDetailsByRawProviderAddress(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO , HttpServletRequest request, UserObject userObject){
 		
 
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Raw Provider Address Search Criteria
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageProviderService.getProviderDetailsByRawProviderAddress(rawProviderAddressVO , bindingResult, userObject));

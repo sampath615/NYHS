@@ -26,7 +26,7 @@ public class RawCCDLabTestVO {
 	private String placerIdRoot;
 	private String placerIdExtension;
 	private String placerIdAuth;
-	private List<RawCCDLabResultVO> theLabResult = new ArrayList<RawCCDLabResultVO>();
+	private List<RawCCDLabResultVO> theLabResult = new ArrayList<>();
 	private String testCodeSystemName;
 	
 	public int getUphnId() {

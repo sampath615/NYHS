@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +106,7 @@ public class SearchEngineController {
 		Random randomNumber = new Random();
 		HttpSession session = request.getSession();
 		if(userObject==null) userObject= new UserObject();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<SearchPersonCriteriaVO> cursorout = null;
 		int totalRecordsCount = 0;

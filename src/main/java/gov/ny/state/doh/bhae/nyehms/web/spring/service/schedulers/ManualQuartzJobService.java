@@ -185,7 +185,7 @@ public class ManualQuartzJobService {
 	 */
 	public List<EcrlsLabDocVO> getReAssignDocuments(String recordType) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		if ("HIV".equals(recordType)) {
 			inOutParameterMap.put("tableName", "VALLH");
@@ -206,7 +206,7 @@ public class ManualQuartzJobService {
 
 	public int updateReAssignDocProcessedStatus(long OBXOBSERVATIONRESULTKEY, long OBROBSERVATIONREQUESTKEY) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("OBXOBSERVATIONRESULTKEY", OBXOBSERVATIONRESULTKEY);
 		inOutParameterMap.put("OBROBSERVATIONREQUESTKEY", OBROBSERVATIONREQUESTKEY);
@@ -222,7 +222,7 @@ public class ManualQuartzJobService {
 
 	public int updateDocumentProcessStatusLog(int failedDocumentIdsCount, long OBXOBSERVATIONRESULTKEY) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("failedDocumentIdsCount", failedDocumentIdsCount);
 		inOutParameterMap.put("OBXOBSERVATIONRESULTKEY", OBXOBSERVATIONRESULTKEY);
@@ -298,7 +298,7 @@ public class ManualQuartzJobService {
 
 	public List<EcrlsLabDocVO> getEclrsRawDatatoClean(String recordType, long lastInsertedId, int fetchRowCount) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("lastInsertedId", lastInsertedId);
 		inOutParameterMap.put("fetchRowCount", fetchRowCount);
@@ -434,7 +434,7 @@ public class ManualQuartzJobService {
 
 		int _documentId = ecrlsLabDocVO.getDOCUMENT_ID();
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 		String clia = ecrlsLabDocVO.getMSHSENDINGFACILITYCLIA().toUpperCase();
 		inputOutputParamters.put("clia", clia);
@@ -521,18 +521,18 @@ public class ManualQuartzJobService {
 
 		int _documentId = ecrlsLabDocVO.getDOCUMENT_ID();
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 		// inputOutputParamters.put("clia",
 		// ecrlsLabDocVO.getMSHSENDINGFACILITYCLIA());
 
-		List<String> pfiList = new ArrayList<String>();
+		List<String> pfiList = new ArrayList<>();
 
 		pfiList.add(ecrlsLabDocVO.getMSHLABPFI());
 
 		inputOutputParamters.put("pfiList", pfiList);
 
-		List<Integer> filterTypes = new ArrayList<Integer>();
+		List<Integer> filterTypes = new ArrayList<>();
 		
 		List<String> errorCodesToBypass = labProcessDAO.getBypassErrorCodes(ecrlsLabDocVO.getDOCUMENT_ID());
 		
@@ -621,7 +621,7 @@ public class ManualQuartzJobService {
 
 		boolean hasErrors = false;
 
-		Map<Integer, String> pfiProcessQueryStrings = new HashMap<Integer, String>();
+		Map<Integer, String> pfiProcessQueryStrings = new HashMap<>();
 
 		for (FilterTypeAndFilterConditionsVO filterTypeAndFilterConditionsVO : filterTypeAndFilterConditions) {
 			String _sqlQueryString = prepareLabProcessQueryCondition(
@@ -660,7 +660,7 @@ public class ManualQuartzJobService {
 
 			if (hasProcessQueryConditions) {
 
-				Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 				inputOutputParamters.put("queryCondition", _completeProcessConditionsForFilterType);
 
@@ -967,7 +967,7 @@ public class ManualQuartzJobService {
 		String zLRFACILITYADDRESSLINE1 = ecrlsLabDocVO.getZLRFACILITYADDRESSLINE1().trim();
 		String zLRPROVIDERADDRESSLINE1 = ecrlsLabDocVO.getZLRPROVIDERADDRESSLINE1().trim();
 
-		Map<String, String> inputParamters = new HashMap<String, String>();
+		Map<String, String> inputParamters = new HashMap<>();
 
 		inputParamters.put("address", pIDADDRESSLINE1);
 		
@@ -1032,7 +1032,7 @@ public class ManualQuartzJobService {
 
 		int _documentId = ecrlsLabDocVO.getDOCUMENT_ID();
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("pfi", pfi);
 
 		stdEcrlsLabDocVO.setRACE_WHITE(LabCommonUtils.checkRaceData(ecrlsLabDocVO.getPIDRACEWHITE()));
@@ -1052,7 +1052,7 @@ public class ManualQuartzJobService {
 
 			if (ehnicityMatches.size() == 0) {
 
-				Map<Object, Object> dummyPfiParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> dummyPfiParameterMap = new HashMap<>();
 				dummyPfiParameterMap.put("pfi", CommonConstants.DEFAULT_PFI);
 				dummyPfiParameterMap.put("pid_ethnic_cd", ethnicityCode);
 				ehnicityMatches = schedulerJobsDAO.getMatchesForEthnicityCode(dummyPfiParameterMap);
@@ -1097,7 +1097,7 @@ public class ManualQuartzJobService {
 
 		String pfi = ecrlsLabDocVO.getMSHLABPFI();
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("pfi", pfi);
 
 		stdEcrlsLabDocVO.setRACE_WHITE(LabCommonUtils.checkRaceData(ecrlsLabDocVO.getPIDRACEWHITE()));
@@ -1117,7 +1117,7 @@ public class ManualQuartzJobService {
 
 			if (ehnicityMatches.size() == 0) {
 
-				Map<Object, Object> dummyPfiParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> dummyPfiParameterMap = new HashMap<>();
 				dummyPfiParameterMap.put("pfi", CommonConstants.DEFAULT_PFI);
 				dummyPfiParameterMap.put("pid_ethnic_cd", ethnicityCode);
 				ehnicityMatches = schedulerJobsDAO.getMatchesForEthnicityCode(dummyPfiParameterMap);
@@ -1292,7 +1292,7 @@ public class ManualQuartzJobService {
 				test_result = "INVALID SEQUENCE";
 			}
 
-			Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 			inputOutputParamters.put("std_interpretation_id", std_interpretation_id);
 			String INTERPRET_CD = schedulerJobsDAO.getStandardInterpretationCodeUsingDescription(inputOutputParamters);
@@ -1422,7 +1422,7 @@ public class ManualQuartzJobService {
 			collectionDate = new Timestamp(ecrlsLabDocVO.getDerivedCollectionDate().getTimeInMillis());
 		}
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 		String std_loinc = "";
 		String std_units = "";
@@ -1643,7 +1643,7 @@ public class ManualQuartzJobService {
 					obxTestConvertToNumericValue = obxTestConvertToNumericValue.replaceAll(",", "");
 				}
 
-				List<Map<String, String>> resultObjs = new ArrayList<Map<String, String>>();
+				List<Map<String, String>> resultObjs = new ArrayList<>();
 
 				if (CommonUtil.isNumeric(obxTestConvertToNumericValue)) {
 
@@ -1705,7 +1705,7 @@ public class ManualQuartzJobService {
 					String interpretationCodesString = schedulerMetaData
 							.get("ACCEPTED_INTERPRETATION_CODES_WITHOUT_STANDARDCODE");
 
-					List<String> validInterpretationCodes = new ArrayList<String>();
+					List<String> validInterpretationCodes = new ArrayList<>();
 
 					if (interpretationCodesString != null) {
 						String[] interpretationCodes = interpretationCodesString.split(",");
@@ -1850,7 +1850,7 @@ public class ManualQuartzJobService {
 	public List<Map<String, String>> getObxObservationResultsMapping(String oBXOBSERVATIONRESULTTEXT, String loincCode,
 			Boolean isNumeric) {
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 		inputOutputParamters.put("oBXOBSERVATIONRESULTTEXT", oBXOBSERVATIONRESULTTEXT.toUpperCase());
 		inputOutputParamters.put("loincCode", loincCode);
@@ -1869,7 +1869,7 @@ public class ManualQuartzJobService {
 
 	public int writeErrorCode(int statusCode, Number documentId, String documentType) {
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
 		String rawTableName = LabCommonUtils.getRawTableName(documentType);
 
@@ -1885,7 +1885,7 @@ public class ManualQuartzJobService {
 	public int addValidationError(Number documentId, String errors, int currentProcessStatus,
 			boolean havingSoftCheckValidationErrors, Number previousProcessStatus, String documentType) {
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("currentProcessStatus", currentProcessStatus);
 
 		inputOutputParamters.put("errorMessage", errors);
@@ -1927,7 +1927,7 @@ public class ManualQuartzJobService {
 	}
 
 	public void writeErrorCodesMasterDetail(int processErrorId, List<Integer> errorCodes) {
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("processErrorId", processErrorId);
 		inputOutputParamters.put("errorCodes", errorCodes);
 
@@ -1966,7 +1966,7 @@ public class ManualQuartzJobService {
 
 		String rawTableName = LabCommonUtils.getRawTableName(documentType);
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("rawTableName", rawTableName);
 
 		List<Map<Object, Object>> docsList = schedulerJobsDAO.getRawDocsList(inputOutputParamters);
@@ -2256,7 +2256,7 @@ public class ManualQuartzJobService {
 
 		PreparedStatement ps = null;
 
-		List<String> failedDocumentIds = new ArrayList<String>();
+		List<String> failedDocumentIds = new ArrayList<>();
 
 		String transactionMessage = null;
 
@@ -2729,7 +2729,7 @@ public class ManualQuartzJobService {
 
 		InputStream obj_InputStream = null;
 
-		List<String> failedDocumentIds = new ArrayList<String>();
+		List<String> failedDocumentIds = new ArrayList<>();
 
 		String transactionMessage = null;
 
@@ -3032,7 +3032,7 @@ public class ManualQuartzJobService {
 
 		InputStream obj_InputStream = null;
 
-		List<String> failedRawRecordIds = new ArrayList<String>();
+		List<String> failedRawRecordIds = new ArrayList<>();
 
 		String transactionMessage = null;
 
@@ -3232,7 +3232,7 @@ public class ManualQuartzJobService {
 
 			int resultCount = 0;
 
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 			inputOutputParameterMap.put("rawIds", rawIds);
 			inputOutputParameterMap.put("standardSubId", subID);
@@ -3273,7 +3273,7 @@ public class ManualQuartzJobService {
 	 */
 	public int storeDocumentMatchResults(List<Map<String, String>> documentQualityStageData) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("documentQualityStageData", documentQualityStageData);
 
@@ -3304,7 +3304,7 @@ public class ManualQuartzJobService {
 
 		int totalResultsCount = 0;
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("parentDocumentId", parentDocumentId);
 		
@@ -4437,7 +4437,7 @@ public class ManualQuartzJobService {
 	public boolean handleRawEclrsRecordValidations(EcrlsLabDocVO ecrlsLabDocVO, StringBuilder failedToValidateDocuments,
 			Map<String, String> schedulerMetaData) {
 		boolean transactionStatus = false;
-		List<String> transactionMessage = new ArrayList<String>();
+		List<String> transactionMessage = new ArrayList<>();
 		// boolean isError = false;
 		try {
 			transactionStatus = quartzSchedulerTransactionHelper.handleRawEclrsRecordValidations(ecrlsLabDocVO,
@@ -4477,7 +4477,7 @@ public class ManualQuartzJobService {
 	 */
 	public Map<String, String> getSchedulerMetaData() {
 
-		Map<String, String> schedulerMetaData = new TreeMap<String, String>();
+		Map<String, String> schedulerMetaData = new TreeMap<>();
 
 		String stage = System.getProperty("stage");
 
@@ -4738,7 +4738,7 @@ public class ManualQuartzJobService {
 
 	public int deleteChildDocumentsFromMatchResults(List<String> duplicateDocumentIds) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("duplicateDocumentIds", duplicateDocumentIds);
 
@@ -4754,7 +4754,7 @@ public class ManualQuartzJobService {
 
 	public void updateSchedulerMetaData(String parameterName, String parameterValue, BindingResult bindingResult) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		if ("JAROT_PASSWORD".equals(parameterName)) {
 			try {
@@ -4797,7 +4797,7 @@ public class ManualQuartzJobService {
 
 		JSONObject statusObject = new JSONObject();
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		try {
 
@@ -4872,7 +4872,7 @@ public class ManualQuartzJobService {
 	public int checkForReferenceLoincDocumentsCount(MultiStepProcessVO multiStepProcessVO) {
 
 		int statusCode = 0;
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("pfi", multiStepProcessVO.getPfi());
 		inputOutputParameterMap.put("loincCode", multiStepProcessVO.getLoincCode());
 
@@ -4902,7 +4902,7 @@ public class ManualQuartzJobService {
 			
 			String  STD_NON_MATCHES_ROLLBACK_QUERY = schedulerMetaData.get("SKIP_MULTI_PROCESS_STATUS");
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("sqlQuery", STD_NON_MATCHES_ROLLBACK_QUERY);
 			
@@ -5242,7 +5242,7 @@ public class ManualQuartzJobService {
 
 	public int associateParentDocumentForMultiStepDocuments(List<Integer> multiStepDocumentIds, int parentDocumentId,
 			String flagStatus) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("documentIds", multiStepDocumentIds);
 		inputOutputParameterMap.put("statusCode", flagStatus);
@@ -5266,7 +5266,7 @@ public class ManualQuartzJobService {
 				"Updating hashnumber for new Raw " + recordType + " records");
 		try {
 
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 			String tableName = LabCommonUtils.getRawTableName(recordType);
 
@@ -5307,7 +5307,7 @@ public class ManualQuartzJobService {
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME,
 				"Checking the duplicates for RAW " + recordType + " Document");
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("p_doc_type_cd", recordType);
 		inputOutputParameterMap.put("process_date", new Date(Calendar.getInstance().getTimeInMillis()));
@@ -5343,7 +5343,7 @@ public class ManualQuartzJobService {
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME,
 				"Checking the duplicates in the new RAW " + recordType + " List");
 		try {
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 			inputOutputParameterMap.put("tableName", LabCommonUtils.getRawTableName(recordType));
 
@@ -5384,7 +5384,7 @@ public class ManualQuartzJobService {
 				"checking the duplicates of New Raw " + recordType + " documents List with the Entire Raw Data");
 		try {
 
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 			inputOutputParameterMap.put("tableName", LabCommonUtils.getRawTableName(recordType));
 
@@ -5820,7 +5820,7 @@ public class ManualQuartzJobService {
 
 		String rawTableName = LabCommonUtils.getRawTableName(documentType);
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("rawTableName", rawTableName);
 		inputOutputParameterMap.put("documentId", document_ID);
@@ -5831,7 +5831,7 @@ public class ManualQuartzJobService {
 	public int deleteDocumentInErrorTable(int currentDocumentId, String requestComments, int processStatus,
 			UserObject userObject) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("documentID", currentDocumentId);
 		inputOutputParameterMap.put("workerId", userObject.getWorkerId());
@@ -5880,9 +5880,9 @@ public class ManualQuartzJobService {
 	 */
 	public void prepareDefaultProcessQueryConditions(Map<String, String> schedulerMetaData) {
 
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 
-		List<String> pfiList = new ArrayList<String>();
+		List<String> pfiList = new ArrayList<>();
 
 		pfiList.add("-999");
 
@@ -5931,7 +5931,7 @@ public class ManualQuartzJobService {
 	 */
 	private String prepareLabProcessQueryCondition(List<FilterConditionsVO> filterConditions) {
 
-		StringBuffer queryString = new StringBuffer("");
+		StringBuilder queryString = new StringBuilder("");
 		int _index = 0;
 
 		for (FilterConditionsVO filterConditionsVO : filterConditions) {
@@ -5960,7 +5960,7 @@ public class ManualQuartzJobService {
 	public List<EcrlsLabDocVO> getPIDUpdatedRecordsFromEclrs(String recordType,
 			Timestamp lAST_PIDUPDATEDATE, long lastInsertedMaxObxObservationResultKey, long currentMaxObxObservationResultKey){
 	
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("lastInsertedId", lastInsertedMaxObxObservationResultKey);
 		inOutParameterMap.put("lastPidUpdateDate", lAST_PIDUPDATEDATE);
@@ -6001,7 +6001,7 @@ public class ManualQuartzJobService {
 	
 	public List<Map<String, Object>> getNyehmsDocumentCurrentStatus(String recordType, long obxObservationResultKey){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("RAW_TABLE", LabCommonUtils.getRawTableNameFast(recordType));
 		
@@ -6093,7 +6093,7 @@ public class ManualQuartzJobService {
 	public String checkPersonAddressGotEdited(String recordType, Integer oldDocumentId,
 			Integer documentId){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("OLD_DOCUMENT_ID", oldDocumentId);
 		
@@ -6109,7 +6109,7 @@ public class ManualQuartzJobService {
 	public void logPIDProcessError(String recodType, Long obxObservationResultKey,
 			String errorMessage){
 		
-		Map<String, Object> inputParameter = new HashMap<String, Object>();
+		Map<String, Object> inputParameter = new HashMap<>();
 		
 		inputParameter.put("obxObservationResultKey", obxObservationResultKey);
 		
@@ -6137,7 +6137,7 @@ public class ManualQuartzJobService {
 	public int checkIfDocumentUpdatedWithPidDetails(String recordType,
 			Long oBXOBSERVATIONRESULTKEY){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("RAW_TABLE", LabCommonUtils.getRawTableNameFast(recordType));
 		
@@ -6154,9 +6154,9 @@ public class ManualQuartzJobService {
 			
 		JSONObject statusObject = new JSONObject();
 		String transactionMessage = null;		
-		List<String> failureDocuments = new ArrayList<String>();
+		List<String> failureDocuments = new ArrayList<>();
 		
-		List<String> successDocuments = new ArrayList<String>();
+		List<String> successDocuments = new ArrayList<>();
 	
 		Iterator<EcrlsLabDocVO> rawEclrsListIterator = ecrlsLabDocList.iterator();
 		while (rawEclrsListIterator.hasNext()) {
@@ -6239,7 +6239,7 @@ public class ManualQuartzJobService {
 	public List<EcrlsLabDocVO> getErroredPIDDocumentsListFromEclrs(
 			List<Long> erroredDocumentsList, String recordType){
 			
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		
 		if ("HIV_LAB".equals(recordType)) {
 			inOutParameterMap.put("tableName", "VALLH");
@@ -6249,7 +6249,7 @@ public class ManualQuartzJobService {
 		
 		inOutParameterMap.put("erroredDocumentsList", erroredDocumentsList);
 
-		List<EcrlsLabDocVO> reAssignPIDUpdatedDocuments = new ArrayList<EcrlsLabDocVO>();
+		List<EcrlsLabDocVO> reAssignPIDUpdatedDocuments = new ArrayList<>();
 
 		reAssignPIDUpdatedDocuments = eclrsDataDAO.getErroredPIDDocumentsListFromEclrs(inOutParameterMap);
 		
@@ -6258,7 +6258,7 @@ public class ManualQuartzJobService {
 	
 	public void checkDuplicatesinStdDocTable(String documentType){
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("STD_TABLE", LabCommonUtils.getStdTableName(documentType));
 		
@@ -6296,7 +6296,7 @@ public class ManualQuartzJobService {
 			
 			String stdTableName = LabCommonUtils.getStdTableName(documentType);
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("fileName", fileName);
 			inputParameterMap.put("stdTableName", stdTableName);
@@ -6357,7 +6357,7 @@ public class ManualQuartzJobService {
 		
 		if (CommonUtil.isNotNullAndEmpty(obxloinccode)) {
 
-			Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>() ;
+			Map<Object, Object> inputOutputParamters = new HashMap<>() ;
 			inputOutputParamters.put("loincCode", obxloinccode);
 
 

@@ -84,7 +84,7 @@ public class AdministrationService {
 	 */
 	public Map<String, String> getSrchregionTypes(BindingResult result, UserObject userObject){
 			boolean errorFlag=false;
-			Map<String, String> regionTypes = new LinkedHashMap<String, String>();
+			Map<String, String> regionTypes = new LinkedHashMap<>();
 			
 				List<Map<String, String>> regionTypesList = nyehmsWorkerRegionsViewDAO.getSearchRegionDescription();
 				for(Map<String, String> regionTypeMap : regionTypesList){
@@ -106,7 +106,7 @@ public class AdministrationService {
 	 */	
 	public List<NyehmsRole> getSrchroleTypes(BindingResult result, UserObject userObject){
 			boolean errorFlag=false;
-			List<NyehmsRole> nyehmsRoles= new ArrayList<NyehmsRole>();
+			List<NyehmsRole> nyehmsRoles= new ArrayList<>();
 				nyehmsRoles = nyehmsWorkerRegionsViewDAO.getSearchRoleDescription();
 			return nyehmsRoles;
 		}
@@ -154,8 +154,8 @@ public class AdministrationService {
 	 * @return   nyehmsWorkerRegionsViewVOList   List of users
 	 */
 	public List<NyehmsWorkerRegionsViewVO>  getSearchUsersList(NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO, BindingResult result, UserObject userObject){
-		List<NyehmsWorkerRegionsViewVO> nyehmsWorkerRegionsViewVOList = new ArrayList<NyehmsWorkerRegionsViewVO>();
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		List<NyehmsWorkerRegionsViewVO> nyehmsWorkerRegionsViewVOList = new ArrayList<>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			inOutParameterMap.put("p_shortname", nyehmsWorkerRegionsViewVO.getLegacyUid());
 			inOutParameterMap.put("p_fname", nyehmsWorkerRegionsViewVO.getFirstName());
 			inOutParameterMap.put("p_lname",nyehmsWorkerRegionsViewVO.getLastName());	
@@ -188,7 +188,7 @@ public class AdministrationService {
 	 */
 	public List<UserRegionVO> getRegionRoleByUserIdList(long workerId,  BindingResult result, UserObject userObject){
 
-		List<UserRegionVO> nyehmsWorkerRegionsViewVOList = new ArrayList<UserRegionVO>();
+		List<UserRegionVO> nyehmsWorkerRegionsViewVOList = new ArrayList<>();
 		
 		nyehmsWorkerRegionsViewVOList = nyehmsWorkerRegionsViewDAO.getRegionRoleByUserIdList(workerId);
 		
@@ -211,7 +211,7 @@ public class AdministrationService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 		
-		Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParamaterMap = new HashMap<>();
 		inOutParamaterMap.put("p_user_id", nyehmsWorkerRegionsViewVO.getWorkerId());
 		inOutParamaterMap.put("p_region_code", nyehmsWorkerRegionsViewVO.getRegionCode());
 		inOutParamaterMap.put("p_role_code",nyehmsWorkerRegionsViewVO.getRoleCode());
@@ -250,7 +250,7 @@ public class AdministrationService {
 			
 
 			// calling DAO for getting clientsecret, base url, endpoint url
-			Map<Object, Object> wsMap = new HashMap<Object, Object>();
+			Map<Object, Object> wsMap = new HashMap<>();
 			wsMap.put("userStage", userStage); // userStage
 			wsMap.put("function", "profile");
 
@@ -295,7 +295,7 @@ public class AdministrationService {
 		try {
     		
 				//fetching parameters from db for WebServiceConstants
-				Map<Object, Object> wsMap = new HashMap<Object, Object>();
+				Map<Object, Object> wsMap = new HashMap<>();
 				wsMap.put("userStage", userStage); // userStage
 				wsMap.put("function", "removePermForUser");
 				
@@ -359,7 +359,7 @@ public class AdministrationService {
 		try {
 			
 			// calling DAO for getting client secret, base url, endpoint url
-						Map<Object, Object> wsMap = new HashMap<Object, Object>();
+						Map<Object, Object> wsMap = new HashMap<>();
 						wsMap.put("userStage", userStage); // userStage
 						wsMap.put("function", "permissions");
 
@@ -419,7 +419,7 @@ public class AdministrationService {
 			Timestamp telecommuteTrngDate = dateUtil.getSqlDateTimeStamp(nyehmsWorkerRegionsViewVO.getTelecommuteTrainingDate());
 			
 //			String macAddress =nyehmsWorkerRegionsViewVO.getMacAddress().toUpperCase();
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			inOutParameterMap.put("p_legacy_uid", nyehmsWorkerRegionsViewVO.getLegacyUid().toUpperCase());
 			inOutParameterMap.put("p_first_name", nyehmsWorkerRegionsViewVO.getFirstName());
 			inOutParameterMap.put("p_last_name", nyehmsWorkerRegionsViewVO.getLastName());
@@ -476,7 +476,7 @@ public class AdministrationService {
     //save user details of manageProfile module in DB
     public void  saveUserDetails(NyehmsUsersVO nyehmsUsersVO, BindingResult bindingResult, UserObject userObject){
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			inOutParameterMap.put("firstName", nyehmsUsersVO.getFirstName());
 			inOutParameterMap.put("lastName", nyehmsUsersVO.getLastName());
 			inOutParameterMap.put("emailAddress", nyehmsUsersVO.getEmailAddress());
@@ -523,7 +523,7 @@ public class AdministrationService {
 		Integer statusCode=null;
 		
 		//Terminating the User from the database
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_user_id", workerId);
 		inOutParameterMap.put("p_terminated_by",userObject.getWorkerId());	
 		log.error("Terminating USer");
@@ -558,7 +558,7 @@ public class AdministrationService {
 	 */
    	public List<NyehmsUsersVO>  getUsersMacAddressAndRegionDetails(long workerId, BindingResult bindingResult, UserObject userObject){
    		
-   			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+   			Map<Object, Object> inOutParameterMap = new HashMap<>();
    			
    			inOutParameterMap.put("p_worker_id", workerId);
    			nyehmsWorkerRegionsViewDAO.getUsersMacAddressAndRegionDetails(inOutParameterMap);
@@ -606,7 +606,7 @@ public class AdministrationService {
 	public void updateOrRetireRegionRole(UserRegionVO userRegionVO,
 			BindingResult result, UserObject userObject){
 		
-    	Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+    	Map<Object, Object> inOutParameterMap = new HashMap<>();
     	
 		Integer statusCode=null;
 		String transactionMessage=null;
@@ -698,7 +698,7 @@ public class AdministrationService {
 	
 	public List<Map<String, String>> getEmailNotificationList(String aCTION_NAME, BindingResult bindingResult, UserObject userObject){
 	
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("ACTION_NAME", aCTION_NAME);
 		
@@ -715,7 +715,7 @@ public class AdministrationService {
 	public Map<String, String> getWorkerIdUsingEmail(String emailAddress){
 		String workerId = searchManageProfileDAO.getWorkerIdUsingEmail(emailAddress);
 		
-		Map<String, String> userDetails = new HashMap<String, String>();
+		Map<String, String> userDetails = new HashMap<>();
 		
 		userDetails.put("workerId", workerId);
 		
@@ -725,7 +725,7 @@ public class AdministrationService {
 	
 	public void saveUpdatedNotifications(String aCTION_NAME, String tO_LIST, String cC_LIST, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("ACTION_NAME", aCTION_NAME);
 		
@@ -760,7 +760,7 @@ public class AdministrationService {
 
 	public Map<String, String> getUserTypes(BindingResult result, UserObject userObject) {
 		// TODO Auto-generated method stub 
-		Map<String, String> userTypes = new LinkedHashMap<String, String>();
+		Map<String, String> userTypes = new LinkedHashMap<>();
 		
 		List<Map<String, String>> userTypesList = nyehmsWorkerRegionsViewDAO.getUserTypes();
 		for(Map<String, String> userTypeMap : userTypesList){
@@ -771,7 +771,7 @@ public class AdministrationService {
 
 	public Map<String, String> getUserFacilityNames(BindingResult result, UserObject userObject) {
 		// TODO Auto-generated method stub 
-		Map<String, String> userFacilityNames = new LinkedHashMap<String, String>();
+		Map<String, String> userFacilityNames = new LinkedHashMap<>();
 		
 		List<Map<String, String>> userFacilityNamesList = nyehmsWorkerRegionsViewDAO.getUserFacilityNames();
 		for(Map<String, String> userFacilityNameMap : userFacilityNamesList){
@@ -785,7 +785,7 @@ public class AdministrationService {
 	}
 
 	public List<JSONObject> getSCReportData(String fromDate, String toDate, BindingResult dummyBindingResult, UserObject userObject) {
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		
@@ -809,7 +809,7 @@ public class AdministrationService {
 	}
 	
 	public List<JSONObject> getTeleCommuteReportData(String teleCommute, String fromDate, String toDate, BindingResult dummyBindingResult, UserObject userObject) {
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_teleCommute", teleCommute);
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);

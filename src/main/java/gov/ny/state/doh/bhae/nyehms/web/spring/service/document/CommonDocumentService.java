@@ -91,7 +91,7 @@ public class CommonDocumentService {
 	
 	public List<JSONObject>  getDispositionCodeValues(boolean filterRows){
 		
-		Map<String, Boolean> inputParameterMap = new HashMap<String, Boolean>();
+		Map<String, Boolean> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("filterRows", filterRows);
 		
@@ -188,7 +188,7 @@ public class CommonDocumentService {
 	
 	public List<PSMessageVO> getPSMessageDetails(int docId, String documentType){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", docId);
 		inputOutputParameterMap.put("documentType", documentType);
@@ -208,7 +208,7 @@ public class CommonDocumentService {
 		Statement statement = null;
 		ResultSet resultSet = null;
 
-		Map<String, String> countryCodes=new LinkedHashMap<String, String>();
+		Map<String, String> countryCodes=new LinkedHashMap<>();
 		
 		try {
 			if (connection != null) {
@@ -253,7 +253,7 @@ public class CommonDocumentService {
 			String stateNo, int documentId,
 			UserObject userObject, String documentType, String origin){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		
 		
@@ -280,7 +280,7 @@ public class CommonDocumentService {
 	@Transactional
 	public void deleteEntryInPersonDocAssociation(int document_ID, String documentType, String associationStatus, UserObject userObject){
 			
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("associationStatus", associationStatus);
 		inputOutputParameterMap.put("p_user_id", userObject.getWorkerId());
@@ -309,7 +309,7 @@ public class CommonDocumentService {
 			
 		}
 		
-		List<Integer> documentIds = new ArrayList<Integer>();
+		List<Integer> documentIds = new ArrayList<>();
 		if("DOCCS".equals(documentType)){
 			
 			documentIds = doccsDocumentDAO.getDinDoccsIds(document_ID);
@@ -370,7 +370,7 @@ public class CommonDocumentService {
 	public String getColumnDataFromTable(String tableName, String targetColumn,
 			String refColumn, int refValue){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("tableName", tableName);
 		inputOutputParameterMap.put("targetColumn", targetColumn);
@@ -384,7 +384,7 @@ public class CommonDocumentService {
 	public void updateDocumentPsAssignStatus(int pS_ASSIGN_STATUS,
 			int newDocumentId){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", newDocumentId);
 		inputOutputParameterMap.put("pS_ASSIGN_STATUS", pS_ASSIGN_STATUS);
@@ -399,7 +399,7 @@ public class CommonDocumentService {
 	}
 
 	public void updateTriggeringDocumentIdInNyehmsMessage(int documentId, int newDocumentId){
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("oldDocumentId", documentId);
 		inputOutputParameterMap.put("newDocumentId", newDocumentId);
@@ -416,7 +416,7 @@ public class CommonDocumentService {
 			String documentType,
 			int statusCode){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		String tableName = LabCommonUtils.getRawTableNameFast(documentType);
 		
@@ -445,7 +445,7 @@ public class CommonDocumentService {
 			String tableName,
 			int statusCode){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("tableName", tableName);
 		inputOutputParameterMap.put("statusCode", statusCode);
@@ -461,7 +461,7 @@ public class CommonDocumentService {
 
 	
 	public void deleteDocumentFromStdTable(String parentDocumentType, int documentId, UserObject userObject){
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		String tableName = LabCommonUtils.getStdTableName(parentDocumentType);
 		inputOutputParameterMap.put("tableName", tableName);
@@ -480,7 +480,7 @@ public class CommonDocumentService {
 	public void updateStdDocumentStatus(int currentDocumentId, String documentType,
 			int statusCode){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("tableName", LabCommonUtils.getStdTableName(documentType));
 		inputOutputParameterMap.put("statusCode", statusCode);
@@ -497,7 +497,7 @@ public class CommonDocumentService {
 	
 	public Map<Object, Object> getDocData(int documentId, String tableIdentification,
 			String documentType){
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		String tableName = null;
 		
@@ -546,7 +546,7 @@ public class CommonDocumentService {
 				
 				int documentId = (Integer)rawDocData.get("DOCUMENT_ID");
 				
-				Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 				
 				inputOutputParameterMap.put("oldDocumentId", oldDocumentId);
 				inputOutputParameterMap.put("newDocumentId", documentId);
@@ -569,7 +569,7 @@ public class CommonDocumentService {
 
 				Integer documentId = (Integer)rawDocData.get("DOCUMENT_ID");
 				
-				Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 				
 				inputOutputParameterMap.put("oldDocumentId", oldDocumentId);
 				inputOutputParameterMap.put("newDocumentId", documentId);
@@ -641,7 +641,7 @@ public class CommonDocumentService {
 	public void updateSurvellianceAssignmentStatus(int documentId, int assignProcess,
 			UserObject userObject, BindingResult bindingResult){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", documentId);
 		inputOutputParameterMap.put("assignProcess", assignProcess);
@@ -665,7 +665,7 @@ public class CommonDocumentService {
 	public List<String> getDocumentTypes(UserObject userObject){
 		
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("p_module_id", 16);
 		map.put("p_worker_id", userObject.getWorkerId());
@@ -679,7 +679,7 @@ public class CommonDocumentService {
 	
 	public Map<String, String> getStatenoAndSourceCodeFromStdDocData(String parentDocumentType, int documentId, UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", documentId);
 		
@@ -718,7 +718,7 @@ public class CommonDocumentService {
 		
 		String rawTableName = LabCommonUtils.getRawTableName(documentType);
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		
 		inputOutputParameterMap.put("rawTableName", rawTableName);
@@ -754,7 +754,7 @@ public class CommonDocumentService {
 	
 	public int writeDocumentTestType(int document_ID, String testType) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("documentID", document_ID);
 		inputOutputParameterMap.put("testType", testType);
@@ -777,7 +777,7 @@ public class CommonDocumentService {
 	
 	public int updateRIDRDocumentWithAcrf(String ridrDocumentId, int acrfDocId, UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("acrfDocId", acrfDocId);
 		inputOutputParameterMap.put("ridrDocumentId", ridrDocumentId);
@@ -834,7 +834,7 @@ public class CommonDocumentService {
 	
 	
 	public void createNonCaseWithNewDocument(int documentId, int newDocumentId){
-		Map<String, Integer> inputParameterMap = new HashMap<String, Integer>();
+		Map<String, Integer> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("oldDocumentId", documentId);
 		inputParameterMap.put("newDocumentId", newDocumentId);
@@ -898,7 +898,7 @@ public class CommonDocumentService {
 	}
 	
 	public void updateRiaLabDocument(int documentId, int newDocumentId) {
-		Map<String, Integer> inputMap = new HashMap<String, Integer>();
+		Map<String, Integer> inputMap = new HashMap<>();
 		inputMap.put("OLD_DOCUMENTID", documentId);
 		inputMap.put("NEW_DOCUMENTID", newDocumentId);
 		commonDocLabsDAO.updateRiaLabDocument(inputMap);

@@ -54,7 +54,7 @@ public class ProcessACRFForm {
 	// Generate Primary Key for the ACRF Table from DB Sequence
 	public int getAcrfDocTblPK(BindingResult result, int documentId, String testType, String documentType)
 			throws NyehmsException {
-		Map<Object, Object> docIdMap = new HashMap<Object, Object>();
+		Map<Object, Object> docIdMap = new HashMap<>();
 
 		if ("PCRF".equals(documentType)) {
 			docIdMap.put("p_document_type", "PCRF");
@@ -81,14 +81,14 @@ public class ProcessACRFForm {
 
 		log.debug(nyehmsLog + " -- {}", codedAcrfTestList);
 
-		Map<String, List<CodedAcrfTestVO>> labTestMap = new HashMap<String, List<CodedAcrfTestVO>>();
+		Map<String, List<CodedAcrfTestVO>> labTestMap = new HashMap<>();
 
 		// Declare Test and Test-Result Objects to be inserted in model object
-		List<CodedAcrfTestVO> hivAntiBodyNonTypDiffTstMap = new ArrayList<CodedAcrfTestVO>();
-		List<CodedAcrfTestVO> hivAntiBodyTypDiffTstMap = new ArrayList<CodedAcrfTestVO>();
-		List<CodedAcrfTestVO> hivQualitativeTstMap = new ArrayList<CodedAcrfTestVO>();
-		List<CodedAcrfTestVO> hivQuantitativeTstMap = new ArrayList<CodedAcrfTestVO>();
-		List<CodedAcrfTestVO> drugResistanceTstMap = new ArrayList<CodedAcrfTestVO>();
+		List<CodedAcrfTestVO> hivAntiBodyNonTypDiffTstMap = new ArrayList<>();
+		List<CodedAcrfTestVO> hivAntiBodyTypDiffTstMap = new ArrayList<>();
+		List<CodedAcrfTestVO> hivQualitativeTstMap = new ArrayList<>();
+		List<CodedAcrfTestVO> hivQuantitativeTstMap = new ArrayList<>();
+		List<CodedAcrfTestVO> drugResistanceTstMap = new ArrayList<>();
 
 		boolean isNewForm = false;
 		
@@ -119,7 +119,7 @@ public class ProcessACRFForm {
 					labTestMap.put(testTypeSection, labTestResults);
 
 				} else {
-					List<CodedAcrfTestVO> labTestResults = new ArrayList<CodedAcrfTestVO>();
+					List<CodedAcrfTestVO> labTestResults = new ArrayList<>();
 					labTestResults.add(codedAcrfTestList.get(i));
 					labTestMap.put(testTypeSection, labTestResults);
 				}
@@ -161,19 +161,19 @@ public class ProcessACRFForm {
 
 		AcrfRidrVO acrfRidrVO = new AcrfRidrVO();
 
-		List<AcrfRidrVO> acrfRidrList = new ArrayList<AcrfRidrVO>();
+		List<AcrfRidrVO> acrfRidrList = new ArrayList<>();
 
 		acrfRidrList.add(acrfRidrVO);
 
 		acrfFormVO.setAcrfRidrList(acrfRidrList);
 
 		// ACRF Labs Table Object
-		List<RawAcrfLabsVO> rawAcrfLabList = new ArrayList<RawAcrfLabsVO>();
+		List<RawAcrfLabsVO> rawAcrfLabList = new ArrayList<>();
 
 		// Set the 4 lab objects for 4 test types.
 		RawAcrfLabsVO rawAcrfLab;
 
-		Map<String, Integer> labDataSectionDataMap = new HashMap<String, Integer>();
+		Map<String, Integer> labDataSectionDataMap = new HashMap<>();
 		labDataSectionDataMap.put("01", 2);
 		labDataSectionDataMap.put("02", 3);
 		labDataSectionDataMap.put("03", 3);
@@ -199,7 +199,7 @@ public class ProcessACRFForm {
 		acrfFormVO.setRawAcrfDoc(rawAcrfDoc);
 		// Populate main model object with drop down lists for lab test data
 		papulateLabTestCodeObjects(documentType, codedAcrfTestList, acrfFormVO, userObject, sessionID);
-		List<RawAcrfCd4TstVO> immunoLogicCd4TstList = new ArrayList<RawAcrfCd4TstVO>();
+		List<RawAcrfCd4TstVO> immunoLogicCd4TstList = new ArrayList<>();
 		immunoLogicCd4TstList.add(new RawAcrfCd4TstVO());
 		// Add custom objects to the main model object to be used in JSP page
 		acrfFormVO.setRawAcrfLabs(rawAcrfLabList);
@@ -226,7 +226,7 @@ public class ProcessACRFForm {
 
 		String testCode = "";
 		String parentTest = "";
-		Map<Object, Object> labResultMap = new HashMap<Object, Object>();
+		Map<Object, Object> labResultMap = new HashMap<>();
 		for (RawAcrfLabsVO rawAcrfLabs : rawAcrfLabsList) {
 			testCode = rawAcrfLabs.getAcrfTestCode();
 			parentTest = rawAcrfLabs.getParentTestType();
@@ -264,7 +264,7 @@ public class ProcessACRFForm {
 			String sessionId) {
 
 		log.debug(nyehmsLog + "  Missing Parent Test Type Codes being added");
-		List<Integer> exsistingCode = new ArrayList<Integer>();
+		List<Integer> exsistingCode = new ArrayList<>();
 		int parentTesttype = 0;
 		for (RawAcrfLabsVO rawAcrfLabs : rawAcrfLabsList) {
 			log.debug(nyehmsLog + "  Parent Test Type Code :  {}", rawAcrfLabs.getParentTestType());
@@ -298,7 +298,7 @@ public class ProcessACRFForm {
 	public void addMissingLabParentTestCodesFor2023Form(List<RawAcrfLabsVO> rawAcrfLabsList, UserObject userObject,
 			String sessionId) {
 		
-		List<String> labTestSectionMap = new ArrayList<String>();
+		List<String> labTestSectionMap = new ArrayList<>();
 		
 		labTestSectionMap.add("01_1");
 		labTestSectionMap.add("01_2");

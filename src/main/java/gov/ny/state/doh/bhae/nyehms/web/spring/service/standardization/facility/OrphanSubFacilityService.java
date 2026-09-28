@@ -94,7 +94,7 @@ public class OrphanSubFacilityService {
 		inOutParamaterMap=new HashMap<Object, Object>();
 		inOutParamaterMap.put("subFacilityId", subFacilityId);
 		inOutParamaterMap.put("masterFacilityId", masterFacilityId);
-		inOutParamaterMap.put("statusCode", new Integer(1));
+		inOutParamaterMap.put("statusCode", Integer.valueOf(1));
 		inOutParamaterMap.put("statusMessage", "");
 		orphanSubFacilityDAO.linkOrphanSubFacilityToMasterFacility(inOutParamaterMap);
 		statusCode=(Integer)inOutParamaterMap.get("statusCode");

@@ -49,7 +49,7 @@ public class ClusterPartnerReviewService {
 	ClusterPartnerReviewTransactionHelper clusterPartnerReviewTransactionHelper;
 	
 	public List<String> getClusterPartnerIdList(String statusCode, BindingResult bindingResult, UserObject userObject){
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("STATUS_CODE", statusCode);
 		
 		return clusterPartnerReviewDAO.getClusterPartnerIdList(inputParameterMap);
@@ -58,11 +58,11 @@ public class ClusterPartnerReviewService {
 	public Map<String, Object> getClusterPartnerDocumentIdReviewDetails(String qualityStageStatus,
 			String clusterPartnerId, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> documentDetailsToReview = new HashMap<String, Object>();
+		Map<String, Object> documentDetailsToReview = new HashMap<>();
 		
 		try{
 		
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			
 			
 			inOutParamaterMap.put("clusterPartnerId", clusterPartnerId);
@@ -127,7 +127,7 @@ public class ClusterPartnerReviewService {
 	
 	public void discardClericalReviewDocument(long documentId, BindingResult bindingResult, UserObject userObject) {
 		
-		 Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		 Map<String, Object> inOutParameterMap = new HashMap<>();
 		 
 		 inOutParameterMap.put("documentId", documentId);
 		 inOutParameterMap.put("workerId", userObject.getWorkerId());
@@ -203,7 +203,7 @@ public class ClusterPartnerReviewService {
 	
 	public void rejectClusterPSMessage(long documentId, String rejectReason, String otherReason, BindingResult bindingResult,
 			UserObject userObject) {
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_document_id", documentId);
 		inOutParameterMap.put("p_rejectReason", rejectReason);
 		inOutParameterMap.put("p_otherReason", otherReason);
@@ -285,7 +285,7 @@ public class ClusterPartnerReviewService {
 		if("CLUST_PART".equals(documentType)) {
 			ClusterPartnerDocVO  clusterPartnerDocVO=  clusterPartnerReviewDAO.getClusterPartnerDocData(documentId);
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			inputParameterMap.put("DOCUMENT_ID", clusterPartnerDocVO.getDOCUMENT_ID());
 			
 			List<PartnerInvestigationVO> partnerInvestigationList = clusterPartnerReviewDAO.getPartnerInvestigationDetails(inputParameterMap);
@@ -297,7 +297,7 @@ public class ClusterPartnerReviewService {
 		}else {
 			
 
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			inputParameterMap.put("PARTNER_ID", documentId);
 
 			ClusterPartnerDocVO  clusterPartnerDocVO = clusterPartnerReviewDAO.getClusterPartnerReviewDocData(inputParameterMap);
@@ -343,7 +343,7 @@ public class ClusterPartnerReviewService {
 
 	public Map<String, String> getPsMessageDetails(int docId, String clusterId, UserObject userObject){
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_docId", docId);
 		inOutParameterMap.put("p_clusterId", clusterId);
 		
@@ -354,7 +354,7 @@ public class ClusterPartnerReviewService {
 	public void updateClusterFile(String clusterPartnerId, String clusterFileResolveDate, BindingResult bindingResult,
 			UserObject userObject) {
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_clusterPartnerId", clusterPartnerId);
 		inOutParameterMap.put("p_date", clusterFileResolveDate);
 		inOutParameterMap.put("p_workerId", userObject.getWorkerId());

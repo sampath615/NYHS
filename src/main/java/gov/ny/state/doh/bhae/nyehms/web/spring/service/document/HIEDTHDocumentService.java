@@ -49,7 +49,7 @@ public class HIEDTHDocumentService {
 
 
 	public String convertBlobtoEncryptedEncodedString(Blob blob) {
-		StringBuffer strOut = new StringBuffer();
+		StringBuilder strOut = new StringBuilder();
 		String aux;
 		BufferedReader br;
 		try {
@@ -125,7 +125,7 @@ public class HIEDTHDocumentService {
 				rawDeathDocVO.setDeathDate(Task[6]);
 				rawDeathDocVO.setDeathTime(Task[7]);
 				rawDeathDocVO.setCurrentProcessStatus("1");
-				Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParameters = new HashMap<>();
 				inputOutputParameters.put("p_document_type", "HIE_DTH");
 				inputOutputParameters.put("p_received_date", myDate);
 				commonDocumentService.getNewDocId(inputOutputParameters);
@@ -140,7 +140,7 @@ public class HIEDTHDocumentService {
 	}
 
 	public int writeRawHIEDTHRecordDataToStdTable(Map<Object, Object> stdHieDthDocVO) {
-		Map<Object, Object> stdHIEDTHDocinsertVo = new HashMap<Object, Object>();
+		Map<Object, Object> stdHIEDTHDocinsertVo = new HashMap<>();
 		stdHIEDTHDocinsertVo.put("DOCUMENT_ID", stdHieDthDocVO.get("DOCUMENT_ID"));
 		stdHIEDTHDocinsertVo.put("SOURCE_FACILITY", stdHieDthDocVO.get("SOURCE_FACILITY"));
 		stdHIEDTHDocinsertVo.put("MEDICAL_RECORD_NUMBER",

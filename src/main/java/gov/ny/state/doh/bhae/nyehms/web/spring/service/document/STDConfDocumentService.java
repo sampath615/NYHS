@@ -32,7 +32,7 @@ public class STDConfDocumentService {
     @Autowired
     CommonDocumentService commonDocumentService;
     
-    private Map<String, String> drugListMap = new HashMap<String, String>();
+    private Map<String, String> drugListMap = new HashMap<>();
     
     public STDConfDocVO getSTDConfDoc(int docId,
 			BindingResult dummyBindingResult, UserObject userObject, String id){

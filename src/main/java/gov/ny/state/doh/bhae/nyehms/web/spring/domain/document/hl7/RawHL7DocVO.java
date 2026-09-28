@@ -31,15 +31,15 @@ public class RawHL7DocVO {
 	private String mshMessageText;
 	private String mshMessageType;
 	private String mshMessageClass;
-	private List<RawHL7Dg1VO> theDG1List = new ArrayList<RawHL7Dg1VO>();
-	private List<RawHL7ObrVO> theOBRList = new ArrayList<RawHL7ObrVO>();
+	private List<RawHL7Dg1VO> theDG1List = new ArrayList<>();
+	private List<RawHL7ObrVO> theOBRList = new ArrayList<>();
 	private String evnEventType;
 	private String evnEventDate;
 	private String segmentProfile;
-	private List<RawHL7INSVO> theINSList = new ArrayList<RawHL7INSVO>();
-	private List<RawHL7ORCVO> theORCList = new ArrayList<RawHL7ORCVO>();
-	private List<RawHL7AddressVO> theAddressList = new ArrayList<RawHL7AddressVO>();
-	private List<RawHL7MedicationVO> theMedicationList = new ArrayList<RawHL7MedicationVO>();
+	private List<RawHL7INSVO> theINSList = new ArrayList<>();
+	private List<RawHL7ORCVO> theORCList = new ArrayList<>();
+	private List<RawHL7AddressVO> theAddressList = new ArrayList<>();
+	private List<RawHL7MedicationVO> theMedicationList = new ArrayList<>();
 	private StdHL7RaceVO personRaceData;
 
 	private int ccdMatchDocId;

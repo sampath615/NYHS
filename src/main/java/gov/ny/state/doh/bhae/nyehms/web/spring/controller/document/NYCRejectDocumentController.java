@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +31,7 @@ public class NYCRejectDocumentController {
 	{
 		
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<NYCRejectVO> nycRejectList = nycRejectDocumentService.getNYCRejectDetails(docId, bindingResult, userObject);
@@ -46,7 +46,7 @@ public class NYCRejectDocumentController {
 	public @ResponseBody Map<Object, Object> updateNYCRejectDocumentComments(HttpServletRequest request, @RequestParam int documentId, @RequestParam String comments, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		
 		nycRejectDocumentService.updateNYCRejectDocumentComments(documentId, comments, userObject);
 		

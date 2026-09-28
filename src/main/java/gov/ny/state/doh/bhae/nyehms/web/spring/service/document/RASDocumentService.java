@@ -86,7 +86,7 @@ public class RASDocumentService {
 
 	public void updateResistanceRasDocuments(int documentId, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", documentId);
 		inputOutputParameterMap.put("user_id", userObject.getWorkerId());

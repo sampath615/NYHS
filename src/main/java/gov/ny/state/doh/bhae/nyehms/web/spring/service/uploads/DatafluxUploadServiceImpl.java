@@ -69,7 +69,7 @@ public class DatafluxUploadServiceImpl {
 		
 		String transactionMessage = null;
 		
-		List<String> columnNames = new ArrayList<String>();
+		List<String> columnNames = new ArrayList<>();
 		
 		try{
 			
@@ -162,7 +162,7 @@ public class DatafluxUploadServiceImpl {
 		
 		String transactionMessage = null;
 		
-		Map<String, Integer> columnIndexMap = new HashMap<String, Integer>();
+		Map<String, Integer> columnIndexMap = new HashMap<>();
 		
 		List<Map<String, String>> dataMap = new ArrayList<>();
 		

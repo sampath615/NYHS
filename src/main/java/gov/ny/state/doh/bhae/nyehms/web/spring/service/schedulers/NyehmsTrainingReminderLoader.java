@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
-import weblogic.jws.Context;
 
 /**
  * Quartz scheduler class to send NYEHMS login reminder email
@@ -37,8 +35,6 @@ public class NyehmsTrainingReminderLoader{
 	@Autowired
 	ManualQuartzJobService manualQuartzJobService;
 	
-    @Context
-    private ServletContext context;
 	
 	@Autowired
 	SendEmail sendEmail;

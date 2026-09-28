@@ -98,9 +98,9 @@ public class UnStandardizedFacilityService {
 	 * @return list of  facility and sub facility addresses encapsulated in a GridObject   
 	 */
 	public List<MasterFacilityDetailsVO> getMasterFacilitiesWithSubFacilities(MasterFacilityVO masterFacilityVO, SubFacilityVO subFacilityVO , String searchFor,BindingResult result, UserObject userObject){
-		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<MasterFacilityDetailsVO>();
+		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<>();
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		//TODO: Need to remove the facility type code
 		inOutParameterMap.put("p_master_fac_name",masterFacilityVO.getMasterFacilityName());
 		inOutParameterMap.put("p_sub_fac_name", subFacilityVO.getFacilityName());

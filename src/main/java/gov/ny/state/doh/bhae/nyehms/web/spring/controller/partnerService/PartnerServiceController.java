@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +61,14 @@ public class PartnerServiceController {
 
 
         
-         Map<Object, Object> targetMap = new HashMap<Object, Object>();
+         Map<Object, Object> targetMap = new HashMap<>();
          BindingResult result = new MapBindingResult(targetMap, "targetMap");
          
          
          
          List<Map<String, String>> codedSexualBehaviors = partnerService.getCodedSexualBehaviors();
          
-         Map<String, String> codedSexualBehaviorsMap = new HashMap<String, String>();
+         Map<String, String> codedSexualBehaviorsMap = new HashMap<>();
          
          for (Map<String, String> sexualBehaviors : codedSexualBehaviors) {
         	 codedSexualBehaviorsMap.put(sexualBehaviors.get("SEXUAL_BEHAVIOR_CODE"), sexualBehaviors.get("SEXUAL_BEHAVIOR_DESC"));

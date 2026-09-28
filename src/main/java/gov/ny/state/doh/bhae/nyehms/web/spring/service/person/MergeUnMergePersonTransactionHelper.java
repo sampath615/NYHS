@@ -163,7 +163,7 @@ public class MergeUnMergePersonTransactionHelper {
 		if("D".equals(flaggedStatenoVO.getRejectStatus())){
 			
 			
-			Map<Object, Object> docIdMap = new HashMap<Object, Object>();
+			Map<Object, Object> docIdMap = new HashMap<>();
 			
 			docIdMap.put("p_document_type", "ACRF");
 			

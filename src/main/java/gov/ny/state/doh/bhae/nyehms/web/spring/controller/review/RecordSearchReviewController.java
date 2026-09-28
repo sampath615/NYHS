@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +53,7 @@ public class RecordSearchReviewController {
 			@RequestParam String flagRequired,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		if("Y".equals(flagRequired)){
 			recordSearchReviewService.changeRecordSearchStatus(stateno, requestComments, "Manual-Warning", flagStatus, bindingResult, userObject);
@@ -70,7 +70,7 @@ public class RecordSearchReviewController {
 			@RequestParam String requestComments,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		recordSearchReviewService.changeRecordSearchStatusForMultipleStatenos(statenoList, requestComments, bindingResult, userObject);
 		return targetMap;
@@ -81,7 +81,7 @@ public class RecordSearchReviewController {
 			@RequestParam("cdcRecords[]")  String[] cdcRecords,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		recordSearchReviewService.discardCDCFeedbackRecords(cdcRecords, bindingResult, userObject);
 		return targetMap;
@@ -103,7 +103,7 @@ public class RecordSearchReviewController {
 		
 		response.addCookie(myCookie);
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> cdcReturnData = documentReviewTransactionHelper.generateCDCReturnData(statenoList, cdcFileName, bindingResult, userObject);
@@ -161,7 +161,7 @@ public class RecordSearchReviewController {
 	public ModelAndView downloadCDCReturnFile(@RequestParam String cdcFileName, 
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> cdcReturnData = recordSearchReviewService.downloadCDCReturnFile(cdcFileName, bindingResult, userObject);
@@ -258,7 +258,7 @@ public class RecordSearchReviewController {
 	public @ResponseBody List<Map<String, String>> getCDCPendingReturnData(
 			HttpServletRequest request, @RequestParam String cdcFileName, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getCDCPendingReturnData(cdcFileName, bindingResult, userObject);
 	}
@@ -297,7 +297,7 @@ public class RecordSearchReviewController {
 	public @ResponseBody List<JSONObject> getRecordSearchStatenos(
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getRecordSearchStatenos(bindingResult, userObject);
 	}
@@ -313,7 +313,7 @@ public class RecordSearchReviewController {
 			@RequestParam String stateno,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return recordSearchReviewService.getRecordSearchStatenoFlagHistory(stateno, bindingResult, userObject);
 	}
@@ -323,7 +323,7 @@ public class RecordSearchReviewController {
 			@RequestParam String cdcFileName,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
@@ -341,7 +341,7 @@ public class RecordSearchReviewController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 				
 		List<Map<String, String>> recordSearchStatenoHistory = recordSearchReviewService.getRecordSearchStatenoHistory(stateNo,  bindingResult,  userObject);

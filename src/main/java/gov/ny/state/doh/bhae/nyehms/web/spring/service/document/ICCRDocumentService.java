@@ -83,7 +83,7 @@ public class ICCRDocumentService {
 		
 		if(iccrTestDataList != null && iccrTestDataList.size() > 0){
 			
-			List<ICCRTestVO> finalICCRTestDataList = new ArrayList<ICCRTestVO>();
+			List<ICCRTestVO> finalICCRTestDataList = new ArrayList<>();
 
 		
 			for (ICCRTestVO iccrTestVO : iccrTestDataList) {
@@ -97,7 +97,7 @@ public class ICCRDocumentService {
 			
 			if(finalICCRTestDataList != null  && finalICCRTestDataList.size() > 0){
 				
-				Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap  = new HashMap<>();
 				
 				inputParameterMap.put("ICCR_DOCUMENT_ID", iccrDataEntryVO.getDOCUMENT_ID());
 				inputParameterMap.put("finalICCRTestDataList", finalICCRTestDataList);

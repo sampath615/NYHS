@@ -51,7 +51,7 @@ public class DatafluxJobExce {
 				
 				log.error("session Connected");
 				
-				List<String> commands = new ArrayList<String>();
+				List<String> commands = new ArrayList<>();
 			  	commands.add("@echo off");
 			  	commands.add("set THREADS=10");
 			    commands.add("set RUNDATE=%DATE:~12,2%%DATE:~4,2%%DATE:~7,2%");

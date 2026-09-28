@@ -29,7 +29,7 @@ public class RawAcrfLabsVO {
 	private String log="";
 	private String otherTest="";
 	private String manufacturer="";
-	private Map<Object,Object> labResultMap= new HashMap<Object,Object>();
+	private Map<Object,Object> labResultMap= new HashMap<>();
 	private String isDeleted="";
 	private String labName;
 	private String clia;

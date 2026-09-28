@@ -7,8 +7,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ public class FacilityManualReviewController {
 	GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawFacility.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> matchRawFacility(long newRawFacilityId,long matchingRawFacilityId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		facilityManualReviewService.matchRawFacility(newRawFacilityId, matchingRawFacilityId, bindingResult, userObject);
 		return targetMap;
@@ -34,7 +34,7 @@ public class FacilityManualReviewController {
 	
 	@RequestMapping(value="/unMatchRawFacility.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> unMatchRawFacility(long newRawFacilityId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		facilityManualReviewService.unMatchRawFacility(newRawFacilityId, bindingResult, userObject);
 		return targetMap;
@@ -42,7 +42,7 @@ public class FacilityManualReviewController {
 	
 	@RequestMapping(value="/getPotentialRawFacList.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getPotentialRawFacList(long rawFacilityId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(facilityManualReviewService.getFacilityDetailsForManualReview(rawFacilityId, bindingResult, userObject));
 		return jsonResponse;

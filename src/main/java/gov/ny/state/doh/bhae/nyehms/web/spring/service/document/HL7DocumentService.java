@@ -223,7 +223,7 @@ public class HL7DocumentService {
 		if ("ADT".equals(messageClass.substring(0, 3))) {
 			EVN theEVN = null;
 			// String messageType = messageClass;
-			List<DG1> dg1List = new ArrayList<DG1>();
+			List<DG1> dg1List = new ArrayList<>();
 			if ("ADT_A01".equals(messageClass) || "ADT_A04".equals(messageClass) || "ADT_A08".equals(messageClass)
 					|| "ADT_A11".equals(messageClass) || "ADT_A13".equals(messageClass)
 					|| "ADT_A28".equals(messageClass) || "ADT_A31".equals(messageClass)) {
@@ -234,7 +234,7 @@ public class HL7DocumentService {
 				theEVN = theA01.getEVN();
 				dg1List = theA01.getDG1All();
 				in1Count = theA01.getINSURANCEReps();
-				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<RawHL7INSVO>();
+				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<>();
 				for (int i = 0; i < in1Count; i++) {
 					ADT_A01_INSURANCE theIns = theA01.getINSURANCE(i);
 					theINS = theIns.getIN1();
@@ -261,7 +261,7 @@ public class HL7DocumentService {
 				theEVN = theA03.getEVN();
 				dg1List = theA03.getDG1All();
 				in1Count = theA03.getINSURANCEReps();
-				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<RawHL7INSVO>();
+				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<>();
 				for (int i = 0; i < in1Count; i++) {
 					ADT_A03_INSURANCE theIns = theA03.getINSURANCE(i);
 					theINS = theIns.getIN1();
@@ -282,7 +282,7 @@ public class HL7DocumentService {
 				theEVN = theA05.getEVN();
 				dg1List = theA05.getDG1All();
 				in1Count = theA05.getINSURANCEReps();
-				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<RawHL7INSVO>();
+				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<>();
 				for (int i = 0; i < in1Count; i++) {
 					ADT_A05_INSURANCE theIns = theA05.getINSURANCE(i);
 					theINS = theIns.getIN1();
@@ -303,7 +303,7 @@ public class HL7DocumentService {
 				theEVN = theA06.getEVN();
 				dg1List = theA06.getDG1All();
 				in1Count = theA06.getINSURANCEReps();
-				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<RawHL7INSVO>();
+				List<RawHL7INSVO> theRawHL7InsVOList = new ArrayList<>();
 				for (int i = 0; i < in1Count; i++) {
 					ADT_A06_INSURANCE theIns = theA06.getINSURANCE(i);
 					theINS = theIns.getIN1();
@@ -386,7 +386,7 @@ public class HL7DocumentService {
 				return theDocVO;
 
 			}
-			List<RawHL7Dg1VO> dg1VOList = new ArrayList<RawHL7Dg1VO>();
+			List<RawHL7Dg1VO> dg1VOList = new ArrayList<>();
 			if (dg1List != null) {
 				for (DG1 theDg1 : dg1List) {
 					RawHL7Dg1VO dg1VO = getDg1VOL(theDg1);
@@ -455,7 +455,7 @@ public class HL7DocumentService {
 			thePV1 = thePatientVisit.getPV1();
 			theDocVO.setThePv1VO(getPv1VO(thePV1));
 			List<ORU_R01_ORDER_OBSERVATION> theObrGroupList = thePatientGroup.getORDER_OBSERVATIONAll();
-			List<RawHL7ObrVO> listObrVO = new ArrayList<RawHL7ObrVO>();
+			List<RawHL7ObrVO> listObrVO = new ArrayList<>();
 			int theObrCount = theObrGroupList.size();
 			int theObxCount = 0;
 			for (int i = 0; i < theObrCount; i++) {
@@ -489,7 +489,7 @@ public class HL7DocumentService {
 				// END
 				ORU_R01_ORDER_OBSERVATION theObrGroup = theObrGroupList.get(i);
 				theObxCount = theObrGroup.getOBSERVATIONReps();
-				List<RawHL7ObxVO> theRawHL7ObxVOList = new ArrayList<RawHL7ObxVO>();
+				List<RawHL7ObxVO> theRawHL7ObxVOList = new ArrayList<>();
 				for (int j = 0; j < theObxCount; j++) {
 					ORU_R01_OBSERVATION theOBXEntry = theObrGroup.getOBSERVATION(j);
 					RawHL7ObxVO hl7LabResultVo = new RawHL7ObxVO();
@@ -533,7 +533,7 @@ public class HL7DocumentService {
 			thePID = theORM.getPATIENT().getPID();
 			thePV1 = theORM.getPATIENT().getPATIENT_VISIT().getPV1();
 			List<ORM_O01_ORDER> theORMGroupList = theORM.getORDERAll();
-			List<RawHL7ORCVO> listOrcVO = new ArrayList<RawHL7ORCVO>();
+			List<RawHL7ORCVO> listOrcVO = new ArrayList<>();
 			int theOrcCount = theORMGroupList.size();
 			if (theORMGroupList != null && theOrcCount > 0) {
 				for (int i = 0; i < theOrcCount; i++) {
@@ -575,7 +575,7 @@ public class HL7DocumentService {
 			thePID = theRDE.getPATIENT().getPID();
 			thePV1 = theRDE.getPATIENT().getPATIENT_VISIT().getPV1();
 			List<RDE_O11_ORDER> theRDEGroupList = theRDE.getORDERAll();
-			List<RawHL7ORCVO> listOrcVO = new ArrayList<RawHL7ORCVO>();
+			List<RawHL7ORCVO> listOrcVO = new ArrayList<>();
 			int theOrcCount = theRDEGroupList.size();
 			if (theRDEGroupList != null && theOrcCount > 0) {
 				for (int i = 0; i < theOrcCount; i++) {
@@ -644,7 +644,7 @@ public class HL7DocumentService {
 			thePID = theOMP.getPATIENT().getPID();
 			thePV1 = theOMP.getPATIENT().getPATIENT_VISIT().getPV1();
 			List<OMP_O09_ORDER> theOMPGroupList = theOMP.getORDERAll();
-			List<RawHL7ORCVO> listOrcVO = new ArrayList<RawHL7ORCVO>();
+			List<RawHL7ORCVO> listOrcVO = new ArrayList<>();
 			int theOrcCount = theOMPGroupList.size();
 			if (theOMPGroupList != null && theOrcCount > 0) {
 				for (int i = 0; i < theOrcCount; i++) {
@@ -1225,7 +1225,7 @@ public class HL7DocumentService {
 			}
 			Varies[] theValues = theOBXEntry.getObservationValue();
 			if (theValues.length > 0) {
-				StringBuffer allResults = new StringBuffer();
+				StringBuilder allResults = new StringBuilder();
 				for (int i = 0; i < theValues.length; i++) {
 					if (i > 0) {
 						allResults.append("#");
@@ -1435,7 +1435,7 @@ public class HL7DocumentService {
 
 	@Transactional
 	private int writeRawHL7RecordDataToStdTable(ResultSet resultSet) throws SQLException {
-		Map<Object, Object> stdHL7DocinsertVo = new HashMap<Object, Object>();
+		Map<Object, Object> stdHL7DocinsertVo = new HashMap<>();
 
 		String FNAME_SPLIT = "";
 		String MNAME_SPLIT = "";
@@ -2010,7 +2010,7 @@ public class HL7DocumentService {
 		int LabTestVOListLength = theLabTestVOList.size();
 		if (theLabTestVOList != null && theLabTestVOList.size() > 0) {
 			List<Integer> LabTestSequences = hl7DocumentDAO.getHL7LabTestSequences(LabTestVOListLength);
-			List<RawHL7ObxVO> completeLabResultList = new ArrayList<RawHL7ObxVO>();
+			List<RawHL7ObxVO> completeLabResultList = new ArrayList<>();
 			for (int i = 0; i < LabTestVOListLength; i++) {
 				int LabTestDocId = LabTestSequences.get(i);
 				RawHL7ObrVO rawHL7ObrVO = theLabTestVOList.get(i);
@@ -2023,12 +2023,12 @@ public class HL7DocumentService {
 					completeLabResultList.addAll(oneLabResultList);
 				}
 			}
-			Map<String, Object> inputParameterMapRawHl7LabTest = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapRawHl7LabTest = new HashMap<>();
 			inputParameterMapRawHl7LabTest.put("hl7DocId", docId);
 			inputParameterMapRawHl7LabTest.put("hl7LabTestList", theLabTestVOList);
 			hl7DocumentDAO.insertRawHL7OBR(inputParameterMapRawHl7LabTest);
 			if (completeLabResultList != null && completeLabResultList.size() > 0) {
-				Map<String, Object> labResultMap = new HashMap<String, Object>();
+				Map<String, Object> labResultMap = new HashMap<>();
 				labResultMap.put("hl7DocId", docId);
 				labResultMap.put("hl7LabResultList", completeLabResultList);
 				hl7DocumentDAO.insertRawHL7OBX(labResultMap);
@@ -2036,7 +2036,7 @@ public class HL7DocumentService {
 		}
 		List<RawHL7Dg1VO> theHL7Dg1List = hl7VO.getTheDG1List();
 		if (theHL7Dg1List != null && theHL7Dg1List.size() > 0) {
-			Map<String, Object> inputParameterMapAddress = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapAddress = new HashMap<>();
 			inputParameterMapAddress.put("hl7DocId", docId);
 			inputParameterMapAddress.put("hl7DG1List", theHL7Dg1List);
 			hl7DocumentDAO.insertDG1List(inputParameterMapAddress);
@@ -2053,7 +2053,7 @@ public class HL7DocumentService {
 							  RawHL7INSVO:: getMedicaidCaseNumber, RawHL7INSVO:: getInsuredPhoneNumber, RawHL7INSVO:: getPlanEffectiveDate, RawHL7INSVO:: getPlanExpirationDate))
 					  .collect(Collectors.toList());
 			
-			Map<String, Object> inputParameterMapINSAddress = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapINSAddress = new HashMap<>();
 			inputParameterMapINSAddress.put("hl7DocId", docId);
 			inputParameterMapINSAddress.put("hl7INSList", theDistinctHL7INSList);
 			hl7DocumentDAO.insertINSList(inputParameterMapINSAddress);
@@ -2062,7 +2062,7 @@ public class HL7DocumentService {
 		}
 		List<RawHL7ORCVO> theHL7ORCList = hl7VO.getTheORCList();
 		if (theHL7ORCList != null && theHL7ORCList.size() > 0) {
-			Map<String, Object> inputParameterMapORC = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapORC = new HashMap<>();
 			inputParameterMapORC.put("hl7DocId", docId);
 			inputParameterMapORC.put("hl7ORCList", theHL7ORCList);
 			hl7DocumentDAO.insertORCList(inputParameterMapORC);
@@ -2113,11 +2113,11 @@ public class HL7DocumentService {
 
 		statusObject.put("Status", "Records could not rematched! Process Failed.");
 		log.error("Calling stored procedure to rematch hl7 against ccd-");
-		Map<String, Object> input = new HashMap<String, Object>();
+		Map<String, Object> input = new HashMap<>();
 		input.put("p_process_status", schedulerMetaData.get("CPS_HL7_CURSOR_TO_MATCH_AGAINST_CCD"));
 		input.put("p_days", schedulerMetaData.get("PAST_DATE_TO_PICK_HL7_CURSOR"));
-		List<Map<String, String>> recordsDetailsList = new ArrayList<Map<String, String>>();
-		Map<String, String> recordsDetails = new HashMap<String, String>();
+		List<Map<String, String>> recordsDetailsList = new ArrayList<>();
+		Map<String, String> recordsDetails = new HashMap<>();
 
 		List<JSONObject> countsBeforeProcessing = hl7DocumentDAO.getTotalCountForEachCPS(input);
 
@@ -2188,8 +2188,8 @@ public class HL7DocumentService {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Successfully stored all the Raw HL7 records in the Standard layer";
 		JSONObject statusObject = new JSONObject();
-		List<String> failedToValidateDocuments = new ArrayList<String>();
-		Set<String> raceCodeErrors = new HashSet<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
+		Set<String> raceCodeErrors = new HashSet<>();
 		try {
 			log.error("Before fetching the RAW HL7 Data");
 			conn = connectionDAO.getConnectionObj();
@@ -2370,7 +2370,7 @@ public class HL7DocumentService {
 		}
 
 		try {
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 			inputOutputParameterMap.put("docId", docId);
 			inputOutputParameterMap.put("startDate", startDate);
 			inputOutputParameterMap.put("endDate", endDate);
@@ -2403,7 +2403,7 @@ public class HL7DocumentService {
 	}
 
 	public List<Map<Object, Object>> getHL7Diagnosis(int docId, String startDate, String endDate) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", docId);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
@@ -2411,7 +2411,7 @@ public class HL7DocumentService {
 	}
 
 	public List<Map<Object, Object>> getHL7Medication(int docId, String startDate, String endDate) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", docId);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
@@ -2420,7 +2420,7 @@ public class HL7DocumentService {
 
 	public List<Map<Object, Object>> getHL7Encounter(int docId, String startDate, String endDate) {
 		List<Map<Object, Object>> abc;
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", docId);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
@@ -2429,8 +2429,8 @@ public class HL7DocumentService {
 
 	public List<PersonFieldVO> getHL7DemogrphicFieldMultiValues(int docId, String startDate, String endDate,
 			String colsName) {
-		List<PersonFieldVO> list = new ArrayList<PersonFieldVO>();
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		List<PersonFieldVO> list = new ArrayList<>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", docId);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
@@ -2457,8 +2457,8 @@ public class HL7DocumentService {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Successfully stored all the Raw HL7 records With MPI CHANGE entries in the Standard layer";
 		JSONObject statusObject = new JSONObject();
-		List<String> failedToValidateDocuments = new ArrayList<String>();
-		Set<String> raceCodeErrors = new HashSet<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
+		Set<String> raceCodeErrors = new HashSet<>();
 		try {
 			log.error("Before fetching the RAW HL7 Data");
 			conn = connectionDAO.getConnectionObj();
@@ -2583,11 +2583,11 @@ public class HL7DocumentService {
 	}
 
 	public List<RawHL7ObrVO> getHL7LabData(int documentID, String startDate, String endDate) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", documentID);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
-		List<RawHL7ObrVO> theLabTestList = new ArrayList<RawHL7ObrVO>();
+		List<RawHL7ObrVO> theLabTestList = new ArrayList<>();
 		theLabTestList = hl7DocumentDAO.getHL7LabTestList(inputOutputParameterMap);
 		if (theLabTestList != null && theLabTestList.size() > 0) {
 			for (int i = 0; i < theLabTestList.size(); i++) {
@@ -2596,7 +2596,7 @@ public class HL7DocumentService {
 				if (rawHL7ObrVO != null) {
 					int labtestId = rawHL7ObrVO.getHl7labTestId();
 					if (labtestId > 0) {
-						List<RawHL7ObxVO> lstLabResultList = new ArrayList<RawHL7ObxVO>();
+						List<RawHL7ObxVO> lstLabResultList = new ArrayList<>();
 						lstLabResultList = hl7DocumentDAO.getHL7LabResultList(labtestId);
 						if (lstLabResultList != null && lstLabResultList.size() > 0) {
 							rawHL7ObrVO.setTheOBXList(lstLabResultList);
@@ -2615,7 +2615,7 @@ public class HL7DocumentService {
 	}
 
 	public List<RawHL7AddressVO> getHL7AddressList(int documentID, String startDate, String endDate) {
-		Map<String, Object> inputOutputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", documentID);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);
@@ -2623,7 +2623,7 @@ public class HL7DocumentService {
 	}
 
 	public List<RawHL7INSVO> getHL7InsuranceList(int documentID, String startDate, String endDate) {
-		Map<String, Object> inputOutputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", documentID);
 		inputOutputParameterMap.put("startDate", startDate);
 		inputOutputParameterMap.put("endDate", endDate);

@@ -9,7 +9,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +41,7 @@ public class OrphanSubFacilityController {
 	public @ResponseBody GridObject getOrphanSubFacilities(HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		GridObject jsonResponse = getGridObject.GetGrid(orphanSubFacilityService.getOrphanSubFacilities(bindingResult, userObject));
@@ -59,7 +59,7 @@ public class OrphanSubFacilityController {
 	public @ResponseBody Map<Object,Object> linkOrphanSubFacilityToMasterFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		orphanSubFacilityService.linkOrphanSubFacilityToMasterFacility(subFacilityId,masterFacilityId, bindingResult, userObject);
 		return targetMap;
@@ -83,7 +83,7 @@ public class OrphanSubFacilityController {
 	public @ResponseBody Map<Object, Object> linkRawToMasterAndOrphanSubFacility(@RequestParam long  subFacilityId, @RequestParam long  masterFacilityId,@RequestParam long  rawSubFacilityId, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		orphanSubFacilityService.linkRawToMasterAndOrphanSubFacility(subFacilityId,masterFacilityId,rawSubFacilityId,bindingResult, userObject);
 		return targetMap;
@@ -99,7 +99,7 @@ public class OrphanSubFacilityController {
 	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkOrphanSubFacility(@RequestParam long  subFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		orphanSubFacilityService.addNewMasterFacilityAndLinkOrphanSubFacility(subFacilityId, masterFacilityVO, bindingResult, userObject);
@@ -124,7 +124,7 @@ public class OrphanSubFacilityController {
 	public @ResponseBody Map<Object, Object> addNewMasterFacilityAndLinkRawToOrphanSubFacility(@RequestParam long  subFacilityId, long rawSubFacilityId, @ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		orphanSubFacilityService.addNewMasterFacilityAndLinkRawToOrphanSubFacility(subFacilityId,rawSubFacilityId,masterFacilityVO,bindingResult, userObject);
 		return targetMap;

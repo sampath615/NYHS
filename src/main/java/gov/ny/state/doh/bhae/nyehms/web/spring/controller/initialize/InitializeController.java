@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.initialize;
 import java.io.IOException;
 import java.security.Key;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,11 +11,10 @@ import java.util.Map;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class InitializeController {
     @Autowired
     DateUtil dateUtil;
 
-    Map<String, String> targetMap = new HashMap<String, String>();
+    Map<String, String> targetMap = new HashMap<>();
     BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
     InitializeUtil initializeUtil = new InitializeUtil();
@@ -368,7 +368,7 @@ public class InitializeController {
         Key key = new SecretKeySpec(keyValue, ALGO);
         Cipher c = Cipher.getInstance(ALGO);
         c.init(Cipher.DECRYPT_MODE, key);
-        byte[] decordedValue = DatatypeConverter.parseBase64Binary(encryptedData);
+        byte[] decordedValue = Base64.getMimeDecoder().decode(encryptedData);
         byte[] decValue = c.doFinal(decordedValue);
 
         String decryptedValue = new String(decValue);

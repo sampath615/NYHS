@@ -16,10 +16,10 @@ public class EharsVariableConstants {
 	
 	public final static Map<String, Integer> EHARS_VARIABLES ;
 	
-	public final static Map<String, String> EHARS_VAR_NAME_MAP = new HashMap<String, String>();
+	public final static Map<String, String> EHARS_VAR_NAME_MAP = new HashMap<>();
 	
 	static {
-		 Map<String, Integer> eharsFieldMap = new HashMap<String, Integer>();
+		 Map<String, Integer> eharsFieldMap = new HashMap<>();
 		 	eharsFieldMap.put("first_name", 2);
 			eharsFieldMap.put("middle_name", 3);
 			eharsFieldMap.put("last_name", 1);

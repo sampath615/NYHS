@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.messageBox;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +52,7 @@ public class MessageBoxController {
     public String getAllMessages(Map<String, Object> map, HttpServletRequest request, @RequestParam String messageType, UserObject userObject) {
 
 
-        Map<String, String> targetMap = new HashMap<String, String>();
+        Map<String, String> targetMap = new HashMap<>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
         JSONObject messageListVO = messageBoxService.getAllMessages(userObject.getUserId(), messageType, bindingResult, userObject);
@@ -81,7 +81,7 @@ public class MessageBoxController {
     Integer setMessageRead(HttpServletRequest request, @RequestParam String messageId, UserObject userObject) {
 
 
-        Map<String, String> targetMap = new HashMap<String, String>();
+        Map<String, String> targetMap = new HashMap<>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
         int resultCount = messageBoxService.setMessageRead(userObject.getUserId(), messageId, bindingResult, userObject);
@@ -103,7 +103,7 @@ public class MessageBoxController {
     Map<String, String> sendNewMessage(HttpServletRequest request, @RequestParam String receiver, @RequestParam String messageBody, UserObject userObject) {
 
 
-        Map<String, String> targetMap = new HashMap<String, String>();
+        Map<String, String> targetMap = new HashMap<>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
         messageBoxService.sendMessage(userObject.getUserId(), receiver, messageBody, bindingResult, userObject);
@@ -123,7 +123,7 @@ public class MessageBoxController {
     Map<String, String> deleteMessage(HttpServletRequest request, @RequestParam String messageId, UserObject userObject) {
 
 
-        Map<String, String> targetMap = new HashMap<String, String>();
+        Map<String, String> targetMap = new HashMap<>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
         messageBoxService.deleteMessage(userObject.getUserId(), messageId, bindingResult, userObject);
@@ -143,7 +143,7 @@ public class MessageBoxController {
     String getNumUnreadMessages(HttpServletRequest request, UserObject userObject) {
 
 
-        Map<String, String> targetMap = new HashMap<String, String>();
+        Map<String, String> targetMap = new HashMap<>();
         BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
         
         int newMsgCount = messageBoxService.getNumUnreadMessages(userObject.getUserId(), bindingResult, userObject);

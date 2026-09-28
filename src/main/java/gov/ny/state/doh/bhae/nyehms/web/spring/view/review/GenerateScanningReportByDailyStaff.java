@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -76,7 +76,7 @@ public class GenerateScanningReportByDailyStaff extends AbstractExcelReportView 
         header2.createCell(columnIndex).setCellValue("Staff ID");
         header2.getCell(columnIndex++).setCellStyle(style);
         
-        List<String> userListNames  = new ArrayList<String>();
+        List<String> userListNames  = new ArrayList<>();
        if(totalCountByUser != null) userListNames.addAll(totalCountByUser.keySet());
       //Add staff names
         for (String workerName : userListNames) {

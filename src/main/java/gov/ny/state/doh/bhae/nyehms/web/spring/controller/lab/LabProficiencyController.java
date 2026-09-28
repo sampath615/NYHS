@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -258,7 +258,7 @@ public class LabProficiencyController {
        
         
 //
-        List<String> filterNumbers = new ArrayList<String>();
+        List<String> filterNumbers = new ArrayList<>();
         
         filterNumbers.add(filterNumber);
         

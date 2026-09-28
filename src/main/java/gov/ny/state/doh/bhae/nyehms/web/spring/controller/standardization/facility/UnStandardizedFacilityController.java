@@ -10,7 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.S
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class UnStandardizedFacilityController {
 	 */
 	@RequestMapping(value="/flagFacilityAsProvider.json", method=RequestMethod.POST,produces = "application/json") 
 	public @ResponseBody Map<Object,Object> flagFacilityAsProvider(@RequestParam long facilityId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		unStandardizedFacilityService.flagFacilityAsProvider(facilityId,bindingResult,userObject);
@@ -73,7 +73,7 @@ public class UnStandardizedFacilityController {
 
 	@RequestMapping(value="/getMasterFacilitiesWithSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getMasterFacilitiesWithSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam String searchFor, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject gridObject = getGridObject.GetGrid(unStandardizedFacilityService.getMasterFacilitiesWithSubFacilities(masterFacilityVO,subFacilityVO , searchFor, bindingResult, userObject));
 		return gridObject;
@@ -88,7 +88,7 @@ public class UnStandardizedFacilityController {
 	 */
 	@RequestMapping(value="/standardizeRawByCreatingMasterAndSubFacilities.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> standardizeRawByCreatingMasterAndSubFacilities(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO,@ModelAttribute("subFacilityVO") SubFacilityVO  subFacilityVO,@RequestParam long  rawSubFacilityId, HttpServletRequest request, BindingResult result, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		unStandardizedFacilityService.standardizeRawByCreatingMasterAndSubFacilities(masterFacilityVO, subFacilityVO, rawSubFacilityId, bindingResult, userObject);
 		return targetMap;

@@ -1,6 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
 import java.math.BigDecimal;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -29,8 +30,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
 
 
 /**
@@ -68,7 +67,7 @@ public class LaftDetailsService {
 	 */
 	public List<LaftDetailsVO> getValidationFailedLabDocumentDetails(String documentType, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		
 		inOutParameterMap.put("rawTableName", LabCommonUtils.getRawTableName(documentType));
@@ -87,7 +86,7 @@ public class LaftDetailsService {
 	 */
 	public List<LaftDetailsVO> getValidationFailedDeletedLabDocumentDetails(String documentType, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		
 		inOutParameterMap.put("rawTableName", LabCommonUtils.getRawTableName(documentType));
@@ -210,23 +209,17 @@ public class LaftDetailsService {
 		
 		Connection connection = connectionDAO.getConnectionObj();
 		OracleConnection oracleConnection = null;
-			ArrayDescriptor des;
 			try {
 				if(connection != null){
 				
-					oracleConnection = (OracleConnection)connection;
+					oracleConnection = connection.unwrap(OracleConnection.class);
 					   
-					String schemaName = oracleConnection.physicalConnectionWithin().getCurrentSchema();
+					String schemaName = oracleConnection.getCurrentSchema();
 					
 					 
-					des = ArrayDescriptor.createDescriptor(schemaName+".NUM_ARR", connection);
-					
-					//Set<String> aasdfa = documentIdsAndStatus.entrySet();
-				    
-					
-					ARRAY array_to_pass = new ARRAY(des,connection,documentIds.toArray());
+					Array array_to_pass = oracleConnection.createOracleArray(schemaName+".NUM_ARR", documentIds.toArray());
 					 
-					Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+					Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 					inOutParameterMap.put("p_document_list", array_to_pass);
 					inOutParameterMap.put("p_current_status", statusCode);
@@ -312,7 +305,7 @@ public class LaftDetailsService {
 		boolean isError = false; 
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("p_documentId", id);
 			inOutParameterMap.put("p_notes", notes);
@@ -346,7 +339,7 @@ public class LaftDetailsService {
 		boolean isError = false; 
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("p_documentIds", documentIds);
 			inOutParameterMap.put("p_notes", notes);
@@ -391,7 +384,7 @@ public class LaftDetailsService {
 		
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("p_filterType", addressFilterType);
 			inOutParameterMap.put("p_address", rawAddress);
@@ -432,7 +425,7 @@ public class LaftDetailsService {
 		
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("addressId", addressId);
 			
@@ -477,16 +470,16 @@ public class LaftDetailsService {
 		List<Map<String, Object>> labErrorReportsByType = null;
 		
 		
-		Map<String, Map<String, Integer>> softChecks = new HashMap<String, Map<String, Integer>>();
+		Map<String, Map<String, Integer>> softChecks = new HashMap<>();
 		
-		Map<String, Map<String, Integer>> hardChecks = new HashMap<String, Map<String, Integer>>();
+		Map<String, Map<String, Integer>> hardChecks = new HashMap<>();
 		
-		Map<String, Map<String, Map<String, Integer>>> errorMap = new LinkedHashMap<String, Map<String, Map<String, Integer>>>();
+		Map<String, Map<String, Map<String, Integer>>> errorMap = new LinkedHashMap<>();
 		
 		
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();
+			Map<String, String> inOutParameterMap = new HashMap<>();
 			
 	
 			
@@ -524,7 +517,7 @@ public class LaftDetailsService {
 					}else{
 						
 						
-						Map<String, Integer>  softErrors = new HashMap<String, Integer>();
+						Map<String, Integer>  softErrors = new HashMap<>();
 						
 						
 						softErrors.put(ERROR_DESC, COUNT);
@@ -552,7 +545,7 @@ public class LaftDetailsService {
 					}else{
 						
 						
-						Map<String, Integer>  hardErrors = new HashMap<String, Integer>();
+						Map<String, Integer>  hardErrors = new HashMap<>();
 						
 						
 						hardErrors.put(ERROR_DESC, COUNT);
@@ -611,7 +604,7 @@ public class LaftDetailsService {
 		List<Map<String, Object>> labErrorReportsByFacility = null;
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();
+			Map<String, String> inOutParameterMap = new HashMap<>();
 			
 			
 			labErrorReportsByFacility = laftDetailsDAO.getLabErrorReportsByFacilityName(inOutParameterMap);
@@ -635,7 +628,7 @@ public class LaftDetailsService {
 		List<Map<String, Object>> errorStatusReportByLab = null;
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();
+			Map<String, String> inOutParameterMap = new HashMap<>();
 			
 			inOutParameterMap.put("fromDate", fromDate);
 			
@@ -664,21 +657,21 @@ public class LaftDetailsService {
 		
 		List<Map<String, String>> errorReportsList = null;
 		
-		Set<String> workerNames = new HashSet<String>();
+		Set<String> workerNames = new HashSet<>();
 		
 				
 		//Week,     Date, 	UserId, data  
 		Map<String, Map<String, Map<String, Map<String, Integer>>>> errorReportDataByStatus = new LinkedHashMap<String, Map<String, Map<String, Map<String, Integer>>>>();
 		
 		
-		Map<String, Map<String, Map<String, Integer>>> statusCountByUserByWeek = new HashMap<String, Map<String, Map<String, Integer>>>();
+		Map<String, Map<String, Map<String, Integer>>> statusCountByUserByWeek = new HashMap<>();
 				
-		Map<String, Map<String, Integer>> totalStatusCountByUser = new HashMap<String, Map<String, Integer>>();		
+		Map<String, Map<String, Integer>> totalStatusCountByUser = new HashMap<>();		
 		
 		
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();
+			Map<String, String> inOutParameterMap = new HashMap<>();
 			
 			inOutParameterMap.put("fromDate", fromDate);
 			
@@ -799,7 +792,7 @@ public class LaftDetailsService {
 							
 							
 							//Start : Error Report by Create Date by User
-							Map<String, Integer> errorReportStatusData = new HashMap<String, Integer>();
+							Map<String, Integer> errorReportStatusData = new HashMap<>();
 							
 							errorReportStatusData.put(actionName, count);
 							
@@ -844,7 +837,7 @@ public class LaftDetailsService {
 								
 							}else{
 								
-								Map<String, Integer> statusCounts = new HashMap<String, Integer>();;
+								Map<String, Integer> statusCounts = new HashMap<>();;
 								
 								statusCounts.put(actionName, count);
 								
@@ -902,9 +895,9 @@ public class LaftDetailsService {
 					}else{
 						
 						//Start : Error Report by Create Date by User
-						Map<String, Map<String, Integer>> errorReportStatusByUser = new HashMap<String, Map<String, Integer>>();
+						Map<String, Map<String, Integer>> errorReportStatusByUser = new HashMap<>();
 						
-						Map<String, Integer> errorReportStatusData = new HashMap<String, Integer>();
+						Map<String, Integer> errorReportStatusData = new HashMap<>();
 						
 						errorReportStatusData.put(actionName, count);
 						
@@ -942,7 +935,7 @@ public class LaftDetailsService {
 							
 						}else{
 							
-							Map<String, Integer> statusCounts = new HashMap<String, Integer>();;
+							Map<String, Integer> statusCounts = new HashMap<>();;
 							
 							statusCounts.put(actionName, count);
 							
@@ -1001,11 +994,11 @@ public class LaftDetailsService {
 				}else{
 					
 					//Start : Error Report by Create Date by User
-					Map<String, Map<String, Map<String, Integer>>> errorReportsByDate = new LinkedHashMap<String, Map<String, Map<String, Integer>>>();
+					Map<String, Map<String, Map<String, Integer>>> errorReportsByDate = new LinkedHashMap<>();
 					
-					Map<String, Map<String, Integer>> errorReportStatusByUser = new HashMap<String, Map<String, Integer>>();
+					Map<String, Map<String, Integer>> errorReportStatusByUser = new HashMap<>();
 					
-					Map<String, Integer> errorReportStatusData = new HashMap<String, Integer>();
+					Map<String, Integer> errorReportStatusData = new HashMap<>();
 					
 					
 					errorReportStatusData.put(actionName, count);
@@ -1024,9 +1017,9 @@ public class LaftDetailsService {
 					//Start : Weekly Error Report by by User
 					
 					
-					Map<String, Map<String, Integer>> statusCountByUser = new HashMap<String, Map<String, Integer>>();
+					Map<String, Map<String, Integer>> statusCountByUser = new HashMap<>();
 					
-					Map<String, Integer> statusCounts = new HashMap<String, Integer>();
+					Map<String, Integer> statusCounts = new HashMap<>();
 					
 					statusCounts.put(actionName, count);
 					
@@ -1127,7 +1120,7 @@ public class LaftDetailsService {
 		
 		try{
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("documentId", documentId);
 			inputParameterMap.put("errorCodeList", errorCodes.split(","));

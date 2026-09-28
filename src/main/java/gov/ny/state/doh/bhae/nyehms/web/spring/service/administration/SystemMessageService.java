@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class SystemMessageService {
 	 * @see gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageService#saveSystemMessageDetails(gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessage, org.springframework.validation.BindingResult, gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject)
 	 */
     public void  saveSystemMessageDetails(SystemMessage systemMessage, BindingResult bindingResult, UserObject userObject){
-		Map<Object,Object> messageParametersAndValues = new HashMap<Object, Object>();
+		Map<Object,Object> messageParametersAndValues = new HashMap<>();
 		
 		messageParametersAndValues.put("messageBody", systemMessage.getMessageBody());
 		messageParametersAndValues.put("effectiveEndDate", new Date(systemMessage.getEffectiveEndDate()));
@@ -83,7 +83,7 @@ public class SystemMessageService {
 	 * @see gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageService#updateSystemMessageDetails(gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessage, org.springframework.validation.BindingResult, gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject)
 	 */
     public void  updateSystemMessageDetails(SystemMessage systemMessage, BindingResult bindingResult, UserObject userObject){
-		Map<Object,Object> messageParametersAndValues = new HashMap<Object, Object>();
+		Map<Object,Object> messageParametersAndValues = new HashMap<>();
 		
 		messageParametersAndValues.put("messageBody", systemMessage.getMessageBody());
 		messageParametersAndValues.put("messageId", systemMessage.getMessageId());
@@ -154,7 +154,7 @@ public class SystemMessageService {
 	}
 	
     public void  savePortalSystemMessageDetails(PortalSystemMessage systemMessage, BindingResult bindingResult, UserObject userObject){
-		Map<Object,Object> messageParametersAndValues = new HashMap<Object, Object>();
+		Map<Object,Object> messageParametersAndValues = new HashMap<>();
 		
 		messageParametersAndValues.put("ADMIN", "");
 		messageParametersAndValues.put("PRF_DE", "");
@@ -165,12 +165,12 @@ public class SystemMessageService {
 		messageParametersAndValues.put("endDate", "");
 		
 		switch (systemMessage.getModule_name()) {
-			case "ADMIN_PAGE" : messageParametersAndValues.put("ADMIN", "Y"); break;
-			case "EPRF_DE" : messageParametersAndValues.put("PRF_DE", "Y"); break;
-			case "OOC_INQ" : messageParametersAndValues.put("OOC_INQ", "Y"); break;
-			case "DNLTC_INQ" : messageParametersAndValues.put("DNLTC_INQ", "Y"); break;
-			case "SNP_ID" : messageParametersAndValues.put("SNP_ID", "Y"); break;
-			case "AIRS_EPI" : messageParametersAndValues.put("AIRS_EPI", "Y"); break;
+			case "ADMIN_PAGE" -> messageParametersAndValues.put("ADMIN", "Y");
+			case "EPRF_DE" -> messageParametersAndValues.put("PRF_DE", "Y");
+			case "OOC_INQ" -> messageParametersAndValues.put("OOC_INQ", "Y");
+			case "DNLTC_INQ" -> messageParametersAndValues.put("DNLTC_INQ", "Y");
+			case "SNP_ID" -> messageParametersAndValues.put("SNP_ID", "Y");
+			case "AIRS_EPI" -> messageParametersAndValues.put("AIRS_EPI", "Y");
 		}
 		messageParametersAndValues.put("displayMsg", systemMessage.getDisplay_msg());
 		messageParametersAndValues.put("startDate", new Date(systemMessage.getStart_date()));
@@ -186,7 +186,7 @@ public class SystemMessageService {
 		commonExceptionHandler.inspectDBTransacionResult(0, transactionMessage, bindingResult);
     }
 	public void updatePortalSystemMessageDetails(PortalSystemMessage systemMessage, BindingResult bindingResult, UserObject userObject) {
-		Map<Object,Object> messageParametersAndValues = new HashMap<Object, Object>();
+		Map<Object,Object> messageParametersAndValues = new HashMap<>();
 		
 		messageParametersAndValues.put("ADMIN", "");
 		messageParametersAndValues.put("PRF_DE", "");
@@ -197,12 +197,12 @@ public class SystemMessageService {
 //		messageParametersAndValues.put("endDate", "");
 		
 		switch (systemMessage.getModule_name()) {
-			case "ADMIN_PAGE" : messageParametersAndValues.put("ADMIN", "Y"); break;
-			case "EPRF_DE" : messageParametersAndValues.put("PRF_DE", "Y"); break;
-			case "OOC_INQ" : messageParametersAndValues.put("OOC_INQ", "Y"); break;
-			case "DNLTC_INQ" : messageParametersAndValues.put("DNLTC_INQ", "Y"); break;
-			case "SNP_ID" : messageParametersAndValues.put("SNP_ID", "Y"); break;
-			case "AIRS_EPI" : messageParametersAndValues.put("AIRS_EPI", "Y"); break;
+			case "ADMIN_PAGE" -> messageParametersAndValues.put("ADMIN", "Y");
+			case "EPRF_DE" -> messageParametersAndValues.put("PRF_DE", "Y");
+			case "OOC_INQ" -> messageParametersAndValues.put("OOC_INQ", "Y");
+			case "DNLTC_INQ" -> messageParametersAndValues.put("DNLTC_INQ", "Y");
+			case "SNP_ID" -> messageParametersAndValues.put("SNP_ID", "Y");
+			case "AIRS_EPI" -> messageParametersAndValues.put("AIRS_EPI", "Y");
 		}
 		
 		messageParametersAndValues.put("displayMsg", systemMessage.getDisplay_msg());

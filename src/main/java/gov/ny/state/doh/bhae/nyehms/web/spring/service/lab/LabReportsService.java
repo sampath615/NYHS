@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
+import java.sql.Array;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -46,8 +47,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import oracle.jdbc.OracleConnection;
-import oracle.sql.ARRAY;
-import oracle.sql.ArrayDescriptor;
 
 
 /**
@@ -86,7 +85,7 @@ public class LabReportsService {
 			String startDate, String endDate, BindingResult bindingResult,
 			UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_provider_id", providerId);
 		
 		labReportsDAO.getFeedbackMedicalReport(inOutParameterMap);
@@ -103,7 +102,7 @@ public class LabReportsService {
 	public List<ClinicalLaboratoryVO> getLabSearchResults(BindingResult bindingResult,UserObject userObject, String clia, LabFacilitiesVO labFacilitiesVO ) {
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_clia", clia);
 		inOutParameterMap.put("p_pfi", labFacilitiesVO.getPfi());
 		inOutParameterMap.put("p_lab_name", labFacilitiesVO.getLabName());
@@ -123,10 +122,10 @@ public class LabReportsService {
 	public LabDetailsVO getLabDetails(BindingResult bindingResult,
 			UserObject userObject, String pfi) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_pfi", pfi);
 		
-		List<LabDetailsVO> labDetailsList = new ArrayList<LabDetailsVO>();
+		List<LabDetailsVO> labDetailsList = new ArrayList<>();
 		
 		
 		labReportsDAO.getLabDetails(inOutParameterMap);
@@ -142,7 +141,7 @@ public class LabReportsService {
 		
 		List<LabTestMappingVO> testCodeMappingListFromDB = (List<LabTestMappingVO>)inOutParameterMap.get("p_map_codes");
 		
-		Map<String, List<LabTestMappingVO>> localCodeTotestCodesMappingList = new HashMap<String, List<LabTestMappingVO>>();
+		Map<String, List<LabTestMappingVO>> localCodeTotestCodesMappingList = new HashMap<>();
 		
 		
 		for (LabTestMappingVO labTestMappingVO : testCodeMappingListFromDB) {
@@ -156,7 +155,7 @@ public class LabReportsService {
 				localCodeTotestCodesMappingList.get(_localCodeMapId).add(labTestMappingVO);
 				
 			}else{
-				List<LabTestMappingVO> labTestMappingList = new ArrayList<LabTestMappingVO>();
+				List<LabTestMappingVO> labTestMappingList = new ArrayList<>();
 				labTestMappingList.add(labTestMappingVO);
 				localCodeTotestCodesMappingList.put(_localCodeMapId, labTestMappingList);
 			}
@@ -212,7 +211,7 @@ public class LabReportsService {
 	}
 	
 	public Map<String, String> getActiveAndNonAssociatedLabLoincDescriptionDetails(String pfi, BindingResult result, UserObject userObject) {
-			Map<String, String> loincCodeAndDescriptionMap = new TreeMap<String, String>();
+			Map<String, String> loincCodeAndDescriptionMap = new TreeMap<>();
 			
 			List<Map<String, String>> loincCodesAndDescriptionsList = labReportsDAO.getActiveAndNonAssociatedLabLoincDescriptionDetails(pfi);
 			for(Map<String, String> permit : loincCodesAndDescriptionsList){
@@ -222,7 +221,7 @@ public class LabReportsService {
 	}
 	
 	public Map<String, String> getActiveAssociatedLabLoincDescriptionDetails(String pfi, BindingResult result, UserObject userObject) {
-			Map<String, String> loincCodeAndDescriptionMap = new TreeMap<String, String>();
+			Map<String, String> loincCodeAndDescriptionMap = new TreeMap<>();
 			
 			List<Map<String, String>> loincCodesAndDescriptionsList = labReportsDAO.getActiveAssociatedLabLoincDescriptionDetails(pfi);
 			for(Map<String, String> loinc : loincCodesAndDescriptionsList){
@@ -235,7 +234,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("labPermitId", labPermitsVO.getLabPermitId());
 		inOutParameterMap.put("dateValidFrom", labPermitsVO.getDateValidFrom());
@@ -264,7 +263,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("interactionId", labInteractionHistoryVO.getInteractionId());
 		inOutParameterMap.put("communicationType", labInteractionHistoryVO.getCommunicationType());
@@ -290,7 +289,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("clia", clia);
 		inOutParameterMap.put("pfi", pfi);
@@ -316,7 +315,7 @@ public class LabReportsService {
 		Integer statusCode;
 		
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("instrumentFlagActive", labInstrumentDetailsVO.getInstrumentFlagActive());
 		inOutParameterMap.put("lpiId", labInstrumentDetailsVO.getLpiId());
@@ -376,7 +375,7 @@ public class LabReportsService {
     	
     	if(!hasError){
 		
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 			
 			inOutParameterMap.put("flagActive", labLoincMappingVO.getFlagActive());
 			inOutParameterMap.put("loincMapId", labLoincMappingVO.getLoincMapId());
@@ -408,7 +407,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("permitCode", labPermitsVO.getPermitCode());
 		inOutParameterMap.put("dateValidFrom", labPermitsVO.getDateValidFrom());
@@ -440,7 +439,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("communicationType", labInteractionHistoryVO.getCommunicationType());
 	//	inOutParameterMap.put("issueResolved", labInteractionHistoryVO.getIssueResolved());
@@ -468,7 +467,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("labPermitId", labPermitId);
 		inOutParameterMap.put("instrumentId", instrumentId);
@@ -494,7 +493,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("pfi", labLoincMappingVO.getPfi());
 		inOutParameterMap.put("loincCode", labLoincMappingVO.getLoincCode());
@@ -524,7 +523,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("loincMapId", labLoincMappingVO.getLoincMapId());
 		inOutParameterMap.put("pfi", labLoincMappingVO.getPfi());
@@ -555,7 +554,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("localCodeMapId", localCodeMapId);
 		//inOutParameterMap.put("flagActive", "Y");
@@ -592,7 +591,7 @@ public class LabReportsService {
 		Integer statusCode;
 		List<Long> localCodeMapId = null;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("localCode", localCode);
@@ -633,7 +632,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		 
 		inOutParameterMap.put("localCodeMapId", localCodeMapId);
 		inOutParameterMap.put("loincMapIds", loincCodes);
@@ -684,7 +683,7 @@ public class LabReportsService {
 		
 		String transactionMessage=null;
 		Integer statusCode = -1;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		 
 		inOutParameterMap.put("clia", clia);
 		inOutParameterMap.put("lastUpdatedBy", userObject.getWorkerId());
@@ -714,7 +713,7 @@ public class LabReportsService {
 	public void saveLabFacilityDetails(BindingResult bindingResult,UserObject userObject, LabFacilitiesVO labFacilitiesVO ){
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_pfi", labFacilitiesVO.getPfi());
 		inOutParameterMap.put("p_lab_name", labFacilitiesVO.getLabName());
 		inOutParameterMap.put("p_laftStaffAssigned", labFacilitiesVO.getLaftStaffAssigned());
@@ -755,7 +754,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_flagActive", labLocalCodesMappingVO.getLocalCodeFlagActive());
 		inOutParameterMap.put("p_lastUpdatedBy", userObject.getWorkerId());
 		inOutParameterMap.put("dateValidTill", labLocalCodesMappingVO.getDateValidTill());
@@ -782,7 +781,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_startDate", labLoincMappingVO.getDateValidFrom());
 		inOutParameterMap.put("p_endDate", labLoincMappingVO.getDateValidTill());
 		inOutParameterMap.put("p_lastUpdatedBy", userObject.getWorkerId());
@@ -813,7 +812,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_flagActive", labTestMappingVO.getFlagActive());
 		inOutParameterMap.put("p_lastUpdatedBy", userObject.getWorkerId());
 		inOutParameterMap.put("p_localCodeMapId", labTestMappingVO.getLocalCodeMapId());
@@ -846,18 +845,15 @@ public class LabReportsService {
 		
 		CallableStatement callableStatement = null;
 		
-			 ArrayDescriptor des;
 			try {
 				if(connection != null){
 				
-					OracleConnection oracleConnection = (OracleConnection)connection;
+					OracleConnection oracleConnection = connection.unwrap(OracleConnection.class);
 					
-					String schemaName = oracleConnection.physicalConnectionWithin().getCurrentSchema();
+					String schemaName = oracleConnection.getCurrentSchema();
 					
 					 
-					des = ArrayDescriptor.createDescriptor(schemaName+".NUM_ARR", connection);
-					
-					 ARRAY array_to_pass = new ARRAY(des,connection,loincCodes);
+					Array array_to_pass = oracleConnection.createOracleArray(schemaName+".NUM_ARR", loincCodes);
 					 
 					 callableStatement = connection.prepareCall("call pkg_lab_maintenance.pr_merge_lab_localcd_loincs(?,?,?,?,?)");
 					 
@@ -935,7 +931,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("interactionNotes", interactionNotes);
 		inOutParameterMap.put("interactionContactType", interactionContactType);
@@ -958,7 +954,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("alternativeContactName", alternativeContactName);
 		inOutParameterMap.put("alternativeContactPhone", alternativeContactPhone);
@@ -986,7 +982,7 @@ public class LabReportsService {
 	
 	public List<LabFacilitiesVO> getFacilitiesDataForClia(BindingResult bindingResult, UserObject userObject, String clia){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_clia", clia);
 		
 		List<LabFacilitiesVO> facilityDetailsList =  labReportsDAO.getFacilitiesDataForClia(inOutParameterMap);
@@ -1041,7 +1037,7 @@ public class LabReportsService {
 		
 		String transactionMessage=null;
 		Integer statusCode = -1;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		 
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("workerId", userObject.getWorkerId());
@@ -1068,7 +1064,7 @@ public class LabReportsService {
 	public void addNewSubmissionDataTypesToPFI(BindingResult bindingResult,UserObject userObject,String pfi, List<JSONObject> newSubmissionDataList){
 		String transactionMessage=null;
 		Integer statusCode = -1;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		 
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("workerId", userObject.getWorkerId());
@@ -1093,7 +1089,7 @@ public class LabReportsService {
 	
 	public JSONObject geLabPhysicalFacilityDetails(String pfi, String clia, BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		 
 		inOutParameterMap.put("pfi", pfi);
 		inOutParameterMap.put("clia", clia);
@@ -1149,7 +1145,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("workerId", userObject.getWorkerId());
 		inOutParameterMap.put("contactId", contactId);
 		
@@ -1173,7 +1169,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("workerId", userObject.getWorkerId());
 		inOutParameterMap.put("submissionTypeId", submissionTypeId);
 		
@@ -1428,14 +1424,14 @@ public class LabReportsService {
 
 	public List<LabOpsReportsVO> getNycNysCommReportData(String fromDate, String toDate, String nycServiceFlag, BindingResult dummyBindingResult, UserObject userObject) {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		
 		List<LabOpsReportsVO> nycNysCommReportList = labReportsDAO.getNycNysCommReportData(inputData);
 		
 		if (CommonUtil.isNotNullAndEmpty(nycServiceFlag) && nycServiceFlag.equals("Y")) {
-			List<LabOpsReportsVO> nycNysCommReportList2 = new ArrayList<LabOpsReportsVO>(); 
+			List<LabOpsReportsVO> nycNysCommReportList2 = new ArrayList<>(); 
 			for (LabOpsReportsVO currObj : nycNysCommReportList) {
 				if (currObj.getNycLab().equals("Y")) {
 					nycNysCommReportList2.add(currObj);
@@ -1450,7 +1446,7 @@ public class LabReportsService {
 
 	public List<LabOpsReportsVO> getListOfLabsByApprovalStatus(UserObject userObject, BindingResult bindingResult, String approvalStatus) {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("approvalStatus", approvalStatus);
 		
 		List<LabOpsReportsVO> listOfLabsByApprovalStatus = labReportsDAO.getLabListByApprovalStatus(inputData);

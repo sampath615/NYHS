@@ -268,7 +268,7 @@ public class LabProficiencyService {
             LabProficiencyVO instance = new LabProficiencyVO();
             instance.setDatabaseConnection(conn);
 
-            List<List<JSONObject>> filterTypeConditions = new ArrayList<List<JSONObject>>();
+            List<List<JSONObject>> filterTypeConditions = new ArrayList<>();
             
             for (String  filterNumber : filterNumbers) {
             	List<JSONObject> jsonArray = instance.getLabProficiencyList(pfi, filterNumber);
@@ -303,7 +303,7 @@ public class LabProficiencyService {
     	Connection conn = null;
         String res = "failure";
         
-        List<JSONObject> queryCriteriaList = new ArrayList<JSONObject>();
+        List<JSONObject> queryCriteriaList = new ArrayList<>();
         
         List<JSONObject> filteredData = null;
         

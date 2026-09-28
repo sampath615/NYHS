@@ -3,8 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +34,7 @@ public class CancerDocReviewController {
 	@RequestMapping(value = "/getCancerDoc.html")
 	public String getCancerDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		CancerDocVO cancerDocVO = cancerDocumentService.getCancerDoc(docId, bindingResult, userObject);
 		map.put("stdCancerDocVO", cancerDocVO);

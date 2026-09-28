@@ -74,7 +74,7 @@ public class CCDLoader {
 				log.error("You are running locally with a loadSchedulers property of N");
 			}else{
 				
-				List<JSONObject> schedulerStatusObject = new ArrayList<JSONObject>();
+				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				
 				Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
 				

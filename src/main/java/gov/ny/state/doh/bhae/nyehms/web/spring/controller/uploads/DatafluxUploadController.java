@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class DatafluxUploadController {
 	@RequestMapping(value = "/loadExcelData")
 	public String loadExcelData(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		
@@ -52,7 +52,7 @@ public class DatafluxUploadController {
 		
 		HttpSession session = request.getSession();
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 
@@ -72,7 +72,7 @@ public class DatafluxUploadController {
 	@RequestMapping(value="/readFileColumnNames", method = RequestMethod.POST)
 	public String  readFileColumnNames(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, Map<String, Object> map, UserObject userObject){
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		

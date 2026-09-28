@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.scan;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -60,10 +60,10 @@ public class DocumentsScanController {
 	
 	@RequestMapping(value="/saveScanDocumentToStateNo.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> saveScanDocumentToStateNo(
-			HttpServletRequest request, @RequestParam String stateNo, @RequestParam String documentType, @RequestParam("RemoteFile") CommonsMultipartFile RemoteFile, UserObject userObject)
+			HttpServletRequest request, @RequestParam String stateNo, @RequestParam String documentType, @RequestParam("RemoteFile") MultipartFile RemoteFile, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//searchService.saveScanDocumentToStateNo(stateNo, bindingResult, userObject);
 		

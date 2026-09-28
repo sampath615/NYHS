@@ -299,7 +299,7 @@ public class PartnerService {
 
         Statement statement = null;
         ResultSet rs = null;
-        ArrayList<Integer> partnerList = new ArrayList<Integer>();
+        ArrayList<Integer> partnerList = new ArrayList<>();
        // String partnerListQuery = "SELECT partnrid FROM NYEHMSLOCAL_OWNER.LEGACY_PS_PERSON_PARTNER_VW where assignment_id =" + assignmentId;
         String partnerListQuery = "SELECT partnrid FROM LEGACY_PS_PERSON_PARTNER_VW where assignment_id =" + assignmentId;
 

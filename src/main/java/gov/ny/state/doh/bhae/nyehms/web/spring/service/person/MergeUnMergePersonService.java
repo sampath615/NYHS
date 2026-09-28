@@ -68,7 +68,7 @@ public class MergeUnMergePersonService {
 	public List<FlaggedStatenoVO> getFlaggedStatenosList(
 			BindingResult bindingResult, UserObject userObject) {
 
-		List<FlaggedStatenoVO> flaggedStatenosList = new ArrayList<FlaggedStatenoVO>();
+		List<FlaggedStatenoVO> flaggedStatenosList = new ArrayList<>();
 
 		flaggedStatenosList = mergeUnMergePersonDAO.getFlaggedStatenosList();
 
@@ -83,7 +83,7 @@ public class MergeUnMergePersonService {
 		
 		Integer duplicationId = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno1", flaggedStatenoVO.getStateno1());
 		inOutParameterMap.put("p_stateno2", flaggedStatenoVO.getStateno2());
@@ -152,7 +152,7 @@ public class MergeUnMergePersonService {
 		
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("duplicationId", id);
 			inOutParameterMap.put("followUp", followUp);
@@ -182,7 +182,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_duplication_id",
 				flaggedStatenoVO.getDuplicationId());
@@ -231,7 +231,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", flaggedStatenoVO.getStateno1());
 		inOutParameterMap.put("p_flagged_by", userObject.getWorkerId());
@@ -260,7 +260,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", flaggedStatenoVO.getStateno1());
 		inOutParameterMap.put("p_worker_id", userObject.getWorkerId());
@@ -289,9 +289,9 @@ public class MergeUnMergePersonService {
 			FlaggedStatenoVO flaggedStatenoVO, BindingResult result,
 			UserObject userObject) {
 
-		List<FlaggedStatenoVO> statenosFlagHistoryList = new ArrayList<FlaggedStatenoVO>();
+		List<FlaggedStatenoVO> statenosFlagHistoryList = new ArrayList<>();
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno_1", flaggedStatenoVO.getStateno1());
 		inOutParameterMap.put("p_stateno_2", flaggedStatenoVO.getStateno2());
@@ -307,9 +307,9 @@ public class MergeUnMergePersonService {
 	
 	public List<FlaggedStatenoVO> getSimilarFlaggedPairs(String duplicationId, BindingResult result,UserObject userObject) {
 
-		List<FlaggedStatenoVO> statenosFlagHistoryList = new ArrayList<FlaggedStatenoVO>();
+		List<FlaggedStatenoVO> statenosFlagHistoryList = new ArrayList<>();
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_duplication_id", duplicationId);
 		
@@ -361,7 +361,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_duplication_id",
 				flaggedStatenoVO.getDuplicationId());
@@ -400,7 +400,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		java.util.Map<Object, Object> inOutParameterMap = new java.util.HashMap<Object, Object>();
+		java.util.Map<Object, Object> inOutParameterMap = new java.util.HashMap<>();
 
 		inOutParameterMap.put("p_duplication_id", duplicationId);
 		inOutParameterMap.put("p_module_id", "16");
@@ -408,7 +408,7 @@ public class MergeUnMergePersonService {
 
 		mergeUnMergePersonDAO.fetchPersonObjects(inOutParameterMap);
 
-		List<PersonVO> personViewList = new ArrayList<PersonVO>();
+		List<PersonVO> personViewList = new ArrayList<>();
 
 		PersonVO personVO = null;
 
@@ -417,8 +417,8 @@ public class MergeUnMergePersonService {
 		List<String> statenoHistoryData = null;
 		PersonViewVO personViewVO = null;
 		PersonRaceVO personRaceVO = null;
-		List<String> eHARSNysStatenoHistoryData = new ArrayList<String> ();
-		List<String> eHARSNycStatenoHistoryData = new ArrayList<String> ();
+		List<String> eHARSNysStatenoHistoryData = new ArrayList<> ();
+		List<String> eHARSNycStatenoHistoryData = new ArrayList<> ();
 
 		String[][] outputCursorsDetails = {
 				{ "p_stateno_1_details", "p_stateno_1_race",
@@ -509,7 +509,7 @@ public class MergeUnMergePersonService {
 				}
 
 				
-				Map<Object,Object> _map = new HashMap<Object,Object>();
+				Map<Object,Object> _map = new HashMap<>();
 				
 				_map.put("p_state_no", cursorSet[2]);
 				
@@ -539,9 +539,9 @@ public class MergeUnMergePersonService {
 			String stateno, BindingResult result,
 			UserObject userObject) {
 
-		List<BadlyMergedStatenosVO> statenoFlagHistory = new ArrayList<BadlyMergedStatenosVO>();
+		List<BadlyMergedStatenosVO> statenoFlagHistory = new ArrayList<>();
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", stateno);
 		
@@ -559,7 +559,7 @@ public class MergeUnMergePersonService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_document_ids", documentIds);
 		inOutParameterMap.put("p_from_stateno", stateno1);
@@ -588,7 +588,7 @@ public class MergeUnMergePersonService {
 		Integer statusCode = null;
 		String stateno = null;
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_caller", "Unmerge");
 		
@@ -665,7 +665,7 @@ public class MergeUnMergePersonService {
 		
 		try{
 			
-			Map<String, Object> inputParameter = new HashMap<String, Object>();
+			Map<String, Object> inputParameter = new HashMap<>();
 			
 			
 			inputParameter.put("DOCUMENT_ID", documentId);
@@ -708,7 +708,7 @@ public class MergeUnMergePersonService {
 			BindingResult bindingResult, UserObject userObject){
 		
 		
-		Map<String, Object> inputParameter = new HashMap<String, Object>();
+		Map<String, Object> inputParameter = new HashMap<>();
 		
 		
 		inputParameter.put("DOCUMENT_ID", documentId);
@@ -726,7 +726,7 @@ public class MergeUnMergePersonService {
 			String documentIds, String doccsDocumentList,
 			BindingResult bindingResult, UserObject userObject){
 		
-		   Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		   Map<String, Object> inputParameterMap = new HashMap<>();
 		   
 		   
 		
@@ -778,7 +778,7 @@ public class MergeUnMergePersonService {
 	public void validateDodAgainstCollectionDateBeforeMerge(String stateno1,
 			String stateno2, BindingResult bindingResult, UserObject userObject){
 		
-		   		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		   		Map<String, Object> inputParameterMap = new HashMap<>();
 		   	
 				inputParameterMap.put("stateno1", stateno1);
 				inputParameterMap.put("stateno2", stateno2);
@@ -809,7 +809,7 @@ public class MergeUnMergePersonService {
 		List<Map<String, Object>> mergeReportsByOrigin = null;
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();	
+			Map<String, String> inOutParameterMap = new HashMap<>();	
 			inOutParameterMap.put("fromDate", fromDate);			
 			inOutParameterMap.put("toDate", toDate);
 			mergeReportsByOrigin = mergeUnMergePersonDAO.getMergeReportsByOrigin(inOutParameterMap);	
@@ -824,7 +824,7 @@ public class MergeUnMergePersonService {
 		List<Map<String, Object>> mergeReportsByBadMerges = null;
 		
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();	
+			Map<String, String> inOutParameterMap = new HashMap<>();	
 			inOutParameterMap.put("fromDate", fromDate);			
 			inOutParameterMap.put("toDate", toDate);
 			mergeReportsByBadMerges = mergeUnMergePersonDAO.getMergeReportsByBadMerges(inOutParameterMap);	
@@ -838,12 +838,12 @@ public class MergeUnMergePersonService {
 	public Map<String, Map<String, Map<String, Map<String, Integer>>>> getMergeReportsByDailyStaff(String fromDate, String toDate, Map<String, Object> map,
 			UserObject userObject) {
 		Map<String, Map<String, Map<String, Map<String, Integer>>>> dataMapByWeeks = new LinkedHashMap<String, Map<String, Map<String, Map<String, Integer>>>>();		
-		Map<String, Map<String, Map<String, Integer>>> weeklyCountByWeeks = new HashMap<String, Map<String, Map<String, Integer>>>();
-		Map<String, Map<String, Integer>> totalCountByUsers = new HashMap<String, Map<String, Integer>>();
-		List<String> userNamesList = new ArrayList<String>();
+		Map<String, Map<String, Map<String, Integer>>> weeklyCountByWeeks = new HashMap<>();
+		Map<String, Map<String, Integer>> totalCountByUsers = new HashMap<>();
+		List<String> userNamesList = new ArrayList<>();
 
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();	
+			Map<String, String> inOutParameterMap = new HashMap<>();	
 			inOutParameterMap.put("fromDate", fromDate);			
 			inOutParameterMap.put("toDate", toDate);
 			List<Map<String, Object>> mergeReportsListRaw = mergeUnMergePersonDAO.getMergeReportsByDailyStaff(inOutParameterMap);	
@@ -869,7 +869,7 @@ public class MergeUnMergePersonService {
 					if (dataMapByWeeks.get(mondayOfWeekString) != null) {
 						dataMapByWeeks.get(mondayOfWeekString).put(currentDateInMap, null);
 					} else {
-						Map<String, Map<String, Map<String, Integer>>> emptyRowsByDates = new LinkedHashMap<String, Map<String, Map<String, Integer>>>();
+						Map<String, Map<String, Map<String, Integer>>> emptyRowsByDates = new LinkedHashMap<>();
 						emptyRowsByDates.put(currentDateInMap, null);
 						dataMapByWeeks.put(mondayOfWeekString, emptyRowsByDates);
 					}
@@ -977,12 +977,12 @@ public class MergeUnMergePersonService {
 	public Map<String, Map<String, Map<String, Map<String, Integer>>>> getBadMergeReportsByDailyStaff(String fromDate, String toDate, Map<String, Object> map,
 			UserObject userObject) {
 		Map<String, Map<String, Map<String, Map<String, Integer>>>> dataMapByWeeks = new LinkedHashMap<String, Map<String, Map<String, Map<String, Integer>>>>();		
-		Map<String, Map<String, Map<String, Integer>>> weeklyCountByWeeks = new HashMap<String, Map<String, Map<String, Integer>>>();
-		Map<String, Map<String, Integer>> totalCountByUsers = new HashMap<String, Map<String, Integer>>();
-		List<String> userNamesList = new ArrayList<String>();
+		Map<String, Map<String, Map<String, Integer>>> weeklyCountByWeeks = new HashMap<>();
+		Map<String, Map<String, Integer>> totalCountByUsers = new HashMap<>();
+		List<String> userNamesList = new ArrayList<>();
 
 		try{
-			Map<String, String> inOutParameterMap = new HashMap<String, String>();	
+			Map<String, String> inOutParameterMap = new HashMap<>();	
 			inOutParameterMap.put("fromDate", fromDate);			
 			inOutParameterMap.put("toDate", toDate);
 			List<Map<String, Object>> mergeReportsListRaw = mergeUnMergePersonDAO.getBadMergeReportsByDailyStaff(inOutParameterMap);	
@@ -1008,7 +1008,7 @@ public class MergeUnMergePersonService {
 					if (dataMapByWeeks.get(mondayOfWeekString) != null) {
 						dataMapByWeeks.get(mondayOfWeekString).put(currentDateInMap, null);
 					} else {
-						Map<String, Map<String, Map<String, Integer>>> emptyRowsByDates = new LinkedHashMap<String, Map<String, Map<String, Integer>>>();
+						Map<String, Map<String, Map<String, Integer>>> emptyRowsByDates = new LinkedHashMap<>();
 						emptyRowsByDates.put(currentDateInMap, null);
 						dataMapByWeeks.put(mondayOfWeekString, emptyRowsByDates);
 					}

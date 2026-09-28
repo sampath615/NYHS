@@ -195,7 +195,7 @@ public class LabReportsTransactionHelper {
 		String typeOfResult = acceptedTestResultDomainVO.getTypeOfResult();
 		
 		
-		StringBuffer inputData = new StringBuffer();
+		StringBuilder inputData = new StringBuilder();
 		
 		inputData.append(typeOfResult).append(CONCAT_IND);
 		if(acceptedValue != null){
@@ -250,7 +250,7 @@ public class LabReportsTransactionHelper {
 	@Transactional
 	public void changeLoincMultiSpotDocuments(Integer[] documentIds, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameters = new HashMap<>();
 		inputOutputParameters.put("p_document_type", "HIV_LAB");
 		inputOutputParameters.put("p_new_doc_id", "");	
 		inputOutputParameters.put("p_workerId", userObject.getWorkerId());

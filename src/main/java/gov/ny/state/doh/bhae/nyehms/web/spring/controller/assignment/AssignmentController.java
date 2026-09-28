@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -117,7 +117,7 @@ public class AssignmentController {
 	@Autowired
 	DateUtil dateUtil;
 
-	private static final Map<Integer, String> monthMap = new HashMap<Integer, String>();
+	private static final Map<Integer, String> monthMap = new HashMap<>();
     
     
     
@@ -285,7 +285,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		documentTransactionHelper.processOOSUnknowndocument(documentId, 3, survAssessStatus, documentType,  userObject, bindingResult);
@@ -301,7 +301,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		commonDocumentService.updateSurvellianceAssignmentStatus(documentId, 11, userObject, bindingResult);
@@ -317,7 +317,7 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		return assignmentService.getAssignmentStatusByACRF(acrfDocId,  userObject, bindingResult);
@@ -475,7 +475,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult dummyBindingResult = new MapBindingResult(targetMap,
 				"Sample");
 
@@ -503,7 +503,7 @@ public class AssignmentController {
 		UserObject userObject = (UserObject) request.getSession().getAttribute(
 				"UserObj");
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,
 				"Sample");
 		
@@ -519,7 +519,7 @@ public class AssignmentController {
 		UserObject userObject = (UserObject) request.getSession().getAttribute(
 				"UserObj");
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,
 				"Sample");
 
@@ -537,7 +537,7 @@ public class AssignmentController {
 		UserObject userObject = (UserObject) request.getSession().getAttribute(
 				"UserObj");
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,
 				"Sample");
 		
@@ -553,7 +553,7 @@ public class AssignmentController {
 		UserObject userObject = (UserObject) request.getSession().getAttribute(
 				"UserObj");
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,
 				"Sample");
 
@@ -570,7 +570,7 @@ public class AssignmentController {
 		UserObject userObject = (UserObject) request.getSession().getAttribute(
 				"UserObj");
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,
 				"Sample");
 
@@ -711,7 +711,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, Object> dummyMindingMap = new HashMap<String, Object>();
+		Map<String, Object> dummyMindingMap = new HashMap<>();
 		BindingResult dummyBindingResult = new MapBindingResult(
 				dummyMindingMap, "Sample");
 
@@ -772,13 +772,13 @@ public class AssignmentController {
 		
 		if(userObject==null) userObject= new UserObject();
 
-		List<String> regionNames = new ArrayList<String>();
+		List<String> regionNames = new ArrayList<>();
 		
 		
 		String completeFromDate = null;
 		String completeToDate = null;
 		
-		List<String>  monthNames = new ArrayList<String>();
+		List<String>  monthNames = new ArrayList<>();
 		
 		Calendar end_calender = Calendar.getInstance();
 		Calendar start_calender = Calendar.getInstance();
@@ -1010,7 +1010,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(
 				targetMap, "Sample");
 		
@@ -1034,7 +1034,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(
 				targetMap, "Sample");
 		
@@ -1352,7 +1352,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult dummyBindingResult = new MapBindingResult(targetMap,"Sample");
 
 		assignmentService.reabAssign(reabAssignVO, dummyBindingResult,userObject, request.getSession().getId());
@@ -1373,7 +1373,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult dummyBindingResult = new MapBindingResult(targetMap,"Sample");
 		String comments = "";
 
@@ -1449,7 +1449,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult dummyBindingResult = new MapBindingResult(targetMap,"Sample");
 		assignmentService.updateReabActivityNStatus(assignmentId, "", "", "", reviewComments, "AREAB09", "", dummyBindingResult,userObject, request);
 
@@ -1470,7 +1470,7 @@ public class AssignmentController {
 		if (userObject == null)
 			userObject = new UserObject();
 
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap,"Sample");
 
 		assignReassignVO.setWorkerId(userObject.getWorkerId());

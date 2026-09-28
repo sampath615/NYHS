@@ -115,8 +115,8 @@ public class PreMatchHITSchedulerHelper {
 		try {
 
 			List<Map<String, String>> raceCodeList = hitCommonDocumentService.getRaceCodes();
-			Map<String, String> raceMap = new HashMap<String, String>();
-			Map<String, String> ethnicityMap = new HashMap<String, String>();
+			Map<String, String> raceMap = new HashMap<>();
+			Map<String, String> ethnicityMap = new HashMap<>();
 			for (Map<String, String> raceCode : raceCodeList) {
 				String _stdRaceValue = raceCode.get("RACE");
 				String _stdEthnicityValue = raceCode.get("ETHNICITY");
@@ -237,8 +237,8 @@ public class PreMatchHITSchedulerHelper {
 		try {
 
 			List<Map<String, String>> raceCodeList = hitCommonDocumentService.getRaceCodes();
-			Map<String, String> raceMap = new HashMap<String, String>();
-			Map<String, String> ethnicityMap = new HashMap<String, String>();
+			Map<String, String> raceMap = new HashMap<>();
+			Map<String, String> ethnicityMap = new HashMap<>();
 			for (Map<String, String> raceCode : raceCodeList) {
 				String _stdRaceValue = raceCode.get("RACE");
 				String _stdEthnicityValue = raceCode.get("ETHNICITY");
@@ -268,7 +268,7 @@ public class PreMatchHITSchedulerHelper {
 			//obj_SFTPChannel.cd(CURR_DIR);
 
 			@SuppressWarnings("unchecked")
-			List<ChannelSftp.LsEntry> xmlfilesList = new ArrayList<ChannelSftp.LsEntry>(obj_SFTPChannel.ls(SFTP_WORKING_DIR))  ;
+			List<ChannelSftp.LsEntry> xmlfilesList = new ArrayList<>(obj_SFTPChannel.ls(SFTP_WORKING_DIR))  ;
 			
 			//removes if any directory is in the list 
 			xmlfilesList = xmlfilesList.stream().filter(entry -> !entry.getAttrs().isDir())
@@ -299,7 +299,7 @@ public class PreMatchHITSchedulerHelper {
 				String ccdDoccumentString = outputter.outputString(ccdDocument);
 				log.error("File name {}", fileLSEntry.getFilename());
 
-				Map<String, Object> uphnData = new HashMap<String, Object>();
+				Map<String, Object> uphnData = new HashMap<>();
 				uphnData.put("p_fileName", fileName);
 				uphnData.put("p_dateCreated", dateCreated);
 				uphnData.put("p_fileSize", fileSize);
@@ -403,7 +403,7 @@ public class PreMatchHITSchedulerHelper {
 		 
 		 if(recordType.equals("CCD")) {
 			 	processingStage = "parse CCD";
-				Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParameters = new HashMap<>();
 				inputOutputParameters.put("p_document_type", "CCD");
 				inputOutputParameters.put("p_received_date", dateCreated);
 				
@@ -430,7 +430,7 @@ public class PreMatchHITSchedulerHelper {
 		 }else if(recordType.equals("HL7"))  {
 				processingStage = "parse HL7";
 
-				Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutputParameters = new HashMap<>();
 				inputOutputParameters.put("p_document_type", "HL7");
 				inputOutputParameters.put("p_received_date", dateCreated);
 				commonDocumentService.getNewDocId(inputOutputParameters);
@@ -487,8 +487,8 @@ public class PreMatchHITSchedulerHelper {
 		try {
 
 			List<Map<String, String>> raceCodeList = hitCommonDocumentService.getRaceCodes();
-			Map<String, String> raceMap = new HashMap<String, String>();
-			Map<String, String> ethnicityMap = new HashMap<String, String>();
+			Map<String, String> raceMap = new HashMap<>();
+			Map<String, String> ethnicityMap = new HashMap<>();
 			for (Map<String, String> raceCode : raceCodeList) {
 				String _stdRaceValue = raceCode.get("RACE");
 				String _stdEthnicityValue = raceCode.get("ETHNICITY");
@@ -656,7 +656,7 @@ public class PreMatchHITSchedulerHelper {
 	 */
 	public void writeRawHitRecordsToStd(String recordType, Map<String, String> schedulerMetaData,
 			List<JSONObject> schedulerStatusObject) {
-		Map<String, String> statusObject = new LinkedHashMap<String,String>();
+		Map<String, String> statusObject = new LinkedHashMap<>();
 		
 		if ("CCD".equals(recordType)
 				&& "Y".equals(schedulerMetaData.get("REQUIRED_TO_STORE_CCD_RECORDS_IN_STD_LAYER"))) {
@@ -791,7 +791,7 @@ public class PreMatchHITSchedulerHelper {
 		int raceErrorCounter = 0;
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Successfully stored all the Raw CCD records in the Standard layer";
-		List<String> failedToValidateDocuments = new ArrayList<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
 		int totalDocuments = rawccddocAddrList.size();
 		log.error("Writing Raw CCD data to Std table");
 
@@ -802,10 +802,10 @@ public class PreMatchHITSchedulerHelper {
 			statusObjectZeroCount.put(CommonConstants.TRANSACTION_STATUS, transactionStatus);
 			statusObjectZeroCount.put(CommonConstants.TRANSACTION_MESSAGE, transactionMessage);
 		} else {
-			List<Integer> validDocumentIds = new ArrayList<Integer>();
+			List<Integer> validDocumentIds = new ArrayList<>();
 			log.error("Total count of CCD's to parse in STD are {}", rawccddocAddrList.size());
 
-			Set<String> raceCodeErrors = new HashSet<String>();
+			Set<String> raceCodeErrors = new HashSet<>();
 			for (Map<Object, Object> stdCCDDocVo : rawccddocAddrList) {
 				try {
 					BigDecimal documentId = (BigDecimal) stdCCDDocVo.get("DOCUMENT_ID");
@@ -896,14 +896,14 @@ public class PreMatchHITSchedulerHelper {
 			List<JSONObject> schedulerStatusObject) {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Succesfully stored all the Raw HIE DTH records in the Standard layer";
-		List<String> failedToValidateDocuments = new ArrayList<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
 		int totalDocuments = rawExpDocList.size();
 		log.error("Writing Raw HIE_DTH data to Std table {}", totalDocuments);
 		if (totalDocuments == 0) {
 			log.error("No data available to store in Standard HIE_DTH table.");
 			return;
 		}
-		List<Integer> validDocumentIds = new ArrayList<Integer>();
+		List<Integer> validDocumentIds = new ArrayList<>();
 		JSONObject statusObject = new JSONObject();
 		// statusObject.put(CommonConstants.STATUS_ACTION_NAME, "Storing unique
 		// Raw CCD data in Standard table.");

@@ -33,7 +33,7 @@ public class CancerDocumentService {
 	public void processCancerDocument(long documentId, String stateno, Long clusterId, String match_cd,
 			BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 
 		inputParameterMap.put("DOCUMENT_ID", documentId);
 		inputParameterMap.put("STATENO", stateno);

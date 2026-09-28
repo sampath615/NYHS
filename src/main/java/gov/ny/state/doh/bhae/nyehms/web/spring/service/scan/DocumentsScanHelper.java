@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jcraft.jsch.SftpException;
 
@@ -28,7 +28,7 @@ public class DocumentsScanHelper {
 	
 	
 	@Transactional
-	public void saveScanDocumentToStateNoSFTP(String stateNo, String documentType, CommonsMultipartFile scannedFile,
+	public void saveScanDocumentToStateNoSFTP(String stateNo, String documentType, MultipartFile scannedFile,
 			BindingResult bindingResult, UserObject userObject) throws SftpException, Exception {
 		
 			int docId = documentsScanService.createTheScanDocumentDetailsInDb(stateNo, null, documentType, bindingResult, userObject);

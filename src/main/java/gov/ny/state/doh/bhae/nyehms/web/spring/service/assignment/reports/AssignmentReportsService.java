@@ -57,7 +57,7 @@ public class AssignmentReportsService {
 		
 		boolean isDataForALLRegions = false;
 		
-		Map<String, Map<String, Integer>> allRegionsMap = new TreeMap<String, Map<String, Integer>>();
+		Map<String, Map<String, Integer>> allRegionsMap = new TreeMap<>();
 		
 		if("ALL".equals(region)){
 			isDataForALLRegions = true;
@@ -122,11 +122,11 @@ public class AssignmentReportsService {
 					
 					if(assignmentsByRegion.get(regionCode) == null){
 						
-						Map<String, Map<String, Map<String, Integer>>> assignmentByWorker = new TreeMap<String, Map<String, Map<String, Integer>>>();
+						Map<String, Map<String, Map<String, Integer>>> assignmentByWorker = new TreeMap<>();
 						
-						Map<String, Map<String, Integer>> assignmentsByWorkerDocumentTypes = new TreeMap<String, Map<String, Integer>>();
+						Map<String, Map<String, Integer>> assignmentsByWorkerDocumentTypes = new TreeMap<>();
 						
-						Map<String, Integer> assignmentsByCategory = new TreeMap<String, Integer>();
+						Map<String, Integer> assignmentsByCategory = new TreeMap<>();
 						
 						Integer _currentOpenAssignmentsCount = resultSet.getInt("COUNT");
 						
@@ -193,7 +193,7 @@ public class AssignmentReportsService {
 						
 						Integer _current30DAYSCount = resultSet.getInt("30DAYS");
 						
-						Map<String, Integer> assignmentsByCategory = new TreeMap<String, Integer>();
+						Map<String, Integer> assignmentsByCategory = new TreeMap<>();
 						
 						assignmentsByCategory.put("OPEN", _currentOpenAssignmentsCount);
 						
@@ -239,7 +239,7 @@ public class AssignmentReportsService {
 					
 				}
 				if(isDataForALLRegions){
-					Map<String, Map<String, Map<String,Integer>>> _dummyAllRegionsMap = new HashMap<String, Map<String, Map<String,Integer>>>();
+					Map<String, Map<String, Map<String,Integer>>> _dummyAllRegionsMap = new HashMap<>();
 					_dummyAllRegionsMap.put("ALL", allRegionsMap);
 					assignmentsByRegion.put("ALL", _dummyAllRegionsMap);
 				}
@@ -285,7 +285,7 @@ public class AssignmentReportsService {
 		
 		boolean isDataForALLRegions = false;
 		//Map<All Region, Map<worker, Map<Month, count>>>		
-		Map<String, Map<String, Map<String, Integer>>> allRegionsMap = new TreeMap<String, Map<String, Map<String, Integer>>>();
+		Map<String, Map<String, Map<String, Integer>>> allRegionsMap = new TreeMap<>();
 		
 		if("ALL".equals(region)){
 			isDataForALLRegions = true;
@@ -336,13 +336,13 @@ public class AssignmentReportsService {
 					
 					if(assignmentsByRegion.get(regionCode) == null){
 						
-						Map<String, Map<String, Map<String, Integer>>> assignmentsByWorker = new TreeMap<String, Map<String, Map<String, Integer>>>();
+						Map<String, Map<String, Map<String, Integer>>> assignmentsByWorker = new TreeMap<>();
 						
 						
 						
-						Map<String, Map<String, Integer>> assignmentsByMonth = new HashMap<String, Map<String, Integer>>();
+						Map<String, Map<String, Integer>> assignmentsByMonth = new HashMap<>();
 						
-						Map<String, Integer> assignmentsByClosedStatus = new HashMap<String, Integer>();
+						Map<String, Integer> assignmentsByClosedStatus = new HashMap<>();
 						
 						
 						
@@ -570,7 +570,7 @@ public class AssignmentReportsService {
 			UserObject userObject){
 		
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		
 		String testType = null;
@@ -613,7 +613,7 @@ public class AssignmentReportsService {
 			UserObject userObject){
 		
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		String testType = null;
 		if("RESISTANCE".equals(documentType)){
@@ -654,7 +654,7 @@ public class AssignmentReportsService {
 			String toDate, String fileName, String documentType, String eharsStatus, String category,
 			BindingResult dummyBindingResult, UserObject userObject){
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		String testType = null;
 		if("RESISTANCE".equals(documentType)){
@@ -710,7 +710,7 @@ public class AssignmentReportsService {
 	public List<Map<String, String>> getAHIAssignmentsByRegionAndCategory(String regionId, String assignmentStatus,
 			String documentType, String ahiFlag, BindingResult dummyBindingResult, UserObject userObject){
 		
-		Map<String, String> inputData = new HashMap<String, String>();
+		Map<String, String> inputData = new HashMap<>();
 		
 		inputData.put("ahiFlag", ahiFlag);
 		inputData.put("regionId", regionId);
@@ -722,7 +722,7 @@ public class AssignmentReportsService {
 	
 	public List<Map<String, String>> getAssignmentAHIReports(String ahiFlag){
 		
-		Map<String, String> inputData = new HashMap<String, String>();
+		Map<String, String> inputData = new HashMap<>();
 		
 		inputData.put("ahiFlag", ahiFlag);
 
@@ -735,7 +735,7 @@ public class AssignmentReportsService {
 
 	public List<JSONObject> getAssignmentClosureStatusReport(String fromDate, String toDate, String regionCode, BindingResult dummyBindingResult, UserObject userObject) {
 
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		inputData.put("p_region_cd", regionCode);

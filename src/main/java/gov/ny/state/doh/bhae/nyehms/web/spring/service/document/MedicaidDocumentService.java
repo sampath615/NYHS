@@ -97,7 +97,7 @@ public class MedicaidDocumentService {
     	
     	
     	
-    	Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+    	Map<Object, Object> stdDocData = new HashMap<>();
     	
     	
     	BigDecimal document_id = (BigDecimal)docVO.get("DOCUMENT_ID");
@@ -137,28 +137,16 @@ public class MedicaidDocumentService {
     			
     			
     			switch (race_cd) {
-					case 0:
-						stdDocData.put("RACE_UNKNOWN",1);
-						break;
-					case 5:
+					case 0 -> stdDocData.put("RACE_UNKNOWN",1);
+					case 5 -> {
 						stdDocData.put("RACE_UNKNOWN",1);
 						stdDocData.put("ETHNICITY", LabCommonUtils.checkEthnicityData(_ethnicityCode));
-						break;
-					case 1:
-						stdDocData.put("RACE_WHITE",1);
-						break;
-					case 2:
-						stdDocData.put("RACE_BLACK",1);
-						break;
-					case 3:
-						stdDocData.put("RACE_ASIAN",1);
-						break;
-					case 4:
-						stdDocData.put("RACE_INDIAN",1);
-						break;
-					case 9:
-						stdDocData.put("RACE_OTHER",1);
-						break;
+					}
+					case 1 -> stdDocData.put("RACE_WHITE",1);
+					case 2 -> stdDocData.put("RACE_BLACK",1);
+					case 3 -> stdDocData.put("RACE_ASIAN",1);
+					case 4 -> stdDocData.put("RACE_INDIAN",1);
+					case 9 -> stdDocData.put("RACE_OTHER",1);
 					}
     		
     		}catch(NumberFormatException numberFormatException){

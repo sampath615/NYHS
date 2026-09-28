@@ -102,7 +102,7 @@ public class County {
         null, "Yates"
     };
     
-    public static final Map<String, String> nycGazToNameMap = new HashMap<String, String>();
+    public static final Map<String, String> nycGazToNameMap = new HashMap<>();
     
     static {
         nycGazToNameMap.put("93", "MANHATTAN");

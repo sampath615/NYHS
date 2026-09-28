@@ -39,7 +39,7 @@ public class LaftDetailsTransactionHelper {
 		
 		boolean status = false;
 		
-		List<Integer> statusCodes = new ArrayList<Integer>();
+		List<Integer> statusCodes = new ArrayList<>();
 		
 		if("undelete".equals(actionName)){
 			statusCodes.add(CommonConstants.RAW_RECORD_DELETED_PROCESS_STATUS);
@@ -62,7 +62,7 @@ public class LaftDetailsTransactionHelper {
 		
 			for (Integer statusCode : statusCodes) {
 				
-				Map<Object, Object> inputOutPutParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> inputOutPutParameterMap = new HashMap<>();
 				
 				inputOutPutParameterMap.put("statusCode" , statusCode);
 				

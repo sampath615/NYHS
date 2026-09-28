@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ public class NonCaseDocumentController {
 			@RequestParam int reason,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		documentTransactionHelper.createNonCaseDocument(triggeringDocId, comments, reason, bindingResult, userObject);
@@ -55,7 +55,7 @@ public class NonCaseDocumentController {
 			@RequestParam String comments,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		nonCaseDocumentService.addCommentsToNonCaseDoc(triggeringDocId, comments, bindingResult, userObject);
@@ -70,7 +70,7 @@ public class NonCaseDocumentController {
 			@RequestParam boolean flagActive,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		if(flagActive){
@@ -100,7 +100,7 @@ public class NonCaseDocumentController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO, @RequestParam String reason,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		nonCaseDocumentService.flagAsNonCase(
 				flaggedStatenoVO, reason, bindingResult, userObject);
@@ -123,7 +123,7 @@ public class NonCaseDocumentController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String newStateno = nonCaseDocumentService.unflagAsNonCase(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -147,7 +147,7 @@ public class NonCaseDocumentController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 				
 		List<Map<String, String>> nonCaseDocHistory = nonCaseDocumentService.getNonCaseDocHistory(stateNo,  bindingResult,  userObject);
@@ -163,7 +163,7 @@ public class NonCaseDocumentController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> nonCaseDocEharsStatenos = nonCaseDocumentService.getNonCaseEharsStatenos("No", bindingResult,  userObject);
@@ -181,7 +181,7 @@ public class NonCaseDocumentController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> nonCaseDocEharsStatenos = nonCaseDocumentService.getNonCaseEharsStatenos("Yes", bindingResult,  userObject);
@@ -199,7 +199,7 @@ public class NonCaseDocumentController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return "review/NonCaseFlaggedHistory";
@@ -211,7 +211,7 @@ public class NonCaseDocumentController {
 			HttpServletRequest request, @RequestParam(required=false) String FROM_DATE, @RequestParam(required=false) String TO_DATE, @RequestParam String ACTIVE_FLAG, UserObject userObject)
 	{
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 				
 		return nonCaseDocumentService.getNonCaseFlaggedHistory(FROM_DATE, TO_DATE, ACTIVE_FLAG, bindingResult,  userObject);

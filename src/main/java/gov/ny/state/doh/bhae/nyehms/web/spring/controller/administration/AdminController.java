@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class AdminController {
 	{	
 		NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO =new NyehmsWorkerRegionsViewVO();
 		map.put("nyehmsWorkerRegionsViewVO", nyehmsWorkerRegionsViewVO);
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Map<String, String> regionTypes = administrationService.getSrchregionTypes(bindingResult, userObject);
 		map.put("regionTypes", regionTypes);
@@ -92,7 +92,7 @@ public class AdminController {
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				administrationService.getSearchUsersList(
@@ -106,7 +106,7 @@ public class AdminController {
 	public @ResponseBody List<JSONObject> getUserCommentsList(@RequestParam String workerId,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return 
 				administrationService.getUserCommentsList(workerId,
@@ -130,7 +130,7 @@ public class AdminController {
 			@RequestParam long  workerId,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				administrationService.getRegionRoleByUserIdList(
@@ -152,7 +152,7 @@ public class AdminController {
 	public @ResponseBody GridObject getManageRegionRoleList(
 			@RequestParam long  workerId, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				administrationService.getRegionRoleByUserIdList(
@@ -174,7 +174,7 @@ public class AdminController {
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.addingNewRegionRole(
 				nyehmsWorkerRegionsViewVO , bindingResult, userObject);
@@ -194,7 +194,7 @@ public class AdminController {
 			@ModelAttribute("userRegionVO") UserRegionVO userRegionVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.updateOrRetireRegionRole(userRegionVO , bindingResult, userObject);
 		return targetMap;
@@ -213,7 +213,7 @@ public class AdminController {
 	public String getNewUserPage(
 			Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{	
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO =new NyehmsWorkerRegionsViewVO();
 		map.put("nyehmsWorkerRegionsViewVO", nyehmsWorkerRegionsViewVO);
@@ -252,7 +252,7 @@ public class AdminController {
 			Map<String, Object> map,
 			HttpServletRequest request, UserObject userObject)
 	{	
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Map<String, String> regionTypes = administrationService.getSrchregionTypes(bindingResult, userObject);
 		map.put("regionTypes", regionTypes);
@@ -276,10 +276,10 @@ public class AdminController {
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.validateUser(nyehmsWorkerRegionsViewVO , bindingResult, userObject);
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		if(bindingResult.hasErrors()){
 			List<ObjectError> errors = bindingResult.getAllErrors();
 			for(ObjectError error : errors){
@@ -317,7 +317,7 @@ public class AdminController {
 			@ModelAttribute("nyehmsWorkerRegionsViewVO") NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.creatingNewUserInHcsAndNyehms(
 				nyehmsWorkerRegionsViewVO , bindingResult, userObject);
@@ -337,7 +337,7 @@ public class AdminController {
 			@ModelAttribute("nyehmsUsersVO") NyehmsUsersVO nyehmsUsersVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.saveUserDetails(nyehmsUsersVO , bindingResult, userObject);
 		return targetMap;
@@ -358,7 +358,7 @@ public class AdminController {
 			@RequestParam String legacyUid,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		administrationService.terminateUserFromHCSAndDB(
 				workerId,legacyUid, bindingResult, userObject);
@@ -378,7 +378,7 @@ public class AdminController {
 			@RequestParam long workerId,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, Object> targetMap= new HashMap<String, Object>();
+		Map<String, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				administrationService.getUsersMacAddressAndRegionDetails(
@@ -404,7 +404,7 @@ public class AdminController {
 			@RequestParam String ACTION_NAME, Map<String, Object> map,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<Map<String, String>> notificationList = administrationService.getEmailNotificationList(ACTION_NAME , bindingResult, userObject);
 		
@@ -431,7 +431,7 @@ public class AdminController {
 	public @ResponseBody List<String> getUsersEmailList(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -443,7 +443,7 @@ public class AdminController {
 	public @ResponseBody Map<String, String> getWorkerId(Map<String, Object> map, HttpServletRequest request, @RequestParam String emailAddress, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -455,7 +455,7 @@ public class AdminController {
 	public @ResponseBody Map<Object, Object> saveUpdatedNotifications(Map<String, Object> map, HttpServletRequest request, @RequestParam String COLUMN_NAME, @RequestParam(required=false)  String TO_LIST, @RequestParam(required=false)  String CC_LIST, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		administrationService.saveUpdatedNotifications(COLUMN_NAME, TO_LIST, CC_LIST, bindingResult, userObject); 
@@ -469,7 +469,7 @@ public class AdminController {
 	public @ResponseBody List<String> getUserShortNameList(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return administrationService.getUserShortNameList(bindingResult, userObject);

@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,7 +212,7 @@ public class ClericalReviewController {
 	
 	@RequestMapping(value="/getDatafluxDocumentIdAndPotentialMatchesForStatenos.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getDatafluxDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
 		Map<String, Object> documentAndItsPotentialMatches = clericalReviewService.getDatafluxDocumentIdAndPotentialMatchesForStatenos(documentType, reviewType, bindingResult, userObject);
@@ -224,7 +224,7 @@ public class ClericalReviewController {
 	public @ResponseBody Map<Object, Object> matchDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, @RequestParam(required = false) Long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, @RequestParam String documentType, @RequestParam(required = false) String comments, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clericalReviewService.reviewDatafluxStagedDocuments(documentId, stateno, clusterId, fuzzyClusterId, datafluxMatchCd, documentType, comments, bindingResult, userObject);
@@ -239,7 +239,7 @@ public class ClericalReviewController {
 	public @ResponseBody Map<Object, Object> noMatchForDocumentToStatenoInDataFlux(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) long fuzzyClusterId, @RequestParam(required = false) Long clusterId, @RequestParam String datafluxMatchCd, String documentType, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clericalReviewService.reviewDatafluxStagedDocuments(documentId, null, clusterId, fuzzyClusterId, datafluxMatchCd, documentType, null, bindingResult, userObject);
@@ -410,7 +410,7 @@ public class ClericalReviewController {
 	
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenos.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenos(HttpServletRequest request, @RequestParam String documentType, @RequestParam String reviewType, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
 		Map<String, Object> documentAndItsPotentialMatches = clericalReviewService.getDocumentIdAndPotentialMatchesForStatenos(documentType, reviewType, bindingResult, userObject);
@@ -421,7 +421,7 @@ public class ClericalReviewController {
 	
 	@RequestMapping(value="/getOOCDocumentFileNames.json",  produces = "application/json")
 	public @ResponseBody List<JSONObject> getOOCDocumentFileNames(HttpServletRequest request, @RequestParam String fileType, @RequestParam int processStatus, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<JSONObject> fileNamesByFileType = ePRFOOCDocumentService.getOOCDocumentFileNames(fileType, processStatus, bindingResult, userObject);
@@ -432,7 +432,7 @@ public class ClericalReviewController {
 	
 	@RequestMapping(value="/getQualityStageStatusCodesForTheFileName.json",  produces = "application/json")
 	public @ResponseBody List<String> getQualityStageStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<String> qualitStageStatusCodes = clericalReviewService.getQualityStageStatusCodesForTheFileName(fileName, documentType, bindingResult, userObject);
@@ -446,7 +446,7 @@ public class ClericalReviewController {
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenosForQSReview.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForQSReview(HttpServletRequest request, UserObject userObject){
 		HttpSession session = request.getSession();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String FILTER_CRITERIA_STATUS = (String)session.getAttribute("FILTER_CRITERIA_STATUS");
@@ -462,7 +462,7 @@ public class ClericalReviewController {
 	@RequestMapping(value="/getDocumentIdAndPotentialMatchesForStatenosForDFReview.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForDFReview(HttpServletRequest request, UserObject userObject){
 		HttpSession session = request.getSession();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String FILTER_CRITERIA_STATUS = (String)session.getAttribute("FILTER_CRITERIA_STATUS");
@@ -477,7 +477,7 @@ public class ClericalReviewController {
 	
 	@RequestMapping(value="/getDFStatusCodesForTheFileName.json",  produces = "application/json")
 	public @ResponseBody List<String> getDFStatusCodesForTheFileName(HttpServletRequest request, @RequestParam String fileName, @RequestParam String documentType, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<String> qualitStageStatusCodes = clericalReviewService.getDFStatusCodesForTheFileName(fileName, documentType, bindingResult, userObject);
@@ -507,7 +507,7 @@ public class ClericalReviewController {
 	public @ResponseBody Map<Object, Object> matchDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, @RequestParam String stateno, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clericalReviewService.matchDocumentToStateno(documentId, stateno, bindingResult, userObject);
@@ -520,7 +520,7 @@ public class ClericalReviewController {
 	public @ResponseBody Map<Object, Object> noMatchForDocumentToStateno(HttpServletRequest request, @RequestParam long documentId, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clericalReviewService.noMatchForADocument(documentId, bindingResult, userObject);
@@ -533,7 +533,7 @@ public class ClericalReviewController {
 	public @ResponseBody Map<Object, Object> qualityStagedDocumentManualReview(HttpServletRequest request, @RequestParam long documentId, @RequestParam(required = false) String stateno, @RequestParam String matchCode, @RequestParam String documentType, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clericalReviewService.qualityStagedDocumentManualReview(documentId, stateno, matchCode, documentType, bindingResult, userObject);

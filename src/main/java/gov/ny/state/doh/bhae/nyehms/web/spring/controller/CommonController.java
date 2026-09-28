@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,7 +93,7 @@ public class CommonController {
 		if(userObject!=null && "Y".equals(EnvironmentProperties.envProperties.getProperty("byPass"))){
 			session.setAttribute("UserObj", userObject);
 			//If the User initialize object is not loaded loading the method to validate the USer details  
-			Map<String, String> targetMap= new HashMap<String, String>();
+			Map<String, String> targetMap= new HashMap<>();
 			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 			//set the User login date in the Date base to show the current logged in date for the next log in
 			commonService.setLoginDate(userObject.getWorkerId(), bindingResult);
@@ -182,7 +182,7 @@ public class CommonController {
 			@RequestParam String zip,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		AddressFieldVO addressFieldVO= new AddressFieldVO();				
 		addressFieldVO.setFieldName(fieldName.toUpperCase());
@@ -235,7 +235,7 @@ public class CommonController {
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		commonService.getAddressFieldsCombination(addressFieldVO, bindingResult, userObject);
 		return targetMap;
@@ -267,7 +267,7 @@ public class CommonController {
 			HttpServletRequest request, Map<String, Object> map)
 	{		
 		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		

@@ -36,7 +36,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery("INFANT_MATCH");
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));
 		
@@ -61,7 +61,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery("CLIMS_NONMATCH");
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));
 		
@@ -85,7 +85,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery("MOTHER_MATCH");
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));
 		
@@ -102,7 +102,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery("PERI_EXPO");
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));
 		
@@ -136,7 +136,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery(screenCode);
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));
 		
@@ -150,7 +150,7 @@ public class NBSReviewService {
 	}
 		
 	public void matchNBSDocumentToStateno(long documentId, String stateno, String reviewComments, BindingResult bindingResult, UserObject userObject) {
-			 Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+			 Map<String, Object> inOutParameterMap = new HashMap<>();
 			 
 			 inOutParameterMap.put("p_documentId", documentId);
 			 
@@ -182,7 +182,7 @@ public class NBSReviewService {
 	public void updateNBSExposureStatus(long documentId, String exposureStatus, String comments, BindingResult bindingResult,
 			UserObject userObject) {
 		
-			Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inOutParameterMap = new HashMap<>();
 			 
 			 inOutParameterMap.put("p_documentId", documentId);
 			 
@@ -235,7 +235,7 @@ public class NBSReviewService {
 	public void processNBSDocument(long documentId, String stateno, Long clusterId, String match_cd, String comments,  
 			BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("DOCUMENT_ID", documentId);
 		inputParameterMap.put("STATENO", stateno);
@@ -256,7 +256,7 @@ public class NBSReviewService {
 	
 	public Map<String, Object> getClimsDocumentDetailsForMatchReview(Integer documentId, BindingResult bindingResult,
 			UserObject userObject){
-		Map<String, Object> documentDetailsToReview = new HashMap<String, Object>();
+		Map<String, Object> documentDetailsToReview = new HashMap<>();
 		
 		try{
 		
@@ -296,7 +296,7 @@ public class NBSReviewService {
 	
 	public Map<String, Object> getNBSDocumentDetailsForMatchReview(Integer documentId, BindingResult bindingResult,
 			UserObject userObject){
-		Map<String, Object> documentDetailsToReview = new HashMap<String, Object>();
+		Map<String, Object> documentDetailsToReview = new HashMap<>();
 		
 		try{
 		
@@ -337,7 +337,7 @@ public class NBSReviewService {
 	
 	public Map<String, Boolean> checkForClimsRecId(String stateno, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Boolean> climsRecData = new HashMap<String, Boolean>();
+		Map<String, Boolean> climsRecData = new HashMap<>();
 		
 		
 		String climsPatientId  = nbsReviewDAO.getClimsPatientId(stateno);
@@ -371,7 +371,7 @@ public class NBSReviewService {
 			BindingResult bindingResult, UserObject userObject) {
 
 		int resultCount = 0;
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_documentId", documentId);
 		inputParameterMap.put("p_reviewComments", reviewComments);
 		inputParameterMap.put("p_hivFinalStatus", hivFinalStatus);
@@ -400,7 +400,7 @@ public class NBSReviewService {
 	public void updateStdNbsReviewComments(Integer documentId, String reviewComments, BindingResult bindingResult,
 			UserObject userObject) {
 		int resultCount = 0;
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_documentId", documentId);
 		inputParameterMap.put("p_reviewComments", reviewComments);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
@@ -427,7 +427,7 @@ public class NBSReviewService {
 	public void updateClimsReviewComments(Integer documentId, String reviewComments, BindingResult bindingResult,
 			UserObject userObject) {
 		int resultCount = 0;
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_documentId", documentId);
 		inputParameterMap.put("p_reviewComments", reviewComments);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
@@ -453,7 +453,7 @@ public class NBSReviewService {
 	
 	public void updateRawNBSData(Integer documentId, String reviewComments, BindingResult bindingResult, UserObject userObject) {
 		int resultCount = 0;
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_documentId", documentId);
 		inputParameterMap.put("p_reviewComments", reviewComments);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
@@ -479,7 +479,7 @@ public class NBSReviewService {
 	
 	public List<Map<String, Object>> getNBSSearchViewResults(String labId, String firstName, String lastName, String labNo,
 			String medRecordNumber, String dateOfBirth, String pfi, String gender, String weight, BindingResult bindingResult, UserObject userObject){
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		if(CommonUtil.isNotNullAndEmpty(labId)) {
 			inputParameterMap.put("p_labId", labId.replaceAll("\\*", "%"));			
 		}
@@ -514,7 +514,7 @@ public class NBSReviewService {
 	public void matchClimsDocumentToNBS(String patientId, long nbsDocumentId, String reviewComments,
 			BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_patientId", patientId);
 		inputParameterMap.put("p_nbsDocumentId", nbsDocumentId);
 		inputParameterMap.put("p_reviewComments", reviewComments);
@@ -543,7 +543,7 @@ public class NBSReviewService {
 		
 		Map<String, String> queryParameters = nbsReviewDAO.getPerinatalReviewQuery("CLIMS_MATCH_YR");
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 
 		StringBuilder sqlQuery = new StringBuilder(queryParameters.get("SCREEN_SQL"));

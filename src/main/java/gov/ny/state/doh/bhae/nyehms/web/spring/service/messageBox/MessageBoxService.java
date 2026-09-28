@@ -52,7 +52,7 @@ public class MessageBoxService {
         		allMessageList = messageBoxDAO.getSentMessages(userID.toUpperCase());
         	}
         	
-        	List<Object> listOfMessages = new ArrayList<Object>();
+        	List<Object> listOfMessages = new ArrayList<>();
         	
         	for (JSONObject messageVO : allMessageList) {
         		
@@ -97,7 +97,7 @@ public class MessageBoxService {
         	
         	String[] receiversList = receiver.split(",");
 
-            Map<Object, Object> map = new HashMap<Object, Object>();
+            Map<Object, Object> map = new HashMap<>();
 
             map.put("userID", userId.toUpperCase());
             map.put("receiversList", receiversList);
@@ -134,7 +134,7 @@ public class MessageBoxService {
         
         try {
             // create a map with all the parameters to pass to mybatis 
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("userId", userId.toUpperCase());
             map.put("messageId", messageId);
             resultCount = messageBoxDAO.setMessageRead(map);
@@ -170,7 +170,7 @@ public class MessageBoxService {
 
         try {
             // create a map with all the parameters to pass to mybatis 
-            Map<String, String> map = new HashMap<String, String>();
+            Map<String, String> map = new HashMap<>();
             map.put("userId", userId.toUpperCase());
             map.put("messageId", messageId);
             messageBoxDAO.deleteMessage(map);

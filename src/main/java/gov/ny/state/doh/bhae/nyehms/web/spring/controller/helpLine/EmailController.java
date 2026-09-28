@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public class EmailController {
 	@RequestMapping(value = "/processEmail", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> processEmail(HttpServletRequest request, UserObject userObject) {
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Integer statusCode = 0;

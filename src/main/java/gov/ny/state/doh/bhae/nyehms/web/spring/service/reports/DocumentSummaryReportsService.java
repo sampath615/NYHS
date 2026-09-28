@@ -74,7 +74,7 @@ public class DocumentSummaryReportsService {
 	public void generateWeeklyDocumentStatusSummaryReport() throws TemplateNotFoundException, MalformedTemplateNameException, freemarker.core.ParseException, IOException, TemplateException, SftpException, MessagingException  {
 
 		Configuration configuration=null;
-		Map<String, Map<String, List<JSONObject>>> finalData = new LinkedHashMap<String, Map<String, List<JSONObject>>>();
+		Map<String, Map<String, List<JSONObject>>> finalData = new LinkedHashMap<>();
 
 		ConverterProperties converterProperties = new ConverterProperties();
 		PdfWriter writer = null;
@@ -140,7 +140,7 @@ public class DocumentSummaryReportsService {
 			
 			String sqlQuery = (String)tableRefData.get("SQL_QUERY");
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("SQL_QUERY", sqlQuery);
 			
@@ -151,7 +151,7 @@ public class DocumentSummaryReportsService {
 			}
 			
 			
-			Map<String, List<JSONObject>> byDocument = new LinkedHashMap<String, List<JSONObject>>();
+			Map<String, List<JSONObject>> byDocument = new LinkedHashMap<>();
 			
 			for (Map<String, String> data : documentSummaryList) {
 				

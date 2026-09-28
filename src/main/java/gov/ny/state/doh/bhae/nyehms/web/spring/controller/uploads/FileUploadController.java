@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +125,7 @@ public class FileUploadController {
 	@RequestMapping(value="/getCurrentStatenoDataFile", method = RequestMethod.POST)
 	public ModelAndView  getCurrentStatenoDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, UserObject userObject){
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
@@ -168,7 +168,7 @@ public class FileUploadController {
 	@RequestMapping(value="/getSTATENOHistoryDataFile", method = RequestMethod.POST)
 	public ModelAndView  getSTATENOHistoryDataFile(HttpServletRequest request, @RequestParam("fileData") MultipartFile fileData, HttpServletResponse response, UserObject userObject){
 		
-		Map<String, String> targetMap = new HashMap<String, String>();
+		Map<String, String> targetMap = new HashMap<>();
 		
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
@@ -417,7 +417,7 @@ public class FileUploadController {
 		String clusterType = clusterUploadVO.getClusterType();
 		boolean isClusterIdExist = false;
 		String clusterId = null;
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		
 		if (CommonUtil.isNotNullAndEmpty(uploadType) && uploadType.equalsIgnoreCase("N")) {
 			clusterUploadVO.setExistingClusterId("");

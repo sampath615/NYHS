@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class PSMessageController {
 			@RequestParam String MSG_TYPE_NAME, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -70,7 +70,7 @@ public class PSMessageController {
 			@RequestParam  long triggerDocId, @RequestParam String actionName, @RequestParam String comments, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		psMessageReviewService.updatePsMessageReviewStatus(triggerDocId, actionName, comments, bindingResult, userObject);
@@ -190,7 +190,7 @@ public class PSMessageController {
 			HttpServletResponse response,
 			Map<String, Object> map, UserObject userObject) {
 		
-			Map<Object, Object> targetMap= new HashMap<Object, Object>();
+			Map<Object, Object> targetMap= new HashMap<>();
 			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 			
 			List<Map<String, String>> psOOCExpsReport = psMessageReviewService.getPSOOCExpsReport(fromDate, toDate, messageCounty, bindingResult, userObject, null);

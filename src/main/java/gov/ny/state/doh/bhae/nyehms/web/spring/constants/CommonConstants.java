@@ -278,7 +278,7 @@ public class CommonConstants {
 	public static final String JAROT_USERNAME = "JAROT_USERNAME";
 	public static final String JAROT_PASSWORD = "JAROT_PASSWORD";
 	
-	public static final Set<String> NY_CITY_COUNTIES = new HashSet<String>(Arrays.asList(
+	public static final Set<String> NY_CITY_COUNTIES = new HashSet<>(Arrays.asList(
 		     new String[] {"061", "005", "047", "081", "085"}
 		));
 	

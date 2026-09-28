@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -88,7 +88,7 @@ public class DeathDocumentService {
 				stdDeathDocVO.setCauseOfDeath("HIV Cause of Death");
 			}else {
 				
-				Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("docId", docId);
 				inputParameterMap.put("TABLE_NAME", "STD_DEATH_DOC");
@@ -130,7 +130,7 @@ public class DeathDocumentService {
 		final String DASH = "-";
 		final String DASHDASH = "--";
 
-		Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+		Map<Object, Object> stdDocData = new HashMap<>();
 		String NCHS_FORMAT = (String) docVO.get("NCHS_FORMAT");
 
 		stdDocData.put("DOCUMENT_ID", docVO.get("DOCUMENT_ID"));
@@ -583,7 +583,7 @@ public class DeathDocumentService {
 	 * @param stdDocData output fields to store into STD_DEATH_DOC
 	 */
 	public static void updateStdCausesAndAlsoHCause(Map<Object, Object> docVo, Map<Object, Object> stdDocData) {
-		Set<String> hCauseSet = new HashSet<String>(); 
+		Set<String> hCauseSet = new HashSet<>(); 
 		String icd10Code = (String)docVo.get("ICD10");
 		if (CommonUtil.isNotNullAndEmpty(icd10Code)) {hCauseSet.add(updateStdCauseAndGetHCause("ICD10", icd10Code, stdDocData));}
 		String underlyingCode = (String)docVo.get("UNDERLYING");

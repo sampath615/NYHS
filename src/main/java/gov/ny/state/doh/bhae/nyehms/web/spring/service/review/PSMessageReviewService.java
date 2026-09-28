@@ -51,7 +51,7 @@ public class PSMessageReviewService {
 	 */
 	public List<JSONObject> getPsMessageReviewDocuments(String RESOLVED_STATUS, String PARAMETER_NAME,String MSG_TYPE_NAME, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("RESOLVED_STATUS", RESOLVED_STATUS);
 		if(CommonUtil.isNotNullAndEmpty(PARAMETER_NAME)) {
@@ -74,7 +74,7 @@ public class PSMessageReviewService {
 	public void updatePsMessageReviewStatus(long triggerDocId, String actionName, String comments, BindingResult bindingResult,
 			UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_trigger_doc_id", triggerDocId);
 		inOutParameterMap.put("p_comments", comments);
@@ -114,7 +114,7 @@ public class PSMessageReviewService {
 	
 	public List<Map<String, String>> savePSMessageComments(String comments, Integer dOCUMENT_ID, UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_documentId", dOCUMENT_ID);
 		inOutParameterMap.put("p_comments", comments);
@@ -128,7 +128,7 @@ public class PSMessageReviewService {
 	
 	public List<Map<String, String>> saveLAFTMessageComments(String comments,String reason, Integer dOCUMENT_ID, UserObject userObject) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_comments", comments);
 		inOutParameterMap.put("p_reason", reason);
@@ -152,7 +152,7 @@ public class PSMessageReviewService {
 		
 		JSONObject psMessageReport = new JSONObject();
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 
 		inputParameterMap.put("p_fromDate", fromDate);
 		inputParameterMap.put("p_toDate", toDate);
@@ -162,9 +162,9 @@ public class PSMessageReviewService {
 		
 		
 		
-		Map<String, Object> countyTotalMap = new LinkedHashMap<String, Object>();
-		Map<String, Object> metricTotalMap = new LinkedHashMap<String, Object>();
-		Map<String, Map<String, Object>> weekTotalByCountyMap = new LinkedHashMap<String, Map<String, Object>>(); 
+		Map<String, Object> countyTotalMap = new LinkedHashMap<>();
+		Map<String, Object> metricTotalMap = new LinkedHashMap<>();
+		Map<String, Map<String, Object>> weekTotalByCountyMap = new LinkedHashMap<>(); 
 		
 		for (Map<String, Object> map : psMessageReportList) {
 			
@@ -259,7 +259,7 @@ public class PSMessageReviewService {
 		
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if(CommonUtil.isNotNullAndEmpty(messageCounty) && messageCounty.indexOf("ALL") != -1) {
 			inputParameterMap.put("ALL_COUNTIES", true);
@@ -282,7 +282,7 @@ public class PSMessageReviewService {
 	
 	public List<Map<String, String>> getPSOOCExpsReport(String fromDate, String toDate, String messageCounty,
 			BindingResult dummyBindingResult, UserObject userObject, Object object){
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if(CommonUtil.isNotNullAndEmpty(messageCounty) && messageCounty.indexOf("ALL") != -1) {
 			inputParameterMap.put("ALL_COUNTIES", true);

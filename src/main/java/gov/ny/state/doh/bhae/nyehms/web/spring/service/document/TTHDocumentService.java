@@ -44,7 +44,7 @@ public class TTHDocumentService {
 		boolean rollbackFlag=false;
 		int newDocId=0;
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_type", "TTH");
 		map.put("p_new_doc_id", "");	
 		try{			

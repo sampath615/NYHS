@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class ClusterPartnerReviewController {
 		//session.setAttribute("FILTER_CRITERIA_FILE_NAME", null);
 		map.put("DOCUMENT_TYPE", "CLUST_PART");
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<String> clusterPartnerIdList = clusterPartnerReviewService.getClusterPartnerIdList("ALL", bindingResult, userObject);
@@ -63,7 +63,7 @@ public class ClusterPartnerReviewController {
 	
 	@RequestMapping(value="/getClusterPartnerIdList.json",  produces = "application/json")
 	public @ResponseBody List<String> getClusterPartnerIdList(HttpServletRequest request, @RequestParam String statusCode, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		List<String> clusterPartnerIdList = clusterPartnerReviewService.getClusterPartnerIdList(statusCode, bindingResult, userObject);
@@ -113,7 +113,7 @@ public class ClusterPartnerReviewController {
 	public String resolveClusterFiles(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 		
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<String> clusterPartnerIdList = clusterPartnerReviewService.getClusterPartnerIdList("ALL", bindingResult, userObject);
@@ -128,7 +128,7 @@ public class ClusterPartnerReviewController {
 	public String updateClusterFile(HttpServletRequest request, Map<String, Object> map, @RequestParam String clusterPartnerId, @RequestParam String clusterFileResolveDate, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterPartnerReviewService.updateClusterFile(clusterPartnerId, clusterFileResolveDate, bindingResult, userObject);
@@ -150,7 +150,7 @@ public class ClusterPartnerReviewController {
 	@RequestMapping(value="/getClusterPartnerDocumentIdReviewDetails.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getClusterPartnerDocumentIdReviewDetails(HttpServletRequest request, //@RequestParam String qualityStageStatus,
 			@RequestParam String clusterPartnerId, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, Object> documentAndItsPotentialMatches = clusterPartnerReviewService.getClusterPartnerDocumentIdReviewDetails(
@@ -163,7 +163,7 @@ public class ClusterPartnerReviewController {
 	public @ResponseBody Map<Object, Object> discardClericalReviewDocument(HttpServletRequest request, @RequestParam long documentId, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterPartnerReviewService.discardClericalReviewDocument(documentId, bindingResult, userObject);
@@ -177,7 +177,7 @@ public class ClusterPartnerReviewController {
 			String datafluxMatchCd, @RequestParam String INS_CLUSTER, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterPartnerReviewService.processClusterPartnerDocument(documentId, stateno, datafluxMatchCd, INS_CLUSTER, bindingResult, userObject);
@@ -193,7 +193,7 @@ public class ClusterPartnerReviewController {
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterPartnerReviewService.triggerClusterPSMessage(documentId, reason, otherReason, addressFieldVO, bindingResult, userObject);
@@ -208,7 +208,7 @@ public class ClusterPartnerReviewController {
 	public @ResponseBody Map<Object, Object> rejectClusterPSMessage(HttpServletRequest request, @RequestParam long documentId, @RequestParam String rejectReason, @RequestParam(required = false) String OtherRejectReason, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterPartnerReviewService.rejectClusterPSMessage(documentId, rejectReason, OtherRejectReason, bindingResult, userObject);
@@ -234,7 +234,7 @@ public class ClusterPartnerReviewController {
 	public String psMessageReasons(
 			Map<String, Object> map, HttpServletRequest request, @RequestParam String reasonType)
 	{
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("REASON_TYPE", reasonType);
 		
 		List<Map<String, String>> psMessageReasonList = clusterPartnerReviewService.getPSMessageReasons(inputParameterMap);
@@ -252,7 +252,7 @@ public class ClusterPartnerReviewController {
 	public @ResponseBody List<Map<String, Object>> getClusterNoPSRecords(HttpServletRequest request, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return clusterPartnerReviewService.getClusterNoPSRecords(bindingResult, userObject);

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +87,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -105,7 +105,7 @@ public class LabReportsController {
 	public @ResponseBody String getLastImportedEclrsDate(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String lastEcrlsImportDate = reportsService.getlastEcrlsImportDate(pfi, bindingResult, userObject);
@@ -168,7 +168,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> permitCodeAndDescriptionMap = reportsService.getActiveAssociatedPermitCodeAndDescriptionDetails(pfi, bindingResult, userObject);
@@ -189,7 +189,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> permitCodeAndDescriptionMap = reportsService.getPermitCodesAndDescriptionsForEdit(bindingResult, userObject);
@@ -214,7 +214,7 @@ public class LabReportsController {
 	@RequestMapping("/addLabCommunication")
 	public String addLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {	
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");	
 		
 		List<JSONObject> communicationTypes = reportsService.getInteractionContactTypes(bindingResult, userObject);		
@@ -229,7 +229,7 @@ public class LabReportsController {
 	@RequestMapping("/updateLabCommunication")
 	public String updateLabCommunication(Map<String, Object> map, HttpServletRequest request, @RequestParam String labInteractionId, UserObject userObject) {
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");	
 		
 		List<JSONObject> communicationTypes = reportsService.getInteractionContactTypes(bindingResult, userObject);		
@@ -247,7 +247,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -272,7 +272,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> loincCodeAndDescriptionMap = reportsService.getActiveAndNonAssociatedLabLoincDescriptionDetails(pfi, bindingResult, userObject);		
@@ -299,7 +299,7 @@ public class LabReportsController {
 		
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> loincCodeAndDescriptionMap = reportsService.getActiveAssociatedLabLoincDescriptionDetails(labLoincMappingVO.getPfi(), bindingResult, userObject);		
@@ -324,7 +324,7 @@ public class LabReportsController {
 	public String addLabLocalCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> loincCodeAndDescriptionMap = reportsService.getActiveAssociatedLabLoincDescriptionDetails(pfi, bindingResult, userObject);
@@ -354,7 +354,7 @@ public class LabReportsController {
 	public String addLabLocalTestCode(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		//Map<String, String> testCodeAndDescriptionMap = reportsService.getActiveAssociatedLabLoincDescriptionDetails(pfi, bindingResult, userObject);
@@ -386,7 +386,7 @@ public class LabReportsController {
 			@RequestParam String  endDate, HttpServletRequest request, Map<String, Object> map, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 
@@ -402,7 +402,7 @@ public class LabReportsController {
 	public String getWorkerMetricsReport(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return "reports/workerMetrics/workerMetrics";
@@ -418,7 +418,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getMatchedProviderDetails(Map<String, Object> map, HttpServletRequest request,@RequestParam  String providerName, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -434,7 +434,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> changeCliaForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String clia, @RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -449,7 +449,7 @@ public class LabReportsController {
 	public @ResponseBody List<String> getLoincsForPfi(Map<String, Object> map, HttpServletRequest request,@RequestParam  String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return reportsService.getLoincsForPfi(bindingResult, userObject, pfi);
@@ -462,7 +462,7 @@ public class LabReportsController {
 	public @ResponseBody JSONObject getLoincReferenceValues(Map<String, Object> map, HttpServletRequest request,@RequestParam  String loincCode, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return reportsService.getLoincReferenceValues(bindingResult, userObject, loincCode);
@@ -480,7 +480,7 @@ public class LabReportsController {
 		
 		HttpSession session = request.getSession();
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		
@@ -516,7 +516,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getClinicalLaboratoriesWithFacilities(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO, @RequestParam String clia, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<ClinicalLaboratoryVO> labSearchResult = reportsService.getLabSearchResults(bindingResult, userObject, clia, labFacilitiesVO);
@@ -533,7 +533,7 @@ public class LabReportsController {
 
 		HttpSession session = request.getSession();
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -558,7 +558,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabPermitDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -575,7 +575,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewContactToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -593,7 +593,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewSubmissionTypeToFacility(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -611,7 +611,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabSubmissionTypeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labSubmissionTypeVO") LabSubmissionTypeVO labSubmissionTypeVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -628,7 +628,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabContactDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labNewContactVO") LabNewContactVO labNewContactVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -645,7 +645,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabCommunicationDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		reportsService.updateLabCommunicationDetails(bindingResult, userObject, labInteractionHistoryVO);
@@ -657,7 +657,7 @@ public class LabReportsController {
 	public @ResponseBody List<JSONObject> loadPFIContacts(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -674,7 +674,7 @@ public class LabReportsController {
 	public @ResponseBody List<JSONObject> loadPFISubmissionTypesDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -694,7 +694,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabInstrumentDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labInstrumentDetailsVO") LabInstrumentDetailsVO labInstrumentDetailsVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -711,7 +711,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabLoincCodeDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -730,7 +730,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabLocalCodeDetails(@ModelAttribute("labLocalCodesMappingVO") LabLocalCodesMappingVO labLocalCodesMappingVO, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -747,7 +747,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabLocalCodeLoincDetails(@ModelAttribute("labLocalCodesMappingVO") LabLoincMappingVO labLoincMappingVO, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -763,7 +763,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabLocalCodeMappingDetails(@ModelAttribute("labTestMappingVO") LabTestMappingVO labTestMappingVO, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -781,7 +781,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewPermitToFacility(HttpServletRequest request, @ModelAttribute("labPermitsVO") LabPermitsVO labPermitsVO , UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -797,7 +797,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewCommunicationToFacility(HttpServletRequest request, @ModelAttribute("labInteractionHistoryVO") LabInteractionHistoryVO labInteractionHistoryVO , UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.addNewCommunicationToFacility(labInteractionHistoryVO, bindingResult, userObject);
@@ -810,7 +810,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewInstrumentToPermit(@RequestParam long labPermitId,@RequestParam long instrumentId, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -827,7 +827,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.addNewLabLoincToFacility(labLoincMappingVO, bindingResult, userObject);
@@ -840,7 +840,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLabLoincToFacility(HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.updateLabLoincToFacility(labLoincMappingVO, bindingResult, userObject);
@@ -853,7 +853,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewLabTestToFacility(@RequestParam long localCodeMapId, @RequestParam  String testDescription, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.addNewLabTestToFacility(localCodeMapId, testDescription, dateValidFrom, dateValidTill, bindingResult, userObject);
@@ -867,7 +867,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addNewLabLocalCodeToFacility(@RequestParam String pfi,@RequestParam  String localCode,@RequestParam("loincCodes[]")  long[] loincCodes, @RequestParam String dateValidFrom, @RequestParam(required = false) String dateValidTill, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -885,7 +885,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> updateLoincDetailsOfLocalCode(@RequestParam long localCodeMapId,@RequestParam  String pfi,@RequestParam("loincCodes[]")  long[] loincCodes, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -901,7 +901,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> saveLabFacilityDetails(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labFacilitiesVO") LabFacilitiesVO labFacilitiesVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.saveLabFacilityDetails(bindingResult, userObject, labFacilitiesVO);
@@ -914,7 +914,7 @@ public class LabReportsController {
 	public String getInteractionHistory(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<JSONObject> communicationTypes = reportsService.getInteractionContactTypes(bindingResult, userObject);
@@ -931,7 +931,7 @@ public class LabReportsController {
 	@RequestMapping(value="/getLabInteractionHistoryData.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<LabInteractionHistoryVO> getLabInteractionHistoryData(HttpServletRequest request, @RequestParam String pfi, UserObject userObject){
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -944,7 +944,7 @@ public class LabReportsController {
 	@RequestMapping(value="/getLabCommunicationHistoryData.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<LabInteractionHistoryVO> getLabCommunicationHistoryData(HttpServletRequest request, @RequestParam String pfi, UserObject userObject){
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -958,7 +958,7 @@ public class LabReportsController {
 	@RequestMapping(value="/addLabInteractionNotes.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> addLabInteractionNotes(HttpServletRequest request, @RequestParam String pfi, @RequestParam String interactionNotes, @RequestParam String interactionContactType, UserObject userObject){
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.addLabInteractionNotes(pfi, interactionNotes, interactionContactType, bindingResult, userObject);
@@ -969,7 +969,7 @@ public class LabReportsController {
 	@RequestMapping(value="/addNewAlternativeContact.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> addNewAlternativeContact(HttpServletRequest request, @RequestParam String pfi, @RequestParam String alternativeContactName, @RequestParam String alternativeContactPhone, @RequestParam String alternativeContactEmail, @RequestParam String alternativeContactFax, UserObject userObject){
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.addNewAlternativeContactTOPFI(pfi, alternativeContactName, alternativeContactPhone, alternativeContactEmail, alternativeContactFax, bindingResult, userObject);
@@ -984,11 +984,11 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> addLabDetails(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		JsonArray facilityDetails = null;
 		
-		List<LabFacilitiesVO> facilityDetailsObject = new ArrayList<LabFacilitiesVO>();
+		List<LabFacilitiesVO> facilityDetailsObject = new ArrayList<>();
 		if(request.getParameter("facilityDetails")!=null){
 			JsonParser parser = new JsonParser();
 			facilityDetails = (JsonArray)parser.parse(request.getParameter("facilityDetails"));
@@ -1012,7 +1012,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getClinicalLabarotories(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<String> clinicalLabaratoriesList = reportsService.getClinicalLabarotories(bindingResult, userObject);
@@ -1028,7 +1028,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getFacilitiesDataForClia(Map<String, Object> map, HttpServletRequest request, @RequestParam String clia, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<LabFacilitiesVO> facilitiesListForClia = transactionService.getFacilitiesDataAndContactsAssociatedForClia(bindingResult, userObject, clia);
@@ -1045,7 +1045,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> checkPFIExistence(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.checkPFIExistence(bindingResult, userObject, pfi);
@@ -1058,7 +1058,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> deleteContactForPFI(Map<String, Object> map, HttpServletRequest request, @RequestParam String contactId, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.deleteContactForPFI(bindingResult, userObject, contactId);
@@ -1073,7 +1073,7 @@ public class LabReportsController {
 			@RequestParam String pfi, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		reportsService.deleteSubmissionType(bindingResult, userObject, submissionTypeId, pfi);
@@ -1097,7 +1097,7 @@ public class LabReportsController {
 	public @ResponseBody List<Map<String, Object>> loadMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam String pfi, @RequestParam String loincs, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		return labDocumentService.loadMultiSpotDocuments(bindingResult, userObject, pfi, loincs);
@@ -1109,7 +1109,7 @@ public class LabReportsController {
 	public @ResponseBody Map<Object, Object> processMultiSpotDocuments(Map<String, Object> map, HttpServletRequest request, @RequestParam("multiSpotDocuments[]")  int[] multiSpotDocuments, @RequestParam int retainDocumentId, @RequestParam int loincGroupId, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		labDocumentService.processMultiSpotDocuments(bindingResult, userObject, multiSpotDocuments, retainDocumentId, loincGroupId);
@@ -1137,7 +1137,7 @@ public class LabReportsController {
 	public String labListByApprovalStatus(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		JSONObject approvalStatusJsonObj = reportsService.getApprovalStatus(bindingResult, userObject);
@@ -1152,7 +1152,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getLabListByApporvalStatusData(HttpServletRequest request, @RequestParam String approvalStatus, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		GridObject jsonResponse = getGridObject.GetGrid( reportsService.getListOfLabsByApprovalStatus(userObject, bindingResult, approvalStatus));
@@ -1171,7 +1171,7 @@ public class LabReportsController {
 	public @ResponseBody GridObject getCountOfLabsByApporvalStatusData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(reportsService.getCountOfLabsByApprovalStatus(userObject, bindingResult));

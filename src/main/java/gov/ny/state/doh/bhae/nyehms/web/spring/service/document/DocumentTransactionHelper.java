@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -205,7 +205,7 @@ public class DocumentTransactionHelper {
 		if(resultCount == 0){
 			throw new DataRetrievalFailureException("Failed to update the delete status in Raw Hiv table while editing the Error document  ");
 		}
-		Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameters = new HashMap<>();
 		inputOutputParameters.put("p_document_type", "HIV_LAB");
 		inputOutputParameters.put("p_new_doc_id", "");	
 		inputOutputParameters.put("p_parent_doc_id", currentDocumentId);
@@ -257,7 +257,7 @@ public class DocumentTransactionHelper {
 	 */
 	public Map<String, Object> getStatenoDetailsOfStateno(Integer docId, String stateno, String origin, UserObject userObject)
 	{
-		Map<String, Object> statenoDetails = new HashMap<String, Object>(); 
+		Map<String, Object> statenoDetails = new HashMap<>(); 
 		List<String> nycCitnoList = personService.getNycCityNoDetails(stateno, null, userObject);
 		
 		statenoDetails.put("NYEHMS_STATENO", stateno);
@@ -321,7 +321,7 @@ public class DocumentTransactionHelper {
 			
 			int currentDocumentId = pRFDocumentVO.getDOCUMENT_ID();
 			
-			Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameters = new HashMap<>();
 			inputOutputParameters.put("p_document_type", "PRF");
 			inputOutputParameters.put("p_new_doc_id", "");	
 			inputOutputParameters.put("p_parent_doc_id", currentDocumentId);
@@ -634,7 +634,7 @@ public class DocumentTransactionHelper {
 		
 		String parentDocumentType = LabCommonUtils.getDocumentType(documentType);
 		
-		Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameters = new HashMap<>();
 		inputOutputParameters.put("p_document_type", parentDocumentType);
 		inputOutputParameters.put("p_new_doc_id", "");	
 		inputOutputParameters.put("p_parent_doc_id", documentId);
@@ -704,7 +704,7 @@ public class DocumentTransactionHelper {
 		
 		commonDocumentService.moveStdDocumentToDocAttrTables((String)personDocData.get("STATENO"), newDocumentId, userObject, parentDocumentType, null);
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		BigDecimal PS_ASSIGN_STATUS = (BigDecimal)personDocData.get("PS_ASSESS_STATUS");
 		
@@ -818,7 +818,7 @@ public class DocumentTransactionHelper {
 			 
 			 Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
 			 
-			 List<Integer> errorCodes = new ArrayList<Integer>();
+			 List<Integer> errorCodes = new ArrayList<>();
 			 
 			 quartzSchedulerTransactionHelper.validatingRawRecord(ecrlsLabDocVO, errors, errorCodes, stdEcrlsLabDocVO, schedulerMetaData);
 			 
@@ -994,7 +994,7 @@ public class DocumentTransactionHelper {
 			}
 		}
 		String parentDocumentType = LabCommonUtils.getDocumentType(documentType);
-		Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameters = new HashMap<>();
 		inputOutputParameters.put("p_document_type", parentDocumentType);
 		inputOutputParameters.put("p_new_doc_id", "");	
 		inputOutputParameters.put("p_parent_doc_id", documentId);
@@ -1030,8 +1030,8 @@ public class DocumentTransactionHelper {
 
 		if("HIV_LAB".equals(parentDocumentType)){
 			EcrlsLabDocVO ecrlsLabDocVO = labDocumentService.getHivLabDoc(newDocumentId, bindingResult, userObject, userObject.getSessionId());
-			List<String> errors = new ArrayList<String>();
-			List<Integer> errorCodes = new ArrayList<Integer>();
+			List<String> errors = new ArrayList<>();
+			List<Integer> errorCodes = new ArrayList<>();
 			StdEcrlsLabDocVO stdEcrlsLabDocVO = new StdEcrlsLabDocVO();
 			Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
 			String errorStatus = ""; 
@@ -1049,7 +1049,7 @@ public class DocumentTransactionHelper {
 				errorStatus = "HARD";
 			}
 			if(errors.size() > 0){
-				StringBuffer outputMessage = new StringBuffer();
+				StringBuilder outputMessage = new StringBuilder();
 				outputMessage.append("<span class='documentErrorMessages'>");
 				for (String error : errors) {
 					outputMessage.append(error);
@@ -1133,7 +1133,7 @@ public class DocumentTransactionHelper {
 		BigDecimal PS_ASSIGN_STATUS = (BigDecimal)personDocData.get("PS_ASSESS_STATUS");
 		BigDecimal SURV_ASSESS_STATUS = (BigDecimal)personDocData.get("SURV_ASSESS_STATUS");
 		BigDecimal SURV_ASSIGNMENT_ID = (BigDecimal)personDocData.get("SURV_ASSIGNMENT_ID");
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		if(PS_ASSIGN_STATUS != null && PS_ASSIGN_STATUS.intValue() != 0){
 			commonDocumentService.updateTriggeringDocumentIdInNyehmsMessage(documentId, newDocumentId);
 			inputParameterMap.put("PS_ASSIGN_STATUS", PS_ASSIGN_STATUS);
@@ -1273,7 +1273,7 @@ public class DocumentTransactionHelper {
 		
 		
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_type", "AHI");
 		map.put("p_new_doc_id", "");
 		
@@ -1483,7 +1483,7 @@ public class DocumentTransactionHelper {
 				throw new DataRetrievalFailureException("Failed to update the delete status in Raw Hiv table while editing the Provider details");
 			}
 			
-			Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameters = new HashMap<>();
 			inputOutputParameters.put("p_document_type", "HIV_LAB");
 			inputOutputParameters.put("p_new_doc_id", "");	
 			inputOutputParameters.put("p_parent_doc_id", currentDocumentId);
@@ -1515,7 +1515,7 @@ public class DocumentTransactionHelper {
 	@Transactional
 	public void insertICCRRawData(ICCRDataEntryVO iccrDataEntryVO, UserObject userObject, BindingResult bindingResult) throws SQLException {
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_type", "ICCR");
 		map.put("p_new_doc_id", "");
 		map.put("p_parent_doc_id", "");
@@ -1571,7 +1571,7 @@ public class DocumentTransactionHelper {
 				throw new DataRetrievalFailureException("Failed to update the delete status in Raw Hiv table while editing the Units of measurement");
 			}
 			
-			Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameters = new HashMap<>();
 			inputOutputParameters.put("p_document_type", "HIV_LAB");
 			inputOutputParameters.put("p_new_doc_id", "");	
 			inputOutputParameters.put("p_parent_doc_id", currentDocumentId);
@@ -1604,7 +1604,7 @@ public class DocumentTransactionHelper {
 			UserObject userObject, BindingResult bindingResult) {
 		try {
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("p_stateno", stateno);
 			inputParameterMap.put("p_requestComments", requestComments);
@@ -1659,7 +1659,7 @@ public class DocumentTransactionHelper {
 				throw new DataRetrievalFailureException("Failed to update the delete status in Raw Hiv table while editing the Provider details");
 			}
 			
-			Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameters = new HashMap<>();
 			inputOutputParameters.put("p_document_type", "HIV_LAB");
 			inputOutputParameters.put("p_new_doc_id", "");	
 			inputOutputParameters.put("p_parent_doc_id", currentDocumentId);

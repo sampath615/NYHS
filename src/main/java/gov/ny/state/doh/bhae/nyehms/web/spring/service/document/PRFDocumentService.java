@@ -208,7 +208,7 @@ public class PRFDocumentService {
     	
     	String sexAtBirth = pRFDocumentVO.getSEX_AT_BIRTH();
     	
-    	Map<String, String> errors = new HashMap<String, String>();
+    	Map<String, String> errors = new HashMap<>();
     	
     	
 //    	if(CommonUtil.isNotNullAndEmpty(sexAtBirth)){
@@ -433,7 +433,7 @@ public class PRFDocumentService {
     public int updatePrfDocStatusInRawTable(int docId, int current_process_Status, BindingResult bindingResult,
 			UserObject userObject){
     	
-    	Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+    	Map<Object, Object> inputParameterMap = new HashMap<>();
     	
     	inputParameterMap.put("docId", docId);
     	inputParameterMap.put("userId", userObject.getUserId());
@@ -448,7 +448,7 @@ public class PRFDocumentService {
 			UserObject userObject){
     	
 
-    	Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+    	Map<Object, Object> inputParameterMap = new HashMap<>();
 
     	inputParameterMap.put("docId", docId);
     	inputParameterMap.put("userId", userObject.getUserId());

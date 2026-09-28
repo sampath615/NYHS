@@ -10,7 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,7 +55,7 @@ public class SystemMessageController {
 	 */
 	@RequestMapping(value="/getSystemMessages.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getSystemMessages(String statusFlag, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getSystemMessages(statusFlag, bindingResult, userObject));
 		
@@ -74,7 +74,7 @@ public class SystemMessageController {
 	 */
 	@RequestMapping(value="/getSystemMessageArchives.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getSystemMessageArchives(@ModelAttribute("SystemMessage") SystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getSystemMessageArchives(systemMessage, bindingResult, userObject));
 		return jsonResponse;
@@ -89,7 +89,7 @@ public class SystemMessageController {
 	 */
 	@RequestMapping(value="/saveSystemMessage.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> saveSystemMessage(@ModelAttribute("SystemMessage") SystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		systemMessageService.saveSystemMessageDetails(systemMessage , bindingResult, userObject);
@@ -113,7 +113,7 @@ public class SystemMessageController {
 	 */
 	@RequestMapping(value="/updateSystemMessage.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateSystemMessage(@ModelAttribute("SystemMessage") SystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		systemMessageService.updateSystemMessageDetails(systemMessage , bindingResult, userObject);
@@ -137,7 +137,7 @@ public class SystemMessageController {
 	@RequestMapping(value="/getInProgressProcessingSystemMessages.json", method = RequestMethod.POST,  produces = "application/json")
 	public @ResponseBody Map<Object, Object> getInProgressProcessingSystemMessages(HttpServletRequest request) {		
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		systemMessageService.getInProgressActiveSystemMessages(request, bindingResult);
@@ -156,7 +156,7 @@ public class SystemMessageController {
 	
 	@RequestMapping(value="/getPortalSystemMessages.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getPortalSystemMessages(String statusFlag, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getPortalSystemMessages(statusFlag, bindingResult, userObject));
 		
@@ -166,7 +166,7 @@ public class SystemMessageController {
 	
 	@RequestMapping(value="/savePortalSystemMessage.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> savePortalSystemMessage(@ModelAttribute("SystemMessage") PortalSystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		systemMessageService.savePortalSystemMessageDetails(systemMessage , bindingResult, userObject);
@@ -176,7 +176,7 @@ public class SystemMessageController {
 	
 	@RequestMapping(value="/updatePortalSystemMessage.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> updatePortalSystemMessage(@ModelAttribute("SystemMessage") PortalSystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		systemMessageService.updatePortalSystemMessageDetails(systemMessage , bindingResult, userObject);

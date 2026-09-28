@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.standardization.provi
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object>  addStandardAddress(HttpServletRequest request, @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addingAddressToProvider(-999, subProviderAndAddressVO, bindingResult, userObject);
@@ -84,7 +84,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object>  unableStandardizeProviderRecord(HttpServletRequest request, @RequestParam long recordId, @RequestParam String effectedTable , UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.unableStandardizeProviderRecord(recordId, effectedTable, bindingResult, userObject);
@@ -100,7 +100,7 @@ public class ProviderController {
 	@RequestMapping(value="/getRawProvAddrsList.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getRawProvAddrsList(HttpServletRequest request, @RequestParam(value="_search", required = false) boolean _search, UserObject userObject){
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String searchField = null;
@@ -128,7 +128,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> linkRawProvToSubProvAddrs(@RequestParam long  rawProviderAddressId, @RequestParam long  providerAddressId, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.linkRawProvToSubProvAddrs(rawProviderAddressId, providerAddressId, bindingResult, userObject);
@@ -146,7 +146,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addNewSubProvAddrsAndlinking(@RequestParam long  rawProviderAddressId, @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addNewSubProvAddrsAndlinking(rawProviderAddressId, subProviderAndAddressVO, bindingResult, userObject);
@@ -157,7 +157,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addNewProvNAddrsAndlinking(@RequestParam("rawProviderAddressIds[]") String[]  rawProviderAddressIds, @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addNewProvNAddrsAndlinking(rawProviderAddressIds, subProviderAndAddressVO, bindingResult, userObject);
@@ -175,7 +175,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addRawAndSubProviderAddressDetails(@RequestParam long providerId, @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addRawAndSubProviderAddressDetails(providerId, subProviderAndAddressVO, bindingResult, userObject);
@@ -193,7 +193,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addProviderDetails(@ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addProviderDetails(subProviderAndAddressVO, bindingResult, userObject);
@@ -214,7 +214,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addingAddrsAndlinking(@RequestParam long  rawProviderAddressId, @RequestParam long  providerId,  @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addingAddrsAndlinking(rawProviderAddressId,providerId, subProviderAndAddressVO, bindingResult, userObject);
@@ -225,7 +225,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> addingProvAddrsAndlinking(@RequestParam("rawProviderAddressIds[]") String[]  rawProviderAddressIds, @RequestParam long  providerId,  @ModelAttribute("subProviderAndAddressVO") SubProviderAndAddressVO subProviderAndAddressVO, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.addingProvAddrsAndlinking(rawProviderAddressIds,providerId, subProviderAndAddressVO, bindingResult, userObject);
@@ -252,7 +252,7 @@ public class ProviderController {
 	public @ResponseBody GridObject getRawProvAdrsListBySubprovAdrsId(@ModelAttribute("rawProviderAddressVO") RawProviderAddressVO rawProviderAddressVO, @RequestParam int  searchFor, HttpServletRequest request, UserObject userObject){
 
 
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		GridObject jsonResponse = getGridObject.GetGrid(providerService.getRawProvAdrsListBySubprovAdrsId(rawProviderAddressVO.getSubProviderAddressId(),bindingResult, userObject));
@@ -265,7 +265,7 @@ public class ProviderController {
 			@RequestParam long parentId, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String commaSeparatedVals = commonUtil.convertToCommaSeparated(provAddrsList);
@@ -278,7 +278,7 @@ public class ProviderController {
 			@RequestParam long selToBeMergedSubAddrs, @RequestParam long selToBeMergedParent, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		toBeMergedSubAddrsArray = ArrayUtils.removeElement(toBeMergedSubAddrsArray, selToBeMergedSubAddrs);
@@ -292,7 +292,7 @@ public class ProviderController {
 			@RequestParam long selToBeMergedSubProv, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		toBeMergedSubProvArray = ArrayUtils.removeElement(toBeMergedSubProvArray, selToBeMergedSubProv);
@@ -314,7 +314,7 @@ public class ProviderController {
 	@RequestMapping(value="/getRawProvAddrsNewList.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getRawProvAddrsNewList(HttpServletRequest request, @RequestParam boolean selected, @RequestParam("selectedIds[]") long[] selectedIds, UserObject userObject){
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(providerService.getRawProvAddrsNewList(bindingResult, selected, selectedIds, userObject));
@@ -325,7 +325,7 @@ public class ProviderController {
 	public @ResponseBody Map<Object, Object> linkRawProvidersToSubProvAddrs(@RequestParam("rawProvSelectedAddresses[]") String[]  rawProvSelectedAddresses, @RequestParam long  providerAddressId, @RequestParam String fromNPIRegistry, HttpServletRequest request, UserObject userObject){
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		providerService.linkRawProvidersToSubProvAddrs(rawProvSelectedAddresses, providerAddressId, bindingResult, userObject);

@@ -21,7 +21,7 @@ public class ProviderReportService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getProviderReportByYear(String caseType, String region, String prfSubmitted, String fromYear, String toYear, String ahi, UserObject userObject,
 			BindingResult dummyBindingResult) {
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("p_case_type", caseType);
 		inputParameterMap.put("p_region_cd", region);
@@ -40,7 +40,7 @@ public class ProviderReportService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getProviderReportsByHivDxDate(String fromYear, String toYear,
 			UserObject userObject, BindingResult dummyBindingResult) {
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("p_from_year", fromYear);
 		inputParameterMap.put("p_to_year", toYear);	
@@ -55,7 +55,7 @@ public class ProviderReportService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getProviderReportsByHivDxDateYearly(String fromYear, String toYear,
 			UserObject userObject, BindingResult dummyBindingResult) {
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("p_from_year", fromYear);
 		inputParameterMap.put("p_to_year", toYear);	
@@ -70,7 +70,7 @@ public class ProviderReportService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getProviderReportsByPRFReceived(String fromYear, String toYear, UserObject userObject,
 			BindingResult dummyBindingResult) {
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("p_from_year", fromYear);
 		inputParameterMap.put("p_to_year", toYear);
@@ -84,7 +84,7 @@ public class ProviderReportService {
 
 	public List<JSONObject> getProviderReportsByPRFReceivedYearly(String fromYear, String toYear, UserObject userObject,
 			BindingResult dummyBindingResult) {
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("p_from_year", fromYear);
 		inputParameterMap.put("p_to_year", toYear);

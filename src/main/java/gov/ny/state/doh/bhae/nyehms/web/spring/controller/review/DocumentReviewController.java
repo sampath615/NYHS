@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +91,7 @@ public class DocumentReviewController {
 	public String getAssignmentsReview(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -122,7 +122,7 @@ public class DocumentReviewController {
 	public @ResponseBody List<JSONObject> getprfReviewDocumentsData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -146,7 +146,7 @@ public class DocumentReviewController {
 			@RequestParam String stateNo, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
 		documentsReviewService.reviewAndUpdateAndFlagNonAsCaseTheStatusOfClosedAssignment(colsureCategory, stateNo,
@@ -162,7 +162,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> agreeAndDeleteDocumentForClosedAssignment(@RequestParam int assignmentId,@RequestParam int documentId, @RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -185,7 +185,7 @@ public class DocumentReviewController {
 	public @ResponseBody List<AssignmentsListVO> loadClosedAssignmentsForReview(HttpServletRequest request, @RequestParam String closureCategory, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<AssignmentsListVO> asmtCursorOut = assignmentService.loadClosedAssignmentsForReview(closureCategory,  bindingResult,
@@ -202,7 +202,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> updateRawPrfDocument(HttpServletRequest request, @ModelAttribute("pRFDocumentVO") PRFDocumentVO pRFDocumentVO, @RequestParam boolean isValidationFailed , UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -217,7 +217,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> valiatePrfDocument(HttpServletRequest request, @ModelAttribute("pRFDocumentVO") PRFDocumentVO pRFDocumentVO ){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -231,7 +231,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> deleteRawPrfDoc(HttpServletRequest request, @RequestParam int  docId, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -245,7 +245,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> processRawPrfDoc(HttpServletRequest request, @RequestParam int  docId, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -259,7 +259,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> moveRawToStdByStateno(@RequestParam int documentId, String stateno, @RequestParam(required = false) String requestComments, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -283,7 +283,7 @@ public class DocumentReviewController {
 	public @ResponseBody Map<Object, Object> deleteMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Long[] documentIds, @RequestParam String documentType, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -330,7 +330,7 @@ public class DocumentReviewController {
 			@RequestParam String requestComments, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		

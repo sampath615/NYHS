@@ -57,7 +57,7 @@ public class ADAPDocumentService {
     @Autowired
     CommonService commonService;
     
-    private Map<String, Map<String, String>> zipCodeReferenceMap = new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> zipCodeReferenceMap = new HashMap<>();
 
     
     /**
@@ -125,7 +125,7 @@ public class ADAPDocumentService {
     public int writeRawADAPRecordDataToStdTable(Map<Object, Object> docVO,
 			BigDecimal documentId){
     	
-    	Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+    	Map<Object, Object> stdDocData = new HashMap<>();
 
 //    	
     	
@@ -268,7 +268,7 @@ public class ADAPDocumentService {
 			certNPIHeirarcy = 0.1f;
 		}
 			
-		List<String> npis = new ArrayList<String>();
+		List<String> npis = new ArrayList<>();
     	
     	String pcpNpi = (String) docVO.get("LAST_PC");
     	//String certNPI = (String) docVO.get("PROVNPI");
@@ -285,10 +285,10 @@ public class ADAPDocumentService {
     	
     	
     	
-    	Map<Object, Object> inputParameters = new HashMap<Object, Object>();
+    	Map<Object, Object> inputParameters = new HashMap<>();
     	inputParameters.put("npis", npis);
     	
-    	List<Map<String, String>> subProviderAddressList =  new ArrayList<Map<String,String>>() ;
+    	List<Map<String, String>> subProviderAddressList =  new ArrayList<>() ;
     	
     	stdDocData.put("FLAG_CHOSEN_PROVIDER","RX");
     	
@@ -394,7 +394,7 @@ public class ADAPDocumentService {
     
     public List<String> getFileNameNotShippedToNYC(String nycShipStatus){
     	
-    	Map<String, Object> inParameterMap = new HashMap<String, Object>();
+    	Map<String, Object> inParameterMap = new HashMap<>();
     	
     	inParameterMap.put("nycShipStatus", nycShipStatus);
     	
@@ -413,7 +413,7 @@ public class ADAPDocumentService {
 		
 			
 			
-		Map<String, Object> inParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inParameterMap = new HashMap<>();
 		
 		
 		inParameterMap.put("fileName", fileName);
@@ -462,7 +462,7 @@ public class ADAPDocumentService {
 		String transactionMessage = null;
 		
 				
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
 		
 			
 			
@@ -562,7 +562,7 @@ public class ADAPDocumentService {
 					}
 					
 					
-					Map<String, Object> fileData = new HashMap<String, Object>();
+					Map<String, Object> fileData = new HashMap<>();
 					
 					DataFormatter fmt = new DataFormatter();
 					
@@ -584,7 +584,7 @@ public class ADAPDocumentService {
 
 
 					if(fileData.get("STDRPTS_ID") != null && fileData.get("NYCNUMBER") != null){
-						Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+						Map<String, Object> inputParameterMap = new HashMap<>();
 						
 						
 						inputParameterMap.put("documentId", fileData.get("STDRPTS_ID"));
@@ -620,7 +620,7 @@ public class ADAPDocumentService {
 			workbook.close();
 			
 			if(!isError){
-				Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("fileDataList", fileDataList);
 				inputParameterMap.put("workerId", userObject.getWorkerId());
@@ -672,7 +672,7 @@ public class ADAPDocumentService {
     	
     	boolean isError = false;
 		 
-    	Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+    	Map<String, Object> inOutParameterMap = new HashMap<>();
 		  try {
 			  List<Integer> nycADAPDocuments = aDAPDocumentDAO.getNCYADAPDocumentsToREview();
 		    	
@@ -728,7 +728,7 @@ public class ADAPDocumentService {
 			String reviewCd,  String cityno, String comments, BindingResult bindingResult, UserObject userObject){
     	
     	
-    	Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+    	Map<String, Object> inOutParameterMap = new HashMap<>();
     	
     	
     	
@@ -848,7 +848,7 @@ public class ADAPDocumentService {
 		
 		
 		
-		Map<String, Object> inParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inParameterMap = new HashMap<>();
 		
 		
 		inParameterMap.put("fileName", fileName);

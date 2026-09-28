@@ -125,7 +125,7 @@ public class LabProficiencyVO {
             j.add("LAB_NAME", jsonArray.get(i).getAsJsonObject().get("LAB_NAME"));
             j.add("FILTER_NUMBER", jsonArray.get(i).getAsJsonObject().get("FILTER_NUMBER"));
             j.add("CONDITION_ID", jsonArray.get(i).getAsJsonObject().get("CONDITION_ID"));
-            StringBuffer queryCondition = new StringBuffer("");
+            StringBuilder queryCondition = new StringBuilder("");
             
             
             
@@ -276,7 +276,7 @@ public class LabProficiencyVO {
                 + "            where    FILTER_NUMBER=" + filterNo
                 + "                 ORDER by pfi,filter_number,operator DESC";
 
-        List<JSONObject> proficiencyTestList = new ArrayList<JSONObject>();
+        List<JSONObject> proficiencyTestList = new ArrayList<>();
 
         try {
             statement = conn.createStatement();
@@ -376,7 +376,7 @@ public class LabProficiencyVO {
     public List<JSONObject> getProfieciencyFilteredataForOneCondition(String pfi, List<JSONObject> filterTypeCondition, Integer documentId) {
     	
     	
-    	List<List<JSONObject>> filterTypeConditions = new ArrayList<List<JSONObject>>();
+    	List<List<JSONObject>> filterTypeConditions = new ArrayList<>();
     	
     	filterTypeConditions.add(filterTypeCondition);
     	
@@ -453,7 +453,7 @@ public class LabProficiencyVO {
 
         Statement statement = null;
         ResultSet rs = null;
-        List<JSONObject> filterData = new ArrayList<JSONObject>();
+        List<JSONObject> filterData = new ArrayList<>();
         
         try {
         	
@@ -461,7 +461,7 @@ public class LabProficiencyVO {
         	 
             
             boolean hadWhereCondition = false;
-            StringBuffer sqlQuery = new StringBuffer(); 
+            StringBuilder sqlQuery = new StringBuilder(); 
             sqlQuery.append("select /*+ FIRST_ROWS(100) */ DOCUMENT_ID, OBRPROVIDERLASTNAME, PIDPATIENTIDINTERNAL, OBRPROVIDERFIRSTNAME, ZLRFACILITYNAME, OBXOBSERVATIONRESULTTEXT, OBRACCESSIONNUM, PIDMIDDLENAME,  PIDFIRSTNAME, PIDLASTNAME, to_char(PIDDATEOFBIRTH, 'MM/DD/YYYY') PIDDATEOFBIRTH, ZLRFACILITYADDRESSLINE1, ZLRFACILITYADDRESSLINE2 , ZLRFACILITYCITY ,ZLRPROVIDERADDRESSLINE1 , ZLRPROVIDERADDRESSLINE2 , ZLRPROVIDERCITY, PIDADDRESSLINE1, PIDADDRESSLINE2, PIDCITY, PIDSTATE, OBXLOINCCODE   from RAW_HIV_ECLRS_DOC where CURRENT_PROCESS_STATUS not in ("+CommonConstants.RAW_DUPLICATION_RECORD_PROCESS_STATUS+","+CommonConstants.RAW_RECORD_DELETED_PROCESS_STATUS+","+CommonConstants.RAW_RECORD_MULTISTEP_DELETED_PROCESS_STATUS+","+CommonConstants.DOCUMENT_EDITED_PROCESS_STATUS+") AND ");
             
             if(!"-999".equals(pfi)){

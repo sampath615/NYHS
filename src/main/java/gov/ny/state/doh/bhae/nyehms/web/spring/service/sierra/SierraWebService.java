@@ -77,7 +77,7 @@ public class SierraWebService {
 	
 	GenericUrl url = new GenericUrl(PostUrl.replaceAll(" ", "%20"));
 	
-	Map<String, Object> resistanceObj = new HashMap<String, Object>();
+	Map<String, Object> resistanceObj = new HashMap<>();
 	
 	HttpRequest request = null;
 	
@@ -85,9 +85,9 @@ public class SierraWebService {
 	
 	HttpResponse response = null;
 	
-	private Map<String, Integer> geneMap = new HashMap<String, Integer>();
+	private Map<String, Integer> geneMap = new HashMap<>();
 	
-	private Map<String, Integer> drugCodes = new HashMap<String, Integer>();
+	private Map<String, Integer> drugCodes = new HashMap<>();
 	
 	SierraWebService(){		
 		geneMap.put("PR", 1);
@@ -146,7 +146,7 @@ public class SierraWebService {
    
    public List<Map<String, Object>> getRasDocIdsToParse(int maxDocumentId){
 	   
-	   Map<String, Integer> inputParameterMap = new HashMap<String, Integer>();
+	   Map<String, Integer> inputParameterMap = new HashMap<>();
 	   
 	   inputParameterMap.put("DOC_ID", maxDocumentId);
 	   inputParameterMap.put("ROW_LIMIT", Integer.parseInt(EnvironmentProperties.envProperties.getProperty("RAS_FETCH_ROW_LIMIT")));
@@ -159,11 +159,11 @@ public class SierraWebService {
 	   	
 	
 	
-	Map<String, List<Map<String, Object>>> resistanceMap = new HashMap<String, List<Map<String, Object>>>();
+	Map<String, List<Map<String, Object>>> resistanceMap = new HashMap<>();
 	
-	Map<String, Object> resistance1 = new HashMap<String, Object>();
+	Map<String, Object> resistance1 = new HashMap<>();
 	
-	List<Map<String, Object>> resistanceList = new ArrayList<Map<String, Object>>();
+	List<Map<String, Object>> resistanceList = new ArrayList<>();
 
 	resistance1.put("header", rasDocId);
 	resistance1.put("sequence", sequence);
@@ -238,7 +238,7 @@ public class SierraWebService {
 		String MD5 = inputSequence.get("MD5").toString().replaceAll("\"", "");
 		String SHA512 = inputSequence.get("SHA512").toString().replaceAll("\"", "");
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("version", version);
 		inputParameterMap.put("publishDate", publishDate);
@@ -267,13 +267,13 @@ public class SierraWebService {
 	   
 	   	JsonArray validationResults = rasJsonResponse.getAsJsonArray("validationResults");
 		
-		List<Map<String, String>> valiationResults = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> valiationResults = new ArrayList<>();
 		
 		if(validationResults != null && validationResults.size() > 0) {
 			
 			for (JsonElement jsonElement : validationResults) {
 				
-				Map<String, String> _validationResult = new HashMap<String , String>(); 
+				Map<String, String> _validationResult = new HashMap<>(); 
 				
 				_validationResult.put("level", jsonElement.getAsJsonObject().get("level").toString().replaceAll("\"", ""));
 				_validationResult.put("message", jsonElement.getAsJsonObject().get("message").toString().replaceAll("\"", ""));
@@ -282,7 +282,7 @@ public class SierraWebService {
 				
 			}
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			
 			inputParameterMap.put("VALIDATION_RESULTS", valiationResults);
@@ -319,7 +319,7 @@ public class SierraWebService {
 				throw new DataRetrievalFailureException("No gene element in alignedGeneSequences");
 			}
 			
-			Map<String, Object> geneSeqInfo = new HashMap<String , Object>(); 
+			Map<String, Object> geneSeqInfo = new HashMap<>(); 
 			
 			String _geneName = geneResponse.get("name").toString().replaceAll("\"", "");
 			
@@ -370,7 +370,7 @@ public class SierraWebService {
 				
 				JsonObject mutationObj = mutation.getAsJsonObject();
 				
-				Map<String, Object> inputMutation = new HashMap<String , Object>();
+				Map<String, Object> inputMutation = new HashMap<>();
 				inputMutation.put("GENE_NAME", _geneName);
 				inputMutation.put("GENE_SEQ_ID", geneMap.get(_geneName));
 				inputMutation.put("WILD_TYPE", mutationObj.get("reference").toString().replaceAll("\"", ""));
@@ -425,7 +425,7 @@ public class SierraWebService {
 				
 				JsonObject drugClassObj = drugScoreObj.getAsJsonObject("drugClass");
 				
-				Map<String, Object> inputDrug = new HashMap<String , Object>();
+				Map<String, Object> inputDrug = new HashMap<>();
 				
 				String DRUG_CODE = drugScoreObj.getAsJsonObject("drug").get("displayAbbr").toString().replaceAll("\"", "");
 				inputDrug.put("SEQ_RESULT_ID", sEQ_RESULT_ID);
@@ -442,7 +442,7 @@ public class SierraWebService {
 				
 				
 				
-				List<Map<String, String>> paritalScoreMutationList = new ArrayList<Map<String, String>>();
+				List<Map<String, String>> paritalScoreMutationList = new ArrayList<>();
 				
 				JsonArray partialScoresJsonArray = drugScoreObj.getAsJsonArray("partialScores");
 				
@@ -452,7 +452,7 @@ public class SierraWebService {
 					
 					for (JsonElement _partialScore : partialScoresJsonArray) {
 						
-						Map<String, String> partialScoreMap = new HashMap<String, String>();
+						Map<String, String> partialScoreMap = new HashMap<>();
 						
 						JsonObject partialScoreObject =  _partialScore.getAsJsonObject();
 						
@@ -502,7 +502,7 @@ public class SierraWebService {
 					for (Map<String, String> partialScoreMap : paritalScoreMutationList) {
 						
 						
-						Map<String, Object> drupgPartialListMap = new HashMap<String, Object>();
+						Map<String, Object> drupgPartialListMap = new HashMap<>();
 						
 						drupgPartialListMap.put("SEQ_RESULT_ID", sEQ_RESULT_ID);
 						
@@ -543,7 +543,7 @@ public class SierraWebService {
    }
    
    public String sendLogInformation(Integer minDocumentIdParsed, Integer maxDocumentIdParsed, Map<Integer, String> failedDocumentIds, int totalDocCount, String workerId, boolean insertionFailed) {
-	   Map<String, Object> logParameter = new HashMap<String, Object>();
+	   Map<String, Object> logParameter = new HashMap<>();
        
        logParameter.put("DOCUMENT_ID_MIN", minDocumentIdParsed);
        logParameter.put("DOCUMENT_ID_MAX", maxDocumentIdParsed);
@@ -631,7 +631,7 @@ public class SierraWebService {
    public void updateRASSelectedDocumentStatus(long[] documentIds, String comments, String actionName,
 			BindingResult bindingResult, UserObject userObject) {
 	   
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_document_list", documentIds);
 		if("reprise".equals(actionName)) {

@@ -10,7 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +47,7 @@ public class UnStandardizedProviderController {
 	 */
 	@RequestMapping(value="/flagProviderDataAsFacilty.json", method=RequestMethod.POST,produces = "application/json") 
 	public @ResponseBody Map<Object,Object> flagProviderDataAsFacilty(@RequestParam long providerId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -57,7 +57,7 @@ public class UnStandardizedProviderController {
 
 	@RequestMapping(value="/flagSelectedRawProviderAsFacilty.json", method=RequestMethod.POST,produces = "application/json") 
 	public @ResponseBody Map<Object,Object> flagSelectedRawProviderAsFacilty(@RequestParam("selectedRowIds[]") String[] selectedRowIds,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		

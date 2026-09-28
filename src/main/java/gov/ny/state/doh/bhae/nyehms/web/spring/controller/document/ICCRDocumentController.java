@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class ICCRDocumentController {
 		
 		ICCRDataEntryVO iccrDataEntryVO = new ICCRDataEntryVO();
 		
-		List<ICCRTestVO> iccrTestList = new ArrayList<ICCRTestVO>();
+		List<ICCRTestVO> iccrTestList = new ArrayList<>();
 		iccrTestList.add(new ICCRTestVO());
 		
 		iccrDataEntryVO.setIccrTestList(iccrTestList);
@@ -68,7 +68,7 @@ public class ICCRDocumentController {
 			@ModelAttribute("ICCRDataEntryVO") ICCRDataEntryVO iccrDataEntryVO, HttpServletRequest request, BindingResult result, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		iccrDocumentService.saveICCRDataEntryForm(iccrDataEntryVO, bindingResult, userObject);

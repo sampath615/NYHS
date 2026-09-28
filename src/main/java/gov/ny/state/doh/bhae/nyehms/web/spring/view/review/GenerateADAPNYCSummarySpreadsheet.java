@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -39,7 +39,7 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractExcelReportView{
 		
 		
 		
-		Map<String, String> reviewStatusMap = new HashMap<String, String>();
+		Map<String, String> reviewStatusMap = new HashMap<>();
 		
 		reviewStatusMap.put("M", "Matches");
 		reviewStatusMap.put("N", "Non Matches");

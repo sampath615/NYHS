@@ -29,7 +29,7 @@ public class BirthDocumentService {
     	
     	Map<String, String> rawBthMomData = birthDocumentDAO.getMomData(birthMatchId);
     	
-    	Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+    	Map<String, Object> inputParameterMap = new HashMap<>();
     	
     	inputParameterMap.put("DOCUMENT_ID", bthDocumentId);
     	
@@ -149,7 +149,7 @@ public class BirthDocumentService {
     	
     	Map<String, String> rawBthMomData = birthDocumentDAO.getInfantData(birthMatchId);
     	
-    	Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+    	Map<String, Object> inputParameterMap = new HashMap<>();
     	
     	inputParameterMap.put("DOCUMENT_ID", bthDocumentId);
     	

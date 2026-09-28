@@ -29,7 +29,7 @@ public class ViralLoadReportsService {
 	public List<JSONObject> getNoAdditionalReportData(String dateRange, BindingResult dummyBindingResult,
 			UserObject userObject, Object object){
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		String[] dateRanges = dateRange.split("-");
 		
@@ -49,7 +49,7 @@ public class ViralLoadReportsService {
 			String stateno, BindingResult result,
 			UserObject userObject) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", stateno);
 		

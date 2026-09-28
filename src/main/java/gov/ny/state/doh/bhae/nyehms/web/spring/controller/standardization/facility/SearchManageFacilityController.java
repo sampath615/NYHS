@@ -11,7 +11,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +45,7 @@ public class SearchManageFacilityController {
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsByMasterFacility.json", method=RequestMethod.POST,produces = "application/json")
 	public @ResponseBody GridObject  getFacilityDetailsByMasterFacility(@ModelAttribute("masterFacilityVO") MasterFacilityVO masterFacilityVO , HttpServletRequest request, UserObject userObject){
-		Map<String, Object> targetMap = new HashMap<String, Object>();
+		Map<String, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		//implemented new method to retrieve list Provider and its Provider Address, Raw Provider Address with Provider Search Criteria
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsByMasterFacility(masterFacilityVO , bindingResult, userObject));
@@ -60,7 +60,7 @@ public class SearchManageFacilityController {
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsBySubFacility.json", method=RequestMethod.POST,produces = "application/json")
 	public @ResponseBody GridObject  getFacilityDetailsBySubFacility(@ModelAttribute("subFacilityVO") SubFacilityVO subFacilityVO , HttpServletRequest request, UserObject userObject){
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsBySubFacility(subFacilityVO , bindingResult, userObject));
 		return jsonResponse;
@@ -69,7 +69,7 @@ public class SearchManageFacilityController {
 	
 	@RequestMapping(value="/getFacilityDetailsForAssignmentByRawFacility.json", method=RequestMethod.POST,produces = "application/json")
 	public @ResponseBody GridObject  getFacilityDetailsForAssignmentBySubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request, UserObject userObject){
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsForAssignmentByRawFacility(rawSubFacilityVO , bindingResult, userObject));
@@ -87,7 +87,7 @@ public class SearchManageFacilityController {
 	 */ 
 	@RequestMapping(value="/getFacilityDetailsByRawSubFacility.json", method=RequestMethod.POST,produces = "application/json")
 	public @ResponseBody GridObject  getFacilityDetailsByRawSubFacility(@ModelAttribute("rawSubFacilityVO") RawSubFacilityVO rawSubFacilityVO , HttpServletRequest request, UserObject userObject){
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(searchManageFacilityService.getFacilityDetailsByRawSubFacility(rawSubFacilityVO , bindingResult, userObject));
 		return jsonResponse;

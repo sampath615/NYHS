@@ -74,8 +74,8 @@ public class HITCommonDocumentService {
 	}
 
 	public void insertCodedRace(Set<String> raceCodeErrors) {
-		Set<String> newraceCodeErrors = new HashSet<String>();
-		Map<String, Object> inputParameters = new HashMap<String, Object>();
+		Set<String> newraceCodeErrors = new HashSet<>();
+		Map<String, Object> inputParameters = new HashMap<>();
 		// New Code was added by MXM69 on 11-July-2018 to avoid multiple entries
 		for (String str : raceCodeErrors) {
 			if (CommonUtil.isNotNullAndEmpty(str)) {
@@ -111,7 +111,7 @@ public class HITCommonDocumentService {
 	 *            Either "QUARTZ" if initiated by the regular scheduled Quartz
 	 *            scheduler in spring-config.xml, or the user ID of the user who
 	 *            initiated the trigger via the Manual page in
-	 *            {@link gov.ny.state.doh.bhae.nyehms.web.spring.controller.schedulers.ManualQuartzJobController#triggerSchedulerJobManually(javax.servlet.http.HttpServletRequest, String, String)}
+	 *            {@link gov.ny.state.doh.bhae.nyehms.web.spring.controller.schedulers.ManualQuartzJobController#triggerSchedulerJobManually(jakarta.servlet.http.HttpServletRequest, String, String)}
 	 */
 	public void extractNewPayloadsFromUphnToRaw(List<JSONObject> schedulerStatusObject, String recordType,
 			Map<String, String> schedulerMetaData, String initiator) {
@@ -353,7 +353,7 @@ public class HITCommonDocumentService {
 	}
 
 	public Map<String, String> getHitRaceCodeMapperData() {
-		Map<String, String> hitRaceCodeMapperData = new TreeMap<String, String>();
+		Map<String, String> hitRaceCodeMapperData = new TreeMap<>();
 		List<Map<String, String>> hitRaceCodeMapperDataList = hitDocumentDAO.getHitRaceCodeMapperData();
 		for (Map<String, String> metaData : hitRaceCodeMapperDataList) {
 			hitRaceCodeMapperData.put(metaData.get("RACE_VALUE"), metaData.get("RACE"));
@@ -381,7 +381,7 @@ public class HITCommonDocumentService {
 			String documentType, BindingResult bindingResult, UserObject userObject) {
 		
 		for (long docId : documentIds) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("hitErrorId", docId);
 		inputOutputParameterMap.put("actionName", actionName);
 		int statusCode = hitDocumentDAO.updateHitDocumentsStatusinHITERRROR(inputOutputParameterMap);
@@ -401,7 +401,7 @@ public class HITCommonDocumentService {
 		boolean isError = false; 
 		try{
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			inOutParameterMap.put("hiterrorid", id);
 			inOutParameterMap.put("notes", comments);
@@ -430,7 +430,7 @@ public class HITCommonDocumentService {
 
 	public void updateHitRaceValue(String parameterName, String parameterValue1[], String parameterValue2,
 			BindingResult bindingResult, String UserID) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		String FinalRace = "";
 		String RaceConcat="";
 		for(String racevalue :  parameterValue1){
@@ -459,7 +459,7 @@ public class HITCommonDocumentService {
 
 	public void updateHITErrorRepriseFlagStatus(int uphnId, String statusCode) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("statusCode", statusCode);
 		inputOutputParameterMap.put("uphnID", uphnId);
@@ -501,7 +501,7 @@ public class HITCommonDocumentService {
 	
 	private Map<Object, Object> prepareHITLOGMsgParameterValues(String recordType, String processType, String action) {
 
-		Map<Object, Object> messageParametersAndValues = new HashMap<Object, Object>();
+		Map<Object, Object> messageParametersAndValues = new HashMap<>();
 
 
 			// setting up timestamp

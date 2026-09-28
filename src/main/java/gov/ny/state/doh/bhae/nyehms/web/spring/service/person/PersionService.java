@@ -99,8 +99,8 @@ public class PersionService {
 
 		log.debug("{} user sending date after dateutil conversion is :: {}",nyehmsLog, stDt);
 
-		java.util.Map<Object, Object> map = new java.util.HashMap<Object, Object>();
-		List<PersonViewVO> cursor = new ArrayList<PersonViewVO>();
+		java.util.Map<Object, Object> map = new java.util.HashMap<>();
+		List<PersonViewVO> cursor = new ArrayList<>();
 		map.put("p_data_req_type", "DETL");
 		map.put("p_state_no", stateNo);
 		map.put("p_date", stDt);
@@ -109,7 +109,7 @@ public class PersionService {
 		map.put("p_module_id", 16);
 		map.put("p_worker_id", userObject.getWorkerId());
 		
-		List<PersonViewVO> personViewlist = new ArrayList<PersonViewVO>();
+		List<PersonViewVO> personViewlist = new ArrayList<>();
 
 		personDAO.getPersonViewData(map);
 
@@ -173,7 +173,7 @@ public class PersionService {
 		
 		try{
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			inputParameterMap.put("p_module_id", "16");
 			inputParameterMap.put("p_worker_id", userObject.getWorkerId());
 			
@@ -196,7 +196,7 @@ public class PersionService {
 	public List<PersonDocHistoryVO> getHIVDocumentDetails(String stateNo, BindingResult dummyBindingResult,
 			UserObject userObject, String id) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_module_id", "16");
 		inputParameterMap.put("p_worker_id", userObject.getWorkerId());
 		inputParameterMap.put("p_stateNo", stateNo);
@@ -207,7 +207,7 @@ public class PersionService {
 	public List<PersonDocHistoryVO> getDocumentDetails(String documentId, String documentType,
 			BindingResult dummyBindingResult, UserObject userObject, String id) {
 
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 
 		map.put("documentId", Integer.parseInt(documentId));
 		map.put("documentType", documentType);
@@ -238,8 +238,8 @@ public class PersionService {
 	public List<PersonFieldVO> getFieldValsWithBestIndicator(String stateNo, String fieldName, String callingAppName,
 			BindingResult result, UserObject userObject, String sessionID) {
 		boolean errorFlag = false;
-		List<PersonFieldVO> cursorPersonFieldVals = new ArrayList<PersonFieldVO>();
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		List<PersonFieldVO> cursorPersonFieldVals = new ArrayList<>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("tblField", fieldName);
 		map.put("stateNo", stateNo);
 		map.put("p_calling_app_name", callingAppName);
@@ -247,14 +247,14 @@ public class PersionService {
 		map.put("p_module_id", 16);
 		map.put("p_worker_id", userObject.getWorkerId());
 		
-		List<PersonFieldVO> list = new ArrayList<PersonFieldVO>();
-		List<PersonFieldVO> distinctList = new ArrayList<PersonFieldVO>();
+		List<PersonFieldVO> list = new ArrayList<>();
+		List<PersonFieldVO> distinctList = new ArrayList<>();
 		try {
 
 			log.debug("{}   Current SessionId ==============   {}",userObject.getWorkerId(), userObject.getSessionId());
 			personDAO.getFieldValsWithBestIndicator(map);
 			list = (List<PersonFieldVO>) map.get("refCursor");
-			Map<String, PersonFieldVO> distictValsMap = new HashMap<String, PersonFieldVO>();
+			Map<String, PersonFieldVO> distictValsMap = new HashMap<>();
 			for (PersonFieldVO personFieldVO : list) {
 				distictValsMap.put(personFieldVO.getField().trim(), personFieldVO);
 			}
@@ -285,8 +285,8 @@ public class PersionService {
 	public List<PersonFieldDocsVO> getFieldDocsWithBestIndicator(String stateNo, String fieldName, String fieldVal,
 			String callingAppName, BindingResult result, UserObject userObject, String sessionID) {
 		boolean errorFlag = false;
-		List<PersonFieldVO> cursorPersonFieldVals = new ArrayList<PersonFieldVO>();
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		List<PersonFieldVO> cursorPersonFieldVals = new ArrayList<>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("tblField", fieldName);
 		map.put("stateNo", stateNo);
 		map.put("p_calling_app_name", callingAppName);
@@ -294,8 +294,8 @@ public class PersionService {
 		map.put("p_module_id", 16);
 		map.put("p_worker_id", userObject.getWorkerId());
 		
-		List<PersonFieldDocsVO> list = new ArrayList<PersonFieldDocsVO>();
-		List<PersonFieldDocsVO> listForFieldVal = new ArrayList<PersonFieldDocsVO>();
+		List<PersonFieldDocsVO> list = new ArrayList<>();
+		List<PersonFieldDocsVO> listForFieldVal = new ArrayList<>();
 
 		try {
 			personDAO.getFieldDocsWithBestIndicator(map);
@@ -341,14 +341,14 @@ public class PersionService {
 		if (stDt == null)
 			stDt = new Date();
 		// if(stDt==null) stDt=new Date();
-		java.util.Map<Object, Object> map = new java.util.HashMap<Object, Object>();
-		List<PersonRisksVO> cursorRisksIn = new ArrayList<PersonRisksVO>();
+		java.util.Map<Object, Object> map = new java.util.HashMap<>();
+		List<PersonRisksVO> cursorRisksIn = new ArrayList<>();
 		map.put("p_state_no", stateNo);
 		map.put("p_date", stDt);
 		map.put("refCursor", cursorRisksIn);
 		map.put("p_calling_app_name", "NYEHMS");
 
-		List<PersonRisksVO> list = new ArrayList<PersonRisksVO>();
+		List<PersonRisksVO> list = new ArrayList<>();
 		try {
 			personDAO.getPersonRisksData(map);
 			list = (List<PersonRisksVO>) map.get("refCursor");
@@ -390,13 +390,13 @@ public class PersionService {
 		if (stDt == null)
 			stDt = new Date();
 
-		java.util.Map<Object, Object> map = new java.util.HashMap<Object, Object>();
-		List<PersonRaceVO> cursorRisksIn = new ArrayList<PersonRaceVO>();
+		java.util.Map<Object, Object> map = new java.util.HashMap<>();
+		List<PersonRaceVO> cursorRisksIn = new ArrayList<>();
 		map.put("p_state_no", stateNo);
 		map.put("p_date", stDt);
 		map.put("refCursor", cursorRisksIn);
 
-		List<PersonRaceVO> list = new ArrayList<PersonRaceVO>();
+		List<PersonRaceVO> list = new ArrayList<>();
 		PersonRaceVO personRaceVO = null;
 		try {
 			personDAO.getPersonRaceData(map);
@@ -520,7 +520,7 @@ public class PersionService {
 
 	public List<String> getStatenoHistory(String stateNo, BindingResult bindingResult, UserObject userObject) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_state_no", stateNo);
 
@@ -535,7 +535,7 @@ public class PersionService {
 	@SuppressWarnings("unchecked")
 	public JSONObject getEharsStatenosMapping(String[] statenos, BindingResult bindingResult, UserObject userObject) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("statenos", statenos);
 
@@ -665,7 +665,7 @@ public class PersionService {
 	public void executeTriggerPsMessage(int documentId, String stateno, String testType, String messageType, AddressFieldVO addressFieldVO,
 			BindingResult bindingResult, UserObject userObject) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_stateno", stateno);
 		inOutParameterMap.put("p_document_type", LabCommonUtils.getDocumentType(testType));
@@ -713,7 +713,7 @@ public class PersionService {
 		boolean errorFlag = false;
 		String clusterIds = "";
 		
-		List<String> clusterDetailsList = new ArrayList<String>();
+		List<String> clusterDetailsList = new ArrayList<>();
 
 		try {
 				List<ClusterUploadVO> statenoClusterIdsList = personDAO.getStatenoClusterAssociation(stateNo);
@@ -746,7 +746,7 @@ public class PersionService {
 	public List<String> getNotAssociatedClusterIds(UserObject userObject, BindingResult result, String stateNo) {
 		
 		boolean errorFlag = false;
-		List<String> clusterDetailsList = new ArrayList<String>();
+		List<String> clusterDetailsList = new ArrayList<>();
 
 		try {
 			List<ClusterUploadVO> notAssocClusterDetails = personDAO.getStatenoClusterAssociation(stateNo);
@@ -777,7 +777,7 @@ public class PersionService {
 		
 		boolean isError = false;
 		ClusterDocVO currentDemoInfo = null;
-		Map<String, Object> inputParameter = new HashMap<String, Object>();
+		Map<String, Object> inputParameter = new HashMap<>();
 		
 		List<String> clusterDetailsList = Arrays.asList(clusterDetails.split("\\s*,\\s*"));
 		
@@ -800,7 +800,7 @@ public class PersionService {
 			
 				try {
 					
-					Map<String, Object> clusterDetailsMap = new HashMap<String, Object>();
+					Map<String, Object> clusterDetailsMap = new HashMap<>();
 					
 					clusterDetailsMap.put("clusterId", clusterId);
 					clusterDetailsMap.put("clusterType", clusterType);
@@ -843,7 +843,7 @@ public class PersionService {
 	}
 	
 	public void deletePendingPSMessageDocuments(int documentId, UserObject userObject){
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_document_id", documentId);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
 		personDAO.deletePendingPSMessageDocuments(inputParameterMap);
@@ -859,7 +859,7 @@ public class PersionService {
 	
 	public void deleteRiaDocument(int documentId, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_document_id", documentId);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
 		personDAO.deletePendingRiaDocument(inputParameterMap);
@@ -955,7 +955,7 @@ public class PersionService {
 
 	public List<Map<String, String>> getDuplicateReviewSummary(String ridrValues) {
 
-		List<Map<String, String>> stateNoSummary = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> stateNoSummary = new ArrayList<>();
 		Map<String, String> map;
 
 		String ridrValArr[] = ridrValues.split("~");

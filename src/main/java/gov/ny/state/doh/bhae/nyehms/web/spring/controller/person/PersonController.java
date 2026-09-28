@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +105,7 @@ public class PersonController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog+" stateNo is {} :: End Date is ::: {}", stateNo,endDate);
 		PersonViewVO personViewVO= personService.getPersonViewData(stateNo, endDate, bindingResult, userObject, session.getId());
@@ -142,7 +142,7 @@ public class PersonController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog+ " stateNo is {}  :: Date is ::: {}",stateNo,startDate);
 		List<PersonRisksVO> cursorRisksOut = null;
@@ -279,7 +279,7 @@ public class PersonController {
 			@RequestParam(required = false) String deleteFlag,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		personService.deleteDocument(documentId, documentType, discardReason, discardReasonDescription, comments, stateno, deleteFlag, bindingResult, userObject);
@@ -298,7 +298,7 @@ public class PersonController {
 			HttpServletRequest request)
 	{		
 		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<String> eharsStatenos =  personService.getEharsStateno(stateNo, bindingResult, userObject);
 		if(eharsStatenos != null && eharsStatenos.size() > 0){
@@ -314,7 +314,7 @@ public class PersonController {
 			HttpServletRequest request)
 	{		
 		UserObject userObject=(UserObject)request.getSession().getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		return personService.getEharsStatenosMapping(statenos, bindingResult, userObject);
 	}
@@ -330,7 +330,7 @@ public class PersonController {
 			@RequestParam Map<String, String> params,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.updateStdDocument(params, bindingResult, userObject);
 		return targetMap;
@@ -352,7 +352,7 @@ public class PersonController {
 			Map<String, Object> map,
 			@RequestParam String stateno, UserObject userObject)
 	{
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		String acrfReferenceRowId = request.getParameter("acrfReferenceRowId");
 		aCRFDocumentService.addACRFFormAndAssociateToStateno(acrfReferenceRowId, acrfFormVO, testType, stateno, bindingResult, userObject);
@@ -383,7 +383,7 @@ public class PersonController {
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.triggerPsMessage(documentId, stateno, documentType, messageType, psMessageForce, softErrorCode, addressFieldVO, reason, otherReason, bindingResult, userObject);
 		return targetMap;
@@ -404,7 +404,7 @@ public class PersonController {
 			@RequestParam String documentType,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		personService.getPsMessageType(documentId, stateno, documentType, bindingResult, userObject);
 		return targetMap;
@@ -428,7 +428,7 @@ public class PersonController {
 			HttpServletRequest request, UserObject userObject)
 	{		
 		//, @RequestParam int DOCUMENT_ID, @RequestParam String DOCUMENT_TYPE_CODE
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		commonDocumentEditService.storeEditRawAndStdDocument(allRequestParams, DOCUMENT_ID, DOCUMENT_TYPE_CODE, SOFT_ERROR_ONLY, bindingResult, userObject);
 		return targetMap;
@@ -437,7 +437,7 @@ public class PersonController {
 	@RequestMapping(value="/getNotAssociatedClusterIds.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody List<String> getNotAssociatedClusterIds(HttpServletRequest request, String stateno, UserObject userObject) {
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<String> clusterIdDetails = personService.getNotAssociatedClusterIds(userObject, bindingResult, stateno);
@@ -450,7 +450,7 @@ public class PersonController {
 	@RequestMapping("/addStatenoToCluster")
 	public @ResponseBody Map<Object, Object> addStatenoToCluster(HttpServletRequest request, String stateno, String clusterDetails, String identificationMethod, String identificationDate, long demoDocumentId, UserObject userObject) {
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		personService.associateStateNoToCluster(userObject, bindingResult, stateno, clusterDetails, identificationMethod, identificationDate, demoDocumentId);

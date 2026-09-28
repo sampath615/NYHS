@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Data sources for NYEHMS, imported by spring-config.xml.
+
+  All three are Oracle databases (driver oracle.jdbc.OracleDriver, ojdbc11.jar in $CATALINA_HOME/lib).
+  The pools are container-managed: Tomcat defines them in META-INF/context.xml
+  (connection settings come from catalina.properties, see docs/TOMCAT_MIGRATION.md).
+  resource-ref="true" looks the names up under java:comp/env/.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<!-- Oracle: main NYEHMS database (was WebLogic data source BHAE_NYEHMS_DS_ONE_GL).
+	     Used by the MyBatis session factories, the transaction manager and raw JDBC (ConnectionDAO),
+	     including the Oracle array calls in LabReportsService / LaftDetailsService. -->
+	<jee:jndi-lookup id="appDS" jndi-name="jdbc/BHAE_NYEHMS_DS_ONE_GL" resource-ref="true"
+		expected-type="javax.sql.DataSource" />
+
+	<!-- Oracle: URS database (was WebLogic data source BHAE_NYEHMS_URS); ursSessionFactory -->
+	<jee:jndi-lookup id="ursDS" jndi-name="jdbc/BHAE_NYEHMS_URS" resource-ref="true"
+		expected-type="javax.sql.DataSource" />
+
+	<!-- Oracle: eHARS database (was WebLogic data source BHAE_EHARS_DS_ONE); raw JDBC via
+	     ConnectionDAO.getSqlServerConnectionObj() - despite the method name this is Oracle, not SQL Server -->
+	<jee:jndi-lookup id="eharsDS" jndi-name="jdbc/BHAE_EHARS_DS_ONE" resource-ref="true"
+		expected-type="javax.sql.DataSource" />
+
+</beans>

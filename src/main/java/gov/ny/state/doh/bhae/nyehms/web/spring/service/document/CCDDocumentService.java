@@ -200,8 +200,8 @@ public class CCDDocumentService {
 				rawCCDPersonVO.setLANGUAGE(languageCodeElement.getAttribute("code").getValue());
 			}
 		}
-		List<String> raceCodes = new ArrayList<String>();
-		List<String> raceDisplayNames = new ArrayList<String>();
+		List<String> raceCodes = new ArrayList<>();
+		List<String> raceDisplayNames = new ArrayList<>();
 		List<Element> raceCodeElements = patientElement.getChildren("raceCode", ns);
 		for (Element rce : raceCodeElements) {
 			Element translationElement = rce.getChild("translation", ns);
@@ -234,7 +234,7 @@ public class CCDDocumentService {
 
 	private static List<RawCCDPersonAddressVO> getAddressVOList(Element clinDocElement, int uphnId, int docId)
 			throws Exception {
-		List<RawCCDPersonAddressVO> theAddressVOList = new ArrayList<RawCCDPersonAddressVO>();
+		List<RawCCDPersonAddressVO> theAddressVOList = new ArrayList<>();
 		Element patientRoleElement = descendPath(clinDocElement, "recordTarget/patientRole", ns);
 		List<Element> theAddressElementList = patientRoleElement.getChildren("addr", ns);
 		int numberOfAddresses = theAddressElementList.size();
@@ -307,7 +307,7 @@ public class CCDDocumentService {
 
 	private static List<RawCCDProviderVO> getProviderVOList(Element theClinDocElement, int uphnId, int docId)
 			throws Exception {
-		List<RawCCDProviderVO> theProviderVOList = new ArrayList<RawCCDProviderVO>();
+		List<RawCCDProviderVO> theProviderVOList = new ArrayList<>();
 		Element serviceEventElement = descendPath(theClinDocElement, "documentationOf/serviceEvent", ns);
 		if (serviceEventElement != null) {
 			List<Element> components = serviceEventElement.getChildren("performer", ns);
@@ -353,7 +353,7 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDPayerVO> getPayerVOList(int uphnId, int docId) throws Exception {
-		List<RawCCDPayerVO> payerVOList = new ArrayList<RawCCDPayerVO>();
+		List<RawCCDPayerVO> payerVOList = new ArrayList<>();
 		if (payerSection != null) {
 			List<Element> payerEntries = payerSection.getChildren("entry", ns);
 			int numberOfPayers = payerEntries.size();
@@ -439,7 +439,7 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDEncounterVO> getEncounterVOList(int uphnId, int docId) throws Exception {
-		List<RawCCDEncounterVO> theEncounterVOList = new ArrayList<RawCCDEncounterVO>();
+		List<RawCCDEncounterVO> theEncounterVOList = new ArrayList<>();
 		if (encounterSection != null) {
 			List<Element> encounterEntryElements = encounterSection.getChildren("entry", ns);
 			int encounterLength = encounterEntryElements.size();
@@ -516,7 +516,7 @@ public class CCDDocumentService {
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9-]+");
 		Matcher matcher = pattern.matcher(encounterId);
 		
-		Set<String> allNumbers = new HashSet<String>();
+		Set<String> allNumbers = new HashSet<>();
 		String longestUniqueId = "";
 		int maxLength = 0;
 		
@@ -553,7 +553,7 @@ public class CCDDocumentService {
 
 	private List<RawCCDDiagnosisVO> getDiagnosisVOList(Element encounterEntry, int uphnId, int ccdDocId,
 			int encounterSeqNo) throws Exception {
-		List<RawCCDDiagnosisVO> theDiagnosisVOList = new ArrayList<RawCCDDiagnosisVO>();
+		List<RawCCDDiagnosisVO> theDiagnosisVOList = new ArrayList<>();
 		IteratorIterable<Element> encounterObservationIterator = encounterEntry
 				.getDescendants(new ElementFilter("observation", ns));
 		int diagnosisCounter = 0;
@@ -612,7 +612,7 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDLabTestVO> getLabTestVOList(int uphnId, int docId) throws Exception {
-		List<RawCCDLabTestVO> labVOList = new ArrayList<RawCCDLabTestVO>();
+		List<RawCCDLabTestVO> labVOList = new ArrayList<>();
 		if (labSection != null) {
 			List<Element> labEntries = labSection.getChildren("entry", ns);
 			int testNumber = 0;
@@ -798,7 +798,7 @@ public class CCDDocumentService {
 	 */
 	private List<RawCCDLabResultVO> getRawLabResultVOList(Element organizerElement, int uphnId, int docId,
 			int testNumber) throws Exception {
-		List<RawCCDLabResultVO> theLabResultVOList = new ArrayList<RawCCDLabResultVO>();
+		List<RawCCDLabResultVO> theLabResultVOList = new ArrayList<>();
 		List<Element> componentEntries = organizerElement.getChildren("component", ns);
 		int resultNumberWithinTest = 0;
 		for (Element ce : componentEntries) {
@@ -919,7 +919,7 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDMedVO> getMedVOList(int uphnId, int docId) throws Exception {
-		List<RawCCDMedVO> medVOList = new ArrayList<RawCCDMedVO>();
+		List<RawCCDMedVO> medVOList = new ArrayList<>();
 		if (medsSection != null) {
 			List<Element> medEntries = medsSection.getChildren("entry", ns);
 			int medCounter = 0;
@@ -970,7 +970,7 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDProblemVO> getProblemVOList(int uphnId, int docId) throws Exception {
-		List<RawCCDProblemVO> problemVOList = new ArrayList<RawCCDProblemVO>();
+		List<RawCCDProblemVO> problemVOList = new ArrayList<>();
 		if (problemSection != null) {
 			List<Element> problemEntries = problemSection.getChildren("entry", ns);
 			int problemCounter = 0;
@@ -1106,7 +1106,7 @@ public class CCDDocumentService {
 	 * @return
 	 */
 	private Map<String, String> getEncounterIDMap(Element sectionElement) {
-		Map<String, String> idMap = new HashMap<String, String>();
+		Map<String, String> idMap = new HashMap<>();
 		Element tbodyElement = descendPath(sectionElement, "text/table/tbody", ns);
 		IteratorIterable<Element> idAttributesIterator = tbodyElement.getDescendants(new ElementFilter("content", ns));
 		for (Element contentElement : idAttributesIterator) {
@@ -1127,7 +1127,7 @@ public class CCDDocumentService {
 	 * @return
 	 */
 	private Map<String, String> getTextIDMap(Element sectionElement) {
-		Map<String, String> idMap = new HashMap<String, String>();
+		Map<String, String> idMap = new HashMap<>();
 		Element tbodyElement = descendPath(sectionElement, "text/table/tbody", ns);
 		if (tbodyElement != null) {
 			IteratorIterable<Element> idAttributesIterator = tbodyElement.getDescendants(new ElementFilter("td", ns));
@@ -1248,7 +1248,7 @@ public class CCDDocumentService {
 
 	@Transactional
 	public int writeRawCCDRecordDataToStdTable(Map<Object, Object> stdCCDDocVO) {
-		Map<Object, Object> stdCCDDocinsertVo = new HashMap<Object, Object>();
+		Map<Object, Object> stdCCDDocinsertVo = new HashMap<>();
 
 		String FNAME_SPLIT = "";
 		String MNAME_SPLIT = "";
@@ -1795,7 +1795,7 @@ public class CCDDocumentService {
 	}
 
 	public int writeRawDiagnosisDataToStdTable(Map<Object, Object> stdCCDDiagnosisVO) {
-		Map<Object, Object> stdCCDDiagnosisinsertVo = new HashMap<Object, Object>();
+		Map<Object, Object> stdCCDDiagnosisinsertVo = new HashMap<>();
 		stdCCDDiagnosisinsertVo.put("DIAGNOSIS_ID", stdCCDDiagnosisVO.get("DIAGNOSIS_ID"));
 		stdCCDDiagnosisinsertVo.put("ENCOUNTER_DOC_ID", stdCCDDiagnosisVO.get("ENCOUNTER_DOC_ID"));
 		stdCCDDiagnosisinsertVo.put("DIAGNOSIS_TEXT", stdCCDDiagnosisVO.get("DIAGNOSIS_TEXT"));
@@ -1823,7 +1823,7 @@ public class CCDDocumentService {
 	}
 
 	public void updateRawDiagnosisMovedToSTDStatus(int currentDocumentId, String tableName, char statusCode) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("tableName", tableName);
 		inputOutputParameterMap.put("statusCode", statusCode);
 		inputOutputParameterMap.put("diagnosisID", currentDocumentId);
@@ -1836,7 +1836,7 @@ public class CCDDocumentService {
 	}
 
 	public void updateRawReviewedStatus(int currentDocumentId, String tableName, char statusCode) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("tableName", tableName);
 		inputOutputParameterMap.put("statusCode", statusCode);
 		inputOutputParameterMap.put("diagnosisID", currentDocumentId);
@@ -1849,7 +1849,7 @@ public class CCDDocumentService {
 	}
 
 	public void updateRawProcessDate(int currentDocumentId, String tableName, java.util.Date processDate) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("tableName", tableName);
 		inputOutputParameterMap.put("processDate", processDate);
 		inputOutputParameterMap.put("document_ID", currentDocumentId);
@@ -1878,7 +1878,7 @@ public class CCDDocumentService {
 		// ADDRESSES
 		List<RawCCDPersonAddressVO> theAddresses = theCCD.getTheAddressList();
 		if (theAddresses != null && theAddresses.size() > 0) {
-			Map<String, Object> inputParameterMapAddress = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapAddress = new HashMap<>();
 			inputParameterMapAddress.put("ccdDocId", docId);
 			inputParameterMapAddress.put("addressesList", theAddresses);
 			ccdDocumentDAO.insertCcdAddressList(inputParameterMapAddress);
@@ -1886,7 +1886,7 @@ public class CCDDocumentService {
 		// PROVIDERS
 		List<RawCCDProviderVO> theProviders = theCCD.getTheProviderList();
 		if (theProviders != null && theProviders.size() > 0) {
-			Map<String, Object> inputParameterMapProviders = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapProviders = new HashMap<>();
 			inputParameterMapProviders.put("ccdDocId", docId);
 			inputParameterMapProviders.put("providersList", theProviders);
 			
@@ -1895,7 +1895,7 @@ public class CCDDocumentService {
 		// PAYERS
 		List<RawCCDPayerVO> thePayers = theCCD.getThePayerList();
 		if (thePayers != null && thePayers.size() > 0) {
-			Map<String, Object> inputParameterMapPayers = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapPayers = new HashMap<>();
 			inputParameterMapPayers.put("ccdDocId", docId);
 			inputParameterMapPayers.put("payersList", thePayers);
 			ccdDocumentDAO.insertCcdPayersList(inputParameterMapPayers);
@@ -1915,7 +1915,7 @@ public class CCDDocumentService {
 		// theLabTestVOList.size());
 		if (theLabTestVOList != null && theLabTestVOList.size() > 0) {
 			List<Integer> labTestSequences = ccdDocumentDAO.getLabTestSequences(labTestVOListLength);
-			List<RawCCDLabResultVO> completeLabResultVOList = new ArrayList<RawCCDLabResultVO>();
+			List<RawCCDLabResultVO> completeLabResultVOList = new ArrayList<>();
 			for (int i = 0; i < labTestVOListLength; i++) {
 				int labTestId = labTestSequences.get(i);
 				RawCCDLabTestVO rawCCDLabTestVO = theLabTestVOList.get(i);
@@ -1929,7 +1929,7 @@ public class CCDDocumentService {
 					completeLabResultVOList.addAll(labResultVOList);
 				}
 			}
-			Map<String, Object> inputParameterForLabInsert = new HashMap<String, Object>();
+			Map<String, Object> inputParameterForLabInsert = new HashMap<>();
 			inputParameterForLabInsert.put("ccdDocId", docId);
 			//@added on 10/30 
 			if (theLabTestVOList.size() > 0) {
@@ -1952,7 +1952,7 @@ public class CCDDocumentService {
 			
 			if (completeLabResultVOList != null && completeLabResultVOList.size() > 0) {
 				if (!individualLabResultInsert) {
-					Map<String, Object> labResultMap = new HashMap<String, Object>();
+					Map<String, Object> labResultMap = new HashMap<>();
 					labResultMap.put("ccdDocId", docId);
 					labResultMap.put("labResultsList", completeLabResultVOList);
 					ccdDocumentDAO.insertCcdLabResultsList(labResultMap);
@@ -1996,8 +1996,8 @@ public class CCDDocumentService {
 		int encounterVOListLength = theEncounterVOList.size();
 		if (theEncounterVOList != null && theEncounterVOList.size() > 0) {
 			List<Integer> encounterSequences = ccdDocumentDAO.getEncounterSequences(encounterVOListLength);
-			List<RawCCDDiagnosisVO> completeDiagnosisList = new ArrayList<RawCCDDiagnosisVO>();
-			List<RawCCDEncounterVO> _currentList = new ArrayList<RawCCDEncounterVO>();
+			List<RawCCDDiagnosisVO> completeDiagnosisList = new ArrayList<>();
+			List<RawCCDEncounterVO> _currentList = new ArrayList<>();
 			for (int i = 0; i < encounterVOListLength; i++) {
 				int encounterDocId = encounterSequences.get(i);
 				RawCCDEncounterVO rawCCDEncounterVO = theEncounterVOList.get(i);
@@ -2012,13 +2012,13 @@ public class CCDDocumentService {
 				_currentList.add(rawCCDEncounterVO);
 
 				if (completeDiagnosisList.size() > 2000 || _currentList.size() > 1000) {
-					Map<String, Object> inputParameterForEncounters = new HashMap<String, Object>();
+					Map<String, Object> inputParameterForEncounters = new HashMap<>();
 					inputParameterForEncounters.put("ccdDocId", docId);
 					inputParameterForEncounters.put("encounterList", _currentList);
 					ccdDocumentDAO.insertCcdEncounterList(inputParameterForEncounters);
 					_currentList = new ArrayList<RawCCDEncounterVO>();
 					if (completeDiagnosisList.size() > 0) {
-						Map<String, Object> diagnosisMap = new HashMap<String, Object>();
+						Map<String, Object> diagnosisMap = new HashMap<>();
 						diagnosisMap.put("diagnosisList", completeDiagnosisList);
 						ccdDocumentDAO.insertCcdDiagnosisList(diagnosisMap);
 						completeDiagnosisList = new ArrayList<RawCCDDiagnosisVO>();
@@ -2026,14 +2026,14 @@ public class CCDDocumentService {
 				}
 			}
 			if (_currentList.size() > 0) {
-				Map<String, Object> inputParameterForEncounters = new HashMap<String, Object>();
+				Map<String, Object> inputParameterForEncounters = new HashMap<>();
 				inputParameterForEncounters.put("ccdDocId", docId);
 				inputParameterForEncounters.put("encounterList", _currentList);
 				ccdDocumentDAO.insertCcdEncounterList(inputParameterForEncounters);
 				_currentList = new ArrayList<RawCCDEncounterVO>();
 			}
 			if (completeDiagnosisList.size() > 0) {
-				Map<String, Object> diagnosisMap = new HashMap<String, Object>();
+				Map<String, Object> diagnosisMap = new HashMap<>();
 				diagnosisMap.put("diagnosisList", completeDiagnosisList);
 				ccdDocumentDAO.insertCcdDiagnosisList(diagnosisMap);
 			}
@@ -2041,7 +2041,7 @@ public class CCDDocumentService {
 		// MEDS
 		List<RawCCDMedVO> theMeds = theCCD.getTheMedList();
 		if (theMeds != null && theMeds.size() > 0) {
-			Map<String, Object> inputParameterMapMed = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMapMed = new HashMap<>();
 			inputParameterMapMed.put("ccdDocId", docId);
 			
 			int Size = theMeds.size();
@@ -2062,7 +2062,7 @@ public class CCDDocumentService {
 		// PROBLEMS
 		List<RawCCDProblemVO> theProblems = theCCD.getTheProblemList();
 		if (theProblems != null && theProblems.size() > 0) {
-			Map<String, Object> inputParameterProblems = new HashMap<String, Object>();
+			Map<String, Object> inputParameterProblems = new HashMap<>();
 			inputParameterProblems.put("ccdDocId", docId);
 			int Size = theProblems.size();
 		
@@ -2097,9 +2097,9 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDEncounterVO> getCCDEncountersList(int documentID) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("CCD_DOC_ID", documentID);
-		List<RawCCDEncounterVO> theEncounterList = new ArrayList<RawCCDEncounterVO>();
+		List<RawCCDEncounterVO> theEncounterList = new ArrayList<>();
 		theEncounterList = ccdDocumentDAO.getCCDEncountersList(documentID);
 		if (theEncounterList != null && theEncounterList.size() > 0) {
 			for (int i = 0; i < theEncounterList.size(); i++) {
@@ -2108,7 +2108,7 @@ public class CCDDocumentService {
 				if (rawCCDEncounterVO != null) {
 					int encounterDocId = rawCCDEncounterVO.getEncounterDocId();
 					if (encounterDocId > 0) {
-						List<RawCCDDiagnosisVO> lstDiagnosisList = new ArrayList<RawCCDDiagnosisVO>();
+						List<RawCCDDiagnosisVO> lstDiagnosisList = new ArrayList<>();
 						lstDiagnosisList = ccdDocumentDAO.getDiagnosisList(encounterDocId);
 						if (lstDiagnosisList != null && lstDiagnosisList.size() > 0) {
 							rawCCDEncounterVO.setTheDiagnoses(lstDiagnosisList);
@@ -2122,9 +2122,9 @@ public class CCDDocumentService {
 	}
 
 	public List<RawCCDLabTestVO> getCCDLabTestsList(int documentID) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("CCD_DOC_ID", documentID);
-		List<RawCCDLabTestVO> theLabTestList = new ArrayList<RawCCDLabTestVO>();
+		List<RawCCDLabTestVO> theLabTestList = new ArrayList<>();
 		theLabTestList = ccdDocumentDAO.getCCDLabTestsList(documentID);
 		if (theLabTestList != null && theLabTestList.size() > 0) {
 			for (int i = 0; i < theLabTestList.size(); i++) {
@@ -2133,7 +2133,7 @@ public class CCDDocumentService {
 				if (rawCCDLabTestVO != null) {
 					int labTestId = rawCCDLabTestVO.getCcdLabTestId();
 					if (labTestId > 0) {
-						List<RawCCDLabResultVO> lstLabResultList = new ArrayList<RawCCDLabResultVO>();
+						List<RawCCDLabResultVO> lstLabResultList = new ArrayList<>();
 						lstLabResultList = ccdDocumentDAO.getLabResultsList(labTestId);
 						if (lstLabResultList != null && lstLabResultList.size() > 0) {
 							rawCCDLabTestVO.setTheLabResult(lstLabResultList);

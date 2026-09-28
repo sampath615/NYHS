@@ -56,7 +56,7 @@ public class RecordSearchReviewService {
 			String[] statenoList, String requestComments,
 			BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_requestComments", requestComments);
 		inOutParameterMap.put("p_workerId", userObject.getWorkerId());
@@ -91,7 +91,7 @@ public class RecordSearchReviewService {
 	public void discardCDCFeedbackRecords(String[] cdcRecords,
 			BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_workerId", userObject.getWorkerId());
 		
@@ -135,7 +135,7 @@ public class RecordSearchReviewService {
 		
 		try {
 			
-			Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 			
 			inOutParameterMap.put("p_flagStatus", flagStatus);
@@ -153,7 +153,7 @@ public class RecordSearchReviewService {
 				
 				if(resultCount > 0){
 					
-					Map<String, String> inOutParameters = new HashMap<String, String>();
+					Map<String, String> inOutParameters = new HashMap<>();
 					
 					inOutParameters.put("p_requestComments", requestComments);
 					
@@ -315,7 +315,7 @@ public class RecordSearchReviewService {
 			
 				
 				
-			Map<String, Object> inParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inParameterMap = new HashMap<>();
 			
 			
 							
@@ -397,7 +397,7 @@ public class RecordSearchReviewService {
 			
 				
 				
-			Map<String, Object> inParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inParameterMap = new HashMap<>();
 			
 			
 							
@@ -487,7 +487,7 @@ public class RecordSearchReviewService {
 		
 		BufferedReader bufferedReader;
 				
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
 			
 			if(uploadedFile.isEmpty()){
 				
@@ -504,7 +504,7 @@ public class RecordSearchReviewService {
 				Integer RIDR_COLUMN_NAMES_LENGTH = null;
 				String[] CDC_RETURN_COLUMN_NAMES = null;
 				
-				Map<String, String> inputParameterMap = new HashMap<String, String>();
+				Map<String, String> inputParameterMap = new HashMap<>();
 				inputParameterMap.put("fileName", inputFileName);
 				
 				
@@ -591,7 +591,7 @@ public class RecordSearchReviewService {
 					
 
 					
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						
 						fileData.put("fileName", inputFileName);
 						
@@ -662,7 +662,7 @@ public class RecordSearchReviewService {
 			} 
 			
 			if(!isError){
-				Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("fileDataList", fileDataList);
 				inputParameterMap.put("fileName", inputFileName);
@@ -763,7 +763,7 @@ public class RecordSearchReviewService {
 			String stateValue){
 		
 
-		Map<String,String> inputParameterMap = new HashMap<String,String>();
+		Map<String,String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("stateValue", stateValue);
 		
@@ -774,7 +774,7 @@ public class RecordSearchReviewService {
 			int documentId, BindingResult bindingResult, UserObject userObject){
 		
 
-		Map<Object,Object> inputParameterMap = new HashMap<Object,Object>();
+		Map<Object,Object> inputParameterMap = new HashMap<>();
 		
 		
 		
@@ -832,7 +832,7 @@ public class RecordSearchReviewService {
 	public void replaceRecordSearchStateno(String recSearchSourceStateno,
 			String recSearchStatenoToReplace, String recSearchComments){
 		
-		Map<Object,Object> inputParameterMap = new HashMap<Object,Object>();
+		Map<Object,Object> inputParameterMap = new HashMap<>();
 		
 		
 		inputParameterMap.put("recSearchSourceStateno", recSearchSourceStateno);
@@ -860,7 +860,7 @@ public class RecordSearchReviewService {
 	public int rejectCDCFileFromSentTable(String cdcFileName,
 			UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("cdcFileName", cdcFileName);
 		inputParameterMap.put("workerId", userObject.getWorkerId());
@@ -871,7 +871,7 @@ public class RecordSearchReviewService {
 	public int rejectCDCFileFromFlaggingTable(String cdcFileName,
 			UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("cdcFileName", cdcFileName);
 		inputParameterMap.put("workerId", userObject.getWorkerId());

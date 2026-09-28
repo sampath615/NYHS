@@ -20,79 +20,79 @@ public class LabCommonUtils {
     private static final String LEFT_BRACKET = "(";
     private static final String RIGHT_BRACKET = ")";
 
-    private static final Map<String, String> codedBirthSexValues = new HashMap<String, String>();
-    private static final Map<String, String> codedCurrentGenderValues = new HashMap<String, String>();
-    private static final Map<String, String> codedEthinicityValues = new HashMap<String, String>();
-    private static final Map<String, String> codedRaceDataValues = new HashMap<String, String>();
-    private static final Map<String, String> codedRiskDataValues = new HashMap<String, String>();
-    private static final Map<String, String> codedTestDataValues = new HashMap<String, String>();
+    private static final Map<String, String> codedBirthSexValues = new HashMap<>();
+    private static final Map<String, String> codedCurrentGenderValues = new HashMap<>();
+    private static final Map<String, String> codedEthinicityValues = new HashMap<>();
+    private static final Map<String, String> codedRaceDataValues = new HashMap<>();
+    private static final Map<String, String> codedRiskDataValues = new HashMap<>();
+    private static final Map<String, String> codedTestDataValues = new HashMap<>();
     
-    private static final Map<String, String> stdHivColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawHivColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> stdHivColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawHivColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawStdConfColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdStdConfColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawStdConfColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdStdConfColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawStdColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdStdColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawStdColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdStdColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawMedColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdMedColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawMedColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdMedColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawDeathColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdDeathColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawNycDeathColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdNycDeathColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawAirsColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdAirsColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawDeathColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdDeathColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawNycDeathColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdNycDeathColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawAirsColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdAirsColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawAdapColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdAdapColumnReferances = new HashMap<String, String>();
-    public static final Map<String, String> oldNycRaceColumnMap = new HashMap<String, String>();
+    private static final Map<String, String> rawAdapColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdAdapColumnReferances = new HashMap<>();
+    public static final Map<String, String> oldNycRaceColumnMap = new HashMap<>();
 
-    private static final Map<String, String> stdMedOldColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> stdMedOldColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawPrfColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdPrfColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawNycPrfColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdNycPrfColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdOldCaseColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawSsdmColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdSsdmColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawTbColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdTbColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawSyphColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdSyphColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdDoccsColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawEprfOOCColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdEprfOOCColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawQualCareColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawPrfColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdPrfColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawNycPrfColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdNycPrfColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdOldCaseColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawSsdmColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdSsdmColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawTbColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdTbColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawSyphColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdSyphColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdDoccsColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawEprfOOCColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdEprfOOCColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawQualCareColumnReferances = new HashMap<>();
     
-    private static final Map<String, String> rawNycIJRColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdNycIJRColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawICCRColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdICCRColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> stdOldColumnReferances = new HashMap<String, String>();
-    private static final Map<String, String> rawCASAColumnReferances = new HashMap<String, String>();
+    private static final Map<String, String> rawNycIJRColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdNycIJRColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawICCRColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdICCRColumnReferances = new HashMap<>();
+    private static final Map<String, String> stdOldColumnReferances = new HashMap<>();
+    private static final Map<String, String> rawCASAColumnReferances = new HashMap<>();
     
     
-    private static final Map<String, String> rawTableNames = new HashMap<String, String>();
+    private static final Map<String, String> rawTableNames = new HashMap<>();
 
     private static final StringBuilder deathStandardDocumentsQuery = new StringBuilder("");
     private static final StringBuilder liveStandardDocumentsQuery = new StringBuilder("");
     private static final StringBuilder ssdmStandardDocumentsQuery = new StringBuilder("");
     
-    private static final List<String> RAW_CCD_DOC_LIST = new ArrayList<String>();
-    private static final List<String> UPHN_TRANX_IN_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_PERSON_ADDRESS_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_PROVIDER_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_PAYER_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_LAB_TEST_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_ENCOUNTER_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_MED_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_DIAGNOSIS_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_LAB_RESULT_LIST = new ArrayList<String>();
-    private static final List<String> RAW_CCD_PROBLEM_LIST = new ArrayList<String>();
+    private static final List<String> RAW_CCD_DOC_LIST = new ArrayList<>();
+    private static final List<String> UPHN_TRANX_IN_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_PERSON_ADDRESS_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_PROVIDER_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_PAYER_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_LAB_TEST_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_ENCOUNTER_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_MED_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_DIAGNOSIS_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_LAB_RESULT_LIST = new ArrayList<>();
+    private static final List<String> RAW_CCD_PROBLEM_LIST = new ArrayList<>();
     
     static{
     	
@@ -914,7 +914,7 @@ public class LabCommonUtils {
     		value =  jsonElement.get("VALUE").toString().toUpperCase();
     	}
     	
-    	StringBuffer _operatorCondition = new StringBuffer("");
+    	StringBuilder _operatorCondition = new StringBuilder("");
   	if("LIKE".equalsIgnoreCase(condition)){
 				_operatorCondition.append("LIKE").append(SPACE).append(QUOTE).append(PERCENTAGE).append(value).append(PERCENTAGE).append(QUOTE);
     	}else if("STARTWITH".equals(condition)){
@@ -1465,7 +1465,7 @@ public class LabCommonUtils {
 	
 	public static Map<String, String> convertColumnListMapObj(List<Map<String, String>> stdToRawColumnsList, String keyColumn, String valueColumn){
 		
-		Map<String, String> documentColumnMappingObj = new HashMap<String, String>();
+		Map<String, String> documentColumnMappingObj = new HashMap<>();
 		
 		for (Map<String, String> map : stdToRawColumnsList) {
 			 

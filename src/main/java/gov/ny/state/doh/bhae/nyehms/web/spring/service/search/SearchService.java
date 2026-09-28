@@ -40,11 +40,11 @@ public class SearchService {
 			
 			boolean errorFlag=false;
 			
-			List<String> searchResultsRowIds = new ArrayList<String>();
+			List<String> searchResultsRowIds = new ArrayList<>();
 
 			try{
-				Map<Object,Object> map = new HashMap<Object,Object>();
-				List<SearchPersonCriteriaVO> cursor = new ArrayList<SearchPersonCriteriaVO>();	
+				Map<Object,Object> map = new HashMap<>();
+				List<SearchPersonCriteriaVO> cursor = new ArrayList<>();	
 				
 				
 				
@@ -147,7 +147,7 @@ public class SearchService {
 			List<String> rowIdList, String sortByColumn, String sortOrder, BindingResult dummyBindingResult,
 			UserObject userObject, String sessionId){
 		
-		Map<Object, Object> inputOutputParameterMap  = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap  = new HashMap<>();
 		
 		
 		
@@ -156,7 +156,7 @@ public class SearchService {
 		inputOutputParameterMap.put("sortOrder", sortOrder);
 		
 		
-		List<SearchPersonCriteriaVO> searchResults = new ArrayList<SearchPersonCriteriaVO>();
+		List<SearchPersonCriteriaVO> searchResults = new ArrayList<>();
 		
 
 		int rowIdListSize = rowIdList.size();
@@ -182,10 +182,10 @@ public class SearchService {
 	public List<SearchPersonCriteriaVO> searchPersonFields(SearchPersonCriteriaVO searchPersonCriteriaVO, String searchBy, String searchType, BindingResult result, UserObject userObject, String sessionID){
 		boolean errorFlag=false;
 		
-		Map<Object,Object> map = new HashMap<Object,Object>();
-		List<SearchPersonCriteriaVO> cursor = new ArrayList<SearchPersonCriteriaVO>();	
+		Map<Object,Object> map = new HashMap<>();
+		List<SearchPersonCriteriaVO> cursor = new ArrayList<>();	
 		
-		List<SearchPersonCriteriaVO> list = new ArrayList<SearchPersonCriteriaVO>();
+		List<SearchPersonCriteriaVO> list = new ArrayList<>();
 		
 		String _stateno = searchPersonCriteriaVO.getStateNo();
 		
@@ -288,7 +288,7 @@ public class SearchService {
 		
 
 
-		Map<String,String> inputParameterMap = new HashMap<String,String>();
+		Map<String,String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("fileType", fileType);
 		
@@ -306,7 +306,7 @@ public class SearchService {
 	public List<Map<String, Object>> getRidrSearchViewResults(String stateValue, String fileType){
 		
 
-		Map<String,String> inputParameterMap = new HashMap<String,String>();
+		Map<String,String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("stateValue", stateValue);
 		

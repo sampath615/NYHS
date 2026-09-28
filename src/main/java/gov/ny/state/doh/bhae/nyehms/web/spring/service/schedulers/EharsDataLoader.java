@@ -67,7 +67,7 @@ public class EharsDataLoader{
 						&& "Y".equals(schedulerMetaData.get(CommonConstants.LOAD_EHARS_DATA))
 						&& expectedServerIpAddress.equals(runningServerIpAddress)) {
 				
-						List<String> notificationObj = new ArrayList<String>(); 
+						List<String> notificationObj = new ArrayList<>(); 
 						
 						manualQuartzJobService.updateSchedulerRanDate(qualityStageRunDateParameterName,
 								null, "EHARS data loading", schedulerMetaData,

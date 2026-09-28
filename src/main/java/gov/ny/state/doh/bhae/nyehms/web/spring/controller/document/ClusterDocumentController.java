@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +52,7 @@ public class ClusterDocumentController {
 		log.debug("{}  incoming Cluster Doc ID is {}",nyehmsLog ,docId);
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 
@@ -123,7 +123,7 @@ public class ClusterDocumentController {
 
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<String, String> targetMap= new HashMap<String, String>();
+		Map<String, String> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		documentTransactionHelper.associateStatenoToCluster(clusterId, stateno, requestComments, userObject, bindingResult);
@@ -164,7 +164,7 @@ public class ClusterDocumentController {
 	public @ResponseBody Map<Object, Object> updateClustereHARSImportFlag(HttpServletRequest request, @RequestParam("clusterIdPks[]")  int[] clusterIdPks, Map<String, Object> map, UserObject userObject) {
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		clusterDocumentService.updateClustereHARSImportFlag(clusterIdPks, userObject, bindingResult);
@@ -182,7 +182,7 @@ public class ClusterDocumentController {
 	public @ResponseBody GridObject geteHARSImportFlagData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(clusterDocumentService.geteHARSImportFlagData(userObject, bindingResult));
@@ -217,7 +217,7 @@ public class ClusterDocumentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		
 		List<Integer> linkedDocumentIds = clusterDocumentService.getLinkedMolClusterGenoTypeDocuments(documentId);
 		

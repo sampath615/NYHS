@@ -51,7 +51,7 @@ public class ClericalReviewService {
 	public Map<String, Object> getDocumentIdAndPotentialMatchesForStatenos(String documentTypeToReview, String reviewType, BindingResult result, UserObject userObject) {
 		
 		
-		 Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		 Map<String, Object> inOutParameterMap = new HashMap<>();
 		 
 		 inOutParameterMap.put("documentToReview", documentTypeToReview);
 		 
@@ -101,11 +101,11 @@ public class ClericalReviewService {
 			BindingResult bindingResult, UserObject userObject){
 		
 		
-		Map<String, Object> documentDetailsToReview = new HashMap<String, Object>();
+		Map<String, Object> documentDetailsToReview = new HashMap<>();
 		
 		try{
 		
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			
 			inOutParamaterMap.put("filterCriteriaForStatusCode", filterCriteriaForStatusCode);
 			inOutParamaterMap.put("filterCriteriaForFileName", filterCriteriaForFileName);
@@ -206,11 +206,11 @@ public class ClericalReviewService {
 	public Map<String, Object> getDocumentIdAndPotentialMatchesForStatenosForDFReview(String filterCriteriaForStatusCode, String filterCriteriaForFileName, String filterCriteriaForFileType, String documentType,  
 			BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> documentDetailsToReview = new HashMap<String, Object>();
+		Map<String, Object> documentDetailsToReview = new HashMap<>();
 		
 		try{
 		
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			
 			
 			inOutParamaterMap.put("filterCriteriaForFileName", filterCriteriaForFileName);
@@ -298,7 +298,7 @@ public class ClericalReviewService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 		try{
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			inOutParamaterMap.put("p_raw_document_id", documentId);
 			inOutParamaterMap.put("p_mtch_stateno", stateno);
 			inOutParamaterMap.put("p_worker_id", userObject.getWorkerId());
@@ -320,7 +320,7 @@ public class ClericalReviewService {
 		String transactionMessage=null;
 		Integer statusCode=null;
 		try{
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			inOutParamaterMap.put("p_raw_document_id", documentId);
 			inOutParamaterMap.put("p_worker_id", userObject.getWorkerId());
 			
@@ -357,7 +357,7 @@ public class ClericalReviewService {
 		try{
 			Integer statusCode=null;
 			
-			Map<Object, Object> inOutParamaterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inOutParamaterMap = new HashMap<>();
 			inOutParamaterMap.put("p_raw_document_id", documentId);
 			inOutParamaterMap.put("p_mtch_stateno", stateno);
 			inOutParamaterMap.put("p_mtch_cd", matchCode);
@@ -420,7 +420,7 @@ public class ClericalReviewService {
 			String fileName, String documentType, BindingResult bindingResult,
 			UserObject userObject){
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		Map<String, String> stdColumnNames = LabCommonUtils.getStdReferenceColumnNames(documentType); 
 		
@@ -459,7 +459,7 @@ public class ClericalReviewService {
 	public List<String> getDatafluxAvailabeDocumentTypes(String reviewType, UserObject userObject){
 		
 
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_module_id", "16");
 		inputParameterMap.put("p_worker_id", userObject.getWorkerId());
 		inputParameterMap.put("p_reviewType", reviewType);
@@ -484,7 +484,7 @@ public class ClericalReviewService {
 	public Map<String, Object> getDatafluxDocumentIdAndPotentialMatchesForStatenos(String documentTypeToReview,
 			String reviewType, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		
 		List<Integer> clericalDocuments = null;
 		
@@ -578,7 +578,7 @@ public class ClericalReviewService {
 			throw new DataRetrievalFailureException("Cluster id is missing while updating the match status for the input document");
 		}
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		
 		if("C".equals(match_cd)) {
 			inOutParameterMap.put("p_fuzzy_cluster_id", fuzzyClusterId);
@@ -654,7 +654,7 @@ public class ClericalReviewService {
 		String transactionMessage = null;
 			
 		
-			Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inOutParameterMap = new HashMap<>();
 			 
 			 inOutParameterMap.put("p_fuzzy_cluster_id", fuzzyClusterId);
 			 
@@ -698,7 +698,7 @@ public class ClericalReviewService {
 			UserObject userObject) {
 		
 		try {
-			 Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+			 Map<String, Object> inOutParameterMap = new HashMap<>();
 			 
 			 inOutParameterMap.put("fuzzyClusterId", fuzzyClusterId);
 			 
@@ -722,7 +722,7 @@ public class ClericalReviewService {
 	public List<String> getDFStatusCodesForTheFileName(String fileName, String documentType,
 			BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("fileName", fileName);
 		

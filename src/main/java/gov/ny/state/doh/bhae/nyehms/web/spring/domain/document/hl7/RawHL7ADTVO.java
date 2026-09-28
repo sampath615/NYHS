@@ -17,7 +17,7 @@ public class RawHL7ADTVO {
 	private int obxCount;
 	private int al1Count;
 	private int dg1Count;
-	private List<DG1> dg1List = new ArrayList<DG1>();
+	private List<DG1> dg1List = new ArrayList<>();
 	private int pr1Count;
 	private int gt1Count;
 	private int in1Count;

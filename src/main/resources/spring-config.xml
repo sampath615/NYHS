@@ -46,7 +46,6 @@
 			name="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO" />
 	</oxm:jaxb2-marshaller>
 
-	<bean id="jaxbAnnIntrospector" class="org.codehaus.jackson.xc.JaxbAnnotationIntrospector" />
 	
 	<bean id="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
 <!-- 		<property name="serializationConfig.annotationIntrospector" -->
@@ -94,40 +93,40 @@
 
 	<!--  Spring Core and MVC Declarations End -->
 	
-	<bean id="viewResolver"
-	  class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
-	  <property name="order" value="1"></property>
-	  <property name="basename" value="views"></property>
-	 </bean>
+	<!-- PDF/Excel download views: the view name returned by the controller is the bean id
+	     (was ResourceBundleViewResolver + views.properties, removed in Spring 7) -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="1" />
+	</bean>
+	<bean id="assignmentReportsByDocumentPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.assignment.AssignmentsPdfView" />
+	<bean id="updatedMessageResultsPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.uploads.UpdatedMessagesPdfView" />
+	<bean id="downloadFeedbackSNPDataView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.DownloadFeedbackSNPDataView" />
+	<bean id="generateEPRFSummarySpreadsheet" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateEPRFSummarySpreadsheet" />
+	<bean id="generateCDCReturnFile" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateCDCReturnFileSpreadsheet" />
+	<bean id="generateLabErrorReportByErrorCode" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateLabErrorReportByErrorCode" />
+	<bean id="generateLabErrorReportByFacility" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateLabErrorReportByFacility" />
+	<bean id="generateLabErrorReportByStatus" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateLabErrorReportByStatus" />
+	<bean id="generateLabErrorStatusReportByFacility" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateLabErrorStatusReportByFacility" />
+	<bean id="generateMergeReportByOrigin" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateMergeReportByOrigin" />
+	<bean id="generateMergeReportByBadMerges" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateMergeReportByBadMerges" />
+	<bean id="generateMergeReportByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateMergeReportByDailyStaff" />
+	<bean id="generateBadMergeReportByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateBadMergeReportByDailyStaff" />
+	<bean id="generateADAPNYCDataFile" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateADAPNYCDataSpreadsheet" />
+	<bean id="generateADAPNYCSummaryFile" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateADAPNYCSummarySpreadsheet" />
+	<bean id="generateStatenoHistoryData" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateStatenoHistoryData" />
+	<bean id="generateCurrentStatenoData" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateCurrentStatenoData" />
+	<bean id="uploadedRecordSearchStatnosPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.uploads.UploadedRecordSearchStatnosPdfView" />
+	<bean id="psConfirmedSTDErrorPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.uploads.PSConfirmedSTDPdfView" />
+	<bean id="psMessageReportSpreadsheet" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.report.GeneratePsMessageReport" />
+	<bean id="generatePsOOCExpsReport" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.report.GeneratePsMessageOOCExpsReport" />
+	<bean id="ndvlReportSpreadsheet" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.report.GenerateNdvlReportSpreadsheet" />
+	<bean id="riaActivityReportSpreadsheet" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.report.GenerateRiaActivityReportSpreadsheet" />
+	<bean id="generateScanningReportByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateScanningReportByDailyStaff" />
+	<bean id="generateClericalReportsByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateClericalReportByDailyStaff" />
 	 
 	<!--  MyBatis Spring JDBC Related declaration End -->
-	<bean id="appDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-	  <property name="jndiEnvironment"> 
-	      <props>
-	        <prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
-	      </props>
-	    </property> 
- 	    <property name="jndiName" value="BHAE_NYEHMS_DS_ONE_GL"> </property> 
-	</bean>
-	
-	<bean id="ursDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-	  <property name="jndiEnvironment"> 
-	      <props>
-	        <prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
-	      </props>
-	    </property> 
-	    <property name="jndiName" value="BHAE_NYEHMS_URS"> </property>
-	</bean>
-	
-	<bean id="eharsDS" class="org.springframework.jndi.JndiObjectFactoryBean">
-	  <property name="jndiEnvironment"> 
-	      <props>
-	        <prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
-	      </props>
-	    </property> 
-	    <property name="jndiName" value="BHAE_EHARS_DS_ONE">
-	  </property>
-	</bean>
+	<!-- data sources appDS, ursDS, eharsDS (container JNDI) -->
+	<import resource="classpath:spring-datasource.xml" />
 
 	
 	
@@ -445,11 +444,7 @@
 	</bean>
 
 
+	<!-- uploads are parsed by the servlet container; size limits are in web.xml <multipart-config> -->
 	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-
-		 <!-- setting maximum upload size -->
-		<property name="maxUploadSize" value="409657600" />
-
-	</bean>
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 </beans>

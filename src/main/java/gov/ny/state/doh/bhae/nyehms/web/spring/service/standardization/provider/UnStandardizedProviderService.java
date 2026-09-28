@@ -90,7 +90,7 @@ public class UnStandardizedProviderService {
 		inOutParamaterMap=new HashMap<Object, Object>();
 		inOutParamaterMap.put("providerId", providerId);
 		inOutParamaterMap.put("workerId", userObject.getWorkerId());
-		inOutParamaterMap.put("statusCode", new Integer(1));
+		inOutParamaterMap.put("statusCode", Integer.valueOf(1));
 		inOutParamaterMap.put("statusMessage", "");
 		
 		rawProviderAddressDAO.flagProviderDataAsFacilty(inOutParamaterMap);
@@ -158,8 +158,8 @@ public class UnStandardizedProviderService {
 	@SuppressWarnings("unchecked")
     public List<ProviderDetailsVO> getSrchProviderDetailsWithAddressList(SubProviderAndAddressVO subProviderAndAddressVO ,int searchFor, String searchFromNPI, BindingResult bindingResult, UserObject userObject){
     	
-    	List<ProviderDetailsVO> providerDetailsList = new ArrayList<ProviderDetailsVO>();
-		Map<Object, Object> map = new HashMap<Object, Object>();
+    	List<ProviderDetailsVO> providerDetailsList = new ArrayList<>();
+		Map<Object, Object> map = new HashMap<>();
 
 		map.put("p_provider_fname",subProviderAndAddressVO.getProviderFname());
 		map.put("p_provider_mname",subProviderAndAddressVO.getProviderMname());
@@ -198,7 +198,7 @@ public class UnStandardizedProviderService {
 			subProviderAndAddressVO.setState("");
 		}
 		
-		List<ProviderDetailsVO> providerDetailsList = new ArrayList<ProviderDetailsVO>();
+		List<ProviderDetailsVO> providerDetailsList = new ArrayList<>();
 		
 //		StringBuilder s = new StringBuilder("https://npiregistry.cms.hhs.gov/api/?number="+subProviderAndAddressVO.getProviderNPI()
 		StringBuilder s = new StringBuilder("http://sgwout.health.state.ny.us:7071/cms_nppes_rest_api/api/?number="+subProviderAndAddressVO.getProviderNPI()
@@ -230,7 +230,7 @@ public class UnStandardizedProviderService {
 					JSONObject tableRefData = (JSONObject)i.next();
 					
 					ProviderDetailsVO provDetailsFromRegistry = new ProviderDetailsVO();
-					List<SubProviderAddressVO> subProviderAddressesList = new ArrayList<SubProviderAddressVO>();
+					List<SubProviderAddressVO> subProviderAddressesList = new ArrayList<>();
 					
 					String FIRST_NAME_JSON = "";
 					String LAST_NAME_JSON = ""; 
@@ -307,7 +307,7 @@ public class UnStandardizedProviderService {
 							
 							if (!"".equals(ADDRESS_TYPE_JSON) && ADDRESS_TYPE_JSON.equalsIgnoreCase("LOCATION")) {
 								SubProviderAddressVO subProviderAddresses = new SubProviderAddressVO();
-								List<String> phoneList = new ArrayList<String>();
+								List<String> phoneList = new ArrayList<>();
 								
 						//		subProviderAddresses.setSubProviderAddressId(++addressNo);
 								subProviderAddresses.setSubProviderAddressId(0);
@@ -405,7 +405,7 @@ public class UnStandardizedProviderService {
 		inOutParamaterMap=new HashMap<Object, Object>();
 		inOutParamaterMap.put("p_raw_provider_addr_id_list", String.join(",", rawProvAddressIds));
 		inOutParamaterMap.put("p_user_id", userObject.getWorkerId());
-		inOutParamaterMap.put("p_code_out", new Integer(1));
+		inOutParamaterMap.put("p_code_out", Integer.valueOf(1));
 		inOutParamaterMap.put("p_msg_out", "");
 		
 		rawProviderAddressDAO.flagSelectedRawProviderAsFacilty(inOutParamaterMap);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +35,7 @@ public class LaftFollowupController {
 			@RequestParam int reason,
 			HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		laftFollowupDocumentService.flagLaftFollowupDocument(triggeringDocId, triggeringStateno, comments, reason, bindingResult, userObject);
@@ -49,7 +49,7 @@ public class LaftFollowupController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		
 		int laftFollowupCt = laftFollowupDocumentService.isLaftFollowupActive(documentId);
 		
@@ -72,7 +72,7 @@ public class LaftFollowupController {
 	public @ResponseBody GridObject getFlaggedLaftFollowupData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(laftFollowupDocumentService.getFlaggedLaftFollowupData(userObject, bindingResult));
@@ -85,7 +85,7 @@ public class LaftFollowupController {
 	public @ResponseBody Map<Object, Object> resolveLaftFollowupDocuments(@RequestParam("followupIdsPk[]")  int[] followupIdsPk,
 			@RequestParam String resolutionId, @RequestParam String resolutionComments, HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		laftFollowupDocumentService.resolveLaftFollowupDocuments(followupIdsPk, resolutionId, resolutionComments, userObject, bindingResult);
@@ -97,7 +97,7 @@ public class LaftFollowupController {
 	public @ResponseBody GridObject getFlaggedLaftResolvedData(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		GridObject jsonResponse = getGridObject.GetGrid(laftFollowupDocumentService.getFlaggedLaftResolvedData(userObject, bindingResult));
@@ -109,7 +109,7 @@ public class LaftFollowupController {
 	@RequestMapping(value="/addInitialReviewComments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object, Object> addInitialReviewComments(@RequestParam int followupId, @RequestParam String comments, HttpServletRequest request, UserObject userObject)
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		laftFollowupDocumentService.addInitialReviewComments(followupId, comments, bindingResult, userObject);

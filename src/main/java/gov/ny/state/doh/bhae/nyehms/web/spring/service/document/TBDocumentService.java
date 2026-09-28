@@ -37,7 +37,7 @@ public class TBDocumentService {
     @Autowired
     CommonExceptionHandler commonExceptionHandler;
     
-    private final static Map<String, String> stateCodeMap = new HashMap<String, String>();
+    private final static Map<String, String> stateCodeMap = new HashMap<>();
     
     static{
     	

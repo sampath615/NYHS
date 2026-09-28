@@ -76,7 +76,7 @@ public class PerinatalService {
 
 	public List<Map<String, String>> getFacilityNamesByBirthCriteria(String birthFirstYear, String birthFirstQuarter, String birthSecondYear, String birthSecondQuarter,
 			BindingResult bindingResult, UserObject userObject){
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 
 		inputParameterMap.put("birthFirstYear", birthFirstYear);
 		inputParameterMap.put("birthFirstQuarter", birthFirstQuarter);
@@ -108,9 +108,9 @@ public class PerinatalService {
 		WordprocessingMLPackage facilityReportDocxOut = null;
 		XHTMLImporterImpl facilityReportXHTMLImporter = null;
 		
-		Map<String, Object> responseObj = new HashMap<String, Object>();
+		Map<String, Object> responseObj = new HashMap<>();
 		
-		Map<String, String> failedFacilityNames = new HashMap<String, String>();
+		Map<String, String> failedFacilityNames = new HashMap<>();
 
 		obj_SFTPChannel = remoteServer.getRemoteServerSession();
 
@@ -120,7 +120,7 @@ public class PerinatalService {
 
 		try {
 
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 
 			inputParameterMap.put("birthFirstYear", birthFirstYear);
 			inputParameterMap.put("birthFirstQuarter", birthFirstQuarter);
@@ -278,7 +278,7 @@ public class PerinatalService {
 							attachmentDocxOut.getDocumentModel().getSections().get(0).getPageDimensions().setMargins(MarginsWellKnown.NARROW);
 							attachmentXHTMLImporter = new XHTMLImporterImpl(attachmentDocxOut);
 							
-							Map<String, Object> facilityAttachmentData = new HashMap<String, Object>();
+							Map<String, Object> facilityAttachmentData = new HashMap<>();
 							
 							
 							
@@ -311,7 +311,7 @@ public class PerinatalService {
 					
 					log.error("7");
 					
-					Map<String, Object> facilityData = new HashMap<String, Object>();
+					Map<String, Object> facilityData = new HashMap<>();
 					
 					facilityData.put("FACILITY_DATA_TWO_QUARTERS", facilityDataForTwoQuarters);
 					
@@ -388,7 +388,7 @@ public class PerinatalService {
 					
 					log.error("5");
 					
-					Map<String, String> completeFacilityData = new HashMap<String, String>();
+					Map<String, String> completeFacilityData = new HashMap<>();
 					
 					if (facilityAssigneeDetails == null || facilityAddressDetails == null) {
 //						throw new DataRetrievalFailureException("No Facility information for the PFI " + currentPFI);
@@ -400,13 +400,13 @@ public class PerinatalService {
 					
 					completeFacilityData.putAll(facilityAddressDetails);
 					
-					Map<String, String> quarterNames = new HashMap<String, String>();
+					Map<String, String> quarterNames = new HashMap<>();
 					quarterNames.put("1", "1st");
 					quarterNames.put("2", "2nd");
 					quarterNames.put("3", "3rd");
 					quarterNames.put("4", "4th");
 					
-					Map<String, String> quarterMonthRange = new HashMap<String, String>();
+					Map<String, String> quarterMonthRange = new HashMap<>();
 					quarterMonthRange.put("1", "January-March");
 					quarterMonthRange.put("2", "April-June");
 					quarterMonthRange.put("3", "July-September");
@@ -643,7 +643,7 @@ public class PerinatalService {
 
 	private List<String> findPerinatalAttachments(Map<String, String> facilityData) {
 
-		List<String> attachments = new ArrayList<String>();
+		List<String> attachments = new ArrayList<>();
 
 		if ("1".equals(facilityData.get("ATTACHMENT_A"))) {
 			attachments.add("Attachment A");

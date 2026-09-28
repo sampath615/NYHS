@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ public class RASDocumentController {
 		log.debug(nyehmsLog + "  incoming RAS Doc ID is {}",docId);
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 
@@ -59,7 +59,7 @@ public class RASDocumentController {
 		log.debug(nyehmsLog + "  incoming RAS Doc ID is {}",docId);
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 
@@ -83,7 +83,7 @@ public class RASDocumentController {
 		
 		if(userObject==null) userObject= new UserObject();
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "Sample");
 		
 		String linkedDocumentIds = rasDocumentService.getLinkedResDocuments(documentId);

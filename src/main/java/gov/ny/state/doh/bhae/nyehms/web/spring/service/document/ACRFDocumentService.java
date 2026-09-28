@@ -151,7 +151,7 @@ public class ACRFDocumentService {
 	
 	public void updateSubStanceList(int documentId, List<PcrfSubstanceDocVO> subStanceList, String substanceName, BindingResult result, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("PCRF_SECTION", substanceName);
 		inputParameterMap.put("DOCUMENT_ID", documentId);
@@ -178,7 +178,7 @@ public class ACRFDocumentService {
 	public void updateScreenConditionsList(int documentId, List<PcrfSubstanceDocVO> bpScreenConditionsList, String conditionName,
 			BindingResult result, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("PCRF_SECTION", conditionName);
 		inputParameterMap.put("DOCUMENT_ID", documentId);
@@ -215,7 +215,7 @@ public class ACRFDocumentService {
 			List<RawAcrfLabsVO> rawAcrfLabsList = acrfFormVo.getRawAcrfLabs();
 			int documentId=acrfFormVo.getRawAcrfDoc().getDocumentId();
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			if("PCRF".equals(documentType)){
 				inputParameterMap.put("tableName", "RAW_PCRF_LABS");
@@ -264,7 +264,7 @@ public class ACRFDocumentService {
 		
 		int documentId=acrfFormVO.getRawAcrfDoc().getDocumentId();
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if("PCRF".equals(documentType)){
 			inputParameterMap.put("tableName", "RAW_PCRF_ARVS");
@@ -327,7 +327,7 @@ public class ACRFDocumentService {
 															UserObject userObject, 
 															String sessionID) {
 		boolean errorFlag=false;
-		List<CodedParentTestTypeVO> list= new ArrayList<CodedParentTestTypeVO>();
+		List<CodedParentTestTypeVO> list= new ArrayList<>();
 		try{
 			list= acrfLabDAO.getCodedParentTestTypes();
 		} catch (DataAccessException e) {
@@ -464,7 +464,7 @@ public class ACRFDocumentService {
 //		try{
 			int documentId= 0;
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			if("PCRF".equals(documentType)){
 				inputParameterMap.put("tableName", "RAW_PCRF_CD4");
@@ -497,7 +497,7 @@ public class ACRFDocumentService {
 												UserObject userObject, 
 												String sessionID) {
 		boolean errorFlag=false;
-		List<RawAcrfCd4TstVO>  rawAcrfCd4TstList = new ArrayList<RawAcrfCd4TstVO>();
+		List<RawAcrfCd4TstVO>  rawAcrfCd4TstList = new ArrayList<>();
 		try{
 			
 			String tableName = "";
@@ -508,7 +508,7 @@ public class ACRFDocumentService {
 				tableName = "RAW_ACRF_CD4";
 			}
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("tableName", tableName);
 			inputParameterMap.put("documentId", rawAcrfDocId);
@@ -608,7 +608,7 @@ public class ACRFDocumentService {
 	private List<AcrfRidrVO> getRawAcrfRidrData(String rawAcrfDocId,
 			String documentType, BindingResult result, UserObject userObject, String sessionID) {
 		boolean errorFlag=false;
-		List<AcrfRidrVO>  acrfRidrList = new ArrayList<AcrfRidrVO>();
+		List<AcrfRidrVO>  acrfRidrList = new ArrayList<>();
 		try{
 			acrfRidrList=acrfLabDAO.getRawAcrfRidrData(rawAcrfDocId);
 		}catch (DataAccessException e) {
@@ -631,12 +631,12 @@ public class ACRFDocumentService {
 			String rawAcrfDocId, String documentType, BindingResult result, UserObject userObject,
 			String sessionID) {
 		boolean errorFlag=false;
-		List<CodedArvMedicationsVO>  arvMedicationsList = new ArrayList<CodedArvMedicationsVO>();
+		List<CodedArvMedicationsVO>  arvMedicationsList = new ArrayList<>();
 		try{
 			
 			
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			if("PCRF".equals(documentType)){
 				inputParameterMap.put("tableName", "RAW_PCRF_ARVS");
@@ -681,7 +681,7 @@ public class ACRFDocumentService {
 		List<RawAcrfLabsVO> rawAcrfLabsList=acrfFormVO.getRawAcrfLabs();
 		log.debug(nyehmsLog+" Lab Records :: - "+rawAcrfLabsList.toString());		
 //		try{
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if("PCRF".equals(documentType)){
 			inputParameterMap.put("tableName", "RAW_PCRF_LABS");
@@ -739,7 +739,7 @@ public class ACRFDocumentService {
 		
 		int acrfDocId = acrfFormVO.getRawAcrfDoc().getDocumentId(); 
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if("PCRF".equals(documentType)){
 			inputParameterMap.put("tableName", "RAW_PCRF_ARVS");
@@ -826,7 +826,7 @@ public class ACRFDocumentService {
 		log.debug("{}  CD4 Record : --   {}",nyehmsLog,rawAcrfCd4TstList.toString());
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		if("PCRF".equals(documentType)){
 			inputParameterMap.put("tableName", "RAW_PCRF_CD4");
@@ -876,12 +876,12 @@ public class ACRFDocumentService {
 											String sessionID){
 		// TODO Auto-generated method stub
 		boolean errorFlag=false;
-		List<RawAcrfLabsVO> rawACRFLabsList = new ArrayList<RawAcrfLabsVO>();
+		List<RawAcrfLabsVO> rawACRFLabsList = new ArrayList<>();
 		try{
 			log.debug("{} Fetching LAB Results for doc id {}", nyehmsLog, rawAcrfDocId);
 			
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			
 			if("PCRF".equals(documentType)){
@@ -917,7 +917,7 @@ public class ACRFDocumentService {
 												UserObject userObject, 
 												String sessionID) { 
 		boolean errorFlag=false;
-		List<CodedAcrfTestVO> list = new ArrayList<CodedAcrfTestVO>();
+		List<CodedAcrfTestVO> list = new ArrayList<>();
 		try{
 			list=acrfLabDAO.getCodedAcrfResultTypes();
 		} catch (DataAccessException e) {
@@ -943,7 +943,7 @@ public class ACRFDocumentService {
 															UserObject userObject, 
 															String sessionID) { 
 		boolean errorFlag=false;
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("parentTestType", parentTestType);
 		map.put("acrfTestCode", acrfTestCode);
 		map.put("whereCondition", condition);
@@ -953,7 +953,7 @@ public class ACRFDocumentService {
 		}
 		map.put("acrfRevison", acrfRevison);
 		
-		List<CodedAcrfTestResultVO> listMap = new ArrayList<CodedAcrfTestResultVO>();
+		List<CodedAcrfTestResultVO> listMap = new ArrayList<>();
 		try{
 			listMap = acrfLabDAO.getCodedAcrfTestResultTypes(map);
 		} catch (DataAccessException e) {
@@ -976,7 +976,7 @@ public class ACRFDocumentService {
 		Integer statusCode = -1;
 		String transactionMessage = null;
 		
-		Map<Object, Object> docIdMap = new HashMap<Object, Object>();
+		Map<Object, Object> docIdMap = new HashMap<>();
 		
 		int acrfDocumentId = 0;
 		
@@ -1070,7 +1070,7 @@ public class ACRFDocumentService {
 		
 		String[] eharsFacUids =  acrfLabDAO.getEharsStandardFacilityDetails();
 		
-		List<Map<String, String>> eharsFacilities = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> eharsFacilities = new ArrayList<>();
 		
 		Connection connection = connectionDAO.getSqlServerConnectionObj();
 		
@@ -1092,7 +1092,7 @@ public class ACRFDocumentService {
 				resultSet = statement.executeQuery(queryString.toString());
 				
 				while(resultSet.next()){
-					Map<String, String> _eharsFacility = new HashMap<String, String>();
+					Map<String, String> _eharsFacility = new HashMap<>();
 					_eharsFacility.put("facility_uid", resultSet.getString(1));
 					_eharsFacility.put("facility_name", resultSet.getString(2));
 					eharsFacilities.add(_eharsFacility);
@@ -1125,7 +1125,7 @@ public class ACRFDocumentService {
 	public List<Map<String, String>> getCodedValues(String fieldName){
 		
 		
-		List<Map<String, String>> codedValues = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> codedValues = new ArrayList<>();
 		
 		Connection connection = connectionDAO.getSqlServerConnectionObj();
 		
@@ -1147,7 +1147,7 @@ public class ACRFDocumentService {
 				resultSet = statement.executeQuery(queryString.toString());
 				
 				while(resultSet.next()){
-					Map<String, String> _codedValue = new HashMap<String, String>();
+					Map<String, String> _codedValue = new HashMap<>();
 					_codedValue.put("lookup_cd", resultSet.getString(1));
 					_codedValue.put("lookup_name", resultSet.getString(2));
 					codedValues.add(_codedValue);
@@ -1249,7 +1249,7 @@ public class ACRFDocumentService {
 	public void updatePregOutcomeList(int documentId, List<PcrfSubstanceDocVO> pregOutcomeList, String pregOutcome,
 			BindingResult result, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("PCRF_SECTION", pregOutcome);
 		inputParameterMap.put("DOCUMENT_ID", documentId);

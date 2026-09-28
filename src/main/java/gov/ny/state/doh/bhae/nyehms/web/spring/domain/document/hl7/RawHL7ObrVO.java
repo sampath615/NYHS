@@ -39,7 +39,7 @@ public class RawHL7ObrVO {
 	private String obrAltTestDesc;
 	private String obrAltTestCodingSystem;
 	private String obrNote;
-	private List<RawHL7ObxVO> theOBXList = new ArrayList<RawHL7ObxVO>();
+	private List<RawHL7ObxVO> theOBXList = new ArrayList<>();
 	private String obrProviderName;
 	
 	private String obrCollectionDateStr;

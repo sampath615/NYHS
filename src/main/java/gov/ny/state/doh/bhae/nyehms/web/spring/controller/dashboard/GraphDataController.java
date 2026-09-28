@@ -5,7 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.dashboard.GraphDataServic
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

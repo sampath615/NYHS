@@ -44,8 +44,8 @@ public class SearchManageProviderService {
 	 */ 
 	public List<ProviderDetailsVO> getProviderDetailsByProvider(SubProviderVO providerVO , BindingResult bindingResult, UserObject userObject){
 		
-		List<ProviderDetailsVO> providerDetailsList = new ArrayList<ProviderDetailsVO>();
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		List<ProviderDetailsVO> providerDetailsList = new ArrayList<>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("p_fname",providerVO.getProviderFname());
 		inputOutputParameterMap.put("p_lname",providerVO.getProviderLname());
@@ -77,8 +77,8 @@ public class SearchManageProviderService {
 	 * @return List<ProviderDetailsVO> Having the search resulted data   
 	 */ 
 	public List<ProviderDetailsVO> getProviderDetailsByProviderAddress(SubProviderAndAddressVO subProviderAndAddressVO , BindingResult result, UserObject userObject){
-		List<ProviderDetailsVO> providerDetailsList = new ArrayList<ProviderDetailsVO>();
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		List<ProviderDetailsVO> providerDetailsList = new ArrayList<>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("p_address",subProviderAndAddressVO.getAddress());
 		inputOutputParameterMap.put("p_city",subProviderAndAddressVO.getCity());
@@ -113,8 +113,8 @@ public class SearchManageProviderService {
 	 * @return List<ProviderDetailsVO> Having the search resulted data   
 	 */ 
 	public List<ProviderDetailsVO> getProviderDetailsByRawProviderAddress(RawProviderAddressVO rawProviderAddressVO , BindingResult result, UserObject userObject){
-		List<ProviderDetailsVO> providerDetailsList = new ArrayList<ProviderDetailsVO>();
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		List<ProviderDetailsVO> providerDetailsList = new ArrayList<>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 
 		inputOutputParameterMap.put("p_raw_fname",rawProviderAddressVO.getRawProviderFname());
 		inputOutputParameterMap.put("p_raw_lname",rawProviderAddressVO.getRawProviderLname());
@@ -140,7 +140,7 @@ public class SearchManageProviderService {
 			RawProviderAddressVO rawProviderAddressVO,
 			BindingResult dummyBindingResult, UserObject userObject){
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 
 		if(CommonUtil.isNotNullAndEmpty(rawProviderAddressVO.getRawProviderFname())){
 			map.put("p_provider_fname",rawProviderAddressVO.getRawProviderFname().replaceAll("\\*", "%"));

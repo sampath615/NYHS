@@ -44,18 +44,18 @@ public class LabPFIVO {
         String labPfiListQuery =  "SELECT clia, pfi,NVL(lab_name,' ') lab_name FROM lab_physical_facility WHERE flag_active = 'Y' order by lab_name asc";
         //JsonArray labPfiList = new JsonArray();
         
-        List<Map<String, String>> pfiAndLabNameMap = new ArrayList<Map<String, String>>();
+        List<Map<String, String>> pfiAndLabNameMap = new ArrayList<>();
         try {
             statement = conn.createStatement();
             rs = statement.executeQuery(labPfiListQuery);
             
             while (rs.next()) {
             	
-            	Map<String, String> pfiMap = new HashMap<String, String>();
+            	Map<String, String> pfiMap = new HashMap<>();
             	
             	String _pfi = rs.getString("pfi");
             	
-            	StringBuffer _name = new StringBuffer(rs.getString("clia"));
+            	StringBuilder _name = new StringBuilder(rs.getString("clia"));
             	
             	_name.append(" / ").append(_pfi).append("- (").append(rs.getString("lab_name")).append(")");
             	

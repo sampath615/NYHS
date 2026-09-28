@@ -98,7 +98,7 @@ public class QuartzSchedulerTransactionHelper {
 	@Autowired private QualCareDocumentService qualCareDocumentService;
 	@Autowired LaftFollowupDocumentService laftFollowupDocumentService;	
 	
-	private Map<String, Map<String, String>> zipCodeReferenceMap = new HashMap<String, Map<String, String>>();
+	private Map<String, Map<String, String>> zipCodeReferenceMap = new HashMap<>();
 	
 	/**
 	 * 
@@ -138,7 +138,7 @@ public class QuartzSchedulerTransactionHelper {
 			return;
 		}
 		int failedDocumentsCount = 0 ;
-		List<Integer> validDocumentIds = new ArrayList<Integer>();
+		List<Integer> validDocumentIds = new ArrayList<>();
 		JSONObject statusObject = new JSONObject();
 		try{
 			//preparing the Default process query conditions
@@ -327,7 +327,7 @@ public class QuartzSchedulerTransactionHelper {
 		
 		JSONObject statusObject = new JSONObject();
 		
-		List<EcrlsLabDocVO>  ecrlsLabDocList = new ArrayList<EcrlsLabDocVO>();
+		List<EcrlsLabDocVO>  ecrlsLabDocList = new ArrayList<>();
 		
 		try {
 			//List<EcrlsReAssignDocs> reAssignHivDocList = manualQuartzJobService.getReAssignDocList(recordType);
@@ -382,7 +382,7 @@ public class QuartzSchedulerTransactionHelper {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_FAILURE;
 		String transactionMessage = null;
 		JSONObject statusObject = new JSONObject();
-		List<EcrlsLabDocVO> ecrlsLabDocList = new ArrayList<EcrlsLabDocVO>();
+		List<EcrlsLabDocVO> ecrlsLabDocList = new ArrayList<>();
 		try{
 			ecrlsLabDocList = manualQuartzJobService.runSchedulerFromNyehms();
 			if(ecrlsLabDocList.size() > 0){
@@ -432,7 +432,7 @@ public class QuartzSchedulerTransactionHelper {
 		
 		JSONObject statusObject = new JSONObject();
 		String transactionMessage = null;		
-		List<String> failureDocuments = new ArrayList<String>();
+		List<String> failureDocuments = new ArrayList<>();
 		if(ecrlsLabDocList == null || ecrlsLabDocList.size() == 0){
 			log.error("No data available to write {} to NYEHMS raw table",originFrom);
 			return ecrlsLabDocList;
@@ -516,7 +516,7 @@ public class QuartzSchedulerTransactionHelper {
 					throws DataAccessException, NyehmsException
 	{
 		boolean transactionStatus = false;
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		if("STD".equals(recordType) || "STD_LAB".equals(recordType)){
 			map.put("p_document_type", "STD_LAB");
 		}else{
@@ -633,8 +633,8 @@ public class QuartzSchedulerTransactionHelper {
 	@Transactional
 	public boolean handleRawEclrsRecordValidations(EcrlsLabDocVO ecrlsLabDocVO, StringBuilder failedToValidateDocuments, Map<String, String> schedulerMetaData){
 			boolean transactionStatus = false;
-			List<String> errors =  new ArrayList<String>();
-			List<Integer> errorCodes =  new ArrayList<Integer>();
+			List<String> errors =  new ArrayList<>();
+			List<Integer> errorCodes =  new ArrayList<>();
 			StdEcrlsLabDocVO stdEcrlsLabDocVO = new StdEcrlsLabDocVO();
 			boolean havingSoftCheckValidationErrors = false;
 			int currentProcessStatus = 0;
@@ -768,7 +768,7 @@ public class QuartzSchedulerTransactionHelper {
 		String transactionMessage = null;
 		log.error("Started checking multi step documents");
 		StringBuilder successComments = new StringBuilder();
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		int resultCount = manualQuartzJobService.changeDocumentsStatusToMultiStepCompressFlag();
 		log.error("multi step documents count {}",resultCount);
 		
@@ -810,10 +810,10 @@ public class QuartzSchedulerTransactionHelper {
 	
 	
 	public String processMultispotDocuments(List<EcrlsLabDocVO> multiStepDocumentsForPFI, List<String> errors, int retainDocumentId, int loincGroupId) {
-		TreeSet<String> loincCodes = new TreeSet<String>();
-		List<Integer> documentIds = new ArrayList<Integer>();
+		TreeSet<String> loincCodes = new TreeSet<>();
+		List<Integer> documentIds = new ArrayList<>();
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		Integer newDocumentId = null; 
 		
@@ -1044,7 +1044,7 @@ public class QuartzSchedulerTransactionHelper {
 			log.error("Quality stage job status {}",transactionStatus);
 			//If the process is successful
 			if(CommonConstants.TRANSACTION_STATUS_SUCCESS.equals(transactionStatus)){
-				Map<Integer, List<Integer>> subToRawMapping = new HashMap<Integer, List<Integer>>();
+				Map<Integer, List<Integer>> subToRawMapping = new HashMap<>();
 				//Loading the Standardized Raw PRovider data in to subToRawMapping object
 				boolean isError = manualQuartzJobService.loadRawProviderOrFacilityMappingResults(
 						schedulerStatusObject, schedulerMetaData, subToRawMapping,
@@ -1111,7 +1111,7 @@ public class QuartzSchedulerTransactionHelper {
 			Map<Integer, List<Integer>> subToRawMapping,
 			String actionName, String moduleName)
 	{
-		List<String> failureComments = new ArrayList<String>();
+		List<String> failureComments = new ArrayList<>();
 		JSONObject statusObject = new JSONObject();
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = null;
@@ -1155,7 +1155,7 @@ public class QuartzSchedulerTransactionHelper {
 	{
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Successfully stored all the Raw Std records in the Standard layer";
-		List<String> failedToValidateDocuments = new ArrayList<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
 		int totalDocuments = rawEcrlsLabDocList.size();
 		log.error("Writing Raw Std data to Std table");
 
@@ -1163,7 +1163,7 @@ public class QuartzSchedulerTransactionHelper {
 			log.error("No data available to store in Standard Std table.");
 			return;
 		}
-		List<Integer> validDocumentIds = new ArrayList<Integer>();
+		List<Integer> validDocumentIds = new ArrayList<>();
 		JSONObject statusObject = new JSONObject();
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME,
 				"Storing unique Raw STD data in Standard table.");
@@ -1240,7 +1240,7 @@ public class QuartzSchedulerTransactionHelper {
 	{
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = "Successfully stored all the Raw "+documentType+" records in the Standard layer";
-		List<String> failedToValidateDocuments = new ArrayList<String>();
+		List<String> failedToValidateDocuments = new ArrayList<>();
 		int totalDocuments = docList.size();
 		JSONObject statusObject = new JSONObject();
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME, "Storing Raw "+documentType+" data in Standard table.");
@@ -1385,7 +1385,7 @@ public class QuartzSchedulerTransactionHelper {
 				manualQuartzJobService.getObxObservationResultsMapping(
 				obxObservationResultText, loincCode, null);
 		StringBuilder errorMessage = new StringBuilder("");
-		List<Integer> errorCodes = new ArrayList<Integer>();
+		List<Integer> errorCodes = new ArrayList<>();
 		if (resultObjs == null || resultObjs.size() == 0) {
 			errorMessage.append(" obxObservationresultText(")
 			.append(obxObservationResultText)
@@ -1448,7 +1448,7 @@ public class QuartzSchedulerTransactionHelper {
 		 *                                    * 
 		 **************************************/
 		
-		List<Map<String, Object>> nonCaseDocumentDetails = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> nonCaseDocumentDetails = new ArrayList<>();
 		
 		manualQuartzJobService.loadQualityStageDataJob(
 				schedulerStatusObject, schedulerMetaData, jobName,
@@ -1552,7 +1552,7 @@ public class QuartzSchedulerTransactionHelper {
 		statusObject.put(CommonConstants.STATUS_ACTION_NAME,
 				"Checking the duplicates for STD " + documentType + " Document");
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		boolean isError = false;
 		
@@ -1661,7 +1661,7 @@ public class QuartzSchedulerTransactionHelper {
 		
 		JSONObject statusObject = new JSONObject();
 		
-		List<EcrlsLabDocVO>  ecrlsLabDocList = new ArrayList<EcrlsLabDocVO>();
+		List<EcrlsLabDocVO>  ecrlsLabDocList = new ArrayList<>();
 		
 		try {
 			List<Long> erroredDocumentsList = manualQuartzJobService.getErroredPIDDocumentsList(recordType);
@@ -1752,9 +1752,9 @@ public class QuartzSchedulerTransactionHelper {
 			
 		}
 
-		Map<Integer, Integer> currentProcessStatusDocumentIdMap = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> currentProcessStatusDocumentIdMap = new HashMap<>();
 		
-		List<Integer> documentIdsList = new ArrayList<Integer>();
+		List<Integer> documentIdsList = new ArrayList<>();
 		
 		for (Map<String, Object> map : documentStatusDetails) {
 		
@@ -1823,9 +1823,9 @@ public class QuartzSchedulerTransactionHelper {
 			boolean isDataChanged = false;
 			
 			
-			Map<String, Object> stdTableInputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> stdTableInputParameterMap = new HashMap<>();
 			
-			Map<String, Object> rawTableInputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> rawTableInputParameterMap = new HashMap<>();
 			
 			
 			stdTableInputParameterMap.put("CURRENT_DOCUMENT_ID", documentId);
@@ -1947,7 +1947,7 @@ public class QuartzSchedulerTransactionHelper {
 					
 					String parentDocumentType = LabCommonUtils.getDocumentType(documentType);
 					
-					Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+					Map<Object, Object> inputOutputParameters = new HashMap<>();
 					inputOutputParameters.put("p_document_type", parentDocumentType);
 					inputOutputParameters.put("p_new_doc_id", "");	
 					
@@ -2004,7 +2004,7 @@ public class QuartzSchedulerTransactionHelper {
 						BigDecimal PS_ASSIGN_STATUS = (BigDecimal)personDocData.get("PS_ASSESS_STATUS");
 						BigDecimal SURV_ASSESS_STATUS = (BigDecimal)personDocData.get("SURV_ASSESS_STATUS");
 						BigDecimal SURV_ASSIGNMENT_ID = (BigDecimal)personDocData.get("SURV_ASSIGNMENT_ID");
-						Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+						Map<String, Object> inputParameterMap = new HashMap<>();
 						if(PS_ASSIGN_STATUS != null && PS_ASSIGN_STATUS.intValue() != 0){
 							commonDocumentService.updateTriggeringDocumentIdInNyehmsMessage(documentId, newDocumentId);
 							inputParameterMap.put("PS_ASSIGN_STATUS", PS_ASSIGN_STATUS);
@@ -2190,7 +2190,7 @@ public class QuartzSchedulerTransactionHelper {
 			
 		}else {
 			
-			Map<Object, Object> inputOutputParameters = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameters = new HashMap<>();
 			inputOutputParameters.put("p_document_type", documentType);
 			inputOutputParameters.put("p_new_doc_id", "");	
 			

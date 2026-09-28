@@ -156,7 +156,7 @@ public class RawCCDPayerVO {
 		this.memberFullName = memberFullName;
 	}
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("RAW_CCD_PAYER Document ID: " + ccdDocID + "\n");
 		sb.append("PAYER_ID : " + payerId + "\n");
 		sb.append("Policy ID: " + policyId);

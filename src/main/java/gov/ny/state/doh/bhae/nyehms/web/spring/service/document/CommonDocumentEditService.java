@@ -254,7 +254,7 @@ public class CommonDocumentEditService {
 	
 	public void updateTriggeringDocumentIdInAssignments(List<Integer> assignmentIds, int newDocumentId){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("assignmentIds", assignmentIds);
 		inputParameterMap.put("NEW_DOCUMENT_ID", newDocumentId);
@@ -275,7 +275,7 @@ public class CommonDocumentEditService {
 	
 	public void addEditedAssignmentActivity(List<Integer> assignmentIds, UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		
 		inputOutputParameterMap.put("comments", "Document Edited");

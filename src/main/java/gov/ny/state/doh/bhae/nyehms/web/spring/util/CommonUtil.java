@@ -396,7 +396,7 @@ public class CommonUtil {
 	 */
 	public static String join(String theSeparator, String[] theStringArrayIn) {
 		boolean first = true;
-		StringBuffer theStringBuffer = new StringBuffer();
+		StringBuilder theStringBuffer = new StringBuilder();
 		for (int i = 0; i < theStringArrayIn.length; i++) {
 			if (first) {
 				first = false;

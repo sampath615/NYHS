@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,7 +95,7 @@ public class MergeUnMergePersonController {
 	public @ResponseBody GridObject getFlaggedStateNosPairs(
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				mergeUnMergePersonService.getFlaggedStatenosList(bindingResult, userObject));
@@ -111,7 +111,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String followUp,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.updateMergeFollowUp(
 				id, followUp, bindingResult, userObject);
@@ -134,7 +134,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.flagStatenoPairsAsSame(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -157,7 +157,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		if(request.getParameter("rec_search_actionName") != null){
@@ -192,7 +192,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.flagStatenosAndMergeStatenoPairs(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -209,7 +209,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid
 				(mergeUnMergePersonService.getFlagHistory(
@@ -232,7 +232,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.rejectStatenoFlagPair(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -255,7 +255,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.flagAsBadMerge(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -281,7 +281,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String startDate,
 			Map<String, Object> map, UserObject userObject) 
 	{		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<PersonVO> personList = mergeUnMergePersonService.getPersonViewObjects(
 				duplicationId, stateno1, stateno2, startDate, bindingResult, userObject);
@@ -304,7 +304,7 @@ public class MergeUnMergePersonController {
 			@ModelAttribute("flaggedStatenoVO") FlaggedStatenoVO flaggedStatenoVO,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.unflagAsBadMerge(
 				flaggedStatenoVO, bindingResult, userObject);
@@ -324,7 +324,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String duplicationId,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				mergeUnMergePersonService.getSimilarFlaggedPairs(
@@ -340,7 +340,7 @@ public class MergeUnMergePersonController {
 	public @ResponseBody GridObject getBadlyMergedStatenos(
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				mergeUnMergePersonService.getBadlyMergedStatenos(
@@ -362,7 +362,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String stateno ,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(
 				mergeUnMergePersonService.getBadMergeFlagHistory(
@@ -391,7 +391,7 @@ public class MergeUnMergePersonController {
 			@RequestParam(required = false) String doccsDocumentList,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonTransactionHelper.unMergeTheDocuments(
 				stateno1, stateno2, documentIds, doccsDocumentList,
@@ -418,7 +418,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String doccsDocumentList,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.validateDodAgainstCollectionDate(
 				stateno, documentIds, doccsDocumentList,
@@ -445,7 +445,7 @@ public class MergeUnMergePersonController {
 			@RequestParam String stateno2,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.validateDodAgainstCollectionDateBeforeMerge(
 				stateno1, stateno2,
@@ -472,7 +472,7 @@ public class MergeUnMergePersonController {
 			@RequestParam(required = false) String doccsDocumentList,
 			HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		mergeUnMergePersonService.createNewStatenoAndLinkDocuments(
 				stateno_from, documentIds, doccsDocumentList, bindingResult, userObject);
@@ -663,7 +663,7 @@ public class MergeUnMergePersonController {
 		
 		if(userObject==null) userObject= new UserObject();
 		//request.getParameter("documentId")
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		//, 
 		List<Integer> linkedDocumentIds = mergeUnMergePersonService.getDependentDocumentList(documentId);
 		

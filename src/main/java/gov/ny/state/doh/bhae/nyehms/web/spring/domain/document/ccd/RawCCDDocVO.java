@@ -11,14 +11,14 @@ public class RawCCDDocVO {
 	private int documentId;	
 	private RawCCDPersonDocVO thePerson;
 	private StdCCDDocVo personStdData;
-	private List<RawCCDPersonAddressVO> theAddressList = new ArrayList<RawCCDPersonAddressVO>();
-	private List<RawCCDProviderVO> theProviderList = new ArrayList<RawCCDProviderVO>();
-	private List<RawCCDPayerVO> thePayerList = new ArrayList<RawCCDPayerVO>();
-	private List<RawCCDEncounterVO> theEncounterList = new ArrayList<RawCCDEncounterVO>();
-	private List<RawCCDMedVO> theMedList = new ArrayList<RawCCDMedVO>();
+	private List<RawCCDPersonAddressVO> theAddressList = new ArrayList<>();
+	private List<RawCCDProviderVO> theProviderList = new ArrayList<>();
+	private List<RawCCDPayerVO> thePayerList = new ArrayList<>();
+	private List<RawCCDEncounterVO> theEncounterList = new ArrayList<>();
+	private List<RawCCDMedVO> theMedList = new ArrayList<>();
 	//private List<RawCCDLabVO> theLabList = new ArrayList<RawCCDLabVO>();
-	private List<RawCCDLabTestVO> theLabTestList = new ArrayList<RawCCDLabTestVO>();
-	private List<RawCCDProblemVO> theProblemList = new ArrayList<RawCCDProblemVO>();
+	private List<RawCCDLabTestVO> theLabTestList = new ArrayList<>();
+	private List<RawCCDProblemVO> theProblemList = new ArrayList<>();
 	
 	private long maxUTIICHECKEDRESULTKEY;
 	private long minUTIICHECKEDRESULTKEY;

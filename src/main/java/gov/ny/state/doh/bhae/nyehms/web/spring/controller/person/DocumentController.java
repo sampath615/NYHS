@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -627,8 +627,8 @@ public class DocumentController {
 			Map<String, Object> map, @RequestParam String requestComments, UserObject userObject)
 	{
 		String retPage = "document/LabDocument";
-		List<String> errors = new ArrayList<String>();
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		List<String> errors = new ArrayList<>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult result = new MapBindingResult(targetMap, "targetMap");
 		if (log.isDebugEnabled()) {
 			log.debug("{} saving Labs Doc....", nyehmsLog);
@@ -1229,7 +1229,7 @@ public class DocumentController {
 			@RequestParam(required = false) String closureCategory, UserObject userObject)
 	{
 		Integer statusCode = 0;
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String documentType = request.getParameter("documentType");
@@ -1288,7 +1288,7 @@ public class DocumentController {
 	public @ResponseBody Map<Object, Object> discardACRFForm(@RequestParam String assignmentId,
 			@RequestParam String acrfDocId, @RequestParam String reabstract, HttpServletRequest request, Map<String, Object> map, UserObject userObject)
 	{
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		String documentType = request.getParameter("documentType");
@@ -1314,7 +1314,7 @@ public class DocumentController {
 			@RequestParam boolean havingNoErrorsinForm, @RequestParam String actionName, @RequestParam(required = false) String closureCategory, UserObject userObject)
 	{
 		Integer statusCode = 0;
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		log.debug(nyehmsLog + "  Updating ACRF VO with Doc ID {}", acrfFormVO.getRawAcrfDoc().getAcrfSrcId());
 		String retPage = "worker/ACRFForm";
@@ -1530,7 +1530,7 @@ public class DocumentController {
 		
 		if("NBS".equals(documentType)) {
 			
-			Map<Object, Object> targetMap= new HashMap<Object, Object>();
+			Map<Object, Object> targetMap= new HashMap<>();
 			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 			
 			NBSDocVO nbsDocVO = nbsReviewService.getNBSDoc(documentId, "STD_REVIEW", bindingResult, userObject);
@@ -1692,7 +1692,7 @@ public class DocumentController {
 	{
 		map.put("partnerIndex", partnerIndex);
 		PRFPartnerVO partner = new PRFPartnerVO();
-		List<PRFPartnerVO> partnersList = new ArrayList<PRFPartnerVO>();
+		List<PRFPartnerVO> partnersList = new ArrayList<>();
 		partnersList.add(partner);
 		PRFDocumentVO prfDocumentVO = new PRFDocumentVO();
 		prfDocumentVO.setPartnerList(partnersList);
@@ -1827,7 +1827,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getDocDelDiscardHistory.html")
 	public String getDocDelDiscardHistory(@RequestParam int documentId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		Map<String, String> docDelDiscardHistory = nonCaseDocumentService.getDocDelDiscardHistory(documentId,  bindingResult,  userObject);

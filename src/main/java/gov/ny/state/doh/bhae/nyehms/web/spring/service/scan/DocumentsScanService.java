@@ -26,7 +26,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
@@ -205,7 +205,7 @@ public class DocumentsScanService {
 	
 	
 	public int createTheScanDocumentDetailsInDb(String stateNo, String fileName, String documentType, BindingResult bindingResult, UserObject userObject){
-		Map<Object, Object> docIdMap = new HashMap<Object, Object>();
+		Map<Object, Object> docIdMap = new HashMap<>();
 
 		docIdMap.put("p_document_type", "SCAN");
 		
@@ -234,7 +234,7 @@ public class DocumentsScanService {
 		return newDocId;
 	}
 	
-	public void saveScanDocumentToStateNoSFTP(String stateNo, String documentType, CommonsMultipartFile scannedFile,
+	public void saveScanDocumentToStateNoSFTP(String stateNo, String documentType, MultipartFile scannedFile,
 			BindingResult bindingResult, UserObject userObject){
 		
 		
@@ -265,7 +265,7 @@ public class DocumentsScanService {
 	
 	
     public void storeScannedImageFileToSchoit(String outputFileName,  
-                  CommonsMultipartFile file, String outputLocation, String documentType, BindingResult bindingResult, UserObject userObject){
+                  MultipartFile file, String outputLocation, String documentType, BindingResult bindingResult, UserObject userObject){
            
            ChannelSftp obj_SFTPChannel = null;
            InputStream obj_InputStream = null;
@@ -422,7 +422,7 @@ public class DocumentsScanService {
 		try {
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("DOCUMENT_ID", documentId);
 		inputParameterMap.put("STATENO", stateno);

@@ -79,9 +79,9 @@ public class FacilityService {
 	FacilityStandardizationTransactionHelper facilityStandardizationTransactionHelper;
 	public List<RawSubFacilityVO> getRawSubFacilityList(BindingResult result, String pageType, boolean _search, String searchField, String searchString, String searchOper, UserObject userObject) {
 
-		List<RawSubFacilityVO> rawSubFacilityList = new ArrayList<RawSubFacilityVO>();
+		List<RawSubFacilityVO> rawSubFacilityList = new ArrayList<>();
 			if(pageType.equals("newPage")){
-				Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+				Map<Object, Object> inOutParameterMap = new HashMap<>();
 				inOutParameterMap.put("_search",_search);
 				inOutParameterMap.put("searchField",searchField);
 				if(searchOper != null && (searchOper.equalsIgnoreCase("in") || searchOper.equalsIgnoreCase("ni"))){
@@ -101,7 +101,7 @@ public class FacilityService {
 	public void insertNewStdFacility(SubFacilityVO subFacilityVO,long rawSubFacilityId, BindingResult bindingResult, UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_raw_sub_facility_id", rawSubFacilityId);
 		inOutParameterMap.put("p_facility_name", subFacilityVO.getFacilityName());
 		inOutParameterMap.put("p_facility_department", subFacilityVO.getFacilityDepartment());
@@ -132,7 +132,7 @@ public class FacilityService {
 	public Long addNewStdFacility(SubFacilityVO subFacilityVO, BindingResult bindingResult, UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_facility_name", subFacilityVO.getFacilityName());
 		inOutParameterMap.put("p_facility_department", subFacilityVO.getFacilityDepartment());
@@ -188,7 +188,7 @@ public class FacilityService {
 	public void updateStandardize(long  rawSubFacilityId, long subFacilityId, BindingResult bindingResult, UserObject userObject) {
 		String transactionMessage=null;
 		Integer statusCode=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("rawSubFacilityId", rawSubFacilityId);
 		inOutParameterMap.put("subFacilityId", subFacilityId);
 
@@ -203,9 +203,9 @@ public class FacilityService {
 	 * New Page Grand Services
 	 */
 	public List<MasterFacilityDetailsVO> getSubFacListForSubIds(List<Long> subIds, BindingResult result, UserObject userObject) {
-		 List<MasterFacilityDetailsVO> subFacilityList = new ArrayList<MasterFacilityDetailsVO>();
+		 List<MasterFacilityDetailsVO> subFacilityList = new ArrayList<>();
 
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("subIdsList", subIds);
 
 			subFacilityList = masterFacilityDetailsDAO.getSubFacListForSubIds(map);
@@ -219,7 +219,7 @@ public class FacilityService {
 	public void insertNewGrdFacility(MasterFacilityVO masterFacilityVO, long subFacilityId, BindingResult bindingResult, UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_sub_facility_id", subFacilityId);
 		//TODO: Need to removed facility type related code
 		inOutParameterMap.put("p_master_facility_name", masterFacilityVO.getMasterFacilityName());
@@ -235,9 +235,9 @@ public class FacilityService {
 
 	public List<RawSubFacilityVO> getRawListByStdFacilityId(long subFacilityId, List<Long> rawIds, int searchFor, BindingResult result, UserObject userObject) {
 
-		List<RawSubFacilityVO> rawSubFacilityList = new ArrayList<RawSubFacilityVO>();
+		List<RawSubFacilityVO> rawSubFacilityList = new ArrayList<>();
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("subFacilityId", subFacilityId);
 		if(searchFor == 3){
 			map.put("rawFacilityIds", commonUtil.convertToCommaSeparated(rawIds));
@@ -252,9 +252,9 @@ public class FacilityService {
 	
 	
 	public List<Long> getStdIdsForRawIds(List<Long> rawIds, BindingResult result, UserObject userObject){
-		List<SubFacilityForRawFacilityVO> subFacForRawList = new ArrayList<SubFacilityForRawFacilityVO>();
-		List<Long> subFacilityIds = new ArrayList<Long>();
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		List<SubFacilityForRawFacilityVO> subFacForRawList = new ArrayList<>();
+		List<Long> subFacilityIds = new ArrayList<>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("rawIds", commonUtil.convertToCommaSeparated(rawIds));
 		map.put("subFacForRawFacRefCursor", subFacForRawList);
 
@@ -274,8 +274,8 @@ public class FacilityService {
 	 */
 	public List<Long> getPotentialRawFacList(long rawSubFacilityId, BindingResult result, UserObject userObject){
 
-		List<RawSubFacilityVO> rawSubFacilityVOList = new ArrayList<RawSubFacilityVO>();
-		List<Long> rawPotentialMatchIdS = new ArrayList<Long>();
+		List<RawSubFacilityVO> rawSubFacilityVOList = new ArrayList<>();
+		List<Long> rawPotentialMatchIdS = new ArrayList<>();
 			rawSubFacilityVOList = rawSubFacilityDAO.getPotentialRawFacList(rawSubFacilityId);
 			for(RawSubFacilityVO rawSubFacilityVO : rawSubFacilityVOList){
 				rawPotentialMatchIdS.add(rawSubFacilityVO.getPmRawFacilityId());
@@ -288,7 +288,7 @@ public class FacilityService {
 			UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_fac_id", commaSeparatedVals);
 		inOutParameterMap.put("p_parent_id", parentId);
 		inOutParameterMap.put("p_user_id", userObject.getWorkerId());
@@ -309,7 +309,7 @@ public class FacilityService {
 			BindingResult bindingResult, UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_sub_facility_list", commaSeparatedVals);
 		inOutParameterMap.put("p_retained_sub_facility", selToBeMergedSub);
 		if (selToBeMergedParent != 0) {
@@ -328,7 +328,7 @@ public class FacilityService {
 			UserObject userObject) {
 		Integer statusCode=null;
 		String transactionMessage=null;
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_master_facility_list", commaSeparatedVals);
 		inOutParameterMap.put("p_retained_facility", selToBeMergedGrand);
 		inOutParameterMap.put("p_user_id", userObject.getWorkerId());
@@ -342,7 +342,7 @@ public class FacilityService {
 	
 	//Coded Tables
 	public Map<String, String> getFacilityTypeCodes(BindingResult result, UserObject userObject){
-		Map<String, String> facilityTypeCodes = new LinkedHashMap<String, String>();
+		Map<String, String> facilityTypeCodes = new LinkedHashMap<>();
 			List<Map<String, String>> statusMapList = facilityCodedDAO.getFacilityTypeCodes();
 			for(Map<String, String> statusMap : statusMapList){
 				facilityTypeCodes.put(statusMap.get("code"), statusMap.get("desc"));
@@ -386,7 +386,7 @@ public class FacilityService {
 		
 		String subFacilityId =  subFacilityDAO.getSubFacilityId(facilityUid);
 		
-		Map<String, String> subFacility = new HashMap<String, String>();
+		Map<String, String> subFacility = new HashMap<>();
 		
 		Connection connection = connectionDAO.getSqlServerConnectionObj();
 		
@@ -463,7 +463,7 @@ public class FacilityService {
 			Long standardFacilityId, String phone, BindingResult result,
 			UserObject userObject, String sessionID){
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("standardFacilityId", standardFacilityId);
 		map.put("workerId", userObject.getWorkerId());
 		map.put("phone", phone);
@@ -481,7 +481,7 @@ public class FacilityService {
 		String transactionMessage = "Failed to mark as Unable to Standardize.";
 		Integer statusCode = -1;
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("recordId", recordId);
 		map.put("userId", userObject.getUserId());
 		if("rawFacility".equals(effectedTable)){
@@ -553,7 +553,7 @@ public class FacilityService {
 	public long createRawFacility(RawSubFacilityVO rawSubFacilityVO,
 			BindingResult result, UserObject userObject){
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_facility_fname",rawSubFacilityVO.getFacilityName());
 		inOutParameterMap.put("p_subfacility_id",rawSubFacilityVO.getSubFacilityId());
 		inOutParameterMap.put("p_address",rawSubFacilityVO.getAddress());

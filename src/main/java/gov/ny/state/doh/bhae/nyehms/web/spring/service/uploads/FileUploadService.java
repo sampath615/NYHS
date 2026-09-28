@@ -17,7 +17,7 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -132,7 +132,7 @@ public class FileUploadService {
 	public List<Integer> checkForExistingUpdatedMessageDocIds(
 			Set<Integer> returnMessageDocIds){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("returnMessageDocIds", returnMessageDocIds);
 		
@@ -141,7 +141,7 @@ public class FileUploadService {
 	
 	public List<Integer> getReturnDocIdNotExistInTable(Set<Integer> returnMessageDocIds){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("returnMessageDocIds", returnMessageDocIds);
 		
@@ -171,7 +171,7 @@ public class FileUploadService {
 		
 		String fileName = null;
 		
-		List<Map<String, Object>>  ridrDataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>>  ridrDataList = new ArrayList<>();
 		
 		try{
 			
@@ -275,7 +275,7 @@ public class FileUploadService {
 					}
 					
 					
-					Map<String, Object> ridrData = new HashMap<String, Object>();
+					Map<String, Object> ridrData = new HashMap<>();
 					
 					for (int columnIndex = 0; columnIndex < RIDR_COLUMN_NAMES_LENGTH; columnIndex++) {
 						
@@ -299,7 +299,7 @@ public class FileUploadService {
 	        
 			
 			if(!isError){
-				Map<String, List<Map<String, Object>>> inputParameterMap = new HashMap<String, List<Map<String, Object>>>();
+				Map<String, List<Map<String, Object>>> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("ridrDataList", ridrDataList);
 				
@@ -460,7 +460,7 @@ public class FileUploadService {
 	    
 		//Instantiate the scan engine:
 		ScanEngine.ScanEngineInfo scanEngineTobeUsed = new ScanEngine.ScanEngineInfo("scanserv",1344);
-		Vector <ScanEngine.ScanEngineInfo> scanEnginesForScanning = new Vector <ScanEngine.ScanEngineInfo>();
+		Vector <ScanEngine.ScanEngineInfo> scanEnginesForScanning = new Vector <>();
 		scanEnginesForScanning.add(scanEngineTobeUsed); 
 		ScanEngine scanEngine = null;
 		
@@ -545,7 +545,7 @@ public class FileUploadService {
 		
 		boolean isError = false;
 		String transactionMessage = null;
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String uploadFileName = fileData.getOriginalFilename();
 		
 		if (uploadFileName.length() > 255 || !Pattern.matches("[a-zA-Z0-9]{1,200}\\.[a-zA-Z0-9]{1,10}", uploadFileName)) {
@@ -592,8 +592,8 @@ public class FileUploadService {
 		XSSFWorkbook workbook = null;
 		XSSFSheet worksheet = null;
 		String transactionMessage = null;
-		List<Map<String, Object>>  clusterDataList = new ArrayList<Map<String, Object>>();
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		List<Map<String, Object>>  clusterDataList = new ArrayList<>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String clusterFileName = null;
 		boolean uploadSuccess = false;
 		int noDatRowCt = 0;
@@ -675,7 +675,7 @@ public class FileUploadService {
 					}
 					
 					
-					Map<String, Object> clusterData = new HashMap<String, Object>();
+					Map<String, Object> clusterData = new HashMap<>();
 					DataFormatter fmt = new DataFormatter();
 					
 					for (Cell c : row) {
@@ -700,7 +700,7 @@ public class FileUploadService {
 			}
 			
 			if(!isError){
-				Map<String, List<Map<String, Object>>> inputParameterMap = new HashMap<String, List<Map<String, Object>>>();
+				Map<String, List<Map<String, Object>>> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("clusterDataList", clusterDataList);
 				
@@ -783,9 +783,9 @@ public class FileUploadService {
 		
 		
 		
-		Map<String, String> resultMap = new HashMap<String, String>();
+		Map<String, String> resultMap = new HashMap<>();
 		
-		Map<String, String> uploadRecordSearchStatenoMap = new HashMap<String, String>();
+		Map<String, String> uploadRecordSearchStatenoMap = new HashMap<>();
 
 		
 		
@@ -997,7 +997,7 @@ public class FileUploadService {
 		
 		String transactionMessage = null;
 		
-		Map<String, List<String>> statenoHistoryMap = new HashMap<String, List<String>>();
+		Map<String, List<String>> statenoHistoryMap = new HashMap<>();
 		
 		try{
 			
@@ -1094,7 +1094,7 @@ public class FileUploadService {
 					
 					try{
 						
-						Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+						Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 						inOutParameterMap.put("p_state_no", STATENO);
 
@@ -1122,7 +1122,7 @@ public class FileUploadService {
 					}catch(Exception e){
 						
 						
-						List<String> p_stateno_hist = new ArrayList<String>();
+						List<String> p_stateno_hist = new ArrayList<>();
 						
 						p_stateno_hist.add("Failed to get the STATENO History");
 						
@@ -1185,9 +1185,9 @@ public class FileUploadService {
 		
 		String transactionMessage = null;
 		
-		Map<String, String> currentStatenoMap = new HashMap<String, String>();
+		Map<String, String> currentStatenoMap = new HashMap<>();
 		
-		List<String> inputStatenos = new ArrayList<String>();
+		List<String> inputStatenos = new ArrayList<>();
 		
 		try{
 			
@@ -1299,7 +1299,7 @@ public class FileUploadService {
 
 			
 		
-			Map<String, List<String>> inputMap = new HashMap<String, List<String>>();
+			Map<String, List<String>> inputMap = new HashMap<>();
 			
 			inputMap.put("STATENOS", inputStatenos);
 			
@@ -1355,13 +1355,13 @@ public class FileUploadService {
 		
 		String transactionMessage = null;
 		
-		Map<Integer, Map<String, Object>>  updatedHivData = new HashMap<Integer, Map<String, Object>>();
+		Map<Integer, Map<String, Object>>  updatedHivData = new HashMap<>();
 		
-		List<String> columnNames = new ArrayList<String>(); 
+		List<String> columnNames = new ArrayList<>(); 
 		
-		List<String>  successDocuments = new ArrayList<String>();
+		List<String>  successDocuments = new ArrayList<>();
 		
-		List<String> failureDocuments = new ArrayList<String>();
+		List<String> failureDocuments = new ArrayList<>();
 		
 		try{
 			
@@ -1472,7 +1472,7 @@ public class FileUploadService {
 					}
 					
 					
-					Map<String, Object> documentData = new HashMap<String, Object>();
+					Map<String, Object> documentData = new HashMap<>();
 					
 					Integer originalDocumentId = null;
 					
@@ -1692,8 +1692,8 @@ public class FileUploadService {
 		boolean isError = false; 
 		String transactionMessage = null;
 		
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String uploadFileName = uploadPSConfirmSTDFile.getOriginalFilename();
 		CSVReader csvread = null;
 		
@@ -1732,7 +1732,7 @@ public class FileUploadService {
 				if (!isError) {
 					
 					for(int i=1; i<rowLists.size(); i++){
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						String[] recordRow = rowLists.get(i);
 	
 						// Check if row is null, then ignored
@@ -1825,7 +1825,7 @@ public class FileUploadService {
 		int counter = 0;
 		String CASEKEYString;
 		StringBuilder errorMessage;
-		Map<Object, Object> dataErrorMapList = new HashMap<Object, Object>();
+		Map<Object, Object> dataErrorMapList = new HashMap<>();
 		
 		for (Map<String, Object> dataRow : fileDataList) {
 			
@@ -2054,7 +2054,7 @@ public class FileUploadService {
 
 	public int getStdConfDocumentID() {
 		
-		Map<Object,Object> map = new HashMap<Object,Object>();
+		Map<Object,Object> map = new HashMap<>();
 		int newDocId=0;
 		
 		map.put("p_document_type","STD_CONF");
@@ -2229,8 +2229,8 @@ public class FileUploadService {
 		HSSFWorkbook oldWorkbook = null;
 		HSSFSheet  oldWorksheet = null;
 		
-		List<Map<String, Object>>  fileDataList = new ArrayList<Map<String, Object>>();
-		Map<Object, Object> resultMap = new HashMap<Object, Object>();
+		List<Map<String, Object>>  fileDataList = new ArrayList<>();
+		Map<Object, Object> resultMap = new HashMap<>();
 		String uploadFileName = uploadNYCRejectFile.getOriginalFilename();
 		
 		try{
@@ -2303,7 +2303,7 @@ public class FileUploadService {
 							continue;
 						}
 						
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						DataFormatter fmt = new DataFormatter();
 								
 						for (Cell c : row) {
@@ -2360,7 +2360,7 @@ public class FileUploadService {
 							continue;
 						}
 						
-						Map<String, Object> fileData = new HashMap<String, Object>();
+						Map<String, Object> fileData = new HashMap<>();
 						DataFormatter fmt = new DataFormatter();
 								
 						for (Cell c : row) {
@@ -2390,7 +2390,7 @@ public class FileUploadService {
 			
 			if(!isError){
 				
-				List<UploadNYCSurvRejectVO> nycSurvRejectList = new ArrayList<UploadNYCSurvRejectVO>();
+				List<UploadNYCSurvRejectVO> nycSurvRejectList = new ArrayList<>();
 				
 				log.error("NYC Surv Reject File Upload : No Data Error Found.");
 				
@@ -2448,7 +2448,7 @@ public class FileUploadService {
 
 	public int getNYCSurvRejectDocumentID() {
 		
-		Map<Object,Object> map = new HashMap<Object,Object>();
+		Map<Object,Object> map = new HashMap<>();
 		int newDocId=0;
 		
 		map.put("p_document_type","NYC_REJECT");
@@ -2470,7 +2470,7 @@ public class FileUploadService {
 		int counter = 0;
 		String STATENOString;
 		StringBuilder errorMessage;
-		Map<Object, Object> dataErrorMapList = new HashMap<Object, Object>();
+		Map<Object, Object> dataErrorMapList = new HashMap<>();
 		
 		for (Map<String, Object> dataRow : fileDataList) {
 			
@@ -2522,7 +2522,7 @@ public class FileUploadService {
 		int counter = 0;
 		String STATENOString;
 		StringBuilder errorMessage;
-		Map<Object, Object> dataErrorMapList = new HashMap<Object, Object>();
+		Map<Object, Object> dataErrorMapList = new HashMap<>();
 		String currentOfUploadStaterno;
 		boolean isNyehmsStateNoValid;
 		boolean isIdentificationCodeValid;

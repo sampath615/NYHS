@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -211,7 +211,7 @@ public class HITDocumentController {
 	@RequestMapping(value = "/getHL7LabData.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getHL7LabData(@RequestParam int documentID, @RequestParam String startDate,
 			@RequestParam String endDate, HttpServletRequest request, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		List<RawHL7ObrVO> lstRawHL7ObrVO = hl7DocumentService.getHL7LabData(documentID, startDate, endDate);
 		GridObject jsonResponse = getGridObject.GetGrid(lstRawHL7ObrVO);

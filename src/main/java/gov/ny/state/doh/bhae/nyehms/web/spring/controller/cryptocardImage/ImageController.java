@@ -5,7 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.cryptocardImage.ImageServi
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

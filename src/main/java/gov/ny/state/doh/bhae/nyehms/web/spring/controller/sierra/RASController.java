@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class RASController {
 	public @ResponseBody List<JSONObject> loadFailedRasDocuments(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -54,7 +54,7 @@ public class RASController {
 	public @ResponseBody String runRasJob(@RequestParam Integer DOCUMENT_ID, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -76,7 +76,7 @@ public class RASController {
 	public @ResponseBody Map<Object, Object> updateRASDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String actionName, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		sierraWebService.updateRASSelectedDocumentStatus(documentIds, comments, actionName, bindingResult, userObject);

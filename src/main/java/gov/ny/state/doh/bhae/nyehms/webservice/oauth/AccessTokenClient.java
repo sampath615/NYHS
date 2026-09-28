@@ -91,7 +91,7 @@ public class AccessTokenClient {
 			
 			if(token != null) log.info("Token generated successfully");  
 		} catch(WebClientResponseException webEx){
-			log.error("error while fetching token - {} {}", webEx.getRawStatusCode(), webEx.getStatusText());
+			log.error("error while fetching token - {} {}", webEx.getStatusCode().value(), webEx.getStatusText());
 			log.error("exception while calling token occured - {}", webEx.getMessage());
 		} catch(Exception e) {
 			log.error("error while fetching token - {}", e.getMessage());		
@@ -126,7 +126,7 @@ public class AccessTokenClient {
 					if (isDebug) {buf.append(NL).append("Fetched User Info details=").append(userInfo);}
 					log.error("Fetched User Information from HCS for - {}", userInfo.getUserId());
 		} catch(WebClientResponseException webEx) {
-			if (webEx.getRawStatusCode() == 404 && webEx.getStatusText().equalsIgnoreCase("NOT FOUND")) {
+			if (webEx.getStatusCode().value() == 404 && webEx.getStatusText().equalsIgnoreCase("NOT FOUND")) {
 				log.error("User- {}  is not found in HCS portal.", userId);
 				//Mono.empty();  //deliberately no op
 			}else {
@@ -168,7 +168,7 @@ public class AccessTokenClient {
 			if (isDebug) {buf.append(NL).append("Fetched User Info details=").append(userPermInfo);}
 			
 		}  catch(WebClientResponseException webEx) {
-			if (webEx.getRawStatusCode() == 404 && webEx.getStatusText().equalsIgnoreCase("NOT FOUND")) {
+			if (webEx.getStatusCode().value() == 404 && webEx.getStatusText().equalsIgnoreCase("NOT FOUND")) {
 				log.info("User: {} has no access to nyehms application. Creating Permission", hcsUserId);
 			    //Mono.empty();  //deliberately no op
 			}else {

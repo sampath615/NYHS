@@ -41,7 +41,7 @@ public class LaftFollowupDocumentService {
 	@Transactional
 	public void flagLaftFollowupDocument(int triggeringDocId, String triggeringStateno, String comments, int reason, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputOutputParamters = new HashMap<String, Object>();
+		Map<String, Object> inputOutputParamters = new HashMap<>();
 		
 		inputOutputParamters.put("triggeringDocId", triggeringDocId);
 		inputOutputParamters.put("triggeringStateno", triggeringStateno);
@@ -144,7 +144,7 @@ public class LaftFollowupDocumentService {
 	@Transactional
 	public void resolveLaftFollowupDocuments(int[] followupIdsPk, String resolutionId, String resolutionComments,	UserObject userObject, BindingResult bindingResult) {
 
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("workerFullName", userObject.getUserFullName());
 		inputParameterMap.put("workerId", userObject.getWorkerId());
@@ -225,7 +225,7 @@ public class LaftFollowupDocumentService {
 	}
 	
 	public void updateLaftFollowupDocumentId(int flaggedDocumentId, int newDocumentId) {
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("flaggedDocumentId", flaggedDocumentId);
 		inputOutputParameterMap.put("newDocumentId", newDocumentId);
 		laftFollowupDocumentDAO.updateLaftFollowupDocumentId(inputOutputParameterMap);
@@ -233,7 +233,7 @@ public class LaftFollowupDocumentService {
 	
 	public void updateLaftFollowupResolutionForDeletedDocs(int documentId, UserObject userObject) {
 		
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("documentId", documentId);
 		inputParameterMap.put("workerId", userObject.getWorkerId());
 		laftFollowupDocumentDAO.updateLaftFollowupResolutionForDeletedDocs(inputParameterMap);
@@ -242,7 +242,7 @@ public class LaftFollowupDocumentService {
 
 	public void addInitialReviewComments(int followupId, String comments, BindingResult bindingResult, UserObject userObject) {
 		
-		Map<String, Object> inputParamters = new HashMap<String, Object>();
+		Map<String, Object> inputParamters = new HashMap<>();
 		
 		inputParamters.put("followupIdPk", followupId);
 		inputParamters.put("workerId", userObject.getWorkerId());

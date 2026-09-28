@@ -60,7 +60,7 @@ public class NycDeathDocumentService {
     		"CAUSE1","CAUSE2","CAUSE3","CAUSE4","CAUSE5","CAUSE6","CAUSE7","CAUSE8",
     		"CAUSE9","CAUSE10","CAUSE11","CAUSE12","CAUSE14","CAUSE14","CAUSE15","CAUSE16","CAUSE17",
     		"CAUSE18","CAUSE19","CAUSE20"};
-    public static final Map<String, String> causePrefixMap = new HashMap<String, String>();
+    public static final Map<String, String> causePrefixMap = new HashMap<>();
     static{
     	causePrefixMap.put("B20", "H");
     	causePrefixMap.put("B21", "H");
@@ -115,7 +115,7 @@ public class NycDeathDocumentService {
 				stdDeathDocVO.setCauseOfDeath("HIV Cause of Death");
 			}else{
 				
-				Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap = new HashMap<>();
 				
 				inputParameterMap.put("docId", docId);
 				inputParameterMap.put("TABLE_NAME", "STD_NYC_DEATH_DOC");
@@ -164,7 +164,7 @@ public class NycDeathDocumentService {
 		
 		// All the fields directly from RAW_NYC_DEATH_DOC that are going into
 		// STD_NYC_DEATH_DOC, plus some derived fields
-		Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+		Map<Object, Object> stdDocData = new HashMap<>();
 		// All the FACILITY_XXX columns from the CODED_DEATH_PFI table,
 		// to insert into STD_NYC_DEATH_DOC
 		
@@ -244,7 +244,7 @@ public class NycDeathDocumentService {
 		final String DASH = "-";
 		final String DASHDASH = "--";
 
-		Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+		Map<Object, Object> stdDocData = new HashMap<>();
 
 		stdDocData.put("DOCUMENT_ID", docVO.get("DOCUMENT_ID"));
 		// DEATH_SRC_ID Historical PK
@@ -598,7 +598,7 @@ public class NycDeathDocumentService {
 	 */
 	public static Map<String, String> getNycFacCodeAndInst(String instCode) {
 
-		Map<String, String> results = new HashMap<String, String>();
+		Map<String, String> results = new HashMap<>();
 		results.put("NYC_FAC_CODE", null);
 		results.put("INST",  null);
 		String nycFacCode = null;
@@ -684,7 +684,7 @@ public class NycDeathDocumentService {
 	 * @param stdDocData output fields to store into STD_NYC_DEATH_DOC
 	 */
 	public static void updateStdCausesAndAlsoHCause(Map<Object, Object> docVo, Map<Object, Object> stdDocData) {
-		Set<String> hCauseSet = new HashSet<String>(); 
+		Set<String> hCauseSet = new HashSet<>(); 
 		String icd10Code = (String)docVo.get("ICD10");
 		if (CommonUtil.isNotNullAndEmpty(icd10Code)) {hCauseSet.add(updateStdCauseAndGetHCause("ICD10", icd10Code, stdDocData));}
 		String underlyingCode = (String)docVo.get("UNDERLYING");

@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -100,7 +100,7 @@ public class AssignmentService {
 			String workerId, BindingResult result, UserObject userObject,
 			String sessionID) {
 		boolean errorFlag = false;
-		List<AssignmentWorkerRegionsVO> list = new ArrayList<AssignmentWorkerRegionsVO>();
+		List<AssignmentWorkerRegionsVO> list = new ArrayList<>();
 		try {
 			list = assignmentDAO.getAssignmentWorkerRegions(workerId);
 		} catch (DataAccessException e) {
@@ -126,7 +126,7 @@ public class AssignmentService {
 			BindingResult result, UserObject userObject, String sessionID) {
 
 		boolean errorFlag = false;
-		Map<Integer, String> workers = new LinkedHashMap<Integer, String>();
+		Map<Integer, String> workers = new LinkedHashMap<>();
 
 		try {
 			List<Map<String, String>> workerNamesList = assignmentDAO
@@ -158,8 +158,8 @@ public class AssignmentService {
 			BindingResult result, UserObject userObject, String sessionID) {
 
 		boolean errorFlag = false;
-		Map<String, String> status = new LinkedHashMap<String, String>();
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<String, String> status = new LinkedHashMap<>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("roleCode", roleCode);
 		try {
 			List<Map<String, String>> statusMapList = assignmentDAO
@@ -196,7 +196,7 @@ public class AssignmentService {
 		String transactionMessage = null;
 		Integer statusCode = null;
 
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_assignment_list", assignReassignVO.getAssignmentIds());
 		map.put("p_worker_id", assignReassignVO.getWorkerId());
 		map.put("p_comments", assignReassignVO.getComments());
@@ -297,7 +297,7 @@ public class AssignmentService {
 		String startDate = assignmentsHomeVO.getFromDate();
 		String endDate = assignmentsHomeVO.getTodate();
 				
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 
 		map.put("p_workerId", assignmentsHomeVO.getWorkerId());
 		map.put("p_workerRegionId", assignmentsHomeVO.getWorkerRegionId());
@@ -365,7 +365,7 @@ public class AssignmentService {
 		boolean errorFlag = false;
 
 				
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("p_workerId", assignmentsHomeVO.getWorkerId());
 		map.put("p_assignmentType", assignmentsHomeVO.getAssignmentType());
@@ -409,17 +409,17 @@ public class AssignmentService {
 			BindingResult result, UserObject userObject, String sessionID) {
 		boolean errorFlag = false;
 
-		Map<Object, Object> map = new HashMap<Object, Object>();
-		List<AssignmentDetailsVO> details = new ArrayList<AssignmentDetailsVO>();
-		List<AssignmentActivityVO> activity = new ArrayList<AssignmentActivityVO>();
+		Map<Object, Object> map = new HashMap<>();
+		List<AssignmentDetailsVO> details = new ArrayList<>();
+		List<AssignmentActivityVO> activity = new ArrayList<>();
 
 		map.put("assignmentId", assignmentId);
 		map.put("workerId", userObject.getWorkerId());
 		map.put("details", details);
 		map.put("activity", activity);
 
-		List<AssignmentDetailsVO> assignmentDetailsVOList = new ArrayList<AssignmentDetailsVO>();
-		List<AssignmentActivityVO> assignmentActivityVOList = new ArrayList<AssignmentActivityVO>();
+		List<AssignmentDetailsVO> assignmentDetailsVOList = new ArrayList<>();
+		List<AssignmentActivityVO> assignmentActivityVOList = new ArrayList<>();
 		List<Integer> surveillanceAssignmentDocs = null;
 
 		AssignmentDetailsVO assignmentDetailsVO = new AssignmentDetailsVO();
@@ -476,7 +476,7 @@ public class AssignmentService {
 
 		try {
 			
-			Map<String , Object> map = new HashMap<String , Object>();
+			Map<String , Object> map = new HashMap<>();
 			
 			map.put("includeAllClosureStatus", includeAllClosureStatus);
 			
@@ -588,7 +588,7 @@ public class AssignmentService {
 	public void updateAssignment(AssignmentUpdateVO assignmentUpdateVO,
 			BindingResult result, UserObject userObject) {
 
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		
 		long document_id =  assignmentUpdateVO.getDocumentId();
 		
@@ -643,7 +643,7 @@ public class AssignmentService {
 		Statement statement = null;
 		ResultSet resultSet = null;
 
-		Map<String, String> eharsPersonData = new LinkedHashMap<String, String>();
+		Map<String, String> eharsPersonData = new LinkedHashMap<>();
 	
 		try {
 			if (connection != null) {
@@ -664,7 +664,7 @@ public class AssignmentService {
 				if(stateno != null || !"".equals(stateno)){
 					
 					
-					Map<String, String> map = new HashMap<String, String>();
+					Map<String, String> map = new HashMap<>();
 					map.put("p_stateno", stateno);
 					
 					assignmentDAO.eharsPersonViewQuery(map);
@@ -679,7 +679,7 @@ public class AssignmentService {
 					ResultSetMetaData rsMetaData = resultSet.getMetaData();
 
 					int columnCount = rsMetaData.getColumnCount();
-					List<String> columnNames = new ArrayList<String>();
+					List<String> columnNames = new ArrayList<>();
 					for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
 						columnNames.add(rsMetaData.getColumnName(columnIndex + 1));
 
@@ -777,7 +777,7 @@ public class AssignmentService {
 		List<AssignmentActivityVO> assignmentActivitiesList = null;
 		try {
 			
-			Map<String, Object> inputOutputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputOutputParameterMap = new HashMap<>();
 			
 			inputOutputParameterMap.put("assignmentId", assignmentId);
 			if (CommonUtil.isNotNullAndEmpty(reabstract) && reabstract.equals("Y")) {
@@ -810,7 +810,7 @@ public class AssignmentService {
 		boolean errorFlag = false;
 		List<Map<String, String>> userRoleCodes = null;
 
-		Map<String, String> userRoleCodeMap = new HashMap<String, String>();
+		Map<String, String> userRoleCodeMap = new HashMap<>();
 		try {
 
 			userRoleCodes = assignmentDAO.getUserRoleCodes(userObject
@@ -845,7 +845,7 @@ public class AssignmentService {
 
 		try {
 
-			Map<Object, Object> map = new HashMap<Object, Object>();
+			Map<Object, Object> map = new HashMap<>();
 			map.put("roleCode", roleCode);
 			map.put("workerId", userObject.getWorkerId());
 
@@ -873,7 +873,7 @@ public class AssignmentService {
 	
 	public Integer changeAssignmentAddressDetails(int assignmentId, String origin, String closureCategory, long supervisorRegionId,  
 			long addressId, String addressType, String countyCode, UserObject userObject, BindingResult bindingResult){
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_id", assignmentId);
 		map.put("p_assign_address_type", addressType);
 		map.put("p_prov_fac_person_id", addressId);
@@ -1022,7 +1022,7 @@ public class AssignmentService {
 	
 	public List<PersonDocHistoryVO> getunknownOutOfStateProviderDocuments(
 			String documentType, String processCode, BindingResult dummyBindingResult, UserObject userObject){
-		Map<Object, Object> inputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("documentType", documentType);
 		inputParameterMap.put("processCode", processCode);
 		
@@ -1033,7 +1033,7 @@ public class AssignmentService {
 			String closureCategory, BindingResult bindingResult,
 			UserObject userObject, String id){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("closureCategory", closureCategory);
 		
 		inputParameterMap.put("p_module_id", 16);
@@ -1047,7 +1047,7 @@ public class AssignmentService {
 			String triggerAssignmentCheckStatus, String ahiFlag, String stateNo, UserObject userObject,
 			BindingResult bindingResult){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_document_id", documentId);
 		inputParameterMap.put("p_document_type_code", LabCommonUtils.getDocumentType(documentType));
 		inputParameterMap.put("p_USER_INPUT", triggerAssignmentCheckStatus);
@@ -1081,7 +1081,7 @@ public class AssignmentService {
 	
 	
 	public void updateReviewedDateForAllClosedAssignments(int documentId, UserObject userObject){
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_document_id", documentId);
 		inputParameterMap.put("p_workerId", userObject.getWorkerId());
 		
@@ -1156,7 +1156,7 @@ public class AssignmentService {
 			Integer ahiDocumentId, BindingResult dummyBindingResult,
 			UserObject userObject){
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		
 		inputParameterMap.put("ahiDocumentId", ahiDocumentId);
 		
@@ -1180,7 +1180,7 @@ public class AssignmentService {
 			Integer ahiDocumentId, BindingResult dummyBindingResult,
 			UserObject userObject){
 		
-		Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap  = new HashMap<>();
 		
 		inputParameterMap.put("ahiDocumentId", ahiDocumentId);
 		
@@ -1217,7 +1217,7 @@ public class AssignmentService {
 			String displayName, String documentType, UserObject userObject,
 			BindingResult bindingResult){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("displayName", displayName);
 		inputParameterMap.put("documentType", documentType);
@@ -1250,7 +1250,7 @@ public class AssignmentService {
 		boolean errorFlag = false;
 		List<Map<String, String>> userRoleCodes = null;
 
-		Map<String, String> userRoleCodeMap = new HashMap<String, String>();
+		Map<String, String> userRoleCodeMap = new HashMap<>();
 		try {
 
 			userRoleCodes = assignmentDAO.getUserCORoleCodes(userObject.getWorkerId());
@@ -1274,7 +1274,7 @@ public class AssignmentService {
 
 	public String getWorkerCORegionId(int workerId, String roleCode) {
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("roleCode", roleCode);
 		map.put("workerId", workerId);
 		
@@ -1289,7 +1289,7 @@ public class AssignmentService {
 
 		try {
 
-			Map<Object, Object> map = new HashMap<Object, Object>();
+			Map<Object, Object> map = new HashMap<>();
 			map.put("roleCode", roleCode);
 			map.put("workerId", userObject.getWorkerId());
 			
@@ -1312,7 +1312,7 @@ public class AssignmentService {
 
 		String transactionMessage = null;
 		Integer statusCode = null;
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		
 		if (CommonUtil.isNotNullAndEmpty(reabAssignVO.getReabAssignType()) ) {
 			map.put("p_reab_status_cd", "REAB_A");
@@ -1404,7 +1404,7 @@ public class AssignmentService {
 
 	public int updateReabActivity(String assignmentId, String newReabActivity, String comments, BindingResult bindingResult, UserObject userObject) {
 
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("assignmentId", assignmentId);
 		inputOutputParameterMap.put("activityType", newReabActivity);
@@ -1417,7 +1417,7 @@ public class AssignmentService {
 
 	public int updateReabStatus(String assignmentId, String newReabStatus, String reabClosureCategory, BindingResult bindingResult,UserObject userObject) {
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("assignmentId", assignmentId);
 		inputOutputParameterMap.put("reabStatus", newReabStatus);
@@ -1449,7 +1449,7 @@ public class AssignmentService {
 		List<String> rawCrfArvDiffList = assignmentDAO.getReabComparingVariables("RAW_" + documentType + "_ARVS");
 		String rawCrfArvDiffCols = String.join(",", rawCrfArvDiffList);
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("tableName", LabCommonUtils.getRawTableName(documentType));
 		inputParameterMap.put("document_id", "DOCUMENT_ID");
@@ -1504,7 +1504,7 @@ public class AssignmentService {
 	//	System.out.println("RAW DOC diffFields : " + diffDocFields);
 		
 		
-		Map<String, Object> diffInsertMap = new HashMap<String, Object>();
+		Map<String, Object> diffInsertMap = new HashMap<>();
 		
 		diffInsertMap.put("assignmentId", assignmentId);
 		diffInsertMap.put("diffFields", diffDocFields);
@@ -1565,7 +1565,7 @@ public class AssignmentService {
 		List<Map<String, Object>> labDiffSrcIds = assignmentDAO.getLabPartialDiffSrcId(inputParameterMap);
 		
 		for (Map<String, Object> currObj : labDiffSrcIds) {
-			List<String> labDiffCols= new ArrayList<String>();
+			List<String> labDiffCols= new ArrayList<>();
 			for (Map.Entry<String, Object> entry : currObj.entrySet()) {
 				if (entry.getValue().equals("false")) {
 					labDiffCols.add(entry.getKey());
@@ -1625,7 +1625,7 @@ public class AssignmentService {
 		List<Map<String, Object>> cd4DiffSrcIds = assignmentDAO.getCD4PartialDiffSrcId(inputParameterMap);
 		
 		for (Map<String, Object> currObj : cd4DiffSrcIds) {
-			List<String> cd4DiffCols= new ArrayList<String>();
+			List<String> cd4DiffCols= new ArrayList<>();
 			for (Map.Entry<String, Object> entry : currObj.entrySet()) {
 				if (entry.getValue().equals("false")) {
 					cd4DiffCols.add(entry.getKey());
@@ -1667,7 +1667,7 @@ public class AssignmentService {
 	public Map<String, Object> getCRFDiffSummary(int assignmentId, String documentType, int fsCRFDocId, int reabCRFDocId,
 							BindingResult bindingResult, UserObject userObject, HttpServletRequest request) {
 		
-		Map<String, Object> crfDiffEleMap = new HashMap<String, Object>();
+		Map<String, Object> crfDiffEleMap = new HashMap<>();
 		
 		Map<String, Object> closureStatusMap = assignmentDAO.getReabAssignmentClosureCategories(assignmentId);
 		crfDiffEleMap.put("closureCategory", closureStatusMap);
@@ -1689,16 +1689,16 @@ public class AssignmentService {
 		List<RawAcrfCd4TstVO> rawFsAcrfCd4Tst = fsCRFVO.getRawAcrfCd4Tst();
 		List<RawAcrfCd4TstVO> rawReabAcrfCd4Tst = reabCRFVO.getRawAcrfCd4Tst();
 		
-		Map<String, Object> inputMap = new HashMap<String, Object>();
+		Map<String, Object> inputMap = new HashMap<>();
 		inputMap.put("assignmentId", assignmentId);
 		inputMap.put("tabName", "CD4_INFO");
 		
 		List<String[]> cd4Info = assignmentReabstractUtil.createCD4DataForDisplay(rawFsAcrfCd4Tst, rawReabAcrfCd4Tst, compareDataMapList);
 		crfDiffEleMap.put("cd4Info", cd4Info);
 		
-		List<String[]> closestToCurDx = new  ArrayList<String[]>();
-		List<String[]> firstLowCd4 = new  ArrayList<String[]>();
-		List<String[]> otherCd4 = new  ArrayList<String[]>();
+		List<String[]> closestToCurDx = new  ArrayList<>();
+		List<String[]> firstLowCd4 = new  ArrayList<>();
+		List<String[]> otherCd4 = new  ArrayList<>();
 		
 		for (String[] curCd4Rec : cd4Info) {
 			if (curCd4Rec[6].equals("1")) {
@@ -1718,11 +1718,11 @@ public class AssignmentService {
 		List<RawAcrfLabsVO> rawReabAcrfLabs = reabCRFVO.getRawAcrfLabs();		
 		List<String[]> labInfo = assignmentReabstractUtil.createLabDataForDisplay(rawFsAcrfLabs, rawReabAcrfLabs, compareDataMapList);
 		
-		List<String[]> hivImmunoNonDiff = new  ArrayList<String[]>();
-		List<String[]> hivImmunoDiff = new  ArrayList<String[]>();
-		List<String[]> hivDetTestQual = new  ArrayList<String[]>();
-		List<String[]> hivDetTestQualVL = new  ArrayList<String[]>();
-		List<String[]> drugResTestGeno = new  ArrayList<String[]>();
+		List<String[]> hivImmunoNonDiff = new  ArrayList<>();
+		List<String[]> hivImmunoDiff = new  ArrayList<>();
+		List<String[]> hivDetTestQual = new  ArrayList<>();
+		List<String[]> hivDetTestQualVL = new  ArrayList<>();
+		List<String[]> drugResTestGeno = new  ArrayList<>();
 		for (String[] curLabRec : labInfo) {
 			if (curLabRec[0].equals("01")) {
 				hivImmunoNonDiff.add(curLabRec);
@@ -1755,7 +1755,7 @@ public class AssignmentService {
 			BindingResult result, UserObject userObject, String sessionID) {
 
 		boolean errorFlag = false;
-		Map<Integer, String> workers = new LinkedHashMap<Integer, String>();
+		Map<Integer, String> workers = new LinkedHashMap<>();
 
 		try {
 			List<Map<String, String>> workerNamesList = assignmentDAO

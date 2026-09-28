@@ -22,7 +22,7 @@ public class NYCRejectDocumentService {
 
 	public void updateNYCRejectDocumentComments(int documentId, String comments, UserObject userObject) {
 
-		Map<String, Object> nycRejectDocumentMap = new HashMap<String, Object>();
+		Map<String, Object> nycRejectDocumentMap = new HashMap<>();
 		
 		nycRejectDocumentMap.put("documentId", documentId);
 		nycRejectDocumentMap.put("comments", comments);
@@ -33,7 +33,7 @@ public class NYCRejectDocumentService {
 
 	public List<NYCRejectVO> getNYCRejectDetails(int documentId, BindingResult result, UserObject userObject) {
 		// TODO Auto-generated method stub
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("documentId", documentId);
 		

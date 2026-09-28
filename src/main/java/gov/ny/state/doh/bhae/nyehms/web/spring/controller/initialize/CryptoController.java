@@ -7,9 +7,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

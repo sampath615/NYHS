@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.bo;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 import org.slf4j.Logger;

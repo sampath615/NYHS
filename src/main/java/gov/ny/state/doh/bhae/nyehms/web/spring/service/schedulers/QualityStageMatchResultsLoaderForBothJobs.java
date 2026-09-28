@@ -56,7 +56,7 @@ public class QualityStageMatchResultsLoaderForBothJobs{
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"			
 			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
 				//schedulerStatusObject : is used to track the complete job status (SUCCESS/FAILURE)				
-				List<JSONObject> schedulerStatusObject = new ArrayList<JSONObject>();
+				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table).
 				Map<String, String> schedulerMetaData =
 						manualQuartzJobService.getSchedulerMetaData();
@@ -126,7 +126,7 @@ public class QualityStageMatchResultsLoaderForBothJobs{
 								"LAST_QUALITY_STAGE_SCHEDULER_RUN_DATE_"+CommonConstants.FIRST_JOB,
 								schedulerStatusObject, "Quality Stage", schedulerMetaData);
 						
-						List<Map<String, Object>> nonCaseDocumentDetails = new ArrayList<Map<String, Object>>();
+						List<Map<String, Object>> nonCaseDocumentDetails = new ArrayList<>();
 						
 						if(isSchedulerRanToday){
 							

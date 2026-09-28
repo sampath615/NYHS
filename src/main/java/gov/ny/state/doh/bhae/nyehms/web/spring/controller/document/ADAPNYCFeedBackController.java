@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,7 +87,7 @@ public class ADAPNYCFeedBackController {
 	
 	@RequestMapping(value="/getADAPDocumentIdToReview.json",  produces = "application/json")
 	public @ResponseBody Map<String, Object> getADAPDocumentIdToReview(HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
 		Map<String, Object> documentAndItsDetails = aDAPDocumentService.getADAPDocumentIdToReview(bindingResult, userObject);
@@ -97,7 +97,7 @@ public class ADAPNYCFeedBackController {
 	
 	@RequestMapping(value="/updateNYCADAPDocumentMatchStatus.json",  produces = "application/json")
 	public @ResponseBody Map<Object, Object> updateNYCADAPDocumentMatchStatus(HttpServletRequest request, @RequestParam int documentId, @RequestParam String reviewCd, @RequestParam(required = false) String cityno, @RequestParam(required = false) String comments, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
 		aDAPDocumentService.updateNYCADAPDocumentMatchStatus(documentId, reviewCd, cityno, comments, bindingResult, userObject);
@@ -107,7 +107,7 @@ public class ADAPNYCFeedBackController {
 	
 	@RequestMapping(value="/checkCityNoExists.json",  produces = "application/json")
 	public @ResponseBody Map<Object, Object> checkCityNoExists(HttpServletRequest request, @RequestParam String cityno, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
  
 		aDAPDocumentService.checkCityNoExists(cityno, bindingResult, userObject);
@@ -132,7 +132,7 @@ public class ADAPNYCFeedBackController {
 			HttpServletRequest request, UserObject userObject)
 	{
 		HttpSession session =request.getSession();
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		PersonRisksVO personRisksVO = null;
@@ -166,7 +166,7 @@ public class ADAPNYCFeedBackController {
 		
 		HttpSession session = request.getSession();
 		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> adapNYCData = documentReviewTransactionHelper.generateADAPNYCFile(fileName, nycShiStatus, bindingResult, userObject);
@@ -238,7 +238,7 @@ public class ADAPNYCFeedBackController {
 		
 		HttpSession session = request.getSession();
 		UserObject userObject=(UserObject)session.getAttribute("UserObj");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> adapNYCData = documentReviewTransactionHelper.generateADAPNYCDiscrepancyFile(fileName, bindingResult, userObject);
@@ -309,7 +309,7 @@ public class ADAPNYCFeedBackController {
 		
 		response.addCookie(myCookie);
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		List<Map<String, String>> nycFileSummaryData = aDAPDocumentService.generateNYCFileSummary(fileName, bindingResult, userObject);

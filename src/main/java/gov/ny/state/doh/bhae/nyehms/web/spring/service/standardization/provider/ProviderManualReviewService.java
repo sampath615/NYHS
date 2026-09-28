@@ -69,7 +69,7 @@ public class ProviderManualReviewService {
 	
 	
 	public List<RawProviderAddressVO> getClericalReviewRawProviderAddressDetailsList(BindingResult bindingResult, UserObject userObject){
-		List<RawProviderAddressVO> rawSubFacilityList = new ArrayList<RawProviderAddressVO>();
+		List<RawProviderAddressVO> rawSubFacilityList = new ArrayList<>();
 		
 		rawSubFacilityList= providerManualReviewDAO.getClericalReviewRawProviderAddressList();
 		

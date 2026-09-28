@@ -53,7 +53,7 @@ public class NycPRFDocumentService {
 	
 	public int writeRawNycPRFRecordDataToStdTable(Map<Object, Object> docVO,
 			BigDecimal documentId){
-    	Map<Object, Object> stdDocData = new HashMap<Object, Object>();
+    	Map<Object, Object> stdDocData = new HashMap<>();
     	
     	
     	stdDocData.put("DOCUMENT_ID",docVO.get("DOCUMENT_ID"));

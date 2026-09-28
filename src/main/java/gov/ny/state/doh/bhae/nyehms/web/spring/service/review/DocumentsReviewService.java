@@ -101,7 +101,7 @@ public class DocumentsReviewService {
 	public int updateTheReviewStatusInSurvAssignment(int assignmentId,
 			UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("assignmentId", assignmentId);
 		inputOutputParameterMap.put("workerId", userObject.getWorkerId());
@@ -113,7 +113,7 @@ public class DocumentsReviewService {
 	public int addAssignmentActivity(int assignmentId,
 			String comments, String activityType, UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		inputOutputParameterMap.put("assignmentId", assignmentId);
 		inputOutputParameterMap.put("activityType", activityType);
@@ -158,7 +158,7 @@ public class DocumentsReviewService {
 	public List<JSONObject> getVlStatenosToReview(String reviewCategory, 
 			BindingResult dummyBindingResult, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("reviewCategory", reviewCategory);
 		return assignmentDAO.getVlStatenosToReview(inputParameterMap);
@@ -168,7 +168,7 @@ public class DocumentsReviewService {
 			UserObject userObject) {
 		try{
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("stateno", stateno);
 			inputParameterMap.put("reviewCategory", reviewCategory);

@@ -24,7 +24,7 @@ public class RawCCDEncounterVO {
 	private String facilityTypeCodeSystemName;
 	private String facilityType;
 
-	private List<RawCCDDiagnosisVO> theDiagnoses = new ArrayList<RawCCDDiagnosisVO>();
+	private List<RawCCDDiagnosisVO> theDiagnoses = new ArrayList<>();
 		
 	/*FOR CCD_DOC_VIEWER ONLY*/
 	private String providerFullName;

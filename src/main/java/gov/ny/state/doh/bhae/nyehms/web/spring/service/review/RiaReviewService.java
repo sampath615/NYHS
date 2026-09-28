@@ -53,7 +53,7 @@ public class RiaReviewService {
 	public List<JSONObject> getRiaRecordsForReview(String PARAMETER_NAME, String PARAMETER_VALUE, BindingResult bindingResult, UserObject userObject){
 		
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("PARAMETER_NAME", PARAMETER_NAME);
 		
@@ -70,7 +70,7 @@ public class RiaReviewService {
 
 		if("REVIEW".equals(actionType)) {
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			inputParameterMap.put("DOCUMENT_ID", docId);
 			inputParameterMap.put("WORKER_ID", userObject.getWorkerId());
 			inputParameterMap.put("ACTIVITY_TYPE", "VIEWED");
@@ -98,7 +98,7 @@ public class RiaReviewService {
 		
 		if(CommonUtil.isNotNullAndEmpty(RIDR_INFO)) {
 			
-			List<AcrfRidrVO> acrfRidrList = new ArrayList<AcrfRidrVO>();
+			List<AcrfRidrVO> acrfRidrList = new ArrayList<>();
 					
 			AcrfRidrVO ridrVO = null;
 			
@@ -125,7 +125,7 @@ public class RiaReviewService {
 			
 		}else {
 			
-			List<AcrfRidrVO> acrfRidrList = new ArrayList<AcrfRidrVO>();
+			List<AcrfRidrVO> acrfRidrList = new ArrayList<>();
 			
 			AcrfRidrVO ridrVO = new AcrfRidrVO();
 			
@@ -142,7 +142,7 @@ public class RiaReviewService {
 		
 		List<Map<String, String>> dropDownList = riaRecordsReviewDAO.getRiaFollowUpDropDownData();
 		
-		Map<String, List<Map<String, String>>> riaDropDownList = new HashMap<String, List<Map<String, String>>>();
+		Map<String, List<Map<String, String>>> riaDropDownList = new HashMap<>();
 		
 		for (Map<String, String> map : dropDownList) {
 			
@@ -164,7 +164,7 @@ public class RiaReviewService {
 		
 		List<Map<String, String>> dropDownList = riaRecordsReviewDAO.getRiaCodedDropDownData();
 		
-		Map<String, List<Map<String, String>>> riaDropDownList = new HashMap<String, List<Map<String, String>>>();
+		Map<String, List<Map<String, String>>> riaDropDownList = new HashMap<>();
 		
 		for (Map<String, String> map : dropDownList) {
 			
@@ -195,7 +195,7 @@ public class RiaReviewService {
 		
 		List<Map<String, String>> riaColumnPropertyList = riaRecordsReviewDAO.getRiaFieldColumnProperties();
 		
-		Map<String, String> fieldProperties = new HashMap<String, String>();
+		Map<String, String> fieldProperties = new HashMap<>();
 		
 		for (Map<String, String> map : riaColumnPropertyList) {
 			
@@ -305,13 +305,13 @@ public class RiaReviewService {
 		
 		updateQuery.append(" where complete_Date is null and DOCUMENT_ID =").append(DOCUMENT_ID);
 		
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("updateQuery", updateQuery.toString());
 		
 		int resultCount = riaRecordsReviewDAO.saveRiaDoc(inputParameterMap);
 		if(resultCount > 0) {
-			Map<String, Object> prameterMap = new HashMap<String, Object>();
+			Map<String, Object> prameterMap = new HashMap<>();
 			prameterMap.put("DOCUMENT_ID", DOCUMENT_ID);
 			prameterMap.put("WORKER_ID", userObject.getWorkerId());
 			prameterMap.put("ACTIVITY_TYPE", "SAVED");
@@ -388,7 +388,7 @@ public class RiaReviewService {
 		int resultCount =  riaRecordsReviewDAO.closeRiaDoc(riaDoc);
 		
 		if(resultCount > 0) {
-			Map<String, Object> prameterMap = new HashMap<String, Object>();
+			Map<String, Object> prameterMap = new HashMap<>();
 			prameterMap.put("DOCUMENT_ID", riaDoc.getDOCUMENT_ID());
 			prameterMap.put("WORKER_ID", userObject.getWorkerId());
 			prameterMap.put("ACTIVITY_TYPE", "COMPLETED");
@@ -421,7 +421,7 @@ public class RiaReviewService {
 			UserObject userObject) {
 		for (RiaProviderFollowupVO riaProviderFollowupVO : provFollowUpList) {
 			
-			Map<String, Object > parameterMap = new HashMap<String, Object>();
+			Map<String, Object > parameterMap = new HashMap<>();
 			if(checkProvFollowUpDataExists(riaProviderFollowupVO)) {
 				
 				parameterMap.put("DATE_OF_CONTACT", riaProviderFollowupVO.getDATE_OF_CONTACT());
@@ -462,7 +462,7 @@ public class RiaReviewService {
 				
 				//String nextFollowUpId = riaRecordsReviewDAO.getNextFollowUpId();
 				
-				Map<String, Object > parameterMap = new HashMap<String, Object>();
+				Map<String, Object > parameterMap = new HashMap<>();
 				
 				parameterMap.put("FOLLOW_UP_CD", FOLLOW_UP_CD);
 				parameterMap.put("DOCUMENT_ID", DOCUMENT_ID);
@@ -476,10 +476,10 @@ public class RiaReviewService {
 				List<RiaInterventionDocVO> interventionList = riaFollowupDocVO.getInterventionDocList();
 				
 				if(interventionList != null) {
-					List<Map<String, String>> interventionsList = new ArrayList<Map<String, String>>();
+					List<Map<String, String>> interventionsList = new ArrayList<>();
 					for (RiaInterventionDocVO riaInterventionDocVO : interventionList) {
 						if(CommonUtil.isNotNullAndEmpty(riaInterventionDocVO.getINTERVENTION_CD())) {
-							Map<String, String> interventions = new HashMap<String, String>();
+							Map<String, String> interventions = new HashMap<>();
 							interventions.put("CODE", riaInterventionDocVO.getINTERVENTION_CD());
 							interventions.put("DATE", CommonUtil.parseDefaultDateValue(riaInterventionDocVO.getINTERVENTION_DATE()));
 							interventions.put("OTHER_TEXT", riaInterventionDocVO.getINTERVENTION_OTHER_TEXT());
@@ -489,7 +489,7 @@ public class RiaReviewService {
 					}
 					
 					if(interventionsList.size() > 0) {
-						Map<String, Object> interventionMap = new HashMap<String, Object>();
+						Map<String, Object> interventionMap = new HashMap<>();
 						interventionMap.put("RIA_FOLLOW_UP_ID", parameterMap.get("RIA_FOLLOW_UP_ID"));
 						interventionMap.put("WORKER_ID", userObject.getWorkerId());
 						interventionMap.put("interventionsList", interventionsList);
@@ -507,7 +507,7 @@ public class RiaReviewService {
 				List<RiaInterventionDocVO> interventionList = riaFollowupDocVO.getInterventionDocList();
 				
 				if(interventionList != null) {
-					List<String> interventions = new ArrayList<String>();
+					List<String> interventions = new ArrayList<>();
 					for (RiaInterventionDocVO riaInterventionDocVO : interventionList) {
 						if(CommonUtil.isNotNullAndEmpty(riaInterventionDocVO.getINTERVENTION_CD())) {
 							interventions.add(riaInterventionDocVO.getINTERVENTION_CD());
@@ -515,7 +515,7 @@ public class RiaReviewService {
 					}
 					
 					if(interventions.size() > 0) {
-						Map<String, Object> interventionMap = new HashMap<String, Object>();
+						Map<String, Object> interventionMap = new HashMap<>();
 						interventionMap.put("RIA_FOLLOW_UP_ID", FOLLOW_UP_ID);
 						interventionMap.put("WORKER_ID", userObject.getWorkerId());
 						interventionMap.put("interventionsList", interventions);
@@ -533,11 +533,11 @@ public class RiaReviewService {
 						}
 						
 						
-						List<Map<String, String>> interventionsList = new ArrayList<Map<String, String>>();
+						List<Map<String, String>> interventionsList = new ArrayList<>();
 						
 						for (RiaInterventionDocVO riaInterventionDocVO : interventionList) {
 							if(CommonUtil.isNotNullAndEmpty(riaInterventionDocVO.getINTERVENTION_CD()) && interventions.indexOf(riaInterventionDocVO.getINTERVENTION_CD()) > -1) {
-								Map<String, String> interventionsMap = new HashMap<String, String>();
+								Map<String, String> interventionsMap = new HashMap<>();
 								interventionsMap.put("CODE", riaInterventionDocVO.getINTERVENTION_CD());
 								interventionsMap.put("DATE", CommonUtil.parseDefaultDateValue(riaInterventionDocVO.getINTERVENTION_DATE()));
 								interventionsMap.put("OTHER_TEXT", riaInterventionDocVO.getINTERVENTION_OTHER_TEXT());
@@ -565,7 +565,7 @@ public class RiaReviewService {
 	
 	public Map<String, String> verifyRiaActivity(Integer DOCUMENT_ID, UserObject userObject){
 		
-		Map<String, Integer> inputParameterMap = new HashMap<String, Integer>();
+		Map<String, Integer> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("DOCUMENT_ID", DOCUMENT_ID);
 		inputParameterMap.put("WORKER_ID", userObject.getWorkerId());
@@ -584,7 +584,7 @@ public class RiaReviewService {
 		
 		if(riaActivity != null && riaActivity.size() > 0) {
 		
-			StringBuffer activityContent = new StringBuffer("");
+			StringBuilder activityContent = new StringBuilder("");
 			
 			for (Map<String, String> activity : riaActivity) {
 				
@@ -633,7 +633,7 @@ public class RiaReviewService {
 	
 	public Map<String, Object> statenosFlaggedForRia(String stateno1, String stateno2, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("stateno1", stateno1);
 		inputParameterMap.put("stateno2", stateno2);
 		
@@ -647,13 +647,13 @@ public class RiaReviewService {
 	public Map<String, String> getRiaFollowUpReport(String riaFlaggedFromDate, String riaFlaggedToDate, BindingResult bindingResult,
 			UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("riaFlaggedFromDate", riaFlaggedFromDate);
 		inputParameterMap.put("riaFlaggedToDate", riaFlaggedToDate);
 		
 		List<Map<String, String>> riaFollowUpReportList = riaRecordsReviewDAO.getRiaFollowUpReport(inputParameterMap);
 		
-		Map<String, String> riaFollowUpReport = new HashMap<String, String>();
+		Map<String, String> riaFollowUpReport = new HashMap<>();
 		
 		for (Map<String, String> map : riaFollowUpReportList) {
 			riaFollowUpReport.put(map.get("PROGRAM_TYPE"), map.get("COUNT"));
@@ -666,13 +666,13 @@ public class RiaReviewService {
 	
 	public Map<String, String> getRiaTreatmentReport(String riaFlaggedFromDate, String riaFlaggedToDate,
 			BindingResult bindingResult, UserObject userObject){
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("riaFlaggedFromDate", riaFlaggedFromDate);
 		inputParameterMap.put("riaFlaggedToDate", riaFlaggedToDate);
 		
 		List<Map<String, String>> riaFollowUpReportList = riaRecordsReviewDAO.getRiaTreatmentReport(inputParameterMap);
 		
-		Map<String, String> riaTreatmentReport = new HashMap<String, String>();
+		Map<String, String> riaTreatmentReport = new HashMap<>();
 		
 		for (Map<String, String> map : riaFollowUpReportList) {
 			riaTreatmentReport.put(map.get("ARV_TREATMENT"), map.get("COUNT"));
@@ -684,7 +684,7 @@ public class RiaReviewService {
 	
 	public Map<String, Integer> getRiaEligibilityReport(String riaFlaggedFromDate, String riaFlaggedToDate, String[] personCounty, String reportType, BindingResult bindingResult, UserObject userObject){
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("riaFlaggedFromDate", riaFlaggedFromDate);
 		inputParameterMap.put("riaFlaggedToDate", riaFlaggedToDate);
 		inputParameterMap.put("personCounties", personCounty);
@@ -706,7 +706,7 @@ public class RiaReviewService {
 	public List<JSONObject> getRiaEligibilityRecordsByReport(String riaFlaggedFromDate, String riaFlaggedToDate, String[] personCounty, String pARAMETER_NAME,
 			String pARAMETER_VALUE, BindingResult bindingResult, UserObject userObject){
 			
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("PARAMETER_NAME", pARAMETER_NAME);
 		
@@ -729,7 +729,7 @@ public class RiaReviewService {
 	
 	public List<JSONObject> getRiaReportByFollowup(String riaFlaggedFromDate, String riaFlaggedToDate, String pARAMETER_NAME, String pARAMETER_VALUE,
 			BindingResult bindingResult, UserObject userObject)	{
-	Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+	Map<String, Object> inputParameterMap = new HashMap<>();
 	
 	inputParameterMap.put("PARAMETER_NAME", pARAMETER_NAME);
 	
@@ -744,7 +744,7 @@ public class RiaReviewService {
 	
 	public List<JSONObject> getRiaReportByTreatment(String riaFlaggedFromDate, String riaFlaggedToDate, String pARAMETER_NAME, String pARAMETER_VALUE,
 			BindingResult bindingResult, UserObject userObject)	{
-	Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+	Map<String, Object> inputParameterMap = new HashMap<>();
 	
 	inputParameterMap.put("PARAMETER_NAME", pARAMETER_NAME);
 	
@@ -759,7 +759,7 @@ public class RiaReviewService {
 
 	public List<Map<String, String>> getRiaActivityReportData(String fromDate, String toDate, BindingResult dummyBindingResult,
 			UserObject userObject, Object object){
-		Map<String, String> inputParameterMap = new HashMap<String, String>();
+		Map<String, String> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("p_fromDate", fromDate);
 		inputParameterMap.put("p_toDate", toDate);
 		return riaRecordsReviewDAO.getRiaActivityReportData(inputParameterMap);
@@ -767,7 +767,7 @@ public class RiaReviewService {
 
 	public List<JSONObject> getRiaNoLinkedtoCareDataReport(String riaFlaggedFromDate, String riaFlaggedToDate,
 			BindingResult bindingResult, UserObject userObject) {
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("riaFlaggedFromDate", riaFlaggedFromDate);
 		inputParameterMap.put("riaFlaggedToDate", riaFlaggedToDate);
 

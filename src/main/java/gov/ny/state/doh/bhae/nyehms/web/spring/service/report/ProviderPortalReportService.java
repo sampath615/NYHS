@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ProviderPortalReportService {
 
 	public List<JSONObject> getProvPortalSubmittedProviders(String fileType) {
 		
-		Map<String, String> inputParameter = new HashMap<String, String>();
+		Map<String, String> inputParameter = new HashMap<>();
 		
 		if (CommonUtil.isNotNullAndEmpty(fileType) && ( fileType.equals("P") || fileType.equals("O") || fileType.equals("D") )) {
 			inputParameter.put("fileType1", fileType);
@@ -45,7 +45,7 @@ public class ProviderPortalReportService {
 	@Transactional
 	public List<ProvPortalSubmissionReportVO> getProvPortalSNPReportData(String fromDate, String toDate, String provId, BindingResult dummyBindingResult, UserObject userObject) {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		
 		inputData.put("p_file_type_cd", "P");
 		inputData.put("p_prov_id", provId);
@@ -65,7 +65,7 @@ public class ProviderPortalReportService {
 			String portalFileType, BindingResult dummyBindingResult, UserObject userObject) {
 		
 
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		ProvPortalReportVO provPortalRptVO = null;
 		
 		inputData.put("p_file_type_cd", portalFileType);
@@ -100,7 +100,7 @@ public class ProviderPortalReportService {
 		HttpSession session = request.getSession();
 		List<ProvPortalOocDnltcGttDataVO> oocDnltcGttData = (List<ProvPortalOocDnltcGttDataVO>) session.getAttribute("oocDnltcGttDataObject");
 		
-		List<Map<String, String>> statenoConclusionList = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> statenoConclusionList = new ArrayList<>();
 		Map<String, String> statenoConclusionMap = null;
 		
 		if (gridName.equals("provPortalOOCDNLTCReportTable")) {

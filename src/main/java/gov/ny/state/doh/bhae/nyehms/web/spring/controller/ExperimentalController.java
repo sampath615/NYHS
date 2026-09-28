@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class ExperimentalController {
 
 	@RequestMapping(value = "/experimentHome")
 	public String experimentHome(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -65,7 +65,7 @@ public class ExperimentalController {
 
 	@RequestMapping(value = "/experiment1")
 	public String experiment1(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -84,7 +84,7 @@ public class ExperimentalController {
 
 	@RequestMapping(value = "/experiment2")
 	public String experiment2(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		return ("experimental/experiment2");
@@ -121,7 +121,7 @@ public class ExperimentalController {
 	public String hitracecodemapper(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -155,7 +155,7 @@ public class ExperimentalController {
 	public String hiterrorreprise(HttpServletRequest request, HttpServletResponse response, Map<String, String> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -188,7 +188,7 @@ public class ExperimentalController {
 	@RequestMapping(value = "/getHitRaceValue.json") // , produces ="application/json")
 	public @ResponseBody Map<Object, Object> getHitRaceValue(HttpServletRequest request,
 			@RequestParam String parameterName, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Integer statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
 		if (statusCode == 0) {
@@ -220,7 +220,7 @@ public class ExperimentalController {
 		if(userObject !=null) {
 			UserId = userObject.getUserId();
 		}
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -243,7 +243,7 @@ public class ExperimentalController {
 	public @ResponseBody Map<Object, Object> updateHitDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam String documentType, @RequestParam String actionName, @RequestParam(value="notes", required = false) String notes, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		hitCommonDocumentService.updateHitDocumentsStatus(documentIds, actionName, documentType, bindingResult, userObject);
 		
@@ -253,7 +253,7 @@ public class ExperimentalController {
 	@RequestMapping(value="/updateHitErrorComments.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody  Map<Object, Object> updateHitErrorComments(HttpServletRequest request, @RequestParam long id, @RequestParam String NOTES, UserObject userObject){	
 		System.out.println("Code is working here");
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");		
 		hitCommonDocumentService.updateHitErrorComments(id, NOTES, bindingResult, userObject);		
 		return targetMap;
@@ -302,7 +302,7 @@ public class ExperimentalController {
 		log.error("Made it to /getCcdTable.html");
 		String docId = request.getParameter("docId");
 		String table = request.getParameter("table");
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -351,7 +351,7 @@ public class ExperimentalController {
 				param = "ccd_doc_id";
 			}
 			List<String> columnList = LabCommonUtils.getCCDDocList(table_long);
-			Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inOutParameterMap = new HashMap<>();
 			inOutParameterMap.put("docId", docId);
 			inOutParameterMap.put("table", table_long);
 			inOutParameterMap.put("parameter", param);
@@ -362,7 +362,7 @@ public class ExperimentalController {
 
 	@RequestMapping(value = "/experiment3")
 	public String experiment3(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -397,7 +397,7 @@ public class ExperimentalController {
 	@RequestMapping(value = "/simplestManualQuartzJob")
 	public String simplestManualQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
 		manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -426,7 +426,7 @@ public class ExperimentalController {
 	public static String makeHTMLTable(List<Map<String, Object>> rs, List<String> columnList, boolean showColumnType)
 			throws SQLException {
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		String clobSubstring = "";
 		sb.append("<table border='2' cellpadding='2' cellspacing='0'>");
 		sb.append("<tr>");
@@ -440,15 +440,9 @@ public class ExperimentalController {
 			for (String columnName : columnList) {
 				sb.append("<td>");
 				Object columnValue = map.get(columnName);
-				if (columnValue instanceof Clob) {
-					if (columnValue != null) {
-						if (((Clob) columnValue).getSubString(1, (int) ((Clob) columnValue).length()).length() > 50) {
-							clobSubstring = ((Clob) columnValue).getSubString(1, (int) ((Clob) columnValue).length())
-									.substring(0, 50).toString();
-						} else {
-							clobSubstring = ((Clob) columnValue).getSubString(1, (int) ((Clob) columnValue).length());
-						}
-					}
+				if (columnValue instanceof Clob clob) {
+					String clobText = clob.getSubString(1, (int) clob.length());
+					clobSubstring = clobText.length() > 50 ? clobText.substring(0, 50) : clobText;
 					columnValue = clobSubstring;
 				}
 				if (columnValue != null) {

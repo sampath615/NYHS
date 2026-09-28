@@ -78,7 +78,7 @@ public class AHIDocumentService {
 		
 		if(ahiCIStiList != null && ahiCIStiList.size() > 0){
 			
-			List<AHICiStiVO> finalAHICIStiList = new ArrayList<AHICiStiVO>();
+			List<AHICiStiVO> finalAHICIStiList = new ArrayList<>();
 
 		
 			for (AHICiStiVO ahiCiStiVO : ahiCIStiList) {
@@ -90,7 +90,7 @@ public class AHIDocumentService {
 			
 			if(finalAHICIStiList != null  && finalAHICIStiList.size() > 0){
 				
-				Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap  = new HashMap<>();
 				
 				inputParameterMap.put("AHI_DOCUMENT_ID", ahiDocVo.getDOCUMENT_ID());
 				
@@ -116,7 +116,7 @@ public class AHIDocumentService {
 		
 		if(ahiNegInd900TestHistoryList != null && ahiNegInd900TestHistoryList.size() > 0){
 
-		List<AHINegInd900TestHistoryVO> finalAhiNegInd900TestHistoryList = new ArrayList<AHINegInd900TestHistoryVO>();
+		List<AHINegInd900TestHistoryVO> finalAhiNegInd900TestHistoryList = new ArrayList<>();
 		
 		
 			for(AHINegInd900TestHistoryVO ahiNegInd900TestHistory: ahiNegInd900TestHistoryList){
@@ -132,7 +132,7 @@ public class AHIDocumentService {
 	
 			if(finalAhiNegInd900TestHistoryList != null  && finalAhiNegInd900TestHistoryList.size() > 0){
 				
-				Map<String, Object> inputParameterMap  = new HashMap<String, Object>();
+				Map<String, Object> inputParameterMap  = new HashMap<>();
 				
 				inputParameterMap.put("AHI_DOCUMENT_ID", ahiDocVo.getDOCUMENT_ID());
 				
@@ -174,7 +174,7 @@ public class AHIDocumentService {
 		String transactionMessage = null;
 
 			
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("assignmentId", assignmentId);
 		if(ahiFlagStatus){
@@ -323,7 +323,7 @@ public class AHIDocumentService {
 	
 	private List<AHICiStiVO> getCiStiConditions(int documentId, BindingResult result, UserObject userObject) {
 		boolean errorFlag=false;
-		List<AHICiStiVO>  ciStiConditionList = new ArrayList<AHICiStiVO>();
+		List<AHICiStiVO>  ciStiConditionList = new ArrayList<>();
 		try{
 			ciStiConditionList=ahiDocumentDAO.getCiStiConditionData(documentId);
 		}catch (DataAccessException e) {
@@ -343,7 +343,7 @@ public class AHIDocumentService {
 	
 	private List<AHINegInd900TestHistoryVO> getNegInd900TestHistoryData(int documentId, BindingResult result, UserObject userObject) {
 		boolean errorFlag=false;
-		List<AHINegInd900TestHistoryVO>  negInd900TestHistoryList = new ArrayList<AHINegInd900TestHistoryVO>();
+		List<AHINegInd900TestHistoryVO>  negInd900TestHistoryList = new ArrayList<>();
 		try{
 			negInd900TestHistoryList=ahiDocumentDAO.getNegInd900TestHistoryData(documentId);
 		}catch (DataAccessException e) {
@@ -409,7 +409,7 @@ public class AHIDocumentService {
 		int resultCount = 0;
 		try{
 			
-			Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+			Map<String, Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("acrfDocId", acrfDocId);
 			inputParameterMap.put("ahiDocId", ahiDocId);
@@ -443,7 +443,7 @@ public class AHIDocumentService {
 	public List<AhiAlertTrackingVO> getAhiFlaggedStatenoData(UserObject userObject, BindingResult bindingResult, String followupReq, String followupComp) {
 		
 		List<AhiAlertTrackingVO> ahiFlaggeddataList = ahiDocumentDAO.getAhiFlaggedStatenoData();
-		List<AhiAlertTrackingVO> ahiFollowupDataList = new ArrayList<AhiAlertTrackingVO>();
+		List<AhiAlertTrackingVO> ahiFollowupDataList = new ArrayList<>();
 		
 		if (followupReq.equals("Y")) {
 			for (AhiAlertTrackingVO currData : ahiFlaggeddataList) {
@@ -515,7 +515,7 @@ public class AHIDocumentService {
 
 	public void updateAhiAlertTracking(AhiAlertTrackingVO ahiAlertTrackingVO, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("prfCollection", ahiAlertTrackingVO.getPrfCollection());
 		inputParameterMap.put("lastUpdatedBy", userObject.getWorkerId());
@@ -532,7 +532,7 @@ public class AHIDocumentService {
 
 	public void insertAhiAlertFollowup(AhiAlertTrackingVO ahiAlertTrackingVO, UserObject userObject) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("followupStepTakenCode", ahiAlertTrackingVO.getFollowupStepTakenCode());
 		inputParameterMap.put("userNotes", ahiAlertTrackingVO.getUserNotes());
@@ -557,7 +557,7 @@ public class AHIDocumentService {
 	public List<AhiAlertTrackingVO> getAhiAlertData(UserObject userObject, BindingResult bindingResult, String dataType, String dataSubType) {
 
 		List<AhiAlertTrackingVO> ahiAlertdataList = ahiDocumentDAO.getAhiFlaggedStatenoData();
-		List<AhiAlertTrackingVO> ahiDisplayDataList = new ArrayList<AhiAlertTrackingVO>();
+		List<AhiAlertTrackingVO> ahiDisplayDataList = new ArrayList<>();
 		
 		
 		if (dataType.equals("UR")) {	// AHI Alert data need to be review   Status = OPEN
@@ -612,7 +612,7 @@ public class AHIDocumentService {
 
 	public void updateAhiAlertStatus(AhiAlertTrackingVO ahiAlertTrackingVO, UserObject userObject, BindingResult bindingResult) {
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("ahiAlertReviewedBy", userObject.getWorkerId());
 		inputParameterMap.put("ahiAlertSeqId", ahiAlertTrackingVO.getAhiAlertSeqId());

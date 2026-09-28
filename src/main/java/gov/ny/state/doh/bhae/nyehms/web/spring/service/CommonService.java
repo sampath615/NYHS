@@ -19,9 +19,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class CommonService {
 			String sessionID)
 	{		
 		boolean rollbackFlag=false;
-		List<String> resultList= new ArrayList<String>();
+		List<String> resultList= new ArrayList<>();
 		try{		
 			List<AddressFieldVO> listFetch= commonDAO.getAddressDropDownInfo(addressFieldVO);			
 			for(AddressFieldVO addressField : listFetch){				
@@ -112,7 +112,7 @@ public class CommonService {
 			String sessionID)
 	{
 		boolean rollbackFlag=false;
-		Map<String, String> stateCodes=new LinkedHashMap<String, String>();		
+		Map<String, String> stateCodes=new LinkedHashMap<>();		
 		try{
 			List<Map<String, String>> stateMapList = commonDAO.getStateCodes();
 			for(Map<String, String> stateMap : stateMapList){
@@ -138,7 +138,7 @@ public class CommonService {
 	public Map<String, String> getCountyCodes(BindingResult result, UserObject userObject, String sessionID) {
 		boolean rollbackFlag=false;	
 		
-		Map<String, String> countyCodes=new LinkedHashMap<String, String>();
+		Map<String, String> countyCodes=new LinkedHashMap<>();
 		try{
 			List<Map<String, String>> countyMapList = commonDAO.getCountyCodes();
 			for(Map<String, String> countyMap : countyMapList){
@@ -166,7 +166,7 @@ public class CommonService {
 			UserObject userObject, String sessionID) {
 		boolean rollbackFlag=false;	
 		
-		Map<String, String> countryCodes=new LinkedHashMap<String, String>();
+		Map<String, String> countryCodes=new LinkedHashMap<>();
 		try{
 			List<Map<String, String>> countryMapList = commonDAO.getCountryCodes();
 			for(Map<String, String> countryMap : countryMapList){
@@ -510,7 +510,7 @@ private static String getINIPath() {
 	
 	public JSONObject getUserPermissions(int workerId, String workerRegionId, BindingResult bindingResult) {
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("workerId",workerId);
 		inOutParameterMap.put("workerRegionId",workerRegionId);
@@ -542,7 +542,7 @@ private static String getINIPath() {
 	
 	public String getImprovedStandardAddress(String customAddress)
 	{
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("customAddress",customAddress);
 		commonDAO.getImprovedStandardAddress(inOutParameterMap);
 		String improvedCustomAddress =  (String)inOutParameterMap.get("standardAddress");
@@ -698,7 +698,7 @@ private static String getINIPath() {
 		
 		try{
 			
-			Map<String, Object> inputParameter = new HashMap<String, Object>();
+			Map<String, Object> inputParameter = new HashMap<>();
 			
 			inputParameter.put("WORKER_ID", userObject.getWorkerId());
 			
@@ -740,7 +740,7 @@ private static String getINIPath() {
 		
 		List<Map<String, String>> addressList = commonDAO.getZipCodeReferenceData();
 		
-		Map<String, Map<String, String>> zipCodeReferenceData = new HashMap<String, Map<String, String>>();
+		Map<String, Map<String, String>> zipCodeReferenceData = new HashMap<>();
 		
 		Map<String, String> zipCodeDetails = null;
 		
@@ -766,7 +766,7 @@ private static String getINIPath() {
 		
 		List<Map<String, String>> countyCodeList = commonDAO.getCountyCodeReferenceData();
 		
-		Map<String, String> countyCodeReferenceData = new HashMap<String, String>();
+		Map<String, String> countyCodeReferenceData = new HashMap<>();
 		
 		for (Map<String, String> countyMap : countyCodeList) {
 			
@@ -782,7 +782,7 @@ private static String getINIPath() {
 	public Map<String, String> getNotificationList(String columnName){
 		
 		
-		Map<String, String> notificationEmailListByAddressType = new HashMap<String, String>();
+		Map<String, String> notificationEmailListByAddressType = new HashMap<>();
 		
 		notificationEmailListByAddressType.put("COLUMN_NAME", columnName);
 		

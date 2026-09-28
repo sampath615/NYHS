@@ -42,8 +42,8 @@ public class SearchManageFacilityService {
 	public List<MasterFacilityDetailsVO> getFacilityDetailsByMasterFacility(
 			MasterFacilityVO masterFacilityVO, BindingResult bindingResult,
 			UserObject userObject) {
-		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<MasterFacilityDetailsVO>();
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		
 		//TODO: Need to remove Facility type code
 		inOutParameterMap.put("p_master_fac_name",masterFacilityVO.getMasterFacilityName());
@@ -64,8 +64,8 @@ public class SearchManageFacilityService {
 	 */
 	public List<MasterFacilityDetailsVO> getFacilityDetailsBySubFacility(SubFacilityVO subFacilityVO,
 			BindingResult bindingResult, UserObject userObject) {
-		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<MasterFacilityDetailsVO>();
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		inOutParameterMap.put("p_facname",subFacilityVO.getFacilityName());
 		inOutParameterMap.put("p_fac_dept",subFacilityVO.getFacilityDepartment()); 
@@ -86,7 +86,7 @@ public class SearchManageFacilityService {
 			RawSubFacilityVO rawSubFacilityVO, BindingResult bindingResult,
 			UserObject userObject) {
 
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 
 		if(CommonUtil.isNotNullAndEmpty(rawSubFacilityVO.getFacilityName())){
 			inOutParameterMap.put("p_facname",rawSubFacilityVO.getFacilityName().replaceAll("\\*", "%"));
@@ -156,8 +156,8 @@ public class SearchManageFacilityService {
 	public List<MasterFacilityDetailsVO> getFacilityDetailsByRawSubFacility(
 			RawSubFacilityVO rawSubFacilityVO, BindingResult bindingResult,
 			UserObject userObject) {
-		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<MasterFacilityDetailsVO>();
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		List<MasterFacilityDetailsVO> masterFacilitiesWithSubFacilities = new ArrayList<>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_facname",rawSubFacilityVO.getFacilityName());
 		inOutParameterMap.put("p_fac_dept",rawSubFacilityVO.getFacilityDepartment()); 
 		inOutParameterMap.put("p_address",rawSubFacilityVO.getAddress());

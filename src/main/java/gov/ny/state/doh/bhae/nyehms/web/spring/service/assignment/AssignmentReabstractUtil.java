@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<Map<String, Object>> getLabSameData(List<Map<String, Object>> labData1, List<Map<String, Object>> labData2, String docType, List<String> rawCrfLabDiffList, String documentId) {
 		
-		List<Map<String, Object>> labSameDataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> labSameDataList = new ArrayList<>();
 		String dataTypeId = "LAB_SRC_ID";
 		for (Map<String,Object> labCurData1 : labData1) {
 			String parentTestType = (String) labCurData1.get("PARENT_TEST_TYPE");
@@ -76,7 +76,7 @@ public class AssignmentReabstractUtil {
 					BigDecimal reabCrfSrcId = (BigDecimal) labCurData2.get(dataTypeId);
 					labCurData2.remove(dataTypeId);
 					if (labCurData1.equals(labCurData2)) {
-						Map<String, Object> labDataMap = new HashMap<String, Object>();
+						Map<String, Object> labDataMap = new HashMap<>();
 						labDataMap.put("LAB_SRC_ID1", fsCrfSrcId);
 						labDataMap.put("LAB_SRC_ID2", reabCrfSrcId);
 						
@@ -107,7 +107,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<Map<String, Object>> getCd4SameData(List<Map<String, Object>> cd4Data1, List<Map<String, Object>> cd4Data2, String docType, List<String> rawCrfCd4DiffList, String documentId) {
 		
-		List<Map<String, Object>> cd4SameDataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> cd4SameDataList = new ArrayList<>();
 		String dataTypeId = "CD4_SRC_ID";
 		for (Map<String,Object> cd4CurData1 : cd4Data1) {
 			String closestToCurrentDx = (String) cd4CurData1.get("CLOSEST_TO_CURRENT_DX");
@@ -120,7 +120,7 @@ public class AssignmentReabstractUtil {
 					BigDecimal crfSrcIdData2 = (BigDecimal) cd4CurData2.get(dataTypeId);
 					cd4CurData2.remove(dataTypeId);
 					if (cd4CurData1.equals(cd4CurData2)) {
-						Map<String, Object> cd4DataMap = new HashMap<String, Object>();
+						Map<String, Object> cd4DataMap = new HashMap<>();
 						cd4DataMap.put("CD4_SRC_ID1", crfSrcIdData1);
 						cd4DataMap.put("CD4_SRC_ID2", crfSrcIdData2);
 						
@@ -164,7 +164,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<String[]> createArvDataForDisplay(List<CodedArvMedicationsVO> arvFirstMedicationsList, List<CodedArvMedicationsVO> arvSecondMedicationsList){
 		
-		List<String[]> arvDisplayInfo = new ArrayList<String[]>();
+		List<String[]> arvDisplayInfo = new ArrayList<>();
 		String[] arvData;
 		List<JSONObject> arvMedCodedList = commonDocLabsDAO.getCodedArvs();
 		arvFirstMedicationsList = getArvMedDesc(arvFirstMedicationsList, arvMedCodedList);
@@ -280,7 +280,7 @@ public class AssignmentReabstractUtil {
 	public Map<String, String> getARVDiffData(List<Map<String, String>> arvUseData1, List<Map<String, String>> arvUseData2, 
 										List<String> rawCrfArvDiffList, String documentId) {
 		
-		Map<String, String> arvUseTypeDiffMap = new HashMap<String, String>();
+		Map<String, String> arvUseTypeDiffMap = new HashMap<>();
 	
 		for (Map<String,String> arvCur2 : arvUseData2) {
 			String diffArvsFields = "";
@@ -324,7 +324,7 @@ public class AssignmentReabstractUtil {
 	public Map<String, String> getARVSameData(List<Map<String, String>> arvUseData1, List<Map<String, String>> arvUseData2, 
 										List<String> rawCrfArvDiffList, String documentId) {
 		
-		Map<String, String> arvUseTypeDiffMap = new HashMap<String, String>();
+		Map<String, String> arvUseTypeDiffMap = new HashMap<>();
 	
 		for (Map<String,String> arvCur2 : arvUseData2) {
 			String arvUseType2 = arvCur2.get("ARV_USE_TYPE");
@@ -349,7 +349,7 @@ public class AssignmentReabstractUtil {
 			if (CommonUtil.isNotNullAndEmpty(arvMedVO.getArvMedications())) {
 				String arvMedDesc = "";
 				String arvMedicationUsed = arvMedVO.getArvMedications();
-				List<String> arvMedicationUsedList = new ArrayList<String>();
+				List<String> arvMedicationUsedList = new ArrayList<>();
 				if (arvMedicationUsed.contains(",")) {
 					arvMedicationUsedList = Arrays.asList(arvMedicationUsed.split(","));
 				} else {
@@ -420,27 +420,27 @@ public class AssignmentReabstractUtil {
 			
 			String survMethodCd = crfDocVO.getSurveillanceMethodCode();
 			switch(survMethodCd) {
-			case "ACT" : crfDocVO.setSurveillanceMethodCode("Active"); break;
-			case "PAS" : crfDocVO.setSurveillanceMethodCode("Passive"); break;
-			case "FUP" : crfDocVO.setSurveillanceMethodCode("Follow up"); break;
-			case "REAB" : crfDocVO.setSurveillanceMethodCode("Reabstraction"); break;
-			case "U" : crfDocVO.setSurveillanceMethodCode("Unknown"); break;
+			case "ACT" -> crfDocVO.setSurveillanceMethodCode("Active");
+			case "PAS" -> crfDocVO.setSurveillanceMethodCode("Passive");
+			case "FUP" -> crfDocVO.setSurveillanceMethodCode("Follow up");
+			case "REAB" -> crfDocVO.setSurveillanceMethodCode("Reabstraction");
+			case "U" -> crfDocVO.setSurveillanceMethodCode("Unknown");
 			}
 
 			String rptMedCd = crfDocVO.getReportMediumCode();
 			switch(rptMedCd) {
-			case "FV" : crfDocVO.setReportMediumCode("Field Visit"); break;
-			case "Mailed" : crfDocVO.setReportMediumCode("Mailed"); break;
-			case "Faxed" : crfDocVO.setReportMediumCode("Faxed"); break;
-			case "Phone" : crfDocVO.setReportMediumCode("Phone"); break;
-			case "ET" : crfDocVO.setReportMediumCode("Phone"); break;
-			case "CDDisk" : crfDocVO.setReportMediumCode("CD/Disk"); break;
+			case "FV" -> crfDocVO.setReportMediumCode("Field Visit");
+			case "Mailed" -> crfDocVO.setReportMediumCode("Mailed");
+			case "Faxed" -> crfDocVO.setReportMediumCode("Faxed");
+			case "Phone" -> crfDocVO.setReportMediumCode("Phone");
+			case "ET" -> crfDocVO.setReportMediumCode("Phone");
+			case "CDDisk" -> crfDocVO.setReportMediumCode("CD/Disk");
 			}
 
 			String vitalStatCd = crfDocVO.getVitalStatisticsCode();
 			switch(vitalStatCd) {
-			case "A" : crfDocVO.setVitalStatisticsCode("Alive"); break;
-			case "D" : crfDocVO.setVitalStatisticsCode("Dead"); break;
+			case "A" -> crfDocVO.setVitalStatisticsCode("Alive");
+			case "D" -> crfDocVO.setVitalStatisticsCode("Dead");
 			}		
 			
 			String code = crfDocVO.getBirthSex();
@@ -453,19 +453,19 @@ public class AssignmentReabstractUtil {
 			
 			String genderCd = crfDocVO.getGenderCode();
 			switch(genderCd) {
-			case "M" : crfDocVO.setGenderCode("Male"); break;
-			case "F" : crfDocVO.setGenderCode("Female"); break;
-			case "X" : crfDocVO.setGenderCode("Transgender Male-to-Female(MTF)"); break;
-			case "Y" : crfDocVO.setGenderCode("Transgender Female-to-Male(FTM)"); break;
-			case "U" : crfDocVO.setGenderCode("Unknown"); break;
-			case "O" : crfDocVO.setGenderCode("Additional gender identity"); break;
+			case "M" -> crfDocVO.setGenderCode("Male");
+			case "F" -> crfDocVO.setGenderCode("Female");
+			case "X" -> crfDocVO.setGenderCode("Transgender Male-to-Female(MTF)");
+			case "Y" -> crfDocVO.setGenderCode("Transgender Female-to-Male(FTM)");
+			case "U" -> crfDocVO.setGenderCode("Unknown");
+			case "O" -> crfDocVO.setGenderCode("Additional gender identity");
 			}
 
 			String ethnicityCd = crfDocVO.getEthnicityCode();
 			switch(ethnicityCd) {
-			case "01" : crfDocVO.setEthnicityCode("Hispanic/Latino"); break;
-			case "02" : crfDocVO.setEthnicityCode("Not Hispanic/Latino"); break;
-			case "09" : crfDocVO.setEthnicityCode("Unknown"); break;
+			case "01" -> crfDocVO.setEthnicityCode("Hispanic/Latino");
+			case "02" -> crfDocVO.setEthnicityCode("Not Hispanic/Latino");
+			case "09" -> crfDocVO.setEthnicityCode("Unknown");
 			}
 			
 			for (Map<String, String> ethnicity : ethnicities) {
@@ -484,11 +484,11 @@ public class AssignmentReabstractUtil {
 			
 			String mainTthSrc = crfDocVO.getMainARVSource();
 			switch(mainTthSrc) {
-			case "PT_INTV" : crfDocVO.setMainARVSource("Patient Interview"); break;
-			case "MED_REC" : crfDocVO.setMainARVSource("Medical Record Review"); break;
-			case "PROV_RPT" : crfDocVO.setMainARVSource("Provider Report"); break;
-			case "NHM_E_PEMS" : crfDocVO.setMainARVSource("NHM&E"); break;
-			case "OTH" : crfDocVO.setMainARVSource("Other"); break;
+			case "PT_INTV" -> crfDocVO.setMainARVSource("Patient Interview");
+			case "MED_REC" -> crfDocVO.setMainARVSource("Medical Record Review");
+			case "PROV_RPT" -> crfDocVO.setMainARVSource("Provider Report");
+			case "NHM_E_PEMS" -> crfDocVO.setMainARVSource("NHM&E");
+			case "OTH" -> crfDocVO.setMainARVSource("Other");
 			}
 			
 			crfDocVO.setAliasDateOfBirth(CommonUtil.parseDefaultDateValue(crfDocVO.getAliasDateOfBirth()));
@@ -523,7 +523,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<String[]> createCD4DataForDisplay(List<RawAcrfCd4TstVO> rawFsAcrfCd4Tst, List<RawAcrfCd4TstVO> rawReabAcrfCd4Tst, List<Map<String, Object>> compareDataMapList){
 		
-		List<String[]> cd4DisplayInfo = new ArrayList<String[]>();
+		List<String[]> cd4DisplayInfo = new ArrayList<>();
 		String[] cd4Data;
 		
 		for (Map<String, Object> currentDataMap : compareDataMapList) {
@@ -649,7 +649,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<String[]> createLabDataForDisplay(List<RawAcrfLabsVO> rawFsAcrfLabs, List<RawAcrfLabsVO> rawReabAcrfLabs, List<Map<String, Object>> compareDataMapList){
 		
-		List<String[]> labDisplayInfo = new ArrayList<String[]>();
+		List<String[]> labDisplayInfo = new ArrayList<>();
 		String[] labData;
 		
 		List<CodedAcrfTestVO> acrfTestCodeList = acrfLabDAO.getCodedAcrfResultTypes();
@@ -987,7 +987,7 @@ public class AssignmentReabstractUtil {
 	
 	public List<Map<String, Object>> removeBlankCd4Data(List<Map<String, Object>> cd4DataList) {
 		
-		List<Map<String, Object>> newCd4DataList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> newCd4DataList = new ArrayList<>();
 		
 		if (cd4DataList.size() > 0) {
 			for (Map<String, Object> currObj : cd4DataList) {

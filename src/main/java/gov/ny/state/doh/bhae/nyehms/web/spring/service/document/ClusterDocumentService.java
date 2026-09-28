@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -68,7 +68,7 @@ public class ClusterDocumentService {
 	
 	@Autowired DateUtil dateUtil;
 	
-	List<String> statenoNotFoundInEhars = new ArrayList<String>();
+	List<String> statenoNotFoundInEhars = new ArrayList<>();
 	
 	@Autowired	CommonUtil commonUtil;
 
@@ -76,7 +76,7 @@ public class ClusterDocumentService {
 		
 		String docClusterType = clusterDocumentDAO.getDocumentClusterType(documentId);
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		
 		inputData.put("documentId", documentId);
 		inputData.put("docClusterType", docClusterType);
@@ -123,7 +123,7 @@ public class ClusterDocumentService {
 
 	public List<JSONObject> getExistingClusterIdsByType(String clusterType) {
 		
-		Map<String, String> existingClusterType = new HashMap<String, String>();
+		Map<String, String> existingClusterType = new HashMap<>();
 		
 		existingClusterType.put("clusterType", clusterType);
 		
@@ -134,7 +134,7 @@ public class ClusterDocumentService {
 
 	public List<ClusterDocReportVO> getClusterReportsByTypeAndId(String clusterType, String clusterId, BindingResult bindingResult, UserObject userObject) {
 
-		Map<String, String> reportInputData = new HashMap<String, String>();
+		Map<String, String> reportInputData = new HashMap<>();
 		
 		reportInputData.put("clusterType", clusterType);
 		reportInputData.put("clusterId", clusterId);
@@ -146,7 +146,7 @@ public class ClusterDocumentService {
 
 	public Map<String, String> getClusterTypeList() {
 		
-		Map<String, String> clusterTypeList = new HashMap<String, String>();
+		Map<String, String> clusterTypeList = new HashMap<>();
 
 		clusterTypeList.put("BHAE_M", "BHAE Molecular");
 		clusterTypeList.put("BHAE_TS", "BHAE Space - Time");
@@ -190,7 +190,7 @@ public class ClusterDocumentService {
 	
 	public int getClusterDocumentID() {
 		
-		Map<Object,Object> map = new HashMap<Object,Object>();
+		Map<Object,Object> map = new HashMap<>();
 		int newDocId=0;
 		
 		map.put("p_document_type","CLUSTER");
@@ -227,7 +227,7 @@ public class ClusterDocumentService {
 	
 	public void moveStdDocumentToDocAttrTables(long documentId, UserObject userObject){
 		
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		
 		if (documentId == 0) {
 			
@@ -266,7 +266,7 @@ public class ClusterDocumentService {
 		
 		String transactionMessage = null;
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		String requestComments = "CLUST_BHAE_TS";
 		
 		inOutParameterMap.put("p_stateno", stateNo);
@@ -275,7 +275,7 @@ public class ClusterDocumentService {
 		
 		if(resultCount > 0){
 			
-			Map<String, String> inOutParameters = new HashMap<String, String>();
+			Map<String, String> inOutParameters = new HashMap<>();
 			
 			inOutParameters.put("p_requestComments", requestComments);
 			inOutParameters.put("STATENO", stateNo);
@@ -321,7 +321,7 @@ public class ClusterDocumentService {
 			clusterId = clusterUploadVO.getExistingClusterId();
 		}
 		
-		Map<String, Object> nyehmsUploadClusterMap = new HashMap<String, Object>();
+		Map<String, Object> nyehmsUploadClusterMap = new HashMap<>();
 		
 		nyehmsUploadClusterMap.put("clusterId", clusterId);
 		nyehmsUploadClusterMap.put("clusterType", clusterType);
@@ -385,7 +385,7 @@ public class ClusterDocumentService {
 		
 		String uploadType = clusterUploadVO.getUploadType();
 		
-		List<ClusterTemplateVO> currentOfAlreadyUploadedStatenosDataList = new ArrayList<ClusterTemplateVO>() ;
+		List<ClusterTemplateVO> currentOfAlreadyUploadedStatenosDataList = new ArrayList<>() ;
 		
 		if (uploadType.equals("E")) {
 			clusterId = clusterUploadVO.getExistingClusterId();
@@ -513,7 +513,7 @@ public class ClusterDocumentService {
 	@Transactional
 	public ClusterIdReportVO getClusterIdReports(String clusterType, String clusterId, String showDocuments, BindingResult bindingResult, UserObject userObject) {			
 		
-		Map<Object, Object> inOutParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inOutParameterMap = new HashMap<>();
 		inOutParameterMap.put("p_cluster_id", clusterId);
 		
 		clusterDocumentDAO.getClusterIdReport(inOutParameterMap);
@@ -548,7 +548,7 @@ public class ClusterDocumentService {
 			
 		}
 		
-		List<ClusterIdReportDataVO> showDataReportList = new ArrayList<ClusterIdReportDataVO>() ; 
+		List<ClusterIdReportDataVO> showDataReportList = new ArrayList<>() ; 
 		if (showDocuments.equals("I")) {
 			for (ClusterIdReportDataVO rptRow : clusterIdReportDataList) {
 				if (CommonUtil.isNotNullAndEmpty(rptRow.getDissassociation_date()) )
@@ -646,7 +646,7 @@ public class ClusterDocumentService {
 	}
 	
 	public Map<String, String> getMoleTimeFrameData() {
-		Map<String, String> moleTimeFrameCodes=new LinkedHashMap<String, String>();
+		Map<String, String> moleTimeFrameCodes=new LinkedHashMap<>();
 
 		List<Map<String, String>> getMoleTimeFrameDataList = clusterDocumentDAO.getMoleTimeFrameData();
 		for(Map<String, String> moleTimeFrameMap : getMoleTimeFrameDataList){
@@ -669,7 +669,7 @@ public class ClusterDocumentService {
 	@Transactional
 	public void updateClustereHARSImportFlag(int[] clusterIdPks, UserObject userObject, BindingResult bindingResult) {
 		
-		Map<String, Object> eHARSImportFlagMap = new HashMap<String, Object>();
+		Map<String, Object> eHARSImportFlagMap = new HashMap<>();
 		
 		eHARSImportFlagMap.put("workerId", userObject.getWorkerId());
 		
@@ -692,7 +692,7 @@ public class ClusterDocumentService {
 	
 	public List<JSONObject> getMolClusterDemoDocumentIds(String stateNo, String identificationCd, String notAssocClusterDetails) {
 		
-		Map<String, Object> demoDocumentIDsMap = new HashMap<String, Object>();
+		Map<String, Object> demoDocumentIDsMap = new HashMap<>();
 		
 		String clusterType = "";
 		if (CommonUtil.isNotNullAndEmpty(notAssocClusterDetails) && notAssocClusterDetails.contains("BHAE_M")) {
@@ -723,7 +723,7 @@ public class ClusterDocumentService {
 	}
 	public Map<String, String> getTransmissionCategoryData() {
 		
-		Map<String, String> transCategCodes=new LinkedHashMap<String, String>();
+		Map<String, String> transCategCodes=new LinkedHashMap<>();
 
 		List<Map<String, String>> transCategDataList = clusterDocumentDAO.getTransmissionCategoryData();
 		for(Map<String, String> transCategMap : transCategDataList){
@@ -734,7 +734,7 @@ public class ClusterDocumentService {
 	}
 	
 	public Map<String, String> getEharsRaceValues() {
-		Map<String, String> eharsRaceCodes=new LinkedHashMap<String, String>();
+		Map<String, String> eharsRaceCodes=new LinkedHashMap<>();
 
 		List<Map<String, String>> eharsRaceDataList = clusterDocumentDAO.getEharsRaceData();
 		for(Map<String, String> eharsRaceMap : eharsRaceDataList){
@@ -745,7 +745,7 @@ public class ClusterDocumentService {
 	}
 	
 	public Map<String, String> getEharsEthnicityValues() {
-		Map<String, String> eharsEthnicityCodes=new LinkedHashMap<String, String>();
+		Map<String, String> eharsEthnicityCodes=new LinkedHashMap<>();
 
 		List<Map<String, String>> eharsEthnicityDataList = clusterDocumentDAO.getEharsEthnicityData();
 		for(Map<String, String> eharsEthnicityMap : eharsEthnicityDataList){

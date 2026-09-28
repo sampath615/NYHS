@@ -40,7 +40,7 @@ public class InitializeService {
 	public List<String> getActiveMACAddressesList(BindingResult result, UserInitObject userInitObject, String sessionID){
 	
 		boolean errorFlag=false;
-		List<String> activeMACAddresses  = new ArrayList<String>();
+		List<String> activeMACAddresses  = new ArrayList<>();
 		try {
 			activeMACAddresses = initializeDAO.getActiveMACAddressesList(userInitObject.getUserId());	
 		} catch(DataAccessException dae){
@@ -134,7 +134,7 @@ public class InitializeService {
 	public List<String> getActiveOSs(BindingResult result, UserInitObject userInitObject, String sessionID) {
 
 		boolean errorFlag=false;
-		List<String> activeOSs  = new ArrayList<String>();
+		List<String> activeOSs  = new ArrayList<>();
 		try {
 			activeOSs = initializeDAO.getActiveOSs();	
 		} catch(DataAccessException dae){

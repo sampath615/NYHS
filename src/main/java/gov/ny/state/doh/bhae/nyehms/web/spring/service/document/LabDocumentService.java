@@ -67,7 +67,7 @@ public class LabDocumentService {
 		log.debug("{} fetching for docId : {}", nyehmsLog,documentId);
 		try{
 			
-			Map<Object, Object> map = new HashMap<Object, Object>();
+			Map<Object, Object> map = new HashMap<>();
 			
 			if("STD_LAB".equals(documentType)){
 				map.put("std_table_name", "std_std_eclrs_doc");	
@@ -104,7 +104,7 @@ public class LabDocumentService {
 		log.debug("{} fetching for docId : {}", nyehmsLog,docId);
 		try{
 			
-			Map<Object, Object> map = new HashMap<Object, Object>();
+			Map<Object, Object> map = new HashMap<>();
 			
 			if("STD_LAB".equals(documentType)){
 				map.put("raw_table_name", "raw_std_eclrs_doc");
@@ -184,7 +184,7 @@ public class LabDocumentService {
 		boolean rollbackFlag=false;
 		int newDocId=0;
 		
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_type", "ECLRS");
 		map.put("p_new_doc_id", "");	
 		map.put("p_parent_doc_id", stdLabDocVO.getDocumentId());		
@@ -235,7 +235,7 @@ public class LabDocumentService {
 	public void editLabErrorDoc(EcrlsLabDocVO ecrlsLabDocVO, String requestComments,
 			BindingResult result, UserObject userObject, String id){
 		boolean isError = false; 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		try{
 			documentTransactionHelper.editLabErrorDoc(ecrlsLabDocVO, requestComments, result, userObject, errors, id );
 		}catch(DataAccessException dataAccessException){
@@ -261,7 +261,7 @@ public class LabDocumentService {
 	
 	public void moveRawToStdByStateno(int documentId, String stateno, String requestComments, BindingResult bindingResult, UserObject userObject){
 		boolean isError = false; 
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		
 		try{
 			documentTransactionHelper.moveRawToStdByStateno(documentId, stateno , requestComments, errors,  bindingResult, userObject);
@@ -285,7 +285,7 @@ public class LabDocumentService {
 			java.util.Date collectionDate) {
 		
 		String obxObservationResultText = OBXOBSERVATIONRESULTTEXT;
-		Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("documentId",
 				documentId);
 		String[] sequenceArray = obxObservationResultText.split("(?<=\\G.{4000})");
@@ -344,7 +344,7 @@ public class LabDocumentService {
 			
 			String  STD_NON_MATCHES_RESTAGE_QUERY = schedulerMetaData.get("STD_NON_MATCHES_RESTAGE_QUERY");
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("sqlQuery", STD_NON_MATCHES_RESTAGE_QUERY);
 			
@@ -389,7 +389,7 @@ public class LabDocumentService {
 		
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("loincCodes", loincs.split(","));
 		inputParameterMap.put("pfiList", pfi.split(","));
 		
@@ -407,11 +407,11 @@ public class LabDocumentService {
 			
 			log.error("Grouping Multi spot Documents {}   Retain DocumentId : {} loincGroupId : {}",Arrays.toString(multiSpotDocuments),retainDocumentId,loincGroupId);
 			
-			Map<Object, Object> inputOutputParameterMap = new HashMap<Object, Object>();
+			Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 			
 			inputOutputParameterMap.put("documentIds", multiSpotDocuments);
 			List<EcrlsLabDocVO> multiStepDocumentsForPFI = labDocumentDAO.getRawDocumentsData(inputOutputParameterMap);
-			List<String> errors = new ArrayList<String>();
+			List<String> errors = new ArrayList<>();
 			
 			String errorMessage = quartzSchedulerTransactionHelper.processMultispotDocuments(multiStepDocumentsForPFI, errors, retainDocumentId, loincGroupId);
 			
@@ -448,7 +448,7 @@ public class LabDocumentService {
 	
 	public int updateStatusCodeForHivDocuments(List<Integer> documentIds,
 			int statusCode) {
-		Map<Object, Object> inputOutputParamters = new HashMap<Object, Object>();
+		Map<Object, Object> inputOutputParamters = new HashMap<>();
 		inputOutputParamters.put("statusCode", statusCode);
 		inputOutputParamters.put("documentIds", documentIds);
 
@@ -471,7 +471,7 @@ public class LabDocumentService {
 			
 			String  STD_NON_MATCHES_ROLLBACK_QUERY = schedulerMetaData.get("STD_NON_MATCHES_ROLLBACK_QUERY");
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("sqlQuery", STD_NON_MATCHES_ROLLBACK_QUERY);
 			
@@ -498,7 +498,7 @@ public class LabDocumentService {
 	public void insertStandardHIVResistanceResultFromOldDocument(
 			int newDocumentId, Integer documentId){
 		
-		Map<String, Integer> inputParameterMap = new HashMap<String, Integer>();
+		Map<String, Integer> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("CURRENT_DOCUMENT_ID", documentId);
 		inputParameterMap.put("NEW_DOCUMENT_ID", newDocumentId);

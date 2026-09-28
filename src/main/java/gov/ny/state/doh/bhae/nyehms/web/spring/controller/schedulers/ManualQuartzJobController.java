@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.quartz.JobDataMap;
 import org.slf4j.Logger;
@@ -64,7 +64,7 @@ public class ManualQuartzJobController {
 	@RequestMapping(value = "/manualQuartzJob")
 	public String manualQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
 		manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -97,7 +97,7 @@ public class ManualQuartzJobController {
 	@RequestMapping(value = "/scanningQuartzJob")
 	public String scanningQuartzJob(HttpServletRequest request, Map<String, String> map, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
 		manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -143,7 +143,7 @@ public class ManualQuartzJobController {
 	public @ResponseBody Map<Object, Object> updateMetaDataValue(HttpServletRequest request, Map<String, Object> map,
 			@RequestParam String parameterName, @RequestParam String parameterValue, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Check the user's permissions
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -160,7 +160,7 @@ public class ManualQuartzJobController {
 	public @ResponseBody Map<Object, Object> updateSystemProperties(HttpServletRequest request, Map<String, Object> map,
 			@RequestParam String parameterName, @RequestParam String parameterValue) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		try {
 			EnvironmentProperties.envProperties.setProperty(parameterName, parameterValue);
@@ -178,7 +178,7 @@ public class ManualQuartzJobController {
 	public String schedulerMetaData(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
 
 		HttpSession session = request.getSession();
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		// Checking the Permissions for the user
 		int statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
@@ -212,7 +212,7 @@ public class ManualQuartzJobController {
 	public @ResponseBody Map<Object, Object> getMetaDataValue(HttpServletRequest request,
 			@RequestParam String parameterName, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		Integer statusCode = manualQuartzJobService.getPermissionsAccessForManualQuartzJob(bindingResult, userObject);
 		if (statusCode == 0) {
@@ -252,7 +252,7 @@ public class ManualQuartzJobController {
 			@RequestParam String jobName, @RequestParam String actionName, UserObject userObject) {
 
 		log.error("jobName: {}; actionName: {}",jobName,actionName);
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		JobDataMap jobDataMap = new JobDataMap();
 
@@ -289,7 +289,7 @@ public class ManualQuartzJobController {
 	@RequestMapping(value = "/executeHl7CursorstoMatchAgainstCCD", produces = "application/json")
 	public @ResponseBody Map<Object, Object> executeHl7RematchingCursorsAgainstCCD(HttpServletRequest request, UserObject userObject) {
 
-		Map<Object, Object> targetMap = new HashMap<Object, Object>();
+		Map<Object, Object> targetMap = new HashMap<>();
 		Map<String, String> statusObject = new LinkedHashMap<>();
 		// initiator
 		statusObject.put("Initiator", "HL7 Manual Process Initiated by &lt;<b>" + userObject.getUserId() + "</b>&gt;");

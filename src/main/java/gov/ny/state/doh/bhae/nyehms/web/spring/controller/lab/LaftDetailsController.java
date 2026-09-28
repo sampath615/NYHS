@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +139,7 @@ public class LaftDetailsController {
 	public @ResponseBody GridObject loadValidationFailedLabDocuments(@RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -158,7 +158,7 @@ public class LaftDetailsController {
 	public @ResponseBody GridObject loadValidationFailedDeletedLabDocuments(@RequestParam String documentType, HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -176,7 +176,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> updateLabNotes(HttpServletRequest request, @RequestParam long id, @RequestParam String notes, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -189,7 +189,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> byPassDocumentError(HttpServletRequest request, @RequestParam String documentId, @RequestParam String errorCodes, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -209,7 +209,7 @@ public class LaftDetailsController {
 	public @ResponseBody GridObject loadHEDDetails(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -232,7 +232,7 @@ public class LaftDetailsController {
 	public @ResponseBody Map<Object, Object> updateDocumentsStatus(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="comments", required = false) String comments, @RequestParam String documentType, @RequestParam String actionName, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		laftDetailsService.updateSelectedDocumentStatus(documentIds, comments, actionName, documentType, bindingResult, userObject);
@@ -244,7 +244,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> addNotesToProcessErrors(HttpServletRequest request, @RequestParam("documentIds[]")  long[] documentIds, @RequestParam(value="notes", required = false) String notes, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -257,7 +257,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> updateUnitsOfMeasure(HttpServletRequest request, @RequestParam("documentIds[]")  int[] documentIds, @RequestParam(value="units", required = false) String units, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -279,7 +279,7 @@ public class LaftDetailsController {
 			@RequestParam(value="npi", required = false) String npi, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -293,7 +293,7 @@ public class LaftDetailsController {
 			@ModelAttribute("addressFieldVO") AddressFieldVO addressFieldVO, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -306,7 +306,7 @@ public class LaftDetailsController {
 	public @ResponseBody  List<JSONObject> getAddressSameAsEntries(HttpServletRequest request, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -320,7 +320,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> addRawProviderFacilityAddressSameAsResidence(HttpServletRequest request, @RequestParam String rawAddress, @RequestParam String addressFilterType, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -335,7 +335,7 @@ public class LaftDetailsController {
 	public @ResponseBody  Map<Object, Object> updateAddressSameAsStatus(HttpServletRequest request, @RequestParam String id, @RequestParam String FLAG_ACTIVE, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -458,7 +458,7 @@ public class LaftDetailsController {
 		
 		ModelAndView mav = null;
 		
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		if("ERROR".equals(category)){

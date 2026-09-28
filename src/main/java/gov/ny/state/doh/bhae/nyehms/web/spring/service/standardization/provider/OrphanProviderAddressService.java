@@ -93,7 +93,7 @@ public class OrphanProviderAddressService {
 		inOutParamaterMap=new HashMap<Object, Object>();
 		inOutParamaterMap.put("providerAddressId", providerAddressId);
 		inOutParamaterMap.put("providerId", providerId);
-		inOutParamaterMap.put("statusCode", new Integer(1));
+		inOutParamaterMap.put("statusCode", Integer.valueOf(1));
 		inOutParamaterMap.put("statusMessage", "");
 
 		orphanProviderAddressDAO.linkOrphanAddressToProvider(inOutParamaterMap);

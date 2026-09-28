@@ -89,7 +89,7 @@ public class PersonTransactionHelper {
 			
 		}else{
 			
-			Map<Object,Object> inputParameterMap = new HashMap<Object,Object>();
+			Map<Object,Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("documentId", documentId);
 			
@@ -148,7 +148,7 @@ public class PersonTransactionHelper {
 		if(triggerPsMessage){
 			if(CommonUtil.isNotNullAndEmpty(reason)) {
 				
-				Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+				Map<String, Object> inOutParameterMap = new HashMap<>();
 				
 				inOutParameterMap.put("p_cluster_documentId", documentId);
 				
@@ -176,7 +176,7 @@ public class PersonTransactionHelper {
 			UserObject userObject) {
 		
 			
-			Map<Object,Object> inputParameterMap = new HashMap<Object,Object>();
+			Map<Object,Object> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("stateno", stateno);
 			
@@ -230,7 +230,7 @@ public class PersonTransactionHelper {
 		}
 		
 		
-		Map<String, Object> inputParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inputParameterMap = new HashMap<>();
 		
 		inputParameterMap.put("triggeringDocId", documentId);
 		inputParameterMap.put("flagActive", "Y");

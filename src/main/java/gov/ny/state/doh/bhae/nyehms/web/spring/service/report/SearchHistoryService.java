@@ -23,7 +23,7 @@ public class SearchHistoryService {
 		
 		List<JSONObject> workerNamesList = searchHistoryDAO.getSearchedWorkerNames();
 		
-		Map<String, String> workers = new LinkedHashMap<String, String>();
+		Map<String, String> workers = new LinkedHashMap<>();
 		
 		for (JSONObject jsonObj : workerNamesList) {
 			workers.put(jsonObj.get("WORKER_ID").toString(), jsonObj.get("WORKER_NAME").toString());
@@ -35,7 +35,7 @@ public class SearchHistoryService {
 	public List<JSONObject> getSearchHistoryReportData(String fromDate, String toDate, int worker,
 			BindingResult dummyBindingResult, UserObject userObject) {
 		
-		Map<Object, Object> inputData = new HashMap<Object, Object>();
+		Map<Object, Object> inputData = new HashMap<>();
 		inputData.put("p_from_date", fromDate);
 		inputData.put("p_to_date", toDate);
 		inputData.put("p_worker_id", worker);

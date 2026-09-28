@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +86,7 @@ public class LabLoincResultDomainMappingController {
 		
 		HttpSession session = request.getSession();
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -118,7 +118,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody List<LabLoincMappingVO> getLoincAndDescriptionSearchResults(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -131,7 +131,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody GridObject getAtrDomainsAssoicatedToLoincCode(Map<String, Object> map, HttpServletRequest request,@RequestParam String loincCode, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -144,7 +144,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody Map<Object, Object> addNewLabLoincDetailsToLookup(Map<String, Object> map, HttpServletRequest request, @ModelAttribute("labLoincMappingVO") LabLoincMappingVO labLoincMappingVO, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -161,7 +161,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody Map<Object, Object> addNewAcceptableTestResults(@ModelAttribute("acceptedTestResultDomainVO") AcceptedTestResultDomainVO acceptedTestResultDomainVO,HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		loincResultDomainMappingService.addNewAcceptableTestResultsAndAssociateToLoincCode(acceptedTestResultDomainVO, bindingResult, userObject);
@@ -173,7 +173,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody Map<Object, Object> updateLoincAndTestResultsDomainStatus(@RequestParam String flagActive, @RequestParam("loincAtrDomainMapId")  long loincAtrDomainMapId,HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -187,7 +187,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody Map<String, String> getLoincAndUnitsOfMeasurementCombination(@RequestParam String loincCd, HttpServletRequest request, UserObject userObject) {
 
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		
@@ -200,7 +200,7 @@ public class LabLoincResultDomainMappingController {
 	public @ResponseBody Map<Object, Object> changeLoincMultiSpotDocuments(HttpServletRequest request, @RequestParam("documentIds[]")  Integer[] documentIds, @RequestParam String documentType, UserObject userObject){
 		
 
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		
 		

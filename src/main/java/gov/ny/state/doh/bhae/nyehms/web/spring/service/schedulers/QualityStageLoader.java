@@ -59,7 +59,7 @@ public class QualityStageLoader{
 			//this property will be set it to "N"			
 			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
 				//schedulerStatusObject : is used to track the complete job status (SUCCESS/FAILURE)				
-				List<JSONObject> schedulerStatusObject = new ArrayList<JSONObject>();
+				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table).
 				Map<String, String> schedulerMetaData =
 						manualQuartzJobService.getSchedulerMetaData();

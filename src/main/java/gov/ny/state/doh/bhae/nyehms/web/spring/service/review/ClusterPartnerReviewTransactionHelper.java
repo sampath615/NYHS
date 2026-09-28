@@ -37,7 +37,7 @@ public class ClusterPartnerReviewTransactionHelper {
 			String INS_CLUSTER, BindingResult bindingResult, UserObject userObject) {
 		
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_document_id", documentId);
 		
@@ -118,7 +118,7 @@ public class ClusterPartnerReviewTransactionHelper {
 	public void triggerClusterPSMessage(int partnerId, long documentId, String reason, String otherReason,
 			AddressFieldVO addressFieldVO, UserObject userObject) {
 		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
+		Map<String, Object> inOutParameterMap = new HashMap<>();
 		
 		inOutParameterMap.put("p_document_id", partnerId);
 		inOutParameterMap.put("p_cluster_documentId", documentId);

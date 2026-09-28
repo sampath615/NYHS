@@ -90,7 +90,7 @@ public class AIRSDocumentService {
 			BigDecimal documentId) {
 		
 		int resultCount = 0;
-		List<String> errors = new ArrayList<String>();
+		List<String> errors = new ArrayList<>();
 		int currentProcessStatus = 0;
 		BigDecimal existingProcessStatus = (BigDecimal) docVO.get("CURRENT_PROCESS_STATUS");
 
@@ -456,7 +456,7 @@ public class AIRSDocumentService {
 			String tableName = EnvironmentProperties.envProperties.getProperty(parameterName+"_TABLE");
 			String columns = EnvironmentProperties.envProperties.getProperty(parameterName+"_COLUMNS");
 			
-			Map<String, String> inputParameterMap = new HashMap<String, String>();
+			Map<String, String> inputParameterMap = new HashMap<>();
 			
 			inputParameterMap.put("tableName", tableName);
 			inputParameterMap.put("columns", columns);
@@ -481,7 +481,7 @@ public class AIRSDocumentService {
 	
 	public void checkForActiveErrors(Boolean checkForToday) {
 		
-		Map<String, Boolean> inputParameterMap = new HashMap<String, Boolean>();
+		Map<String, Boolean> inputParameterMap = new HashMap<>();
 		inputParameterMap.put("checkForToday", checkForToday);
 		List<Map<String, Object>> errorList = airsDocumentDAO.checkForActiveErrors(inputParameterMap);
 		//

@@ -31,7 +31,7 @@ public class SearchManageProfileService {
 	 * @see gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SearchManageProfileService#getModuleAndPermissionsByRole(long, org.springframework.validation.BindingResult, gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject)
 	 */
 	public List<ModuleAndPermissionsVO> getModuleAndPermissionsByRole(long roleCode,BindingResult bindingResult,UserObject userObject){
-			Map<Object,Object> inOutParameterMap=new HashMap<Object,Object>(); 
+			Map<Object,Object> inOutParameterMap=new HashMap<>(); 
 			List<ModuleAndPermissionsVO> moduleAndPermissionsByRole;
 			inOutParameterMap.put("p_role_cd", roleCode);
 			
@@ -55,7 +55,7 @@ public class SearchManageProfileService {
 	 * @return List of ModuleAndPermissionsVO instances
 	 */
 	public List<ModuleAndPermissionsVO> getModuleAndPermissionsByWorkerRegionId(long workerRegionId,BindingResult bindingResult,UserObject userObject, boolean withFlagSuggestedIndicator){
-			Map<Object,Object> inOutParameterMap=new HashMap<Object,Object>(); 
+			Map<Object,Object> inOutParameterMap=new HashMap<>(); 
 			List<ModuleAndPermissionsVO> moduleAndPermissionsByRole;
 			inOutParameterMap.put("p_worker_region_id", workerRegionId);
 			
@@ -76,7 +76,7 @@ public class SearchManageProfileService {
 	
 	public List<String> getGraphsHierarchy(BindingResult bindingResult, UserObject userObject){
 		
-		Map<Object,Object> inOutParameterMap=new HashMap<Object,Object>();
+		Map<Object,Object> inOutParameterMap=new HashMap<>();
 		
 		inOutParameterMap.put("p_worker_id", userObject.getWorkerId());
 		

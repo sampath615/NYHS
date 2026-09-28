@@ -39,7 +39,7 @@ public class CommonExceptionHandler {
 							" at "+dateUtil.getSystemDateTime()+
 							" Error Description is ::: "+ exception.toString();		
 		//Send the email
-		Map<Object, Object> messageParametersAndValues = new HashMap<Object, Object>();		
+		Map<Object, Object> messageParametersAndValues = new HashMap<>();		
 		messageParametersAndValues.put("p_log_date", new Timestamp(new Date().getTime()));
 		messageParametersAndValues.put("p_user_id", userObject.getUserId());
 		messageParametersAndValues.put("p_session_id", sessionId);		

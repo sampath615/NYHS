@@ -7,7 +7,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ public class ProviderManualReviewController {
 	GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawProviderAddress.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> matchRawProviderAddress(long newRawProviderAddressId,long matchingRawProviderAddressId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		providerManualReviewService.matchRawProviderAddress(newRawProviderAddressId, matchingRawProviderAddressId, bindingResult, userObject);
 		return targetMap;
@@ -33,7 +33,7 @@ public class ProviderManualReviewController {
 	
 	@RequestMapping(value="/unMatchRawProvider.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> unMatchRawProvider(long newRawProviderAddressId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		providerManualReviewService.unMatchRawProviderAddress(newRawProviderAddressId, bindingResult, userObject);
 		return targetMap;
@@ -41,7 +41,7 @@ public class ProviderManualReviewController {
 	
 	@RequestMapping(value="/getPotentialProviderDetailsListByRawProvider.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getPotentialProviderDetailsListByRawProvider(long rawProviderAddressId,HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(providerManualReviewService.getPotentialProviderDetailsListByRawProvider(rawProviderAddressId, bindingResult, userObject));
 		return jsonResponse;
@@ -50,7 +50,7 @@ public class ProviderManualReviewController {
 	
 	@RequestMapping(value="/getClericalReviewRawProviderAddressList.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody GridObject getClericalReviewRawProviderAddressList(HttpServletRequest request, UserObject userObject){
-		Map<Object, Object> targetMap= new HashMap<Object, Object>();
+		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 		GridObject jsonResponse = getGridObject.GetGrid(providerManualReviewService.getClericalReviewRawProviderAddressDetailsList(bindingResult, userObject));
 		return jsonResponse;
