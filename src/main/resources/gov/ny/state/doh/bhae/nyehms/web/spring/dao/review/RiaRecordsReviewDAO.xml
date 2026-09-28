@@ -170,15 +170,7 @@ SELECT stateno,
    	) where rn = 1
 	</select>
 
-<select id="getRiaReportByFollowup" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
-	select * from (  	
-	select distinct ria.DOCUMENT_ID RIA_DOCUMENT_ID, test_type_Cd as "documentType", LAB_DOC_ID as "documentId", CURR_NYEHMS_STATENO as "stateno", ria.FIRST_NAME as "firstName", ria.LAST_NAME as "lastName", DOB_TEXT as "dateOfBirth", INITIAL_PROVNAME "providerName", INITIAL_PROV_ADDRESS  || ', ' || INITIAL_PROV_CITY || ', ' || INITIAL_PROV_STATE || ', ' || INITIAL_PROV_ZIP  "providerAddress",  
-PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP as "address",
-TO_CHAR(RIA_FLAGGED_DATE, 'MM/DD/YYYY') as "flaggedDate",
-TO_CHAR(complete_Date, 'MM/DD/YYYY') as "completedDate",
-${PARAMETER_NAME}_NOTES NOTES ,
-			(select LISTAGG(follow_up_desc, ', ')  WITHIN GROUP (ORDER BY RIA_DOC_ID) from RIA_FOLLOW_UP followup, CODED_RIA_FOLLOW_UP_CODES coded  where ria_doc_id = ria.DOCUMENT_ID and followup.follow_up_cd like  '%${PARAMETER_NAME}%' and coded.FOLLOW_UP_CD =followup.follow_up_cd) FOLLOW_UP_CD,
-
+	<sql id="riaIneligibleReasonAndOpenRecords">
 case when NOT_HIV_FLAG is not null then 'Not HIV'
 	when OOJ_CASE_FLAG is not null then 'OOJ Case'
 	when OOJ_PROVIDER_FLAG is not null then 'OOJ Provider'
@@ -209,6 +201,18 @@ case when NOT_HIV_FLAG is not null then 'Not HIV'
   and complete_Date is null 
   
   and RIA_FLAGGED_DATE between TO_DATE(#{riaFlaggedFromDate}, 'MM/DD/YYYY')  and TO_DATE(#{riaFlaggedToDate}, 'MM/DD/YYYY')+1
+	</sql>
+
+<select id="getRiaReportByFollowup" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
+	select * from (  	
+	select distinct ria.DOCUMENT_ID RIA_DOCUMENT_ID, test_type_Cd as "documentType", LAB_DOC_ID as "documentId", CURR_NYEHMS_STATENO as "stateno", ria.FIRST_NAME as "firstName", ria.LAST_NAME as "lastName", DOB_TEXT as "dateOfBirth", INITIAL_PROVNAME "providerName", INITIAL_PROV_ADDRESS  || ', ' || INITIAL_PROV_CITY || ', ' || INITIAL_PROV_STATE || ', ' || INITIAL_PROV_ZIP  "providerAddress",  
+PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP as "address",
+TO_CHAR(RIA_FLAGGED_DATE, 'MM/DD/YYYY') as "flaggedDate",
+TO_CHAR(complete_Date, 'MM/DD/YYYY') as "completedDate",
+${PARAMETER_NAME}_NOTES NOTES ,
+			(select LISTAGG(follow_up_desc, ', ')  WITHIN GROUP (ORDER BY RIA_DOC_ID) from RIA_FOLLOW_UP followup, CODED_RIA_FOLLOW_UP_CODES coded  where ria_doc_id = ria.DOCUMENT_ID and followup.follow_up_cd like  '%${PARAMETER_NAME}%' and coded.FOLLOW_UP_CD =followup.follow_up_cd) FOLLOW_UP_CD,
+
+<include refid="riaIneligibleReasonAndOpenRecords"/>
   
   and exists (select 1 from RIA_FOLLOW_UP followUp, CODED_RIA_FOLLOW_UP_CODES coded_followUp  where  RIA_DOC_ID = ria.DOCUMENT_ID and coded_followUp.FOLLOW_UP_CD = followUp.FOLLOW_UP_CD and PROGRAM_TYPE = #{PARAMETER_NAME} 
   
@@ -246,36 +250,7 @@ PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_
 TO_CHAR(RIA_FLAGGED_DATE, 'MM/DD/YYYY') as "flaggedDate",
 TO_CHAR(complete_Date, 'MM/DD/YYYY') as "completedDate",
 
-case when NOT_HIV_FLAG is not null then 'Not HIV'
-	when OOJ_CASE_FLAG is not null then 'OOJ Case'
-	when OOJ_PROVIDER_FLAG is not null then 'OOJ Provider'
-	when PT_ON_PREP_FLAG is not null then 'PREP'
-	when NON_PROMPT_FLAG is not null then 'Non Prompt'
-	when DECEASED is not null then 'Deceased'
-	when FEDERAL_FACILITY is not null then 'Federal Facility'
-	when NDVL_AT_DX is not null then 'NDVL at time of dx'
-	when PERINATAL is not null then 'Perinatal'
-	when PKP_FLAG is not null then 'PKP'
-	else null end RIA_INELIGIBLE_REASON,TO_CHAR (calc_ehars_dx_dt (m.hiv_dx_dt, n.hiv_dx_dt),
-                         'mm/dd/yyyy')
-                   AS CALC_EHARS_HIV_DX_DT
-                   ,
-          row_number() over (partition by ria.DOCUMENT_ID order by TO_CHAR (calc_ehars_dx_dt (m.hiv_dx_dt, n.hiv_dx_dt), 'mm/dd/yyyy')) rn
-          
-         from nyehms_ria_doc ria
-  JOIN document_locator doc
-  
-  ON (ria.lab_doc_id = doc.document_id)
-  LEFT OUTER JOIN ehars_person_nyc n
-  ON (ria.curr_nyehms_stateno = n.nyehms_stateno AND n.status_flag NOT IN ('D', 'P') AND n.hiv_aids_cdc = 'Y')
-    LEFT OUTER JOIN nyehms_ehars_stateno_map m
-  ON (ria.curr_nyehms_stateno = m.nyehms_stateno AND m.status_flag NOT IN ('D', 'P') AND m.hiv_aids_cdc = 'Y')
-  
-  where ria.MERGED_RIA_STATENO IS NULL and nvl(STATENO_DELETED, 'N') != 'Y'
-  
-  and complete_Date is null 
-  
-  and RIA_FLAGGED_DATE between TO_DATE(#{riaFlaggedFromDate}, 'MM/DD/YYYY')  and TO_DATE(#{riaFlaggedToDate}, 'MM/DD/YYYY')+1 
+<include refid="riaIneligibleReasonAndOpenRecords"/>
                     
                     <if test="ALL_COUNTIES == false">
                 AND person_county IN  
@@ -372,8 +347,7 @@ SELECT PROGRAM_TYPE || '_NOT_COMPLETED' PROGRAM_TYPE, TO_CHAR(count(distinct RIA
 	</select>
 	
 	
-	<select id="getRiaDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RiaDocVO">
-		select TO_CHAR(ADDRESS_DATE, 'MM/DD/YYYY') ADDRESS_DATE,
+	<sql id="riaDocColumns1">
 TO_CHAR(COMPLETE_DATE, 'MM/DD/YYYY') COMPLETE_DATE,
 TO_CHAR(FIRST_GENOTYPE_DATE, 'MM/DD/YYYY') FIRST_GENOTYPE_DATE,
 TO_CHAR(FIRST_PRF_DATE, 'MM/DD/YYYY') FIRST_PRF_DATE,
@@ -475,8 +449,9 @@ PS_CLOSURE_DISPO,
 RECENT_VL_PROV_ADDRESS, 
 RECENT_VL_PROVNAME, 
 RIDR_INFO, 
-PS_WORKER_ASSIGNED,
-DISNUMBER,
+	</sql>
+
+	<sql id="riaDocColumns2">
 BIRTH_SEX, 
 CURRENT_GENDER, 
 FOOD_INSECURITY, 
@@ -535,6 +510,14 @@ BHAE_NOTES,
 OMD_NOTES, 
 PS_NOTES, 
 SSN,
+	</sql>
+
+	<select id="getRiaDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RiaDocVO">
+		select TO_CHAR(ADDRESS_DATE, 'MM/DD/YYYY') ADDRESS_DATE,
+<include refid="riaDocColumns1"/>
+PS_WORKER_ASSIGNED,
+DISNUMBER,
+<include refid="riaDocColumns2"/>
 DOCUMENT_ID from NYEHMS_RIA_DOC where DOCUMENT_ID = #{docId}
 	</select>		
 	
@@ -584,167 +567,10 @@ RIA_INTERVENTION intervention
 
 select
 TO_CHAR(ADDRESS_DATE, 'MM/DD/YYYY') ADDRESS_DATE,
-TO_CHAR(COMPLETE_DATE, 'MM/DD/YYYY') COMPLETE_DATE,
-TO_CHAR(FIRST_GENOTYPE_DATE, 'MM/DD/YYYY') FIRST_GENOTYPE_DATE,
-TO_CHAR(FIRST_PRF_DATE, 'MM/DD/YYYY') FIRST_PRF_DATE,
-TO_CHAR(INITIAL_APPOINTMENT_DATE, 'MM/DD/YYYY') INITIAL_APPOINTMENT_DATE,
-TO_CHAR(INITIAL_COLLECTION_DATE, 'MM/DD/YYYY') INITIAL_COLLECTION_DATE,
-TO_CHAR(LAST_UPDATED_DATE, 'MM/DD/YYYY') LAST_UPDATED_DATE,
-TO_CHAR(MOVED_FROM_NY_DATE, 'MM/DD/YYYY') MOVED_FROM_NY_DATE,
-TO_CHAR(MOVED_TO_NY_DATE, 'MM/DD/YYYY') MOVED_TO_NY_DATE,
-TO_CHAR(PS_CLOSURE_DATE, 'MM/DD/YYYY') PS_CLOSURE_DATE,
-TO_CHAR(PS_LAST_UPDATE_DATE, 'MM/DD/YYYY') PS_LAST_UPDATE_DATE,
-TO_CHAR(PS_MESSAGE_SENT_DATE, 'MM/DD/YYYY') PS_MESSAGE_SENT_DATE,
-TO_CHAR(RECENT_CD4_DATE, 'MM/DD/YYYY') RECENT_CD4_DATE,
-TO_CHAR(RECENT_VL_DATE, 'MM/DD/YYYY') RECENT_VL_DATE,
-TO_CHAR(RIA_ELIGIBILITY_DATE, 'MM/DD/YYYY') RIA_ELIGIBILITY_DATE,
-TO_CHAR(RIA_FLAGGED_DATE, 'MM/DD/YYYY') RIA_FLAGGED_DATE,
-TO_CHAR(SOUNDEX_CHECK_DATE, 'MM/DD/YYYY') SOUNDEX_CHECK_DATE, 
-TO_CHAR(FIRST_VL_DATE, 'MM/DD/YYYY') FIRST_VL_DATE,
-ARV_MEDICATION, 
-CDESSCASEKEY, 
-DEATH_SOURCE, 
-LAB_DOC_ID, 
-TREATMENT_SOURCE, 
-AHI_FLAG, 
-AIRS_DOC, 
-ARVS_TAKEN, 
-EHARS_ELIG, 
-PKP_FLAG,
-PT_ON_PREP_FLAG,
-NON_PROMPT_FLAG,
-DECEASED,
-FEDERAL_FACILITY,
-NDVL_AT_DX,
-PERINATAL,
-NOT_HIV_FLAG,
-OOJ_CASE_FLAG,
-OOJ_PROVIDER_FLAG, 
-PREP_TAKEN, 
-NO_PREVIOUS_TEST,
-RACE_ASIAN, 
-RACE_BLACK, 
-RACE_INDIAN, 
-RACE_PACIFIC, 
-RACE_WHITE, 
-RAP_PROVIDER,
-TTH_RAP_PROVIDER,  
-RECORD_SEARCH, 
-RIA_ELIGIBLE, 
-ARV_BEGIN_DATE, 
-LIP_DATE_TEXT,
-BURKL_DATE_TEXT, 
-CALC_EHARS_HIV_DX_DT, 
-CANDE_DATE_TEXT, 
-CANDLUNG_DATE_TEXT, 
-CERVCANC_DATE_TEXT, 
-CMV_DATE_TEXT, 
-CMVRET_DATE_TEXT, 
-COCCI_DATE_TEXT, 
-CRYPTOCO_DATE_TEXT, 
-CRYPTOSP_DATE_TEXT, 
-CURR_NYEHMS_STATENO, 
-DIAGNOSIS_SETTING_TYPE, 
-DOB_TEXT, 
-DOD_TEXT, 
-HERPES_DATE_TEXT, 
-HISTO_DATE_TEXT, 
-HIVNCEPH_DATE_TEXT, 
-ISO_DATE_TEXT, 
-KS_DATE_TEXT, 
-LAST_UPDATED_BY, 
-LYMPHB_DATE_TEXT, 
-LYMPHIM_DATE_TEXT, 
-MYCOAV_DATE_TEXT, 
-MYCODISM_DATE_TEXT, 
-MYCOPULM_DATE_TEXT, 
-MYCOTH_DATE_TEXT, 
-NYC_EHARS_HIV_DX_DT, 
-NYEHMS_STATENO, 
-NYS_EHARS_HIV_DX_DT, 
-NYS_LAST_NEG_DT, 
-PCP_DATE_TEXT, 
-PML_DATE_TEXT, 
-PNEUM_DATE_TEXT,
-TREATMENT_FAC_TYPE_OTHER_TEXT,
-PREP_NON_ADHER_RSN_OTHER_TEXT, 
-RECENT_CD4_VALUE, 
-RECENT_VL_VALUE,
-FIRST_VL_UNITS,
-FIRST_VL_VALUE,  
-RIA_ELIGIBILITY_UID, 
-SALMNELA_DATE_TEXT, 
-TOXO_DATE_TEXT, 
-WASTING_DATE_TEXT, 
-AIRS_FACILITY,
-AIRS_TC_ID, 
-INITIAL_PROV_ADDRESS, 
-INITIAL_PROVNAME, 
-PERSON_ADDRESS, 
-PS_CLOSURE_DISPO, 
-RECENT_VL_PROV_ADDRESS, 
-RECENT_VL_PROVNAME, 
-RIDR_INFO, 
+<include refid="riaDocColumns1"/>
 DISNUMBER,
 PS_WORKER_ASSIGNED, 
-BIRTH_SEX, 
-CURRENT_GENDER, 
-FOOD_INSECURITY, 
-HEALTH_LITERACY, 
-HOUSING_INSTABILITY, 
-INCARCERATION, 
-INITIAL_PROV_STATE, 
-INSURANCE_BARRIER, 
-LANGUAGE_BARRIER,
-MENTAL_HEALTH_BARRIER, 
-PERSON_STATE, 
-PKP_DX_STATE,
-RECV_CARE_OOS,
-RECV_CARE_STATE_CD,
-OOS_FACILITY_NAME,
-PREP_ADHERENCE,
-PREP_NON_ADHERENCE_REASON,
-PKP_DX_DATE, 
-RECENT_VL_PROV_STATE, 
-SUBSTANCE_USE, 
-TRANSPORTATION_BARRIERS, 
-RAP_PROVIDER_MNAME, 
-TTH_RAP_PROVIDER_MNAME,
-BIRTH_COUNTRY, 
-ETHNICITY, 
-INITIAL_FACILITY_COUNTY, 
-INITIAL_PROV_COUNTY, 
-PERSON_COUNTY, 
-PKP_DX_COUNTRY, 
-INITIAL_PROV_CITY, 
-RECENT_VL_PROV_CITY, 
-FIRST_NAME, 
-LAST_NAME, 
-INITIAL_PROV_ZIP, 
-PERSON_ZIP, 
-RECENT_CD4_UNITS, 
-RECENT_VL_PROV_ZIP, 
-RECENT_VL_UNITS, 
-BARRIERS_TO_CARE_OTHER_TEXT,
-ADVERSE_EFFECTS_TO_MEDS,
-TREATMENT_FACILITY_NAME, 
-TREATMENT_FACILITY_TYPE,
-CASE_CLOSURE_CD, 
-DEATH_SOURCE_OTHER_TEXT, 
-DIAGNOSIS_FACILITY, 
-DIAGNOSIS_SETTING_OTHER_TEXT, 
-NYC_DISEASE_CATEG_DX, 
-NYS_DISEASE_CATEG_DX, 
-PERSON_CITY, 
-RAP_PROVIDER_FNAME, 
-RAP_PROVIDER_LNAME,
-TTH_RAP_PROVIDER_FNAME, 
-TTH_RAP_PROVIDER_LNAME, 
-TREATMENT_SOURCE_OTHER_TEXT, 
-BHAE_NOTES, 
-OMD_NOTES, 
-PS_NOTES, 
-SSN,
+<include refid="riaDocColumns2"/>
 DOCUMENT_ID
 from all_ria_vw where document_id = #{docId}
 	
