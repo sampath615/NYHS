@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -52,6 +51,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMatchHITSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.PersonNameUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
@@ -82,7 +82,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 	private Element labSection;
 	private Element problemSection;
 	private Element medsSection;
-	private static final List<String> validtest = Arrays.asList("JR", "SR", "III", "II", "MD", "MS", "MA", "MRS", "MR","SIR");
 	private Map<String, String> encounterReferenceMap = null;
 	private Map<String, String> labReferenceMap = null;
 	private Map<String, String> problemReferenceMap = null;
@@ -1272,15 +1271,15 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 		// character will be converted to space and apostrophe will be removed if found
 		if (CommonUtil.isNotNullAndEmpty(FirstName)) {
 			FirstName = FirstName.toUpperCase().trim();
-			FirstNameWithSuffix = isNameHavingSuffix(FirstName);
+			FirstNameWithSuffix = PersonNameUtil.splitSuffix(FirstName);
 		}
 		if (CommonUtil.isNotNullAndEmpty(MiddleName)) {
 			MiddleName = MiddleName.toUpperCase().trim();
-			MiddleNameWithSuffix = isNameHavingSuffix(MiddleName);
+			MiddleNameWithSuffix = PersonNameUtil.splitSuffix(MiddleName);
 		}
 		if (CommonUtil.isNotNullAndEmpty(LastName)) {
 			LastName = LastName.toUpperCase().trim();
-			LastNameWithSuffix = isNameHavingSuffix(LastName);
+			LastNameWithSuffix = PersonNameUtil.splitSuffix(LastName);
 		}
 
 		// Name and suffix are separated if found
@@ -2162,30 +2161,6 @@ public class CCDDocumentServiceImpl implements CCDDocumentService {
 
 	public List<RawCCDPayerVO> getCCDPayersList(int documentID) {
 		return ccdDocumentDAO.getCCDPayersList(documentID);
-	}
-
-	public static String[] isNameHavingSuffix(String name) {
-
-		String[] Output = new String[2];
-		if (CommonUtil.isNotNullAndEmpty(name)) {
-			String[] splited = name.split("\\s+");
-			for (int i = 0; i < splited.length; i++) {
-				String SplittedWord = splited[i];
-
-				int index = validtest.indexOf(SplittedWord);
-				if (index != -1) {
-					// for (int j = 0; j < validtest.size(); j++) {
-					String suffixFromList = (String) validtest.get(index);
-					Output[0] = name.replace(suffixFromList, "").replace(suffixFromList, "").trim();
-					Output[1] = suffixFromList.trim();
-					return Output;
-				}
-			}
-		}
-		if (!CommonUtil.isNotNullAndEmpty(Output[0]) && !CommonUtil.isNotNullAndEmpty(Output[1])) {
-			Output = null;
-		}
-		return Output;
 	}
 
 	@Override

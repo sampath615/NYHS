@@ -23,6 +23,7 @@ import org.docx4j.model.structure.PageSizePaper;
 import org.docx4j.model.structure.SectionWrapper;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.Part;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.HeaderPart;
@@ -486,7 +487,7 @@ public class PerinatalServiceImpl implements PerinatalService {
 				      
 				     FooterPart footerPart = createFooter(facilityReportDocxOut);
 				      
-				     footerPart.getContent().add(newFooterImage(facilityReportDocxOut, footerPart, bytes));
+				     footerPart.getContent().add(newImage(facilityReportDocxOut, footerPart, bytes));
 				     log.error("11");
 				
 					Template template = configuration.getTemplate("perinatalPerformanceLetter.ftl");
@@ -782,28 +783,7 @@ public class PerinatalServiceImpl implements PerinatalService {
 		
 	 
 	 private static P newImage(WordprocessingMLPackage word,
-			 HeaderPart sourcePart,
-			 byte[] bytes) throws Exception {
-		 BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(word,  sourcePart, bytes);
-	                //.createImagePart(word, sourcePart, bytes);
-	        int id = (int) (Math.random() * 10000);
-	        Inline inline = imagePart.createImageInline("image", "image", id, id * 2, false);
-
-	        Drawing drawing = factory.createDrawing();
-	        drawing.getAnchorOrInline().add(inline);
-
-	        R r = factory.createR();
-	        r.getContent().add(drawing);
-
-	        P p = factory.createP();
-	        p.getContent().add(r);
-
-	        return p;
-		}
-	 
-	 
-	 private static P newFooterImage(WordprocessingMLPackage word,
-			 FooterPart sourcePart,
+			 Part sourcePart,
 			 byte[] bytes) throws Exception {
 		 BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(word,  sourcePart, bytes);
 	                //.createImagePart(word, sourcePart, bytes);

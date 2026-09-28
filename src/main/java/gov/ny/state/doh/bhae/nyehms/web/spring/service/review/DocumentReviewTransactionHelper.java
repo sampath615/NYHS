@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.review;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -67,9 +66,6 @@ public class DocumentReviewTransactionHelper {
 
 	@Autowired
 	ClericalReviewService clericalReviewService;
-	
-	@Autowired
-	ClusterPartnerReviewService clusterPartnerReviewService;
 	
 	@Autowired
 	NBSReviewService nBSReviewService;
@@ -844,88 +840,6 @@ public class DocumentReviewTransactionHelper {
 			clericalReviewService.updateMatchResultsToDatafluxReviewDocument(documentId, stateno, clusterId, fuzzyClusterId, match_cd, 
 					bindingResult, userObject);
 	}
-		
-		
-	}
-	
-	@Transactional
-	public void processClusterPartnerDocument(long documentId, String stateno, String match_cd, String reviewStatus, 
-			String INS_CLUSTER, BindingResult bindingResult, UserObject userObject) {
-		
-		
-		Map<String, Object> inOutParameterMap = new HashMap<String, Object>();
-		
-		inOutParameterMap.put("p_document_id", documentId);
-		
-		inOutParameterMap.put("ACTUAL_MATCH_CD", match_cd);
-		 
-		 inOutParameterMap.put("CURRENT_PROCESS_STATUS", 17);
-		 
-		 inOutParameterMap.put("stateno", stateno);
-		 
-		 inOutParameterMap.put("p_worker_id", userObject.getWorkerId());
-		 
-		 inOutParameterMap.put("p_ins_cluster", INS_CLUSTER);
-		 
-		 inOutParameterMap.put("p_triggerPsMessage", "N");
-		 
-		 if(CommonUtil.isNotNullAndEmpty(stateno) && "Y".equals(INS_CLUSTER)) {
-			 
-			 inOutParameterMap.put("UPDATED_MATCH_CD", match_cd+"_M");
-			 
-			 inOutParameterMap.put("CURRENT_PROCESS_STATUS", 17);
-			 
-			 //int existingMatches = clusterPartnerReviewService.checkForExistingMatches(inOutParameterMap);
-			 
-			 
-		 }else if(CommonUtil.isNotNullAndEmpty(stateno) && "N".equals(INS_CLUSTER)) {
-			 
-			 inOutParameterMap.put("UPDATED_MATCH_CD", match_cd+"_M");
-			 
-			 inOutParameterMap.put("CURRENT_PROCESS_STATUS", 48);
-			 
-		 }else if(CommonUtil.isNullOrEmpty(stateno) && "N".equals(INS_CLUSTER)) { 
-			 inOutParameterMap.put("UPDATED_MATCH_CD", match_cd+"_N");
-			 
-			 inOutParameterMap.put("CURRENT_PROCESS_STATUS", 48);
-		 }else if(CommonUtil.isNullOrEmpty(stateno) && "Y".equals(INS_CLUSTER)) { 
-			 inOutParameterMap.put("UPDATED_MATCH_CD", match_cd+"_N");
-			 
-			 inOutParameterMap.put("CURRENT_PROCESS_STATUS", 17);
-		 }
-
-		 int resultCount =  clusterPartnerReviewService.updateClusterPartnerMatchSummary(inOutParameterMap);
-		
-		if(resultCount==0){
-			throw new DataRetrievalFailureException("Document is already reviewed, please refesh the page");
-		}else if(CommonUtil.isNotNullAndEmpty(stateno)) {
-			 commonExceptionHandler.inspectDBTransacionResult(0, "Document mapped to STATENO:"+stateno, bindingResult);
-		}else if(CommonUtil.isNullOrEmpty(stateno) ) {
-			 commonExceptionHandler.inspectDBTransacionResult(0, "Marked document as Not a match", bindingResult);
-		}
-		
-		if("N".equals(INS_CLUSTER)) {
-			return;
-		}
-		
-		
-		clusterPartnerReviewService.processClusterparterDocumentToClusterTables(inOutParameterMap);
-		
-		Integer statusCode=(Integer)inOutParameterMap.get("p_code_out");
-		
-		if(statusCode==0) {
-			return;
-
-		}else {
-			log.error((String)inOutParameterMap.get("p_msg_out"));
-			throw new DataRetrievalFailureException("Failed to update the Cluster partner document status to "+reviewStatus);
-
-		}
-		 
-		 
-		
-			 
-		
 		
 		
 	}
