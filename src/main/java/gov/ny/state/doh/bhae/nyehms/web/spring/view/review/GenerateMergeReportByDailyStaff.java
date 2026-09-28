@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -18,9 +17,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class GenerateMergeReportByDailyStaff extends AbstractXlsView {
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+
+public class GenerateMergeReportByDailyStaff extends AbstractExcelReportView {
 	
 	@Override
 	protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request,
@@ -39,8 +39,7 @@ public class GenerateMergeReportByDailyStaff extends AbstractXlsView {
 		String fromDate = (String)model.get("fromDate");
 		String toDate = (String)model.get("toDate");
 				
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		setAttachmentHeaders(response, fileName);
 		
 		Sheet sheet = workbook.createSheet("DAILY MERGES REVIEWED BY STAFF");
 		sheet.setDefaultColumnWidth(11);
@@ -48,17 +47,11 @@ public class GenerateMergeReportByDailyStaff extends AbstractXlsView {
 		sheet.addMergedRegion(new CellRangeAddress(0, 2, 0, userNamesList.size()*2 + 2)); //Merged region is for title row
 		
 		CellStyle style = workbook.createCellStyle();
-        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        style.setBorderTop(BorderStyle.MEDIUM);
-        style.setBorderBottom(BorderStyle.MEDIUM);
-        style.setBorderRight(BorderStyle.MEDIUM);
-        style.setBorderLeft(BorderStyle.MEDIUM); 
+        setSolidFill(style, IndexedColors.LIGHT_GREEN);
+        setBorders(style, BorderStyle.MEDIUM);
         style.setAlignment(HorizontalAlignment.CENTER);
         
-        Font font= workbook.createFont();
-        font.setFontHeightInPoints((short)14);
-        font.setFontName("Calibri");
+        Font font = createCalibriFont(workbook, 14, false);
         style.setFont(font);
         style.setWrapText(true);
         
@@ -66,12 +59,8 @@ public class GenerateMergeReportByDailyStaff extends AbstractXlsView {
         Font boldFont= workbook.createFont();        
         boldFont.setBold(true);
         boldStyle.setFont(boldFont);        
-        boldStyle.setBorderTop(BorderStyle.MEDIUM);
-        boldStyle.setBorderBottom(BorderStyle.MEDIUM);
-        boldStyle.setBorderRight(BorderStyle.MEDIUM);
-        boldStyle.setBorderLeft(BorderStyle.MEDIUM);
-        boldStyle.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-        boldStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        setBorders(boldStyle, BorderStyle.MEDIUM);
+        setSolidFill(boldStyle, IndexedColors.LIGHT_TURQUOISE);
         
         //Create title row in the merged region
         Row header0 = sheet.createRow(0);        

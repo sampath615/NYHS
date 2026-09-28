@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class DownloadFeedbackSNPDataView extends AbstractXlsView{
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+
+public class DownloadFeedbackSNPDataView extends AbstractExcelReportView{
 
 
 	
@@ -40,15 +40,13 @@ public class DownloadFeedbackSNPDataView extends AbstractXlsView{
 		  	
 		  	
 		fileName.append(".xls");
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		setAttachmentHeaders(response, fileName);
 		Sheet sheet = workbook.createSheet();
 		sheet.setDefaultColumnWidth(25);
 		CellStyle style = workbook.createCellStyle();
 
 		
-        style.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.index);
-        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        setSolidFill(style, IndexedColors.GREY_25_PERCENT);
 
         
         Row header = sheet.createRow(0);

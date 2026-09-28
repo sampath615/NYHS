@@ -15,6 +15,14 @@ public abstract class AbstractITextPdfView extends AbstractView {
 		setContentType("application/pdf");
 	}
 
+	/**
+	 * Marks the response as a PDF download with the given file name.
+	 */
+	protected static void setAttachmentHeaders(HttpServletResponse response, CharSequence fileName) {
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	}
+
 	protected void buildPdfMetadata(Map<String, Object> model, Document document, HttpServletRequest request) {}
 
 	protected abstract void buildPdfDocument(Map<String, Object> model,

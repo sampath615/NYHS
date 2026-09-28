@@ -13,13 +13,13 @@ import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 
 
 
-public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
+public class GenerateADAPNYCDataSpreadsheet extends AbstractExcelReportView{
 
 
     	
@@ -43,8 +43,7 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 			
 		}
 	    		
-	    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	    setAttachmentHeaders(response, fileName);
 		
 		
 		Sheet sheet = workbook.createSheet();
@@ -56,15 +55,10 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractXlsView{
 		CellStyle commonStyles = workbook.createCellStyle();
 		
 		commonStyles.setAlignment(HorizontalAlignment.CENTER);
-		commonStyles.setBorderBottom(BorderStyle.THIN);
-		commonStyles.setBorderTop(BorderStyle.THIN);
-		commonStyles.setBorderLeft(BorderStyle.THIN);
-        commonStyles.setBorderRight(BorderStyle.THIN);
+		setBorders(commonStyles, BorderStyle.THIN);
         commonStyles.setWrapText(true);
         
-        Font commonFont = workbook.createFont();
-        commonFont.setFontHeight((short)(11*20));
-        commonFont.setFontName("Calibri");
+        Font commonFont = createCalibriFont(workbook, 11, false);
         
         commonStyles.setFont(commonFont);//set it to bold
         

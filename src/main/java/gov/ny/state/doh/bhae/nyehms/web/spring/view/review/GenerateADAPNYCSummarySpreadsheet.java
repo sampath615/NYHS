@@ -9,20 +9,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 
 
 
-public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
+public class GenerateADAPNYCSummarySpreadsheet extends AbstractExcelReportView{
 
 
     	
@@ -65,8 +64,7 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
 			
 		}
 	    		
-	    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	    setAttachmentHeaders(response, fileName);
 		
 		
 		Sheet Matchsheet = workbook.createSheet();
@@ -94,15 +92,10 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
 		CellStyle commonStyles = workbook.createCellStyle();
 		
 		commonStyles.setAlignment(HorizontalAlignment.CENTER);
-		commonStyles.setBorderBottom(BorderStyle.THIN);
-		commonStyles.setBorderTop(BorderStyle.THIN);
-		commonStyles.setBorderLeft(BorderStyle.THIN);
-        commonStyles.setBorderRight(BorderStyle.THIN);
+		setBorders(commonStyles, BorderStyle.THIN);
         commonStyles.setWrapText(true);
         
-        Font commonFont = workbook.createFont();
-        commonFont.setFontHeight((short)(11*20));
-        commonFont.setFontName("Calibri");
+        Font commonFont = createCalibriFont(workbook, 11, false);
         
         commonStyles.setFont(commonFont);//set it to bold
         
@@ -123,14 +116,10 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
 
         boldStyle.setFont(boldFont);
         
-        boldStyle.setBorderTop(BorderStyle.MEDIUM);
-        boldStyle.setBorderBottom(BorderStyle.MEDIUM);
-        boldStyle.setBorderRight(BorderStyle.MEDIUM);
-        boldStyle.setBorderLeft(BorderStyle.MEDIUM);
+        setBorders(boldStyle, BorderStyle.MEDIUM);
         
         //boldStyle.setFillForegroundColor(Color.LEMON_CHIFFON.index);
-        boldStyle.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-        boldStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        setSolidFill(boldStyle, IndexedColors.LIGHT_TURQUOISE);
         
 
         
@@ -140,10 +129,7 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractXlsView{
 
         summaryStatusStyle.setFont(boldFont);
         
-        summaryStatusStyle.setBorderTop(BorderStyle.MEDIUM);
-        summaryStatusStyle.setBorderBottom(BorderStyle.MEDIUM);
-        summaryStatusStyle.setBorderRight(BorderStyle.MEDIUM);
-        summaryStatusStyle.setBorderLeft(BorderStyle.MEDIUM);
+        setBorders(summaryStatusStyle, BorderStyle.MEDIUM);
      
         
         

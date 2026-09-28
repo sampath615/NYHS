@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -16,9 +15,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class GenerateLabErrorReportByStatus extends AbstractXlsView{
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+
+public class GenerateLabErrorReportByStatus extends AbstractExcelReportView{
 
 	
 	/**
@@ -49,8 +49,7 @@ public class GenerateLabErrorReportByStatus extends AbstractXlsView{
 			
 			String fileName = "LAFT_Reprise_Delete_By_LAFT.XLS";
 			
-			response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+			setAttachmentHeaders(response, fileName);
 			Sheet sheet = workbook.createSheet("REPORT BY SOLUTION");
 			
 			sheet.setColumnWidth(0, 13290);
@@ -60,19 +59,13 @@ public class GenerateLabErrorReportByStatus extends AbstractXlsView{
 			CellStyle style = workbook.createCellStyle();
 
 			
-	        style.setFillForegroundColor(IndexedColors.LIGHT_GREEN.index);
-	        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        setSolidFill(style, IndexedColors.LIGHT_GREEN);
 	        
-	        style.setBorderTop(BorderStyle.MEDIUM);
-	        style.setBorderBottom(BorderStyle.MEDIUM);
-	        style.setBorderRight(BorderStyle.MEDIUM);
-	        style.setBorderLeft(BorderStyle.MEDIUM);
+	        setBorders(style, BorderStyle.MEDIUM);
 	        
 	        style.setAlignment(HorizontalAlignment.CENTER);
 	        
-	        Font font= workbook.createFont();
-	        font.setFontHeightInPoints((short)14);
-	        font.setFontName("Calibri");
+	        Font font = createCalibriFont(workbook, 14, false);
 	        //font.setBold(true);
 	        
 	        style.setFont(font);
@@ -89,14 +82,10 @@ public class GenerateLabErrorReportByStatus extends AbstractXlsView{
 
 	        boldStyle.setFont(boldFont);
 	        
-	        boldStyle.setBorderTop(BorderStyle.MEDIUM);
-	        boldStyle.setBorderBottom(BorderStyle.MEDIUM);
-	        boldStyle.setBorderRight(BorderStyle.MEDIUM);
-	        boldStyle.setBorderLeft(BorderStyle.MEDIUM);
+	        setBorders(boldStyle, BorderStyle.MEDIUM);
 	        
 	        //boldStyle.setFillForegroundColor(Color.LEMON_CHIFFON.index);
-	        boldStyle.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-	        boldStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+	        setSolidFill(boldStyle, IndexedColors.LIGHT_TURQUOISE);
 	        
 	        
 	        

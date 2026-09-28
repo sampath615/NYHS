@@ -9,21 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 
 
 
 
-public class GeneratePsMessageReport extends AbstractXlsView{
+public class GeneratePsMessageReport extends AbstractExcelReportView{
 
 
     	
@@ -53,8 +52,7 @@ public class GeneratePsMessageReport extends AbstractXlsView{
 
 	    fileName.append(".xls");
 	    		
-	    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	    setAttachmentHeaders(response, fileName);
 		
 		
 		Sheet sheet = workbook.createSheet();
@@ -64,15 +62,10 @@ public class GeneratePsMessageReport extends AbstractXlsView{
 		CellStyle commonStyles = workbook.createCellStyle();
 		
 		commonStyles.setAlignment(HorizontalAlignment.LEFT);
-		commonStyles.setBorderBottom(BorderStyle.THIN);
-		commonStyles.setBorderTop(BorderStyle.THIN);
-		commonStyles.setBorderLeft(BorderStyle.THIN);
-        commonStyles.setBorderRight(BorderStyle.THIN);
+		setBorders(commonStyles, BorderStyle.THIN);
         commonStyles.setWrapText(true);
         
-        Font commonFont = workbook.createFont();
-        commonFont.setFontHeight((short)(11*20));
-        commonFont.setFontName("Calibri");
+        Font commonFont = createCalibriFont(workbook, 11, false);
         
         commonStyles.setFont(commonFont);
         
@@ -80,16 +73,10 @@ public class GeneratePsMessageReport extends AbstractXlsView{
         CellStyle countyStyles = workbook.createCellStyle();
 		
         countyStyles.setAlignment(HorizontalAlignment.LEFT);
-        countyStyles.setBorderBottom(BorderStyle.THIN);
-        countyStyles.setBorderTop(BorderStyle.THIN);
-        countyStyles.setBorderLeft(BorderStyle.THIN);
-        countyStyles.setBorderRight(BorderStyle.THIN);
+        setBorders(countyStyles, BorderStyle.THIN);
         countyStyles.setWrapText(true);
         
-        Font countyFont = workbook.createFont();
-        countyFont.setFontHeight((short)(11*20));
-        countyFont.setFontName("Calibri");
-        countyFont.setBold(true);
+        Font countyFont = createCalibriFont(workbook, 11, true);
         
         countyStyles.setFont(commonFont);
         
@@ -97,20 +84,13 @@ public class GeneratePsMessageReport extends AbstractXlsView{
         CellStyle headerStyle = workbook.createCellStyle();
 		
 		headerStyle.setAlignment(HorizontalAlignment.LEFT);
-		headerStyle.setBorderBottom(BorderStyle.THIN);
-		headerStyle.setBorderTop(BorderStyle.THIN);
-		headerStyle.setBorderLeft(BorderStyle.THIN);
-		headerStyle.setBorderRight(BorderStyle.THIN);
+		setBorders(headerStyle, BorderStyle.THIN);
 		
-		headerStyle.setFillForegroundColor(IndexedColors.BLUE_GREY.index);
-		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		setSolidFill(headerStyle, IndexedColors.BLUE_GREY);
         headerStyle.setWrapText(true);
     
         
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeight((short)(12*20));
-        font.setFontName("Calibri");
+        Font font = createCalibriFont(workbook, 12, true);
         
         headerStyle.setFont(font);//set it to bold
         

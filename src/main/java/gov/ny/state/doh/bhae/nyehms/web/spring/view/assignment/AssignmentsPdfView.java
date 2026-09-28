@@ -50,8 +50,7 @@ public class AssignmentsPdfView extends AbstractITextPdfView{
 			fileName.append("_").append(assignmentStatusDisplayName);
 		}
 		fileName.append("_").append("Assignments.pdf");
-		resp.setContentType("application/pdf");
-		resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		setAttachmentHeaders(resp, fileName);
 		String str = "<html><head></head><body>"+
 				"<p align='middle' style='text-align:center;font-weight:bold'><span style='color:blue'>"+documentType+"</span><span style='color:orange'>"+filerCondition+"</span> <span style='color:red'>"+filterByCategory+"</span> <span style='color:green'>"+assignmentStatusDisplayName+"</span> <span>Assignments</span></p>"+
 				"</body></html>";

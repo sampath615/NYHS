@@ -17,14 +17,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUpDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 
 
 
-public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
+public class GenerateEPRFSummarySpreadsheet extends AbstractExcelReportView{
 
 
     	
@@ -46,8 +46,7 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
 	    	fileName.append(".xls");
 	    //}
 	    		
-	    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-	    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+	    setAttachmentHeaders(response, fileName);
 		
 		
 		Sheet sheet = workbook.createSheet();
@@ -62,15 +61,10 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
 		CellStyle commonStyles = workbook.createCellStyle();
 		
 		commonStyles.setAlignment(HorizontalAlignment.CENTER);
-		commonStyles.setBorderBottom(BorderStyle.THIN);
-		commonStyles.setBorderTop(BorderStyle.THIN);
-		commonStyles.setBorderLeft(BorderStyle.THIN);
-        commonStyles.setBorderRight(BorderStyle.THIN);
+		setBorders(commonStyles, BorderStyle.THIN);
         commonStyles.setWrapText(true);
         
-        Font commonFont = workbook.createFont();
-        commonFont.setFontHeight((short)(11*20));
-        commonFont.setFontName("Calibri");
+        Font commonFont = createCalibriFont(workbook, 11, false);
         
         commonStyles.setFont(commonFont);//set it to bold
         
@@ -108,20 +102,14 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
 		CellStyle style1 = workbook.createCellStyle();
 		
 		style1.setAlignment(HorizontalAlignment.CENTER);
-		style1.setBorderBottom(BorderStyle.THIN);
-		style1.setBorderTop(BorderStyle.THIN);
-		style1.setBorderLeft(BorderStyle.THIN);
-		style1.setBorderRight(BorderStyle.THIN);
+		setBorders(style1, BorderStyle.THIN);
 		
         //style1.setFillForegroundColor(Color.DARK_TEAL.index);
         style1.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         style1.setWrapText(true);
     
         
-        Font font = workbook.createFont();
-        font.setBold(true);
-        font.setFontHeight((short)(14*20));
-        font.setFontName("Calibri");
+        Font font = createCalibriFont(workbook, 14, true);
         
         style1.setFont(font);//set it to bold
         
@@ -155,10 +143,7 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractXlsView{
         
         
         
-        Font font2 = workbook.createFont();
-        font2.setBold(true);
-        font2.setFontHeight((short)(11*20));
-        font2.setFontName("Calibri");
+        Font font2 = createCalibriFont(workbook, 11, true);
         
         
         CellStyle style4 = workbook.createCellStyle();

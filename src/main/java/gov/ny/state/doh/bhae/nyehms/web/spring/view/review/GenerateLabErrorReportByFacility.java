@@ -17,9 +17,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class GenerateLabErrorReportByFacility extends AbstractXlsView{
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+
+public class GenerateLabErrorReportByFacility extends AbstractExcelReportView{
 
 
 	
@@ -41,8 +42,7 @@ public class GenerateLabErrorReportByFacility extends AbstractXlsView{
 		
 		String fileName = "LAFT_ERRORS_REPORTS_BY_LAB.XLS";
 		
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+		setAttachmentHeaders(response, fileName);
 		Sheet sheet = workbook.createSheet("REPORTS BY LAB");
 		
 		sheet.setColumnWidth(0, 5290);
@@ -56,19 +56,13 @@ public class GenerateLabErrorReportByFacility extends AbstractXlsView{
 		CellStyle style = workbook.createCellStyle();
 
 		
-		style.setFillForegroundColor(IndexedColors.LIGHT_TURQUOISE.index);
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		setSolidFill(style, IndexedColors.LIGHT_TURQUOISE);
         
-        style.setBorderTop(BorderStyle.MEDIUM);
-        style.setBorderBottom(BorderStyle.MEDIUM);
-        style.setBorderRight(BorderStyle.MEDIUM);
-        style.setBorderLeft(BorderStyle.MEDIUM);
+        setBorders(style, BorderStyle.MEDIUM);
         
         style.setAlignment(HorizontalAlignment.CENTER);
         
-        Font font= workbook.createFont();
-        font.setFontHeightInPoints((short)14);
-        font.setFontName("Calibri");
+        Font font = createCalibriFont(workbook, 14, false);
         //font.setBold(true);
         
         style.setFont(font);
@@ -101,10 +95,7 @@ public class GenerateLabErrorReportByFacility extends AbstractXlsView{
 
         boldStyle.setFont(boldFont);
         
-        boldStyle.setBorderTop(BorderStyle.MEDIUM);
-        boldStyle.setBorderBottom(BorderStyle.MEDIUM);
-        boldStyle.setBorderRight(BorderStyle.MEDIUM);
-        boldStyle.setBorderLeft(BorderStyle.MEDIUM);
+        setBorders(boldStyle, BorderStyle.MEDIUM);
         
         //boldStyle.setFillForegroundColor(Color.LEMON_CHIFFON.index);
         boldStyle.setFillForegroundColor(IndexedColors.AQUA.index);

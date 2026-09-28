@@ -9,9 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class GenerateCDCReturnFileSpreadsheet extends AbstractXlsView{
+import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+
+public class GenerateCDCReturnFileSpreadsheet extends AbstractExcelReportView{
 
 
 	
@@ -46,8 +47,7 @@ public class GenerateCDCReturnFileSpreadsheet extends AbstractXlsView{
 		  	
 		
 		  	
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName.toString() + "\"");
+		setAttachmentHeaders(response, fileName);
 		
 		
 		Sheet sheet = workbook.createSheet();
