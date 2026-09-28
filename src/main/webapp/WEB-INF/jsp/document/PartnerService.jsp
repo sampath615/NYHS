@@ -3,12 +3,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@page import="gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties" %>
-<%
-
-pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));
-
-%>
 <link href="${staticPath}/css/docs/partnerService.css?v=${buildDate}" rel="stylesheet" type="text/css" />
 <script src="${staticPath}/js/docs/partnerService/partnerService.js?v=${buildDate}"></script>
 

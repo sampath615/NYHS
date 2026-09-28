@@ -93,6 +93,9 @@ public class NYEHMSAppServletContextListener implements ServletContextListener {
 			}
 		}
 
+		// used by the JSPs as a cache-busting version on static JS/CSS URLs (?v=${buildDate})
+		arg0.getServletContext().setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));
+
 	}
 
 	/**

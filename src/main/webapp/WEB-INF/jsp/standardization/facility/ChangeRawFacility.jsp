@@ -1,13 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@page import="gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties" %>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%
-
-pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));
-
-%>
 <link href="${staticPath}/css/standardization/facility/newpage.css?v=${buildDate}" rel="stylesheet" type="text/css" />
 
 

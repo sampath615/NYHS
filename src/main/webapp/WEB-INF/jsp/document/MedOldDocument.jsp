@@ -2,12 +2,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@page import="gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties" %>
-<%
-
-pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));
-
-%>
 <script src="${staticPath}/js/docs/medDoc.js?v=${buildDate}"></script>
 
 <link href="${staticPath}/css/docs/prfForm.css?v=${buildDate}" rel="stylesheet" type="text/css" />

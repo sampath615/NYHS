@@ -1,4 +1,3 @@
-<%@page import="gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <c:set var="staticPath" value="${sessionScope.staticPath}"/>
@@ -10,11 +9,6 @@
 <c:if test="${userPermissions == null || userPermissions == ''}">
 	<c:set var="userPermissions" value = "1" />
 </c:if>
-<%
-
-pageContext.setAttribute("buildDate", EnvironmentProperties.envProperties.getProperty("installationDate"));
-
-%>
 
 <script type="text/javascript"> 
 	var contextPath="${contextPath}";
