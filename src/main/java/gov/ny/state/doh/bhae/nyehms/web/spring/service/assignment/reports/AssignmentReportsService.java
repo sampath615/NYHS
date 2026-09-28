@@ -26,14 +26,13 @@ import org.springframework.validation.BindingResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.reports.AssignmentReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 @Service
-public class AssignmentReportsServiceImpl implements AssignmentReportsService {
+public class AssignmentReportsService {
 
-	private static final Logger log = LoggerFactory.getLogger(AssignmentReportsServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(AssignmentReportsService.class);
 
 	
 	
@@ -46,7 +45,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 
 
 
-	@Override
 	public Map<String, Map<String, Map<String, Map<String, Integer>>>> getAssignmentStatusReportByWorkerId(String region, BindingResult dummyBindingResult, UserObject userObject){
 		
 		Connection connection = connectionDAO.getConnectionObj();
@@ -274,7 +272,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentsByRegion;
 	}
 	
-	@Override
 	public Map<String, Map<String, Map<String, Map<String, Integer>>>> getAssignmentReportMatrix(String fromDate,String  toDate,String  region,
 			BindingResult dummyBindingResult, UserObject userObject){
 		
@@ -567,7 +564,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentsByRegion;
 	}
 	
-	@Override
 	public List<Map<String, String>> getAssignmentStatusReportByDocument(
 			String startDate, String toDate, String fileName,
 			String documentType, BindingResult dummyBindingResult,
@@ -611,7 +607,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentReportsMatrix;
 	}
 	
-	@Override
 	public List<Map<String, String>> getAssignmentStatusReportByEharsStatus(
 			String fromDate, String toDate, String fileName,
 			String documentType, BindingResult dummyBindingResult,
@@ -654,7 +649,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentReportsMatrix;
 	}
 	
-	@Override
 	public List<Map<String, String>> getAssignmentDocumentsByStatusByDocumentByRegion(
 			String regionId, String assignmentStatus, String fromDate,
 			String toDate, String fileName, String documentType, String eharsStatus, String category,
@@ -713,7 +707,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentDocuments;
 	}
 	
-	@Override
 	public List<Map<String, String>> getAHIAssignmentsByRegionAndCategory(String regionId, String assignmentStatus,
 			String documentType, String ahiFlag, BindingResult dummyBindingResult, UserObject userObject){
 		
@@ -727,7 +720,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		return assignmentReportsDAO.getAHIAssignmentsByRegionAndCategory(inputData);
 	}
 	
-	@Override
 	public List<Map<String, String>> getAssignmentAHIReports(String ahiFlag){
 		
 		Map<String, String> inputData = new HashMap<String, String>();
@@ -741,7 +733,6 @@ public class AssignmentReportsServiceImpl implements AssignmentReportsService {
 		
 	}
 
-	@Override
 	public List<JSONObject> getAssignmentClosureStatusReport(String fromDate, String toDate, String regionCode, BindingResult dummyBindingResult, UserObject userObject) {
 
 		Map<Object, Object> inputData = new HashMap<Object, Object>();

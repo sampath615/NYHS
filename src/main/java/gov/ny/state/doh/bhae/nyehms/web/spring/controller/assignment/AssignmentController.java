@@ -54,7 +54,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.AdministrationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SearchManageProfileService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentReportsService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.reports.AssignmentReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ADAPDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
