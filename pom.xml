@@ -98,6 +98,7 @@
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
@@ -121,7 +122,17 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>4.0.5</version>
 		</dependency>
-
+		<!-- Bean Validation: WebLogic provided this; Tomcat does not (spring-config.xml 'validator' bean) -->
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>9.0.1.Final</version>
+		</dependency>
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -215,20 +226,6 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.5</version>
-		</dependency>
-
-		<!-- NYS DOH / HIN internal libraries (from the internal repository).
-		     hin-framework-* provide HCSSecurityFilter / ServiceConsumerSecurityFilter used in web.xml:
-		     they must be Jakarta (jakarta.servlet) builds to run on Tomcat 11 - see docs/TOMCAT_MIGRATION.md -->
-		<dependency>
-			<groupId>gov.nyhealth.comdir</groupId>
-			<artifactId>hin-framework-common</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.nyhealth.comdir</groupId>
-			<artifactId>hin-framework-services</artifactId>
-			<version>1.1.1</version>
 		</dependency>
 		<dependency>
 			<groupId>ny-oits</groupId>

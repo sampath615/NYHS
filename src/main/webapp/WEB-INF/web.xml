@@ -9,27 +9,8 @@
    		<welcome-file>web/appInitialize</welcome-file>   
  	</welcome-file-list>
 	
-	  <!-- The HCSSecurityFilter must be first filter !! -->
-	<filter>
-		<filter-name>HCSSecurityFilter</filter-name>
-		<filter-class>
-		gov.ny.health.hcs.fwrk.security.HCSSecurityFilter
-		</filter-class>
-	</filter>
-	<filter>
-		<filter-name>ServiceConsumerSecurityFilter</filter-name>
-		<filter-class>
-		us.ny.state.health.hin.srvs.filter.ServiceConsumerSecurityFilter
-		</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>HCSSecurityFilter</filter-name>
-		<url-pattern>*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>ServiceConsumerSecurityFilter</filter-name>
-		<url-pattern>*</url-pattern>
-	</filter-mapping>
+	  <!-- removed The HCSSecurityFilter must be first filter !! -->
+
 		
 	<servlet>
 		<servlet-name>spring</servlet-name>
