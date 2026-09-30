@@ -28,11 +28,11 @@
 		maxTotal="20" maxIdle="5" maxWaitMillis="30000"
 		validationQuery="select 1 from dual" testOnBorrow="true" />
 
-	<!-- was WebLogic data source BHAE_EHARS_DS_ONE (eharsDS: raw JDBC via ConnectionDAO.getSqlServerConnectionObj) -->
+	<!-- was WebLogic data source BHAE_EHARS_DS1 (SQL Server; ehars DB; raw JDBC via ConnectionDAO.getSqlServerConnectionObj) -->
 	<Resource name="jdbc/BHAE_EHARS_DS_ONE" auth="Container" type="javax.sql.DataSource"
-		driverClassName="oracle.jdbc.OracleDriver"
-		url="${nyehms.db.ehars.url}" username="${nyehms.db.ehars.user}" password="${nyehms.db.ehars.password}"
-		maxTotal="20" maxIdle="5" maxWaitMillis="30000"
-		validationQuery="select 1 from dual" testOnBorrow="true" />
+	          driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+	          url="${nyehms.db.ehars.url}" username="${nyehms.db.ehars.user}" password="${nyehms.db.ehars.password}"
+	          maxTotal="20" maxIdle="5" maxWaitMillis="30000"
+	          validationQuery="select 1" testOnBorrow="true" />
 
 </Context>
