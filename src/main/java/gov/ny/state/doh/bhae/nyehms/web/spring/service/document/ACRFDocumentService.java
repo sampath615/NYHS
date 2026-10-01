@@ -5,7 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.administration.NyehmsWorkerRe
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.PcrfDocDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestResultVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedParentTestTypeVO;

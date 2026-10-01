@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.ClinicalLaboratoryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FeedbackReportOverallSummaryVO;

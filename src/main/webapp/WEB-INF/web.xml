@@ -2,47 +2,19 @@
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
-	id="WebApp_ID" version="6.1" metadata-complete="true">
+	id="WebApp_ID" version="6.1" metadata-complete="false">
 
 
 	<welcome-file-list>
    		<welcome-file>web/appInitialize</welcome-file>   
  	</welcome-file-list>
-	
-	  <!-- removed The HCSSecurityFilter must be first filter !! -->
 
-		
-	<servlet>
-		<servlet-name>spring</servlet-name>
-		<servlet-class>
-			org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
-		  <init-param> 
-        	<param-name>contextConfigLocation</param-name> 
-        	<param-value> 
-               /WEB-INF/classes/spring-config.xml 
-        </param-value> 
-    		</init-param> 
-		<load-on-startup>1</load-on-startup>
-		<!-- was CommonsMultipartResolver maxUploadSize=409657600 (whole request) -->
-		<multipart-config>
-			<max-file-size>409657600</max-file-size>
-			<max-request-size>409657600</max-request-size>
-		</multipart-config>
-	</servlet>
-		
-	<servlet-mapping>
-		<servlet-name>spring</servlet-name>
-		<url-pattern>/web/*</url-pattern>
-	</servlet-mapping>	
 	
 	<listener>
 		<listener-class>
              gov.ny.state.doh.bhae.nyehms.web.spring.listener.NYEHMSAppServletContextListener 
         </listener-class>
    </listener>
-   	
- 
  
 
 	<!-- was weblogic.xml <timeout-secs>1800</timeout-secs> -->

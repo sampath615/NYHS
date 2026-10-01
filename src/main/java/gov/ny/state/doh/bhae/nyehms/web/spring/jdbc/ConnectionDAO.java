@@ -1,4 +1,4 @@
-package gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc;
+package gov.ny.state.doh.bhae.nyehms.web.spring.jdbc;
 
 /**
  * This class is used to define the Database connection object details

@@ -24,7 +24,7 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HITDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitErrorVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;

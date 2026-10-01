@@ -92,7 +92,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HITDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HL7DocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7AddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7Dg1VO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7DocVO;

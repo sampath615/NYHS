@@ -32,7 +32,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycDeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCEHARSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;

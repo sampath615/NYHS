@@ -1,6 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabProcessDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.AddLabProficiencyDataVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabPFIVO;

@@ -1,6 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.FacilityCodedDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDetailsDAO;

@@ -15,7 +15,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.EharsDataLoaderDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 
 
 /**

@@ -18,9 +18,9 @@
 
 	<context:annotation-config />
 	<aop:aspectj-autoproxy />
-	
-	<!-- Scan the source folder for possible Spring @components -->
-	<context:component-scan base-package="gov.ny.state.doh.bhae.nyehms.web.spring" />
+
+<!--	 Scan the source folder for possible Spring @components -->
+<!--	<context:component-scan base-package="gov.ny.state.doh.bhae.nyehms.web.spring" />-->
 	
 	<!-- Spring validation frame work specific error messages -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
@@ -177,7 +177,7 @@
 	<!--  Spring Transaction Management End-->
 	
 	
-	<bean id="connectionDAO" class="gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.impl.JdbcConnectionDAO">
+	<bean id="connectionDAO" class="gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO">
 		<property name="dataSource" ref="appDS" />
 		<property name="sqlDataSource" ref="eharsDS" />
 	</bean>

@@ -1,4 +1,4 @@
-package gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.impl;
+package gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl;
 
 /**
  * This class will provide the Database connection object details
@@ -6,7 +6,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.impl;
  * @author ska03
  * 
  */
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 
 import java.sql.Connection;
 import java.sql.SQLException;

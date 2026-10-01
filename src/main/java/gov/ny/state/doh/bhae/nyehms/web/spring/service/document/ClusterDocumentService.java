@@ -20,7 +20,7 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClusterDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.RecordSearchReviewDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocPSMessageVO;

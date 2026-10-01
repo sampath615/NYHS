@@ -241,7 +241,7 @@ The full assessment, with impact/risk ratings and a phased plan, is in [`docs/DU
 These are the patterns that will most complicate the planned Java 21 / Tomcat / modular-monolith / JPA migration.
 
 **Direct database access outside the DAO layer** (the biggest single issue for a MyBatis→JPA migration, since it's invisible to any repository-based approach):
-- `web/spring/dao/jdbc/impl/JdbcConnectionDAO.java` hands out raw `Connection` objects (`getConnectionObj()` from `appDS`, `getSqlServerConnectionObj()` — actually Oracle `eharsDS`, see §3) which 6+ services then use to build hand-rolled `PreparedStatement`/`CallableStatement` SQL.
+- `web/spring/dao/impl/JdbcConnectionDAO.java` hands out raw `Connection` objects (`getConnectionObj()` from `appDS`, `getSqlServerConnectionObj()` — actually Oracle `eharsDS`, see §3) which 6+ services then use to build hand-rolled `PreparedStatement`/`CallableStatement` SQL.
 - Confirmed raw JDBC (`Connection`/`Statement`/`PreparedStatement`) in **17 service files**, heaviest in `ManualQuartzJobServiceImpl.java` and `LabProficiencyServiceImpl.java` (9 occurrences).
 - Raw `CallableStatement` built directly in application code (not MyBatis) in `LabReportsServiceImpl.java:910` and `AddLabProficiencyDataVO.java:50`.
 - One controller, `ExperimentalController.java:26,40`, `@Autowired`s a DAO (`CCDDocumentDAO`) directly, skipping the service layer entirely.
