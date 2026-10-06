@@ -20,7 +20,7 @@
 	<aop:aspectj-autoproxy />
 
 <!--	 Scan the source folder for possible Spring @components -->
-<!--	<context:component-scan base-package="gov.ny.state.doh.bhae.nyehms.web.spring" />-->
+	<context:component-scan base-package="gov.ny.state.doh.bhae.nyehms.web.spring" />
 	
 	<!-- Spring validation frame work specific error messages -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />

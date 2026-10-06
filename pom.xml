@@ -1,37 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<!-- Phase 1: Spring Boot 4 (Spring Framework 7) manages framework versions.
-         Still a WAR deployed to external Tomcat 11; XML config imported via @ImportResource.
-         If 4.0.5 is not in Artifactory, use any available 4.0.x. -->
+
+             Still a WAR deployed to external Tomcat 11; XML config imported via @ImportResource.
+
+             If 4.0.5 is not in Artifactory, use any available 4.0.x. -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>4.0.5</version>
 		<relativePath/>
 	</parent>
-
 	<groupId>nyehms</groupId>
 	<artifactId>nyehms</artifactId>
 	<packaging>war</packaging>
 	<version>2.5.66</version>
 	<description>New york electronic HIV management System</description>
-
 	<properties>
 		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.directory>C:/NyehmsBuild/dev2</project.build.directory>
 	</properties>
-
 	<dependencies>
 		<!-- ===== Spring Boot ===== -->
+		<!-- Core starter, declared explicitly so spring-boot-autoconfigure is packaged in the WAR.
+
+                     Without this it only arrives through spring-boot-starter-tomcat (provided) and is left out,
+
+                     which makes @SpringBootApplication a silent no-op at runtime. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 			<exclusions>
 				<!-- app uses log4j2.xml, not Logback -->
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- Spring MVC (Boot 4 name for the old spring-boot-starter-web).
+
+                     Brings spring-webmvc, spring-web, spring-context, spring-beans, spring-aop, spring-core. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-logging</artifactId>
@@ -55,53 +72,44 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- Log4j2 (replaces log4j-api/core/slf4j-impl and slf4j-api below) -->
+		<!-- Log4j2 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
 		</dependency>
+		<!-- ===== Spring Framework modules NOT brought in by the starters above =====
 
-		<!-- ===== Spring Framework (versions managed by Boot) ===== -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
+                     (spring-context, spring-beans, spring-aop, spring-web and spring-webmvc were removed:
+
+                      they now come transitively from spring-boot-starter-webmvc) -->
+		<!-- Quartz, mail and FreeMarker integration -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-		</dependency>
+		<!-- <oxm:jaxb2-marshaller> in spring-config.xml -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webflux</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
-		</dependency>
+		<!-- brings spring-jdbc and spring-tx, which mybatis-spring needs.
+
+                     Phase 2: if nothing imports org.springframework.orm, replace with spring-jdbc. -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 		</dependency>
+		<!-- Phase 2: remove if nothing imports org.springframework.jms -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+		</dependency>
+		<!-- WebClient only (used with reactor-netty below); the app itself stays servlet/MVC -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+		</dependency>
+		<!-- <aop:aspectj-autoproxy/> in spring-config.xml -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -111,7 +119,6 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.30</version>
 		</dependency>
-
 		<!-- ===== Jakarta EE APIs: servlet and annotations are provided by Tomcat 11 ===== -->
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
@@ -159,14 +166,12 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-
 		<!-- ===== Logging ===== -->
 		<!-- log4j 1.x API calls routed to SLF4J -> Log4j2 -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 		</dependency>
-
 		<!-- ===== Persistence ===== -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -190,7 +195,6 @@
 			<artifactId>quartz</artifactId>
 			<version>2.5.2</version>
 		</dependency>
-
 		<!-- ===== JSON / HTTP ===== -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -225,14 +229,12 @@
 			<groupId>io.projectreactor</groupId>
 			<artifactId>reactor-core</artifactId>
 		</dependency>
-
 		<!-- ===== Mail (plain library, not provided by Tomcat) ===== -->
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.5</version>
 		</dependency>
-
 		<!-- ===== NYS DOH internal libraries (from the internal repository) ===== -->
 		<dependency>
 			<groupId>ny-oits</groupId>
@@ -249,7 +251,6 @@
 			<artifactId>SymJavaAPI</artifactId>
 			<version>4.3.0.2</version>
 		</dependency>
-
 		<!-- ===== Documents: Excel, PDF, Word ===== -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -293,7 +294,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<!-- ===== HL7 ===== -->
 		<dependency>
 			<groupId>hapi</groupId>
@@ -305,7 +305,6 @@
 			<artifactId>hapi-structures-v25</artifactId>
 			<version>2.2</version>
 		</dependency>
-
 		<!-- ===== Utilities ===== -->
 		<dependency>
 			<groupId>com.github.mwiede</groupId>
@@ -338,7 +337,6 @@
 			<version>2.3</version>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<directory>${project.build.directory}</directory>
 		<finalName>${project.artifactId}</finalName>
