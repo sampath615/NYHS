@@ -5,6 +5,7 @@
 | **Branch** | `spring-boot-migration` (Spring Boot 4.0.5, Hibernate 7.2, Spring Data JPA 4.0) |
 | **Approach** | Module by module. MyBatis and JPA run side by side on the same `appDS` pool and in the same transactions until the last mapper is gone. |
 | **Done** | NYC PRF partner list (`NycPRFPartnerDAO` → `NycprfPartnerRepository`) |
+| **Conventions** | JPQL / derived queries only (no native SQL), entities with annotated fields only (no getters/setters), DTOs as `record`s or the existing form VO via `select new`. |
 
 ---
 
@@ -14,10 +15,10 @@ Measured over all 76 mapper files (1,332 statements):
 
 | Kind | Statements | JPA approach |
 |---|---:|---|
-| Plain, typed SQL | 201 | Entity + repository (derived or JPQL query); native query where the SQL is Oracle-specific. |
+| Plain, typed SQL | 201 | Entities + repository with derived or JPQL queries. |
 | `Map` / `JSONObject` in or out (untyped) | 906 | Introduce a DTO/projection per query first, then migrate. |
 | Stored procedures (`CALLABLE`) | 132 | `@Procedure` / `StoredProcedureQuery`, or keep on plain JDBC — business logic stays in PL/SQL. |
-| Oracle-specific SQL (`NVL`, `TO_CHAR`, `(+)`, `CONNECT BY`, `ROWNUM`...) | 668 | Native queries (unchanged SQL). |
+| Oracle-specific SQL (`NVL`, `TO_CHAR`, `(+)`, `CONNECT BY`, `ROWNUM`...) | 668 | Rewrite in JPQL where an equivalent exists (`coalesce`, `cast`, explicit joins, `fetch first`); otherwise decide per case (no native SQL by default). |
 | `${}` string substitution | 104 | Redesign (dynamic table/column names cannot be bound parameters); review for SQL injection. |
 
 (Counts overlap: a statement can be in several rows.) Removing MyBatis completely therefore means rewriting about 1,100 statements; do it in small, tested steps, smallest and most self-contained modules first.
@@ -44,8 +45,8 @@ Measured over all 76 mapper files (1,332 statements):
    WHERE table_name IN ('<TABLE>') ORDER BY table_name, column_id;
    ```
    A wrong `@Id` makes Hibernate merge rows that share it — never guess it for entity reads or writes.
-3. **Entity** in `web.spring.entity.<area>` (field names in Java style, `@Column` with the real name). Keep the existing VO for the JSPs/controllers; map entity ↔ VO in the repository or service.
-4. **Repository** in `web.spring.repository.<area>`: derived/JPQL queries for simple cases; for SQL that must stay exactly as it was, a query fragment (`XxxQueries` + `XxxQueriesImpl`) with a native query and **explicitly typed columns** (`NativeQuery.addScalar(label, String.class / java.sql.Date.class ...)`) so values convert exactly as MyBatis did.
+3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); give it a constructor matching the JPQL `select new` list plus an explicit no-arg constructor.
+4. **Repository** in `web.spring.repository.<area>`: a Spring Data interface with derived or JPQL (`@Query`) methods only — **no native SQL, no implementation classes**. Read the data the screens need with a JPQL constructor expression (`select new <Vo>(...)`) straight into the existing VO/form object, or into a `record` when no form binds to it. Entities have **annotated fields only** (no getters/setters; Hibernate uses field access).
 5. **Service**: replace the DAO with the repository; nothing else changes.
 6. **Delete** the DAO interface and its mapper XML (they are bound by name; nothing else to unregister).
 7. **Verify**:
@@ -53,7 +54,7 @@ Measured over all 76 mapper files (1,332 statements):
    - a JUnit test in `src/test` against H2 with the expected values (`mvn test`);
    - full compile; then deploy and click through the screen.
 
-Notes: Hibernate rejects a native query that selects the same column name twice (MyBatis ignored it). `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only) — read it the same way.
+Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only): map the entity attribute as `LocalDate` and convert with `Date.valueOf` in the VO constructor. A numeric column that a VO holds as text can be mapped as a `String` attribute (Hibernate then reads it with `getString()`, like MyBatis). JPQL `select distinct new ...` keeps SQL `DISTINCT` semantics. Entity keys only matter once entities are loaded or written; projections (`select new`) never go through the persistence context.
 
 ---
 
@@ -61,7 +62,7 @@ Notes: Hibernate rejects a native query that selects the same column name twice 
 
 | Module | Was (MyBatis) | Now (JPA) | Verified | Notes |
 |---|---|---|---|---|
-| NYC PRF partner list (NYC PRF document view) | `NycPRFPartnerDAO.getNycPRFPartner` (`RAW_NYCPRF_PARTNER` ⨝ `STD_NYCPRF_PARTNER`) | `NycprfPartnerRepository.findPartnersOfDocument` (native query, typed columns) + read-only entity `StdNycprfPartner` | Side by side with the old mapper on H2: identical (DISTINCT, missing rows, NULLs, number-as-text, date-only). `NycprfPartnerRepositoryTest` (4 tests) incl. the shared-transaction check. Full compile. | Entity key `(PATIENT_ID, NYCPRF_DOCUMENT_ID)` is **assumed** — confirm (step 2) before using the entity for writes (`NycPRFDocumentDAO` still inserts these rows). The duplicated `PARTNER_TEST_DATE_TEXT` column was dropped from the SQL. **Not yet deployed.** |
+| NYC PRF partner list (NYC PRF document view) | `NycPRFPartnerDAO.getNycPRFPartner` (`RAW_NYCPRF_PARTNER` ⨝ `STD_NYCPRF_PARTNER`) | `NycprfPartnerRepository.findPartnersOfDocument`: one JPQL `select distinct new NycPRFPartnerVO(...)` over the read-only entities `StdNycprfPartner` and `RawNycprfPartner` | Side by side with the old mapper on H2: identical (DISTINCT, missing rows, NULLs, number-as-text, date-only). `NycprfPartnerRepositoryTest` (4 tests) incl. the shared-transaction check. Full compile. | Entity key `(PATIENT_ID, NYCPRF_DOCUMENT_ID)` is **assumed** — confirm (step 2) before using the entity for writes (`NycPRFDocumentDAO` still inserts these rows). The mapper selected `PARTNER_TEST_DATE_TEXT` twice; the JPQL selects it once (same result). **Not yet deployed.** |
 
 **Next candidates** (small, live, single table, typed): `EharsDataLoaderDAO.deleteRIDREharsData` (`EHARS_RIDR`), `OldCasesDocumentDAO`, `MedicaidOldDocumentDAO`, `BlackBoxDocDAO`, `NDIDocumentDAO`, then the rest of the NYC PRF document (`NycPRFDocumentDAO`, which also writes `STD_NYCPRF_PARTNER`).
 

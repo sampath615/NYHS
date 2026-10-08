@@ -1,6 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import org.hibernate.annotations.Immutable;
 
@@ -11,14 +11,12 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 /**
- * A partner named on an NYC Partner Referral Form (table STD_NYCPRF_PARTNER).
+ * A partner named on an NYC Partner Referral Form, standardized (table STD_NYCPRF_PARTNER).
  * <p>
- * Read-only for now: the partner list is read by
- * {@link gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerQueries}
- * with a native query, and the rows are still written by NycPRFDocumentDAO (MyBatis).
- * <b>The key (PATIENT_ID, NYCPRF_DOCUMENT_ID) is assumed and must be confirmed against the
- * table's primary key before this entity is used for writes or entity queries</b>
- * (see docs/JPA_MIGRATION.md).
+ * Read-only and queried through JPQL projections only (see NycprfPartnerRepository); the rows are
+ * still written by NycPRFDocumentDAO (MyBatis). <b>The key (PATIENT_ID, NYCPRF_DOCUMENT_ID) is
+ * assumed and must be confirmed against the table's primary key before this entity is loaded or
+ * written as an entity</b> (docs/JPA_MIGRATION.md).
  */
 @Entity
 @Immutable
@@ -155,16 +153,16 @@ public class StdNycprfPartner {
 	private String partnerStatus;
 
 	@Column(name = "HDISP_DT")
-	private LocalDateTime hdispDate;
+	private LocalDate hdispDate;
 
 	@Column(name = "CREATE_UID")
 	private String createUid;
 
 	@Column(name = "CREATE_DATE")
-	private LocalDateTime createDate;
+	private LocalDate createDate;
 
 	@Column(name = "INFORMED_DATE")
-	private LocalDateTime informedDate;
+	private LocalDate informedDate;
 
 	@Column(name = "HIGH_PRIORITY")
 	private String highPriority;
@@ -174,200 +172,4 @@ public class StdNycprfPartner {
 
 	@Column(name = "ELICITED_BY_ACT")
 	private String elicitedByAct;
-
-	public String getPatientId() {
-		return patientId;
-	}
-
-	public String getNycprfDocumentId() {
-		return nycprfDocumentId;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public String getMiddleName() {
-		return middleName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public String getAltName() {
-		return altName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public String getZip() {
-		return zip;
-	}
-
-	public String getPlus4() {
-		return plus4;
-	}
-
-	public String getHomePhone() {
-		return homePhone;
-	}
-
-	public String getCellPhone() {
-		return cellPhone;
-	}
-
-	public String getPager() {
-		return pager;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getDobText() {
-		return dobText;
-	}
-
-	public String getAge() {
-		return age;
-	}
-
-	public String getCurrentGender() {
-		return currentGender;
-	}
-
-	public String getEthnicity() {
-		return ethnicity;
-	}
-
-	public String getRaceWhite() {
-		return raceWhite;
-	}
-
-	public String getRaceBlack() {
-		return raceBlack;
-	}
-
-	public String getRaceAsian() {
-		return raceAsian;
-	}
-
-	public String getRaceIndian() {
-		return raceIndian;
-	}
-
-	public String getRacePacific() {
-		return racePacific;
-	}
-
-	public String getRaceUnknown() {
-		return raceUnknown;
-	}
-
-	public String getRaceOther() {
-		return raceOther;
-	}
-
-	public String getRaceOtherText() {
-		return raceOtherText;
-	}
-
-	public String getComplexion() {
-		return complexion;
-	}
-
-	public String getHair() {
-		return hair;
-	}
-
-	public String getHeight() {
-		return height;
-	}
-
-	public String getWeight() {
-		return weight;
-	}
-
-	public String getPlaceOfEmployment() {
-		return placeOfEmployment;
-	}
-
-	public String getWorkHours() {
-		return workHours;
-	}
-
-	public String getWorkPhone() {
-		return workPhone;
-	}
-
-	public String getMaritalCode() {
-		return maritalCode;
-	}
-
-	public String getPregnant() {
-		return pregnant;
-	}
-
-	public String getSpouse() {
-		return spouse;
-	}
-
-	public String getDvScreen() {
-		return dvScreen;
-	}
-
-	public String getRiskViolence() {
-		return riskViolence;
-	}
-
-	public String getPartnerAssistanceStatus() {
-		return partnerAssistanceStatus;
-	}
-
-	public String getPartnerTestDateText() {
-		return partnerTestDateText;
-	}
-
-	public String getPartnerStatus() {
-		return partnerStatus;
-	}
-
-	public LocalDateTime getHdispDate() {
-		return hdispDate;
-	}
-
-	public String getCreateUid() {
-		return createUid;
-	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
-	}
-
-	public LocalDateTime getInformedDate() {
-		return informedDate;
-	}
-
-	public String getHighPriority() {
-		return highPriority;
-	}
-
-	public String getElicitedByPnap() {
-		return elicitedByPnap;
-	}
-
-	public String getElicitedByAct() {
-		return elicitedByAct;
-	}
 }
