@@ -4,7 +4,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -57,14 +56,7 @@ public class DataSourceConfig {
         return jndiDataSource("jdbc/BHAE_EHARS_DS_ONE");
     }
 
-    /**
-     * The only transaction manager: @Transactional always means the main NYEHMS
-     * database (appDS), exactly as before.
-     */
-    @Bean
-    public DataSourceTransactionManager transactionManager(@Qualifier("appDS") DataSource appDS) {
-        return new DataSourceTransactionManager(appDS);
-    }
+    // The transaction manager (a JpaTransactionManager on appDS) is defined in JpaConfig.
 
     @Bean
     public JdbcConnectionDAO connectionDAO(@Qualifier("appDS") DataSource appDS,
