@@ -5,7 +5,7 @@
 | **Branch** | `spring-boot-migration` (Spring Boot 4.0.5, Hibernate 7.2, Spring Data JPA 4.0) |
 | **Approach** | Module by module. MyBatis and JPA run side by side on the same `appDS` pool and in the same transactions until the last mapper is gone. |
 | **Done** | NYC PRF partner list (`NycPRFPartnerDAO` → `NycprfPartnerRepository`) |
-| **Conventions** | JPQL / derived queries only (no native SQL), entities with annotated fields only (no getters/setters), DTOs as `record`s or the existing form VO via `select new`. |
+| **Conventions** | JPQL / derived queries only (no native SQL), entities with annotated fields only (no getters/setters), DTOs as `record`s or the existing form VO via `select new`. VOs that still need accessors (JSP EL, form binding, MyBatis) get them from Lombok `@Getter`/`@Setter` instead of hand-written methods. |
 
 ---
 
@@ -45,7 +45,7 @@ Measured over all 76 mapper files (1,332 statements):
    WHERE table_name IN ('<TABLE>') ORDER BY table_name, column_id;
    ```
    A wrong `@Id` makes Hibernate merge rows that share it — never guess it for entity reads or writes.
-3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); give it a constructor matching the JPQL `select new` list plus an explicit no-arg constructor.
+3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); give it a constructor matching the JPQL `select new` list plus an explicit no-arg constructor. Replace its hand-written accessors with Lombok `@Getter`/`@Setter` (check first that every accessor is a plain get/set, then compare `javap -public` of the old and new class).
 4. **Repository** in `web.spring.repository.<area>`: a Spring Data interface with derived or JPQL (`@Query`) methods only — **no native SQL, no implementation classes**. Read the data the screens need with a JPQL constructor expression (`select new <Vo>(...)`) straight into the existing VO/form object, or into a `record` when no form binds to it. Entities have **annotated fields only** (no getters/setters; Hibernate uses field access).
 5. **Service**: replace the DAO with the repository; nothing else changes.
 6. **Delete** the DAO interface and its mapper XML (they are bound by name; nothing else to unregister).
