@@ -21,7 +21,7 @@
 		<span class="hdrFont"> Provider Name:</span> <br/>
 		<div style="float:left; width:76%; padding-bottom:5px;" class="container"> 					
 			<div style="float:left; width: 175px">
-				<span class="mL10 hdrFont"> <spring:message code="label.firstname" /></span>  <br/> <span class="mL10 "> <form:input path="rawAcrfDoc.slProviderFname" id="rawAcrfDoc_slProviderFname"value="${acrfFormVO.rawAcrfDoc.slProviderFname}" class="standardInputSmallText " cssErrorClass="error" maxlength="25" title="First Name"/> </span>
+				<span class="mL10 hdrFont"> <spring:message code="label.firstname" /></span>  <br/> <span class="mL10 "> <form:input path="rawAcrfDoc.slProviderFname" id="rawAcrfDoc_slProviderFname" value="${acrfFormVO.rawAcrfDoc.slProviderFname}" class="standardInputSmallText " cssErrorClass="error" maxlength="25" title="First Name"/> </span>
 				<div class="v_error rawAcrfDoc_slProviderFname mL10"></div>
 			</div>
 			<div style="float:left; width: 180px">
@@ -399,7 +399,7 @@
 			
 		</div>		
 		<div id="child_recvClottingFactorBeforeDiag" style="float:right; width:19%; padding-top:13px;">
-			<span class="mL5"><form:radiobutton path="rawAcrfDoc.recvClottingFactorBeforeDiag"  id="rawAcrfDoc_recvClottingFactorBeforeDiag"value="Y" title="Coagulation disorder" class="ptHistoryChecked PTYes"/> Yes </span>
+			<span class="mL5"><form:radiobutton path="rawAcrfDoc.recvClottingFactorBeforeDiag"  id="rawAcrfDoc_recvClottingFactorBeforeDiag" value="Y" title="Coagulation disorder" class="ptHistoryChecked PTYes"/> Yes </span>
 			<span class="mL5"><form:radiobutton path="rawAcrfDoc.recvClottingFactorBeforeDiag"  id="rawAcrfDoc_recvClottingFactorBeforeDiag" value="N" title="Coagulation disorder" class="PTNo"/> No </span>
 			<span class="mL5"><form:radiobutton path="rawAcrfDoc.recvClottingFactorBeforeDiag"  id="rawAcrfDoc_recvClottingFactorBeforeDiag" value="U" title="Coagulation disorder" class="PTUnknown"/> Unknown </span>
 			<div class="v_error child_recvClottingFactorBeforeDiag"></div>

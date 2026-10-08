@@ -15,12 +15,6 @@
 		http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.1.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd">
 
-
-	<context:annotation-config />
-	<aop:aspectj-autoproxy />
-
-<!--	 Scan the source folder for possible Spring @components -->
-	<context:component-scan base-package="gov.ny.state.doh.bhae.nyehms.web.spring" />
 	
 	<!-- Spring validation frame work specific error messages -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
@@ -46,45 +40,9 @@
 			name="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO" />
 	</oxm:jaxb2-marshaller>
 
-	
-	<bean id="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
-<!-- 		<property name="serializationConfig.annotationIntrospector" -->
-<!-- 			ref="jaxbAnnIntrospector" /> -->
-<!-- 		<property name="deserializationConfig.annotationIntrospector" -->
-<!-- 			ref="jaxbAnnIntrospector" /> -->
-	</bean>
-	
-	
-	
-<!-- 	<bean id="jsonHttpMessageConverter" -->
-<!--     class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" /> -->
-	 
-	<!-- Bind the return value of the Rest service to the ResponseBody. -->
-<!-- 	<bean -->
-<!-- 	    class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> -->
-		
-		
-	
-	<mvc:annotation-driven>
-		<mvc:message-converters>
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
-				p:objectMapper-ref="jacksonObjectMapper" />
-		</mvc:message-converters>
-		<mvc:argument-resolvers>
-			<bean class="gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObjectArgumentResolver" />
-		</mvc:argument-resolvers>
-	</mvc:annotation-driven>
 	<!--  REST, Web Services Related declaration End -->
 	
 	<!--  Spring Core and MVC Declarations Start -->
-	<bean id="jspViewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
 	
 	<bean id="freeMarkerConfigurationFactory" class="org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean">
 	    <property name="templateLoaderPath" value="classpath:/templates"/>
@@ -95,9 +53,8 @@
 	
 	<!-- PDF/Excel download views: the view name returned by the controller is the bean id
 	     (was ResourceBundleViewResolver + views.properties, removed in Spring 7) -->
-	<bean id="viewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
-		<property name="order" value="1" />
-	</bean>
+
+
 	<bean id="assignmentReportsByDocumentPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.assignment.AssignmentsPdfView" />
 	<bean id="updatedMessageResultsPdfView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.uploads.UpdatedMessagesPdfView" />
 	<bean id="downloadFeedbackSNPDataView" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.DownloadFeedbackSNPDataView" />
@@ -123,65 +80,8 @@
 	<bean id="riaActivityReportSpreadsheet" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.report.GenerateRiaActivityReportSpreadsheet" />
 	<bean id="generateScanningReportByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateScanningReportByDailyStaff" />
 	<bean id="generateClericalReportsByDailyStaff" class="gov.ny.state.doh.bhae.nyehms.web.spring.view.review.GenerateClericalReportByDailyStaff" />
-	 
-	<!--  MyBatis Spring JDBC Related declaration End -->
-	<!-- data sources appDS, ursDS, eharsDS (container JNDI) -->
-	<import resource="classpath:spring-datasource.xml" />
 
-	
-	
-		
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="appDS" />
-		<property name="typeAliasesPackage"
-			value="gov.ny.state.doh.bhae.nyehms.web.spring.domain" />
-	</bean>
-	
-	<bean id="elrlsSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="appDS" />
-		<property name="typeAliasesPackage"
-			value="gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ecrls" />
-	</bean>
-	
-	
-	<bean id="ursSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="ursDS" />
-		<property name="typeAliasesPackage"
-			value="gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ursdb" />
-	</bean>
 
-	<bean id="MapperScannerConfigurer1" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage"
-			value="gov.ny.state.doh.bhae.nyehms.web.spring.dao,gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms" />
-	    <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-	</bean>	
-	
-	<bean id="MapperScannerConfigurer2" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ecrls"/>
-        <property name="sqlSessionFactoryBeanName" value="elrlsSessionFactory"/>
-    </bean>
-    
-    
-	<bean id="MapperScannerConfigurer3" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ursdb"/>
-        <property name="sqlSessionFactoryBeanName" value="ursSessionFactory"/>
-    </bean>
-    
-	<!--  Spring Transaction Management Start-->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-  		 		 <property name="dataSource" ref="appDS" />
-	</bean>
-		 
-	<tx:annotation-driven transaction-manager="transactionManager" />
-	<!--  Spring Transaction Management End-->
-	
-	
-	<bean id="connectionDAO" class="gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO">
-		<property name="dataSource" ref="appDS" />
-		<property name="sqlDataSource" ref="eharsDS" />
-	</bean>
-	
 	
 	<bean id="rawRecordsCleaner" class="gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.RawRecordsCleaner" />
 	
@@ -443,8 +343,4 @@
 		</property>
 	</bean>
 
-
-	<!-- uploads are parsed by the servlet container; size limits are in web.xml <multipart-config> -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 </beans>

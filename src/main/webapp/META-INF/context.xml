@@ -18,14 +18,14 @@
 	<Resource name="jdbc/BHAE_NYEHMS_DS_ONE_GL" auth="Container" type="javax.sql.DataSource"
 		driverClassName="oracle.jdbc.OracleDriver"
 		url="${nyehms.db.app.url}" username="${nyehms.db.app.user}" password="${nyehms.db.app.password}"
-		maxTotal="50" maxIdle="10" maxWaitMillis="30000" connectionInitSqls="alter session set current_schema =NYEHMSLOCAL_OWNER"
+		maxTotal="2" maxIdle="1" maxWaitMillis="30000" connectionInitSqls="alter session set current_schema =NYEHMSLOCAL_OWNER"
 	          validationQuery="select 1 from dual" testOnBorrow="true" />
 
 	<!-- was WebLogic data source BHAE_NYEHMS_URS (ursDS) -->
 	<Resource name="jdbc/BHAE_NYEHMS_URS" auth="Container" type="javax.sql.DataSource"
 		driverClassName="oracle.jdbc.OracleDriver"
 		url="${nyehms.db.urs.url}" username="${nyehms.db.urs.user}" password="${nyehms.db.urs.password}"
-		maxTotal="20" maxIdle="5" maxWaitMillis="30000"
+		maxTotal="3" maxIdle="1" maxWaitMillis="30000"
 		validationQuery="select 1 from dual" testOnBorrow="true" />
 
 	<!-- was WebLogic data source BHAE_EHARS_DS1 (SQL Server; ehars DB; raw JDBC via ConnectionDAO.getSqlServerConnectionObj) -->

@@ -160,7 +160,7 @@
 						<div class="personInfo pB10">
 							<span class="fieldHolder25 ">
 								<span class="fLW35">DIN for inmate </span>
-								<span  class="fLW60"><form:input path="DIN"class=" standardInputSmallText"  maxlength="10"/></span>
+								<span  class="fLW60"><form:input path="DIN" class=" standardInputSmallText"  maxlength="10"/></span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Insurance Number </span>

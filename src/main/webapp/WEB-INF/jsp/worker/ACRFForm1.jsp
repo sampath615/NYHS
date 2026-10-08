@@ -167,7 +167,7 @@
 		
 		<div style="float:left; width:17%; border-right:1px dotted; padding-bottom:7px;"> 
 			<span class="mL5 hdrFont"> *<spring:message code="label.zip" /> </span> <br/>
-			<span class="mL5"> <form:input path="rawAcrfDoc.zipcode" id="rawAcrfDoc_zipcode" value="${acrfFormVO.rawAcrfDoc.zipcode}" class="standardInputSmallText2 nOnly widgetFields newZip widgetAddressFieldsReadonly"addrsVar="zipAddrs"  maxlength="5" title="Zip Code"/> </span>
+			<span class="mL5"> <form:input path="rawAcrfDoc.zipcode" id="rawAcrfDoc_zipcode" value="${acrfFormVO.rawAcrfDoc.zipcode}" class="standardInputSmallText2 nOnly widgetFields newZip widgetAddressFieldsReadonly" addrsVar="zipAddrs"  maxlength="5" title="Zip Code"/> </span>
 			<span class="mL2"> <form:input path="rawAcrfDoc.plus4" id="rawAcrfDoc_plus4" value="${acrfFormVO.rawAcrfDoc.plus4}" class="standardInputSmallText1 nOnly" addrsVar="plus4Addrs" maxlength="4" title="plus4"/> </span>
 			<div class="v_error rawAcrfDoc_zipcode mL5"></div>
 		</div>
