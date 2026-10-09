@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -137,7 +138,7 @@ public class RecordSearchReviewController {
         		
 		
         Cookie myCookie1 =
-      		  new Cookie("TRANSACTION_MESSAGE", (String)targetMap.get("TRANSACTION_MESSAGE"));
+      		  new Cookie("TRANSACTION_MESSAGE", CommonUtil.encodeCookieValue((String)targetMap.get("TRANSACTION_MESSAGE")));
                 
         
 

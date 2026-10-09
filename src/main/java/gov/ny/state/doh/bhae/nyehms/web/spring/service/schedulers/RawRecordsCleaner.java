@@ -23,6 +23,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMat
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * Contains the methods that execute the PRE-MATCH document processing
@@ -35,6 +36,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  * 
  * @author ska03
  */
+@Component
 public class RawRecordsCleaner {
 
 	private static Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);

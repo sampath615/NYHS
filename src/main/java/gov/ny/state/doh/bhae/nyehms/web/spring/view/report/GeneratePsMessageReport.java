@@ -18,10 +18,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+import org.springframework.stereotype.Component;
 
 
-
-
+@Component("psMessageReportSpreadsheet")
 public class GeneratePsMessageReport extends AbstractExcelReportView{
 
 

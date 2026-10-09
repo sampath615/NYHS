@@ -11,7 +11,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+import org.springframework.stereotype.Component;
 
+@Component("generateCDCReturnFile")
 public class GenerateCDCReturnFileSpreadsheet extends AbstractExcelReportView{
 
 

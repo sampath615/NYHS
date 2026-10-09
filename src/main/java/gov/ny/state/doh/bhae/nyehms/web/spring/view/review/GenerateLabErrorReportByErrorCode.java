@@ -16,7 +16,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GenerateLabErrorReportByErrorCode extends AbstractExcelReportView{
 
 	

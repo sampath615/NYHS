@@ -16,8 +16,10 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import org.springframework.stereotype.Component;
 
 
+@Component("assignmentReportsByDocumentPdfView")
 public class AssignmentsPdfView extends AbstractITextPdfView{
 
 

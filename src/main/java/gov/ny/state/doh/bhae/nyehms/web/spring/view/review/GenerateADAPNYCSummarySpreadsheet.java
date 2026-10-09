@@ -18,9 +18,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+import org.springframework.stereotype.Component;
 
 
-
+@Component("generateADAPNYCSummaryFile")
 public class GenerateADAPNYCSummarySpreadsheet extends AbstractExcelReportView{
 
 
