@@ -16,12 +16,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.ApplicationContextP
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import org.springframework.stereotype.Component;
 
 /**
  * Module to perform POST-MATCH processing if a one-job scenario or initiate
  * the second job if a two-job scenario.
  * @author ska03
  */
+@Component
 public class QualityStageLoader{
 
 	private static Logger log = LoggerFactory.getLogger(QualityStageLoader.class);

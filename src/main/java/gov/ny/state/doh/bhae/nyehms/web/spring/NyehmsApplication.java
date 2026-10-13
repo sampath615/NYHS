@@ -3,10 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.ImportResource;
 
 @SpringBootApplication
-@ImportResource("classpath:spring-config.xml")
 public class NyehmsApplication extends SpringBootServletInitializer {
 
     @Override

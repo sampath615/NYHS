@@ -12,6 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import org.springframework.stereotype.Component;
 
 /**
  * Quartz scheduler class to load PRF Review Status to the users
@@ -19,6 +20,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  * @author ska03
  *
  */
+@Component
 public class PrfReviewStatusLoader{
 	
 	/*

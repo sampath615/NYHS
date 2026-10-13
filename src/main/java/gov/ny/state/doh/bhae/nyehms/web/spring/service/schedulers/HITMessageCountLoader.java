@@ -18,7 +18,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumen
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.CommonSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HITMessageCountLoader {
 
 	private static Logger log = LoggerFactory.getLogger(HITMessageCountLoader.class);

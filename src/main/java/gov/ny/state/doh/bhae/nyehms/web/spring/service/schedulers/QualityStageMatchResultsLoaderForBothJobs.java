@@ -17,11 +17,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Module to perform all POST-MATCH processing
  * @author ska03
  */
+@Component
 public class QualityStageMatchResultsLoaderForBothJobs{
 	
 	private static Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);

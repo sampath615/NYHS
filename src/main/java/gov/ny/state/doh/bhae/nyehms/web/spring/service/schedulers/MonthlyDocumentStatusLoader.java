@@ -12,6 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.StatusReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import org.springframework.stereotype.Component;
 
 /**
  * Quartz scheduler to load monthly lab report
@@ -19,6 +20,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  * @author ska03
  *
  */
+@Component
 public class MonthlyDocumentStatusLoader{
 	
 	/*
