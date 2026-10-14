@@ -51,8 +51,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NonCaseDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPrfFormVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.OldCaseDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
@@ -972,63 +970,6 @@ public class DocumentController {
 		return retPage;
 	}
 
-	/**
-	 * This method adds the partner object and send back the same form.
-	 *
-	 * Logic for adding partner: 1. Include empty partner object while user gets
-	 * the PRF form using getPrfDoc.html. 2. This extra empty object will be
-	 * used as empty form when user clicks add partner. 3. The present method
-	 * /addPRFPartner will retain the user entered new partner information and
-	 * populate new empty partner object if user wants to add 2nd new partner.
-	 * 4. This process will continue until user submits the whole form for DB
-	 * saving. 5. During the saving to DB, we remove the empty object created by
-	 * this method (/addPRFPartner) or the initial getPrfDoc.html
-	 *
-	 * @param nycPrfFormVO
-	 * @param result
-	 * @param request
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping(value = "/addNycPRFPartner", method = RequestMethod.POST)
-	public String addNycPRFPartner(@ModelAttribute("nycPrfFormVO") NycPrfFormVO nycPrfFormVO, BindingResult result,
-			HttpServletRequest request, Map<String, Object> map)
-	{
-		String retPage = "document/NycPrfDocument";
-		LinkedList<NycPRFPartnerVO> nycPRFPartnerVOList = nycPrfFormVO.getNycPRFPartnerVOList();
-		// Add empty partner object for Add New Partner Functionality.
-		NycPRFPartnerVO emptyNycPRFPartnerVO = new NycPRFPartnerVO();
-		nycPRFPartnerVOList.add(emptyNycPRFPartnerVO);
-		nycPrfFormVO.setNycPRFPartnerVOList(nycPRFPartnerVOList);
-		return retPage;
-	}
-
-	/**
-	 * This method is called to delete NYC PRF Partner doc
-	 *
-	 * @param nycPrfFormVO
-	 * @param result
-	 * @param request
-	 * @param map
-	 * @return
-	 */
-	@RequestMapping(value = "/deleteNycPRFPartner", method = RequestMethod.POST)
-	public String deleteNycPRFPartner(@ModelAttribute("nycPrfFormVO") NycPrfFormVO nycPrfFormVO, BindingResult result,
-			HttpServletRequest request, Map<String, Object> map)
-	{
-		String retPage = "document/NycPrfDocument";
-		LinkedList<NycPRFPartnerVO> nycPRFPartnerVOList = nycPrfFormVO.getNycPRFPartnerVOList();
-		// Delete the object marked for delete
-		for (int i = 0; i < nycPRFPartnerVOList.size(); i++) {
-			// if
-			// ("true".equalsIgnoreCase(nycPRFPartnerVOList.get(i).getTempDelete()))
-			// {
-			// log.debug(nyehmsLog + " removing the object form list with first
-		}
-		nycPrfFormVO.setNycPRFPartnerVOList(nycPRFPartnerVOList);
-		return retPage;
-	}
-	
 	@RequestMapping(value = "/loadFacilityLabWidget.html")
 	public String loadFacilityLabWidget(Map<String, Object> map, HttpServletRequest request)
 	{

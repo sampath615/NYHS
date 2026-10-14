@@ -130,7 +130,7 @@ public class NycPRFDocVO extends NYEHMSDocVO {
     //List<TTHDocumentVO> tTHDocumentVOList;
     //List<TTHDocumentVO> tTHDocumentVOListOrigional; // we are saving TTH doc list 2 times
     // since we will have to compare if the TTH document was changed or not         
-    List<NycPRFPartnerVO> partnerList;
+    List<NycprfPartner> partnerList;
 
 
 
@@ -1311,13 +1311,13 @@ public class NycPRFDocVO extends NYEHMSDocVO {
 
 
 
-	public List<NycPRFPartnerVO> getPartnerList() {
+	public List<NycprfPartner> getPartnerList() {
 		return partnerList;
 	}
 
 
 
-	public void setPartnerList(List<NycPRFPartnerVO> partnerList) {
+	public void setPartnerList(List<NycprfPartner> partnerList) {
 		this.partnerList = partnerList;
 	}
 

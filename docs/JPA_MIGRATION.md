@@ -5,7 +5,7 @@
 | **Branch** | `spring-boot-migration` (Spring Boot 4.0.5, Hibernate 7.2, Spring Data JPA 4.0) |
 | **Approach** | Module by module. MyBatis and JPA run side by side on the same `appDS` pool and in the same transactions until the last mapper is gone. |
 | **Done** | NYC PRF partner list (`NycPRFPartnerDAO` → `NycprfPartnerRepository`) |
-| **Conventions** | JPQL / derived queries only (no native SQL), entities with annotated fields only (no getters/setters), DTOs as `record`s or the existing form VO via `select new`. VOs that still need accessors (JSP EL, form binding, MyBatis) get them from Lombok `@Getter`/`@Setter` instead of hand-written methods. |
+| **Conventions** | JPQL / derived queries only (no native SQL); entities with annotated fields only (no getters/setters); data read for a screen comes back as a Java `record` built with JPQL `select new` (no VO class, no accessors, no mapping code). |
 
 ---
 
@@ -45,8 +45,11 @@ Measured over all 76 mapper files (1,332 statements):
    WHERE table_name IN ('<TABLE>') ORDER BY table_name, column_id;
    ```
    A wrong `@Id` makes Hibernate merge rows that share it — never guess it for entity reads or writes.
-3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); replace its hand-written accessors and constructors with Lombok `@Getter`, `@Setter`, `@NoArgsConstructor` and `@AllArgsConstructor` (check first that every accessor is a plain get/set, then compare `javap -public` of the old and new class). The JPQL `select new` list must follow the VO's field declaration order, because that is the order of the generated all-arguments constructor; a mismatch stops the application at startup (Spring Data validates the query).
-4. **Repository** in `web.spring.repository.<area>`: a Spring Data interface with derived or JPQL (`@Query`) methods only — **no native SQL, no implementation classes**. Read the data the screens need with a JPQL constructor expression (`select new <Vo>(...)`) straight into the existing VO/form object, or into a `record` when no form binds to it. Entities have **annotated fields only** (no getters/setters; Hibernate uses field access).
+3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only.
+4. **Repository** in `web.spring.repository.<area>`: a Spring Data interface with derived or JPQL (`@Query`) methods only — **no native SQL, no implementation classes**. Return what the screen needs as a `record` built with a JPQL constructor expression (`select new <Record>(...)`), replacing the old VO class:
+   - **Display-only data** (the usual case): a record works with JSP EL on Tomcat 11 (`RecordELResolver`) and with Spring's form tags for display (`form:input path="list[i].X"` reads record components). Keep the VO's property names as component names so the JSPs and the generated HTML names/ids do not change. Check first that nothing posts the form back into these objects and that the old VO has no other writers.
+   - **Data posted back by a form**: records cannot be filled field by field; keep a mutable form class (or test Spring constructor binding) — decide per screen.
+   - The JPQL select list must follow the record's component order; a mismatch stops the application at startup (Spring Data validates the query).
 5. **Service**: replace the DAO with the repository; nothing else changes.
 6. **Delete** the DAO interface and its mapper XML (they are bound by name; nothing else to unregister).
 7. **Verify**:
@@ -54,7 +57,7 @@ Measured over all 76 mapper files (1,332 statements):
    - a JUnit test in `src/test` against H2 with the expected values (`mvn test`);
    - full compile; then deploy and click through the screen.
 
-Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only): map the entity attribute with the VO's type (`java.sql.Date`), so the generated constructor takes it unchanged; Hibernate then reads it with `getDate()` too. A numeric column that a VO holds as text can be mapped as a `String` attribute (Hibernate then reads it with `getString()`, like MyBatis). JPQL `select distinct new ...` keeps SQL `DISTINCT` semantics. Entity keys only matter once entities are loaded or written; projections (`select new`) never go through the persistence context.
+Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only): map the entity attribute and the record component as `java.sql.Date` (the JSP's `<fmt:formatDate>` needs a `java.util.Date`); Hibernate then reads it with `getDate()` too. A numeric column that a VO holds as text can be mapped as a `String` attribute (read with `getString()`, like MyBatis). JPQL `select distinct new ...` keeps SQL `DISTINCT` semantics. Entity keys only matter once entities are loaded or written; projections (`select new`) never go through the persistence context.
 
 ---
 
@@ -62,7 +65,7 @@ Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (d
 
 | Module | Was (MyBatis) | Now (JPA) | Verified | Notes |
 |---|---|---|---|---|
-| NYC PRF partner list (NYC PRF document view) | `NycPRFPartnerDAO.getNycPRFPartner` (`RAW_NYCPRF_PARTNER` ⨝ `STD_NYCPRF_PARTNER`) | `NycprfPartnerRepository.findPartnersOfDocument`: one JPQL `select distinct new NycPRFPartnerVO(...)` over the read-only entities `StdNycprfPartner` and `RawNycprfPartner` | Side by side with the old mapper on H2: identical (DISTINCT, missing rows, NULLs, number-as-text, date-only). `NycprfPartnerRepositoryTest` (4 tests) incl. the shared-transaction check. Full compile. | Entity key `(PATIENT_ID, NYCPRF_DOCUMENT_ID)` is **assumed** — confirm (step 2) before using the entity for writes (`NycPRFDocumentDAO` still inserts these rows). The mapper selected `PARTNER_TEST_DATE_TEXT` twice; the JPQL selects it once (same result). **Not yet deployed.** |
+| NYC PRF partner list (NYC PRF document view) | `NycPRFPartnerDAO.getNycPRFPartner` (`RAW_NYCPRF_PARTNER` ⨝ `STD_NYCPRF_PARTNER`) | `NycprfPartnerRepository.findPartnersOfDocument`: one JPQL `select distinct new NycprfPartner(...)` (a record, replacing the `NycPRFPartnerVO` class) over the read-only entities `StdNycprfPartner` and `RawNycprfPartner` | Side by side with the old mapper on H2: identical (DISTINCT, missing rows, NULLs, number-as-text, date-only). `NycprfPartnerRepositoryTest` (4 tests) incl. the shared-transaction check. Full compile. | Entity key `(PATIENT_ID, NYCPRF_DOCUMENT_ID)` is **assumed** — confirm (step 2) before using the entity for writes (`NycPRFDocumentDAO` still inserts these rows). The mapper selected `PARTNER_TEST_DATE_TEXT` twice; the JPQL selects it once (same result). Removed with it: the dead `NycPrfFormVO`, the `/addNycPRFPartner` and `/deleteNycPRFPartner` endpoints (no JSP bound `nycPrfFormVO`; the delete loop was commented out) and the empty `NycPRFDocumentService.insertNycPRFDoc` stub. **Not yet deployed.** |
 
 **Next candidates** (small, live, single table, typed): `EharsDataLoaderDAO.deleteRIDREharsData` (`EHARS_RIDR`), `OldCasesDocumentDAO`, `MedicaidOldDocumentDAO`, `BlackBoxDocDAO`, `NDIDocumentDAO`, then the rest of the NYC PRF document (`NycPRFDocumentDAO`, which also writes `STD_NYCPRF_PARTNER`).
 

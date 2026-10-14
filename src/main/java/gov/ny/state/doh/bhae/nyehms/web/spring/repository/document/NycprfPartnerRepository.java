@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartnerId;
 
@@ -23,7 +23,7 @@ public interface NycprfPartnerRepository extends Repository<StdNycprfPartner, St
 	 * @return the partners; empty if there are none
 	 */
 	@Query("""
-			select distinct new gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO(
+			select distinct new gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner(
 						s.patientId,
 						s.nycprfDocumentId,
 						s.firstName,
@@ -78,5 +78,5 @@ public interface NycprfPartnerRepository extends Repository<StdNycprfPartner, St
 			where r.patientId = s.patientId
 			  and r.nycprfDocumentId = :nycprfDocumentId
 			""")
-	List<NycPRFPartnerVO> findPartnersOfDocument(long nycprfDocumentId);
+	List<NycprfPartner> findPartnersOfDocument(long nycprfDocumentId);
 }

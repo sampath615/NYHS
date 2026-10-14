@@ -3,8 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPrfFormVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.SexOrn;
@@ -39,16 +38,11 @@ public class NycPRFDocumentService {
 		NycPRFDocVO nycPRFDocVO = nycPRFDocumentDAO.getNycPRFDoc(docId);
         
 		
-		List<NycPRFPartnerVO> prfPartnerList = nycprfPartnerRepository.findPartnersOfDocument(docId);
+		List<NycprfPartner> prfPartnerList = nycprfPartnerRepository.findPartnersOfDocument(docId);
     	
 		nycPRFDocVO.setPartnerList(prfPartnerList);
     	
         return nycPRFDocVO;	
-	}
-
-	public void insertNycPRFDoc(NycPrfFormVO nycPrfFormVO, BindingResult result, UserObject userObject, String sessionID) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	public int writeRawNycPRFRecordDataToStdTable(Map<Object, Object> docVO,
