@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
+
 import java.sql.Date;
 import java.util.List;
 
@@ -130,7 +132,7 @@ public class NycPRFDocVO extends NYEHMSDocVO {
     //List<TTHDocumentVO> tTHDocumentVOList;
     //List<TTHDocumentVO> tTHDocumentVOListOrigional; // we are saving TTH doc list 2 times
     // since we will have to compare if the TTH document was changed or not         
-    List<NycprfPartner> partnerList;
+    List<NycPrfPartnerData> partnerList;
 
 
 
@@ -1311,13 +1313,13 @@ public class NycPRFDocVO extends NYEHMSDocVO {
 
 
 
-	public List<NycprfPartner> getPartnerList() {
+	public List<NycPrfPartnerData> getPartnerList() {
 		return partnerList;
 	}
 
 
 
-	public void setPartnerList(List<NycprfPartner> partnerList) {
+	public void setPartnerList(List<NycPrfPartnerData> partnerList) {
 		this.partnerList = partnerList;
 	}
 

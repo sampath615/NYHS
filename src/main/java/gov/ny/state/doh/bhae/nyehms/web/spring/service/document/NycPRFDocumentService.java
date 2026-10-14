@@ -5,6 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.SexOrn;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -38,7 +39,7 @@ public class NycPRFDocumentService {
 		NycPRFDocVO nycPRFDocVO = nycPRFDocumentDAO.getNycPRFDoc(docId);
         
 		
-		List<NycprfPartner> prfPartnerList = nycprfPartnerRepository.findPartnersOfDocument(docId);
+		List<NycPrfPartnerData> prfPartnerList = nycprfPartnerRepository.findPartnersOfDocument(docId);
     	
 		nycPRFDocVO.setPartnerList(prfPartnerList);
     	

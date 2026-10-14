@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
+import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
@@ -17,6 +18,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Immutable
+@Getter
 @Table(name = "RAW_NYCPRF_PARTNER")
 @IdClass(RawNycprfPartnerId.class)
 public class RawNycprfPartner {

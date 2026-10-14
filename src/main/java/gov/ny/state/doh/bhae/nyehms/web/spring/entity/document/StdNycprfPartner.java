@@ -2,6 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
@@ -20,6 +22,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Immutable
+@Getter
 @Table(name = "STD_NYCPRF_PARTNER")
 @IdClass(StdNycprfPartnerId.class)
 public class StdNycprfPartner {
@@ -172,4 +175,6 @@ public class StdNycprfPartner {
 
 	@Column(name = "ELICITED_BY_ACT")
 	private String elicitedByAct;
+
+
 }

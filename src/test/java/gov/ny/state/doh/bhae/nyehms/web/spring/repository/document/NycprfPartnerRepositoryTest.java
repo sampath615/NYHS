@@ -7,11 +7,15 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -62,29 +66,30 @@ class NycprfPartnerRepositoryTest {
 
 	@Test
 	void returnsEachStandardizedPartnerOfTheDocumentOnce() {
-		List<NycprfPartner> partners = repository.findPartnersOfDocument(100);
+		List<NycPrfPartnerData> partners = repository.findPartnersOfDocument(100);
+
 
 		// P1 was received twice with the same address (DISTINCT); P4 has no standardized row
-		assertThat(partners).extracting(NycprfPartner::PATIENT_ID).containsExactlyInAnyOrder("P1", "P2");
+		assertThat(partners).extracting(p -> p.stdNycprfPartner().getPatientId()).containsExactlyInAnyOrder("P1", "P2");
 	}
 
 	@Test
 	void convertsValuesLikeTheMyBatisMapper() {
-		NycprfPartner p1 = partner(100, "P1");
+        NycPrfPartnerData p1 = partner(100, "P1");
 
-		assertThat(p1.FNAME()).isEqualTo("Ann");
-		assertThat(p1.STD_ADDRESS()).isEqualTo("1 MAIN ST");     // std.ADDRESS as STD_ADDRESS
-		assertThat(p1.raw_address()).isEqualTo("1 Main St");     // raw1.PRTADDRESS as raw_address
-		assertThat(p1.AGE()).isEqualTo("34");                    // NUMBER column read as text
-		assertThat(p1.PARTNER_TEST_DATE_TEXT()).isEqualTo("01/02/2023");
-		assertThat(p1.HDISP_DT()).isEqualTo(Date.valueOf("2023-05-06")); // DATE read as date only
-		assertThat(p1.CREATE_DATE()).isEqualTo(Date.valueOf("2023-05-01"));
-		assertThat(p1.INFORMED_DATE()).isNull();
+		assertThat(p1.stdNycprfPartner().getFirstName()).isEqualTo("Ann");
+		assertThat(p1.stdNycprfPartner().getAddress()).isEqualTo("1 MAIN ST");     // std.ADDRESS as STD_ADDRESS
+		assertThat(p1.rawNycprfPartner().getAddress()).isEqualTo("1 Main St");     // raw1.PRTADDRESS as raw_address
+		assertThat(p1.stdNycprfPartner().getAge()).isEqualTo("34");                    // NUMBER column read as text
+		assertThat(p1.stdNycprfPartner().getPartnerTestDateText()).isEqualTo("01/02/2023");
+		assertThat(p1.stdNycprfPartner().getHdispDate()).isEqualTo(Date.valueOf("2023-05-06")); // DATE read as date only
+		assertThat(p1.stdNycprfPartner().getCreateDate()).isEqualTo(Date.valueOf("2023-05-01"));
+		assertThat(p1.stdNycprfPartner().getInformedDate()).isNull();
 
-		NycprfPartner p2 = partner(100, "P2");
-		assertThat(p2.raw_address()).isNull();
-		assertThat(p2.AGE()).isNull();
-		assertThat(partner(200, "P3").AGE()).isEqualTo("0");
+        NycPrfPartnerData p2 = partner(100, "P2");
+		assertThat(p2.rawNycprfPartner().getAddress()).isNull();
+		assertThat(p2.stdNycprfPartner().getAge()).isNull();
+		assertThat(partner(200, "P3").stdNycprfPartner().getAge()).isEqualTo("0");
 	}
 
 	@Test
@@ -106,10 +111,10 @@ class NycprfPartnerRepositoryTest {
 		assertThat(repository.findPartnersOfDocument(300)).isEmpty();        // rolled back
 	}
 
-	private NycprfPartner partner(int documentId, String patientId) {
+	private NycPrfPartnerData partner(int documentId, String patientId) {
 		return repository.findPartnersOfDocument(documentId).stream()
-				.filter(p -> patientId.equals(p.PATIENT_ID()))
+				.filter(p -> patientId.equals(p.stdNycprfPartner().getPatientId()))
 				.findFirst()
-				.orElseThrow();
+				.orElseThrow(null);
 	}
 }
