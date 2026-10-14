@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.JpaConfig;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner;
 
 /**
  * NYC PRF partner list (moved from MyBatis NycPRFPartnerDAO to Spring Data JPA), against an
@@ -79,7 +78,7 @@ class NycprfPartnerRepositoryTest {
 
 		assertThat(p1.stdNycprfPartner().getFirstName()).isEqualTo("Ann");
 		assertThat(p1.stdNycprfPartner().getAddress()).isEqualTo("1 MAIN ST");     // std.ADDRESS as STD_ADDRESS
-		assertThat(p1.rawNycprfPartner().getAddress()).isEqualTo("1 Main St");     // raw1.PRTADDRESS as raw_address
+		assertThat(p1.rawAddress()).isEqualTo("1 Main St");     // raw1.PRTADDRESS as raw_address
 		assertThat(p1.stdNycprfPartner().getAge()).isEqualTo("34");                    // NUMBER column read as text
 		assertThat(p1.stdNycprfPartner().getPartnerTestDateText()).isEqualTo("01/02/2023");
 		assertThat(p1.stdNycprfPartner().getHdispDate()).isEqualTo(Date.valueOf("2023-05-06")); // DATE read as date only
@@ -87,9 +86,20 @@ class NycprfPartnerRepositoryTest {
 		assertThat(p1.stdNycprfPartner().getInformedDate()).isNull();
 
         NycPrfPartnerData p2 = partner(100, "P2");
-		assertThat(p2.rawNycprfPartner().getAddress()).isNull();
+		assertThat(p2.rawAddress()).isNull();
 		assertThat(p2.stdNycprfPartner().getAge()).isNull();
 		assertThat(partner(200, "P3").stdNycprfPartner().getAge()).isEqualTo("0");
+	}
+
+	@Test
+	void keepsEveryReceivedAddressOfAPartner() {
+		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER VALUES ('P5', 500, '5 Oak St')");
+		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER VALUES ('P5', 500, '7 Pine St')");
+		jdbcTemplate.update("INSERT INTO STD_NYCPRF_PARTNER (PATIENT_ID, NYCPRF_DOCUMENT_ID, FNAME) VALUES ('P5', '500', 'Eve')");
+
+		// the old MyBatis query returned one row per received address
+		assertThat(repository.findPartnersOfDocument(500)).extracting(NycPrfPartnerData::rawAddress)
+				.containsExactlyInAnyOrder("5 Oak St", "7 Pine St");
 	}
 
 	@Test

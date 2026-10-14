@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerRepository;

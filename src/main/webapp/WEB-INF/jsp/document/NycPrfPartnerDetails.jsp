@@ -14,9 +14,9 @@
 					<div class="pL30 pT10">
 						<span class="personLabelDoc4 bold">Name </span>
 						<span> 
-							<span ><form:input path="partnerList[${ptnrCounter.index}].LNAME" class="standardInputSmallText mL20"  maxlength="25"/></span> 
-							<span ><form:input path="partnerList[${ptnrCounter.index}].FNAME" class="standardInputSmallText"  maxlength="20"/></span>
-							<span ><form:input path="partnerList[${ptnrCounter.index}].MNAME" class="standardInputSmallText"  maxlength="25"/></span>
+							<span ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.lastName" class="standardInputSmallText mL20"  maxlength="25"/></span> 
+							<span ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.firstName" class="standardInputSmallText"  maxlength="20"/></span>
+							<span ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.middleName" class="standardInputSmallText"  maxlength="25"/></span>
 							<span class="labelunderneath4"> Last</span> 
 							<span class="labelunderneath4"> First</span>
 							<span class="labelunderneath4"> Middle</span>
@@ -25,59 +25,59 @@
 					<div class="pL30 pT10">
 						<span class="personLabelDoc4 bold">Alias Name</span>
 						<span> 
-							<span ><form:input path="partnerList[${ptnrCounter.index}].ALT_NAME" class="standardInputSmallText mL20"  maxlength="25"/></span> 
+							<span ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.altName" class="standardInputSmallText mL20"  maxlength="25"/></span> 
 						</span>
 					</div>
 					<div class="pL30 pT10">
 						<span class="riskLabelField4 bold">Address</span>
-						<span ><form:input path="partnerList[${ptnrCounter.index}].STD_ADDRESS" class="standardInputText newAddress"  maxlength="62"/></span>
+						<span ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.address" class="standardInputText newAddress"  maxlength="62"/></span>
 						<span class="labelunderneath1"> Street </span><span class="" style="padding-left:140px"> Apt</span><br>
 					</div>
 					<div class="pL30 pT10">
 						<span class="bold">City</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].CITY" class="oAdrDlg standardInputSmallText1 newCity"  maxlength="30"/></span>
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.city" class="oAdrDlg standardInputSmallText1 newCity"  maxlength="30"/></span>
 						<span class="pL30 bold">State</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].STATE" class="oAdrDlg standardInputSmallText1 newState"  maxlength="2" /> </span>
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.state" class="oAdrDlg standardInputSmallText1 newState"  maxlength="2" /> </span>
 						<span class="pL30 bold"> Zip </span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].ZIP" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5"/></span>
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.zip" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5"/></span>
 					</div>			
 					<div class="pL30 pT10">
 						<span class="bold">E-mail Address</span>
-						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].EMAIL"  class="standardInputText"  maxlength="50"/></span>	
+						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.email"  class="standardInputText"  maxlength="50"/></span>	
 					</div>				
 					<div class="pL30 pT10">
 						
 						<span class="bold">Home Phone</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].HOME_PHONE" class="pNumber standardInputSmallText"  maxlength="20"/></span>
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.homePhone" class="pNumber standardInputSmallText"  maxlength="20"/></span>
 						<span class="pL30 bold">Cell Phone</span>
-						<span class="pL10"> <form:input path="partnerList[${ptnrCounter.index}].CELL_PHONE" style="width:136px" class="pNumber standardInputSmallText"  maxlength="20"/></span>												
+						<span class="pL10"> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.cellPhone" style="width:136px" class="pNumber standardInputSmallText"  maxlength="20"/></span>												
 						<br>
 					</div>
 					<div class="pL30 pT10">
 						<span class="bold">Pager</span>
-						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].PAGER" style="width:136px" class="pNumber standardInputSmallText"  maxlength="20"/></span>	
+						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.pager" style="width:136px" class="pNumber standardInputSmallText"  maxlength="20"/></span>	
 					</div>
 					<div class="pL30 pT10">
 						<span class="bold">DOB</span>
-						<span class="pL10"> <form:input path="partnerList[${ptnrCounter.index}].DOB_TEXT" style="width:136px" class="pNumber standardInputSmallText"  maxlength="10"/></span>
+						<span class="pL10"> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.dobText" style="width:136px" class="pNumber standardInputSmallText"  maxlength="10"/></span>
 						<span class="pL30 bold">Estimated Age</span>
-						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].AGE" class="pNumber standardInputSmallText1"  maxlength="3"/></span>	
+						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.age" class="pNumber standardInputSmallText1"  maxlength="3"/></span>	
 						<br>
 					</div>
 					<div class="pL30 pT10">	
 						<span class="bold"> Gender</span> 
 						<span class="pL30"> 
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="M" /> Male </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="F" /> Female </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="U" />Unknown</span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="M" /> Male </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="F" /> Female </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="U" />Unknown</span>
 						</span>
 					</div>	
 					<div class="pL30 pT10">	
 						<span class="bold"> Transgender</span> 
 						<span class="pL30"> 
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="X" /> MTF </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="Y" /> FTM </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].CURRENT_GENDER" value="T" /> Unspecified </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="X" /> MTF </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="Y" /> FTM </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.currentGender" value="T" /> Unspecified </span>
 						</span>
 						<br>
 					</div>	
@@ -86,8 +86,8 @@
 							Spouse of patient?
 						</span>
 						<span class="fieldHolder50">
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].SPOUSE" value="Y" /> Yes </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].SPOUSE" value="N" /> No </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.spouse" value="Y" /> Yes </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.spouse" value="N" /> No </span>
 						</span> <br>
 					</div>
 					 <br>
@@ -96,8 +96,8 @@
 							Domestic violence screen done?
 						</span>
 						<span class="fieldHolder50">
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].DVSCREEN" value="Y" /> Yes </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].DVSCREEN" value="N" /> No </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.dvScreen" value="Y" /> Yes </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.dvScreen" value="N" /> No </span>
 						</span> <br>
 					</div>
 					 <br>
@@ -106,8 +106,8 @@
 							If YES, risk of domestic violence identified?
 						</span>
 						<span class="fieldHolder50">
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].RISK_VIOLENCE" value="Y" /> Yes </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].RISK_VIOLENCE" value="N" /> No </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.riskViolence" value="Y" /> Yes </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.riskViolence" value="N" /> No </span>
 						</span> <br>
 					</div>
 					 <br>						
@@ -118,7 +118,7 @@
 							Partner assistance status
 						</span>
 						<span class="pL10">
-							<span> <form:input path="partnerList[${ptnrCounter.index}].PARTNER_ASSISTANCE_STATUS" id="partnerAssistanceStatus" class="standardInputSmallText1"  maxlength="2"/> </span>
+							<span> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.partnerAssistanceStatus" id="partnerAssistanceStatus" class="standardInputSmallText1"  maxlength="2"/> </span>
 						</span> 
 						<span style="position:absolute;" class="informationMarkTarget">
 							<img src="${staticPath}/images/icons/information.png" class="informationMark" alt="Question Mark" style="width: 16px; height: 16px; vertical-align: top;">
@@ -128,8 +128,8 @@
 							Date notified
 						</span>
 						<span class="pL10">
-							<fmt:formatDate value="${nycPRFDocVO.partnerList[ptnrCounter.index].INFORMED_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedINFORMED_DATE" />
-							<span> <form:input path="partnerList[${ptnrCounter.index}].INFORMED_DATE" value="${theFormattedINFORMED_DATE}" class="standardInputSmallText1"  maxlength="10"/> </span>
+							<fmt:formatDate value="${nycPRFDocVO.partnerList[ptnrCounter.index].stdNycprfPartner.informedDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedINFORMED_DATE" />
+							<span> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.informedDate" value="${theFormattedINFORMED_DATE}" class="standardInputSmallText1"  maxlength="10"/> </span>
 						</span> <br>
 					</div>
 					 <br>
@@ -138,9 +138,9 @@
 							HIV status of partner:
 						</span>
 						<span class="pL10 fieldHolder50">
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].PARTNER_STATUS" value="P" /> Positive </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].PARTNER_STATUS" value="N" /> Negative </span>
-							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].PARTNER_STATUS" value="U" /> Unknown </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.partnerStatus" value="P" /> Positive </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.partnerStatus" value="N" /> Negative </span>
+							<span> <form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.partnerStatus" value="U" /> Unknown </span>
 						</span> <br>
 					</div>
 					 <br>
@@ -150,7 +150,7 @@
 							<span class="pL30 bold"> Date tested </span>
 						</span>
 						<span class="fieldHolder50">
-							<span> <form:input path="partnerList[${ptnrCounter.index}].PARTNER_TEST_DATE_TEXT" class="standardInputSmallText"  maxlength="10"/> </span>
+							<span> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.partnerTestDateText" class="standardInputSmallText"  maxlength="10"/> </span>
 						</span> <br>
 					</div>
 					<br>
@@ -162,26 +162,26 @@
 										<span class="bold">Race</span>
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_WHITE" value="1" /> White	
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceWhite" value="1" /> White	
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_BLACK" value="1" /> African American
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceBlack" value="1" /> African American
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_ASIAN" value="1" /> Asian
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceAsian" value="1" /> Asian
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_INDIAN" value="1" /> American Indian/Alaskan Native
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceIndian" value="1" /> American Indian/Alaskan Native
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_PACIFIC" value="1" /> Pacific
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.racePacific" value="1" /> Pacific
 									</div> 
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_OTHER" value="1" /> Other 
-										<form:input path="partnerList[${ptnrCounter.index}].RACE_OTHER_TEXT" class="standardInputSmallText2"  maxlength="20"/>
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceOther" value="1" /> Other 
+										<form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceOtherText" class="standardInputSmallText2"  maxlength="20"/>
 									</div>
 									<div>
-										<form:checkbox path="partnerList[${ptnrCounter.index}].RACE_UNKNOWN" value="1" /> Unknown
+										<form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.raceUnknown" value="1" /> Unknown
 									</div>	
 								</li>
 							</ul>		
@@ -192,9 +192,9 @@
 									<div>
 										<div><Span class="bold">Ethnicity</Span> (Check one) </br> Hispanic or Latino<br></div>
 										<div>
-											<form:radiobutton path="partnerList[${ptnrCounter.index}].ETHNICITY" value="01" /> Yes <br>
-											<form:radiobutton path="partnerList[${ptnrCounter.index}].ETHNICITY" value="02" /> No <br>
-											<form:radiobutton path="partnerList[${ptnrCounter.index}].ETHNICITY" value="09" /> Unknown <br>
+											<form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.ethnicity" value="01" /> Yes <br>
+											<form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.ethnicity" value="02" /> No <br>
+											<form:radiobutton path="partnerList[${ptnrCounter.index}].stdNycprfPartner.ethnicity" value="09" /> Unknown <br>
 										</div>
 									</div>
 								</li>
@@ -204,13 +204,13 @@
 					<br>
 					<div class="clear">						
 						<span class="bold">Complexion</span>
-						<span  class="p10"><form:input path="partnerList[${ptnrCounter.index}].COMPLEXION_PARTNER" class="standardInputSmallText1"  maxlength="20"/></span> 
+						<span  class="p10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.complexion" class="standardInputSmallText1"  maxlength="20"/></span> 
 						<span class="pL10 bold">Hair</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].HAIR_PARTNER" class="standardInputSmallText1"  maxlength="15"/></span>  
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.hair" class="standardInputSmallText1"  maxlength="15"/></span>  
 						<span class="pL10 bold">Height</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].HEIGHT" class="standardInputSmallText1"  maxlength="15"/></span> 
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.height" class="standardInputSmallText1"  maxlength="15"/></span> 
 						<span class="pL10 bold">Weight</span>
-						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].WEIGHT" class="standardInputSmallText1"  maxlength="20"/></span> 
+						<span class="pL10"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.weight" class="standardInputSmallText1"  maxlength="20"/></span> 
 					</div>
 					<br>	
 					<div>
@@ -218,23 +218,23 @@
 							Place of employment
 						</span>
 						<span class="">
-							<span> <form:input path="partnerList[${ptnrCounter.index}].PLACE_OF_EMPLOYMENT" class="standardInputText"  maxlength="30" /> </span>
+							<span> <form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.placeOfEmployment" class="standardInputText"  maxlength="30" /> </span>
 						</span> <br>
 					</div>
 					<br>
 					<div class="">
 						<span class="bold">Work hours</span>
-						<span class="pL30" ><form:input path="partnerList[${ptnrCounter.index}].WORK_HOURS" class="standardInputSmallText"  maxlength="25"/></span> 
+						<span class="pL30" ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.workHours" class="standardInputSmallText"  maxlength="25"/></span> 
 						<span class="pL30 bold">Work Phone</span>
-						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].WORK_PHONE" class="standardInputSmallText"  maxlength="30"/></span> 
+						<span class="pL30"><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.workPhone" class="standardInputSmallText"  maxlength="30"/></span> 
 					</div>
 					<br>
 					<div class="">
 						<span class="bold">Marital status</span>
-						<span class="pL30" ><form:input path="partnerList[${ptnrCounter.index}].MARITAL_CODE" class="standardInputSmallText"  maxlength="2"/></span> 
+						<span class="pL30" ><form:input path="partnerList[${ptnrCounter.index}].stdNycprfPartner.maritalCode" class="standardInputSmallText"  maxlength="2"/></span> 
 						<span class="pL30 bold">Pregnant</span>
 						<span class="pL30">
-							<span> <form:checkbox path="partnerList[${ptnrCounter.index}].PREGNANT" value="Y" /> Yes </span>
+							<span> <form:checkbox path="partnerList[${ptnrCounter.index}].stdNycprfPartner.pregnant" value="Y" /> Yes </span>
 						</span> 
 					</div><br>
 					<div>

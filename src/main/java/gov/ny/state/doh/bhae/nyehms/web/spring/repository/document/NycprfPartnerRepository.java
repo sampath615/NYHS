@@ -17,13 +17,13 @@ public interface NycprfPartnerRepository extends Repository<StdNycprfPartner, St
 	/**
 	 * The partners listed on an NYC PRF document: the standardized partner data plus the address
 	 * as received, built as the form object the NYC PRF document screen binds to. Each partner is
-	 * returned once even if it was received more than once with the same address.
+	 * returned once per received address (once if it was received more than once with the same address).
 	 *
 	 * @param nycprfDocumentId document id of the NYC PRF form
 	 * @return the partners; empty if there are none
 	 */
 	@Query("""
-			select new gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData(stdNycprfPartner, rawNycprfPartner)
+			select distinct new gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData(stdNycprfPartner, rawNycprfPartner.address)
 			from StdNycprfPartner stdNycprfPartner
 			join RawNycprfPartner rawNycprfPartner
 			on rawNycprfPartner.patientId = stdNycprfPartner.patientId

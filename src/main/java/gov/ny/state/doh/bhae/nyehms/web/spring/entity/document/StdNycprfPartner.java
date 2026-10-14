@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
 import java.sql.Date;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 
