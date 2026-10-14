@@ -2,8 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.repository.document;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
@@ -12,7 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartnerI
 /**
  * Spring Data JPA repository for NYC PRF partners (replaces the MyBatis NycPRFPartnerDAO).
  */
-public interface NycprfPartnerRepository extends Repository<StdNycprfPartner, StdNycprfPartnerId> {
+public interface NycprfPartnerRepository extends JpaRepository<StdNycprfPartner, StdNycprfPartnerId> {
 
 	/**
 	 * The partners listed on an NYC PRF document: the standardized partner data plus the address

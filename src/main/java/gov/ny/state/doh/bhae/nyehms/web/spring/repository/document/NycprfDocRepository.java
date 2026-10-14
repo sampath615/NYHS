@@ -1,7 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.repository.document;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
@@ -9,7 +9,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
 /**
  * Spring Data JPA repository for NYC PRF documents (replaces NycPRFDocumentDAO.getNycPRFDoc).
  */
-public interface NycprfDocRepository extends Repository<StdNycprfDoc, Integer> {
+public interface NycprfDocRepository extends JpaRepository<StdNycprfDoc, Integer> {
 
 	/**
 	 * An NYC PRF document for the document screen: the standardized form, the person address as
