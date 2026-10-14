@@ -45,7 +45,7 @@ Measured over all 76 mapper files (1,332 statements):
    WHERE table_name IN ('<TABLE>') ORDER BY table_name, column_id;
    ```
    A wrong `@Id` makes Hibernate merge rows that share it — never guess it for entity reads or writes.
-3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); give it a constructor matching the JPQL `select new` list plus an explicit no-arg constructor. Replace its hand-written accessors with Lombok `@Getter`/`@Setter` (check first that every accessor is a plain get/set, then compare `javap -public` of the old and new class).
+3. **Entity** in `web.spring.entity.<area>`: Java-style field names with `@Column` carrying the real column name; `@Immutable` while the module is read-only. Keep the existing VO for the JSPs/controllers (Spring form binding needs its accessors); replace its hand-written accessors and constructors with Lombok `@Getter`, `@Setter`, `@NoArgsConstructor` and `@AllArgsConstructor` (check first that every accessor is a plain get/set, then compare `javap -public` of the old and new class). The JPQL `select new` list must follow the VO's field declaration order, because that is the order of the generated all-arguments constructor; a mismatch stops the application at startup (Spring Data validates the query).
 4. **Repository** in `web.spring.repository.<area>`: a Spring Data interface with derived or JPQL (`@Query`) methods only — **no native SQL, no implementation classes**. Read the data the screens need with a JPQL constructor expression (`select new <Vo>(...)`) straight into the existing VO/form object, or into a `record` when no form binds to it. Entities have **annotated fields only** (no getters/setters; Hibernate uses field access).
 5. **Service**: replace the DAO with the repository; nothing else changes.
 6. **Delete** the DAO interface and its mapper XML (they are bound by name; nothing else to unregister).
@@ -54,7 +54,7 @@ Measured over all 76 mapper files (1,332 statements):
    - a JUnit test in `src/test` against H2 with the expected values (`mvn test`);
    - full compile; then deploy and click through the screen.
 
-Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only): map the entity attribute as `LocalDate` and convert with `Date.valueOf` in the VO constructor. A numeric column that a VO holds as text can be mapped as a `String` attribute (Hibernate then reads it with `getString()`, like MyBatis). JPQL `select distinct new ...` keeps SQL `DISTINCT` semantics. Entity keys only matter once entities are loaded or written; projections (`select new`) never go through the persistence context.
+Notes: `java.sql.Date` in a VO means MyBatis read the column with `getDate()` (date only): map the entity attribute with the VO's type (`java.sql.Date`), so the generated constructor takes it unchanged; Hibernate then reads it with `getDate()` too. A numeric column that a VO holds as text can be mapped as a `String` attribute (Hibernate then reads it with `getString()`, like MyBatis). JPQL `select distinct new ...` keeps SQL `DISTINCT` semantics. Entity keys only matter once entities are loaded or written; projections (`select new`) never go through the persistence context.
 
 ---
 

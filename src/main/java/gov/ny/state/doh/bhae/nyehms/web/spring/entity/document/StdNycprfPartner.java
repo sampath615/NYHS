@@ -1,6 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
 import org.hibernate.annotations.Immutable;
 
@@ -153,16 +153,16 @@ public class StdNycprfPartner {
 	private String partnerStatus;
 
 	@Column(name = "HDISP_DT")
-	private LocalDate hdispDate;
+	private Date hdispDate;
 
 	@Column(name = "CREATE_UID")
 	private String createUid;
 
 	@Column(name = "CREATE_DATE")
-	private LocalDate createDate;
+	private Date createDate;
 
 	@Column(name = "INFORMED_DATE")
-	private LocalDate informedDate;
+	private Date informedDate;
 
 	@Column(name = "HIGH_PRIORITY")
 	private String highPriority;
