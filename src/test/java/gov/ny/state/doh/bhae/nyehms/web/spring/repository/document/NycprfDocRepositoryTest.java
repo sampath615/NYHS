@@ -49,12 +49,12 @@ class NycprfDocRepositoryTest {
 	void readsTheDocumentWithItsCurrentMatch() {
 		NycPrfDocData doc = repository.findDocument(100);
 
-		assertThat(doc.DOCUMENT_ID()).isEqualTo(100);
-		assertThat(doc.PRF_SRC_ID()).isEqualTo(7L);
-		assertThat(doc.FNAME()).isEqualTo("FNAME");                      // standardized text column
+		assertThat(doc.stdNycprfDoc().getDocumentId()).isEqualTo(100);
+		assertThat(doc.stdNycprfDoc().getPrfSrcId()).isEqualTo(7L);
+		assertThat(doc.stdNycprfDoc().getFname()).isEqualTo("FNAME");                      // standardized text column
 		assertThat(doc.rawPersonAddress()).isEqualTo("12 Raw St");       // RAW_NYCPRF_DOC.ADDRESS
-		assertThat(doc.STATENO()).isEqualTo("1234");                     // only the current association
-		assertThat(doc.DISCARD_STATUS()).isEqualTo("Y");
+		assertThat(doc.stateno()).isEqualTo("1234");                     // only the current association
+		assertThat(doc.discardStatus()).isEqualTo("Y");
 		assertThat(doc.partnerList()).isEmpty();                         // partners are added by the service
 	}
 
@@ -62,21 +62,21 @@ class NycprfDocRepositoryTest {
 	void formatsAndReadsDatesLikeTheMyBatisMapper() {
 		NycPrfDocData doc = repository.findDocument(100);
 
-		assertThat(doc.DOB()).isEqualTo("05/06/1980");                   // TO_CHAR(DOB, 'MM/DD/YYYY')
-		assertThat(doc.FIELD_PROC_DATE()).isEqualTo("01/02/2023");
-		assertThat(doc.ADMISSION_DATE()).isEqualTo(Date.valueOf("2023-03-04")); // DATE read as date only
-		assertThat(doc.CREATE_DATE()).isEqualTo(Date.valueOf("2023-03-05"));
-		assertThat(doc.REVIEW_DATE()).isNull();
+		assertThat(doc.dob()).isEqualTo("05/06/1980");                   // TO_CHAR(DOB, 'MM/DD/YYYY')
+		assertThat(doc.fieldProcDate()).isEqualTo("01/02/2023");
+		assertThat(doc.stdNycprfDoc().getAdmissionDate()).isEqualTo(Date.valueOf("2023-03-04")); // DATE read as date only
+		assertThat(doc.stdNycprfDoc().getCreateDate()).isEqualTo(Date.valueOf("2023-03-05"));
+		assertThat(doc.stdNycprfDoc().getReviewDate()).isNull();
 	}
 
 	@Test
 	void documentWithoutMatchOrDates() {
 		NycPrfDocData doc = repository.findDocument(200);
 
-		assertThat(doc.STATENO()).isNull();
+		assertThat(doc.stateno()).isNull();
 		assertThat(doc.rawPersonAddress()).isNull();
-		assertThat(doc.DOB()).isNull();
-		assertThat(doc.FIELD_PROC_DATE()).isNull();
+		assertThat(doc.dob()).isNull();
+		assertThat(doc.fieldProcDate()).isNull();
 	}
 
 	@Test
