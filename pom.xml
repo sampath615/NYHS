@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<!-- Phase 1: Spring Boot 4 (Spring Framework 7) manages framework versions.
-
-             Still a WAR deployed to external Tomcat 11; XML config imported via @ImportResource.
-
-             If 4.0.5 is not in Artifactory, use any available 4.0.x. -->
+	<!-- Spring Boot 4 (Spring Framework 7) manages framework and most library versions.
+            Packaged as a WAR and deployed to external Tomcat 11. Configuration is pure Java (no XML). -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.5</version>
+		<version>4.0.8</version>
 		<relativePath/>
 	</parent>
 	<groupId>nyehms</groupId>
@@ -26,59 +22,57 @@
 	</properties>
 	<dependencies>
 		<!-- ===== Spring Boot ===== -->
-		<!-- Core starter, declared explicitly so spring-boot-autoconfigure is packaged in the WAR.
-
-                     Without this it only arrives through spring-boot-starter-tomcat (provided) and is left out,
-
-                     which makes @SpringBootApplication a silent no-op at runtime. -->
+		<!-- Declared explicitly so spring-boot-autoconfigure is packaged in the WAR.
+                    Without it, it only arrives through spring-boot-starter-tomcat (provided) and is left out,
+                    which makes @SpringBootApplication a silent no-op at runtime. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<!-- Spring MVC (Boot 4 name for the old spring-boot-starter-web).
-
-                     Brings spring-webmvc, spring-web, spring-context, spring-beans, spring-aop, spring-core. -->
+		<!-- Spring MVC. Brings spring-webmvc, spring-web, spring-context, spring-beans, spring-aop, spring-core. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 			<exclusions>
-				<!-- keep Jackson 2 only for now (Phase 1 = no behavior change) -->
+				<!-- Jackson 2 only for now; Jackson 3 migration is a later step -->
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-jackson</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- external Tomcat 11 provides the servlet container: do not package embedded Tomcat -->
+		<!-- External Tomcat 11 provides the servlet container: do not package embedded Tomcat -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
-		<!-- ===== Spring Framework modules NOT brought in by the starters above =====
-
-                     (spring-context, spring-beans, spring-aop, spring-web and spring-webmvc were removed:
-
-                      they now come transitively from spring-boot-starter-webmvc) -->
-		<!-- Quartz, mail and FreeMarker integration -->
+		<!-- JPA / Hibernate. Brings spring-data-jpa, hibernate-core, spring-orm, spring-jdbc and spring-tx
+                    (spring-jdbc/spring-tx are also what mybatis-spring needs).
+                    DataSources come from Tomcat JNDI (DataSourceConfig), so the HikariCP pool is not needed. -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.zaxxer</groupId>
+					<artifactId>HikariCP</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- ===== Spring Framework modules not brought in by the starters above ===== -->
+		<!-- Quartz integration (SchedulerFactoryBean, JobDetailFactoryBean, CronTriggerFactoryBean), mail, FreeMarker -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		<!-- brings spring-jdbc and spring-tx, which mybatis-spring needs.
-		<!- JDBC + transactions (DataAccessException, @Transactional, DataSourceTransactionManager);
-  		  mybatis-spring needs these but does not bring them -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-		</dependency>
-		<!-- WebClient only (used with reactor-netty below); the app itself stays servlet/MVC -->
+		<!-- WebClient only (used with reactor-netty below); the app itself stays servlet/MVC.
+                    Also brings reactor-core. -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webflux</artifactId>
 		</dependency>
-		<!-- <aop:aspectj-autoproxy/> in spring-config.xml -->
+		<!-- AspectJ annotations for the @Aspect classes (exception handling / controller interceptors) -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
@@ -86,7 +80,6 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.30</version>
 		</dependency>
 		<!-- ===== Jakarta EE APIs: servlet and annotations are provided by Tomcat 11 ===== -->
 		<dependency>
@@ -117,7 +110,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- JAXB 4 (jakarta.xml.bind): oxm marshaller and docx4j -->
+		<!-- JAXB 4 (jakarta.xml.bind), used by docx4j -->
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
@@ -126,7 +119,7 @@
 			<groupId>org.glassfish.jaxb</groupId>
 			<artifactId>jaxb-runtime</artifactId>
 		</dependency>
-		<!-- Bean Validation: WebLogic provided this; Tomcat does not (spring-config.xml 'validator' bean) -->
+		<!-- Bean Validation: Tomcat does not provide it (ApplicationConfig 'validator' bean) -->
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
@@ -135,13 +128,13 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-		<!-- ===== Logging ===== -->
-		<!-- log4j 1.x API calls routed to SLF4J -> Log4j2 -->
+		<!-- ===== Logging (Spring Boot default: SLF4J + Logback, configured in application.properties) ===== -->
+		<!-- Routes old log4j 1.x API calls (org.apache.log4j) to SLF4J -> Logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 		</dependency>
-		<!-- ===== Persistence ===== -->
+		<!-- ===== Persistence: MyBatis (existing DAOs, being migrated to JPA) ===== -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
@@ -152,17 +145,16 @@
 			<artifactId>mybatis</artifactId>
 			<version>3.5.19</version>
 		</dependency>
+		<!-- The container pool loads the driver: copy ojdbc11.jar to $CATALINA_HOME/lib -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
 			<version>23.5.0.24.07</version>
-			<!-- the container pool loads the driver: copy ojdbc11.jar to $CATALINA_HOME/lib -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
-			<version>2.5.2</version>
 		</dependency>
 		<!-- ===== JSON / HTTP ===== -->
 		<dependency>
@@ -193,10 +185,6 @@
 		<dependency>
 			<groupId>io.projectreactor.netty</groupId>
 			<artifactId>reactor-netty-http</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.projectreactor</groupId>
-			<artifactId>reactor-core</artifactId>
 		</dependency>
 		<!-- ===== Mail (plain library, not provided by Tomcat) ===== -->
 		<dependency>
@@ -255,13 +243,6 @@
 			<groupId>org.docx4j</groupId>
 			<artifactId>docx4j-ImportXHTML</artifactId>
 			<version>11.4.8</version>
-			<exclusions>
-				<!-- docx4j-ImportXHTML wrongly ships Logback; the app uses Log4j2 -->
-				<exclusion>
-					<groupId>ch.qos.logback</groupId>
-					<artifactId>logback-classic</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- ===== HL7 ===== -->
 		<dependency>
@@ -288,7 +269,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.17.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.collections</groupId>
@@ -305,7 +285,7 @@
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
-		<!-- compile-time only: keep it out of the WAR -->
+		<!-- Compile-time only: keep it out of the WAR -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
