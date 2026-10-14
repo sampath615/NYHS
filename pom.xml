@@ -34,13 +34,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
-			<exclusions>
-				<!-- app uses log4j2.xml, not Logback -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- Spring MVC (Boot 4 name for the old spring-boot-starter-web).
 
@@ -49,10 +42,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
 				<!-- keep Jackson 2 only for now (Phase 1 = no behavior change) -->
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
@@ -65,18 +54,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-logging</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-		<!-- Log4j2 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-log4j2</artifactId>
-		</dependency>
+
 		<!-- ===== Spring Framework modules NOT brought in by the starters above =====
 
                      (spring-context, spring-beans, spring-aop, spring-web and spring-webmvc were removed:
@@ -87,22 +66,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-		<!-- <oxm:jaxb2-marshaller> in spring-config.xml -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-		</dependency>
 		<!-- brings spring-jdbc and spring-tx, which mybatis-spring needs.
-
-                     Phase 2: if nothing imports org.springframework.orm, replace with spring-jdbc. -->
+		<!- JDBC + transactions (DataAccessException, @Transactional, DataSourceTransactionManager);
+  		  mybatis-spring needs these but does not bring them -->
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-		</dependency>
-		<!-- Phase 2: remove if nothing imports org.springframework.jms -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jms</artifactId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 		<!-- WebClient only (used with reactor-netty below); the app itself stays servlet/MVC -->
 		<dependency>
@@ -336,6 +305,12 @@
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
+		<!-- compile-time only: keep it out of the WAR -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<directory>${project.build.directory}</directory>
@@ -353,6 +328,18 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
