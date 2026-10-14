@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.ApplicationContextProvider;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
@@ -31,6 +30,7 @@ public class QualityStageLoader{
 	@Autowired SendEmail                         sendEmail;
 	@Autowired QuartzSchedulerTransactionHelper  quartzSchedulerTransactionHelper;
 	@Autowired ManualQuartzJobService            manualQuartzJobService;
+	@Autowired SchedulerNotificationVO			 schedulerNotificationVO;
 
 	/**
 	 * Drives the POST-MATCH document processing steps (one job scenario) or
@@ -89,15 +89,7 @@ public class QualityStageLoader{
 							"LAST_QUALITY_STAGE_MATCH_RESULTS_SCHEDULER_RUN_DATE",
 							schedulerStatusObject, "Quality Stage Match results",
 							schedulerMetaData, "QUALITY_STAGE_MATCH_RESULTS_DEPENDENT_SCHEDULER");
-					/*
-					 * Storing the Status object in Application context.
-					 * This status will be high level, which will be sending it to the few users.
-					 */
-					ApplicationContextProvider appContext = new ApplicationContextProvider();
-					SchedulerNotificationVO schedulerNotificationVO = 
-							appContext.getApplicationContext().getBean(
-									"notificationObject",
-									SchedulerNotificationVO.class);
+
 					List<String> schedulerNotificationObj =  schedulerNotificationVO.getSchedulerStatusObj();
 //					if("Y".equals(NEED_TO_RUN_SECOND_JOB)){ // Two jobs
 //						manualQuartzJobService.updateSchedulerMetaData(

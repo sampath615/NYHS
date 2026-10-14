@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.ApplicationContextProvider;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.AIRSDocumentService;
@@ -53,6 +52,9 @@ public class RawRecordsCleaner {
 
 	@Autowired
 	HITCommonDocumentService hitCommonDocumentService;
+
+	@Autowired
+	SchedulerNotificationVO schedulerNotificationVO;
 	
 //	@Autowired
 //	DatafluxJobExce datafluxJobExce;
@@ -184,9 +186,7 @@ public class RawRecordsCleaner {
 					 * This status will be high level, which will be sending it
 					 * to the few users.
 					 */
-					ApplicationContextProvider appContext = new ApplicationContextProvider();
-					SchedulerNotificationVO schedulerNotificationVO = appContext.getApplicationContext()
-							.getBean("notificationObject", SchedulerNotificationVO.class);
+
 					List<String> schedulerNotificationObj = schedulerNotificationVO.getSchedulerStatusObj();
 					
 					schedulerNotificationObj.clear();

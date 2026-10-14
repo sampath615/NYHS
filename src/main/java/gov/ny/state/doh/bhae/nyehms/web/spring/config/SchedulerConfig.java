@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.config;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.*;
 import org.quartz.Job;
 import org.quartz.JobDetail;
@@ -33,16 +32,6 @@ import java.util.Map;
 
 @Configuration
 public class SchedulerConfig {
-
-    /**
-     * Status of the nightly scheduler process. Looked up BY NAME
-     * (getBean("notificationObject", ...)) in RawRecordsCleaner, QualityStageLoader
-     * and QualityStageMatchResultsLoaderForBothJobs, so keep the method name.
-     */
-    @Bean
-    public SchedulerNotificationVO notificationObject() {
-        return new SchedulerNotificationVO();
-    }
 
     // ----------------------------------------------------------------  jobs
 

@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.common;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ import java.util.List;
  * @author ska03
  *
  */
+@Component
 public class SchedulerNotificationVO{
 	
 	private List<String> schedulerStatusObj = new ArrayList<>();
