@@ -20,8 +20,7 @@ public interface NycprfDocRepository extends Repository<StdNycprfDoc, Integer> {
 	 */
 	@Query("""
 			select new gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData(stdNycprfDoc,
-					rawNycprfDoc.address, personDocAssociation.stateno, personDocAssociation.discardStatus,
-					format(stdNycprfDoc.dob as 'MM/dd/yyyy'), format(stdNycprfDoc.fieldProcDate as 'MM/dd/yyyy'))
+					rawNycprfDoc.address, personDocAssociation.stateno, personDocAssociation.discardStatus)
 			from RawNycprfDoc rawNycprfDoc
 			join StdNycprfDoc stdNycprfDoc
 			on stdNycprfDoc.documentId = rawNycprfDoc.documentId

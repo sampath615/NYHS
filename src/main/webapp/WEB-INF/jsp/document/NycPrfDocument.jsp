@@ -117,7 +117,8 @@
 						<div class="personInfo pB10">
 							<span class="fieldHolder25 ">
 								<span class="fLW35 bold">Date of Birth </span>
-								<span  class="fLW60"><form:input  path="dob" id="dobValidation" class="dPicker standardInputSmallText"  maxlength="10"/></span>
+								<fmt:formatDate value="${nycPRFDocVO.stdNycprfDoc.dob}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDob" />
+								<span  class="fLW60"><form:input  path="stdNycprfDoc.dob" id="dobValidation" class="dPicker standardInputSmallText" value="${theFormattedDob}"  maxlength="10"/></span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35 bold">Date of Death </span>
@@ -827,7 +828,8 @@
 										<li>
 											<span class="bold">Date assigned for field investigation </span>
 											<span class="mL10"> 
-												<span> <form:input id="FIELD_PROC_DATE"  path="fieldProcDate" class="dPicker standardInputSmallText"  maxlength="10"/> </span> 
+												<fmt:formatDate value="${nycPRFDocVO.stdNycprfDoc.fieldProcDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedFieldProcDate" />
+												<span> <form:input id="FIELD_PROC_DATE"  path="stdNycprfDoc.fieldProcDate" class="dPicker standardInputSmallText" value="${theFormattedFieldProcDate}"  maxlength="10"/> </span> 
 											</span>
 										</li>	
 									

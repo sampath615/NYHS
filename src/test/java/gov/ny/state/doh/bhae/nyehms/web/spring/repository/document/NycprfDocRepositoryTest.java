@@ -59,11 +59,11 @@ class NycprfDocRepositoryTest {
 	}
 
 	@Test
-	void formatsAndReadsDatesLikeTheMyBatisMapper() {
+	void readsDatesAsDateOnly() {
 		NycPrfDocData doc = repository.findDocument(100);
 
-		assertThat(doc.dob()).isEqualTo("05/06/1980");                   // TO_CHAR(DOB, 'MM/DD/YYYY')
-		assertThat(doc.fieldProcDate()).isEqualTo("01/02/2023");
+		assertThat(doc.stdNycprfDoc().getDob()).isEqualTo(Date.valueOf("1980-05-06"));      // the JSP formats it as MM/dd/yyyy
+		assertThat(doc.stdNycprfDoc().getFieldProcDate()).isEqualTo(Date.valueOf("2023-01-02"));
 		assertThat(doc.stdNycprfDoc().getAdmissionDate()).isEqualTo(Date.valueOf("2023-03-04")); // DATE read as date only
 		assertThat(doc.stdNycprfDoc().getCreateDate()).isEqualTo(Date.valueOf("2023-03-05"));
 		assertThat(doc.stdNycprfDoc().getReviewDate()).isNull();
@@ -75,8 +75,8 @@ class NycprfDocRepositoryTest {
 
 		assertThat(doc.stateno()).isNull();
 		assertThat(doc.rawPersonAddress()).isNull();
-		assertThat(doc.dob()).isNull();
-		assertThat(doc.fieldProcDate()).isNull();
+		assertThat(doc.stdNycprfDoc().getDob()).isNull();
+		assertThat(doc.stdNycprfDoc().getFieldProcDate()).isNull();
 	}
 
 	@Test
