@@ -2,9 +2,9 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.SexOrn;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,21 +27,17 @@ public class NycPRFDocumentService {
 	@Autowired
 	NycPRFDocumentDAO nycPRFDocumentDAO;
 	@Autowired
+	NycprfDocRepository nycprfDocRepository;
+	@Autowired
 	NycprfPartnerRepository nycprfPartnerRepository;
 	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;	
 	
 	
 	
-	public NycPRFDocVO getNycPRFDoc(int docId, BindingResult result, UserObject userObject, String sessionID) {
-		NycPRFDocVO nycPRFDocVO = nycPRFDocumentDAO.getNycPRFDoc(docId);
-        
-		
-		List<NycPrfPartnerData> prfPartnerList = nycprfPartnerRepository.findPartnersOfDocument(docId);
-    	
-		nycPRFDocVO.setPartnerList(prfPartnerList);
-    	
-        return nycPRFDocVO;	
+	public NycPrfDocData getNycPRFDoc(int docId, BindingResult result, UserObject userObject, String sessionID) {
+		return nycprfDocRepository.findDocument(docId)
+				.withPartnerList(nycprfPartnerRepository.findPartnersOfDocument(docId));
 	}
 	
 	public int writeRawNycPRFRecordDataToStdTable(Map<Object, Object> docVO,
