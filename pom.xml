@@ -128,7 +128,7 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-		<!-- ===== Logging (Spring Boot default: SLF4J + Logback, configured in application.properties) ===== -->
+		<!-- ===== Logging (Spring Boot default: SLF4J + Logback, configured in application.yml) ===== -->
 		<!-- Routes old log4j 1.x API calls (org.apache.log4j) to SLF4J -> Logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>

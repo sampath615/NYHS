@@ -20,9 +20,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObjectArgumentResolv
  * spring-config.xml.
  * <ul>
  * <li>JSP view resolver: spring.mvc.view.prefix / spring.mvc.view.suffix in
- * application.properties (Spring Boot creates the InternalResourceViewResolver).</li>
+ * application.yml (Spring Boot creates the InternalResourceViewResolver).</li>
  * <li>Multipart uploads: Spring Boot registers the StandardServletMultipartResolver;
- * the size limits are spring.servlet.multipart.* in application.properties.</li>
+ * the size limits are spring.servlet.multipart.* in application.yml.</li>
  * </ul>
  * Do not add @EnableWebMvc here: it switches Spring Boot's MVC configuration off.
  */
