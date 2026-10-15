@@ -19,6 +19,6 @@ public interface InitializeDAO {
 	public List<FirefoxVersionVO> getValidFirefoxVer() throws DataAccessException;
 	public String getLatestFirefoxVersion()  throws DataAccessException;
 	public void insertUserAccessAttemp(UserAccessAttemptVO userAccessAttemptVO)throws DataAccessException;	
-	public List<InitFailureReasonsVO> getInitFailReasons() throws DataAccessException;
+	//public List<InitFailureReasonsVO> getInitFailReasons() throws DataAccessException;
 	public String getLatestJavaVersionNumber()  throws DataAccessException;
 }

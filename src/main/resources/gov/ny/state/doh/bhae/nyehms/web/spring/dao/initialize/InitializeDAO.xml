@@ -101,7 +101,7 @@
 						
 	</insert>
 	
-  	<resultMap id="getInitFailReasonResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO" >
+ <!-- 	<resultMap id="getInitFailReasonResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO" >
   		    <result column="REASON_CD" property="reasoncd" jdbcType="DECIMAL" />
     		<result column="SHORT_DESC" property="short_desc" jdbcType="VARCHAR" />
     		<result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
@@ -111,5 +111,5 @@
 		SELECT REASON_CD, SHORT_DESC, DESCRIPTION
 		FROM CODED_INIT_FAILURE_REASONS
 		ORDER BY REASON_CD
-	</select>
+	</select>-->
 </mapper>
