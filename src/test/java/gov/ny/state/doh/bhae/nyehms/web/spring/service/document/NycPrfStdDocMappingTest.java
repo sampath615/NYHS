@@ -62,11 +62,11 @@ class NycPrfStdDocMappingTest {
 
 	@Test
 	void writesNumbersAsOracleTextAndRefusesDatesForText() {
-		assertThat(NycPrfStdDocMapping.oracleText(5)).isEqualTo("5");
-		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("12.50"))).isEqualTo("12.5");
-		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("0.50"))).isEqualTo(".5");
-		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("-0.25"))).isEqualTo("-.25");
-		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("1E+3"))).isEqualTo("1000");
+		assertThat(OracleConversions.oracleText(5)).isEqualTo("5");
+		assertThat(OracleConversions.oracleText(new BigDecimal("12.50"))).isEqualTo("12.5");
+		assertThat(OracleConversions.oracleText(new BigDecimal("0.50"))).isEqualTo(".5");
+		assertThat(OracleConversions.oracleText(new BigDecimal("-0.25"))).isEqualTo("-.25");
+		assertThat(OracleConversions.oracleText(new BigDecimal("1E+3"))).isEqualTo("1000");
 		assertThat(NycPrfStdDocMapping.toStdDoc(raw("CITYNO", new BigDecimal("12345"))).getCityno()).isEqualTo("12345");
 		// Oracle would have formatted it with its session date format
 		assertThatThrownBy(() -> NycPrfStdDocMapping.toStdDoc(raw("DOD", Timestamp.valueOf("2023-03-04 00:00:00"))))
@@ -75,9 +75,9 @@ class NycPrfStdDocMappingTest {
 
 	@Test
 	void trimsSpacesOnly() {
-		assertThat(NycPrfStdDocMapping.trimmed("  a b  ")).isEqualTo("a b");
-		assertThat(NycPrfStdDocMapping.trimmed("\ta\t")).isEqualTo("\ta\t");   // Oracle TRIM removes spaces only
-		assertThat(NycPrfStdDocMapping.upper(" o'neil ")).isEqualTo("O'NEIL");
+		assertThat(OracleConversions.trimmed("  a b  ")).isEqualTo("a b");
+		assertThat(OracleConversions.trimmed("\ta\t")).isEqualTo("\ta\t");   // Oracle TRIM removes spaces only
+		assertThat(OracleConversions.upper(" o'neil ")).isEqualTo("O'NEIL");
 	}
 
 	@Test
@@ -101,8 +101,8 @@ class NycPrfStdDocMappingTest {
 
 		// with a conversion: the second field's value is converted
 		StdNycprfDoc converted = NycPrfStdDocMapping.toStdDoc(raw("EVRNGTST", "", "TSTNGBEF", "y", "EXPHIV", "n", "EXPSIX", "y"));
-		assertThat(converted.getEverTestNeg()).isEqualTo(NycPrfStdDocMapping.upper(LabCommonUtils.checkTestDataValues("y"))).isNotNull();
-		assertThat(converted.getRsonFirstPosExp()).isEqualTo(NycPrfStdDocMapping.upper(LabCommonUtils.checkTestDataValues("n"))).isNotNull();
+		assertThat(converted.getEverTestNeg()).isEqualTo(OracleConversions.upper(LabCommonUtils.checkTestDataValues("y"))).isNotNull();
+		assertThat(converted.getRsonFirstPosExp()).isEqualTo(OracleConversions.upper(LabCommonUtils.checkTestDataValues("n"))).isNotNull();
 	}
 
 	@Test

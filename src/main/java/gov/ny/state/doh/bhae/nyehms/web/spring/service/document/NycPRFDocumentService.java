@@ -1,6 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfDocRepository;
@@ -8,6 +9,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartner
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,10 @@ public class NycPRFDocumentService {
 	 * Writes the standardized partners (STD_NYCPRF_PARTNER) of a document from the partners as received.
 	 */
 	public void writeRawNycPRFPartnerDataFromRawTable(BigDecimal documentId) {
-		nycprfPartnerRepository.insertStdPartnersOfDocument(documentId.longValue());
+		List<StdNycprfPartner> partners = nycprfPartnerRepository.findReceivedPartnersOfDocument(documentId.longValue()).stream()
+				.map(NycPrfStdPartnerMapping::toStdPartner)
+				.toList();
+		nycprfPartnerRepository.saveAllAndFlush(partners);
 	}
 
 	public PersonViewVO getNYCPRFDocumentForClericalReview(int documentId){

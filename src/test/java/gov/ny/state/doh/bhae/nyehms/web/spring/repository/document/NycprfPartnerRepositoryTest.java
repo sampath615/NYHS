@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawNycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfPartnerData;
 import org.junit.jupiter.api.Test;
@@ -85,7 +86,7 @@ class NycprfPartnerRepositoryTest {
 		assertThat(p1.stdNycprfPartner().getAge()).isEqualTo("34");                    // NUMBER column read as text
 		assertThat(p1.stdNycprfPartner().getPartnerTestDateText()).isEqualTo("01/02/2023");
 		assertThat(p1.stdNycprfPartner().getHdispDate()).isEqualTo(Date.valueOf("2023-05-06")); // DATE read as date only
-		assertThat(p1.stdNycprfPartner().getCreateDate()).isEqualTo(Date.valueOf("2023-05-01"));
+		assertThat(p1.stdNycprfPartner().getCreateDate()).isEqualTo(Timestamp.valueOf("2023-05-01 08:00:00"));   // with its time
 		assertThat(p1.stdNycprfPartner().getInformedDate()).isNull();
 
         NycPrfPartnerData p2 = partner(100, "P2");
@@ -96,9 +97,9 @@ class NycprfPartnerRepositoryTest {
 
 	@Test
 	void keepsEveryReceivedAddressOfAPartner() {
-		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('P5', 500, '5 Oak St')");
-		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('P5', 500, '7 Pine St')");
-		jdbcTemplate.update("INSERT INTO STD_NYCPRF_PARTNER (PATIENT_ID, NYCPRF_DOCUMENT_ID, FNAME) VALUES ('P5', '500', 'Eve')");
+		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('R6', 'P5', 500, '5 Oak St')");
+		jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('R7', 'P5', 500, '7 Pine St')");
+		jdbcTemplate.update("INSERT INTO STD_NYCPRF_PARTNER (PARTNRID, PATIENT_ID, NYCPRF_DOCUMENT_ID, FNAME) VALUES ('S4', 'P5', '500', 'Eve')");
 
 		// the old MyBatis query returned one row per received address
 		assertThat(repository.findPartnersOfDocument(500)).extracting(NycPrfPartnerData::rawAddress)
@@ -114,8 +115,8 @@ class NycprfPartnerRepositoryTest {
 	void sharesTheTransactionWithJdbcCode() {
 		// MyBatis and the raw JDBC code reach appDS the same way as JdbcTemplate (DataSourceUtils)
 		new TransactionTemplate(transactionManager).executeWithoutResult(status -> {
-			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('T1', 300, 'tx')");
-			jdbcTemplate.update("INSERT INTO STD_NYCPRF_PARTNER (PATIENT_ID, NYCPRF_DOCUMENT_ID) VALUES ('T1', '300')");
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTADDRESS) VALUES ('R8', 'T1', 300, 'tx')");
+			jdbcTemplate.update("INSERT INTO STD_NYCPRF_PARTNER (PARTNRID, PATIENT_ID, NYCPRF_DOCUMENT_ID) VALUES ('S5', 'T1', '300')");
 
 			assertThat(repository.findPartnersOfDocument(300)).hasSize(1);   // sees the uncommitted rows
 			status.setRollbackOnly();
@@ -125,31 +126,39 @@ class NycprfPartnerRepositoryTest {
 	}
 
 	@Test
-	void insertsTheStandardizedPartnersOfADocument() {
+	void readsTheReceivedPartnersAndSavesNewStandardizedOnes() {
 		new TransactionTemplate(transactionManager).executeWithoutResult(status -> {
-			jdbcTemplate.update("""
-					INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID, PRTLNAME, PRTRACE, PRTCURGENDER, PRTAGE, PRF_HIVSTUS, UPDATED, PRIDTINF, P)
-					VALUES (' w1 ', 700, ' lee ', ' white ', 'mtf', ' 34 ', 'Positive', ' 3/4/2023 ', 'not a date', 'x')""");
-			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID, PRTRACE, PRTCURGENDER) VALUES ('w2', 700, '3', NULL)");
-			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PATIENTID, NYCPRF_DOCUMENT_ID) VALUES ('other', 701)");
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTLNAME, PRTRACE) VALUES ('R9', ' w1 ', 700, ' lee ', ' white ')");
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID) VALUES ('R10', 'w2', 700)");
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID) VALUES ('R11', 'other', 701)");
 
-			assertThat(repository.insertStdPartnersOfDocument(700)).isEqualTo(2);
+			List<RawNycprfPartner> received = repository.findReceivedPartnersOfDocument(700);
+			assertThat(received).extracting(RawNycprfPartner::getPatientId).containsExactlyInAnyOrder(" w1 ", "w2");
+			assertThat(received).extracting(RawNycprfPartner::getPrtrace).contains(" white ");   // as received
+
+			repository.saveAllAndFlush(List.of(StdNycprfPartner.builder()
+					.partnrid("S700").patientId("w1").nycprfDocumentId("700").lastName("LEE").age("34")
+					.createDate(Timestamp.valueOf("2024-07-08 09:10:11"))
+					.build()));
 
 			Map<String, Object> w1 = jdbcTemplate.queryForMap("SELECT * FROM STD_NYCPRF_PARTNER WHERE PATIENT_ID = 'w1'");
 			assertThat(w1).containsEntry("NYCPRF_DOCUMENT_ID", "700").containsEntry("LNAME", "LEE")
-					.containsEntry("RACE_WHITE", "1").containsEntry("RACE_OTHER", "0").containsEntry("RACE_CD", "01")
-					.containsEntry("CURRENT_GENDER", "F")                  // MTF
-					.containsEntry("ETHNICITY", null)
-					.containsEntry("AGE", new BigDecimal("34"))
-					.containsEntry("PARTNER_STATUS", "P")                  // PRF_HIVSTUS
-					.containsEntry("PARTNERS", "x")                        // P is copied as is
-					.containsEntry("UPDATED_DATE", Timestamp.valueOf("2023-03-04 00:00:00"))  // FN_TO_DATE
-					.containsEntry("INFORMED_DATE", null)                  // FN_TO_DATE of an invalid date
-					.containsEntry("CREATE_UID", "900");
-			assertThat(w1.get("CREATE_DATE")).isNotNull();                // SYSDATE
+					.containsEntry("AGE", new BigDecimal("34"))                                  // text into a NUMBER column
+					.containsEntry("CREATE_DATE", Timestamp.valueOf("2024-07-08 09:10:11"))     // keeps the time
+					.containsEntry("FNAME", null);
+			status.setRollbackOnly();
+		});
+	}
 
-			Map<String, Object> w2 = jdbcTemplate.queryForMap("SELECT * FROM STD_NYCPRF_PARTNER WHERE PATIENT_ID = 'w2'");
-			assertThat(w2).containsEntry("RACE_OTHER", "1").containsEntry("RACE_CD", "06").containsEntry("ETHNICITY", "01");  // race 3
+	@Test
+	void loadsAPartnerReceivedTwiceAsTwoEntities() {
+		new TransactionTemplate(transactionManager).executeWithoutResult(status -> {
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTLNAME) VALUES ('D1', 'd', 800, 'first')");
+			jdbcTemplate.update("INSERT INTO RAW_NYCPRF_PARTNER (PARTNERID, PATIENTID, NYCPRF_DOCUMENT_ID, PRTLNAME) VALUES ('D2', 'd', 800, 'second')");
+
+			// keyed by PARTNERID, so both rows load (the same patient on one document)
+			assertThat(repository.findReceivedPartnersOfDocument(800)).extracting(RawNycprfPartner::getPrtlname)
+					.containsExactlyInAnyOrder("first", "second");
 			status.setRollbackOnly();
 		});
 	}
