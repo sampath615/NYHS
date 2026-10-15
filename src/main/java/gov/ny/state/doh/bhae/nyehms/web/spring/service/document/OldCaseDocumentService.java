@@ -1,7 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.OldCasesDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.OldCaseDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.OldCaseDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.OldCasesDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 /**
- * This is implementation of the TBService interface. This provides
- * implementation for all the methods for TB document.
+ * The Old Cases document screen.
  *
  * @author vxp06
  */
@@ -26,18 +25,18 @@ public class OldCaseDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    OldCasesDocumentDAO oldCasesDocumentDAO;
+    OldCasesDocRepository oldCasesDocRepository;
     @Autowired
     CommonExceptionHandler commonExceptionHandler;
     
-    public OldCaseDocVO getOldCaseDocVO(int docId, BindingResult result, UserObject userObject,
+    public OldCaseDocData getOldCaseDocVO(int docId, BindingResult result, UserObject userObject,
             String sessionID) {
 
         boolean rollbackFlag = false;
-        OldCaseDocVO oldCaseDocVO = null;
+        OldCaseDocData oldCaseDocVO = null;
         log.debug("{} fetching for docId : {}",nyehmsLog, docId);
         try {
-        	oldCaseDocVO = oldCasesDocumentDAO.getOldCaseDocVO(docId);
+        	oldCaseDocVO = oldCasesDocRepository.findDocument(docId);
             
         } catch (DataAccessException e) {
             rollbackFlag = true;

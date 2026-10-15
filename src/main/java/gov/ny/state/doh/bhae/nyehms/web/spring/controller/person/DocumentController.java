@@ -50,7 +50,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NonCaseDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.OldCaseDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
@@ -74,6 +73,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRaceVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.OldCaseDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -450,7 +450,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getOldCasesDoc.html")
 	public String getOldCasesDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		OldCaseDocVO oldCaseDocVO = oldCaseDocumentService.getOldCaseDocVO(docId, dummyBindingResult, userObject,
+		OldCaseDocData oldCaseDocVO = oldCaseDocumentService.getOldCaseDocVO(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);

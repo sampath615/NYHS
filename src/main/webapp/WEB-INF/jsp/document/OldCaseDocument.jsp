@@ -18,13 +18,13 @@
 		
 		<div style="padding-bottom:10px; text-align: right">
             <span class="mL10">Document ID: </span>
-			<span class=" "><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+			<span class=" "><form:input id="DOCUMENT_ID"  path="stdOldCasesDoc.documentId" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
         </div>
 		<div class="container w100 pB10">
  	         <div style="float:left;  width: 40%">
  	            <div >
  	                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
- 	                 <span class="ml10"><form:input path="MATCHED_STATENO" value="${MATCHED_STATENO}" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
+ 	                 <span class="ml10"><form:input id="MATCHED_STATENO"  path="matchedStateno" value="${MATCHED_STATENO}" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
  	            </div>    
  	          </div>
  		</div>
@@ -39,34 +39,34 @@
 			<div class="pL10 mLRTB pB20 ">
 				<div class="floatLeft">
 					<span class=""> First Name</span> 
-					<span class="mL20"> <form:input path="FNAME" class="standardInputSmallText readonly"  maxlength="20"/> </span>
+					<span class="mL20"> <form:input id="FNAME"  path="stdOldCasesDoc.fname" class="standardInputSmallText readonly"  maxlength="20"/> </span>
 				</div>
 				<div class="floatLeft">
 					<span class="mL20"> Middle Name</span>
-					<span class="mL20"> <form:input path="MNAME" class="standardInputSmallText readonly" maxlength="25"/>  </span>
+					<span class="mL20"> <form:input id="MNAME"  path="stdOldCasesDoc.mname" class="standardInputSmallText readonly" maxlength="25"/>  </span>
 				</div>
 				<div class="floatLeft">
 					<span class="mL20"> Last Name</span>
-					<span class="mL20"> <form:input path="LNAME" id="lName" title="Last Name" class="standardInputSmallText readonly" maxlength="25"/>  </span>
+					<span class="mL20"> <form:input  path="stdOldCasesDoc.lname" id="lName" title="Last Name" class="standardInputSmallText readonly" maxlength="25"/>  </span>
 				</div>
 				<div class="floatLeft">
 					<span class="mL20"> Suffix</span>
-					<span class="mL20"><form:input path="SUFFIX" class="standardInputSmallText readonly" maxlength="5"/></span>	
+					<span class="mL20"><form:input id="SUFFIX"  path="stdOldCasesDoc.suffix" class="standardInputSmallText readonly" maxlength="5"/></span>	
 				</div>	
 			</div>
 			<div class="mR5 mT5 mL20 pB20" >
 								
 				<div class="floatLeft"> 
 					<span class="mL20"> Date of Birth </span>
-					<span class="ml10"> <form:input id="dobValidation" path="DOB_TEXT" class="dPicker standardInputSmallText readonly"  maxlength="10"/> </span>
+					<span class="ml10"> <form:input id="dobValidation"  path="stdOldCasesDoc.dobText" class="dPicker standardInputSmallText readonly"  maxlength="10"/> </span>
 				</div>			
 				<div class="floatLeft">
 					<span class=" mL30"> Date of Death </span>
-					<span class="ml10"> <form:input id="dodValidation" path="DOD_TEXT" class="dPicker standardInputSmallText"  maxlength="10"/> </span>
+					<span class="ml10"> <form:input id="dodValidation"  path="stdOldCasesDoc.dodText" class="dPicker standardInputSmallText"  maxlength="10"/> </span>
 				</div>
 				<span class="floatLeft"> 
 					<span class="mL30">SSN </span>	
-					<span class="ml10"> <form:input path="SSN" id="OLD_CASES_SSN" class="standardInputSmallText" maxLength="9" title="SSN"/></span>
+					<span class="ml10"> <form:input  path="stdOldCasesDoc.ssn" id="OLD_CASES_SSN" class="standardInputSmallText" maxLength="9" title="SSN"/></span>
 				</span>					
 			</div>
 			
@@ -74,10 +74,10 @@
  	            <div class="personInfo pTRBL10">
  	                <span class="personLabelDoc"> Address </span>
  		                <span> 	                	
-	 	                	<span class="pL10"> <form:input path="ADDRESS" class="standardinputText readonly" maxlength="62"/>  </span>	 	        
+	 	                	<span class="pL10"> <form:input id="ADDRESS"  path="stdOldCasesDoc.address" class="standardinputText readonly" maxlength="62"/>  </span>	 	        
 	 	                	            	 	                    
 	 	                    <span class="pL30">City</span>
-	 	                    <span class="pL10"><form:input path="CITY" class="standardInputSmallText1 readonly"  maxlength="30"/></span>
+	 	                    <span class="pL10"><form:input id="CITY"  path="stdOldCasesDoc.city" class="standardInputSmallText1 readonly"  maxlength="30"/></span>
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
@@ -90,7 +90,7 @@
 	 	                    
 	 	                    <span class="pL30">Zip </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="ZIP" class="oAdrDlg nOnly standardInputSmallText1 newZip readonly" maxlength="5" /> 
+	 	                       <form:input id="ZIP"  path="stdOldCasesDoc.zip" class="oAdrDlg nOnly standardInputSmallText1 newZip readonly" maxlength="5" /> 
 	 	                    </span> 
 	 	                    
 <!-- 	 	                    <span class="pL30">County </span> -->
@@ -127,51 +127,51 @@
 					Race
 				</div>
 				<div>
-					<form:checkbox path="RACE_WHITE" value="1" class="readonly" /> White	
+					<form:checkbox id="RACE_WHITE1"  path="stdOldCasesDoc.raceWhite" value="1" class="readonly" /> White	
 				</div>
 				<div>
-					<form:checkbox path="RACE_BLACK" value="1" class="readonly" /> African American
+					<form:checkbox id="RACE_BLACK1"  path="stdOldCasesDoc.raceBlack" value="1" class="readonly" /> African American
 				</div>
 				<div>
-					<form:checkbox path="RACE_ASIAN" value="1" class="readonly" /> Asian
+					<form:checkbox id="RACE_ASIAN1"  path="stdOldCasesDoc.raceAsian" value="1" class="readonly" /> Asian
 				</div>
 				<div>
-					<form:checkbox path="RACE_PACIFIC" value="1" class="readonly" /> Pacific
+					<form:checkbox id="RACE_PACIFIC1"  path="stdOldCasesDoc.racePacific" value="1" class="readonly" /> Pacific
 				</div>				
 				<div>
-					<form:checkbox path="RACE_INDIAN" value="1" class="readonly" /> American Indian/ Alaskan Native
+					<form:checkbox id="RACE_INDIAN1"  path="stdOldCasesDoc.raceIndian" value="1" class="readonly" /> American Indian/ Alaskan Native
 				</div>				
 				<div>
-					<form:checkbox path="RACE_OTHER" value="1" class="readonly" /> Other 
+					<form:checkbox id="RACE_OTHER1"  path="stdOldCasesDoc.raceOther" value="1" class="readonly" /> Other 
 				</div>
 				<div>
-					<form:checkbox path="RACE_UNKNOWN" value="1" class="readonly" /> Unknown
+					<form:checkbox id="RACE_UNKNOWN1"  path="stdOldCasesDoc.raceUnknown" value="1" class="readonly" /> Unknown
 				</div>
 			</div>
 			<div style="float:left;  width:35% ; border-right:1px dotted;padding-bottom:10px;">
 				<div style="padding-left:10px;">	
 					Ethnicity (Hispanic or Latino)
 					<br>
-					<form:radiobutton path="ETHNICITY" value="01" class="readonly" /> Yes <br>
-					<form:radiobutton path="ETHNICITY" value="02" class="readonly" /> No <br>
-					<form:radiobutton path="ETHNICITY" value="09" class="readonly" /> Unknown	
+					<form:radiobutton id="ETHNICITY1"  path="stdOldCasesDoc.ethnicity" value="01" class="readonly" /> Yes <br>
+					<form:radiobutton id="ETHNICITY2"  path="stdOldCasesDoc.ethnicity" value="02" class="readonly" /> No <br>
+					<form:radiobutton id="ETHNICITY3"  path="stdOldCasesDoc.ethnicity" value="09" class="readonly" /> Unknown	
 				</div>
 								
 				<div style="padding:15px 0 10px 10px; border-top: dotted 1px; "> 
 					<div class="floatLeft pR10" style="border-right: dotted 1px;">
 						<div class=""> Current Gender </div>
 						<div  class="">
-							<div> <form:radiobutton path="CURRENT_GENDER" value="M" class="readonly" /> Male </div>
-							<div> <form:radiobutton path="CURRENT_GENDER" value="F" class="readonly" /> Female </div>
-							<div> <form:radiobutton path="CURRENT_GENDER" value="U" class="readonly" />Unknown</div>		
+							<div> <form:radiobutton id="CURRENT_GENDER1"  path="stdOldCasesDoc.currentGender" value="M" class="readonly" /> Male </div>
+							<div> <form:radiobutton id="CURRENT_GENDER2"  path="stdOldCasesDoc.currentGender" value="F" class="readonly" /> Female </div>
+							<div> <form:radiobutton id="CURRENT_GENDER3"  path="stdOldCasesDoc.currentGender" value="U" class="readonly" />Unknown</div>		
 						</div>
 					</div>
 					<div class="floatLeft pL10">
 						<div class=""> Transgender </div>
 						<div  class="">
-							<div> <form:radiobutton path="CURRENT_GENDER" value="X" class="readonly" /> MTF </div>		
-							<div> <form:radiobutton path="CURRENT_GENDER" value="Y" class="readonly" /> FTM </div>		
-							<div> <form:radiobutton path="CURRENT_GENDER" value="T" class="readonly" /> Unspecified </div>														
+							<div> <form:radiobutton id="CURRENT_GENDER4"  path="stdOldCasesDoc.currentGender" value="X" class="readonly" /> MTF </div>		
+							<div> <form:radiobutton id="CURRENT_GENDER5"  path="stdOldCasesDoc.currentGender" value="Y" class="readonly" /> FTM </div>		
+							<div> <form:radiobutton id="CURRENT_GENDER6"  path="stdOldCasesDoc.currentGender" value="T" class="readonly" /> Unspecified </div>														
 						</div>
 					</div> 
 				</div>
@@ -181,7 +181,7 @@
 			
 				<span class="pL30">DIN </span>
 	 	                    <span  class="pL10">
-								<form:input path="DIN" class="standardInputMedText readonly"  maxlength="7"/>
+								<form:input id="DIN"  path="stdOldCasesDoc.din" class="standardInputMedText readonly"  maxlength="7"/>
 							</span>
 							
 						</div>
@@ -191,7 +191,7 @@
 			<div  class="b1 pB10">
  					<span class="mL30 ">Comments </span><br/>
  					<div class="mL30">
-					<span>  <form:textarea title="COMMENTS" maxlength="1000" cols="165" rows="8" path="COMMENTS" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>
+					<span>  <form:textarea id="COMMENTS" title="COMMENTS" maxlength="1000" cols="165" rows="8"  path="stdOldCasesDoc.comments" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>
 
 				</div>
 		
@@ -208,7 +208,7 @@
 						<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 						<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 				</c:when>
-				<c:when test="${stdOldCaseDocVO.MATCHED_STATENO != null && stdOldCaseDocVO.MATCHED_STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+				<c:when test="${stdOldCaseDocVO.matchedStateno != null && stdOldCaseDocVO.matchedStateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 						<c:if test="${userPermissions['90'] != null}" >
 							<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 						</c:if>
