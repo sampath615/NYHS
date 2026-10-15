@@ -854,16 +854,20 @@ public class DocumentTransactionHelper {
 		 
 	}
 
+	/**
+	 * Writes the standardized NYC PRF form and, once it is written, its partners; both or neither.
+	 *
+	 * @param docVO      the received form (RAW_NYCPRF_DOC), value per field name
+	 * @param documentId its document id
+	 * @return the number of standardized forms written
+	 */
 	@Transactional
-	public int writeNYCPRFDocAndPartnersData(Map<Object, Object> docVO,
-			BigDecimal documentId) {
-
-		int resultCount = nycPrfDocumentService.writeRawNycPRFRecordDataToStdTable(docVO, documentId);
-		if(resultCount > 0){
+	public int writeNYCPRFDocAndPartnersData(Map<Object, Object> docVO, BigDecimal documentId) {
+		int formsWritten = nycPrfDocumentService.writeRawNycPRFRecordDataToStdTable(docVO);
+		if (formsWritten > 0) {
 			nycPrfDocumentService.writeRawNycPRFPartnerDataFromRawTable(documentId);
 		}
-		
-		return resultCount;
+		return formsWritten;
 	}
 
 	@Transactional

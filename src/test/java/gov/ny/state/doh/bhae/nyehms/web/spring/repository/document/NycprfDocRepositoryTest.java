@@ -1,8 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.repository.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -11,10 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.JpaConfig;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
@@ -40,10 +48,69 @@ class NycprfDocRepositoryTest {
 					.addScripts("db/nycprf-doc.sql", "db/nycprf-doc-data.sql")
 					.build();
 		}
+
+		@Bean
+		JdbcTemplate jdbcTemplate(DataSource appDS) {
+			return new JdbcTemplate(appDS);
+		}
 	}
 
 	@Autowired
 	NycprfDocRepository repository;
+
+	@Autowired
+	PlatformTransactionManager transactionManager;
+
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+
+	@Test
+	void insertsTheStandardizedDocumentLikeTheMyBatisMapper() {
+		Map<Object, Object> stdDocData = new HashMap<>();
+		stdDocData.put("DOCUMENT_ID", new BigDecimal("900"));                          // as read from the raw table
+		stdDocData.put("PRF_SRC_ID", " 7 ");
+		stdDocData.put("FNAME", " ann ");
+		stdDocData.put("DOB", Timestamp.valueOf("1980-05-06 13:45:00"));
+		stdDocData.put("ADMISSION_DATE", " 3/4/2023 ");
+		stdDocData.put("SIG_DATE", "not a date");
+		stdDocData.put("CURRENT_PROCESS_STATUS", 5);                                   // int constant into trim(...)
+		stdDocData.put("FIELD_PROC_DATE", "2023-01-02");                              // text into a DATE column
+		stdDocData.put("FLUX_MATCH_CD", " kept as is ");
+
+		new TransactionTemplate(transactionManager).executeWithoutResult(status -> {
+			assertThat(repository.insertStdDocument(stdDocData)).isEqualTo(1);
+
+			Map<String, Object> row = jdbcTemplate.queryForMap("SELECT * FROM STD_NYCPRF_DOC WHERE DOCUMENT_ID = 900");
+			assertThat(row).containsEntry("PRF_SRC_ID", new BigDecimal("7"))
+					.containsEntry("FNAME", "ANN")                                         // upper(trim(...))
+					.containsEntry("LNAME", null)                                          // not in the map
+					.containsEntry("DOB", Timestamp.valueOf("1980-05-06 13:45:00"))        // keeps the time
+					.containsEntry("ADMISSION_DATE", Timestamp.valueOf("2023-03-04 00:00:00"))  // FN_TO_DATE
+					.containsEntry("SIG_DATE", null)
+					.containsEntry("CURRENT_PROCESS_STATUS", new BigDecimal("5"))
+					.containsEntry("FIELD_PROC_DATE", Timestamp.valueOf("2023-01-02 00:00:00"))
+					.containsEntry("FLUX_MATCH_CD", " kept as is ");
+			status.setRollbackOnly();
+		});
+	}
+
+	@Test
+	void refusesADateForATextColumn() {
+		Map<Object, Object> stdDocData = new HashMap<>();
+		stdDocData.put("DOCUMENT_ID", new BigDecimal("901"));
+		stdDocData.put("DOD_TEXT", Timestamp.valueOf("2023-03-04 00:00:00"));   // Oracle would have used its NLS date format
+
+		assertThatThrownBy(() -> repository.insertStdDocument(stdDocData)).hasMessageContaining("DOD_TEXT expects text but got a date");
+	}
+
+	@Test
+	void writesNumbersAsOracleText() {
+		assertThat(NycprfDocWriterImpl.oracleText(5)).isEqualTo("5");
+		assertThat(NycprfDocWriterImpl.oracleText(new BigDecimal("12.50"))).isEqualTo("12.5");
+		assertThat(NycprfDocWriterImpl.oracleText(new BigDecimal("0.50"))).isEqualTo(".5");
+		assertThat(NycprfDocWriterImpl.oracleText(new BigDecimal("-0.25"))).isEqualTo("-.25");
+		assertThat(NycprfDocWriterImpl.oracleText(new BigDecimal("1E+3"))).isEqualTo("1000");
+	}
 
 	@Test
 	void readsTheDocumentWithItsCurrentMatch() {

@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 /**
  * A partner named on an NYC Partner Referral Form, standardized (table STD_NYCPRF_PARTNER).
  * <p>
- * Read-only and queried through JPQL projections only (see NycprfPartnerRepository); the rows are
- * still written by NycPRFDocumentDAO (MyBatis). <b>The key (PATIENT_ID, NYCPRF_DOCUMENT_ID) is
+ * Never updated: queried through JPQL projections and inserted with an HQL insert ... select
+ * (see NycprfPartnerRepository). <b>The key (PATIENT_ID, NYCPRF_DOCUMENT_ID) is
  * assumed and must be confirmed against the table's primary key before this entity is loaded or
  * written as an entity</b> (docs/JPA_MIGRATION.md).
  */
@@ -176,4 +176,74 @@ public class StdNycprfPartner {
 	private String elicitedByAct;
 
 
+
+	// written by the import (NycprfPartnerRepository.insertStdPartnersOfDocument), not shown on the screen
+	@Column(name = "RACE_CD")
+	private String raceCd;
+
+	@Column(name = "PARTNRID")
+	private String partnrid;
+
+	@Column(name = "BIRTH_SEX")
+	private String birthSex;
+
+	@Column(name = "NOTIFIED_DATE")
+	private String notifiedDate;
+
+	@Column(name = "ENTER_DATE")
+	private String enterDate;
+
+	@Column(name = "EHARS_DIAG_DATE_TEXT")
+	private String eharsDiagDateText;
+
+	@Column(name = "CITYNO")
+	private String cityno;
+
+	@Column(name = "PRIORITY")
+	private String priority;
+
+	@Column(name = "SOURCE")
+	private String source;
+
+	@Column(name = "PARTNERS")
+	private String partners;
+
+	@Column(name = "REFERRAL")
+	private String referral;
+
+	@Column(name = "DISEASE_1")
+	private String disease1;
+
+	@Column(name = "DISEASE_2")
+	private String disease2;
+
+	@Column(name = "CODE")
+	private String code;
+
+	@Column(name = "INTERVIEW")
+	private String interview;
+
+	@Column(name = "INTERVIEW_TYPE")
+	private String interviewType;
+
+	@Column(name = "REFERRAL_TYPE")
+	private String referralType;
+
+	@Column(name = "PRINTED")
+	private String printed;
+
+	@Column(name = "NOTSEND")
+	private String notsend;
+
+	@Column(name = "UPDATED_DATE")
+	private Date updatedDate;
+
+	@Column(name = "INDEX_CITYNO")
+	private String indexCityno;
+
+	@Column(name = "DISPO")
+	private String dispo;
+
+	@Column(name = "HIVDISPO_DATE_TEXT")
+	private String hivdispoDateText;
 }

@@ -12,9 +12,9 @@ import lombok.Getter;
 
 /**
  * An NYC Partner Referral Form, standardized (table STD_NYCPRF_DOC); the columns the NYC PRF
- * document screen reads.
+ * document screen reads and the import writes.
  * <p>
- * Read-only for now (the rows are still written by NycPRFDocumentDAO.writeStdDocData, MyBatis).
+ * Never updated: the rows are inserted with an HQL insert (NycprfDocWriter), not persisted.
  * <b>DOCUMENT_ID as the key is assumed</b> (one standardized row per document) — confirm against
  * the table's primary key (docs/JPA_MIGRATION.md).
  */
@@ -331,8 +331,15 @@ public class StdNycprfDoc {
 	@Column(name = "LAST_NEG_FAC_STATE")
 	private String lastNegFacState;
 
-	@Column(name = "FIELD_PROC_DATE")
+	@Column(name = "FIELD_PROC_DATE", insertable = false, updatable = false)
 	private Date fieldProcDate;
+
+	/**
+	 * The same column as written by the import: the received text, which Oracle converts to a date
+	 * (as the former MyBatis insert did). Use {@link #fieldProcDate} to read it.
+	 */
+	@Column(name = "FIELD_PROC_DATE")
+	private String fieldProcDateText;
 
 	@Column(name = "APARTMENT")
 	private String apartment;
@@ -450,4 +457,113 @@ public class StdNycprfDoc {
 
 	@Column(name = "PROV_TITLE")
 	private String provTitle;
+
+	// written by the import (NycprfDocWriter), not shown on the document screen
+	@Column(name = "FIRST_POS_LOCATION")
+	private String firstPosLocation;
+
+	@Column(name = "PERSON_CENSUS_TRACT")
+	private String personCensusTract;
+
+	@Column(name = "TSAID")
+	private String tsaid;
+
+	@Column(name = "REVTSAID")
+	private String revtsaid;
+
+	@Column(name = "RESP_HIV_TEST_2YRS")
+	private String respHivTest2yrs;
+
+	@Column(name = "WARNING")
+	private String warning;
+
+	@Column(name = "EHARS_NYC_PRF_UID")
+	private String eharsNycPrfUid;
+
+	@Column(name = "NOTSEND")
+	private String notsend;
+
+	@Column(name = "PERSON_LONGITUDE")
+	private String personLongitude;
+
+	@Column(name = "RACE_CD")
+	private String raceCd;
+
+	@Column(name = "CITYNO")
+	private String cityno;
+
+	@Column(name = "PERSON_LATITUDE")
+	private String personLatitude;
+
+	@Column(name = "EHARS")
+	private String ehars;
+
+	@Column(name = "MATCHED_STATENO")
+	private String matchedStateno;
+
+	@Column(name = "OLDFORM")
+	private String oldform;
+
+	@Column(name = "UPDATE_DATE")
+	private Date updateDate;
+
+	@Column(name = "SIG_DATE")
+	private Date sigDate;
+
+	@Column(name = "EHARS_DATE")
+	private Date eharsDate;
+
+	@Column(name = "RECEIVED_DATE")
+	private Date receivedDate;
+
+	@Column(name = "ENTER_DATE")
+	private Date enterDate;
+
+	@Column(name = "MATCH_CD")
+	private String matchCd;
+
+	@Column(name = "EHARS_STATUS_CD")
+	private String eharsStatusCd;
+
+	@Column(name = "MATCH_WEIGHT")
+	private String matchWeight;
+
+	@Column(name = "CURRENT_PROCESS_STATUS")
+	private String currentProcessStatus;
+
+	@Column(name = "MATCH_PASS")
+	private String matchPass;
+
+	@Column(name = "AGE_CATEGORY")
+	private String ageCategory;
+
+	@Column(name = "RECNUM")
+	private String recnum;
+
+	@Column(name = "AGE")
+	private String age;
+
+	@Column(name = "QS_PARENT_DOC_ID")
+	private String qsParentDocId;
+
+	@Column(name = "MATCHED_PROCESS_DATE")
+	private Date matchedProcessDate;
+
+	@Column(name = "EHARS_DOCUMENT_SOURCE_CD")
+	private String eharsDocumentSourceCd;
+
+	@Column(name = "FLUX_MATCH_CD")
+	private String fluxMatchCd;
+
+	@Column(name = "FLUX_POT_STATENO")
+	private String fluxPotStateno;
+
+	@Column(name = "FLUX_MATCHED_STATENO")
+	private String fluxMatchedStateno;
+
+	@Column(name = "FLUX_QS_PARENT_DOC_ID")
+	private Long fluxQsParentDocId;
+
+	@Column(name = "FLUX_MATCHED_PROCESS_DATE")
+	private Date fluxMatchedProcessDate;
 }
