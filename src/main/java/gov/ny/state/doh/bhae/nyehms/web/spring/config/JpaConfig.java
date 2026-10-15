@@ -19,20 +19,26 @@ import jakarta.persistence.EntityManagerFactory;
  * one (see docs/JPA_MIGRATION.md).
  * <p>
  * Defined explicitly because the application has three data sources, so Spring Boot does not
- * auto-configure JPA. Entities live in {@code web.spring.entity}, repositories in
- * {@code web.spring.repository}.
+ * auto-configure JPA. Entities and repositories are found anywhere under {@code web.spring}: in
+ * {@code web.spring.entity} / {@code web.spring.repository} and in per-module packages such as
+ * {@code web.spring.initialize.entity} / {@code web.spring.initialize.repository}. (Only interfaces
+ * extending a Spring Data {@code Repository} and {@code @Entity} classes are picked up, so the
+ * MyBatis DAOs and the VOs are not affected.)
  */
 @Configuration
-@EnableJpaRepositories(basePackages = "gov.ny.state.doh.bhae.nyehms.web.spring.repository",
+@EnableJpaRepositories(basePackages = JpaConfig.BASE_PACKAGE,
 		entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager")
 public class JpaConfig {
+
+	/** Where the JPA entities and the Spring Data repositories are looked for. */
+	static final String BASE_PACKAGE = "gov.ny.state.doh.bhae.nyehms.web.spring";
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("appDS") DataSource appDS) {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setPersistenceUnitName("nyehms");
 		factory.setDataSource(appDS);
-		factory.setPackagesToScan("gov.ny.state.doh.bhae.nyehms.web.spring.entity");
+		factory.setPackagesToScan(BASE_PACKAGE);
 		factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		factory.setJpaPropertyMap(Map.of(
 				// never create, change or validate the schema: the tables are owned by the database team
