@@ -4,11 +4,6 @@
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
 	id="WebApp_ID" version="6.1" metadata-complete="false">
 
-
-	<welcome-file-list>
-   		<welcome-file>web/appInitialize</welcome-file>   
- 	</welcome-file-list>
-
 	
 	<listener>
 		<listener-class>
