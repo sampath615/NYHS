@@ -20,7 +20,6 @@ import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ursdb.AIDADataDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.AIRSDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftDetailsService;
@@ -72,13 +71,6 @@ public class AIRSDocumentService {
        		aIRSDocumentVO.setAIRS_VER_TYPE("OLD");
        	}
         return aIRSDocumentVO;
-    }
-    
-    public PersonViewVO getStdAIRSDocumentForClericalReview(int documentId){
-    	
-    	PersonViewVO aIRSDocVO = airsDocumentDAO.getStdAIRSDocumentForClericalReview(documentId);
-    	
-    	return aIRSDocVO;
     }
     
     public AIRSDocVO getRawAIRSDocument(int documentID){

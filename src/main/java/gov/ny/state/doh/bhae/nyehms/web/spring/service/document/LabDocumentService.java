@@ -24,7 +24,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.QuartzSchedulerTransactionHelper;
@@ -58,42 +57,6 @@ public class LabDocumentService {
 	
 	private final String OOS_CLIA = "33DHIVMAIL";
 
-	
-	public PersonViewVO getStdLabDocForClericalView(int documentId, String documentType,
-			BindingResult dummyBindingResult, UserObject userObject,
-			String sessionId){
-		PersonViewVO stdLabDocVO=null;
-		boolean rollbackFlag=false;
-		log.debug("{} fetching for docId : {}", nyehmsLog,documentId);
-		try{
-			
-			Map<Object, Object> map = new HashMap<>();
-			
-			if("STD_LAB".equals(documentType)){
-				map.put("std_table_name", "std_std_eclrs_doc");	
-				
-			}else{
-				map.put("std_table_name", "std_hiv_eclrs_doc");	
-				
-			}
-			map.put("docId", documentId);
-			
-			stdLabDocVO=labDocumentDAO.getStdLabDocForClericalView(map);
-		} catch (DataAccessException e) {
-			rollbackFlag=true;
-			log.error(nyehmsLog+"  "+e.getMessage());
-			commonExceptionHandler.handleException(e, userObject,sessionId);
-		} catch (Exception e) {
-			rollbackFlag=true;
-			log.error(nyehmsLog+"  "+ e.getMessage());
-			commonExceptionHandler.handleException(e, userObject,sessionId);
-		}finally{						
-			if(rollbackFlag)
-				commonExceptionHandler.populateBindObjTrsnFail(dummyBindingResult);
-		}		
-		
-		return stdLabDocVO;
-	}
 	
 	public StdEcrlsLabDocVO getLabDoc(int docId, String documentType, 
 									BindingResult result, 

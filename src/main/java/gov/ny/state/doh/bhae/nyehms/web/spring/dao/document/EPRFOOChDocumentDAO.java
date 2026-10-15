@@ -8,7 +8,6 @@ import org.json.simple.JSONObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EPRFOOCDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUpDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.FileByConclusionVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 /**
  * This is interface for EPRF OOCDocument.
@@ -24,9 +23,6 @@ public interface EPRFOOChDocumentDAO {
 	public EPRFOOCDocVO getEPRFOOCDoc(int docId);
 
 	public List<JSONObject> getOOCDocumentFileNames(Map<String, Object> inputParameterMap);
-
-	public PersonViewVO getStdEPRFOOCDocumentForClericalReview(
-			int documentId);
 
 	public List<Map<String, Object>> getOOCDocumentsToReview(
 			Map<String, String> inputParameterMap);

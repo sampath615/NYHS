@@ -4,7 +4,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocArvsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocProvidersVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,6 @@ public interface MedicaidDocumentDAO {
     public List<MedicaidDocProvidersVO> getProvidersListForMedicaidDoc(int docId) throws DataAccessException;
 
 	public int writeStdDocData(Map<Object, Object> stdDocData);
-
-	public PersonViewVO getStdMedicaidDocumentForClericalReview(int documentId);
 
 	public int storeRawMedicaidProvidersDataInStd(int intValue);
 

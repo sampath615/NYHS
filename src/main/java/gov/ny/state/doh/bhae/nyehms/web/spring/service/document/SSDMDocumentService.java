@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SSDMDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -135,10 +134,6 @@ public class SSDMDocumentService {
     	}
     	
     	return recordsCountMovedToStd;
-    }
-    
-    public PersonViewVO getStdSSDMDocumentForClericalReview(int documentId){
-    	return ssdmDocumentDAO.getStdSSDMDocumentForClericalReview(documentId);
     }
     
     public void documentInitialValidation(){

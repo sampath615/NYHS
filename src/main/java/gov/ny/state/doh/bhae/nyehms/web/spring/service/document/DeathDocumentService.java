@@ -6,7 +6,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DeathDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -514,14 +513,6 @@ public class DeathDocumentService {
 		
 		getFacilityInfo(stdDocData, pfi, instCode, nysCountyCd, nysCountyFipsCd);
 		
-	}
-
-	public PersonViewVO getStdDeathDocumentForClericalReview(int documentId) {
-
-		PersonViewVO deathDocVO = deathDocumentDAO
-				.getStdDeathDocumentForClericalReview(documentId);
-
-		return deathDocVO;
 	}
 
 	

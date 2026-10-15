@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -35,8 +34,6 @@ public interface AIRSDocumentDAO {
     public int writeRawAIRSRecordDataToStdTable(Map<Object, Object> docVO);
 
 	public AIRSDocVO getRawAIRSDocument(int documentID);
-
-	public PersonViewVO getStdAIRSDocumentForClericalReview(int documentId);
 
 //  No longer used - 6/24/2020
 //	public int insertRawAirsDocument(Map<Object, Object> rawDocData);

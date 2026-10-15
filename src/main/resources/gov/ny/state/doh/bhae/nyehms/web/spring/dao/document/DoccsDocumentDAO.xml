@@ -347,18 +347,6 @@ WHERe DIN_DOCCS_DOC_ID  in (select DOCUMENT_ID from STD_DIN_DOCCS_DOC where DOCC
 
 	</insert>
 	
-	  <select id="getStdDinDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-	  <![CDATA[
-  	select * from (SELECT SSN, FNAME, LNAME, MNAME,SUFFIX, GENDER_DESCRIPTION  GENDER,  DOB_TEXT DOB, DOD_TEXT dateOfDeath, NYSID, MEDICAID_NUMBER, DIN,  
- BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP, 
-PERSON_PLUS4, ETHNICITY_DESCRIPTION  ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  RACE_UNKNOWN, RACE_OTHER  
-from STD_DIN_DOCCS_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
-where s.CURRENT_GENDER=g.GENDER_CODE (+)
-AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCCS_DOC_ID = (SELECT DOCCS_DOC_ID FROM STD_DIN_DOCCS_DOC WHERE document_id = #{docId})  ORDER BY TO_DATE(s.ADMIN_DATE_TEXT , 'MM/DD/YYYY' ) desc)  WHERE rownum < 2
-
-	]]>
-  </select>
   <select id="getDinDoccsIds" parameterType="int" resultType="int">
   	select document_id from STD_DIN_DOCCS_DOC where DOCCS_DOC_ID  = #{document_ID}
   </select>

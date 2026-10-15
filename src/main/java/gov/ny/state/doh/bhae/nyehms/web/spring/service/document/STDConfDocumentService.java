@@ -12,7 +12,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.STDConfDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
@@ -158,10 +157,6 @@ public class STDConfDocumentService {
     	return stdConfDocumentDAO.writeRawSTDConfDocDataToStdTable(docVO);
     }        
 
-	public PersonViewVO getStdConfDocumentForClericalReview(int documentId) {
-		return stdConfDocumentDAO.getStdConfDocumentForClericalReview(documentId);
-	}
-	
 	
 	public void loadSTDConfReferenceVariables() {
 	    	List<Map<String, String>> drugList = stdConfDocumentDAO.getDrugList("DRUG_USED_LIST");

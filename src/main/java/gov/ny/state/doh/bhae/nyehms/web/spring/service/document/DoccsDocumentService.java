@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -363,13 +362,6 @@ public class DoccsDocumentService {
 	
 	public void insertRawDinProbCodesToStdProbCodes(BigDecimal documentId){
 		doccsDocumentDAO.insertRawDinProbCodesToStdProbCodes(documentId);
-	}
-	
-	public PersonViewVO getStdDinDocumentForClericalReview(int documentId){
-		
-		PersonViewVO dinDoccsDocVO = doccsDocumentDAO.getStdDinDocumentForClericalReview(documentId);
-    	
-    	return dinDoccsDocVO;
 	}
 	
 	public int documentInitialValidation(BigDecimal documentId){

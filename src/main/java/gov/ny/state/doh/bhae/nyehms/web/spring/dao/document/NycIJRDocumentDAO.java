@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,5 @@ public interface NycIJRDocumentDAO {
 	public int writeStdDocData(Map<Object, Object> docVO);
 
 	public List<String> getFileNames();
-
-	public PersonViewVO getStdNycIJRDocumentForClericalReview(int documentId);
 
 }

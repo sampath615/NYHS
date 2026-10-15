@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -241,9 +240,5 @@ public class TBDocumentService {
 
     	return tbDocumentDAO.writeRawTBDocDataToStdTable(docVO);
     }
-
-	public PersonViewVO getStdTBDocumentForClericalReview(int documentId) {
-		return tbDocumentDAO.getStdTBDocumentForClericalReview(documentId);
-	}
 
 }

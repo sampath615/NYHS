@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ADAPDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRisksVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,6 @@ public interface ADAPDocumentDAO {
      */
     public ADAPDocVO getADAPDoc(int docId) throws DataAccessException;
 
-	public PersonViewVO getStdADAPDocumentForClericalReview(int documentId);
-
 	public int writeStdDocData(Map<Object, Object> stdDocData);
 
 	public List<Map<String, String>> getSubProviderAddressesForTheNPS(
@@ -46,8 +43,6 @@ public interface ADAPDocumentDAO {
 	public int updateNYCDateForTheFile(Map<String, Object> inParameterMap);
 
 	public int uploadNYCReturnFileData(Map<String, Object> inputParameterMap);
-
-	public PersonViewVO getNYCADAPDocumentForClericalReview(int documentId);
 
 	public List<Integer> getNCYADAPDocumentsToREview();
 

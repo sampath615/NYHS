@@ -2,7 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,7 +16,6 @@ public interface DoccsDocumentDAO {
 	public List<Map<String, Object>> getRawDinDoccsList(BigDecimal documentId);
 	public int insertRawDinDoccsDataToStdTable(Map<String, Object> inputParameterMap);
 	public int insertRawDinProbCodesToStdProbCodes(BigDecimal documentId);
-	public PersonViewVO getStdDinDocumentForClericalReview(int documentId);
 	public List<DinDoccsDocVO> getDinDoccsDocContent(Map<String, Object> inputParameterMap);
 	public List<Integer> getDinDoccsIds(int document_ID);
 	public int documentInitialValidation(BigDecimal documentId);

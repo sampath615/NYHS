@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.Map;
 
@@ -26,8 +25,6 @@ public interface NycDeathDocumentDAO {
     public NycDeathDocVO getNycDeathDoc(int docId) throws DataAccessException;
     
     public int writeNycStdDeathDocData(Map<Object, Object> nycStdDeathDocData);
-    
-    public PersonViewVO getNycStdDeathDocumentForClericalReview(int documentId);
     
     
     public int insertNycRawDTHDocument(Map<Object, Object> rawDocData);

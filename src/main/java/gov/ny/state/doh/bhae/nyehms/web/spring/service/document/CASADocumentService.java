@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CASADocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CASADocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
@@ -162,13 +161,6 @@ public class CASADocumentService {
 		
 	}
 	
-	
-	public PersonViewVO getStdCASADocumentForClericalReview(int documentId) {
-
-		PersonViewVO casaDocVO = casaDocumentDAO.getStdCASADocumentForClericalReview(documentId);
-
-		return casaDocVO;
-	}
 	
 	
 

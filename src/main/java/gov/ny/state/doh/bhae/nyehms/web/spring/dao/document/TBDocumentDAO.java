@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.Map;
 
@@ -27,8 +26,6 @@ public interface TBDocumentDAO {
     public TBDocVO getTBDoc(int docId) throws DataAccessException;
 
 	public int writeRawTBDocDataToStdTable(Map<Object, Object> docVO);
-
-	public PersonViewVO getStdTBDocumentForClericalReview(int documentId);
 
 	public int insertRawEditedTBDocument(Map<Object, Object> rawDocData);
 

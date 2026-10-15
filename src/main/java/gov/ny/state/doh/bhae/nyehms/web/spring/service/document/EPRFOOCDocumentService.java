@@ -24,7 +24,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.EPRFOOChDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EPRFOOCDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUpDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.FileByConclusionVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -163,13 +162,6 @@ public class EPRFOOCDocumentService {
 		}
 		
 		return ePRFOOCDocumentDAO.getOOCDocumentFileNames(inputParameterMap);
-	}
-	
-	public PersonViewVO getStdEPRFOOCDocumentForClericalReview(int documentId){
-		
-		PersonViewVO EPRFOOCDocVO = ePRFOOCDocumentDAO.getStdEPRFOOCDocumentForClericalReview(documentId);
-		
-		return EPRFOOCDocVO;
 	}
 	
 	public int writeRawePRFOOCDocData(Map<Object, Object> docVO,

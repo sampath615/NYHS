@@ -1,9 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfPartner;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycprfPartnerRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -19,8 +17,6 @@ import org.springframework.validation.BindingResult;
 @Service
 public class NycPRFDocumentService {
 
-	@Autowired
-	NycPRFDocumentDAO nycPRFDocumentDAO;
 	@Autowired
 	NycprfDocRepository nycprfDocRepository;
 	@Autowired
@@ -56,15 +52,6 @@ public class NycPRFDocumentService {
 		nycprfPartnerRepository.saveAllAndFlush(partners);
 	}
 
-	public PersonViewVO getNYCPRFDocumentForClericalReview(int documentId){
-		
-		
-		PersonViewVO nycPRFDocVO = nycPRFDocumentDAO.getNYCPRFDocumentForClericalReview(documentId);
-    	
-    	return nycPRFDocVO;
-		
-	}
-	
 	/**
 	 * Standardizes a received NYC PRF form and its partners in one transaction (the import's entry point).
 	 *

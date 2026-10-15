@@ -5,15 +5,6 @@
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO">	
  
  
-  <select id="getStdLabDocForClericalView" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-  	SELECT SSN, FNAME, LNAME, MNAME,SUFFIX, GENDER_DESCRIPTION  GENDER,  DOB_TEXT DOB, NYSID, MEDICAID_NUMBER, DIN,  
-INSURANCE_NUMBER, BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP, 
-PERSON_PLUS4, ETHNICITY_DESCRIPTION  ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  RACE_UNKNOWN, RACE_OTHER, MED_RECORD_NUMBER, PERSON_COUNTRY country 
-from ${std_table_name} s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
-where s.gender=g.GENDER_CODE (+)
-AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCUMENT_ID = #{docId} 
-  </select>
   <select id="getLabDoc" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO">
 		 		<![CDATA[
 		 				

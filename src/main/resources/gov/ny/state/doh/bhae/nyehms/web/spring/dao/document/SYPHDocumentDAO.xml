@@ -59,20 +59,6 @@
 		]]>			
     </select>
     
-     <select id="getStdSYPHDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-		<![CDATA[
-		
-		SELECT FNAME, LNAME, MNAME, BIRTH_SEX birthSex, GENDER_DESCRIPTION GENDER, TO_CHAR(DOB, 'MM/DD/YYYY') DOB, PERSON_ADDRESS, PERSON_STATE,
-        PERSON_CITY, PERSON_COUNTY, PERSON_ZIP, ETHNICITY_DESCRIPTION ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC, 
-        TO_CHAR(DOD, 'MM/DD/YYYY') dateOfDeath, RACE_UNKNOWN, RACE_OTHER   
-        from STD_SYPHILIS_DOC s, CODED_GENDER g, CODED_COUNTY c, CODED_ETHNICITY e
-        where s.birth_sex=g.GENDER_CODE (+)
-          AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-          AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCUMENT_ID = #{documentId}
- 			
-		]]>			
-    </select>
-    	
 	<insert id="writeRawSYPHDocDataToStdTable" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT INTO STD_SYPHILIS_DOC (DOCUMENT_ID,

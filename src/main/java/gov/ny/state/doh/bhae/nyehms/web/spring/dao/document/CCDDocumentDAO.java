@@ -13,7 +13,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDPersonD
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProblemVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProviderVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.StdCCDDocVo;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.Date;
 import java.util.List;
@@ -84,8 +83,6 @@ public interface CCDDocumentDAO {
 	public int insertCcdEncounterList(Map<String, Object> inputParameterMapEncounters);
 
 	public int insertCcdLabTestList(Map<String, Object> inputParameterMapLabs);
-
-	public PersonViewVO getStdCCDDocumentForClericalReview(int documentId);
 
 	public int updateRawDiagnosisMovedToSTDStatusCode(Map<Object, Object> inputOutputParameterMap);
 

@@ -9,7 +9,6 @@ import org.springframework.dao.DataAccessException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 public interface ICCRDocumentDAO {
 	
@@ -24,7 +23,5 @@ public interface ICCRDocumentDAO {
     public List<ICCRTestVO> getICCRDocTestData(int documentId) throws DataAccessException;	    
 
 	public int writeStdDocData(Map<Object, Object> docVO);
-
-	public PersonViewVO getStdICCRDocumentForClericalReview(int documentId);
 
 }

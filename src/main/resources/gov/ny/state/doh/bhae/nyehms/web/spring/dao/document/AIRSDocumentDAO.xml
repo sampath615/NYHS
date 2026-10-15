@@ -116,19 +116,6 @@
 		]]>			
     </select>
     
-     <select id="getStdAIRSDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-		<![CDATA[
-		
-			SELECT SSN, FNAME, LNAME, MNAME, BIRTH_SEX birthSex, GENDER_DESCRIPTION GENDER,  TO_CHAR(DOB, 'MM/DD/YYYY') DOB,  MED_RECORD_NUMBER,    NVL(std.BIRTH_COUNTRY, std.BIRTH_COUNTRY_OTHER) BIRTH_COUNTRY, PERSON_ADDRESS, PERSON_STATE,
- PERSON_CITY, PERSON_COUNTY, PERSON_ZIP, PERSON_PLUS4, ETHNICITY_DESCRIPTION ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  MEDICAID_NUMBER, DOD_TEXT dateOfDeath,
- RACE_UNKNOWN, RACE_OTHER   from STD_AIRS_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
-where s.current_gender=g.GENDER_CODE (+)
-AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-AND s.ETHNICITY = e.ETHNICITY_CODE (+)  and s.DOCUMENT_ID = #{documentId}
- 			
-		]]>			
-    </select>
-    
     	
 	
 	<select id="getRawAIRSDocument" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO">

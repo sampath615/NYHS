@@ -128,18 +128,6 @@ ORA_HASH(trim(upper(#{FNAME,jdbcType=VARCHAR})) || trim(upper(#{LNAME,jdbcType=V
 ,#{FLUX_MATCH_CD, jdbcType=VARCHAR},#{FLUX_POT_STATENO, jdbcType=VARCHAR},#{FLUX_MATCHED_STATENO, jdbcType=VARCHAR},#{FLUX_QS_PARENT_DOC_ID, jdbcType=DECIMAL},#{FLUX_MATCHED_PROCESS_DATE,jdbcType=DATE})
    </insert>
    
-   <select id="getStdDeathDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-	<![CDATA[
-	SELECT SSN, FNAME, LNAME, MNAME, SUFFIX, GENDER_DESCRIPTION GENDER,  DOB_TEXT DOB, DOD_TEXT dateOfDeath,  MED_RECORD_NUMBER, PERSON_ADDRESS, PERSON_STATE, 
- 	PERSON_CITY, PERSON_COUNTY, PERSON_ZIP, PERSON_PLUS4, ETHNICITY_DESCRIPTION ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  
- 	RACE_UNKNOWN, RACE_OTHER   from STD_DEATH_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
-	WHERE s.CURRENT_GENDER=g.GENDER_CODE (+)
-		AND     s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-		AND s.ETHNICITY = e.ETHNICITY_CODE (+)  
-		AND s.DOCUMENT_ID = #{documentId}
-	]]>			
-    </select>
-    
    	<select id="getNysFipsCounty" parameterType="String" resultType="String">
    	<![CDATA[
 			SELECT COUNTY_FIPS_CODE FROM CODED_COUNTY WHERE COUNTY_CD = #{nysCounty} and rownum < 2

@@ -30,7 +30,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ADAPDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ADAPDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRisksVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -382,12 +381,6 @@ public class ADAPDocumentService {
     	
     }
     
-    public PersonViewVO getStdADAPDocumentForClericalReview(int documentId){
-    	PersonViewVO adapDocVO = aDAPDocumentDAO.getStdADAPDocumentForClericalReview(documentId);
-    	
-    	return adapDocVO;
-    }
-    
     public List<String> getFileNames(){
     	return aDAPDocumentDAO.getFileNames();
     }
@@ -655,15 +648,6 @@ public class ADAPDocumentService {
 			}else{
 				commonExceptionHandler.inspectDBTransacionResult(-1, transactionMessage, bindingResult);
 			}
-    	
-    }
-    
-    public PersonViewVO getNYCADAPDocumentForClericalReview(int documentId){
-    	
-    	PersonViewVO adapDocVO = aDAPDocumentDAO.getNYCADAPDocumentForClericalReview(documentId);
-    	
-    	return adapDocVO;
-    	
     	
     }
     

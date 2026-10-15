@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycIJRDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -229,10 +228,6 @@ public class NycIJRDocumentService {
     
     public List<String> getFileNames(){
     	return nycIJRDocumentDAO.getFileNames();
-    }
-    
-    public PersonViewVO getStdNycIJRDocumentForClericalReview(int documentId){
-    	return nycIJRDocumentDAO.getStdNycIJRDocumentForClericalReview(documentId);
     }
     
     

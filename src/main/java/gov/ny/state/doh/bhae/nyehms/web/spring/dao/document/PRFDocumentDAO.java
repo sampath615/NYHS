@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -13,8 +12,6 @@ public interface PRFDocumentDAO {
 	public PRFDocumentVO getPRFDoc(int docId)throws DataAccessException;
 	
 	public int insertPrfDocData(PRFDocumentVO pRFDocumentVO)throws DataAccessException;
-
-	public PersonViewVO getStdPRFDocumentForClericalView(int documentId);
 
 	public List<JSONObject> getprfReviewDocumentsData();
 

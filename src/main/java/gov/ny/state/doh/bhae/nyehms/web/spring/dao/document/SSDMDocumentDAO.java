@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.Map;
 
@@ -26,8 +25,6 @@ public interface SSDMDocumentDAO {
     public SSDMDocVO getSSDMDoc(int docId) throws DataAccessException;
 
 	public int writeStdDocData(Map<Object, Object> docVO);
-
-	public PersonViewVO getStdSSDMDocumentForClericalReview(int documentId);
 
 	public int writeAllRawSSDMDocDataToStdTable();
 

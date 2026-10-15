@@ -4,7 +4,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,8 +14,6 @@ public interface LabDocumentDAO {
 	public StdEcrlsLabDocVO  getLabDoc(Map<Object, Object> map)throws DataAccessException;
 	public void insertLabDocData(LabDocVO stdLabDocVO)throws DataAccessException;
 	public EcrlsLabDocVO getHivLabDoc(int docId);
-	
-	public PersonViewVO getStdLabDocForClericalView(Map<Object, Object> map);
 	
 	
 	

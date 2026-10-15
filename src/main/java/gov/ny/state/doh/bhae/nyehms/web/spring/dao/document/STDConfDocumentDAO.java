@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,6 @@ public interface STDConfDocumentDAO {
     //public void insertTBDocData(TBDocVO tBDocVO) throws DataAccessException;
 
 	public int writeRawSTDConfDocDataToStdTable(Map<Object, Object> docVO);
-
-	public PersonViewVO getStdConfDocumentForClericalReview(int documentId);
 
 	public List<Map<String, String>> getDrugList(String refColumnName);
 

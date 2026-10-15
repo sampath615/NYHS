@@ -48,11 +48,6 @@
 		
     </insert>
 
-  <select id="getStdSSDMDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-  	SELECT SSN, FNAME, LNAME, MNAME,SUFFIX, DOB_TEXT DOB, 	PERSON_STATE_AT_DEATH stateOfDeath, DOD_TEXT dateOfDeath        
-from STD_SSDM_DOC where DOCUMENT_ID = #{docId} 
-  </select>
-	
 	
 	<insert id="writeAllRawSSDMDocDataToStdTable">
 	<![CDATA[

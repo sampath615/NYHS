@@ -817,43 +817,6 @@ where rownum <= 1000
 		]]>
 	</select>
 
-	<select id="getStdCCDDocumentForClericalReview" parameterType="int"
-		resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-		SELECT FNAME,
-		LNAME,
-		MNAME,
-		GENDER_DESCRIPTION GENDER,
-		DOB_TEXT DOB,
-		PERSON_COUNTRY country,
-		PERSON_ADDRESS,
-		PERSON_STATE,
-		PERSON_CITY,
-		COUNTY_NAME PERSON_COUNTY,
-		PERSON_ZIP,
-		PERSON_PLUS4,
-		ETHNICITY_DESCRIPTION ETHNICITY,
-		PERSON_PHONE_CELL cellPhone,
-		PERSON_PHONE_HOME homePhone,
-		PERSON_PHONE_WORK workPhone,
-		RACE_WHITE,
-		RACE_BLACK,
-		RACE_ASIAN,
-		RACE_INDIAN,
-		RACE_PACIFIC,
-		RACE_UNKNOWN,
-		RACE_OTHER,
-		RACE_OTHER_TEXT
-		from STD_CCD_DOC s , CODED_GENDER g ,
-		CODED_COUNTY c ,CODED_ETHNICITY e
-		where s.gender=g.GENDER_CODE (+)
-		AND
-		s.PERSON_COUNTY =
-		c.COUNTY_FIPS_CODE(+)
-		AND s.ETHNICITY =
-		e.ETHNICITY_CODE (+) and
-		s.DOCUMENT_ID = #{docId}
-	</select>
-
 	<update id="updateRawReviewedStatusCode" parameterType="java.util.Map">
 		update
 		${tableName} set REVIEWED = #{statusCode} where DIAGNOSIS_ID =

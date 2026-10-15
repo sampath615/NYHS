@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SYPHDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 
 import java.util.Map;
 
@@ -13,7 +12,5 @@ public interface SYPHDocumentDAO {
     
     public int writeRawSYPHDocDataToStdTable(Map<Object, Object> docVO);
 
-    public PersonViewVO getStdSYPHDocumentForClericalReview(int documentId);
-   
 }
 

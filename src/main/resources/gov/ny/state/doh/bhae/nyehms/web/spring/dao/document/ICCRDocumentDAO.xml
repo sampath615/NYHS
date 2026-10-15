@@ -131,10 +131,4 @@
   
 	</insert>		
 	
-      <select id="getStdICCRDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-  			select FNAME, LNAME, MNAME, DOB, PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP
- 			from STD_ICCR_DOC s, CODED_COUNTY c
-			where s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)  and s.DOCUMENT_ID = #{docId}
-  </select>
-  	
 </mapper>

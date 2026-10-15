@@ -19,7 +19,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ICCRDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -141,10 +140,6 @@ public class ICCRDocumentService {
 		docVO.put("CURRENT_PROCESS_STATUS", 5);
 		
     	return iccrDocumentDAO.writeStdDocData(docVO);
-	}
-
-	public PersonViewVO getStdICCRDocumentForClericalReview(int documentId) {
-		return iccrDocumentDAO.getStdICCRDocumentForClericalReview(documentId);
 	}
 
 }

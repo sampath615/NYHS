@@ -99,16 +99,6 @@ raw1.PROV_ADDRESS PROV_ADDRESS_RAW
     
     </insert>
 	
- 	<select id="getStdConfDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
-		SELECT FNAME, LNAME, MNAME, GENDER_DESCRIPTION GENDER, BIRTH_SEX birthSex, TO_CHAR(DOB, 'MM/DD/YYYY') DOB,   TO_CHAR(DATE_OF_DEATH, 'MM/DD/YYYY') dateOfDeath, 
-  PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP, 
-ETHNICITY_DESCRIPTION  ETHNICITY, RACE_WHITE,RACE_BLACK, RACE_ASIAN, RACE_INDIAN, RACE_PACIFIC,  RACE_UNKNOWN, RACE_OTHER    
-from STD_STD_CONFIRMED_DOC s , CODED_GENDER g  , CODED_COUNTY c ,CODED_ETHNICITY e
-where s.CURRENT_GENDER=g.GENDER_CODE (+)
-AND s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)
-AND s.ETHNICITY = e.ETHNICITY_CODE (+) and s.DOCUMENT_ID = #{docId} 
-	</select>
-	
 	
 	<select id="getDrugList" parameterType="String" resultType="java.util.Map">
 	

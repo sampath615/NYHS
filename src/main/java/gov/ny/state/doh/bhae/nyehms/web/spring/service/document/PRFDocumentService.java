@@ -5,7 +5,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFPartnerDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -83,13 +82,6 @@ public class PRFDocumentService {
     	pRFDocumentVO.setPartnerList(prfPartnerList);
         
         return pRFDocumentVO;
-    }
-    
-    public PersonViewVO getStdPRFDocumentForClericalView(int documentId){
-    	
-    	PersonViewVO pRFDocumentVO = pRFDocumentDAO.getStdPRFDocumentForClericalView(documentId);
-    	
-    	return pRFDocumentVO;
     }
     
     public PRFDocumentVO getCompleteRawPRFDocumentContent(int docId){

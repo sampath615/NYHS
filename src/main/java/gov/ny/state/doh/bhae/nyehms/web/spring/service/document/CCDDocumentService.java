@@ -47,7 +47,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDPersonD
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProblemVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.RawCCDProviderVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd.StdCCDDocVo;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMatchHITSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -1815,11 +1814,6 @@ public class CCDDocumentService {
 		stdCCDDiagnosisinsertVo.put("DIAGNOSIS_SEQ_NO", stdCCDDiagnosisVO.get("DIAGNOSIS_SEQ_NO"));
 		stdCCDDiagnosisinsertVo.put("START_DATE_TEXT", stdCCDDiagnosisVO.get("START_DATE_TEXT"));
 		return ccdDocumentDAO.insertDiagnosisFromRAWToSTD(stdCCDDiagnosisinsertVo);
-	}
-
-	public PersonViewVO getStdCCDDocumentForClericalReview(int documentId) {
-		PersonViewVO clericalPersonViewVO = ccdDocumentDAO.getStdCCDDocumentForClericalReview(documentId);
-		return clericalPersonViewVO;
 	}
 
 	public void updateRawDiagnosisMovedToSTDStatus(int currentDocumentId, String tableName, char statusCode) {
