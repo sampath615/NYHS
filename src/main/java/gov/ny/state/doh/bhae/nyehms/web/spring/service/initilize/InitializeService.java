@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.repository.InitFailureReasonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class InitializeService {
 	
 	@Autowired
 	InitializeDAO initializeDAO;
+
+	@Autowired
+	InitFailureReasonRepository initFailureReasonRepository;
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;	
@@ -271,7 +275,17 @@ public class InitializeService {
 		boolean errorFlag=false;
 		List<InitFailureReasonsVO> initFailureReasons  = null;
 		try {
-			initFailureReasons = initializeDAO.getInitFailReasons();	
+			//initFailureReasons = initializeDAO.getInitFailReasons();
+			initFailureReasons = initFailureReasonRepository.findAllByOrderByReasonCdAsc()
+					.stream()
+					.map(e -> {
+						InitFailureReasonsVO vo = new InitFailureReasonsVO();
+						vo.setReasoncd(e.getReasonCd());
+						vo.setShort_desc(e.getShortDesc());
+						vo.setDescription(e.getDescription());
+						return vo;
+					})
+					.collect(java.util.stream.Collectors.toList());
 		} catch(DataAccessException dae){
 			errorFlag = true;
 			log.error(nyehmsLog+" DataAccessException Occured : "+dae.toString());

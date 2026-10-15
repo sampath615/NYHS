@@ -14,6 +14,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import org.springframework.stereotype.Component;
 
 /**
  * Quartz scheduler class to send NYEHMS login reminder email
@@ -21,6 +22,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  * @author ska03
  *
  */
+@Component
 public class NyehmsLoginReminderLoader{
 	
 	/*

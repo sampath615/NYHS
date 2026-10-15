@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.ApplicationContextProvider;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -17,17 +16,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Module to perform all POST-MATCH processing
  * @author ska03
  */
+@Component
 public class QualityStageMatchResultsLoaderForBothJobs{
 	
 	private static Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);
 	@Autowired SendEmail sendEmail;
 	@Autowired ManualQuartzJobService manualQuartzJobService;
 	@Autowired QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
+	@Autowired SchedulerNotificationVO schedulerNotificationVO;
 	
 	/**
 	 * Drives the POST-MATCH document processing steps in a two-job scenario:
@@ -79,9 +81,6 @@ public class QualityStageMatchResultsLoaderForBothJobs{
 					 * 
 					 * This status will be high level, which will be sending it to the few users.
 					 */
-					ApplicationContextProvider appContext = new ApplicationContextProvider();
-					
-					SchedulerNotificationVO schedulerNotificationVO = appContext.getApplicationContext().getBean("notificationObject", SchedulerNotificationVO.class);
 			    	
 					List<String> schedulerNotificationObj =  schedulerNotificationVO.getSchedulerStatusObj();
 					

@@ -372,7 +372,7 @@ public class CommonUtil {
 	 * Captures the Throwable stacktrace in a String to allow logging, writing to
 	 * files, etc...
 	 * 
-	 * @param the
+	 * @param t
 	 *            Throwable for which the stacktrace is desired.
 	 */
 	public static String getStackTrace(Throwable t) {
@@ -542,5 +542,17 @@ public class CommonUtil {
 			
 			
 		return new String(bytes,0,endIndex, StandardCharsets.UTF_8).trim();
+	}
+
+	/**
+	 * Encodes a message so it can be used as a cookie value. Tomcat rejects
+	 * spaces and some punctuation in cookie values; getCookie() in
+	 * commonUtils.js decodes it again.
+	 */
+	public static String encodeCookieValue(String value) {
+		if (value == null) {
+			return "";
+		}
+		return java.net.URLEncoder.encode(value, StandardCharsets.UTF_8).replace("+", "%20");
 	}
 }

@@ -21,9 +21,10 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUpDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
+import org.springframework.stereotype.Component;
 
 
-
+@Component
 public class GenerateEPRFSummarySpreadsheet extends AbstractExcelReportView{
 
 

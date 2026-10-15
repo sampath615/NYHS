@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -623,10 +624,10 @@ public class MergeUnMergePersonController {
 		if(!isError){			
 			mav.addObject("fromDate", fromDate);			
 			mav.addObject("toDate", toDate);
-			myCookie1 = new Cookie("TRANSACTION_MESSAGE", "Successfully generated the report.");
+			myCookie1 = new Cookie("TRANSACTION_MESSAGE", CommonUtil.encodeCookieValue("Successfully generated the report."));
 	        myCookie2 = new Cookie("TRANSACTION_RESULT", AppConstants.NYEHM_TRANSACTION_SUCCESS_CODE.getName());
 		}else{
-			myCookie1 = new Cookie("TRANSACTION_MESSAGE", "There is no data to generate the report.");
+			myCookie1 = new Cookie("TRANSACTION_MESSAGE",CommonUtil.encodeCookieValue("There is no data to generate the report."));
 	        myCookie2 = new Cookie("TRANSACTION_RESULT", AppConstants.NYEHM_TRANSACTION_FAILURE_CODE.getName());	 
 			map.put("category", category);
 			map.put("reportType", reportType);

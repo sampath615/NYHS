@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -543,7 +544,7 @@ public class LaftDetailsController {
 			mav.addObject("toDate", toDate);
 			
 			
-			myCookie1 = new Cookie("TRANSACTION_MESSAGE", "Successfully generated the Error Report.");
+			myCookie1 = new Cookie("TRANSACTION_MESSAGE", CommonUtil.encodeCookieValue("Successfully generated the Error Report."));
 			
 
 
@@ -554,7 +555,7 @@ public class LaftDetailsController {
 		}else{
 			
 			
-			myCookie1 = new Cookie("TRANSACTION_MESSAGE", "There is no data to generate the Error Report.");
+			myCookie1 = new Cookie("TRANSACTION_MESSAGE",CommonUtil.encodeCookieValue("There is no data to generate the Error Report."));
 			
 
 

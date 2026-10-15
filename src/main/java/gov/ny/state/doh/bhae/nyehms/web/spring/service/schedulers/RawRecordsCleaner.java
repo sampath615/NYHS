@@ -13,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.ApplicationContextProvider;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.AIRSDocumentService;
@@ -23,6 +22,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMat
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * Contains the methods that execute the PRE-MATCH document processing
@@ -35,6 +35,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  * 
  * @author ska03
  */
+@Component
 public class RawRecordsCleaner {
 
 	private static Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);
@@ -51,6 +52,9 @@ public class RawRecordsCleaner {
 
 	@Autowired
 	HITCommonDocumentService hitCommonDocumentService;
+
+	@Autowired
+	SchedulerNotificationVO schedulerNotificationVO;
 	
 //	@Autowired
 //	DatafluxJobExce datafluxJobExce;
@@ -182,9 +186,7 @@ public class RawRecordsCleaner {
 					 * This status will be high level, which will be sending it
 					 * to the few users.
 					 */
-					ApplicationContextProvider appContext = new ApplicationContextProvider();
-					SchedulerNotificationVO schedulerNotificationVO = appContext.getApplicationContext()
-							.getBean("notificationObject", SchedulerNotificationVO.class);
+
 					List<String> schedulerNotificationObj = schedulerNotificationVO.getSchedulerStatusObj();
 					
 					schedulerNotificationObj.clear();
