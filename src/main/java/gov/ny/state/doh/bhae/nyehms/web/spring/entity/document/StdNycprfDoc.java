@@ -1,28 +1,37 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.Immutable;
+import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * An NYC Partner Referral Form, standardized (table STD_NYCPRF_DOC); the columns the NYC PRF
  * document screen reads and the import writes.
  * <p>
- * Never updated: the rows are inserted with an HQL insert (NycprfDocWriter), not persisted.
+ * Never updated: a row is inserted once by the import ({@code NycprfDocRepository.saveAndFlush}, built
+ * with {@link #builder()}), so it is always new ({@link #isNew()}: save() inserts without a select first).
  * <b>DOCUMENT_ID as the key is assumed</b> (one standardized row per document) — confirm against
  * the table's primary key (docs/JPA_MIGRATION.md).
  */
 @Entity
 @Immutable
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "STD_NYCPRF_DOC")
-public class StdNycprfDoc {
+public class StdNycprfDoc implements Persistable<Integer> {
 
 	@Id
 	@Column(name = "DOCUMENT_ID")
@@ -44,7 +53,7 @@ public class StdNycprfDoc {
 	private String altName;
 
 	@Column(name = "DOB")
-	private Date dob;
+	private Timestamp dob;
 
 	@Column(name = "DOD_TEXT")
 	private String dodText;
@@ -155,7 +164,7 @@ public class StdNycprfDoc {
 	private String recvBloodProdCountry;
 
 	@Column(name = "ADMISSION_DATE")
-	private Date admissionDate;
+	private Timestamp admissionDate;
 
 	@Column(name = "INITIAL_HIV_DIAG")
 	private String initialHivDiag;
@@ -191,7 +200,7 @@ public class StdNycprfDoc {
 	private String psRequested;
 
 	@Column(name = "COMPLETED_DATE")
-	private Date completedDate;
+	private Timestamp completedDate;
 
 	@Column(name = "CONTACT_LNAME")
 	private String contactLname;
@@ -248,16 +257,16 @@ public class StdNycprfDoc {
 	private String createUid;
 
 	@Column(name = "CREATE_DATE")
-	private Date createDate;
+	private Timestamp createDate;
 
 	@Column(name = "REVIEW_UID")
 	private String reviewUid;
 
 	@Column(name = "REVIEW_DATE")
-	private Date reviewDate;
+	private Timestamp reviewDate;
 
 	@Column(name = "EHARS_IMPORT_DATE")
-	private Date eharsImportDate;
+	private Timestamp eharsImportDate;
 
 	@Column(name = "PT_INTERVIEW_DATE")
 	private String ptInterviewDate;
@@ -331,15 +340,8 @@ public class StdNycprfDoc {
 	@Column(name = "LAST_NEG_FAC_STATE")
 	private String lastNegFacState;
 
-	@Column(name = "FIELD_PROC_DATE", insertable = false, updatable = false)
-	private Date fieldProcDate;
-
-	/**
-	 * The same column as written by the import: the received text, which Oracle converts to a date
-	 * (as the former MyBatis insert did). Use {@link #fieldProcDate} to read it.
-	 */
 	@Column(name = "FIELD_PROC_DATE")
-	private String fieldProcDateText;
+	private Timestamp fieldProcDate;
 
 	@Column(name = "APARTMENT")
 	private String apartment;
@@ -449,8 +451,12 @@ public class StdNycprfDoc {
 	@Column(name = "MDPRINTNAME")
 	private String mdprintname;
 
-	@Column(name = "PRINTED_DATE")
+	@Column(name = "PRINTED_DATE", insertable = false, updatable = false)
 	private String printedDate;
+
+	/** The same column as the import writes it (a date; the screen reads it as text, {@link #printedDate}). */
+	@Column(name = "PRINTED_DATE")
+	private Timestamp printedDateValue;
 
 	@Column(name = "PROV_FACILITY")
 	private String provFacility;
@@ -458,7 +464,7 @@ public class StdNycprfDoc {
 	@Column(name = "PROV_TITLE")
 	private String provTitle;
 
-	// written by the import (NycprfDocWriter), not shown on the document screen
+	// written by the import (NycPrfStdDocMapping), not shown on the document screen
 	@Column(name = "FIRST_POS_LOCATION")
 	private String firstPosLocation;
 
@@ -505,19 +511,19 @@ public class StdNycprfDoc {
 	private String oldform;
 
 	@Column(name = "UPDATE_DATE")
-	private Date updateDate;
+	private Timestamp updateDate;
 
 	@Column(name = "SIG_DATE")
-	private Date sigDate;
+	private Timestamp sigDate;
 
 	@Column(name = "EHARS_DATE")
-	private Date eharsDate;
+	private Timestamp eharsDate;
 
 	@Column(name = "RECEIVED_DATE")
-	private Date receivedDate;
+	private Timestamp receivedDate;
 
 	@Column(name = "ENTER_DATE")
-	private Date enterDate;
+	private Timestamp enterDate;
 
 	@Column(name = "MATCH_CD")
 	private String matchCd;
@@ -547,7 +553,7 @@ public class StdNycprfDoc {
 	private String qsParentDocId;
 
 	@Column(name = "MATCHED_PROCESS_DATE")
-	private Date matchedProcessDate;
+	private Timestamp matchedProcessDate;
 
 	@Column(name = "EHARS_DOCUMENT_SOURCE_CD")
 	private String eharsDocumentSourceCd;
@@ -565,5 +571,16 @@ public class StdNycprfDoc {
 	private Long fluxQsParentDocId;
 
 	@Column(name = "FLUX_MATCHED_PROCESS_DATE")
-	private Date fluxMatchedProcessDate;
+	private Timestamp fluxMatchedProcessDate;
+
+	@Override
+	public Integer getId() {
+		return documentId;
+	}
+
+	/** Rows are only ever inserted. */
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 }

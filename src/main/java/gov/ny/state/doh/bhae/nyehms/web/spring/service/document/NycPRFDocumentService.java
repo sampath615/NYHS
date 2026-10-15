@@ -40,7 +40,8 @@ public class NycPRFDocumentService {
 	 * @return the number of rows written
 	 */
 	public int writeRawNycPRFRecordDataToStdTable(Map<Object, Object> docVO) {
-		return nycprfDocRepository.insertStdDocument(NycPrfStdDocMapping.toStdDocData(docVO));
+		nycprfDocRepository.saveAndFlush(NycPrfStdDocMapping.toStdDoc(docVO));   // flush: insert now, before the partners
+		return 1;
 	}
 
 	/**

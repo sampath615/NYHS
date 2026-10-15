@@ -1,232 +1,243 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import static java.util.Map.entry;
-
-import java.sql.Date;
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
-import java.util.function.UnaryOperator;
+import java.util.Set;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.SexOrn;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
- * Builds the standardized NYC Partner Referral Form (the STD_NYCPRF_DOC columns) from a received
- * record (a RAW_NYCPRF_DOC row): which raw field each column comes from and how it is cleaned.
+ * Builds the standardized NYC Partner Referral Form (STD_NYCPRF_DOC) from a received record (a
+ * RAW_NYCPRF_DOC row): which raw field each column comes from and how it is cleaned.
+ * <p>
+ * The cleaning the former SQL insert did in Oracle is done here: text is trimmed of spaces and
+ * upper-cased ({@link #upper}), an empty text is stored as null (as Oracle does), dates on the
+ * form go through {@link #fnToDate} (the database function FN_TO_DATE).
  */
 final class NycPrfStdDocMapping {
 
 	/** Who creates the standardized rows: the import. */
 	private static final String IMPORT_USER_ID = "900";
 
-	/** Standardized column -> where its value comes from (all but the few rules further down). */
-	private static final Map<String, From> COLUMNS = Map.ofEntries(
-			// person
-			entry("DOCUMENT_ID", copy("DOCUMENT_ID")),
-			entry("PRF_SRC_ID", copy("PRF")),
-			entry("CITYNO", copy("CITYNO")),
-			entry("FNAME", convert("FNAME", CommonUtil::NameValidation)),
-			entry("MNAME", convert("MI", CommonUtil::NameValidation)),
-			entry("LNAME", convert("LNAME", CommonUtil::NameValidation)),
-			entry("ALT_NAME", copy("ALIA")),
-			entry("ALT_LNAME", copy("ALNAME")),
-			entry("ALT_MNAME", copy("AMNAME")),
-			entry("DOB", copy("DOB")),
-			entry("DOD_TEXT", copy("DOD")),
-			entry("SSN", convert("SSN", CommonUtil::formatSSNValue)),
-			entry("DIN", convert("DIN", CommonUtil::dinValidation)),
-			entry("MED_RECORD_NUMBER", convert("RECNUM", CommonUtil::normalizeString)),
-			entry("PERSON_ADDRESS", convert("ADDRESS", CommonUtil::addressValidation)),
-			entry("APARTMENT", text("APT")),
-			entry("PERSON_CITY", copy("CITY")),
-			entry("PERSON_STATE", copy("ST")),
-			entry("PERSON_ZIP", copy("ZIP")),
-			entry("PERSON_PHONE", copy("PHONE")),
-			entry("BIRTH_COUNTRY", copy("CTRYOFBIRTH")),
-			entry("PRIMARY_LANGUAGE", copy("LANG")),
-			entry("PRIMARY_LANGUAGE_OTHER", copy("OLANG")),
-			entry("PERSON_OTHER_IDENTIFIER", copy("OIDENTF")),
-			entry("EDC", copy("EDC")),
-			entry("PREGNANT", copy("PREGN")),
-
-			// sex, gender, sexual orientation, ethnicity, race (the race flags are completed by the race list)
-			entry("BIRTH_SEX", convert("SEXB", LabCommonUtils::checkBirthSexData)),
-			entry("CURRENT_GENDER", convert("GENDER", LabCommonUtils::checkCurrentGenderData)),
-			entry("ADDITIONAL_GENDER_IDENTITY", copy("ADTIDENTF")),
-			entry("SEX_ORN_ADD_ID", text("SXORI_ADTIDF")),
-			entry("ETHNICITY", convert("ETHNICITY", LabCommonUtils::checkEthnicityData)),
-			entry("RACE_WHITE", convert("RACE_WHITE", LabCommonUtils::checkRaceData)),
-			entry("RACE_BLACK", convert("RACE_BLACK", LabCommonUtils::checkRaceData)),
-			entry("RACE_ASIAN", convert("RACE_ASIAN", LabCommonUtils::checkRaceData)),
-			entry("RACE_INDIAN", convert("RACE_INDIAN", LabCommonUtils::checkRaceData)),
-			entry("RACE_PACIFIC", convert("RACE_PACIFIC", LabCommonUtils::checkRaceData)),
-			entry("RACE_UNKNOWN", convert("RACE_UNKNOWN", LabCommonUtils::checkRaceData)),
-			entry("RACE_OTHER", convert("RACE_OTHER", LabCommonUtils::checkRaceData)),
-			entry("RACE_OTHER_TEXT", copy("OTHERRACE")),
-
-			// risk factors (RISK_OTHER follows from OTHERRISK)
-			entry("SWM", convert("SEX_MALE", LabCommonUtils::checkRiskData)),
-			entry("SWF", convert("SEX_FEMALE", LabCommonUtils::checkRiskData)),
-			entry("IDU", convert("INJECTION", LabCommonUtils::checkRiskData)),
-			entry("SEX_PARTNER_IDU", convert("DRUG", LabCommonUtils::checkRiskData)),
-			entry("SEX_PARTNER_HIV", convert("HIVPSON", LabCommonUtils::checkRiskData)),
-			entry("SEX_PARTNER_MSM", convert("BXMAN", LabCommonUtils::checkRiskData)),
-			entry("SEX_PARTNER_HEMOPHILIAC", convert("S_HEMO", LabCommonUtils::checkRiskData)),
-			entry("RECV_BLOOD_PROD", convert("RECBLD", LabCommonUtils::checkRiskData)),
-			entry("RECV_BLOOD_PROD_DATE_TEXT", copy("RECBLDDT")),
-			entry("RECV_BLOOD_PROD_COUNTRY", copy("RECBLDCTRY")),
-			entry("PERINATAL", convert("PERIEXPO", LabCommonUtils::checkRiskData)),
-			entry("HEALTHCARE_WORKER", convert("HCW", LabCommonUtils::checkRiskData)),
-			entry("RISK_UNKNOWN", convert("RSKUNK", LabCommonUtils::checkRiskData)),
-
-			// HIV and AIDS diagnosis
-			entry("INITIAL_HIV_DIAG", convert("FSTHIVDX", LabCommonUtils::checkRaceData)),
-			entry("INITIAL_HIV_DIAG_DATE_TEXT", copy("FSTHIVDT")),
-			entry("INFORMED_HIV_POS", convert("INFPOSSTUS", LabCommonUtils::checkRaceData)),
-			entry("INFORMED_HIV_DATE_TEXT", copy("INFPOSDT")),
-			entry("PREVIOUS_HIV_DIAG", convert("PREHIVDX", LabCommonUtils::checkRaceData)),
-			entry("PREV_HIV_DIAG_DATE_TEXT", copy("PREHIVDT")),
-			entry("INITIAL_AIDS_DIAG", convert("FSTASDX", LabCommonUtils::checkRaceData)),
-			entry("INIT_AIDS_DIAG_DATE_TEXT", copy("FSTASDXDT")),
-			entry("PREVIOUS_AIDS_DIAG", convert("PREASDX", LabCommonUtils::checkRaceData)),
-			entry("PREV_AIDS_DIAG_DATE_TEXT", copy("PREASDT")),
-			entry("ACUTE_INFECTION", copy("ACUINF")),
-			entry("PS_REQUESTED", convert("CNAP", LabCommonUtils::checkRaceData)),
-
-			// HIV testing history (newer forms have a second name for some fields: first one filled wins)
-			entry("PT_INTERVIEW_DATE", copy("INTIVDT")),
-			entry("FIRST_POS_HIV_DATE", copy("FSTPOSHIVDT")),
-			entry("FIRST_POS_ANON", convert("FSTPOSANO", LabCommonUtils::checkTestDataValues)),
-			entry("FIRST_POS_LOCATION", copy("FLITYTYPE_D")),
-			entry("FIRST_POS_FAC_NAME", copy("FLITYNAME_D")),
-			entry("FIRST_POS_FAC_STATE", copy("FLITYST_D")),
-			entry("FIRST_HIV_TEST_EVER_DATE_TEXT", copy("FSTHIVTSTDT")),
-			entry("EVER_HAD_PREV_POS_TEST", copy("EVEP")),
-			entry("EVER_TEST_NEG", convert("EVRNGTST", "TSTNGBEF", LabCommonUtils::checkTestDataValues)),
-			entry("LAST_NEG_DATE_TEXT", copy("LASTNGTSTDT", "LSTNGTSTDT")),
-			entry("LAST_NEG_FAC_TYPE", copy("FLITYTYPE_J")),
-			entry("LAST_NEG_FAC_NAME", copy("FCLITYNAME_J")),
-			entry("LAST_NEG_FAC_STATE", copy("FCLITYST_J")),
-			entry("NUM_NEG_HIV_TEST", text("NUMNGTST")),
-			entry("RSON_FIRST_POS_EXP", convert("EXPHIV", "EXPSIX", LabCommonUtils::checkTestDataValues)),
-			entry("RSON_FIRST_POS_ROUTN", convert("ROUTN", "TSTAGAIN", LabCommonUtils::checkTestDataValues)),
-			entry("RSON_FIRST_POS_CHKNEG", convert("CHKNEG", "CHECKING", LabCommonUtils::checkTestDataValues)),
-			entry("RSON_FIRST_POS_REQD", convert("REQD", "REQIRED", LabCommonUtils::checkTestDataValues)),
-			entry("RSON_FIRST_POS_OTHER", convert("ORSON", "OTHERRSON", LabCommonUtils::checkTestDataValues)),
-			entry("RSON_FIRST_POS_OTHER_TEXT", copy("DESCR", "SPOTHERRSON")),
-			entry("RSON_FIRST_POS_PRTNR", copy("RECOMD", "PRTHIVPOS")),
-
-			// antiretrovirals (the medication lists follow further down)
-			entry("ARV_6_MO", convert("ANTISIX", LabCommonUtils::checkTestDataValues)),
-			entry("ARV_6_MO_NAME", copy("WHICH")),
-			entry("ARV_6_MO_START_DATE_TEXT", copy("STARTDT")),
-			entry("ARV_6_MO_END_DATE_TEXT", copy("ENDDT")),
-			entry("ARV_CURRENT_TEST", convert("ANTICUR", LabCommonUtils::checkTestDataValues)),
-			entry("PT_ARV_EVER_TAKEN", convert("ARVEVRTKEN", LabCommonUtils::checkTestDataValues)),
-			entry("ARV_TREATMENT", copy("TREATM")),
-			entry("PT_ARV_START_DATE_TEXT", copy("TREATM_SDT")),
-			entry("PT_ARV_END_DATE_TEXT", copy("TREATM_EDT")),
-			entry("POST_EXP_ARV_PEP", copy("POSPEP")),
-			entry("POST_EXP_ARV_PEP_START_DT", copy("POSPEP_SDT")),
-			entry("POST_EXP_ARV_PEP_END_DT", copy("POSPEP_EDT")),
-			entry("ARV_PREVEN_PREP", copy("ARVPREV")),
-			entry("ARV_PREVEN_PREP_START_DT", copy("ARVPREV_SDT")),
-			entry("ARV_PREVEN_PREP_END_DT", copy("ARVPREV_EDT")),
-
-			// provider, facility, referral
-			entry("PROV_FACILITY", copy("PROFALITY")),
-			entry("PROV_LNAME", copy("PROLAST")),
-			entry("PROV_FNAME", copy("PROFIST")),
-			entry("PROV_MI", copy("PROMI")),
-			entry("PROV_TITLE", copy("PROTITLE")),
-			entry("PROV_DEPARTMENT", copy("PRODEPT")),
-			entry("PROV_ADDRESS", copy("PROADD")),
-			entry("PROV_CITY", copy("PROCITY")),
-			entry("PROV_STATE", copy("PROST")),
-			entry("PROV_ZIP", copy("PROZIP")),
-			entry("PROV_PHONE", copy("PROTEL")),
-			entry("PROV_EXT", copy("PROEXT")),
-			entry("PRO_EMAIL", copy("PROEMAIL")),
-			entry("PROVIDER_NPI_NO", copy("NPINO")),
-			entry("PROVIDER_NYS_LIC_NO", copy("LICNO")),
-			entry("FACILITY_TYPE", copy("FACITYPE")),
-			entry("FACILITY_TYPE_OTHER_TEXT", copy("OFACI")),
-			entry("REFERRED_HIV_PROVIDER", copy("REFPV")),
-			entry("REFERRED_PROVIDER_NAME", copy("REFPVNAME")),
-			entry("REFFERED_PROVIDER_TELEPHONE", copy("REFPVTEL")),
-			entry("MDPRINTNAME", copy("MDPRINTNAME")),
-			entry("SIG_DATE", copy("MDSIGN")),
-			entry("COMPLETED_DATE", copy("PROCMPDT")),
-			entry("CONTACT_LNAME", copy("CONTLAST")),
-			entry("CONTACT_FNAME", copy("CONTFIRST")),
-			entry("CONTACT_MNAME", copy("CONTMI")),
-			entry("CONTACT_TITLE", copy("CONTTITLE")),
-			entry("CONTACT_PHONE", copy("CONTTEL")),
-
-			// form handling and eHARS
-			entry("ADMISSION_DATE", copy("VISITDT")),
-			entry("FIELD_PROC_DATE", text("FIELDPROCDATE")),
-			entry("ENTER_DATE", copy("ENTER_DT")),
-			entry("UPDATE_DATE", copy("UPDATE_DT")),
-			entry("PRINTED_DATE", copy("PRINTED")),
-			entry("RECEIVED_DATE", copy("RECEIVED")),
-			entry("TSAID", copy("TSAID")),
-			entry("REVTSAID", copy("REVTSAID")),
-			entry("OLDFORM", copy("OLDFORM")),
-			entry("NOTSEND", copy("NOTSEND")),
-			entry("WARNING", copy("WARNING")),
-			entry("EHARS", copy("EHARS")),
-			entry("EHARS_DATE", copy("EHARSDT")),
-			entry("EHARS_DOCUMENT_SOURCE_CD", copy("SOURE_CD")));
+	/** The date format of the form (FN_TO_DATE(..., 'MM/DD/YYYY')). */
+	private static final DateTimeFormatter FORM_DATE = DateTimeFormatter.ofPattern("M/d/uuuu").withResolverStyle(ResolverStyle.STRICT);
 
 	private NycPrfStdDocMapping() {
 	}
 
 	/**
-	 * The standardized columns for a received record.
+	 * The standardized form for a received record.
 	 *
 	 * @param raw the received record, value per raw field name
-	 * @return value per STD_NYCPRF_DOC column; a column without a value is left out
+	 * @return the new STD_NYCPRF_DOC row; columns without a value are null
 	 */
-	static Map<Object, Object> toStdDocData(Map<Object, Object> raw) {
-		Map<Object, Object> std = new HashMap<>(256);
-		COLUMNS.forEach((column, from) -> std.put(column, from.valueIn(raw)));
+	static StdNycprfDoc toStdDoc(Map<Object, Object> raw) {
+		Set<String> listedRaces = listedRaces(text(raw, "RACE"));
+		String otherRisk = text(raw, "OTHERRISK");
+		SexOrn sexualOrientation = SexOrn.fromString(text(raw, "SXORI"));
 
-		markListedRaces(std, (String) raw.get("RACE"));
-		putOtherRisk(std, (String) raw.get("OTHERRISK"));
-		putMedicationNames(std, "PT_ARV_NAME", (String) raw.get("TREATMMED"));
-		putMedicationNames(std, "POST_EXP_ARV_PEP_MED_NAMES", (String) raw.get("POSMED"));
-		putMedicationNames(std, "ARV_PREVENPREP_MED_NAMES", (String) raw.get("ARVMED"));
-		std.put("NUMBER_TEST_2_YRS", numberOfTestsIn2Years(raw));
+		// RACE_CD stays null: the former insert wrote '' or nothing, which Oracle stores as NULL
+		return StdNycprfDoc.builder()
+				// person
+				.documentId(toInteger(raw.get("DOCUMENT_ID")))
+				.prfSrcId(toLong(raw.get("PRF")))
+				.cityno(upper(raw.get("CITYNO")))
+				.fname(upper(CommonUtil.NameValidation(text(raw, "FNAME"))))
+				.mname(upper(CommonUtil.NameValidation(text(raw, "MI"))))
+				.lname(upper(CommonUtil.NameValidation(text(raw, "LNAME"))))
+				.altName(upper(raw.get("ALIA")))
+				.altLname(upper(raw.get("ALNAME")))
+				.altMname(upper(raw.get("AMNAME")))
+				.dob(date(raw.get("DOB")))
+				.dodText(upper(raw.get("DOD")))
+				.ssn(upper(CommonUtil.formatSSNValue(text(raw, "SSN"))))
+				.din(upper(CommonUtil.dinValidation(text(raw, "DIN"))))
+				.medRecordNumber(upper(CommonUtil.normalizeString(text(raw, "RECNUM"))))
+				.personAddress(upper(CommonUtil.addressValidation(text(raw, "ADDRESS"))))
+				.apartment(upper(text(raw, "APT")))
+				.personCity(upper(raw.get("CITY")))
+				.personState(upper(raw.get("ST")))
+				.personZip(upper(raw.get("ZIP")))
+				.personPhone(upper(raw.get("PHONE")))
+				.birthCountry(upper(raw.get("CTRYOFBIRTH")))
+				.primaryLanguage(upper(raw.get("LANG")))
+				.primaryLanguageOther(upper(raw.get("OLANG")))
+				.personOtherIdentifier(upper(raw.get("OIDENTF")))
+				.edc(upper(raw.get("EDC")))
+				.pregnant(upper(raw.get("PREGN")))
 
-		SexOrn sexualOrientation = SexOrn.fromString((String) raw.get("SXORI"));
-		if (sexualOrientation != null) {
-			std.put("SEX_ORN", sexualOrientation.name());
-		}
+				// sex, gender, sexual orientation, ethnicity, race (the race flags are completed by the race list)
+				.birthSex(upper(LabCommonUtils.checkBirthSexData(text(raw, "SEXB"))))
+				.currentGender(upper(LabCommonUtils.checkCurrentGenderData(text(raw, "GENDER"))))
+				.additionalGenderIdentity(upper(raw.get("ADTIDENTF")))
+				.sexOrnAddId(upper(text(raw, "SXORI_ADTIDF")))
+				.ethnicity(upper(LabCommonUtils.checkEthnicityData(text(raw, "ETHNICITY"))))
+				.raceWhite(upper(race(raw, listedRaces, "RACE_WHITE")))
+				.raceBlack(upper(race(raw, listedRaces, "RACE_BLACK")))
+				.raceAsian(upper(race(raw, listedRaces, "RACE_ASIAN")))
+				.raceIndian(upper(race(raw, listedRaces, "RACE_INDIAN")))
+				.racePacific(upper(race(raw, listedRaces, "RACE_PACIFIC")))
+				.raceUnknown(upper(race(raw, listedRaces, "RACE_UNKNOWN")))
+				.raceOther(upper(race(raw, listedRaces, "RACE_OTHER")))
+				.raceOtherText(upper(raw.get("OTHERRACE")))
 
-		std.put("CREATE_UID", IMPORT_USER_ID);
-		std.put("CREATE_DATE", new Date(System.currentTimeMillis()));
-		std.put("CURRENT_PROCESS_STATUS", CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS);
-		return std;
+				// risk factors (RISK_OTHER follows from OTHERRISK)
+				.swm(upper(LabCommonUtils.checkRiskData(text(raw, "SEX_MALE"))))
+				.swf(upper(LabCommonUtils.checkRiskData(text(raw, "SEX_FEMALE"))))
+				.idu(upper(LabCommonUtils.checkRiskData(text(raw, "INJECTION"))))
+				.sexPartnerIdu(upper(LabCommonUtils.checkRiskData(text(raw, "DRUG"))))
+				.sexPartnerHiv(upper(LabCommonUtils.checkRiskData(text(raw, "HIVPSON"))))
+				.sexPartnerMsm(upper(LabCommonUtils.checkRiskData(text(raw, "BXMAN"))))
+				.sexPartnerHemophiliac(upper(LabCommonUtils.checkRiskData(text(raw, "S_HEMO"))))
+				.recvBloodProd(upper(LabCommonUtils.checkRiskData(text(raw, "RECBLD"))))
+				.recvBloodProdDateText(upper(raw.get("RECBLDDT")))
+				.recvBloodProdCountry(upper(raw.get("RECBLDCTRY")))
+				.perinatal(upper(LabCommonUtils.checkRiskData(text(raw, "PERIEXPO"))))
+				.healthcareWorker(upper(LabCommonUtils.checkRiskData(text(raw, "HCW"))))
+				.riskUnknown(upper(LabCommonUtils.checkRiskData(text(raw, "RSKUNK"))))
+
+				// HIV and AIDS diagnosis
+				.initialHivDiag(trimmed(LabCommonUtils.checkRaceData(text(raw, "FSTHIVDX"))))
+				.initialHivDiagDateText(upper(raw.get("FSTHIVDT")))
+				.informedHivPos(trimmed(LabCommonUtils.checkRaceData(text(raw, "INFPOSSTUS"))))
+				.informedHivDateText(upper(raw.get("INFPOSDT")))
+				.previousHivDiag(trimmed(LabCommonUtils.checkRaceData(text(raw, "PREHIVDX"))))
+				.prevHivDiagDateText(upper(raw.get("PREHIVDT")))
+				.initialAidsDiag(trimmed(LabCommonUtils.checkRaceData(text(raw, "FSTASDX"))))
+				.initAidsDiagDateText(upper(raw.get("FSTASDXDT")))
+				.previousAidsDiag(trimmed(LabCommonUtils.checkRaceData(text(raw, "PREASDX"))))
+				.prevAidsDiagDateText(upper(raw.get("PREASDT")))
+				.acuteInfection(upper(raw.get("ACUINF")))
+				.psRequested(upper(LabCommonUtils.checkRaceData(text(raw, "CNAP"))))
+
+				// HIV testing history (newer forms have a second name for some fields: first one filled wins)
+				.ptInterviewDate(upper(raw.get("INTIVDT")))
+				.firstPosHivDate(upper(raw.get("FSTPOSHIVDT")))
+				.firstPosAnon(upper(LabCommonUtils.checkTestDataValues(text(raw, "FSTPOSANO"))))
+				.firstPosLocation(upper(raw.get("FLITYTYPE_D")))
+				.firstPosFacName(upper(raw.get("FLITYNAME_D")))
+				.firstPosFacState(upper(raw.get("FLITYST_D")))
+				.firstHivTestEverDateText(upper(raw.get("FSTHIVTSTDT")))
+				.everHadPrevPosTest(upper(raw.get("EVEP")))
+				.everTestNeg(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "EVRNGTST", "TSTNGBEF"))))
+				.lastNegDateText(upper(firstFilled(raw, "LASTNGTSTDT", "LSTNGTSTDT")))
+				.lastNegFacType(upper(raw.get("FLITYTYPE_J")))
+				.lastNegFacName(upper(raw.get("FCLITYNAME_J")))
+				.lastNegFacState(upper(raw.get("FCLITYST_J")))
+				.numNegHivTest(upper(text(raw, "NUMNGTST")))
+				.rsonFirstPosExp(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "EXPHIV", "EXPSIX"))))
+				.rsonFirstPosRoutn(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "ROUTN", "TSTAGAIN"))))
+				.rsonFirstPosChkneg(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "CHKNEG", "CHECKING"))))
+				.rsonFirstPosReqd(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "REQD", "REQIRED"))))
+				.rsonFirstPosOther(upper(LabCommonUtils.checkTestDataValues((String) firstFilled(raw, "ORSON", "OTHERRSON"))))
+				.rsonFirstPosOtherText(upper(firstFilled(raw, "DESCR", "SPOTHERRSON")))
+				.rsonFirstPosPrtnr(upper(firstFilled(raw, "RECOMD", "PRTHIVPOS")))
+
+				// antiretrovirals (the medication lists follow further down)
+				.arv6Mo(upper(LabCommonUtils.checkTestDataValues(text(raw, "ANTISIX"))))
+				.arv6MoName(upper(raw.get("WHICH")))
+				.arv6MoStartDateText(upper(raw.get("STARTDT")))
+				.arv6MoEndDateText(upper(raw.get("ENDDT")))
+				.arvCurrentTest(upper(LabCommonUtils.checkTestDataValues(text(raw, "ANTICUR"))))
+				.ptArvEverTaken(upper(LabCommonUtils.checkTestDataValues(text(raw, "ARVEVRTKEN"))))
+				.arvTreatment(upper(raw.get("TREATM")))
+				.ptArvStartDateText(upper(raw.get("TREATM_SDT")))
+				.ptArvEndDateText(upper(raw.get("TREATM_EDT")))
+				.postExpArvPep(upper(raw.get("POSPEP")))
+				.postExpArvPepStartDt(upper(raw.get("POSPEP_SDT")))
+				.postExpArvPepEndDt(upper(raw.get("POSPEP_EDT")))
+				.arvPrevenPrep(upper(raw.get("ARVPREV")))
+				.arvPrevenPrepStartDt(upper(raw.get("ARVPREV_SDT")))
+				.arvPrevenPrepEndDt(upper(raw.get("ARVPREV_EDT")))
+
+				// provider, facility, referral
+				.provFacility(upper(raw.get("PROFALITY")))
+				.provLname(upper(raw.get("PROLAST")))
+				.provFname(upper(raw.get("PROFIST")))
+				.provMi(upper(raw.get("PROMI")))
+				.provTitle(upper(raw.get("PROTITLE")))
+				.provDepartment(upper(raw.get("PRODEPT")))
+				.provAddress(upper(raw.get("PROADD")))
+				.provCity(upper(raw.get("PROCITY")))
+				.provState(upper(raw.get("PROST")))
+				.provZip(upper(raw.get("PROZIP")))
+				.provPhone(upper(raw.get("PROTEL")))
+				.provExt(upper(raw.get("PROEXT")))
+				.proEmail(upper(raw.get("PROEMAIL")))
+				.providerNpiNo(upper(raw.get("NPINO")))
+				.providerNysLicNo(upper(raw.get("LICNO")))
+				.facilityType(upper(raw.get("FACITYPE")))
+				.facilityTypeOtherText(upper(raw.get("OFACI")))
+				.referredHivProvider(upper(raw.get("REFPV")))
+				.referredProviderName(upper(raw.get("REFPVNAME")))
+				.refferedProviderTelephone(upper(raw.get("REFPVTEL")))
+				.mdprintname(upper(raw.get("MDPRINTNAME")))
+				.sigDate(fnToDate(raw.get("MDSIGN")))
+				.completedDate(date(raw.get("PROCMPDT")))
+				.contactLname(upper(raw.get("CONTLAST")))
+				.contactFname(upper(raw.get("CONTFIRST")))
+				.contactMname(upper(raw.get("CONTMI")))
+				.contactTitle(upper(raw.get("CONTTITLE")))
+				.contactPhone(upper(raw.get("CONTTEL")))
+
+				// form handling and eHARS
+				.admissionDate(fnToDate(raw.get("VISITDT")))
+				.fieldProcDate(date(upper(text(raw, "FIELDPROCDATE"))))
+				.enterDate(date(raw.get("ENTER_DT")))
+				.updateDate(date(raw.get("UPDATE_DT")))
+				.printedDateValue(date(raw.get("PRINTED")))
+				.receivedDate(date(raw.get("RECEIVED")))
+				.tsaid(upper(raw.get("TSAID")))
+				.revtsaid(upper(raw.get("REVTSAID")))
+				.oldform(upper(raw.get("OLDFORM")))
+				.notsend(upper(raw.get("NOTSEND")))
+				.warning(upper(raw.get("WARNING")))
+				.ehars(upper(raw.get("EHARS")))
+				.eharsDate(fnToDate(raw.get("EHARSDT")))
+				.eharsDocumentSourceCd(upper(raw.get("SOURE_CD")))
+
+				// rules
+				.riskOther(upper(CommonUtil.isNotNullAndEmpty(otherRisk) ? "Y" : "N"))
+				.riskOtherText(upper(CommonUtil.isNotNullAndEmpty(otherRisk) ? otherRisk : null))
+				.ptArvName(upper(medicationNames(text(raw, "TREATMMED"))))
+				.postExpArvPepMedNames(upper(medicationNames(text(raw, "POSMED"))))
+				.arvPrevenprepMedNames(upper(medicationNames(text(raw, "ARVMED"))))
+				.numberTest2Yrs(upper(numberOfTestsIn2Years(raw)))
+				.sexOrn(upper(sexualOrientation == null ? null : sexualOrientation.name()))
+
+				// written by the import
+				.createUid(IMPORT_USER_ID)
+				.createDate(new Timestamp(System.currentTimeMillis()))
+				.currentProcessStatus(trimmed(CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS))
+				.build();
 	}
 
 	/**
-	 * Sets the race flag of every race in the comma-separated race list ("WHITE,BLACK", ...) on top
-	 * of the separate race fields; RACE_CD is set to "" when there is no list.
+	 * The race flag columns ("RACE_WHITE", ...) named by the comma-separated race list
+	 * ("WHITE,BLACK", ...); entries are not trimmed.
 	 */
-	private static void markListedRaces(Map<Object, Object> std, String races) {
-		if (CommonUtil.isNullOrEmpty(races)) {
-			std.put("RACE_CD", "");
-			return;
-		}
-		for (String race : races.trim().toUpperCase().split(",")) {
-			String flag = raceFlag(race);
-			if (flag != null) {
-				std.put(flag, "1");
+	private static Set<String> listedRaces(String races) {
+		Set<String> flags = new HashSet<>();
+		if (CommonUtil.isNotNullAndEmpty(races)) {
+			for (String race : races.trim().toUpperCase().split(",")) {
+				String flag = raceFlag(race);
+				if (flag != null) {
+					flags.add(flag);
+				}
 			}
 		}
+		return flags;
 	}
 
 	/** The race flag column of one entry of the race list, or null if it is none of them. */
@@ -249,26 +260,20 @@ final class NycPrfStdDocMapping {
 		return null;
 	}
 
-	/** RISK_OTHER is "Y" with the described risk as RISK_OTHER_TEXT, or "N" if none is described. */
-	private static void putOtherRisk(Map<Object, Object> std, String otherRisk) {
-		if (CommonUtil.isNotNullAndEmpty(otherRisk)) {
-			std.put("RISK_OTHER", "Y");
-			std.put("RISK_OTHER_TEXT", otherRisk);
-		} else {
-			std.put("RISK_OTHER", "N");
-		}
+	/** A race flag: "1" if the race list names it, else the flag field of the same name. */
+	private static String race(Map<Object, Object> raw, Set<String> listedRaces, String flag) {
+		String fromField = LabCommonUtils.checkRaceData(text(raw, flag));
+		return listedRaces.contains(flag) ? "1" : fromField;
 	}
 
-	/** A comma-separated medication list, stored separated by "|" (left out when empty). */
-	private static void putMedicationNames(Map<Object, Object> std, String column, String medications) {
-		if (CommonUtil.isNotNullAndEmpty(medications)) {
-			std.put(column, medications.replace(',', '|'));
-		}
+	/** A comma-separated medication list, separated by "|" instead; null when empty. */
+	private static String medicationNames(String medications) {
+		return CommonUtil.isNotNullAndEmpty(medications) ? medications.replace(',', '|') : null;
 	}
 
 	/** NUMTSTING without "_" and without one leading zero ("05" is "5"), or else NGTST. */
 	private static Object numberOfTestsIn2Years(Map<Object, Object> raw) {
-		String tests = (String) raw.get("NUMTSTING");
+		String tests = text(raw, "NUMTSTING");
 		if (CommonUtil.isNullOrEmpty(tests)) {
 			return raw.get("NGTST");
 		}
@@ -277,41 +282,98 @@ final class NycPrfStdDocMapping {
 		return leadingZero ? tests.substring(1) : tests;
 	}
 
-	private static From copy(String field) {
-		return new From(field, null, null);
+	/** A text field. */
+	private static String text(Map<Object, Object> raw, String field) {
+		return (String) raw.get(field);
 	}
 
-	/** The first of the two fields that is filled, as it is. */
-	private static From copy(String field, String otherwise) {
-		return new From(field, otherwise, null);
+	/** The first field, or the second one when the first is empty (newer and older form versions). */
+	private static Object firstFilled(Map<Object, Object> raw, String field, String otherwise) {
+		Object value = raw.get(field);
+		return CommonUtil.isNotNullAndEmpty((String) value) ? value : raw.get(otherwise);
 	}
 
-	/** A text field, as it is. */
-	private static From text(String field) {
-		return new From(field, null, UnaryOperator.identity());
+	/** UPPER(TRIM(value)) as Oracle computes it; null when empty. */
+	static String upper(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : text.toUpperCase(Locale.ROOT);
 	}
 
-	private static From convert(String field, UnaryOperator<String> conversion) {
-		return new From(field, null, conversion);
-	}
-
-	/** The first of the two fields that is filled, converted. */
-	private static From convert(String field, String otherwise, UnaryOperator<String> conversion) {
-		return new From(field, otherwise, conversion);
-	}
-
-	/**
-	 * Where a column's value comes from: a raw field, or the {@code otherwise} field when the first
-	 * one is empty; text fields are passed through {@code conversion} (none: the value as it is).
-	 */
-	private record From(String field, String otherwise, UnaryOperator<String> conversion) {
-
-		Object valueIn(Map<Object, Object> raw) {
-			Object value = raw.get(field);
-			if (otherwise != null && !CommonUtil.isNotNullAndEmpty((String) value)) {
-				value = raw.get(otherwise);
-			}
-			return conversion == null ? value : conversion.apply((String) value);
+	/** TRIM(value) as Oracle computes it (spaces only); null when empty, as Oracle stores it. */
+	static String trimmed(Object value) {
+		String text = oracleText(value);
+		if (text == null) {
+			return null;
 		}
+		int start = 0;
+		int end = text.length();
+		while (start < end && text.charAt(start) == ' ') {
+			start++;
+		}
+		while (end > start && text.charAt(end - 1) == ' ') {
+			end--;
+		}
+		return start == end ? null : text.substring(start, end);
+	}
+
+	/** A value as text the way Oracle converts it implicitly: numbers without trailing zeros (0.5 is ".5"). */
+	static String oracleText(Object value) {
+		if (value == null || value instanceof String) {
+			return (String) value;
+		}
+		if (value instanceof java.util.Date) {
+			// Oracle would have formatted it with the session's NLS date format
+			throw new IllegalArgumentException("A date where text is expected: " + value);
+		}
+		if (value instanceof Number number) {
+			String text = new BigDecimal(number.toString()).stripTrailingZeros().toPlainString();
+			if (text.startsWith("0.")) {
+				return text.substring(1);
+			}
+			return text.startsWith("-0.") ? "-" + text.substring(2) : text;
+		}
+		return value.toString();
+	}
+
+	/** FN_TO_DATE(TRIM(value), 'MM/DD/YYYY'): the date, or null when it is not a valid date. */
+	static Timestamp fnToDate(Object value) {
+		String text = trimmed(value);
+		if (text == null) {
+			return null;
+		}
+		try {
+			return Timestamp.valueOf(LocalDate.parse(text, FORM_DATE).atStartOfDay());
+		} catch (DateTimeParseException e) {
+			return null;
+		}
+	}
+
+	/** A date column: a date as it is (with its time); text as MM/DD/YYYY or YYYY-MM-DD. */
+	static Timestamp date(Object value) {
+		if (value == null || value instanceof Timestamp) {
+			return (Timestamp) value;
+		}
+		if (value instanceof java.util.Date date) {
+			return new Timestamp(date.getTime());
+		}
+		String text = trimmed(value);
+		if (text == null) {
+			return null;
+		}
+		try {
+			return Timestamp.valueOf(LocalDate.parse(text, text.contains("/") ? FORM_DATE : DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
+		} catch (DateTimeParseException e) {
+			throw new IllegalArgumentException("Not a date: " + value, e);
+		}
+	}
+
+	private static Integer toInteger(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : new BigDecimal(text).intValueExact();
+	}
+
+	private static Long toLong(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : new BigDecimal(text).longValueExact();
 	}
 }

@@ -1,84 +1,135 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfDoc;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
- * The standardized NYC PRF form built from a received record (the rules of the former
- * NycPRFDocumentService.writeRawNycPRFRecordDataToStdTable, compared side by side on 20,000
- * random records when they were moved here).
+ * The standardized NYC PRF form built from a received record: the rules of the former
+ * NycPRFDocumentService.writeRawNycPRFRecordDataToStdTable plus the cleaning its SQL insert did
+ * in Oracle (upper/trim, FN_TO_DATE, empty text stored as null).
  */
 class NycPrfStdDocMappingTest {
 
 	@Test
-	void copiesAndRenamesTheReceivedFields() {
-		Map<Object, Object> std = NycPrfStdDocMapping.toStdDocData(raw(
-				"DOCUMENT_ID", new BigDecimal("12"), "PRF", "7", "CITY", "Albany", "PROFALITY", "Clinic", "SOURE_CD", "S1"));
+	void copiesRenamesAndCleansTheReceivedFields() {
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw(
+				"DOCUMENT_ID", new BigDecimal("12"), "PRF", " 7 ", "CITY", " Albany ", "PROFALITY", "clinic", "ZIP", "  "));
 
-		assertThat(std).containsEntry("DOCUMENT_ID", new BigDecimal("12"))
-				.containsEntry("PRF_SRC_ID", "7")
-				.containsEntry("PERSON_CITY", "Albany")
-				.containsEntry("PROV_FACILITY", "Clinic")
-				.containsEntry("EHARS_DOCUMENT_SOURCE_CD", "S1")
-				.containsEntry("PERSON_ZIP", null);                  // missing field: column present, null
+		assertThat(std.getDocumentId()).isEqualTo(12);
+		assertThat(std.getPrfSrcId()).isEqualTo(7L);
+		assertThat(std.getPersonCity()).isEqualTo("ALBANY");               // UPPER(TRIM(...))
+		assertThat(std.getProvFacility()).isEqualTo("CLINIC");
+		assertThat(std.getPersonZip()).isNull();                            // blank text is stored as null
+		assertThat(std.getPersonState()).isNull();                          // missing field
 	}
 
 	@Test
 	void setsTheImportColumns() {
-		Map<Object, Object> std = NycPrfStdDocMapping.toStdDocData(raw());
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw());
 
-		assertThat(std).containsEntry("CREATE_UID", "900")
-				.containsEntry("CURRENT_PROCESS_STATUS", CommonConstants.RAW_RECORD_VALIDATION_SUCCESS_PROCESS_STATUS);
-		assertThat(std.get("CREATE_DATE")).isInstanceOf(Date.class);
+		assertThat(std.getCreateUid()).isEqualTo("900");
+		assertThat(std.getCurrentProcessStatus()).isEqualTo("5");
+		assertThat(std.getCreateDate()).isNotNull();
+		assertThat(std.getRaceCd()).isNull();
+	}
+
+	@Test
+	void convertsTheDates() {
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw(
+				"DOB", Timestamp.valueOf("1980-05-06 13:45:00"),        // a date read from the raw table keeps its time
+				"VISITDT", " 3/4/2023 ",                                 // FN_TO_DATE
+				"MDSIGN", "02/30/2023",                                  // FN_TO_DATE of an invalid date
+				"FIELDPROCDATE", "01/02/2023",
+				"ENTER_DT", "2023-05-06"));
+
+		assertThat(std.getDob()).isEqualTo(Timestamp.valueOf("1980-05-06 13:45:00"));
+		assertThat(std.getAdmissionDate()).isEqualTo(Timestamp.valueOf("2023-03-04 00:00:00"));
+		assertThat(std.getSigDate()).isNull();
+		assertThat(std.getFieldProcDate()).isEqualTo(Timestamp.valueOf("2023-01-02 00:00:00"));
+		assertThat(std.getEnterDate()).isEqualTo(Timestamp.valueOf("2023-05-06 00:00:00"));
+		assertThatThrownBy(() -> NycPrfStdDocMapping.toStdDoc(raw("DOB", "May 6"))).hasMessageContaining("Not a date");
+	}
+
+	@Test
+	void writesNumbersAsOracleTextAndRefusesDatesForText() {
+		assertThat(NycPrfStdDocMapping.oracleText(5)).isEqualTo("5");
+		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("12.50"))).isEqualTo("12.5");
+		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("0.50"))).isEqualTo(".5");
+		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("-0.25"))).isEqualTo("-.25");
+		assertThat(NycPrfStdDocMapping.oracleText(new BigDecimal("1E+3"))).isEqualTo("1000");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("CITYNO", new BigDecimal("12345"))).getCityno()).isEqualTo("12345");
+		// Oracle would have formatted it with its session date format
+		assertThatThrownBy(() -> NycPrfStdDocMapping.toStdDoc(raw("DOD", Timestamp.valueOf("2023-03-04 00:00:00"))))
+				.hasMessageContaining("A date where text is expected");
+	}
+
+	@Test
+	void trimsSpacesOnly() {
+		assertThat(NycPrfStdDocMapping.trimmed("  a b  ")).isEqualTo("a b");
+		assertThat(NycPrfStdDocMapping.trimmed("\ta\t")).isEqualTo("\ta\t");   // Oracle TRIM removes spaces only
+		assertThat(NycPrfStdDocMapping.upper(" o'neil ")).isEqualTo("O'NEIL");
 	}
 
 	@Test
 	void marksTheRacesOfTheRaceList() {
-		Map<Object, Object> std = NycPrfStdDocMapping.toStdDocData(raw("RACE", "white,American Indian,Native Hawaiian"));
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw("RACE", "white,American Indian,Native Hawaiian"));
 
-		assertThat(std).containsEntry("RACE_WHITE", "1").containsEntry("RACE_INDIAN", "1").containsEntry("RACE_PACIFIC", "1")
-				.doesNotContainKey("RACE_CD");
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("RACE", " "))).containsEntry("RACE_CD", "");
+		assertThat(std.getRaceWhite()).isEqualTo("1");
+		assertThat(std.getRaceIndian()).isEqualTo("1");
+		assertThat(std.getRacePacific()).isEqualTo("1");
 		// entries are not trimmed: " BLACK" is not "BLACK"
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("RACE", "WHITE, BLACK")).get("RACE_BLACK")).isNotEqualTo("1");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("RACE", "WHITE, BLACK")).getRaceBlack()).isNotEqualTo("1");
 	}
 
 	@Test
 	void takesTheSecondFieldWhenTheFirstIsEmpty() {
-		Map<Object, Object> std = NycPrfStdDocMapping.toStdDocData(raw(
-				"LASTNGTSTDT", " ", "LSTNGTSTDT", "01/02/2023", "RECOMD", "R", "PRTHIVPOS", "ignored"));
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw(
+				"LASTNGTSTDT", " ", "LSTNGTSTDT", "01/02/2023", "RECOMD", "r", "PRTHIVPOS", "ignored"));
 
-		assertThat(std).containsEntry("LAST_NEG_DATE_TEXT", "01/02/2023").containsEntry("RSON_FIRST_POS_PRTNR", "R");
+		assertThat(std.getLastNegDateText()).isEqualTo("01/02/2023");
+		assertThat(std.getRsonFirstPosPrtnr()).isEqualTo("R");
+
+		// with a conversion: the second field's value is converted
+		StdNycprfDoc converted = NycPrfStdDocMapping.toStdDoc(raw("EVRNGTST", "", "TSTNGBEF", "y", "EXPHIV", "n", "EXPSIX", "y"));
+		assertThat(converted.getEverTestNeg()).isEqualTo(NycPrfStdDocMapping.upper(LabCommonUtils.checkTestDataValues("y"))).isNotNull();
+		assertThat(converted.getRsonFirstPosExp()).isEqualTo(NycPrfStdDocMapping.upper(LabCommonUtils.checkTestDataValues("n"))).isNotNull();
 	}
 
 	@Test
 	void describesTheOtherRisk() {
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("OTHERRISK", "tattoo")))
-				.containsEntry("RISK_OTHER", "Y").containsEntry("RISK_OTHER_TEXT", "tattoo");
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw())).containsEntry("RISK_OTHER", "N").doesNotContainKey("RISK_OTHER_TEXT");
+		StdNycprfDoc withRisk = NycPrfStdDocMapping.toStdDoc(raw("OTHERRISK", "tattoo"));
+		assertThat(withRisk.getRiskOther()).isEqualTo("Y");
+		assertThat(withRisk.getRiskOtherText()).isEqualTo("TATTOO");
+
+		StdNycprfDoc withoutRisk = NycPrfStdDocMapping.toStdDoc(raw());
+		assertThat(withoutRisk.getRiskOther()).isEqualTo("N");
+		assertThat(withoutRisk.getRiskOtherText()).isNull();
 	}
 
 	@Test
 	void separatesMedicationNamesWithBars() {
-		Map<Object, Object> std = NycPrfStdDocMapping.toStdDocData(raw("TREATMMED", "A,B,C", "ARVMED", ""));
+		StdNycprfDoc std = NycPrfStdDocMapping.toStdDoc(raw("TREATMMED", "a,b,c", "ARVMED", ""));
 
-		assertThat(std).containsEntry("PT_ARV_NAME", "A|B|C").doesNotContainKey("ARV_PREVENPREP_MED_NAMES");
+		assertThat(std.getPtArvName()).isEqualTo("A|B|C");
+		assertThat(std.getArvPrevenprepMedNames()).isNull();
 	}
 
 	@Test
 	void cleansTheNumberOfTests() {
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("NUMTSTING", "0_5")).get("NUMBER_TEST_2_YRS")).isEqualTo("5");
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("NUMTSTING", "0")).get("NUMBER_TEST_2_YRS")).isEqualTo("0");
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("NUMTSTING", "10")).get("NUMBER_TEST_2_YRS")).isEqualTo("10");
-		assertThat(NycPrfStdDocMapping.toStdDocData(raw("NUMTSTING", " ", "NGTST", "3")).get("NUMBER_TEST_2_YRS")).isEqualTo("3");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("NUMTSTING", "0_5")).getNumberTest2Yrs()).isEqualTo("5");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("NUMTSTING", "0")).getNumberTest2Yrs()).isEqualTo("0");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("NUMTSTING", "10")).getNumberTest2Yrs()).isEqualTo("10");
+		assertThat(NycPrfStdDocMapping.toStdDoc(raw("NUMTSTING", " ", "NGTST", new BigDecimal("3"))).getNumberTest2Yrs()).isEqualTo("3");
 	}
 
 	private static Map<Object, Object> raw(Object... fieldsAndValues) {

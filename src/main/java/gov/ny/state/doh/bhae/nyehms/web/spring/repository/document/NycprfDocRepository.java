@@ -7,10 +7,10 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdNycprfDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
 
 /**
- * Spring Data JPA repository for NYC PRF documents (replaces NycPRFDocumentDAO.getNycPRFDoc and
- * writeStdDocData; the insert is in {@link NycprfDocWriter}).
+ * Spring Data JPA repository for NYC PRF documents (replaces NycPRFDocumentDAO.getNycPRFDoc, and
+ * writeStdDocData through {@code saveAndFlush}).
  */
-public interface NycprfDocRepository extends JpaRepository<StdNycprfDoc, Integer>, NycprfDocWriter {
+public interface NycprfDocRepository extends JpaRepository<StdNycprfDoc, Integer> {
 
 	/**
 	 * An NYC PRF document for the document screen: the standardized form, the person address as
