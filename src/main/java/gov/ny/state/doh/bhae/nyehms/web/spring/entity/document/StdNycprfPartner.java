@@ -1,36 +1,45 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
-import lombok.Getter;
 import org.hibernate.annotations.Immutable;
+import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * A partner named on an NYC Partner Referral Form, standardized (table STD_NYCPRF_PARTNER).
  * <p>
- * Never updated: queried through JPQL projections and inserted with an HQL insert ... select
- * (see NycprfPartnerRepository). <b>The key (PATIENT_ID, NYCPRF_DOCUMENT_ID) is
- * assumed and must be confirmed against the table's primary key before this entity is loaded or
- * written as an entity</b> (docs/JPA_MIGRATION.md).
+ * Never updated: read for the document screen and inserted once by the import
+ * (NycPrfStdPartnerMapping, {@code saveAllAndFlush}; always new, see {@link #isNew()}).
+ * The key is PARTNRID, which is unique and NOT NULL (confirmed by the project owner).
  */
+
 @Entity
 @Immutable
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "STD_NYCPRF_PARTNER")
-@IdClass(StdNycprfPartnerId.class)
-public class StdNycprfPartner {
+public class StdNycprfPartner implements Persistable<String> {
 
 	@Id
+	@Column(name = "PARTNRID")
+	private String partnrid;
+
 	@Column(name = "PATIENT_ID")
 	private String patientId;
 
-	@Id
 	@Column(name = "NYCPRF_DOCUMENT_ID")
 	private String nycprfDocumentId;
 
@@ -161,10 +170,10 @@ public class StdNycprfPartner {
 	private String createUid;
 
 	@Column(name = "CREATE_DATE")
-	private Date createDate;
+	private Timestamp createDate;
 
 	@Column(name = "INFORMED_DATE")
-	private Date informedDate;
+	private Timestamp informedDate;
 
 	@Column(name = "HIGH_PRIORITY")
 	private String highPriority;
@@ -177,12 +186,9 @@ public class StdNycprfPartner {
 
 
 
-	// written by the import (NycprfPartnerRepository.insertStdPartnersOfDocument), not shown on the screen
+	// written by the import (NycPrfStdPartnerMapping), not shown on the screen
 	@Column(name = "RACE_CD")
 	private String raceCd;
-
-	@Column(name = "PARTNRID")
-	private String partnrid;
 
 	@Column(name = "BIRTH_SEX")
 	private String birthSex;
@@ -236,7 +242,7 @@ public class StdNycprfPartner {
 	private String notsend;
 
 	@Column(name = "UPDATED_DATE")
-	private Date updatedDate;
+	private Timestamp updatedDate;
 
 	@Column(name = "INDEX_CITYNO")
 	private String indexCityno;
@@ -246,4 +252,15 @@ public class StdNycprfPartner {
 
 	@Column(name = "HIVDISPO_DATE_TEXT")
 	private String hivdispoDateText;
+
+	@Override
+	public String getId() {
+		return partnrid;
+	}
+
+	/** Rows are only ever inserted. */
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 }

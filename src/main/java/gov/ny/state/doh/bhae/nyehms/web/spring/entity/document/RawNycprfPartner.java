@@ -6,35 +6,37 @@ import org.hibernate.annotations.Immutable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
 /**
  * A partner as received on an NYC Partner Referral Form (table RAW_NYCPRF_PARTNER); only the
  * columns the application reads.
  * <p>
- * Read-only and queried through JPQL projections only. <b>The key is assumed</b> (the same
- * partner can be received more than once), see {@link StdNycprfPartner}.
+ * Read-only. The document screen reads it through a JPQL projection; the import loads the entities
+ * of a document. The key is PARTNERID: the import copies it to STD_NYCPRF_PARTNER.PARTNRID, which
+ * is unique, so a partner received twice on a document still loads as two entities.
  */
+
 @Entity
 @Immutable
 @Getter
 @Table(name = "RAW_NYCPRF_PARTNER")
-@IdClass(RawNycprfPartnerId.class)
 public class RawNycprfPartner {
 
 	@Id
+	@Column(name = "PARTNERID")
+	private String partnerid;
+
 	@Column(name = "PATIENTID")
 	private String patientId;
 
-	@Id
 	@Column(name = "NYCPRF_DOCUMENT_ID")
 	private Long nycprfDocumentId;
 
 	@Column(name = "PRTADDRESS")
 	private String address;
 
-	// read by the import (NycprfPartnerRepository.insertStdPartnersOfDocument)
+	// read by the import (NycprfPartnerRepository.findReceivedPartnersOfDocument, NycPrfStdPartnerMapping)
 	@Column(name = "CITYNO")
 	private String cityno;
 
@@ -61,9 +63,6 @@ public class RawNycprfPartner {
 
 	@Column(name = "P")
 	private String p;
-
-	@Column(name = "PARTNERID")
-	private String partnerid;
 
 	@Column(name = "PRF_ELICITED")
 	private String prfElicited;
