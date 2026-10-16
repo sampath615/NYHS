@@ -64,55 +64,6 @@
     
     
     
-    <select id="getInsDthDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO">
-		 		<![CDATA[
-		 			
-		 			 SELECT 
-		 			 s1.RACE_INDIAN,
-					s1.RACE_BLACK,
-					s1.RACE_ASIAN,
-					s1.RACE_PACIFIC,
-					s1.RACE_WHITE,
-					s1.RACE_MULTIPLE,
-					s1.RACE_OTHER,
-					s1.RACE_UNKNOWN,
-					s1.CREATE_UID,
-					s1.DATE_OF_DEATH,
-					s1.EHARS_IMPORT_DATE,
-					s1.CREATE_DATE,
-					s1.DOCUMENT_ID,
-					s1.CURRENT_PROCESS_STATUS,
-					s1.MNAME,
-					s1.DOB_TEXT,
-					s1.CURRENT_GENDER,
-					s1.MATCHED_STATENO,
-					s1.FNAME,
-					s1.LNAME,
-					s1.INS_DEATH_FILE_NAME,
-					s1.MEDICAID_NUMBER,
-					s1.DECEASED_STATUS,
-					s1.SSN ,
-					PDOC.STATENO,
-					PDOC.DISCARD_STATUS,
-					D.PARENT_DOCUMENT_ID 
-					
-					 from STD_INS_DEATH_DOC s1 LEFT OUTER JOIN  PERSON_DOC_ASSOCIATION PDOC
-                    
-                    ON (s1.document_id = PDOC.document_id
-                    
-                 AND PDOC.dissassociation_date IS NULL) 
-                 
-                 INNER JOIN document_locator D
-             ON s1.document_id=d.document_id
-             
-                 WHERE s1.DOCUMENT_ID = #{documentId}
-                 
-                  
-                 
-		 	]]>
-		 				
-    </select>	
-    
       <select id="getArvsForMedicaidDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocArvsVO">
      	SELECT CIN,
        PRESCRIBED_ARVS,

@@ -1,16 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
 
 public interface DoccsDocumentDAO {	
-	public DoccsDocVO getDoccsDoc(int documentId)throws DataAccessException;
 	public int getDoccsDocumentId(int docId);
 	public int insertRawDoccsDataToStdTable(Map<Object, Object> docVO);
 	public List<Map<String, Object>> getRawDinDoccsList(BigDecimal documentId);

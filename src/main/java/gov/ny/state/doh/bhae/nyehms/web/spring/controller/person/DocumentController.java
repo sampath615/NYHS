@@ -30,35 +30,22 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.JsonObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.bo.ProcessACRFForm;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ADAPDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.BlackBoxDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CASADocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CLIMSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EPRFOOCDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidOldDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDICauseDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDIDocumentVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCEHARSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NonCaseDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.QualCareDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SYPHDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAddressDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAliasDocVO;
@@ -72,6 +59,20 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRaceVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.DoccsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.InsDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.SsdmDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.ClimsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.MedicaidOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycPrfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.OldCaseDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
@@ -210,7 +211,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getCASADoc.html")
 	public String getCASADocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		CASADocVO stdCASADocVO = casaDocumentService.getCASADoc(docId, dummyBindingResult, userObject,
+		CasaDocData stdCASADocVO = casaDocumentService.getCASADoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -250,7 +251,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getDeathDoc.html")
 	public String getDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		DeathDocVO stdDeathDocVO = deathDocumentSrvice.getDeathDoc(docId, dummyBindingResult, userObject,
+		DeathDocData stdDeathDocVO = deathDocumentSrvice.getDeathDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -270,7 +271,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNycDeathDoc.html")
 	public String getNycDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NycDeathDocVO stdNycDeathDocVO = nycDeathDocumentService.getNycDeathDoc(docId, dummyBindingResult, userObject,
+		NycDeathDocData stdNycDeathDocVO = nycDeathDocumentService.getNycDeathDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -332,7 +333,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNYCEHARS.html")
 	public String getNYCEHARSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NYCEHARSDocVO nYCEHARSDocVO = commonDocumentService.getNycEHARSDoc(docId, dummyBindingResult, userObject,
+		NycEharsDocData nYCEHARSDocVO = commonDocumentService.getNycEHARSDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -389,7 +390,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getInsDeathDoc.html")
 	public String getInsDeathDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
 
-		InsDeathDocVO insDeathDocVO = medicaidDocumentSrvice.getInsDthDoc(docId, dummyBindingResult, userObject,
+		InsDeathDocData insDeathDocVO = medicaidDocumentSrvice.getInsDthDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -481,7 +482,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getMedicaidOldDoc.html")
 	public String getMedicaidOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		MedicaidOldDocVO medicaidOldDocVO = medicaidOldDocumentSrvice.getMedicaidOldDoc(docId, dummyBindingResult,
+		MedicaidOldDocData medicaidOldDocVO = medicaidOldDocumentSrvice.getMedicaidOldDoc(docId, dummyBindingResult,
 				userObject, request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -501,7 +502,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getDoccsDoc.html")
 	public String getDoccsDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		DoccsDocVO stdDoccsDocVO = doccsDocumentService.getDoccsDoc(docId, dummyBindingResult, userObject,
+		DoccsDocData stdDoccsDocVO = doccsDocumentService.getDoccsDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -650,7 +651,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getSSDMDoc.html")
 	public String getSSDMDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		SSDMDocVO stdSSDMDocVO = ssdmDocumentService.getSSDMDoc(docId, dummyBindingResult, userObject,
+		SsdmDocData stdSSDMDocVO = ssdmDocumentService.getSSDMDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -904,7 +905,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getStdOldDoc.html")
 	public String getStdOldDoc(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		StdOldDocVO stdOldDocVO = labDocumentService.getStdOldDoc(docId, dummyBindingResult, userObject,
+		StdOldDocData stdOldDocVO = labDocumentService.getStdOldDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		map.put("stdOldDocVO", stdOldDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1329,7 +1330,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getCLIMSForm.html")
 	public String getCLIMSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		CLIMSDocVO cLIMSDocVO = cLIMSDocumentService.getCLIMSDocument(docId);
+		ClimsDocData cLIMSDocVO = cLIMSDocumentService.getCLIMSDocument(docId);
 		map.put("stdCLIMSDocVO", cLIMSDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -1389,7 +1390,7 @@ public class DocumentController {
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
-		NDIDocumentVO nDIDocumentVO = nDIDocumentService.getNDIDoc(docId);
+		NdiDocData nDIDocumentVO = nDIDocumentService.getNDIDoc(docId);
 		if (nDIDocumentVO != null) {
 			documentTransactionHelper.getStatenoDetailsOfDocument(docId, userObject);
 		}
@@ -1413,7 +1414,7 @@ public class DocumentController {
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
-		NDICauseDocVO nDICauseDocVO = nDIDocumentService.getNDICauseDoc(docId);
+		NdiCauseDocData nDICauseDocVO = nDIDocumentService.getNDICauseDoc(docId);
 		if (nDICauseDocVO != null) {
 			Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 					userObject);
@@ -1436,7 +1437,7 @@ public class DocumentController {
 		if (userObject == null) {
 			userObject = new UserObject();
 		}
-		BlackBoxDocVO blackBoxDocVO = blackBoxDocService.getBlackBoxDoc(docId);
+		BlackBoxDocData blackBoxDocVO = blackBoxDocService.getBlackBoxDoc(docId);
 		if (blackBoxDocVO != null) {
 			Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 					userObject);
@@ -1444,7 +1445,7 @@ public class DocumentController {
 		}
 		map.put("stdBlackBoxDocVO", blackBoxDocVO);
 		
-		List<Map<String, String>> documentRefData = blackBoxDocService.getBlackBoxRefData();
+		List<BlackBoxRefData> documentRefData = blackBoxDocService.getBlackBoxRefData();
 		
 		map.put("documentRefData", documentRefData);
 		
@@ -1479,7 +1480,7 @@ public class DocumentController {
 			return "document/NBSDocument";
 		}else if("CLIMS".equals(documentType)) {
 			
-			CLIMSDocVO climsDocVO = cLIMSDocumentService.getCLIMSDocument(documentId);;
+			ClimsDocData climsDocVO = cLIMSDocumentService.getCLIMSDocument(documentId);;
 			map.put("stdCLIMSDocVO", climsDocVO);
 			return "document/CLIMSDocument";
 		}

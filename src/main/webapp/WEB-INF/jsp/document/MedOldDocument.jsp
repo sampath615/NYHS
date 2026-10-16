@@ -18,27 +18,27 @@
     </div>
     <div style="padding-bottom:10px; text-align: right">
            <span class="mL10">Document ID: </span>
-		<span class=" "><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
+		<span class=" "><form:input id="DOCUMENT_ID"  path="stdMedOldDoc.documentId" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
        </div>
 	<div class="container w100 pB10">
         <div style="float:left; width: 40%">
            <div>
                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
-                <span class="ml10"><form:input path="STATENO" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
+                <span class="ml10"><form:input id="STATENO"  path="stateno" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
            </div>    
          </div>
          <div style="float:left; width: 30%">
            <div>
                <span class=" ml10">	eHARS Import Date: </span>
-               <fmt:formatDate value="${stdMedicaidDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-	 		<span class="ml10"><form:input path="EHARS_IMPORT_DATE" value="${theFormattedDate}" class="standardInputSmallText ml10" readonly="true"/> </span>
+               <fmt:formatDate value="${stdMedicaidDocVO.stdMedOldDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+	 		<span class="ml10"><form:input id="EHARS_IMPORT_DATE"  path="stdMedOldDoc.eharsImportDate" value="${theFormattedDate}" class="standardInputSmallText ml10" readonly="true"/> </span>
           </div>                  
         </div>
         <div style="float:left; width: 30%; text-align: right">
         	<div>
                <span class="mL10">NYC SHIP Date: </span>
-               <fmt:formatDate value="${stdMedicaidDocVO.NYC_SHIP_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE" />
-	 		<span class="ml10 "><form:input path="NYC_SHIP_DATE" value="${theFormattedNYC_SHIP_DATE}" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
+               <fmt:formatDate value="${stdMedicaidDocVO.stdMedOldDoc.nycShipDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE" />
+	 		<span class="ml10 "><form:input id="NYC_SHIP_DATE"  path="stdMedOldDoc.nycShipDate" value="${theFormattedNYC_SHIP_DATE}" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
            </div> 
         </div>     
 	</div>
@@ -53,57 +53,57 @@
         <div class="mLRTB">
 			<span class="">
 				<span class=""> First Name</span> 
-				<span class="pL10"><form:input path="FNAME" class="standardInputMedText" maxlength="13" /></span>
+				<span class="pL10"><form:input id="FNAME"  path="stdMedOldDoc.fname" class="standardInputMedText" maxlength="13" /></span>
 			</span>
 			<span class=" ">
 				<span class="pL30"> Last Name</span>
-				<span class="pL10"><form:input path="LNAME" id="lName" title="Last Name" class="standardInputMedText" maxlength="15" /></span>
+				<span class="pL10"><form:input  path="stdMedOldDoc.lname" id="lName" title="Last Name" class="standardInputMedText" maxlength="15" /></span>
 			</span>					
 			<span class=""> 
 				<span class="pL30"> Middle Name</span>
-				<span class="pL10"> <form:input path="MNAME" id="mname" class=" standardInputMedText" maxlength="10" /> </span>
+				<span class="pL10"> <form:input  path="stdMedOldDoc.mname" id="mname" class=" standardInputMedText" maxlength="10" /> </span>
 			</span>
 			<span class=""> 
 				<span class="pL30">Suffix </span>	
-				<span class="pL10"> <form:input path="SUFFIX" class="standardInputSmallText" maxLength="9" /></span>
+				<span class="pL10"> <form:input id="SUFFIX"  path="stdMedOldDoc.suffix" class="standardInputSmallText" maxLength="9" /></span>
 			</span>	 
 		</div>
         
         <div class="pB10">           
             <span class="pL10">DOB </span>
             <span> 
-	 	        <span class="pL10"><form:input path="DOB_TEXT" class="standardInputSmallText" maxLength="9" /> </span>  	 
+	 	        <span class="pL10"><form:input id="DOB_TEXT"  path="stdMedOldDoc.dobText" class="standardInputSmallText" maxLength="9" /> </span>  	 
             </span>
             
             <span class="pL30">Age</span>
-            <span class="pL10"><form:input path="AGE" class="standardInputSmallText" maxLength="9" /> </span>
+            <span class="pL10"><form:input id="AGE"  path="stdMedOldDoc.age" class="standardInputSmallText" maxLength="9" /> </span>
             
             <span class="pL30">SSN</span>
-            <span class="pL10"><form:input path="SSN" class="standardInputSmallText" maxLength="9" /> </span>
+            <span class="pL10"><form:input id="SSN"  path="stdMedOldDoc.ssn" class="standardInputSmallText" maxLength="9" /> </span>
         </div> 
         
         <div class="b1" style="margin: 15px 5px 10px 5px">
             <div class="personInfo pTRBL10">
                 <span class="personLabelDoc"> Address </span>
 	                <span> 	             
-	                	<span class="pL10"><form:input path="raw_address" class="standardinputText" maxlength="62" readonly="true"/>  </span>  	 
+	                	<span class="pL10"><form:input id="raw_address"  path="rawAddress" class="standardinputText" maxlength="62" readonly="true"/>  </span>  	 
 	                    
 	                    <span class="pL30">City</span>
-	                    <span class="pL10"><form:input path="PERSON_CITY" class="standardinputSmallText1 ml10" maxlength="17"/></span>
+	                    <span class="pL10"><form:input id="PERSON_CITY"  path="stdMedOldDoc.personCity" class="standardinputSmallText1 ml10" maxlength="17"/></span>
 	                    
 	                    <span class="pL30">State </span>
 	                    <span  class="pL10">
-						<form:input path="PERSON_STATE" class="standardinputSmallText1 ml10" maxlength="2"/>
+						<form:input id="PERSON_STATE"  path="stdMedOldDoc.personState" class="standardinputSmallText1 ml10" maxlength="2"/>
 					</span>
 	                    
 	                    <span class="pL30">Zip </span>
 	                    <span class="pL10"> 
-	                       <form:input path="PERSON_ZIP" class="standardInputSmallText1 ml10" maxlength="5"/> - <form:input path="PERSON_PLUS4" class="standardInputSmallText1 ml10" maxlength="4"/>  
+	                       <form:input id="PERSON_ZIP"  path="stdMedOldDoc.personZip" class="standardInputSmallText1 ml10" maxlength="5"/> - <form:input id="PERSON_PLUS4"  path="stdMedOldDoc.personPlus4" class="standardInputSmallText1 ml10" maxlength="4"/>  
 	                    </span>    
 	                    
 	                    <span class="pL30">County </span>
 	                    <span class="pL10"> 
-	                    	 <form:select path="PERSON_COUNTY"  cssClass="oAdrDlg newCounty standardInputSmallText1 roundedBrdr" disabled="true"> 
+	                    	 <form:select id="PERSON_COUNTY"  path="stdMedOldDoc.personCounty"  cssClass="oAdrDlg newCounty standardInputSmallText1 roundedBrdr" disabled="true"> 
 								<form:option value=""></form:option>
 								<form:options items="${sessionScope.countyMap}"/>
 							 </form:select>
@@ -113,11 +113,11 @@
 	                </span>
             </div>
             <div class="personInfo pT10 pTRBL10">
-            	<span  class="" style="padding-left:59px"><form:input path="PERSON_ADDRESS" class="standardinputText" maxlength="62" readonly="true"/></span>
+            	<span  class="" style="padding-left:59px"><form:input id="PERSON_ADDRESS"  path="stdMedOldDoc.personAddress" class="standardinputText" maxlength="62" readonly="true"/></span>
               	 
               	  <span class="pL30">Phone </span>
                    <span class="pL10"> 
-                      <form:input path="PERSON_TELEPHONE" class="standardInputSmallText1 ml10" maxlength="5"/> 
+                      <form:input id="PERSON_TELEPHONE"  path="stdMedOldDoc.personTelephone" class="standardInputSmallText1 ml10" maxlength="5"/> 
                    </span> 
                    
                 <br>               
@@ -130,45 +130,45 @@
 			<div style="float:left; width:35%; margin-left:20px; border-right:1px dotted;">			
 				<div> Race </div> 
 				<div>					
-					<form:checkbox path="RACE_WHITE" value="1" />White	
+					<form:checkbox id="RACE_WHITE1"  path="stdMedOldDoc.raceWhite" value="1" />White	
 					<br>
-					<form:checkbox path="RACE_BLACK" value="1" /> African American
+					<form:checkbox id="RACE_BLACK1"  path="stdMedOldDoc.raceBlack" value="1" /> African American
 					<br>
-					<form:checkbox path="RACE_ASIAN" value="1" /> Asian
+					<form:checkbox id="RACE_ASIAN1"  path="stdMedOldDoc.raceAsian" value="1" /> Asian
 					<br>
-					<form:checkbox path="RACE_INDIAN" value="1" /> American Indian/ Alaskan Native		
+					<form:checkbox id="RACE_INDIAN1"  path="stdMedOldDoc.raceIndian" value="1" /> American Indian/ Alaskan Native		
 					<br>			
-					<form:checkbox path="RACE_PACIFIC" value="1" /> Pacific Islander
+					<form:checkbox id="RACE_PACIFIC1"  path="stdMedOldDoc.racePacific" value="1" /> Pacific Islander
 					<br>
-					<form:checkbox path="RACE_OTHER" value="1" /> Other 
+					<form:checkbox id="RACE_OTHER1"  path="stdMedOldDoc.raceOther" value="1" /> Other 
 					<br>
-					<form:checkbox path="RACE_UNKNOWN" value="1" /> Unknown						
+					<form:checkbox id="RACE_UNKNOWN1"  path="stdMedOldDoc.raceUnknown" value="1" /> Unknown						
 				</div>	
 			</div>
 			<div class=" " style="float:left; width:25% ;">
 				<div style=" padding-left:10px;">
 					<span><spring:message code="label.ethnicity" />  (Hispanic or Latino)</span>
 					<div> 
-						<form:radiobutton path="ETHNICITY" value="01" /> <spring:message code="label.yes" /><br>
-						<form:radiobutton path="ETHNICITY" value="02" /> <spring:message code="label.no" /><br>
-						<form:radiobutton path="ETHNICITY" value="09" /> <spring:message code="label.unknown" />
+						<form:radiobutton id="ETHNICITY1"  path="stdMedOldDoc.ethnicity" value="01" /> <spring:message code="label.yes" /><br>
+						<form:radiobutton id="ETHNICITY2"  path="stdMedOldDoc.ethnicity" value="02" /> <spring:message code="label.no" /><br>
+						<form:radiobutton id="ETHNICITY3"  path="stdMedOldDoc.ethnicity" value="09" /> <spring:message code="label.unknown" />
 					</div>
 				</div>	
 				<div style="padding:15px 0 10px 10px; border-top: dotted 1px;">
 					<div class="floatLeft pR10" style="border-right: dotted 1px;">
 						<div class=""> Current Gender </div>
 						<div  class="">
-							<div> <form:radiobutton path="CURRENT_GENDER" value="M" /> Male </div>
-							<div> <form:radiobutton path="CURRENT_GENDER" value="F" /> Female </div>
-							<div> <form:radiobutton path="CURRENT_GENDER" value="U" />Unknown</div>		
+							<div> <form:radiobutton id="CURRENT_GENDER1"  path="stdMedOldDoc.currentGender" value="M" /> Male </div>
+							<div> <form:radiobutton id="CURRENT_GENDER2"  path="stdMedOldDoc.currentGender" value="F" /> Female </div>
+							<div> <form:radiobutton id="CURRENT_GENDER3"  path="stdMedOldDoc.currentGender" value="U" />Unknown</div>		
 						</div>
 					</div>
 					<div class="floatLeft pL10">
 						<div class=""> Transgender </div>
 						<div  class="">
-							<div> <form:radiobutton path="CURRENT_GENDER" value="X" /> MTF </div>		
-							<div> <form:radiobutton path="CURRENT_GENDER" value="Y" /> FTM </div>		
-							<div> <form:radiobutton path="CURRENT_GENDER" value="T" /> Unspecified </div>														
+							<div> <form:radiobutton id="CURRENT_GENDER4"  path="stdMedOldDoc.currentGender" value="X" /> MTF </div>		
+							<div> <form:radiobutton id="CURRENT_GENDER5"  path="stdMedOldDoc.currentGender" value="Y" /> FTM </div>		
+							<div> <form:radiobutton id="CURRENT_GENDER6"  path="stdMedOldDoc.currentGender" value="T" /> Unspecified </div>														
 						</div>
 					</div> 
 				</div>
@@ -182,7 +182,7 @@
 						Medical Record Number
 					</div>
 					<div style="float:left">
-						<form:input path="MED_RECORD_NUMBER" class="standardInputMedText mL5" maxlength="10"/>
+						<form:input id="MED_RECORD_NUMBER"  path="stdMedOldDoc.medRecordNumber" class="standardInputMedText mL5" maxlength="10"/>
 					</div>
 				</div>
 				<div class="mT5 container">
@@ -190,7 +190,7 @@
 						CIN
 					</div>
 					<div style="float:left">
-						<form:input path="MEDICAID_NUMBER" class="standardInputMedText mL5" maxlength="10"/>
+						<form:input id="MEDICAID_NUMBER"  path="stdMedOldDoc.medicaidNumber" class="standardInputMedText mL5" maxlength="10"/>
 					</div>
 				</div>			
 				<div class="mT5 container">
@@ -198,7 +198,7 @@
 						HIV CRG
 					</div>
 					<div style="float:left">
-						<form:input id="stateno" path="HIV_CRG" class=" standardInputMedText mL5" maxlength="10"/>
+						<form:input id="stateno"  path="stdMedOldDoc.hivCrg" class=" standardInputMedText mL5" maxlength="10"/>
 					</div>
 				</div>					
 				<div class="mT5 container">
@@ -206,7 +206,7 @@
 						HIV SCREEN
 					</div>
 					<div style="float:left">
-						<form:input path="HIV_SCREEN" class="standardInputMedText mL5" maxlength="40"/>
+						<form:input id="HIV_SCREEN"  path="stdMedOldDoc.hivScreen" class="standardInputMedText mL5" maxlength="40"/>
 					</div>
 				</div>					
 			</div>
@@ -221,38 +221,38 @@
         <div class="eventCriteriaFields" style="border-bottom: 1px dotted;">
             <div class="" style="width:23%; float:left; border-right:1px dotted; padding:15px 0 10px 20px;">
                 <div >           
-                        <div><span><form:checkbox path="CRITERIA_1" value="Y" /> Criteria 1 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_2" value="Y" /> Criteria 2 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_3" value="Y" /> Criteria 3 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_4" value="Y" /> Criteria 4 </span></div>
-                       <div><span><form:checkbox path="CRITERIA_5" value="Y" />  Criteria 5 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_11"  path="stdMedOldDoc.criteria1" value="Y" /> Criteria 1 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_21"  path="stdMedOldDoc.criteria2" value="Y" /> Criteria 2 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_31"  path="stdMedOldDoc.criteria3" value="Y" /> Criteria 3 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_41"  path="stdMedOldDoc.criteria4" value="Y" /> Criteria 4 </span></div>
+                       <div><span><form:checkbox id="CRITERIA_51"  path="stdMedOldDoc.criteria5" value="Y" />  Criteria 5 </span></div>
                 </div>
             </div>
              <div class="" style="width:23%; float:left; border-right:1px dotted; padding:15px 0 10px 20px;">
                 <div >   
-                        <div><span><form:checkbox path="CRITERIA_6" value="Y" /> Criteria 6 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_7" value="Y" /> Criteria 7 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_8" value="Y" /> Criteria 8 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_9" value="Y" /> Criteria 9 </span></div>
-                        <div><span><form:checkbox path="CRITERIA_10" value="Y" /> Criteria 10 </span></div> 
+                        <div><span><form:checkbox id="CRITERIA_61"  path="stdMedOldDoc.criteria6" value="Y" /> Criteria 6 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_71"  path="stdMedOldDoc.criteria7" value="Y" /> Criteria 7 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_81"  path="stdMedOldDoc.criteria8" value="Y" /> Criteria 8 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_91"  path="stdMedOldDoc.criteria9" value="Y" /> Criteria 9 </span></div>
+                        <div><span><form:checkbox id="CRITERIA_101"  path="stdMedOldDoc.criteria10" value="Y" /> Criteria 10 </span></div> 
                 </div>
             </div>
              <div class="" style="width:23%; float:left; border-right:1px dotted; padding:15px 0 10px 20px;">
                 <div >           
-                    <div><span><form:checkbox path="CRITERIA_11" value="Y" /> Criteria 11 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_12" value="Y" /> Criteria 12 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_13" value="Y" /> Criteria 13 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_14" value="Y" /> Criteria 14 </span></div>                       
-                   <div><span><form:checkbox path="CRITERIA_15" value="Y" />  Criteria 15 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_111"  path="stdMedOldDoc.criteria11" value="Y" /> Criteria 11 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_121"  path="stdMedOldDoc.criteria12" value="Y" /> Criteria 12 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_131"  path="stdMedOldDoc.criteria13" value="Y" /> Criteria 13 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_141"  path="stdMedOldDoc.criteria14" value="Y" /> Criteria 14 </span></div>                       
+                   <div><span><form:checkbox id="CRITERIA_151"  path="stdMedOldDoc.criteria15" value="Y" />  Criteria 15 </span></div>
                 </div>
             </div>
             <div class="" style="width:23%; float:left; padding:15px 0 10px 20px">
                 <div >                        
-                    <div><span><form:checkbox path="CRITERIA_16" value="Y" /> Criteria 16 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_17" value="Y" /> Criteria 17 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_18" value="Y" /> Criteria 18 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_19" value="Y" /> Criteria 19 </span></div>
-                    <div><span><form:checkbox path="CRITERIA_20" value="Y" /> Criteria 20 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_161"  path="stdMedOldDoc.criteria16" value="Y" /> Criteria 16 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_171"  path="stdMedOldDoc.criteria17" value="Y" /> Criteria 17 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_181"  path="stdMedOldDoc.criteria18" value="Y" /> Criteria 18 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_191"  path="stdMedOldDoc.criteria19" value="Y" /> Criteria 19 </span></div>
+                    <div><span><form:checkbox id="CRITERIA_201"  path="stdMedOldDoc.criteria20" value="Y" /> Criteria 20 </span></div>
                 </div> 
             </div>
             
@@ -454,31 +454,31 @@
             <div class="personInfo pTRBL10">
                 <span class="personLabelDoc"> Address </span>
 	                <span> 	             
-	                	<span class="pL10"><form:input path="raw_prov_address" class="standardinputText" maxlength="62" readonly="true"/>  </span>  	 
+	                	<span class="pL10"><form:input id="raw_prov_address"  path="rawProvAddress" class="standardinputText" maxlength="62" readonly="true"/>  </span>  	 
 	                    
 	                    <span class="pL30">City</span>
-	                    <span class="pL10"><form:input path="PROV_CITY" class="standardinputSmallText1" maxlength="17"/></span>
+	                    <span class="pL10"><form:input id="PROV_CITY"  path="stdMedOldDoc.provCity" class="standardinputSmallText1" maxlength="17"/></span>
 	                    
 	                    <span class="pL30">State </span>
-	                    <span  class="pL10"><form:input path="PROV_STATE" class="standardinputSmallText1" maxlength="2"/></span>
+	                    <span  class="pL10"><form:input id="PROV_STATE"  path="stdMedOldDoc.provState" class="standardinputSmallText1" maxlength="2"/></span>
 	                    
 	                    <span class="pL30">Zip </span>
 	                    <span class="pL10"> 
-	                       <form:input path="PROV_ZIP" class="standardInputSmallText1" maxlength="5"/> - <form:input path="PROV_PLUS4" class="standardInputSmallText1" maxlength="4"/>  
+	                       <form:input id="PROV_ZIP"  path="stdMedOldDoc.provZip" class="standardInputSmallText1" maxlength="5"/> - <form:input id="PROV_PLUS4"  path="stdMedOldDoc.provPlus4" class="standardInputSmallText1" maxlength="4"/>  
 	                    </span>    
 	                    
 	                    <span class="pL30">County </span>
-	                    <span class="pL10"><form:input path="PROV_COUNTY" class="standardInputSmallText1" maxlength="5"/> </span> 	                    
+	                    <span class="pL10"><form:input id="PROV_COUNTY"  path="stdMedOldDoc.provCounty" class="standardInputSmallText1" maxlength="5"/> </span> 	                    
 	                    <br>
 	                    <span class="labelunderneathAddress"> Street Address</span><span class="dispAddressStdRaw"> (Raw)</span>
 	                </span>
             </div>
             <div class="personInfo pT10 pTRBL10">
-            	<span  class="" style="padding-left:59px"><form:input path="PROV_ADDRESS" class="standardinputText" maxlength="62" readonly="true"/></span>
+            	<span  class="" style="padding-left:59px"><form:input id="PROV_ADDRESS"  path="stdMedOldDoc.provAddress" class="standardinputText" maxlength="62" readonly="true"/></span>
               	 
               	  <span class="pL30">Phone </span>
                     <span class="pL10"> 
-                       <form:input path="PROV_PHONE" class="standardInputMedText" maxlength="5"/> 
+                       <form:input id="PROV_PHONE"  path="stdMedOldDoc.provPhone" class="standardInputMedText" maxlength="5"/> 
                     </span> 
                 <br>               
                 <span class="labelunderneathAddress"> Street Address</span><span class="dispAddressStdRaw"> (Std)</span>
@@ -499,7 +499,7 @@
 									<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 									<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 							</c:when>
-							<c:when test="${userPermissions['90'] != null && stdMedicaidDocVO.STATENO != null && stdMedicaidDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+							<c:when test="${userPermissions['90'] != null && stdMedicaidDocVO.stateno != null && stdMedicaidDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 									<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 							</c:when>
 					</c:choose>

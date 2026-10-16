@@ -2,7 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CASADocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CASADocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CasaDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
@@ -26,6 +27,8 @@ public class CASADocumentService {
 	@Autowired
 	CASADocumentDAO	casaDocumentDAO;
 	@Autowired
+	CasaDocRepository casaDocRepository;
+	@Autowired
 	private ManualQuartzJobService manualQuartzJobService; 
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
@@ -34,14 +37,14 @@ public class CASADocumentService {
 	private static Logger log = LoggerFactory.getLogger(CASADocumentService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	public CASADocVO getCASADoc(int docID, BindingResult result,
+	public CasaDocData getCASADoc(int docID, BindingResult result,
 			UserObject userObject, String sessionID) {
 		
 		boolean rollbackFlag = false;
-		CASADocVO stdCASADocVO = null;
+		CasaDocData stdCASADocVO = null;
 		log.debug("{} fetching for docID : {}",nyehmsLog, docID);
 		try {
-			stdCASADocVO = casaDocumentDAO.getCASADoc(docID);
+			stdCASADocVO = casaDocRepository.findDocument(docID);
 		} catch (DataAccessException e) {
 			rollbackFlag = true;
 			log.error(nyehmsLog + "  " + e.getMessage());

@@ -56,11 +56,11 @@
          <div class="pB20 pT20">
 		
 					
-			<c:if test="${StdInsDeathDocVO.PARENT_DOCUMENT_ID != null &&  StdInsDeathDocVO.PARENT_DOCUMENT_ID != 0}">
+			<c:if test="${StdInsDeathDocVO.parentDocumentId != null &&  StdInsDeathDocVO.parentDocumentId != 0}">
 
 				<div  class="floatLeft" id="parentDocumentIdSection">
 		            <span class="parentIdSectionLabel bold">Parent DocumentId: </span>
-					<span class=" parentIdSectionValue"><a href="#" onclick="loadDocumentDlg(${StdInsDeathDocVO.PARENT_DOCUMENT_ID}, '${param.documentType}')">${StdInsDeathDocVO.PARENT_DOCUMENT_ID}</a></span>
+					<span class=" parentIdSectionValue"><a href="#" onclick="loadDocumentDlg(${StdInsDeathDocVO.parentDocumentId}, '${param.documentType}')">${StdInsDeathDocVO.parentDocumentId}</a></span>
 					
 		         </div>	
 	         </c:if>
@@ -73,22 +73,22 @@
             <div style="float:left; width: 40%">
 	            <div>
 	                <span class="mL10"> <spring:message code="label.stateNo" />: </span>
-	                <span class="ml10" style=""><form:input path="STATENO" class="standardInputSmallText readonly"/> </span>
+	                <span class="ml10" style=""><form:input id="STATENO"  path="stateno" class="standardInputSmallText readonly"/> </span>
 	            </div>    
             </div>
             <div style="float:left; width: 30%">
  	         	<div>
  	                <span class="mL10 bold">eHARS Import Date: </span>
 					<span class="mL10 ">
-						<fmt:formatDate value="${StdInsDeathDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-						<form:input path="EHARS_IMPORT_DATE" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/>
+						<fmt:formatDate value="${StdInsDeathDocVO.stdInsDeathDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+						<form:input id="EHARS_IMPORT_DATE"  path="stdInsDeathDoc.eharsImportDate" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/>
 					</span>
  	            </div> 
             </div>
             <div style="float:left; width: 30%;text-align:right">
  	            <div>
  	                <span class=" ml10 bold">	Document ID: </span>
- 			 		<span class="ml10"><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/>
+ 			 		<span class="ml10"><form:input id="DOCUMENT_ID"  path="stdInsDeathDoc.documentId" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/>
  			 			
  			 		</span>
  	           </div>                  
@@ -107,17 +107,17 @@
         	<div class="personInfo pTRBL10">
    	     		<div class="fieldHolder25">
                 <span class="pL10">First Name </span> 
-                <span class="pL5"><form:input path="FNAME" id="INS_VITAL_FNAME" class="standardInputMedText required" title="First Name" maxLength="40"/></span>
+                <span class="pL5"><form:input  path="stdInsDeathDoc.fname" id="INS_VITAL_FNAME" class="standardInputMedText required" title="First Name" maxLength="40"/></span>
                 <div class="pL10 v_error INS_VITAL_FNAME "></div> 
             </div>
             <div class="fieldHolder25">
                	<span class="pL10">Middle Name </span> 
-               	<span  class="pL5"><form:input path="MNAME" id="INS_VITAL_MNAME" class="standardInputMedText"  title="Middle Name" maxLength="1"/></span>
+               	<span  class="pL5"><form:input  path="stdInsDeathDoc.mname" id="INS_VITAL_MNAME" class="standardInputMedText"  title="Middle Name" maxLength="1"/></span>
                	<div class="pL10 v_error INS_VITAL_MNAME "></div>
             </div>
             <div class="fieldHolder25">
                	<span class="pL10">Last Name </span> 
-               	<span  class="pL5"><form:input path="LNAME" id="INS_VITAL_LNAME" class="standardInputMedText required" title="Last Name" maxLength="40"/></span>
+               	<span  class="pL5"><form:input  path="stdInsDeathDoc.lname" id="INS_VITAL_LNAME" class="standardInputMedText required" title="Last Name" maxLength="40"/></span>
                	<div class="pL10 v_error INS_VITAL_LNAME "></div>
             </div>
         
@@ -127,18 +127,18 @@
         <div class="clearBoth personInfo pT20 pL10">
       		<div class="fieldHolder25">
                <span class=" bold">Date of Birth</span>
-                <span class="pL10"><form:input path="DOB_TEXT" id="DATE_OF_BIRTH"  class="standardInputSmallText mask dPicker" datevalidations="completeDate" maxlength="10" title="Date of Birth"/></span>
+                <span class="pL10"><form:input  path="stdInsDeathDoc.dobText" id="DATE_OF_BIRTH"  class="standardInputSmallText mask dPicker" datevalidations="completeDate" maxlength="10" title="Date of Birth"/></span>
                 <div class="pL10 v_error DATE_OF_BIRTH "></div> 
             </div>
             <div class="fieldHolder25">
                 <span class="pL10 bold">Date of Death</span>
-                <fmt:formatDate value="${StdInsDeathDocVO.DATE_OF_DEATH}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDateOfDeath" />
-                <span class="pL10"><form:input path="DATE_OF_DEATH" value="${theFormattedDateOfDeath}" id="DATE_OF_DEATH"   class="standardInputSmallText mask dPicker" datevalidations="completeDate" maxlength="10" title="Date of Death"/></span>
+                <fmt:formatDate value="${StdInsDeathDocVO.stdInsDeathDoc.dateOfDeath}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDateOfDeath" />
+                <span class="pL10"><form:input  path="stdInsDeathDoc.dateOfDeath" value="${theFormattedDateOfDeath}" id="DATE_OF_DEATH"   class="standardInputSmallText mask dPicker" datevalidations="completeDate" maxlength="10" title="Date of Death"/></span>
                	<div class="pL10 v_error DATE_OF_DEATH "></div>
             </div>
             <div class="fieldHolder25">
                <span class="pL10 bold">SSN</span>
-                <span class="pL10"><form:input path="SSN" id="INS_VITAL_SSN"  class="standardInputSmallText" maxlength="9" title="SSN"/></span>
+                <span class="pL10"><form:input  path="stdInsDeathDoc.ssn" id="INS_VITAL_SSN"  class="standardInputSmallText" maxlength="9" title="SSN"/></span>
                	<div class="pL10 v_error INS_VITAL_SSN "></div>
             </div>
         
@@ -153,27 +153,27 @@
                         Race  
                     </div>
                     <div>
-                        <form:checkbox path="RACE_WHITE"  value="1" /> White 
+                        <form:checkbox id="RACE_WHITE1"  path="stdInsDeathDoc.raceWhite"  value="1" /> White 
                     </div>
                     <div>
-                        <form:checkbox path="RACE_BLACK"  value="1" /> Black / African American
+                        <form:checkbox id="RACE_BLACK1"  path="stdInsDeathDoc.raceBlack"  value="1" /> Black / African American
                     </div>
                     <div>
-                        <form:checkbox path="RACE_ASIAN"  value="1" /> Asian
+                        <form:checkbox id="RACE_ASIAN1"  path="stdInsDeathDoc.raceAsian"  value="1" /> Asian
                     </div>
                     <div>
-                        <form:checkbox path="RACE_INDIAN"  value="1" /> American Indian/Alaska Native
+                        <form:checkbox id="RACE_INDIAN1"  path="stdInsDeathDoc.raceIndian"  value="1" /> American Indian/Alaska Native
                     </div>
                     <div>
-                        <form:checkbox path="RACE_PACIFIC"  value="1" /> Native Hawaiian or Other Pacific Islander
-                    </div>
-                    
-                    <div>
-                        <form:checkbox path="RACE_OTHER"  value="1" /> Other
+                        <form:checkbox id="RACE_PACIFIC1"  path="stdInsDeathDoc.racePacific"  value="1" /> Native Hawaiian or Other Pacific Islander
                     </div>
                     
                     <div>
-                        <form:checkbox path="RACE_UNKNOWN"  value="1" /> Unknown
+                        <form:checkbox id="RACE_OTHER1"  path="stdInsDeathDoc.raceOther"  value="1" /> Other
+                    </div>
+                    
+                    <div>
+                        <form:checkbox id="RACE_UNKNOWN1"  path="stdInsDeathDoc.raceUnknown"  value="1" /> Unknown
                     </div>
                 </div>  
                  
@@ -186,17 +186,17 @@
 	                	<div class="floatLeft pR10" style="border-right: dotted 1px;">
 							<div class="bold"> Current Gender </div>
 							<div  class="">
-								<div> <form:radiobutton path="CURRENT_GENDER" value="M" /> Male </div>
-								<div> <form:radiobutton path="CURRENT_GENDER" value="F" /> Female </div>
-								<div> <form:radiobutton path="CURRENT_GENDER" value="U" />Unknown</div>		
+								<div> <form:radiobutton id="CURRENT_GENDER1"  path="stdInsDeathDoc.currentGender" value="M" /> Male </div>
+								<div> <form:radiobutton id="CURRENT_GENDER2"  path="stdInsDeathDoc.currentGender" value="F" /> Female </div>
+								<div> <form:radiobutton id="CURRENT_GENDER3"  path="stdInsDeathDoc.currentGender" value="U" />Unknown</div>		
 							</div>
 						</div>
 						<div class="floatLeft pL10">
 							<div class=""> &nbsp; </div>
 							<div  class="">
-								<div> <form:radiobutton path="CURRENT_GENDER" value="X" /> MTF </div>		
-								<div> <form:radiobutton path="CURRENT_GENDER" value="Y" /> FTM </div>		
-								<div> <form:radiobutton path="CURRENT_GENDER" value="T" /> Unspecified </div>														
+								<div> <form:radiobutton id="CURRENT_GENDER4"  path="stdInsDeathDoc.currentGender" value="X" /> MTF </div>		
+								<div> <form:radiobutton id="CURRENT_GENDER5"  path="stdInsDeathDoc.currentGender" value="Y" /> FTM </div>		
+								<div> <form:radiobutton id="CURRENT_GENDER6"  path="stdInsDeathDoc.currentGender" value="T" /> Unspecified </div>														
 							</div>
 						</div>   
 	                </div> 
@@ -214,7 +214,7 @@
 								CIN
 							</div>
 							<div style="float:left">
-								<form:input path="MEDICAID_NUMBER"  id="INS_VITAL_MEDICAID_NUMBER" class="standardInputMedText mL5" title="CIN" maxlength="8"/>
+								<form:input  path="stdInsDeathDoc.medicaidNumber"  id="INS_VITAL_MEDICAID_NUMBER" class="standardInputMedText mL5" title="CIN" maxlength="8"/>
 							</div>
 							<div class="v_error INS_VITAL_MEDICAID_NUMBER "></div>
 						</div>	
@@ -224,7 +224,7 @@
 								Deceased Status
 							</div>
 							<div style="float:left">
-								<form:input path="DECEASED_STATUS"  class="standardInputMedText mL5" title="Deceased Status" maxlength="8"/>
+								<form:input id="DECEASED_STATUS"  path="stdInsDeathDoc.deceasedStatus"  class="standardInputMedText mL5" title="Deceased Status" maxlength="8"/>
 							</div>
 						</div>	
 						
@@ -233,7 +233,7 @@
 								File Name
 							</div>
 							<div style="float:left">
-								<form:input path="INS_DEATH_FILE_NAME"  class="standardInputMedText mL5 readonly"  maxlength="50" title="File Name"/>
+								<form:input id="INS_DEATH_FILE_NAME"  path="stdInsDeathDoc.insDeathFileName"  class="standardInputMedText mL5 readonly"  maxlength="50" title="File Name"/>
 							</div>
 						</div>		
             
@@ -255,7 +255,7 @@
 
 <div class="mT50">&nbsp;&nbsp;&nbsp;</div> <!-- dummy div -->	
 		 <div id="button-row" class="button-row documentButtons center">
-		 					<c:if test="${StdInsDeathDocVO.STATENO != null && StdInsDeathDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+		 					<c:if test="${StdInsDeathDocVO.stateno != null && StdInsDeathDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 									<c:if test="${userPermissions['90'] != null}" >
 										<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 									</c:if>

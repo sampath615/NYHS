@@ -23,7 +23,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.StdOldDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.QuartzSchedulerTransactionHelper;
@@ -41,6 +42,8 @@ public class LabDocumentService {
 	DocumentTransactionHelper documentTransactionHelper;	
 	@Autowired
 	LabDocumentDAO labDocumentDAO;
+	@Autowired
+	StdOldDocRepository stdOldDocRepository;
 	@Autowired
 	CommonDocumentService commonDocumentService;
 	@Autowired
@@ -421,9 +424,9 @@ public class LabDocumentService {
 		return resultCount;
 	}
 	
-	public StdOldDocVO getStdOldDoc(int docId,
+	public StdOldDocData getStdOldDoc(int docId,
 			BindingResult dummyBindingResult, UserObject userObject, String id){
-		return labDocumentDAO.getStdOldDoc(docId);
+		return stdOldDocRepository.findDocument(docId);
 	}
 	
 	public void rollbackStdDocumentNonMatches( 

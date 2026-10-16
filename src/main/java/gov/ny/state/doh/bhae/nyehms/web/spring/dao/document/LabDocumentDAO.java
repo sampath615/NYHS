@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdOldDocVO;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +35,6 @@ public interface LabDocumentDAO {
 	public int updateStatusCodeForHivDocuments(Map<Object, Object> inputOutputParameterMap);
 	
 	
-	public StdOldDocVO getStdOldDoc(int docId);
 	public int insertStandardHIVResistanceResultFromOldDocument(
 			Map<String, Integer> inputParameterMap);
 	public Integer getMultiStepDocumentId(Integer documentId);

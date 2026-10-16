@@ -1,10 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
 
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
 
 /**
  * This is interface for NYC DeathDocument.
@@ -15,15 +13,6 @@ import org.springframework.dao.DataAccessException;
  */
 public interface NycDeathDocumentDAO {
 
-    /**
-     * This will return NYC death doc for a given doc id.
-     *
-     * @param docId
-     * @return
-     * @throws DataAccessException
-     */
-    public NycDeathDocVO getNycDeathDoc(int docId) throws DataAccessException;
-    
     public int writeNycStdDeathDocData(Map<Object, Object> nycStdDeathDocData);
     
     

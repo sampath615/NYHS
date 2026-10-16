@@ -33,7 +33,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycDeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCEHARSDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycEharsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -60,6 +61,7 @@ public class CommonDocumentService {
 	
 	@Autowired private CommonExceptionHandler    commonExceptionHandler;
 	@Autowired private CommonDocLabsDAO          commonDocLabsDAO;	
+	@Autowired private NycEharsDocRepository nycEharsDocRepository;
 	@Autowired private CommonDAO          commonDAO;
 	@Autowired private DocumentDAO               documentDAO;
 	@Autowired private ConnectionDAO             connectionDAO;
@@ -696,10 +698,10 @@ public class CommonDocumentService {
 		return commonDocLabsDAO.getStatenoAndSourceCodeFromStdDocData(inputOutputParameterMap);
 	}
 	
-	public NYCEHARSDocVO getNycEHARSDoc(int docId,
+	public NycEharsDocData getNycEHARSDoc(int docId,
 			BindingResult dummyBindingResult, UserObject userObject, String id){
 		
-		return commonDocLabsDAO.getNycEHARSDoc(docId);
+		return nycEharsDocRepository.findDocument(docId);
 		
 	}
 	

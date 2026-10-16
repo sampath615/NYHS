@@ -19,20 +19,20 @@
  	         <div style="float:left; width: 40%">
  	            <div>
  	                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
- 	                 <span class="ml10"><form:input path="STATENO" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
+ 	                 <span class="ml10"><form:input id="STATENO"  path="stateno" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
  	            </div>    
  	          </div>
  	          <div style="float:left; width: 30%">
  	            	<div>
  	                <span class=" ml10">	eHARS Import Date: </span>
- 			 		<span class="ml10"><form:input path="EHARS_IMPORT_DATE" class="standardInputSmallText ml10" readonly="true"/> </span>
+ 			 		<span class="ml10"><form:input id="EHARS_IMPORT_DATE"  path="stdNdiCauseDoc.eharsImportDate" class="standardInputSmallText ml10" readonly="true"/> </span>
  	           	</div>    
  	         </div>
  	         
  	         <div style="float:left; width: 30%; text-align: right">
  	            <div>
  	                <span class=" ml10">	Document ID: </span>
- 			 		<span class="ml10"><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10" maxlength="6" readonly="true"/> </span>
+ 			 		<span class="ml10"><form:input id="DOCUMENT_ID"  path="stdNdiCauseDoc.documentId" class="standardinputSmallText ml10" maxlength="6" readonly="true"/> </span>
  	           	</div>    
  	         </div>
      
@@ -50,36 +50,36 @@
                 <div class="mLRTB">
                         <span class="">
                                 <span class="bold"> First Name</span> 
-                                <span class="pL10"> <form:input path="FNAME" class="standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="FNAME"  path="stdNdiCauseDoc.fname" class="standardInputSmallText" /> </span>
                         </span>
                         <span class="">
                                 <span class="pL30 bold"> Middle Name</span>
-                                <span class="pL10"> <form:input path="MNAME" class="standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="MNAME"  path="stdNdiCauseDoc.mname" class="standardInputSmallText" /> </span>
                         </span>
                         <span class="">
                                 <span class="pL30 bold"> Last Name</span> 
-                                <span class="pL10"> <form:input path="LNAME" class="required standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="LNAME"  path="stdNdiCauseDoc.lname" class="required standardInputSmallText" /> </span>
                         </span>
                         <span class="">
                                 <span class="pL30 bold"> SSN</span>
-                                <span class="pL10"> <form:input path="SSN" class="standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="SSN"  path="stdNdiCauseDoc.ssn" class="standardInputSmallText" /> </span>
                         </span>   
                         <br>               
                 </div>
                 <div class="mLRTB">
                          <span class="">
                                 <span class="bold"> Date of Birth</span>
-                                <span class="pL10"> <form:input path="DOB_TEXT" class="standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="DOB_TEXT"  path="stdNdiCauseDoc.dobText" class="standardInputSmallText" /> </span>
                         </span>
                         <span class="">
                                 <span class="pL30 bold"> State of Residence</span> 
-                                <span class="pL10"> <form:input path="RES_STATE" class="standardInputSmallText" /> </span>
+                                <span class="pL10"> <form:input id="RES_STATE"  path="stdNdiCauseDoc.resState" class="standardInputSmallText" /> </span>
                         </span> 
                			<span class="">
                                 <span class="pL30 bold"> Gender</span> 
                                 <span class="pL10"> 
-                                        <span> <form:radiobutton path="GENDER" value="M" /> Male </span>
-                                        <span> <form:radiobutton path="GENDER" value="F" /> Female </span>
+                                        <span> <form:radiobutton id="GENDER1"  path="stdNdiCauseDoc.gender" value="M" /> Male </span>
+                                        <span> <form:radiobutton id="GENDER2"  path="stdNdiCauseDoc.gender" value="F" /> Female </span>
                                 </span>
                         </span>
                         
@@ -90,24 +90,24 @@
 	                        Race
 	                    </div>
 	                    <div class="mL50 fieldHolder25 ">
-	                        <div><form:checkbox path="RACE_WHITE"  value="1" /> White</div>
+	                        <div><form:checkbox id="RACE_WHITE1"  path="stdNdiCauseDoc.raceWhite"  value="1" /> White</div>
 	                        
-	                        <div><form:checkbox path="RACE_BLACK"  value="1" /> African American </div>
+	                        <div><form:checkbox id="RACE_BLACK1"  path="stdNdiCauseDoc.raceBlack"  value="1" /> African American </div>
 	                        
-	                        <div><form:checkbox path="RACE_ASIAN"  value="1" /> Asian/Pacific Islander </div>
+	                        <div><form:checkbox id="RACE_ASIAN1"  path="stdNdiCauseDoc.raceAsian"  value="1" /> Asian/Pacific Islander </div>
 	                    </div>
 	                    
 	                    <div class="fieldHolder25 ">
-	                        <div><form:checkbox path="RACE_INDIAN"  value="1" /> American Indian/Alaskan Native</div>
+	                        <div><form:checkbox id="RACE_INDIAN1"  path="stdNdiCauseDoc.raceIndian"  value="1" /> American Indian/Alaskan Native</div>
 	                        
-	                        <div><form:checkbox path="RACE_PACIFIC"  value="1" /> Pacific</div>
+	                        <div><form:checkbox id="RACE_PACIFIC1"  path="stdNdiCauseDoc.racePacific"  value="1" /> Pacific</div>
 	                        
-	                        <div><form:checkbox path="RACE_MULTIPLE"  value="1" /> Multiple</div>
+	                        <div><form:checkbox id="RACE_MULTIPLE1"  path="stdNdiCauseDoc.raceMultiple"  value="1" /> Multiple</div>
 	                    </div>
 	                    <div  class="fieldHolder25 ">
-	                        <div><form:checkbox path="RACE_OTHER"  value="1" /> Other</div>
+	                        <div><form:checkbox id="RACE_OTHER1"  path="stdNdiCauseDoc.raceOther"  value="1" /> Other</div>
 	                        
-	                        <div><form:checkbox path="RACE_UNKNOWN"  value="1" /> Unknown</div> 
+	                        <div><form:checkbox id="RACE_UNKNOWN1"  path="stdNdiCauseDoc.raceUnknown"  value="1" /> Unknown</div> 
 	                    </div>
 	                     
 	           </div>  
@@ -123,13 +123,13 @@
                      
                         <span class="fieldHolder25">
                                 <span class="fLW35 bold"> Unique No</span> 
-                                <span class="fLW60"> <form:input path="UNIQ_NO" class="required standardInputSmallText" /> </span>
+                                <span class="fLW60"> <form:input id="UNIQ_NO"  path="stdNdiCauseDoc.uniqNo" class="required standardInputSmallText" /> </span>
                         </span> 
                         <span class="fieldHolder25">
                                 <span class="fLW35 bold"> File Category</span> 
                                 <span class="fLW60"> 
-                                        <span> <form:radiobutton path="NDIFILE_CAT" value="U" /> Unknown </span>
-                                        <span> <form:radiobutton path="NDIFILE_CAT" value="K" /> Known </span>
+                                        <span> <form:radiobutton id="NDIFILE_CAT1"  path="stdNdiCauseDoc.ndifileCat" value="U" /> Unknown </span>
+                                        <span> <form:radiobutton id="NDIFILE_CAT2"  path="stdNdiCauseDoc.ndifileCat" value="K" /> Known </span>
                                 </span>
                         </span> 
                         <br>
@@ -137,15 +137,15 @@
                 <div class="mLRTB pB10">           
                         <span class="fieldHolder25">
                                 <span class="fLW35 bold"> Date of Death</span> 
-                                <span class="fLW60"> <form:input path="DOD_TEXT" class="required standardInputSmallText" /> </span>
+                                <span class="fLW60"> <form:input id="DOD_TEXT"  path="stdNdiCauseDoc.dodText" class="required standardInputSmallText" /> </span>
                         </span> 
                         <span class="fieldHolder25">
                                 <span class="fLW35 bold"> Death Certificate</span>
-                                <span class="fLW60"> <form:input path="DEATH_CERT" class="standardInputSmallText" /> </span>
+                                <span class="fLW60"> <form:input id="DEATH_CERT"  path="stdNdiCauseDoc.deathCert" class="standardInputSmallText" /> </span>
                         </span>        
                         <span class="fieldHolder25">
                                 <span class="fLW35 bold"> State of Death</span> 
-                                <span class="fLW60"> <form:input path="DEATH_STATE" class="standardInputSmallText" /> </span>
+                                <span class="fLW60"> <form:input id="DEATH_STATE"  path="stdNdiCauseDoc.deathState" class="standardInputSmallText" /> </span>
                         </span>                                                              
                         
                         <br>
@@ -160,242 +160,242 @@
                 <div id="personNDIDetailsLeft">
                 		
                 
-                		<c:if test="${stdNDICauseDocVO.CAUSE1 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG1 != null}">
+                		<c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause1 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag1 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 1</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG1" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG11"  path="stdNdiCauseDoc.natureInjuryFlag1" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 1</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE1" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE1"  path="stdNdiCauseDoc.cause1" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE2 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG2 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause2 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag2 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 2</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG2" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG21"  path="stdNdiCauseDoc.natureInjuryFlag2" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 2</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE2" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE2"  path="stdNdiCauseDoc.cause2" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE3 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG3 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause3 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag3 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 3</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG3" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG31"  path="stdNdiCauseDoc.natureInjuryFlag3" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 3</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE3" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE3"  path="stdNdiCauseDoc.cause3" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE4 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG4 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause4 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag4 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 4</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG4" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG41"  path="stdNdiCauseDoc.natureInjuryFlag4" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 4</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE4" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE4"  path="stdNdiCauseDoc.cause4" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE5 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG5 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause5 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag5 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 5</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG5" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG51"  path="stdNdiCauseDoc.natureInjuryFlag5" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 5</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE5" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE5"  path="stdNdiCauseDoc.cause5" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE6 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG6 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause6 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag6 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 6</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG6" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG61"  path="stdNdiCauseDoc.natureInjuryFlag6" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 6</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE6" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE6"  path="stdNdiCauseDoc.cause6" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE7 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG7 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause7 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag7 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 7</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG7" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG71"  path="stdNdiCauseDoc.natureInjuryFlag7" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 7</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE7" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE7"  path="stdNdiCauseDoc.cause7" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE8 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG8 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause8 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag8 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 8</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG8" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG81"  path="stdNdiCauseDoc.natureInjuryFlag8" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 8</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE8" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE8"  path="stdNdiCauseDoc.cause8" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE9 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG9 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause9 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag9 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 9</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG9" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG91"  path="stdNdiCauseDoc.natureInjuryFlag9" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 9</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE9" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE9"  path="stdNdiCauseDoc.cause9" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE10 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG10 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause10 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag10 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 10</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG10" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG101"  path="stdNdiCauseDoc.natureInjuryFlag10" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 10</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE10" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE10"  path="stdNdiCauseDoc.cause10" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE11 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG11 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause11 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag11 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 11</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG11" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG111"  path="stdNdiCauseDoc.natureInjuryFlag11" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 11</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE11" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE11"  path="stdNdiCauseDoc.cause11" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE12 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG12 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause12 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag12 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 12</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG12" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG121"  path="stdNdiCauseDoc.natureInjuryFlag12" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 12</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE12" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE12"  path="stdNdiCauseDoc.cause12" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE13 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG13 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause13 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag13 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 13</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG13" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG131"  path="stdNdiCauseDoc.natureInjuryFlag13" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 13</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE13" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE13"  path="stdNdiCauseDoc.cause13" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE14 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG14 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause14 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag14 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 14</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG14" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG141"  path="stdNdiCauseDoc.natureInjuryFlag14" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 14</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE14" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE14"  path="stdNdiCauseDoc.cause14" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE15 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG15 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause15 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag15 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 15</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG15" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG151"  path="stdNdiCauseDoc.natureInjuryFlag15" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 15</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE15" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE15"  path="stdNdiCauseDoc.cause15" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE16 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG16 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause16 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag16 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 16</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG16" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG161"  path="stdNdiCauseDoc.natureInjuryFlag16" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 16</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE16" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE16"  path="stdNdiCauseDoc.cause16" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE17 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG17 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause17 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag17 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 17</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG17" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG171"  path="stdNdiCauseDoc.natureInjuryFlag17" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 17</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE17" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE17"  path="stdNdiCauseDoc.cause17" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE18 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG18 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause18 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag18 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 18</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG18" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG181"  path="stdNdiCauseDoc.natureInjuryFlag18" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 18</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE18" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE18"  path="stdNdiCauseDoc.cause18" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE19 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG19 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause19 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag19 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 19</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG19" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG191"  path="stdNdiCauseDoc.natureInjuryFlag19" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 19</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE19" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE19"  path="stdNdiCauseDoc.cause19" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
 	                    
-	                    <c:if test="${stdNDICauseDocVO.CAUSE20 != null  || stdNDICauseDocVO.NATURE_INJURY_FLAG20 != null}">
+	                    <c:if test="${stdNDICauseDocVO.stdNdiCauseDoc.cause20 != null  || stdNDICauseDocVO.stdNdiCauseDoc.natureInjuryFlag20 != null}">
 	                        <span class="fieldHolder30">
 	                                <span class="fLW60 bold"> Nature of Injury 20</span> 
-	                                <span class="fLW35"> <form:checkbox path="NATURE_INJURY_FLAG20" value='1' /> </span>
+	                                <span class="fLW35"> <form:checkbox id="NATURE_INJURY_FLAG201"  path="stdNdiCauseDoc.natureInjuryFlag20" value='1' /> </span>
 	                        </span>
 	                        <span class="fieldHolder70">
 	                                <span class="fLW35 bold"> Cause of Death 20</span> 
-	                                <span class="fLW60"> <form:input path="CAUSE20" class="standardInputSmallText" /> </span>
+	                                <span class="fLW60"> <form:input id="CAUSE20"  path="stdNdiCauseDoc.cause20" class="standardInputSmallText" /> </span>
 	                        </span> 
 	                        <br><br>
 	                    </c:if>
@@ -413,7 +413,7 @@
 									<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 									<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 							</c:when>
-							<c:when test="${userPermissions['90'] != null && stdNDICauseDocVO.STATENO != null && stdNDICauseDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+							<c:when test="${userPermissions['90'] != null && stdNDICauseDocVO.stateno != null && stdNDICauseDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 									<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 							</c:when>
 						</c:choose>

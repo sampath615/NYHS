@@ -38,20 +38,20 @@
 		</div>
 		<div style="padding-bottom:10px; text-align: right">
             <span class="mL10">Document ID: </span>
-			<span class=" "><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
+			<span class=" "><form:input id="DOCUMENT_ID"  path="stdBlackBoxDoc.documentId" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
         </div>
 		<div class="container pB10 w100 pT20">
             <div style="float:left; width: 40%">
 	            <div >
 	               <span class="ml10"> <spring:message code="label.stateNo" />: </span>
-				<span class="ml10"><form:input path="STATENO" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
+				<span class="ml10"><form:input id="STATENO"  path="stateno" class="standardInputSmallText" maxlength="10" readonly="true"/> </span>
 	            </div>    
             </div>
             <div style="float:left;  width: 30%">
 	            <div style="">
 	                <span class="mL10">	eHARS Import Date: </span>
-	                <fmt:formatDate value="${stdBlackBoxDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-					<span class="mL10"><form:input path="EHARS_IMPORT_DATE" value= "${theFormattedDate}" class="standardInputSmallText" readonly="true"/></span>
+	                <fmt:formatDate value="${stdBlackBoxDocVO.stdBlackBoxDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+					<span class="mL10"><form:input id="EHARS_IMPORT_DATE"  path="stdBlackBoxDoc.eharsImportDate" value= "${theFormattedDate}" class="standardInputSmallText" readonly="true"/></span>
 	            </div>
             </div>
 <!--             <div style="float:left; width: 30%; text-align: right"> -->
@@ -72,19 +72,19 @@
 	            <div class="flw40">
 		            <div >
 		               <span class="fLW25 bold"> STATENO </span>
-						<span class="fLW60"> <form:input path="RIDR_STATENO" class="standardInputSmallText  " readonly="true"/></span>
+						<span class="fLW60"> <form:input id="RIDR_STATENO"  path="stdBlackBoxDoc.ridrStateno" class="standardInputSmallText  " readonly="true"/></span>
 		            </div>    
 	            </div>
 	            <div class="flw30">
 		            <div style="">
 		                <span class="fLW25 bold">	State </span>
-		                <span class="fLW60"> <form:input path="STATE_CODE" class="standardInputSmallText  " readonly="true"/></span>
+		                <span class="fLW60"> <form:input id="STATE_CODE"  path="stdBlackBoxDoc.stateCode" class="standardInputSmallText  " readonly="true"/></span>
 		            </div>
 	            </div>
 				 <div class="flw30">
 		            <div >
 		               <span class="fLW25 bold"> Score </span>
-					<span class="fLW60"> <form:input path="SCORE" class="standardInputSmallText  " readonly="true"/></span>
+					<span class="fLW60"> <form:input id="SCORE"  path="stdBlackBoxDoc.score" class="standardInputSmallText  " readonly="true"/></span>
 		            </div>    
 	            </div>
 				 <div class="fieldHolder25">
@@ -95,15 +95,15 @@
    				<div class="flw40">
 		            <div >
 		               <span class="fLW25 bold"> Match summary </span>
-						<span class="fLW60"> <form:input path="MATCH_SUMMARY" class="standardInputSmallText  " readonly="true"/> </span>
+						<span class="fLW60"> <form:input id="MATCH_SUMMARY"  path="stdBlackBoxDoc.matchSummary" class="standardInputSmallText  " readonly="true"/> </span>
 		            </div>      
 	            </div>
 	            <div class="flw30">
 		            <div >
 		               <span class="fLW25 bold"> Match Date </span>
 						<span class="fLW60"> 
-							<fmt:formatDate value="${stdBlackBoxDocVO.RECEIVED_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedReceivedDate" />
-							<form:input path="RECEIVED_DATE" value= "${theFormattedReceivedDate}" class="standardInputMedText  " readonly="true"/>
+							<fmt:formatDate value="${stdBlackBoxDocVO.stdBlackBoxDoc.receivedDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedReceivedDate" />
+							<form:input id="RECEIVED_DATE"  path="stdBlackBoxDoc.receivedDate" value= "${theFormattedReceivedDate}" class="standardInputMedText  " readonly="true"/>
 						 </span>
 		            </div>      
 	            </div>
@@ -120,15 +120,15 @@
 			<div class="mLRTB pB20">
 				<span class="fieldHolder25">
 					<span class="fLW35 bold"> First Name</span> 
-					<span class="fLW60"> <form:input path="FIRST_NAME" class="standardInputSmallText" maxlength="15"/> </span>
+					<span class="fLW60"> <form:input id="FIRST_NAME"  path="stdBlackBoxDoc.firstName" class="standardInputSmallText" maxlength="15"/> </span>
 				</span>
 				<span class="fieldHolder25 ">
 					<span class="fLW35 bold"> Middle Name</span>
-					<span class="fLW60"> <form:input path="MIDDLE_NAME" class="standardInputSmallText" maxlength="1"/>  </span>
+					<span class="fLW60"> <form:input id="MIDDLE_NAME"  path="stdBlackBoxDoc.middleName" class="standardInputSmallText" maxlength="1"/>  </span>
 				</span>
 				<span class="fieldHolder25 ">
 					<span class="fLW35 bold"> Last Name</span>
-					<span class="fLW60"> <form:input path="LAST_NAME" id="lName" title="Last Name" class="standardInputSmallText required" maxlength="20"/>  </span>
+					<span class="fLW60"> <form:input  path="stdBlackBoxDoc.lastName" id="lName" title="Last Name" class="standardInputSmallText required" maxlength="20"/>  </span>
 				</span>
 			</div>
 <!-- 			<div class="mLRTB pB20">				 -->
@@ -144,22 +144,22 @@
 			<div class="mLRTB pB20">
 				<span class="fieldHolder25 ">
 					<span class="fLW35 bold"> Date of Birth</span>
-					<span class="fLW60"> <form:input id="dobValidation" path="DOB_TEXT" class="dPicker standardInputSmallText" maxlength="15"/> </span>
+					<span class="fLW60"> <form:input id="dobValidation"  path="stdBlackBoxDoc.dobText" class="dPicker standardInputSmallText" maxlength="15"/> </span>
 				</span>
 				<span class="fieldHolder25 ">
 					<span class="fLW35 bold"> SSN </span>
-					<span class="fLW60"><form:input path="SSN"  class="standardInputSmallText" maxlength="2"/></span>	
+					<span class="fLW60"><form:input id="SSN"  path="stdBlackBoxDoc.ssn"  class="standardInputSmallText" maxlength="2"/></span>	
 				</span>	
 				<span class="fieldHolder25 ">
 					<span class=" bold">Vital Status</span>
 	                <span class="pL10">
-	                	<form:radiobutton path="VITAL_STATUS" value="1" /> Alive
-	                	<form:radiobutton path="VITAL_STATUS" value="2" /> Dead
+	                	<form:radiobutton id="VITAL_STATUS1"  path="stdBlackBoxDoc.vitalStatus" value="1" /> Alive
+	                	<form:radiobutton id="VITAL_STATUS2"  path="stdBlackBoxDoc.vitalStatus" value="2" /> Dead
 	                </span>
 				</span>
 				<span class="fieldHolder25 ">
 					<span class="fLW35 bold"> Date of Death </span>
-					<span class="fLW60"><form:input id="dodValidation" path="DOD_TEXT" title="Date of death" class="dPicker required standardInputSmallText" maxlength="15"/></span>	
+					<span class="fLW60"><form:input id="dodValidation"  path="stdBlackBoxDoc.dodText" title="Date of death" class="dPicker required standardInputSmallText" maxlength="15"/></span>	
 				</span>
 			</div>
 
@@ -179,36 +179,36 @@
 	
 						<div style="">
 	
-							<form:checkbox path="RACE_WHITE" value="1" />White	
+							<form:checkbox id="RACE_WHITE1"  path="stdBlackBoxDoc.raceWhite" value="1" />White	
 							<br>
-							<form:checkbox path="RACE_BLACK" value="1" /> African American
+							<form:checkbox id="RACE_BLACK1"  path="stdBlackBoxDoc.raceBlack" value="1" /> African American
 							<br>
-							<form:checkbox path="RACE_ASIAN" value="1" /> Asian
+							<form:checkbox id="RACE_ASIAN1"  path="stdBlackBoxDoc.raceAsian" value="1" /> Asian
 							<br>
-							<form:checkbox path="RACE_PACIFIC" value="1" /> Pacific Islander
+							<form:checkbox id="RACE_PACIFIC1"  path="stdBlackBoxDoc.racePacific" value="1" /> Pacific Islander
 							<br>
-							<form:checkbox path="RACE_INDIAN" value="1" /> American Indian/Alaskan Native
+							<form:checkbox id="RACE_INDIAN1"  path="stdBlackBoxDoc.raceIndian" value="1" /> American Indian/Alaskan Native
 							<br>
 	
-							<form:checkbox path="RACE_OTHER" value="1" /> Other
+							<form:checkbox id="RACE_OTHER1"  path="stdBlackBoxDoc.raceOther" value="1" /> Other
 							<br>
-							<form:checkbox path="RACE_UNKNOWN" value="1" /> Unknown
+							<form:checkbox id="RACE_UNKNOWN1"  path="stdBlackBoxDoc.raceUnknown" value="1" /> Unknown
 						</div>	
 					</div>
 					<div style="padding:10px 0 10px 20px; border-top: dotted 1px;">
 						<span class="bold">Ethnicity  (Hispanic or Latino)</span>
 						<div style="">
-							<form:radiobutton path="ETHNICITY" value="01" /> Yes <br>
-							<form:radiobutton path="ETHNICITY" value="02" /> No <br>
-							<form:radiobutton path="ETHNICITY" value="09" /> Unknown <br>
+							<form:radiobutton id="ETHNICITY1"  path="stdBlackBoxDoc.ethnicity" value="01" /> Yes <br>
+							<form:radiobutton id="ETHNICITY2"  path="stdBlackBoxDoc.ethnicity" value="02" /> No <br>
+							<form:radiobutton id="ETHNICITY3"  path="stdBlackBoxDoc.ethnicity" value="09" /> Unknown <br>
 						</div>	
 					</div>
 					
 					<div style="padding:10px 0 10px 20px; border-top: dotted 1px;">
 						<span class="bold">Birth Sex</span>
 						<div style="">
-							<form:radiobutton path="BIRTH_SEX" value="M" /> Male <br>
-							<form:radiobutton path="BIRTH_SEX" value="F" /> Female <br>
+							<form:radiobutton id="BIRTH_SEX1"  path="stdBlackBoxDoc.birthSex" value="M" /> Male <br>
+							<form:radiobutton id="BIRTH_SEX2"  path="stdBlackBoxDoc.birthSex" value="F" /> Female <br>
 						</div>	
 					</div>
 				</div>
@@ -221,17 +221,17 @@
 							<div class="fieldHolder30 ">
 								<div class="bold"> Current Gender </div>
 								<div  class="">
-									<div> <form:radiobutton path="CURRENT_GENDER" value="M" /> Male </div>
-									<div> <form:radiobutton path="CURRENT_GENDER" value="F" /> Female </div>
-									<div> <form:radiobutton path="CURRENT_GENDER" value="U" />Unknown</div>		
+									<div> <form:radiobutton id="CURRENT_GENDER1"  path="stdBlackBoxDoc.currentGender" value="M" /> Male </div>
+									<div> <form:radiobutton id="CURRENT_GENDER2"  path="stdBlackBoxDoc.currentGender" value="F" /> Female </div>
+									<div> <form:radiobutton id="CURRENT_GENDER3"  path="stdBlackBoxDoc.currentGender" value="U" />Unknown</div>		
 								</div>
 							</div>
 							<div class="fieldHolder30 ">
 								<div class="bold"> Transgender </div>
 								<div  class="">
-									<div> <form:radiobutton path="CURRENT_GENDER" value="X" /> MTF </div>		
-									<div> <form:radiobutton path="CURRENT_GENDER" value="Y" /> FTM </div>		
-									<div> <form:radiobutton path="CURRENT_GENDER" value="T" /> Unspecified </div>														
+									<div> <form:radiobutton id="CURRENT_GENDER4"  path="stdBlackBoxDoc.currentGender" value="X" /> MTF </div>		
+									<div> <form:radiobutton id="CURRENT_GENDER5"  path="stdBlackBoxDoc.currentGender" value="Y" /> FTM </div>		
+									<div> <form:radiobutton id="CURRENT_GENDER6"  path="stdBlackBoxDoc.currentGender" value="T" /> Unspecified </div>														
 								</div>
 							</div>
 						</div>
@@ -246,7 +246,7 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                    <form:input path="HIV_DX_DATE_TEXT" class="standardInputSmallText  " readonly="true"/>
+					                    <form:input id="HIV_DX_DATE_TEXT"  path="stdBlackBoxDoc.hivDxDateText" class="standardInputSmallText  " readonly="true"/>
 								</span>
 							</div>
 						</div>
@@ -257,11 +257,11 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                  <form:select path="HIV_CATEG" cssClass="standardInputLongText" title="HIV Category">
+					                  <form:select id="HIV_CATEG"  path="stdBlackBoxDoc.hivCateg" cssClass="standardInputLongText" title="HIV Category">
 											<form:option value="" ></form:option>
 											<c:forEach items="${documentRefData}" var="columnData">
-												<c:if test="${columnData.REF_COLUMN == 'HIV_CATEG' }">
-													<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+												<c:if test="${columnData.refColumn == 'HIV_CATEG' }">
+													<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 												</c:if>
 											</c:forEach>
 									</form:select>
@@ -275,7 +275,7 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                    <form:input path="AIDS_DX_DATE_TEXT" class="standardInputSmallText  " readonly="true"/>
+					                    <form:input id="AIDS_DX_DATE_TEXT"  path="stdBlackBoxDoc.aidsDxDateText" class="standardInputSmallText  " readonly="true"/>
 								</span>
 							</div>
 						</div>
@@ -286,11 +286,11 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                  <form:select path="AIDS_CATEG" cssClass="standardInputLongText" title="AIDS Category">
+					                  <form:select id="AIDS_CATEG"  path="stdBlackBoxDoc.aidsCateg" cssClass="standardInputLongText" title="AIDS Category">
 											<form:option value="" ></form:option>
 											<c:forEach items="${documentRefData}" var="columnData">
-												<c:if test="${columnData.REF_COLUMN == 'AIDS_CATEG' }">
-													<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+												<c:if test="${columnData.refColumn == 'AIDS_CATEG' }">
+													<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 												</c:if>
 											</c:forEach>
 									</form:select>
@@ -305,7 +305,7 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                    <form:input path="HIV_AIDS_DX_DATE_TEXT" class="standardInputSmallText  " readonly="true"/>
+					                    <form:input id="HIV_AIDS_DX_DATE_TEXT"  path="stdBlackBoxDoc.hivAidsDxDateText" class="standardInputSmallText  " readonly="true"/>
 								</span>
 							</div>
 						</div>
@@ -318,11 +318,11 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                  <form:select path="TRANS_CATEG" cssClass="standardInputLongText" title="Transmission Category">
+					                  <form:select id="TRANS_CATEG"  path="stdBlackBoxDoc.transCateg" cssClass="standardInputLongText" title="Transmission Category">
 											<form:option value="" ></form:option>
 											<c:forEach items="${documentRefData}" var="columnData">
-												<c:if test="${columnData.REF_COLUMN == 'TRANS_CATEG' }">
-													<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+												<c:if test="${columnData.refColumn == 'TRANS_CATEG' }">
+													<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 												</c:if>
 											</c:forEach>
 									</form:select>
@@ -344,7 +344,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="VL_RECENT_VALUE" class="standardInputSmallText  "/>
+					                    <form:input id="VL_RECENT_VALUE"  path="stdBlackBoxDoc.vlRecentValue" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -355,7 +355,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="VL_RECENT_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="VL_RECENT_DATE_TEXT"  path="stdBlackBoxDoc.vlRecentDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -366,7 +366,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="CD4_RECENT_CNT_VALUE" class="standardInputSmallText  "/>
+					                    <form:input id="CD4_RECENT_CNT_VALUE"  path="stdBlackBoxDoc.cd4RecentCntValue" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -377,7 +377,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="CD4_RECENT_CNT_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="CD4_RECENT_CNT_DATE_TEXT"  path="stdBlackBoxDoc.cd4RecentCntDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -388,7 +388,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="CD4_RECENT_PCT_VALUE" class="standardInputSmallText  "/>
+					                    <form:input id="CD4_RECENT_PCT_VALUE"  path="stdBlackBoxDoc.cd4RecentPctValue" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -399,7 +399,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="CD4_RECENT_PCT_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="CD4_RECENT_PCT_DATE_TEXT"  path="stdBlackBoxDoc.cd4RecentPctDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -410,8 +410,8 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:radiobutton path="XLAB" value="Y" /> Yes
-	                					<form:radiobutton path="XLAB" value="N" /> No
+					                    <form:radiobutton id="XLAB1"  path="stdBlackBoxDoc.xlab" value="Y" /> Yes
+	                					<form:radiobutton id="XLAB2"  path="stdBlackBoxDoc.xlab" value="N" /> No
 								</span>
 							</div>
 						</div>
@@ -422,7 +422,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="XLAB_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="XLAB_DATE_TEXT"  path="stdBlackBoxDoc.xlabDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -433,9 +433,9 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                     <form:radiobutton path="PHYS_HIV" value="Y" /> Yes
-	                					 <form:radiobutton path="PHYS_HIV" value="N" /> No
-	                					 <form:radiobutton path="PHYS_HIV" value="U" /> Unknown
+					                     <form:radiobutton id="PHYS_HIV1"  path="stdBlackBoxDoc.physHiv" value="Y" /> Yes
+	                					 <form:radiobutton id="PHYS_HIV2"  path="stdBlackBoxDoc.physHiv" value="N" /> No
+	                					 <form:radiobutton id="PHYS_HIV3"  path="stdBlackBoxDoc.physHiv" value="U" /> Unknown
 								</span>
 							</div>
 						</div>
@@ -446,7 +446,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="PHYS_HIV_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="PHYS_HIV_DATE_TEXT"  path="stdBlackBoxDoc.physHivDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -457,7 +457,7 @@
 							</div>
 							<div class="fieldHolder50">
 								<span class="">
-					                    <form:input path="OI_DX_DATE_TEXT" class="standardInputSmallText  "/>
+					                    <form:input id="OI_DX_DATE_TEXT"  path="stdBlackBoxDoc.oiDxDateText" class="standardInputSmallText  "/>
 								</span>
 							</div>
 						</div>
@@ -468,11 +468,11 @@
 							</div>
 							<div class="fieldHolder70">
 								<span class="">
-					                    <form:select path="OI_CD" class="standardInputLongText  " >
+					                    <form:select id="OI_CD"  path="stdBlackBoxDoc.oiCd" class="standardInputLongText  " >
 					                    	<form:option value="" ></form:option>
 											<c:forEach items="${documentRefData}" var="columnData">
-												<c:if test="${columnData.REF_COLUMN == 'OI_CD' }">
-													<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+												<c:if test="${columnData.refColumn == 'OI_CD' }">
+													<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 												</c:if>
 											</c:forEach>
 					                    </form:select>
@@ -495,11 +495,11 @@
 	            	<span class="fieldHolder33">
 	                	<span class="fieldHolder25 bold"> Test Code </span>
 	                	<span class="fieldHolder75">
-	                			<form:select path="LAB_TEST_CD_HIV1" class="standardInputLongText  "  title="Test Code">
+	                			<form:select id="LAB_TEST_CD_HIV1"  path="stdBlackBoxDoc.labTestCdHiv1" class="standardInputLongText  "  title="Test Code">
 			                    	<form:option value="" ></form:option>
 									<c:forEach items="${documentRefData}" var="columnData">
-										<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_CD_HIV1' }">
-											<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+										<c:if test="${columnData.refColumn == 'LAB_TEST_CD_HIV1' }">
+											<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 										</c:if>
 									</c:forEach>
 			                    </form:select>
@@ -509,11 +509,11 @@
 	                <span class="fieldHolder33">
 	                    <span class="fLW40 bold">Test Type</span>
 	                    <span class="fLW60"> 
-	                    	<form:select path="LAB_TEST_TYPE_HIV1" class="standardInputSmallText  "  title="Test type">
+	                    	<form:select id="LAB_TEST_TYPE_HIV1"  path="stdBlackBoxDoc.labTestTypeHiv1" class="standardInputSmallText  "  title="Test type">
 		                    	<form:option value="" ></form:option>
 								<c:forEach items="${documentRefData}" var="columnData">
-									<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_TYPE_HIV1' }">
-										<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+									<c:if test="${columnData.refColumn == 'LAB_TEST_TYPE_HIV1' }">
+										<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 									</c:if>
 								</c:forEach>
 		                    </form:select>
@@ -521,7 +521,7 @@
 	                </span>
 	                <span class="fieldHolder20">
 	                    <span class="fLW40 bold">Sample Date </span>
-	                    <span  class="fLW60"><form:input path="SAMPLE_DATE_HIV1_TEXT" class="standardInputSmallText1"/></span>
+	                    <span  class="fLW60"><form:input id="SAMPLE_DATE_HIV1_TEXT"  path="stdBlackBoxDoc.sampleDateHiv1Text" class="standardInputSmallText1"/></span>
 	                </span>
 	               
 	            </div>
@@ -529,19 +529,19 @@
 	            	<span class="fieldHolder25">
 	                    <span class="fLW40 bold">Result </span>
 	                    <span class="fLW60"> 
-	                         <form:input path="RESULT_HIV1" class="oAdrDlg nOnly standardInputSmallText1 " /> 
+	                         <form:input id="RESULT_HIV1"  path="stdBlackBoxDoc.resultHiv1" class="oAdrDlg nOnly standardInputSmallText1 " /> 
 	                    </span>
 	                </span>
 	            	<span class="fieldHolder25">
 						<span class="fLW40 bold">Result Interpretation </span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_INTERPRETATION_HIV1"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_INTERPRETATION_HIV1"  path="stdBlackBoxDoc.resultInterpretationHiv1"   class="standardInputSmallText1" />
 		                </span>
 		            </span>
 		            <span class="fieldHolder25">
 		                <span class="bold fLW40">Units</span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_UNITS_HIV1"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_UNITS_HIV1"  path="stdBlackBoxDoc.resultUnitsHiv1"   class="standardInputSmallText1" />
 		                </span>	            
 		            </span>
 	            </div>
@@ -557,11 +557,11 @@
 	            	<span class="fieldHolder33">
 	                	<span class="fieldHolder25 bold"> Test Code </span>
 	                	<span class="fieldHolder75">
-	                			<form:select path="LAB_TEST_CD_HIV2" class="standardInputLongText  "  title="Test Code">
+	                			<form:select id="LAB_TEST_CD_HIV2"  path="stdBlackBoxDoc.labTestCdHiv2" class="standardInputLongText  "  title="Test Code">
 			                    	<form:option value="" ></form:option>
 									<c:forEach items="${documentRefData}" var="columnData">
-										<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_CD_HIV2' }">
-											<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+										<c:if test="${columnData.refColumn == 'LAB_TEST_CD_HIV2' }">
+											<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 										</c:if>
 									</c:forEach>
 			                    </form:select>
@@ -571,11 +571,11 @@
 	                <span class="fieldHolder33">
 	                    <span class="fLW40 bold">Test Type</span>
 	                    <span class="fLW60"> 
-	                    	<form:select path="LAB_TEST_TYPE_HIV2" class="standardInputSmallText  "  title="Test type">
+	                    	<form:select id="LAB_TEST_TYPE_HIV2"  path="stdBlackBoxDoc.labTestTypeHiv2" class="standardInputSmallText  "  title="Test type">
 		                    	<form:option value="" ></form:option>
 								<c:forEach items="${documentRefData}" var="columnData">
-									<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_TYPE_HIV2' }">
-										<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+									<c:if test="${columnData.refColumn == 'LAB_TEST_TYPE_HIV2' }">
+										<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 									</c:if>
 								</c:forEach>
 		                    </form:select>
@@ -583,7 +583,7 @@
 	                </span>
 	                <span class="fieldHolder20">
 	                    <span class="fLW40 bold">Sample Date </span>
-	                    <span  class="fLW60"><form:input path="SAMPLE_DATE_HIV2_TEXT" class="standardInputSmallText1"/></span>
+	                    <span  class="fLW60"><form:input id="SAMPLE_DATE_HIV2_TEXT"  path="stdBlackBoxDoc.sampleDateHiv2Text" class="standardInputSmallText1"/></span>
 	                </span>
 	               
 	            </div>
@@ -591,19 +591,19 @@
 	            	<span class="fieldHolder25">
 	                    <span class="fLW40 bold">Result </span>
 	                    <span class="fLW60"> 
-	                         <form:input path="RESULT_HIV2" class="oAdrDlg nOnly standardInputSmallText1 " /> 
+	                         <form:input id="RESULT_HIV2"  path="stdBlackBoxDoc.resultHiv2" class="oAdrDlg nOnly standardInputSmallText1 " /> 
 	                    </span>
 	                </span>
 	            	<span class="fieldHolder25">
 						<span class="fLW40 bold">Result Interpretation </span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_INTERPRETATION_HIV2"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_INTERPRETATION_HIV2"  path="stdBlackBoxDoc.resultInterpretationHiv2"   class="standardInputSmallText1" />
 		                </span>
 		            </span>
 		            <span class="fieldHolder25">
 		                <span class="bold fLW40">Units</span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_UNITS_HIV2"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_UNITS_HIV2"  path="stdBlackBoxDoc.resultUnitsHiv2"   class="standardInputSmallText1" />
 		                </span>	            
 		            </span>
 	            </div>
@@ -618,11 +618,11 @@
 	            	<span class="fieldHolder33">
 	                	<span class="fieldHolder25 bold"> Test Code </span>
 	                	<span class="fieldHolder75">
-	                			<form:select path="LAB_TEST_CD_HIV3" class="standardInputLongText  "  title="Test Code">
+	                			<form:select id="LAB_TEST_CD_HIV3"  path="stdBlackBoxDoc.labTestCdHiv3" class="standardInputLongText  "  title="Test Code">
 			                    	<form:option value="" ></form:option>
 									<c:forEach items="${documentRefData}" var="columnData">
-										<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_CD_HIV3' }">
-											<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+										<c:if test="${columnData.refColumn == 'LAB_TEST_CD_HIV3' }">
+											<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 										</c:if>
 									</c:forEach>
 			                    </form:select>
@@ -632,11 +632,11 @@
 	                <span class="fieldHolder33">
 	                    <span class="fLW40 bold">Test Type</span>
 	                    <span class="fLW60"> 
-	                    	<form:select path="LAB_TEST_TYPE_HIV3" class="standardInputSmallText  "  title="Test type">
+	                    	<form:select id="LAB_TEST_TYPE_HIV3"  path="stdBlackBoxDoc.labTestTypeHiv3" class="standardInputSmallText  "  title="Test type">
 		                    	<form:option value="" ></form:option>
 								<c:forEach items="${documentRefData}" var="columnData">
-									<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_TYPE_HIV3' }">
-										<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+									<c:if test="${columnData.refColumn == 'LAB_TEST_TYPE_HIV3' }">
+										<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 									</c:if>
 								</c:forEach>
 		                    </form:select>
@@ -644,7 +644,7 @@
 	                </span>
 	                <span class="fieldHolder20">
 	                    <span class="fLW40 bold">Sample Date </span>
-	                    <span  class="fLW60"><form:input path="SAMPLE_DATE_HIV3_TEXT" class="standardInputSmallText1"/></span>
+	                    <span  class="fLW60"><form:input id="SAMPLE_DATE_HIV3_TEXT"  path="stdBlackBoxDoc.sampleDateHiv3Text" class="standardInputSmallText1"/></span>
 	                </span>
 	               
 	            </div>
@@ -652,19 +652,19 @@
 	            	<span class="fieldHolder25">
 	                    <span class="fLW40 bold">Result </span>
 	                    <span class="fLW60"> 
-	                         <form:input path="RESULT_HIV3" class="oAdrDlg nOnly standardInputSmallText1 " /> 
+	                         <form:input id="RESULT_HIV3"  path="stdBlackBoxDoc.resultHiv3" class="oAdrDlg nOnly standardInputSmallText1 " /> 
 	                    </span>
 	                </span>
 	            	<span class="fieldHolder25">
 						<span class="fLW40 bold">Result Interpretation </span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_INTERPRETATION_HIV3"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_INTERPRETATION_HIV3"  path="stdBlackBoxDoc.resultInterpretationHiv3"   class="standardInputSmallText1" />
 		                </span>
 		            </span>
 		            <span class="fieldHolder25">
 		                <span class="bold fLW40">Units</span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_UNITS_HIV3"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_UNITS_HIV3"  path="stdBlackBoxDoc.resultUnitsHiv3"   class="standardInputSmallText1" />
 		                </span>	            
 		            </span>
 	            </div>
@@ -684,11 +684,11 @@
 	                	<span class="fieldHolder25 bold"> Test Code </span>
 	                	<span class="fieldHolder75">
 	                		
-	                		<form:select path="LAB_TEST_CD_AIDS" class="standardInputLongText  "  title="Test Code">
+	                		<form:select id="LAB_TEST_CD_AIDS"  path="stdBlackBoxDoc.labTestCdAids" class="standardInputLongText  "  title="Test Code">
 		                    	<form:option value="" ></form:option>
 								<c:forEach items="${documentRefData}" var="columnData">
-									<c:if test="${columnData.REF_COLUMN == 'LAB_TEST_CD_AIDS' }">
-										<form:option value="${columnData.LOOKUP_CD}" label="${columnData.LOOKUP_NAME}" name="${columnData.LOOKUP_NAME}"></form:option>
+									<c:if test="${columnData.refColumn == 'LAB_TEST_CD_AIDS' }">
+										<form:option value="${columnData.lookupCd}" label="${columnData.lookupName}" name="${columnData.lookupName}"></form:option>
 									</c:if>
 								</c:forEach>
 		                    </form:select>
@@ -697,11 +697,11 @@
 	                </span>
 	                <span class="fieldHolder33">    
 	                    <span class="fLW40 bold">Test Type</span>
-	                    <span class="fLW60"> <form:input path="LAB_TEST_TYPE_AIDS"  class=" standardInputSmallText "  /></span>
+	                    <span class="fLW60"> <form:input id="LAB_TEST_TYPE_AIDS"  path="stdBlackBoxDoc.labTestTypeAids"  class=" standardInputSmallText "  /></span>
 					</span>
 					<span class="fieldHolder20">	                    
 	                    <span class="fLW40 bold">Sample Date </span>
-	                    <span  class="fLW60"><form:input path="SAMPLE_DATE_AIDS_TEXT" class="standardInputSmallText1"/></span>
+	                    <span  class="fLW60"><form:input id="SAMPLE_DATE_AIDS_TEXT"  path="stdBlackBoxDoc.sampleDateAidsText" class="standardInputSmallText1"/></span>
 					</span>
 					   
 	                
@@ -710,13 +710,13 @@
 	            	<span class="fieldHolder25">	                    	
 	                    <span class="fLW40 bold">Result </span>
 	                    <span class="fLW60"> 
-	                         <form:input path="RESULT_AIDS" class="oAdrDlg nOnly standardInputSmallText1 " /> 
+	                         <form:input id="RESULT_AIDS"  path="stdBlackBoxDoc.resultAids" class="oAdrDlg nOnly standardInputSmallText1 " /> 
 	                    </span>
 	                </span> 
 	            	<span class="fieldHolder25">
 	            	  <span class="bold fLW40">Units</span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_UNITS_AIDS"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_UNITS_AIDS"  path="stdBlackBoxDoc.resultUnitsAids"   class="standardInputSmallText1" />
 		                </span>
 		             </span>
 	            </div>
@@ -730,20 +730,20 @@
 	            <div class="personInfo pTRBL10">
 	            	<span class="fieldHolder25">
 	                	<span class="fLW40 bold"> Test Code </span>
-	                	<span class="fLW60"><form:input type="text" path="LAB_TEST_CD_NEG" class="standardInputSmallText" title="Test Code"/>  </span>
+	                	<span class="fLW60"><form:input id="LAB_TEST_CD_NEG" type="text"  path="stdBlackBoxDoc.labTestCdNeg" class="standardInputSmallText" title="Test Code"/>  </span>
 	                </span>
 	                <span class="fieldHolder25">    
 	                    <span class="fLW40 bold">Test Type</span>
-	                    <span class="fLW60"> <form:input path="LAB_TEST_TYPE_NEG"  class=" standardInputSmallText "  /></span>
+	                    <span class="fLW60"> <form:input id="LAB_TEST_TYPE_NEG"  path="stdBlackBoxDoc.labTestTypeNeg"  class=" standardInputSmallText "  /></span>
 					</span>
 					<span class="fieldHolder25">	                    
 	                    <span class="fLW40 bold">Sample Date </span>
-	                    <span  class="fLW60"><form:input path="SAMPLE_DT_NEG_TEXT" class="standardInputSmallText1"/></span>
+	                    <span  class="fLW60"><form:input id="SAMPLE_DT_NEG_TEXT"  path="stdBlackBoxDoc.sampleDtNegText" class="standardInputSmallText1"/></span>
 	                </span>
 	                <span class="fieldHolder25">
 	                    <span class="fLW40 bold">Result </span>
 	                    <span class="fLW60"> 
-	                         <form:input path="RESULT_NEG" class="oAdrDlg nOnly standardInputSmallText1 " /> 
+	                         <form:input id="RESULT_NEG"  path="stdBlackBoxDoc.resultNeg" class="oAdrDlg nOnly standardInputSmallText1 " /> 
 	                    </span>
 		            </span>
 		        </div>
@@ -751,19 +751,19 @@
 		        	<span class="fieldHolder25">
 		        		<span class="bold fLW40">Result Interpretation </span>
 		                   <span class="fLW60"> 
-		                   <form:input path="RESULT_INTERPRETATION_NEG"   class="standardInputSmallText1" />
+		                   <form:input id="RESULT_INTERPRETATION_NEG"  path="stdBlackBoxDoc.resultInterpretationNeg"   class="standardInputSmallText1" />
 		                </span>
 		            </span>
 		            <span class="fieldHolder25">
 			        	 <span class="fLW40 bold ">Last TTH test Date </span>
 		                 <span class="fLW60"> 
-		    	              <form:input path="TTH_LAST_NEG_DATE_TEXT"   class="standardInputSmallText" />
+		    	              <form:input id="TTH_LAST_NEG_DATE_TEXT"  path="stdBlackBoxDoc.tthLastNegDateText"   class="standardInputSmallText" />
 	            	    </span>
 	            	</span>
 	            	<span class="fieldHolder25">   	       
 		                <span class="bold fLW40">Units</span>
 			                   <span class="fLW60"> 
-			                   <form:input path="RESULT_UNITS_NEG"   class="standardInputSmallText1" />
+			                   <form:input id="RESULT_UNITS_NEG"  path="stdBlackBoxDoc.resultUnitsNeg"   class="standardInputSmallText1" />
 			            </span>
 			        </span>    
 		                        
@@ -779,18 +779,18 @@
 	            <div class="personInfo pTRBL10">
 	                <span class="personLabelDoc bold"> Address </span>
 	                <span> 
-	                	<span class="pL10"><form:input type="text" path="CUR_STREET_ADDRESS" class="standardInputText" maxlength="39"/>  </span>
+	                	<span class="pL10"><form:input id="CUR_STREET_ADDRESS" type="text"  path="curStreetAddress" class="standardInputText" maxlength="39"/>  </span>
 	                    
 	                    
 	                    <span class="pL30 bold">City</span>
-	                    <span class="pL10"> <form:input path="CUR_CITY_NAME"  class=" standardInputSmallText "  maxlength="2"/></span>
+	                    <span class="pL10"> <form:input id="CUR_CITY_NAME"  path="stdBlackBoxDoc.curCityName"  class=" standardInputSmallText "  maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">State </span>
-	                    <span  class="pL10"><form:input path="CUR_STATE_CD" class="standardInputSmallText1" maxlength="2"/></span>
+	                    <span  class="pL10"><form:input id="CUR_STATE_CD"  path="stdBlackBoxDoc.curStateCd" class="standardInputSmallText1" maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">Zip </span>
 	                    <span class="pL10"> 
-	                         <form:input path="CUR_ZIP_CD" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
+	                         <form:input id="CUR_ZIP_CD"  path="stdBlackBoxDoc.curZipCd" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
 	                    </span>
 	                    <span class="bold pL30">County </span>
 		                   <span class="pL10"> 
@@ -799,7 +799,7 @@
 <%-- 								        <form:option value="" label="--- Select ---" /> --%>
 <%-- 										<form:options items="${sessionScope.countyMap}"/> --%>
 <%-- 							    </form:select> --%>	
-		                   <form:input path="CUR_COUNTY_NAME"   class="standardInputSmallText" />
+		                   <form:input id="CUR_COUNTY_NAME"  path="stdBlackBoxDoc.curCountyName"   class="standardInputSmallText" />
 		                </span>       	                    
 	                </span>
 	            </div>
@@ -810,7 +810,7 @@
 						
 					
 		                <span class=" bold">Address Date</span>
-		                <span class="pL10"><form:input path="CUR_ADDRESS_DATE_TEXT" style="width:115px" class="standardInputSmallText mask dPicker" datevalidations="partialDate" maxlength="10" title="Address Date"/></span>
+		                <span class="pL10"><form:input id="CUR_ADDRESS_DATE_TEXT"  path="stdBlackBoxDoc.curAddressDateText" style="width:115px" class="standardInputSmallText mask dPicker" datevalidations="partialDate" maxlength="10" title="Address Date"/></span>
 		                
 		                
 <!-- 		                 <span class="pL30 bold">Country </span> -->
@@ -836,18 +836,18 @@
 	            <div class="personInfo pTRBL10">
 	                <span class="personLabelDoc bold"> Address </span>
 	                <span> 
-	                	<span class="pL10"><form:input type="text" path="RSD_STREET_ADDRESS" class="standardInputText" maxlength="39"/>  </span>
+	                	<span class="pL10"><form:input id="RSD_STREET_ADDRESS" type="text"  path="rsdStreetAddress" class="standardInputText" maxlength="39"/>  </span>
 	                    
 	                    
 	                    <span class="pL30 bold">City</span>
-	                    <span class="pL10"> <form:input path="RSD_CITY_NAME"  class=" standardInputSmallText "  maxlength="2"/></span>
+	                    <span class="pL10"> <form:input id="RSD_CITY_NAME"  path="stdBlackBoxDoc.rsdCityName"  class=" standardInputSmallText "  maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">State </span>
-	                    <span  class="pL10"><form:input path="RSD_STATE_CD" class="standardInputSmallText1" maxlength="2"/></span>
+	                    <span  class="pL10"><form:input id="RSD_STATE_CD"  path="stdBlackBoxDoc.rsdStateCd" class="standardInputSmallText1" maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">Zip </span>
 	                    <span class="pL10"> 
-	                         <form:input path="RSD_ZIP_CD" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
+	                         <form:input id="RSD_ZIP_CD"  path="stdBlackBoxDoc.rsdZipCd" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
 	                    </span>
 	                    <span class="bold pL30">County </span>
 		                   <span class="pL10"> 
@@ -856,7 +856,7 @@
 <%-- 								        <form:option value="" label="--- Select ---" /> --%>
 <%-- 										<form:options items="${sessionScope.countyMap}"/> --%>
 <%-- 							    </form:select> --%>	
-		                   <form:input path="RSD_COUNTY_NAME"   class="standardInputSmallText" />
+		                   <form:input id="RSD_COUNTY_NAME"  path="stdBlackBoxDoc.rsdCountyName"   class="standardInputSmallText" />
 		                </span>       	                    
 	                </span>
 	            </div>
@@ -864,7 +864,7 @@
 	            <div class="personInfo pT10 pTRBL10">
 					<div class="fieldHolder25">
 		                <span class=" bold">Country</span>
-		                <span class="pL10"><form:input path="RSD_COUNTRY_CD" style="width:115px" class="standardInputSmallText" title="Country"/></span>
+		                <span class="pL10"><form:input id="RSD_COUNTRY_CD"  path="stdBlackBoxDoc.rsdCountryCd" style="width:115px" class="standardInputSmallText" title="Country"/></span>
 		             </div>
 	            </div><br>
 	        </div>
@@ -879,18 +879,18 @@
 	            <div class="personInfo pTRBL10">
 	                <span> 
 	                	<span class="bold">City</span>
-	                    <span class="pL10"> <form:input path="RSH_CITY_NAME"  class=" standardInputSmallText "  maxlength="2"/></span>
+	                    <span class="pL10"> <form:input id="RSH_CITY_NAME"  path="stdBlackBoxDoc.rshCityName"  class=" standardInputSmallText "  maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">State </span>
-	                    <span  class="pL10"><form:input path="RSH_STATE_CD" class="standardInputSmallText1" maxlength="2"/></span>
+	                    <span  class="pL10"><form:input id="RSH_STATE_CD"  path="stdBlackBoxDoc.rshStateCd" class="standardInputSmallText1" maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">Zip </span>
 	                    <span class="pL10"> 
-	                         <form:input path="RSH_ZIP_CD" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
+	                         <form:input id="RSH_ZIP_CD"  path="stdBlackBoxDoc.rshZipCd" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
 	                    </span>
 	                    <span class="bold pL30">County </span>
 		                   <span class="pL10"> 
-		                   <form:input path="RSH_COUNTY_NAME"   class="standardInputSmallText" />
+		                   <form:input id="RSH_COUNTY_NAME"  path="stdBlackBoxDoc.rshCountyName"   class="standardInputSmallText" />
 		                </span>       	                    
 	                    <br>
 	                </span>
@@ -905,18 +905,18 @@
 	            <div class="personInfo pTRBL10">
 	                <span> 
 	                	<span class="bold">City</span>
-	                    <span class="pL10"> <form:input path="RSA_CITY_NAME"  class=" standardInputSmallText "  maxlength="2"/></span>
+	                    <span class="pL10"> <form:input id="RSA_CITY_NAME"  path="stdBlackBoxDoc.rsaCityName"  class=" standardInputSmallText "  maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">State </span>
-	                    <span  class="pL10"><form:input path="RSA_STATE_CD" class="standardInputSmallText1" maxlength="2"/></span>
+	                    <span  class="pL10"><form:input id="RSA_STATE_CD"  path="stdBlackBoxDoc.rsaStateCd" class="standardInputSmallText1" maxlength="2"/></span>
 	                    
 	                    <span class="pL30 bold">Zip </span>
 	                    <span class="pL10"> 
-	                         <form:input path="RSA_ZIP_CD" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
+	                         <form:input id="RSA_ZIP_CD"  path="stdBlackBoxDoc.rsaZipCd" class="oAdrDlg nOnly standardInputSmallText1 newZip" maxlength="5" /> 
 	                    </span>
 	                    <span class="bold pL30">County </span>
 		                   <span class="pL10"> 
-		                   <form:input path="RSA_COUNTY_NAME"   class="standardInputSmallText" />
+		                   <form:input id="RSA_COUNTY_NAME"  path="stdBlackBoxDoc.rsaCountyName"   class="standardInputSmallText" />
 		                </span>       	                    
 	                    <br>
 	                </span>
@@ -928,7 +928,7 @@
 			<div  class="b1 pB10">
  					<span class="mL30 ">Comments </span><br/>
  					<div class="mL30">
-					<span>  <form:textarea title="COMMENTS" maxlength="255" cols="165" rows="8" path="COMMENTS" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>
+					<span>  <form:textarea id="COMMENTS" title="COMMENTS" maxlength="255" cols="165" rows="8"  path="stdBlackBoxDoc.comments" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>
 
 				</div>
 		
@@ -941,7 +941,7 @@
 								<c:when  test="${param.hasDeleteFunctionality == true}" >	
 										<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 								</c:when>
-								<c:when test="${userPermissions['90'] != null && stdBlackBoxDocVO.STATENO != null && stdBlackBoxDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+								<c:when test="${userPermissions['90'] != null && stdBlackBoxDocVO.stateno != null && stdBlackBoxDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 										<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 								</c:when>
 							</c:choose>

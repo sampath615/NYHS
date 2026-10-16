@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCEHARSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -88,8 +87,6 @@ public interface CommonDocLabsDAO {
 	public List<JSONObject> getCodedFacilityTypeValues();
 
 	public void deleteEntryInDocumentRiskTable(int documentId);
-
-	public NYCEHARSDocVO getNycEHARSDoc(int docId);
 
 	public void updateDocumentsStatus(
 			Map<Object, Object> inputOutputParameterMap);

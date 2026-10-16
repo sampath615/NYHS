@@ -1,7 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidOldDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidOldDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.MedicaidOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.MedicaidOldDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -21,7 +21,7 @@ public class MedicaidOldDocumentService {
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired
-    MedicaidOldDocumentDAO medicaidOldDocumentDAO;
+    MedicaidOldDocRepository medicaidOldDocRepository;
     @Autowired
     CommonExceptionHandler commonExceptionHandler;
 
@@ -34,17 +34,17 @@ public class MedicaidOldDocumentService {
      * @param sessionID
      * @return
      */
-    public MedicaidOldDocVO getMedicaidOldDoc(int docId, BindingResult result, UserObject userObject,
+    public MedicaidOldDocData getMedicaidOldDoc(int docId, BindingResult result, UserObject userObject,
             String sessionID) {
 
         boolean rollbackFlag = false;
-        MedicaidOldDocVO medicaidOldDocVO = null;
+        MedicaidOldDocData medicaidOldDocVO = null;
         log.debug(nyehmsLog + " fetching for docId : " + docId);
         try {
-        	medicaidOldDocVO = medicaidOldDocumentDAO.getMedicaidOldDoc(docId);
+        	medicaidOldDocVO = medicaidOldDocRepository.findDocument(docId);
             
             if(medicaidOldDocVO == null){
-            	medicaidOldDocVO = new MedicaidOldDocVO();
+            	medicaidOldDocVO = MedicaidOldDocData.empty();
             }
         } catch (DataAccessException e) {
             rollbackFlag = true;

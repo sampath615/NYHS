@@ -1,10 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DeathDocVO;
 
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
 
 /**
  * This is interface for DeathDocument. The implementation of these functions is
@@ -13,15 +11,6 @@ import org.springframework.dao.DataAccessException;
  * @author Srikar Kummamuri
  */
 public interface DeathDocumentDAO {
-
-    /**
-     * This will return death doc for a given doc id.
-     *
-     * @param docId
-     * @return
-     * @throws DataAccessException
-     */
-    public DeathDocVO getDeathDoc(int docId) throws DataAccessException;
 
     public int writeStdDocData(Map<Object, Object> stdDocData);
     

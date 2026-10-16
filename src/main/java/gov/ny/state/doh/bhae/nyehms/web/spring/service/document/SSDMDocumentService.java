@@ -1,7 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SSDMDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SSDMDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.SsdmDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.SsdmDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -35,6 +36,8 @@ public class SSDMDocumentService {
     @Autowired
     SSDMDocumentDAO ssdmDocumentDAO;
     @Autowired
+    SsdmDocRepository ssdmDocRepository;
+    @Autowired
     private CommonExceptionHandler commonExceptionHandler;
 
     /**
@@ -47,13 +50,13 @@ public class SSDMDocumentService {
      * @param sessionID
      * @return
      */
-    public SSDMDocVO getSSDMDoc(int docId, BindingResult result, UserObject userObject, String sessionID) {
-        SSDMDocVO stdSSDMDocVO = null;
+    public SsdmDocData getSSDMDoc(int docId, BindingResult result, UserObject userObject, String sessionID) {
+        SsdmDocData stdSSDMDocVO = null;
         boolean rollbackFlag = false;
 
         log.debug(nyehmsLog + " fetching for docId : " + docId);
         try {
-            stdSSDMDocVO = ssdmDocumentDAO.getSSDMDoc(docId);
+            stdSSDMDocVO = ssdmDocRepository.findDocument(docId);
 
         } catch (DataAccessException e) {
             rollbackFlag = true;
@@ -72,21 +75,6 @@ public class SSDMDocumentService {
         return stdSSDMDocVO;
     }
 
-    /**
-     * Mostly unused function. Will have to find out why it is there.
-     *
-     *
-     * @param docId
-     * @param result
-     * @param userObject
-     * @param sessionID
-     * @return
-     */
-    public SSDMDocVO getLabDoc(int docId, BindingResult result,
-            UserObject userObject, String sessionID) {
-        // TODO Auto-generated method stub
-        return null;
-    }
     
     public int writeRawSSDMDocDataToStdTable(Map<Object, Object> docVO,
 			BigDecimal documentId){

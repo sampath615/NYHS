@@ -19,20 +19,20 @@
             <div style="float:left; width: 40%">
 	            <div>
 	                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
-                    <span class="ml10"><form:input path="STATENO"  class="standardInputSmallText" style="width:180px" maxlength="10" readonly="true"/> </span>
+                    <span class="ml10"><form:input id="STATENO"  path="stateno"  class="standardInputSmallText" style="width:180px" maxlength="10" readonly="true"/> </span>
 	            </div>    
             </div>
             <div style="float:left; width: 30%">
 	            <div>
 	                <span class=" ml10">	eHARS Import Date: </span>
-	                <fmt:formatDate value="${stdOldDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-					<span class=" ml10"><form:input path="EHARS_IMPORT_DATE" value="${theFormattedDate}"  class="standardInputSmallText ml10" readonly="true"/></span>
+	                <fmt:formatDate value="${stdOldDocVO.stdStdOldDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+					<span class=" ml10"><form:input id="EHARS_IMPORT_DATE"  path="stdStdOldDoc.eharsImportDate" value="${theFormattedDate}"  class="standardInputSmallText ml10" readonly="true"/></span>
 	            </div>                  
             </div>
             <div style="float:left; width: 30%; text-align: right">
             	<div>
 	                <span class="mL10">Document ID: </span>
-					<span class=" mL10"><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
+					<span class=" mL10"><form:input id="DOCUMENT_ID"  path="stdStdOldDoc.documentId" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
 	            </div> 
             </div>     
    		</div>
@@ -55,10 +55,10 @@
 						<div class="personInfo">
 							<span class="personLabelDoc">Name </span>
 							<span> 
-								<span class="pL150"><form:input path="LNAME" id="lName" class="standardInputMedText" maxlength="25" /></span> 
-								<span  class="pL30"><form:input path="FNAME" class="standardInputMedText" maxlength="20" /></span>
-								<span  class="pL30"><form:input path="MNAME" class="standardInputMedText" maxlength="25" /></span>
-								<span  class="pL30"><form:input path="SUFFIX" class="standardInputMedText" maxlength="25" /></span>
+								<span class="pL150"><form:input  path="stdStdOldDoc.lname" id="lName" class="standardInputMedText" maxlength="25" /></span> 
+								<span  class="pL30"><form:input id="FNAME"  path="stdStdOldDoc.fname" class="standardInputMedText" maxlength="20" /></span>
+								<span  class="pL30"><form:input id="MNAME"  path="stdStdOldDoc.mname" class="standardInputMedText" maxlength="25" /></span>
+								<span  class="pL30"><form:input id="SUFFIX"  path="stdStdOldDoc.suffix" class="standardInputMedText" maxlength="25" /></span>
 								<span class="labelunderneath2" style="display: inline-block"> Last</span>
 								<span class="labelunderneath1"> First</span>
 								<span class="labelunderneath1"> Middle</span>
@@ -71,24 +71,24 @@
 			 	            <div class="personInfo pTRBL10">
 			 	                <span class="personLabelDoc"> Address </span>
 			 		                <span> 	                	
-				 	                	<span class="pL10"><form:input path="rawPersonAddress" class="standardInputText newAddress" style="width:300px" maxlength="62" />  </span>
+				 	                	<span class="pL10"><form:input id="rawPersonAddress"  path="rawpersonaddress" class="standardInputText newAddress" style="width:300px" maxlength="62" />  </span>
 				 	                    
 				 	                    
 				 	                    <span class="pL30">City</span>
-				 	                    <span class="pL10"><form:input path="PERSON_CITY" class="oAdrDlg standardInputSmallText1 newCity" maxlength="30"/></span>
+				 	                    <span class="pL10"><form:input id="PERSON_CITY"  path="stdStdOldDoc.personCity" class="oAdrDlg standardInputSmallText1 newCity" maxlength="30"/></span>
 				 	                    
 				 	                    <span class="pL30">State </span>
 				 	                    <span  class="pL10">
-											<form:input path="PERSON_STATE" cssClass=" standardInputSmallText1 "  maxlength="2"/>
+											<form:input id="PERSON_STATE"  path="stdStdOldDoc.personState" cssClass=" standardInputSmallText1 "  maxlength="2"/>
 										</span>
 				 	                    
 				 	                    <span class="pL30">Zip </span>
 				 	                    <span class="pL10"> 
-				 	                        <form:input path="PERSON_ZIP" class="standardInputSmallText1" maxlength="5"/> -<form:input path="PERSON_PLUS4" class="standardInputSmallText1" maxlength="5"/> 
+				 	                        <form:input id="PERSON_ZIP"  path="stdStdOldDoc.personZip" class="standardInputSmallText1" maxlength="5"/> -<form:input id="PERSON_PLUS4"  path="stdStdOldDoc.personPlus4" class="standardInputSmallText1" maxlength="5"/> 
 				 	                    </span>
 				 	                    <span class="pL30">County </span>
 				 		                   <span class="pL10"> 
-												<form:select path="PERSON_COUNTY"  cssClass="standardInputSmallText1" > 
+												<form:select id="PERSON_COUNTY"  path="stdStdOldDoc.personCounty"  cssClass="standardInputSmallText1" > 
 													<form:option value=""></form:option>
 													<form:options items="${sessionScope.countyMap}"/>
 												</form:select>
@@ -98,10 +98,10 @@
 				 	                </span>
 			 	            </div>
 			 	            <div class="personInfo pT10 pTRBL10">
-			 	            	<span  class="" style="padding-left:59px"><form:input path="PERSON_ADDRESS" class="standardInputText dispAddressStdRaw" style="width:300px" maxlength="62" /></span>
+			 	            	<span  class="" style="padding-left:59px"><form:input id="PERSON_ADDRESS"  path="stdStdOldDoc.personAddress" class="standardInputText dispAddressStdRaw" style="width:300px" maxlength="62" /></span>
 			 	              	 	                 
 			 	                 <span class="pL30"> Phone</span>
-			 					 <span class="pL10"> <form:input path="PERSON_PHONE" class="pNumber standardInputSmallText" maxlength="20"/></span>
+			 					 <span class="pL10"> <form:input id="PERSON_PHONE"  path="stdStdOldDoc.personPhone" class="pNumber standardInputSmallText" maxlength="20"/></span>
 			 	                <br>               
 			 	                <span class="labelunderneathAddress"> Street Address</span><span class="dispAddressStdRaw"> (Std)</span>
 			 	                    
@@ -111,19 +111,19 @@
 						<div class="personInfo pB10">
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Date of Birth </span>
-								<span  class="fLW60"><form:input path="DOB_TEXT" id="dobValidation" class="dPicker standardInputSmallText"  maxlength="10"/></span>
+								<span  class="fLW60"><form:input  path="stdStdOldDoc.dobText" id="dobValidation" class="dPicker standardInputSmallText"  maxlength="10"/></span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Date of Death </span>
 								<span class="fLW60"> 
-									<form:input path="DOD_TEXT" id="dodValidation" class="dPicker standardInputSmallText"  maxlength="10"/>
+									<form:input  path="stdStdOldDoc.dodText" id="dodValidation" class="dPicker standardInputSmallText"  maxlength="10"/>
 								</span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Vital Status</span>
 				                <span class="fLW60">
-				                	<form:radiobutton path="VITAL_STATUS" value="1" /> Alive
-				                	<form:radiobutton path="VITAL_STATUS" value="2" /> Dead
+				                	<form:radiobutton id="VITAL_STATUS1"  path="stdStdOldDoc.vitalStatus" value="1" /> Alive
+				                	<form:radiobutton id="VITAL_STATUS2"  path="stdStdOldDoc.vitalStatus" value="2" /> Dead
 				                </span>
 				               </span>
 				               
@@ -131,7 +131,7 @@
 							<span class="fieldHolder25 ">
 								<span class="fLW35">SSN</span>
 				                <span class="fLW60">
-				                	<form:input path="SSN" class="standardInputSmallText"  maxlength="10"/>
+				                	<form:input id="SSN"  path="stdStdOldDoc.ssn" class="standardInputSmallText"  maxlength="10"/>
 				                </span>
 				               </span>	
 				               
@@ -141,38 +141,38 @@
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Gender </span>
 								<span class=""> 
-									<span> <form:radiobutton path="CURRENT_GENDER" value="M" /> Male </span>
-									<span> <form:radiobutton path="CURRENT_GENDER" value="F" /> Female </span>
+									<span> <form:radiobutton id="CURRENT_GENDER1"  path="stdStdOldDoc.currentGender" value="M" /> Male </span>
+									<span> <form:radiobutton id="CURRENT_GENDER2"  path="stdStdOldDoc.currentGender" value="F" /> Female </span>
 								</span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Transgender </span>
 								<span class=""> 
-									<span> <form:radiobutton path="CURRENT_GENDER" value="X" /> MTF </span>
-									<span> <form:radiobutton path="CURRENT_GENDER" value="Y" /> FTM </span>
+									<span> <form:radiobutton id="CURRENT_GENDER3"  path="stdStdOldDoc.currentGender" value="X" /> MTF </span>
+									<span> <form:radiobutton id="CURRENT_GENDER4"  path="stdStdOldDoc.currentGender" value="Y" /> FTM </span>
 								</span>
 							</span>
 							<span class="fieldHolder50 ">
 								<span class="fLW35">Patient Record No. </span>
-								<span  class="fLW60"><form:input path="MED_RECORD_NUMBER" class="standardInputText"  maxlength="17"/></span>
+								<span  class="fLW60"><form:input id="MED_RECORD_NUMBER"  path="stdStdOldDoc.medRecordNumber" class="standardInputText"  maxlength="17"/></span>
 							</span>	<br>					
 						</div><br>
 						<div class="personInfo pB10">
 							<span class="fieldHolder25 ">
 								<span class="fLW35">DIN for inmate </span>
-								<span  class="fLW60"><form:input path="DIN" class=" standardInputSmallText"  maxlength="10"/></span>
+								<span  class="fLW60"><form:input id="DIN"  path="stdStdOldDoc.din" class=" standardInputSmallText"  maxlength="10"/></span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Insurance Number </span>
 								<span class="fLW60"> 
-									<form:input path="INSURANCE_NUMBER"  class=" standardInputSmallText"  maxlength="10"/>
+									<form:input id="INSURANCE_NUMBER"  path="stdStdOldDoc.insuranceNumber"  class=" standardInputSmallText"  maxlength="10"/>
 								</span>
 							</span>
 							<span class="fieldHolder25 ">
 								<span class="fLW35">Received Date</span>
 				                <span class="fLW60">
-				                	<fmt:formatDate value="${stdOldDocVO.RECEIVED_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedReceivedDate" />
-				                	<form:input path="RECEIVED_DATE" value="${theFormattedReceivedDate}"  class="standardInputSmallText mL5" />
+				                	<fmt:formatDate value="${stdOldDocVO.stdStdOldDoc.receivedDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedReceivedDate" />
+				                	<form:input id="RECEIVED_DATE"  path="stdStdOldDoc.receivedDate" value="${theFormattedReceivedDate}"  class="standardInputSmallText mL5" />
 				                </span>
 				               </span>
 				               
@@ -198,25 +198,25 @@
 									Race
 								</div>
 								<div>
-									<form:checkbox path="RACE_WHITE" value="1" /> White	
+									<form:checkbox id="RACE_WHITE1"  path="raceWhite" value="1" /> White	
 								</div>
 								<div>
-									<form:checkbox path="RACE_BLACK" value="1" /> African American
+									<form:checkbox id="RACE_BLACK1"  path="raceBlack" value="1" /> African American
 								</div>
 								<div>
-									<form:checkbox path="RACE_ASIAN" value="1" /> Asian
+									<form:checkbox id="RACE_ASIAN1"  path="raceAsian" value="1" /> Asian
 								</div>
 								<div>
-									<form:checkbox path="RACE_INDIAN" value="1" /> American Indian/Alaskan Native
+									<form:checkbox id="RACE_INDIAN1"  path="raceIndian" value="1" /> American Indian/Alaskan Native
 								</div>
 								<div>
-									<form:checkbox path="RACE_PACIFIC" value="1" /> Pacific
+									<form:checkbox id="RACE_PACIFIC1"  path="racePacific" value="1" /> Pacific
 								</div> 
 								<div>
-									<form:checkbox path="RACE_OTHER" value="1" /> Other 
+									<form:checkbox id="RACE_OTHER1"  path="raceOther" value="1" /> Other 
 								</div>
 								<div>
-									<form:checkbox path="RACE_UNKNOWN" value="1" /> Unknown
+									<form:checkbox id="RACE_UNKNOWN1"  path="raceUnknown" value="1" /> Unknown
 								</div>	
 							
 					</div>	
@@ -225,9 +225,9 @@
 						
 								<div>
 									Ethnicity (Check one) </br> Hispanic or Latino<br>
-									<form:radiobutton path="ETHNICITY" value="01" /> Yes
-									<form:radiobutton path="ETHNICITY" value="02" /> No
-									<form:radiobutton path="ETHNICITY" value="09" /> Unknown
+									<form:radiobutton id="ETHNICITY1"  path="stdStdOldDoc.ethnicity" value="01" /> Yes
+									<form:radiobutton id="ETHNICITY2"  path="stdStdOldDoc.ethnicity" value="02" /> No
+									<form:radiobutton id="ETHNICITY3"  path="stdStdOldDoc.ethnicity" value="09" /> Unknown
 								</div>
 							
 					</div>	
@@ -243,7 +243,7 @@
 								
 								
 									Country of birth<br>
-									<form:select path="BIRTH_COUNTRY" cssClass="standardInputSmallText" title="Birth Country">
+									<form:select id="BIRTH_COUNTRY"  path="stdStdOldDoc.birthCountry" cssClass="standardInputSmallText" title="Birth Country">
 										<form:option value=""></form:option>
 										<form:options items="${sessionScope.countryMap}"/>
 										<form:option value="OTH">Other</form:option>
@@ -273,12 +273,12 @@
 								<div class="pT8">
 									<span class="fieldHolder25 bold"> Sex With Male</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SWM" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SWM" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWM" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWM" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWM" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SWM" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWM1"  path="stdStdOldDoc.swm" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWM2"  path="stdStdOldDoc.swm" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWM3"  path="stdStdOldDoc.swm" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWM4"  path="stdStdOldDoc.swm" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWM5"  path="stdStdOldDoc.swm" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SWM6"  path="stdStdOldDoc.swm" value="O" /> Yes - Oral Sex Only</span>
 											
 									</span>
 								</div>
@@ -286,24 +286,24 @@
 								
 									<span class="fieldHolder25 bold"> Sex With Female</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SWF" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SWF" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWF" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWM" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWF" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SWF" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWF1"  path="stdStdOldDoc.swf" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWF2"  path="stdStdOldDoc.swf" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWF3"  path="stdStdOldDoc.swf" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWM7"  path="stdStdOldDoc.swm" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWF4"  path="stdStdOldDoc.swf" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SWF5"  path="stdStdOldDoc.swf" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 									
 								</div>
 								<div class="pT8 pB5">
 									<span class="fieldHolder25 bold"> Injection Drug Use</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="IDU" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="IDU" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="IDU" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="IDU" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="IDU" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="IDU" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="IDU1"  path="stdStdOldDoc.idu" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="IDU2"  path="stdStdOldDoc.idu" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="IDU3"  path="stdStdOldDoc.idu" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="IDU4"  path="stdStdOldDoc.idu" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="IDU5"  path="stdStdOldDoc.idu" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="IDU6"  path="stdStdOldDoc.idu" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -312,12 +312,12 @@
 								<div class="pT8 pB5">
 									<span class="fieldHolder25 bold"> HETEROSEXUAL contact with intravenous/injection drug user</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SEX_PARTNER_IDU" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SEX_PARTNER_IDU" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_IDU" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_IDU" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_IDU" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SEX_PARTNER_IDU" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_PARTNER_IDU1"  path="stdStdOldDoc.sexPartnerIdu" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_PARTNER_IDU2"  path="stdStdOldDoc.sexPartnerIdu" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_IDU3"  path="stdStdOldDoc.sexPartnerIdu" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_IDU4"  path="stdStdOldDoc.sexPartnerIdu" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_IDU5"  path="stdStdOldDoc.sexPartnerIdu" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SEX_PARTNER_IDU6"  path="stdStdOldDoc.sexPartnerIdu" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -325,36 +325,36 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> HETEROSEXUAL contact with bisexual male</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SEX_PARTNER_MSM" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SEX_PARTNER_MSM" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_MSM" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_MSM" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_PARTNER_MSM" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SEX_PARTNER_MSM" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_PARTNER_MSM1"  path="stdStdOldDoc.sexPartnerMsm" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_PARTNER_MSM2"  path="stdStdOldDoc.sexPartnerMsm" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_MSM3"  path="stdStdOldDoc.sexPartnerMsm" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_MSM4"  path="stdStdOldDoc.sexPartnerMsm" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_PARTNER_MSM5"  path="stdStdOldDoc.sexPartnerMsm" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SEX_PARTNER_MSM6"  path="stdStdOldDoc.sexPartnerMsm" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold">  HETEROSEXUAL contact with intravenous/injection drug user</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="DRUG_USE" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="DRUG_USE" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="DRUG_USE" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="DRUG_USE" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="DRUG_USE" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="DRUG_USE" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="DRUG_USE1"  path="stdStdOldDoc.drugUse" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="DRUG_USE2"  path="stdStdOldDoc.drugUse" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="DRUG_USE3"  path="stdStdOldDoc.drugUse" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="DRUG_USE4"  path="stdStdOldDoc.drugUse" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="DRUG_USE5"  path="stdStdOldDoc.drugUse" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="DRUG_USE6"  path="stdStdOldDoc.drugUse" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Had sex with an anonymous person?</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SWA" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SWA" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWA" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWA" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWA" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SWA" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWA1"  path="stdStdOldDoc.swa" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWA2"  path="stdStdOldDoc.swa" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWA3"  path="stdStdOldDoc.swa" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWA4"  path="stdStdOldDoc.swa" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWA5"  path="stdStdOldDoc.swa" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SWA6"  path="stdStdOldDoc.swa" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -363,12 +363,12 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Had sex with a transgender person?</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SWT" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SWT" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWT" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWT" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SWT" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SWT" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWT1"  path="stdStdOldDoc.swt" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SWT2"  path="stdStdOldDoc.swt" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWT3"  path="stdStdOldDoc.swt" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWT4"  path="stdStdOldDoc.swt" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SWT5"  path="stdStdOldDoc.swt" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SWT6"  path="stdStdOldDoc.swt" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -376,12 +376,12 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Had sex while intoxicated?</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SEX_WHILE_INTOX" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SEX_WHILE_INTOX" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WHILE_INTOX" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WHILE_INTOX" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WHILE_INTOX" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SEX_WHILE_INTOX" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_WHILE_INTOX1"  path="stdStdOldDoc.sexWhileIntox" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_WHILE_INTOX2"  path="stdStdOldDoc.sexWhileIntox" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WHILE_INTOX3"  path="stdStdOldDoc.sexWhileIntox" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WHILE_INTOX4"  path="stdStdOldDoc.sexWhileIntox" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WHILE_INTOX5"  path="stdStdOldDoc.sexWhileIntox" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SEX_WHILE_INTOX6"  path="stdStdOldDoc.sexWhileIntox" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -390,12 +390,12 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Exchanged drugs/money for Sex?</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="EXCHANGE_SEX" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="EXCHANGE_SEX" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="EXCHANGE_SEX" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="EXCHANGE_SEX" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="EXCHANGE_SEX" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="EXCHANGE_SEX" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="EXCHANGE_SEX1"  path="stdStdOldDoc.exchangeSex" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="EXCHANGE_SEX2"  path="stdStdOldDoc.exchangeSex" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="EXCHANGE_SEX3"  path="stdStdOldDoc.exchangeSex" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="EXCHANGE_SEX4"  path="stdStdOldDoc.exchangeSex" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="EXCHANGE_SEX5"  path="stdStdOldDoc.exchangeSex" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="EXCHANGE_SEX6"  path="stdStdOldDoc.exchangeSex" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -403,12 +403,12 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Had sex without a condom?</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SEX_WOUT_CONDOM" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SEX_WOUT_CONDOM" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WOUT_CONDOM" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WOUT_CONDOM" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SEX_WOUT_CONDOM" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SEX_WOUT_CONDOM" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_WOUT_CONDOM1"  path="stdStdOldDoc.sexWoutCondom" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SEX_WOUT_CONDOM2"  path="stdStdOldDoc.sexWoutCondom" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WOUT_CONDOM3"  path="stdStdOldDoc.sexWoutCondom" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WOUT_CONDOM4"  path="stdStdOldDoc.sexWoutCondom" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SEX_WOUT_CONDOM5"  path="stdStdOldDoc.sexWoutCondom" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SEX_WOUT_CONDOM6"  path="stdStdOldDoc.sexWoutCondom" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -416,24 +416,24 @@
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Been incarcerated</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="INCARCERATED" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="INCARCERATED" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="INCARCERATED" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="INCARCERATED" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="INCARCERATED" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="INCARCERATED" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="INCARCERATED1"  path="stdStdOldDoc.incarcerated" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="INCARCERATED2"  path="stdStdOldDoc.incarcerated" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="INCARCERATED3"  path="stdStdOldDoc.incarcerated" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="INCARCERATED4"  path="stdStdOldDoc.incarcerated" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="INCARCERATED5"  path="stdStdOldDoc.incarcerated" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="INCARCERATED6"  path="stdStdOldDoc.incarcerated" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
 								<div class="clearBoth pT8 pB5">
 									<span class="fieldHolder25 bold"> Shared drug paraphenalia</span>
 									<span class="fieldHolder75"> 
-											<span class="fieldHolder10"><form:radiobutton path="SHARED_DRUG_EQUIP" value="Y" /> Yes</span>
-											<span class="fieldHolder10"><form:radiobutton path="SHARED_DRUG_EQUIP" value="N" /> No</span>
-											<span class="fieldHolder15"><form:radiobutton path="SHARED_DRUG_EQUIP" value="U" /> Unknown</span>
-											<span class="fieldHolder15"><form:radiobutton path="SHARED_DRUG_EQUIP" value="R" /> Refused</span>
-											<span class="fieldHolder15"><form:radiobutton path="SHARED_DRUG_EQUIP" value="D" /> Did not ask</span>		
-											<span class="fieldHolder20"><form:radiobutton path="SHARED_DRUG_EQUIP" value="O" /> Yes - Oral Sex Only</span>
+											<span class="fieldHolder10"><form:radiobutton id="SHARED_DRUG_EQUIP1"  path="stdStdOldDoc.sharedDrugEquip" value="Y" /> Yes</span>
+											<span class="fieldHolder10"><form:radiobutton id="SHARED_DRUG_EQUIP2"  path="stdStdOldDoc.sharedDrugEquip" value="N" /> No</span>
+											<span class="fieldHolder15"><form:radiobutton id="SHARED_DRUG_EQUIP3"  path="stdStdOldDoc.sharedDrugEquip" value="U" /> Unknown</span>
+											<span class="fieldHolder15"><form:radiobutton id="SHARED_DRUG_EQUIP4"  path="stdStdOldDoc.sharedDrugEquip" value="R" /> Refused</span>
+											<span class="fieldHolder15"><form:radiobutton id="SHARED_DRUG_EQUIP5"  path="stdStdOldDoc.sharedDrugEquip" value="D" /> Did not ask</span>		
+											<span class="fieldHolder20"><form:radiobutton id="SHARED_DRUG_EQUIP6"  path="stdStdOldDoc.sharedDrugEquip" value="O" /> Yes - Oral Sex Only</span>
 									</span>
 								
 								</div>
@@ -457,7 +457,7 @@
 			<div class="mLRTB pB10">	
 				<span class="fieldHolder25">
 					<span class="">Provider Name</span>
-					<span class="">  <form:input path="PROV_NAME" class="standardInputMedText ml10" maxlength="20"/>  </span>
+					<span class="">  <form:input id="PROV_NAME"  path="stdStdOldDoc.provName" class="standardInputMedText ml10" maxlength="20"/>  </span>
 				</span>
 				
 			</div>
@@ -466,24 +466,24 @@
  	            <div class="personInfo pTRBL10">
  	                <span class="personLabelDoc"> Address </span>
  		                <span> 	  
- 		                	<span class="pL10"><form:input path="rawProviderAddress" class="standardinputText" maxlength="62" readonly="true"/> </span>              	 	        
+ 		                	<span class="pL10"><form:input id="rawProviderAddress"  path="rawprovideraddress" class="standardinputText" maxlength="62" readonly="true"/> </span>              	 	        
 	 	                	            	 	                    
 	 	                    <span class="pL30">City</span>
-	 	                    <span class="pL10"><form:input path="PROV_CITY" class="standardinputSmallText1" maxlength="30"/></span>
+	 	                    <span class="pL10"><form:input id="PROV_CITY"  path="stdStdOldDoc.provCity" class="standardinputSmallText1" maxlength="30"/></span>
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:input path="PROV_STATE" class="phoneNumberText" maxlength="2"/>
+								<form:input id="PROV_STATE"  path="stdStdOldDoc.provState" class="phoneNumberText" maxlength="2"/>
 							</span>
 	 	                    
 	 	                    <span class="pL30">Zip </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="PROV_ZIP" class="standardinputSmallText1" maxlength="5"/> - <form:input path="PROV_PLUS4" class="standardinputSmallText1" maxlength="4"/> 
+	 	                       <form:input id="PROV_ZIP"  path="stdStdOldDoc.provZip" class="standardinputSmallText1" maxlength="5"/> - <form:input id="PROV_PLUS4"  path="stdStdOldDoc.provPlus4" class="standardinputSmallText1" maxlength="4"/> 
 	 	                    </span> 
 	 	                    
 	 	                    <span class="pL30">County </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:select path="PROV_COUNTY"  cssClass="oAdrDlg roundedBrdr newCounty"> 
+	 	                       <form:select id="PROV_COUNTY"  path="stdStdOldDoc.provCounty"  cssClass="oAdrDlg roundedBrdr newCounty"> 
 									<form:option value=""></form:option>
 									<form:options items="${sessionScope.countyMap}"/>
 								</form:select>
@@ -494,10 +494,10 @@
  	            </div>
  	            <div class="personInfo pT10 pTRBL10">
  	            
- 	            	<span  class="" style="padding-left:59px"><form:input path="PROV_ADDRESS" class="standardInputText dispAddressStdRaw" style="width:300px" maxlength="62" /></span>
+ 	            	<span  class="" style="padding-left:59px"><form:input id="PROV_ADDRESS"  path="stdStdOldDoc.provAddress" class="standardInputText dispAddressStdRaw" style="width:300px" maxlength="62" /></span>
 			 	              	 	                 
  	                 <span class="pL30"> Phone</span>
- 					 <span class="pL10"> <form:input path="PROV_PHONE" class="pNumber standardInputSmallText" maxlength="20"/></span>
+ 					 <span class="pL10"> <form:input id="PROV_PHONE"  path="stdStdOldDoc.provPhone" class="pNumber standardInputSmallText" maxlength="20"/></span>
  	                <br>               
  	                <span class="labelunderneathAddress"> Street Address</span><span class="dispAddressStdRaw"> (Std)</span>
  	                 
@@ -513,7 +513,7 @@
 			<div class="mLRTB pB10">	
 				<span class="fieldHolder25">
 					<span class="">Facility Name</span>
-					<span class="">  <form:input path="FACILITY_NAME" class="standardInputMedText ml10" maxlength="20"/>  </span>
+					<span class="">  <form:input id="FACILITY_NAME"  path="stdStdOldDoc.facilityName" class="standardInputMedText ml10" maxlength="20"/>  </span>
 				</span>
 				
 			</div>
@@ -527,7 +527,7 @@
 	<div id="button-row" class="button-row clear documentButtons"  align="center">
 
 
-		<c:if  test="${stdOldDocVO.STATENO != null && stdOldDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
+		<c:if  test="${stdOldDocVO.stateno != null && stdOldDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
 				<c:if  test="${userPermissions['99'] != null}">
 					<input type="button" id="tButton" class="triggetMsgBtnclick button rounded blue effect-3 displayNone"  value="Trigger Assignment"  onclick="loadSurvAssignmentPopUp()"/>
 				</c:if>
@@ -537,7 +537,7 @@
 					<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 					<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 			</c:when>
-			<c:when test="${userPermissions['90'] != null && stdOldDocVO.STATENO != null && stdOldDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+			<c:when test="${userPermissions['90'] != null && stdOldDocVO.stateno != null && stdOldDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 								<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 						</c:when>
 		</c:choose>

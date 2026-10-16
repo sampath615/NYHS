@@ -7,24 +7,6 @@
 	
 
 
-<select id="getDoccsDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO">
-		<![CDATA[
-		   SELECT NYSID,
-		   std.DOCUMENT_ID,
-                            std.FILE_RECEIVED_DATE DATE_RECEIVED, 
-                            MATCHED_STATENO,
-                            pda.DISCARD_STATUS,
-                            pda.STATENO
-                             from STD_DOCCS_DOC std LEFT OUTER JOIN  person_doc_association pda
-                    
-                    ON (std.document_id = pda.document_id
-                 AND pda.dissassociation_date IS NULL) 
-                 WHERE std.DOCUMENT_ID = #{documentId}
-
-
-		]]>
-</select>
-
 
 
 <select id="getDoccsDocumentId" parameterType="int" resultType="int">

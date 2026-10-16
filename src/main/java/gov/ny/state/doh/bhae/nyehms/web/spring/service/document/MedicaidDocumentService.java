@@ -16,7 +16,8 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.InsDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.InsDeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocProvidersVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -34,6 +35,8 @@ public class MedicaidDocumentService {
 
     @Autowired
     MedicaidDocumentDAO medicaidDocumentDAO;
+    @Autowired
+    InsDeathDocRepository insDeathDocRepository;
     @Autowired
     CommonExceptionHandler commonExceptionHandler;
 
@@ -199,9 +202,9 @@ public class MedicaidDocumentService {
 		return medicaidDocumentDAO.getStdMedicaidDocAndProvidersData(documentId);
 	}
 	
-	public InsDeathDocVO getInsDthDoc(int docId,
+	public InsDeathDocData getInsDthDoc(int docId,
 			BindingResult dummyBindingResult, UserObject userObject, String id){
-		InsDeathDocVO insDeathDocVO = medicaidDocumentDAO.getInsDthDoc(docId);
+		InsDeathDocData insDeathDocVO = insDeathDocRepository.findDocument(docId);
     	
     	return insDeathDocVO;
 	}

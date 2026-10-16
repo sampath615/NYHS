@@ -18,27 +18,27 @@
 			
 		<div class="container paddingBottom5" >
 			<div style="float: left">
-				 STATENO: <form:input path="STATENO" class="standardInputMedText ml10" />
+				 STATENO: <form:input id="STATENO"  path="stateno" class="standardInputMedText ml10" />
 			</div>	
 			<div style="float:right">
-				<fmt:formatDate value="${stdDoccsDocVO.DATE_RECEIVED}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDATE_RECEIVED" />
-				 DATE RECEIVED: <form:input path="DATE_RECEIVED" value= "${theFormattedDATE_RECEIVED}" class="standardInputMedText ml10" />
+				<fmt:formatDate value="${stdDoccsDocVO.stdDoccsDoc.fileReceivedDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDATE_RECEIVED" />
+				 DATE RECEIVED: <form:input id="DATE_RECEIVED"  path="stdDoccsDoc.fileReceivedDate" value= "${theFormattedDATE_RECEIVED}" class="standardInputMedText ml10" />
 			</div>	
 					
 		</div>
 		<div class="container paddingBottom5">			
 			<div style="float:left">
-				NYSID:<form:input path="NYSID" class="standardInputMedText ml30" readonly="true"/>
+				NYSID:<form:input id="NYSID"  path="stdDoccsDoc.nysid" class="standardInputMedText ml30" readonly="true"/>
 			</div>
 		</div>
 				
 		<!--  Person details -->
 		
 		<div class="container accordion" style=" width:100%; padding-bottom:5px; margin-bottom: 10px">	 
-			<c:forEach items="${stdDoccsDocVO.dinDoccsDocVO}" var="dinDoccsDocVO" varStatus="statusHNT">
-			<h3 id="psDetailsHeadingDiv" class="divHeadingCls ${stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].DOCUMENT_ID}accordion" index="${statusHNT.index}">
+			<c:forEach items="${stdDoccsDocVO.dinDoccsDocs}" var="dinDoccsDocVO" varStatus="statusHNT">
+			<h3 id="psDetailsHeadingDiv" class="divHeadingCls ${stdDoccsDocVO.dinDoccsDocs[statusHNT.index].DOCUMENT_ID}accordion" index="${statusHNT.index}">
 				<span class=" mL2" style="position:relative; margin-left:18px; top:-3px">DIN 
-					<c:out value="${stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].DIN}" />
+					<c:out value="${stdDoccsDocVO.dinDoccsDocs[statusHNT.index].DIN}" />
 				</span>	
 			</h3>
 			<div class="dinContainer" style="border: 1px solid #999;">
@@ -56,12 +56,12 @@
 		 	         <div style="float:right; padding-bottom:10px; width:40%; text-align: right; margin-right:10px">
 		 	            <div style="padding-bottom:10px">
 		 	                <span class=" ml10 bold">	eHARS Import Date: </span>
-		 	                <fmt:formatDate value="${stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+		 	                <fmt:formatDate value="${stdDoccsDocVO.dinDoccsDocs[statusHNT.index].EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
 		 			 		<span class="pL10"><form:input path="dinDoccsDocVO[${statusHNT.index}].EHARS_IMPORT_DATE" value="${theFormattedDate}" class="standardInputSmallText ml10" readonly="true"/> </span>
 		 	           </div>                  
 		 	         	<div style="">
 		 	                <span class="mL10 bold">NYC SHIP Date: </span>
-		 	                <fmt:formatDate value="${stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].NYC_SHIP_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
+		 	                <fmt:formatDate value="${stdDoccsDocVO.dinDoccsDocs[statusHNT.index].NYC_SHIP_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
 		 			 		<span class="pL10 "><form:input path="dinDoccsDocVO[${statusHNT.index}].NYC_SHIP_DATE" value="${theFormattedNYC_SHIP_DATE_TEXT}" class="standardinputSmallText ml10" maxlength="6" readonly="true"/></span>
 		 	            </div> 
 		 	         </div>     
@@ -497,7 +497,7 @@
 					</div>
 					
 					
-				<c:if test="${not empty stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].doccsProbCodes}">
+				<c:if test="${not empty stdDoccsDocVO.dinDoccsDocs[statusHNT.index].doccsProbCodes}">
 							<div class="accordion" style="margin: 10px; height: auto">
 
 								<h3 style="" class="divHeadingCls">
@@ -507,11 +507,11 @@
 								</h3>
 								<div class="prbContainer">
 									<c:forEach
-										items="${stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].doccsProbCodes}"
+										items="${stdDoccsDocVO.dinDoccsDocs[statusHNT.index].doccsProbCodes}"
 										var="doccsProbCodes" varStatus="doccsProbCodesStatusHNT">
 
 										<c:if
-											test="${not empty stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].PROBLEM_CD}">
+											test="${not empty stdDoccsDocVO.dinDoccsDocs[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].PROBLEM_CD}">
 											<div class="mLRTB">
 												<span class="fieldHolder48"> <span class="fLW17 bold">
 														Problem Code</span> <span class="fLW60"> <form:input
@@ -532,7 +532,7 @@
 										<br>
 
 										<c:if
-											test="${not empty stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].HIV_DIAG }">
+											test="${not empty stdDoccsDocVO.dinDoccsDocs[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].HIV_DIAG }">
 											<div class="mLRTB">
 												<span class="fieldHolder48"> <span class="fLW17 bold">
 														HIV Diagnosis</span> <span class="fLW60"> <form:input
@@ -551,7 +551,7 @@
 										<br>
 
 										<c:if
-											test="${not empty stdDoccsDocVO.dinDoccsDocVO[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].AIDS_DIAG }">
+											test="${not empty stdDoccsDocVO.dinDoccsDocs[statusHNT.index].doccsProbCodes[doccsProbCodesStatusHNT.index].AIDS_DIAG }">
 											<div class="mLRTB">
 												<span class="fieldHolder48"> <span class="fLW17 bold">
 														AIDs Diagnosis</span> <span class="fLW60"> <form:input
@@ -583,7 +583,7 @@
 	</div>	
 	<div class="mT50">&nbsp;&nbsp;&nbsp;</div> <!-- dummy div -->	
 	<div id="button-row" class="button-row documentButtons" align="center">
-			<c:if  test="${stdDoccsDocVO.STATENO != null && stdDoccsDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
+			<c:if  test="${stdDoccsDocVO.stateno != null && stdDoccsDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
 					<c:if  test="${userPermissions['98'] != null}">	
 						<input type="button" id="tButton" class="triggetMsgBtnclick button rounded blue effect-3 displayNone"  value="Trigger Message"  onclick="confirmAddressForPsMessage()"/>
 					</c:if>
@@ -598,7 +598,7 @@
 								<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 								<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 						</c:when>
-						<c:when test="${userPermissions['90'] != null && stdDoccsDocVO.STATENO != null && stdDoccsDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+						<c:when test="${userPermissions['90'] != null && stdDoccsDocVO.stateno != null && stdDoccsDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 								<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 						</c:when>
 					</c:choose>

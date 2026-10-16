@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.InsDeathDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocArvsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocProvidersVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
@@ -46,8 +45,6 @@ public interface MedicaidDocumentDAO {
 	public Map<Object, Object> getStdMedicaidDocAndProvidersData(int documentId);
 
 	public void insertRawMedicaidArvsData(Map<Object, Object> rawDocData);
-
-	public InsDeathDocVO getInsDthDoc(int docId);
 
 	
 	

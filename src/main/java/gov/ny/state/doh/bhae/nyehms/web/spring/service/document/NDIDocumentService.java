@@ -1,8 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NDIDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDICauseDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NDIDocumentVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NdiDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class NDIDocumentService {
  
  
     @Autowired
-    NDIDocumentDAO nDIDocumentDAO;
+    NdiDocRepository ndiDocRepository;
  
     /**
      * {@inheritDoc}
@@ -29,8 +29,8 @@ public class NDIDocumentService {
      * @param documentId
      * @return
      */
-    public NDIDocumentVO getNDIDoc(int docId) {
-        NDIDocumentVO nDIDocumentVO = nDIDocumentDAO.getNDIDoc(docId);
+    public NdiDocData getNDIDoc(int docId) {
+        NdiDocData nDIDocumentVO = ndiDocRepository.findDocument(docId);
         
         
 
@@ -39,8 +39,8 @@ public class NDIDocumentService {
     	
     	StringBuilder DOD_TEXT = new StringBuilder();
     	
-    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.getDAY_DEATH())){
-    		DOD_TEXT.append(nDIDocumentVO.getDAY_DEATH());
+    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.stdNdiDoc().getDayDeath())){
+    		DOD_TEXT.append(nDIDocumentVO.stdNdiDoc().getDayDeath());
     	}else{
     		DOD_TEXT.append(doubleDots);
     	}
@@ -48,28 +48,25 @@ public class NDIDocumentService {
     	DOD_TEXT.append(slash);
     	
     	
-    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.getMONTH_DEATH())){
-    		DOD_TEXT.append(nDIDocumentVO.getMONTH_DEATH());
+    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.stdNdiDoc().getMonthDeath())){
+    		DOD_TEXT.append(nDIDocumentVO.stdNdiDoc().getMonthDeath());
     	}else{
     		DOD_TEXT.append(doubleDots);
     	}
     	
     	DOD_TEXT.append(slash);
     	
-    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.getYEAR_DEATH())){
-    		DOD_TEXT.append(nDIDocumentVO.getYEAR_DEATH());
+    	if(CommonUtil.isNotNullAndEmpty(nDIDocumentVO.stdNdiDoc().getYearDeath())){
+    		DOD_TEXT.append(nDIDocumentVO.stdNdiDoc().getYearDeath());
     	}else{
     		DOD_TEXT.append(doubleDots).append(doubleDots);
     	}
-    	
-    	nDIDocumentVO.setDOD_TEXT(DOD_TEXT.toString());
-    	
-        return nDIDocumentVO;
+        return nDIDocumentVO.withDodText(DOD_TEXT.toString());
     }
     
-    public NDICauseDocVO getNDICauseDoc(int docId){
+    public NdiCauseDocData getNDICauseDoc(int docId){
     	
-    	return nDIDocumentDAO.getNDICauseDoc(docId);
+    	return ndiDocRepository.findCauseDocument(docId);
     }
 
 }

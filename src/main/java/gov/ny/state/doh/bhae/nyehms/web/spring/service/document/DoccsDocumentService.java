@@ -2,7 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DoccsDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.DoccsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.DoccsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -32,6 +33,8 @@ public class DoccsDocumentService {
 	@Autowired
 	DoccsDocumentDAO doccsDocumentDAO;	
 	@Autowired
+	DoccsDocRepository doccsDocRepository;
+	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;		
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
@@ -43,17 +46,17 @@ public class DoccsDocumentService {
 
 
 
-	public DoccsDocVO getDoccsDoc(int documentId, 
+	public DoccsDocData getDoccsDoc(int documentId, 
 										BindingResult result, 
 										UserObject userObject, 
 										String sessionID) {
 		boolean rollbackFlag=false;
-		DoccsDocVO stdDoccsDocVO=null;
+		DoccsDocData stdDoccsDocVO=null;
 		log.debug("{} fetching for docId : {}", nyehmsLog,documentId);
 		try{
 			
 			
-			stdDoccsDocVO=doccsDocumentDAO.getDoccsDoc(documentId);
+			stdDoccsDocVO=doccsDocRepository.findDocument(documentId);
 			
 			if(stdDoccsDocVO != null){
 				
@@ -64,7 +67,7 @@ public class DoccsDocumentService {
 				
 				List<DinDoccsDocVO> dinDoccs = doccsDocumentDAO.getDinDoccsDocContent(inputParemeterMap);
 				
-				stdDoccsDocVO.setDinDoccsDocVO(dinDoccs);
+				stdDoccsDocVO = stdDoccsDocVO.withDinDoccsDocs(dinDoccs);
 				
 			}
 			

@@ -1,13 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.BlackBoxDocDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.BlackBoxDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.BlackBoxDocRepository;
 
 /**
  * This is implementation of BlackBoxDocService interface. This provides
@@ -21,7 +21,7 @@ public class BlackBoxDocService {
     //private Log log = LogFactory.getLog(this.getClass());
  
 	@Autowired
-    BlackBoxDocDAO blackBoxDocDAO;
+    BlackBoxDocRepository blackBoxDocRepository;
  
     /**
      * {@inheritDoc}
@@ -29,15 +29,13 @@ public class BlackBoxDocService {
      * @param documentId
      * @return
      */
-    public BlackBoxDocVO getBlackBoxDoc(int docId) {
-    	BlackBoxDocVO blackBoxDocVO = blackBoxDocDAO.getBlackBoxDoc(docId);
-        
-        return blackBoxDocVO;
+    public BlackBoxDocData getBlackBoxDoc(int docId) {
+    	return blackBoxDocRepository.findDocument(docId);
     }
     
     
-	public List<Map<String, String>> getBlackBoxRefData(){
-		return blackBoxDocDAO.getBlackBoxRefData();
+	public List<BlackBoxRefData> getBlackBoxRefData(){
+		return blackBoxDocRepository.findRefData();
 	}
 
 }

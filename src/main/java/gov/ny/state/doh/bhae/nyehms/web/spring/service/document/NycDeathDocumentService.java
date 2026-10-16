@@ -4,7 +4,8 @@ import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDA
 import gov.ny.state.doh.bhae.nyehms.utils.County;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycDeathDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycDeathDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycDeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -40,6 +41,8 @@ public class NycDeathDocumentService {
 
 	@Autowired
 	NycDeathDocumentDAO nycDeathDocumentDAO;
+	@Autowired
+	NycDeathDocRepository nycDeathDocRepository;
 	@Autowired
 	private SchedulerJobsDAO schedulerJobsDAO;
 	@Autowired
@@ -92,26 +95,26 @@ public class NycDeathDocumentService {
 	 * @param sessionID
 	 * @return
 	 */
-	public NycDeathDocVO getNycDeathDoc(int docId, BindingResult result,
+	public NycDeathDocData getNycDeathDoc(int docId, BindingResult result,
 			UserObject userObject, String sessionID) {
 
 		boolean rollbackFlag = false;
-		NycDeathDocVO stdDeathDocVO = null;
+		NycDeathDocData stdDeathDocVO = null;
 		log.debug(nyehmsLog + " fetching for docId : " + docId);
 		try {
-			stdDeathDocVO = nycDeathDocumentDAO.getNycDeathDoc(docId);
+			stdDeathDocVO = nycDeathDocRepository.findDocument(docId);
 			
 			if(stdDeathDocVO == null){
 				return null;
 			}
 			
-			String H_CAUSE = stdDeathDocVO.getH_CAUSE();
-			String OI_CAUSE = stdDeathDocVO.getOI_CAUSE();
+			String H_CAUSE = stdDeathDocVO.stdNycDeathDoc().getHcause();
+			String OI_CAUSE = stdDeathDocVO.stdNycDeathDoc().getOiCause();
 			
 			if("Y".equals(H_CAUSE) && "Y".equals(OI_CAUSE)){
-				stdDeathDocVO.setCauseOfDeath("Opportunistic Infection (OI) Cause of Death");
+				stdDeathDocVO = stdDeathDocVO.withCauseOfDeath("Opportunistic Infection (OI) Cause of Death");
 			}else if("Y".equals(H_CAUSE) && "N".equals(OI_CAUSE)){
-				stdDeathDocVO.setCauseOfDeath("HIV Cause of Death");
+				stdDeathDocVO = stdDeathDocVO.withCauseOfDeath("HIV Cause of Death");
 			}else{
 				
 				Map<String, Object> inputParameterMap = new HashMap<>();
@@ -122,7 +125,7 @@ public class NycDeathDocumentService {
 				String meetsCDC = documentDAO.checkStatenoMeetsCDC(inputParameterMap);
 				
 				if("Y".equals(meetsCDC)){
-					stdDeathDocVO.setCauseOfDeath("Meets Case Definition");
+					stdDeathDocVO = stdDeathDocVO.withCauseOfDeath("Meets Case Definition");
 				}
 				
 				

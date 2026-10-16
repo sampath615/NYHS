@@ -20,7 +20,7 @@
 		
 					<div  class="floatRight">
 			            <span class="mL10 bold">Document ID: </span>
-						<span class=" "><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+						<span class=" "><form:input id="DOCUMENT_ID"  path="stdClimsDoc.documentId" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
 			         </div>	
 		
 				</div>
@@ -29,21 +29,21 @@
 		 	         <div style="float:left; width: 40%">
 		 	            <div >
 		 	                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
-		 	                 <span class="ml10"><form:input path="STATENO" class="standardInputSmallText readonly" maxlength="10" readonly="true"/> </span>
+		 	                 <span class="ml10"><form:input id="STATENO"  path="stateno" class="standardInputSmallText readonly" maxlength="10" readonly="true"/> </span>
 		 	            </div>    
 		 	          </div>
 		 	          <div style="float:left; width: 30%">
 		 	         	<div >
 		 	                <span class="ml10"> eHARS Import Date: </span>
-		 	                <fmt:formatDate value="${stdCLIMSDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-		 			 		<span class="ml10"><form:input path="EHARS_IMPORT_DATE" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
+		 	                <fmt:formatDate value="${stdCLIMSDocVO.stdClimsDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+		 			 		<span class="ml10"><form:input id="EHARS_IMPORT_DATE"  path="stdClimsDoc.eharsImportDate" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
 		 	            </div>    
 		 	         </div>
 		 	         <div style="float:left; width: 30%; text-align: right">
 		 	            <div >
 		 	                <span class="mL10">NYC SHIP Date: </span>
-		 	                <fmt:formatDate value="${stdCLIMSDocVO.NYC_SHIP_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
-		 			 		<span class="ml10"><form:input path="NYC_SHIP_DATE" value="${theFormattedNYC_SHIP_DATE_TEXT}" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+		 	                <fmt:formatDate value="${stdCLIMSDocVO.stdClimsDoc.nycShipDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
+		 			 		<span class="ml10"><form:input id="NYC_SHIP_DATE"  path="stdClimsDoc.nycShipDate" value="${theFormattedNYC_SHIP_DATE_TEXT}" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
 		 	            </div> 
 		 	         </div>     
 		 		</div>	 
@@ -59,23 +59,23 @@
                                 <div class="personInfo">
                                 			<div class="fieldHolder25">
 	                                            <span class="pL10">First Name </span> 
-	                                            <span class="pL5"><form:input path="FIRSTNAME" id="CLIMS_FIRSTNAME" class="standardInputMedText  readonly required" title="First Name" maxLength="20"/></span>
+	                                            <span class="pL5"><form:input  path="stdClimsDoc.firstname" id="CLIMS_FIRSTNAME" class="standardInputMedText  readonly required" title="First Name" maxLength="20"/></span>
 	                                            <div class="pL10 v_error AIRS_FNAME "></div> 
 	                                        </div>
 	                                        <div class="fieldHolder25">
                                             	<span class="pL10">Last Name </span> 
-                                            	<span  class="pL5"><form:input path="LASTNAME" id="CLIMS_LASTNAME" class="standardInputMedText readonly"  title="Last Name" maxLength="25"/></span>
+                                            	<span  class="pL5"><form:input  path="stdClimsDoc.lastname" id="CLIMS_LASTNAME" class="standardInputMedText readonly"  title="Last Name" maxLength="25"/></span>
                                             	<div class="pL10 v_error AIRS_MNAME "></div>
                                             </div>
                                			<div class="fieldHolder25">
                                        		<span class="pL10">Date of Birth </span>
-                                   			<fmt:formatDate value="${stdCLIMSDocVO.DOB}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDOBDate" />
-                                   			<span class="ml10"><form:input path="DOB" value= "${theFormattedDOBDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
+                                   			<fmt:formatDate value="${stdCLIMSDocVO.stdClimsDoc.dob}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDOBDate" />
+                                   			<span class="ml10"><form:input id="DOB"  path="stdClimsDoc.dob" value= "${theFormattedDOBDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
                                        		<div class="pL10 v_error DATE_OF_BIRTH "></div>
                                        </div>
                                       	<div class="fieldHolder25">
                                         	<span class="pL10">Age</span>
-                                        	<span class="pL10"><form:input path="AGE" class="standardInputSmallText nOnly readonly" title="Age" maxLength="3"/>&nbsp;&nbsp;</span>
+                                        	<span class="pL10"><form:input id="AGE"  path="stdClimsDoc.age" class="standardInputSmallText nOnly readonly" title="Age" maxLength="3"/>&nbsp;&nbsp;</span>
                                         </div>
                                         <br><br>
                                         
@@ -87,12 +87,12 @@
 				 		                <span> 	                	
 					 	                    <span class="pL30">Zip </span>
 					 	                    <span class="pL10"> 
-					 	                       <form:input path="PATZIP" id="CLIMSZip" class="standardInputSmallText1 widgetAddressFieldsReadonly newZip readonly" title="Zipcode" maxLength="5"/>
+					 	                       <form:input  path="stdClimsDoc.patzip" id="CLIMSZip" class="standardInputSmallText1 widgetAddressFieldsReadonly newZip readonly" title="Zipcode" maxLength="5"/>
 					 	                    </span> 
 					 	                    
 					 	                    <span class="pL30">County </span>
 					 	                    <span class="pL10"> 
-					 	                    	<form:select path="COUNTYCODE"  cssClass="oAdrDlg newCounty roundedBrdr widgetAddressFieldsReadonly newCounty readonly" title="County" maxLength="3"> 
+					 	                    	<form:select id="COUNTYCODE"  path="stdClimsDoc.countycode"  cssClass="oAdrDlg newCounty roundedBrdr widgetAddressFieldsReadonly newCounty readonly" title="County" maxLength="3"> 
 													<form:option value=""></form:option>
 													<form:options items="${sessionScope.countyMap}"/>
 												 </form:select>
@@ -108,39 +108,39 @@
                         <div class="fieldHolder25" style="width: 24%; border: 1px dotted; height: 402px">
                                 <div style="padding:10px ">      
                                         <div> Race </div>
-                                        <div>   <form:checkbox path="RACE_WHITE"  value="1"/> White </div>
-                                        <div>   <form:checkbox path="RACE_BLACK" value="1"/> African American</div>
-                                        <div>   <form:checkbox path="RACE_ASIAN" value="1"/> Asian</div>
-                                        <div>   <form:checkbox path="RACE_INDIAN" value="1"/> American Indian/Alaskan Native</div>
-                                        <div>   <form:checkbox path="RACE_PACIFIC" value="1"/> Pacific Islander</div> 
-                                        <div>   <form:checkbox path="RACE_OTHER" value="1"/> Other 
+                                        <div>   <form:checkbox id="RACE_WHITE1"  path="stdClimsDoc.raceWhite"  value="1"/> White </div>
+                                        <div>   <form:checkbox id="RACE_BLACK1"  path="stdClimsDoc.raceBlack" value="1"/> African American</div>
+                                        <div>   <form:checkbox id="RACE_ASIAN1"  path="stdClimsDoc.raceAsian" value="1"/> Asian</div>
+                                        <div>   <form:checkbox id="RACE_INDIAN1"  path="stdClimsDoc.raceIndian" value="1"/> American Indian/Alaskan Native</div>
+                                        <div>   <form:checkbox id="RACE_PACIFIC1"  path="stdClimsDoc.racePacific" value="1"/> Pacific Islander</div> 
+                                        <div>   <form:checkbox id="RACE_OTHER1"  path="stdClimsDoc.raceOther" value="1"/> Other 
                                         </div>
-                                        <div>   <form:checkbox path="RACE_UNKNOWN" value="1"/> Unknown</div> 
+                                        <div>   <form:checkbox id="RACE_UNKNOWN1"  path="stdClimsDoc.raceUnknown" value="1"/> Unknown</div> 
                                         <br>           
                                 </div>  
                                 <div style="padding:15px 0 10px 10px; border-top: dotted 1px; ">   
                                         <div>
                                                 Ethnicity (Check one) Hispanic or Latino<br>
-                                                <form:radiobutton path="ETHNICITY" value="01" /> Yes
-                                                <form:radiobutton path="ETHNICITY" value="02" /> No
-                                                <form:radiobutton path="ETHNICITY" value="09" /> Unknown
+                                                <form:radiobutton id="ETHNICITY1"  path="stdClimsDoc.ethnicity" value="01" /> Yes
+                                                <form:radiobutton id="ETHNICITY2"  path="stdClimsDoc.ethnicity" value="02" /> No
+                                                <form:radiobutton id="ETHNICITY3"  path="stdClimsDoc.ethnicity" value="09" /> Unknown
                                         </div>
                                 </div>  
 								 <div style="padding:15px 0 10px 10px; border-top: dotted 1px; "> 
 								 	<div class="floatLeft pR10" style="border-right: dotted 1px;">
 										<div class=""> Current Gender </div>
 										<div  class="">
-											<div> <form:radiobutton path="CURRENT_GENDER" value="M" /> Male </div>
-											<div> <form:radiobutton path="CURRENT_GENDER" value="F" /> Female </div>
-											<div> <form:radiobutton path="CURRENT_GENDER" value="U" />Unknown</div>		
+											<div> <form:radiobutton id="CURRENT_GENDER1"  path="stdClimsDoc.currentGender" value="M" /> Male </div>
+											<div> <form:radiobutton id="CURRENT_GENDER2"  path="stdClimsDoc.currentGender" value="F" /> Female </div>
+											<div> <form:radiobutton id="CURRENT_GENDER3"  path="stdClimsDoc.currentGender" value="U" />Unknown</div>		
 										</div>
 									</div>
 									<div class="floatLeft pL10">
 										<div class=""> Transgender </div>
 										<div  class="">
-											<div> <form:radiobutton path="CURRENT_GENDER" value="X" /> MTF </div>		
-											<div> <form:radiobutton path="CURRENT_GENDER" value="Y" /> FTM </div>		
-											<div> <form:radiobutton path="CURRENT_GENDER" value="T" /> Unspecified </div>														
+											<div> <form:radiobutton id="CURRENT_GENDER4"  path="stdClimsDoc.currentGender" value="X" /> MTF </div>		
+											<div> <form:radiobutton id="CURRENT_GENDER5"  path="stdClimsDoc.currentGender" value="Y" /> FTM </div>		
+											<div> <form:radiobutton id="CURRENT_GENDER6"  path="stdClimsDoc.currentGender" value="T" /> Unspecified </div>														
 										</div>
 									</div>
 								</div>
@@ -154,7 +154,7 @@
 												ACCID
 											</div>
 											<div style="float:left">
-												<form:input path="ACCID" class="standardInputMedText mL5 readonly" title="ACCID" maxlength="30"/>
+												<form:input id="ACCID"  path="stdClimsDoc.accid" class="standardInputMedText mL5 readonly" title="ACCID" maxlength="30"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -162,8 +162,8 @@
 												Final Approval Date
 											</div>
 											<div style="float:left">
-											<fmt:formatDate value="${stdCLIMSDocVO.FINALAPPROVALDT}"  type="date" pattern="MM/dd/yyyy" var="theFormattedFINALAPPROVALDT" />
-                                   			<form:input path="FINALAPPROVALDT" value= "${theFormattedFINALAPPROVALDT}" class="standardInputMedText mL5 readonly" datevalidations="completeDate" title="Final Approval Date"/>
+											<fmt:formatDate value="${stdCLIMSDocVO.stdClimsDoc.finalapprovaldt}"  type="date" pattern="MM/dd/yyyy" var="theFormattedFINALAPPROVALDT" />
+                                   			<form:input id="FINALAPPROVALDT"  path="stdClimsDoc.finalapprovaldt" value= "${theFormattedFINALAPPROVALDT}" class="standardInputMedText mL5 readonly" datevalidations="completeDate" title="Final Approval Date"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -171,7 +171,7 @@
 												Initial PCR
 											</div>
 											<div style="float:left">
-												<form:input path="INITIALPCR" title="Initial PCR" class="standardInputMedText mL5 readonly" maxlength="1"/>
+												<form:input id="INITIALPCR"  path="stdClimsDoc.initialpcr" title="Initial PCR" class="standardInputMedText mL5 readonly" maxlength="1"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -179,7 +179,7 @@
 												Follow Up PCR
 											</div>
 											<div style="float:left">
-												<form:input path="FOLLOWUPPCR" title="Follow Up PCR" class="standardInputMedText mL5 readonly" maxlength="1"/>
+												<form:input id="FOLLOWUPPCR"  path="stdClimsDoc.followuppcr" title="Follow Up PCR" class="standardInputMedText mL5 readonly" maxlength="1"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -187,7 +187,7 @@
 												Records ID
 											</div>
 											<div style="float:left">
-												<form:input path="RECID" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Records ID"/>
+												<form:input id="RECID"  path="stdClimsDoc.recid" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Records ID"/>
 											</div>
 										</div>
 										
@@ -196,7 +196,7 @@
 												Patient ID
 											</div>
 											<div style="float:left">
-												<form:input path="PATIENTID" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Patient ID"/>
+												<form:input id="PATIENTID"  path="stdClimsDoc.patientid" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Patient ID"/>
 											</div>
 										</div>
 										
@@ -206,7 +206,7 @@
 												NBS Code
 											</div>
 											<div style="float:left">
-												<form:input path="NBSCODE" class="standardInputMedText mL5 nOnly  readonly" maxlength="10" title="NBS Code"/>
+												<form:input id="NBSCODE"  path="stdClimsDoc.nbscode" class="standardInputMedText mL5 nOnly  readonly" maxlength="10" title="NBS Code"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -214,7 +214,7 @@
 												NBS Lab ID
 											</div>
 											<div style="float:left">
-												<form:input path="NBSLABID" class="standardInputMedText mL5 readonly" maxlength="30" title="NBS Lab ID"/>
+												<form:input id="NBSLABID"  path="stdClimsDoc.nbslabid" class="standardInputMedText mL5 readonly" maxlength="30" title="NBS Lab ID"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -222,7 +222,7 @@
 												Possible Medical Record #
 											</div>
 											<div style="float:left">
-												<form:input path="PATCODE" class="standardInputMedText mL5 readonly" maxlength="30" title="Patient Code"/>
+												<form:input id="PATCODE"  path="stdClimsDoc.patcode" class="standardInputMedText mL5 readonly" maxlength="30" title="Patient Code"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -230,8 +230,8 @@
 												Collection Date
 											</div>
 											<div style="float:left">
-											<fmt:formatDate value="${stdCLIMSDocVO.COLLDATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedCOLLDATE" />
-                                   			<form:input path="COLLDATE" value= "${theFormattedCOLLDATE}" class="standardInputMedText mL5 readonly" datevalidations="completeDate" title="Collection Date"/>										
+											<fmt:formatDate value="${stdCLIMSDocVO.stdClimsDoc.colldate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedCOLLDATE" />
+                                   			<form:input id="COLLDATE"  path="stdClimsDoc.colldate" value= "${theFormattedCOLLDATE}" class="standardInputMedText mL5 readonly" datevalidations="completeDate" title="Collection Date"/>										
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -239,7 +239,7 @@
 												Gestation
 											</div>
 											<div style="float:left">
-												<form:input path="GESTATION" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Gestation"/>
+												<form:input id="GESTATION"  path="stdClimsDoc.gestation" class="standardInputMedText mL5 nOnly readonly" maxlength="10" title="Gestation"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -247,7 +247,7 @@
 												Birth Facility
 											</div>
 											<div style="float:left">
-												<form:input path="BIRTH_FACILITY" class="standardInputMedText mL5 readonly" maxlength="20" title="Birth Facility"/>
+												<form:input id="BIRTH_FACILITY"  path="stdClimsDoc.birthFacility" class="standardInputMedText mL5 readonly" maxlength="20" title="Birth Facility"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -255,7 +255,7 @@
 												Foster Care
 											</div>
 											<div style="float:left">
-												<form:input path="FOSTERCARE" class="standardInputMedText mL5 readonly" maxlength="1" title="Foster Care"/>
+												<form:input id="FOSTERCARE"  path="stdClimsDoc.fostercare" class="standardInputMedText mL5 readonly" maxlength="1" title="Foster Care"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -263,7 +263,7 @@
 												MAV
 											</div>
 											<div style="float:left">
-												<form:input path="MAV" class="standardInputMedText mL5 readonly" maxlength="1" title="MAV"/>
+												<form:input id="MAV"  path="stdClimsDoc.mav" class="standardInputMedText mL5 readonly" maxlength="1" title="MAV"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -271,7 +271,7 @@
 												MAV When
 											</div>
 											<div style="float:left">
-												<form:input path="MAVWHEN" class="standardInputMedText mL5 readonly" maxlength="30" title="MAV When"/>
+												<form:input id="MAVWHEN"  path="stdClimsDoc.mavwhen" class="standardInputMedText mL5 readonly" maxlength="30" title="MAV When"/>
 											</div>
 										</div>	                            
                                 </div>
@@ -281,7 +281,7 @@
 												IPAV
 											</div>
 											<div style="float:left">
-												<form:input path="IPAV" class="standardInputMedText mL5 readonly" maxlength="1" title="IPAV"/>
+												<form:input id="IPAV"  path="stdClimsDoc.ipav" class="standardInputMedText mL5 readonly" maxlength="1" title="IPAV"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -289,7 +289,7 @@
 												ITAV
 											</div>
 											<div style="float:left">
-												<form:input path="ITAV" class="standardInputMedText mL5 readonly" maxlength="1" title="ITAV"/>
+												<form:input id="ITAV"  path="stdClimsDoc.itav" class="standardInputMedText mL5 readonly" maxlength="1" title="ITAV"/>
 											</div>
 										</div>	                                  
                                 		 <div class="mT5 container">
@@ -297,7 +297,7 @@
 												Weight
 											</div>
 											<div style="float:left">
-												<form:input path="WEIGHT" class="standardInputMedText mL5 readonly" title="Weight" maxlength="10"/>
+												<form:input id="WEIGHT"  path="stdClimsDoc.weight" class="standardInputMedText mL5 readonly" title="Weight" maxlength="10"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -305,7 +305,7 @@
 												Submitter First Name
 											</div>
 											<div style="float:left">
-												<form:input path="SUBMFNAME" class="standardInputMedText mL5 readonly" title="Submitter First Name" maxlength="100" />
+												<form:input id="SUBMFNAME"  path="stdClimsDoc.submfname" class="standardInputMedText mL5 readonly" title="Submitter First Name" maxlength="100" />
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -313,7 +313,7 @@
 												Submitter Last Name
 											</div>
 											<div style="float:left">
-												<form:input path="SUBMLNAME" title="Submitter Last Name" class="standardInputMedText mL5 readonly" maxlength="100"/>
+												<form:input id="SUBMLNAME"  path="stdClimsDoc.submlname" title="Submitter Last Name" class="standardInputMedText mL5 readonly" maxlength="100"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -321,7 +321,7 @@
 												Submitter ID
 											</div>
 											<div style="float:left">
-												<form:input path="SUBMITTERID" title="Submitter ID" class="standardInputMedText mL5 readonly" maxlength="50"/>
+												<form:input id="SUBMITTERID"  path="stdClimsDoc.submitterid" title="Submitter ID" class="standardInputMedText mL5 readonly" maxlength="50"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -329,7 +329,7 @@
 												Multispot
 											</div>
 											<div style="float:left">
-												<form:input path="MULTISPOT" class="standardInputMedText mL5 readonly" maxlength="50" title="Multispot"/>
+												<form:input id="MULTISPOT"  path="stdClimsDoc.multispot" class="standardInputMedText mL5 readonly" maxlength="50" title="Multispot"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -337,7 +337,7 @@
 												HIV2QUAL
 											</div>
 											<div style="float:left">
-												<form:input path="HIV2QUAL" class="standardInputMedText mL5 readonly" maxlength="30" title="HIV2QUAL"/>
+												<form:input id="HIV2QUAL"  path="stdClimsDoc.hiv2qual" class="standardInputMedText mL5 readonly" maxlength="30" title="HIV2QUAL"/>
 											</div>
 										</div>
 										<div class="mT5 container">
@@ -345,7 +345,7 @@
 												Results
 											</div>
 											<div style="float:left">
-												<form:input path="TMA" class="standardInputMedText mL5 readonly" maxlength="30" title="TMA"/>
+												<form:input id="TMA"  path="tma" class="standardInputMedText mL5 readonly" maxlength="30" title="TMA"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -353,7 +353,7 @@
 												MEMO
 											</div>
 											<div style="float:left">
-												<form:input path="MEMO" id="MEMO" class="standardInputMedText mL5 dPicker mask readonly" maxlength="40" title="MEMO"/>
+												<form:input  path="stdClimsDoc.memo" id="MEMO" class="standardInputMedText mL5 dPicker mask readonly" maxlength="40" title="MEMO"/>
 											</div>
 										</div>	               
 										<div class="mT5 container">
@@ -361,7 +361,7 @@
 												Geenius
 											</div>
 											<div style="float:left">
-												<form:input path="GEENIUS" class="standardInputMedText mL5 nOnly readonly" maxlength="30" title="Geenius"/>
+												<form:input id="GEENIUS"  path="stdClimsDoc.geenius" class="standardInputMedText mL5 nOnly readonly" maxlength="30" title="Geenius"/>
 											</div>
 										</div>	               
 
@@ -380,7 +380,7 @@
                         <div class="pL10 pT10">
                                 <span class="">
                                         <span class="pL10">Name</span>
-                                        <span class="pL10"><form:input path="FACILITY_NAME" class="standardInputText facilityFields readonly" title="Facility Name" maxlength="80"/></span> 
+                                        <span class="pL10"><form:input id="FACILITY_NAME"  path="stdClimsDoc.facilityName" class="standardInputText facilityFields readonly" title="Facility Name" maxlength="80"/></span> 
                                 </span>    
                                
                         </div><br>
@@ -389,14 +389,14 @@
 			 	            <div class="personInfo pTRBL10" id="airsDocumentFacilityAddressDtls">
 			 	                <span class="personLabelDoc"> Address </span>
 		 		                <span> 	                	
-			 	                	<span class="pL10"> <form:input path="FACILITY_ADDRESS" class="standardInputText facilityFields newAddress widgetAddressFieldsReadonly" title="Address" maxLength="62"/>  </span>	 	        
+			 	                	<span class="pL10"> <form:input id="FACILITY_ADDRESS"  path="stdClimsDoc.facilityAddress" class="standardInputText facilityFields newAddress widgetAddressFieldsReadonly" title="Address" maxLength="62"/>  </span>	 	        
 			 	                	            	 	                    
 			 	                    <span class="pL20">City</span>
-			 	                    <span class="pL10"><form:input path="FACILITY_CITY" class="standardInputSmallText facilityFields widgetAddressFieldsReadonly newCity" title="City" maxLength="30"/></span>
+			 	                    <span class="pL10"><form:input id="FACILITY_CITY"  path="stdClimsDoc.facilityCity" class="standardInputSmallText facilityFields widgetAddressFieldsReadonly newCity" title="City" maxLength="30"/></span>
 			 	                    
 			 	                    <span class="pL20">State </span>
 			 	                    <span  class="pL10">
-										<form:select path="FACILITY_STATE"  class="standardInputSmallText1 facilityFields widgetAddressFieldsReadonly newState" title="State" maxLength="2">
+										<form:select id="FACILITY_STATE"  path="stdClimsDoc.facilityState"  class="standardInputSmallText1 facilityFields widgetAddressFieldsReadonly newState" title="State" maxLength="2">
 													<form:option value=""></form:option>
 													<form:options items="${sessionScope.stateMap}"/>
 										</form:select>
@@ -404,12 +404,12 @@
 			 	                    
 			 	                    <span class="pL20">Zip </span>
 			 	                    <span class="pL10"> 
-			 	                        <form:input path="FACILITY_ZIP" class="standardInputSmallText1 facilityFields widgetAddressFieldsReadonly newZip" title="Zipcode" maxLength="5"/>
+			 	                        <form:input id="FACILITY_ZIP"  path="stdClimsDoc.facilityZip" class="standardInputSmallText1 facilityFields widgetAddressFieldsReadonly newZip" title="Zipcode" maxLength="5"/>
 			 	                    </span> 
 			 	                    
 			 	                    <span class="pL20">County </span>
 			 	                    <span class="pL10"> 
-			 	                    	<form:select path="FACILITY_COUNTY"  cssClass="oAdrDlg newCounty roundedBrdr facilityFields widgetAddressFieldsReadonly newCounty" titl="County" > 
+			 	                    	<form:select id="FACILITY_COUNTY"  path="stdClimsDoc.facilityCounty"  cssClass="oAdrDlg newCounty roundedBrdr facilityFields widgetAddressFieldsReadonly newCounty" titl="County" > 
 											<form:option value=""></form:option>
 											<form:options items="${sessionScope.countyMap}"/>
 										 </form:select>
@@ -419,8 +419,8 @@
 			 	                </span>
 			 	            </div>
 			 	            <div class="personInfo pT10 pTRBL10">
-			 	            	<span  class="nonRawEditFields" style="padding-left:59px"><form:input path="FACADDR1" class="standardInputText readonly" title="Address" maxLength="100"/> - 
-			 	            				<form:input path="FACADDR2" class="standardInputText readonly" title="Address" maxLength="100"/>  </span>
+			 	            	<span  class="nonRawEditFields" style="padding-left:59px"><form:input id="FACADDR1"  path="facaddr1" class="standardInputText readonly" title="Address" maxLength="100"/> - 
+			 	            				<form:input id="FACADDR2"  path="facaddr2" class="standardInputText readonly" title="Address" maxLength="100"/>  </span>
 			 	              	
 			 	                <span style="float: right;" class="mr5">
 			 	                	<a href="javascript:openAddressWidget('airsDocumentFacilityAddressDtls');" class="inlineEditButton displayNone editAddress">Edit</a>
