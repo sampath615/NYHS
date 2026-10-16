@@ -5,5 +5,5 @@ import java.util.Properties;
 public class EnvironmentProperties {
 	
 	public static Properties envProperties = new Properties();
-	
+
 }
