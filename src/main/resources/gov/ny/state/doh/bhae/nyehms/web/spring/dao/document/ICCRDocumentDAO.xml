@@ -64,49 +64,6 @@
 		]]>
 	</insert>
 	
-    <select id="getICCRDocument" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO">
-		 		<![CDATA[
-         select
-         PDOC.STATENO stateNo,
-             std.DOCUMENT_ID, 
-        std.LNAME, 
-        std.FNAME, 
-        std.MNAME, 
-        to_char(std.DOB,'MM/DD/YYYY') DOB, 
-        std.PERSON_ADDRESS, 
-        raw1.PERSON_ADDRESS rawPersonAddress,
-        std.PERSON_CITY, 
-        std.PERSON_STATE, 
-        std.PERSON_ZIP, 
-        std.PERSON_COUNTY,        
-        std.PERSON_PHONE,
-        std.PROV_NAME,
-        std.JURISDICTION_PROVIDING_INFO,      
-        std.PROV_ADDRESS, 
-        raw1.PROV_ADDRESS rawProvAddress,        
-        std.PROV_CITY, 
-        std.PROV_STATE, 
-        std.PROV_ZIP, 
-        std.PROV_COUNTY, 
-        std.PROV_NAME, 
-        std.PROV_PHONE,
-        c1.ANS_DESC RESULTS_RECEIVED,
-        std.COMMENTS,
-        D.PARENT_DOCUMENT_ID    
-                  FROM RAW_ICCR_DOC raw1
-          INNER JOIN STD_ICCR_DOC std
-             ON (std.document_id = raw1.document_id and  raw1.DOCUMENT_ID=#{docId})
-             LEFT OUTER JOIN CODED_YES_NO_UNK c1
-                    ON (std.RESULTS_RECEIVED = c1.ANS_CODE)                   
-             INNER JOIN document_locator D
-             ON raw1.document_id=d.document_id
-          LEFT OUTER JOIN person_doc_association PDOC
-             ON (raw1.document_id = PDOC.document_id
-                 AND PDOC.dissassociation_date IS NULL)								 			
-		 			
-		 			]]>	 				
-    </select>
-
 	<select id="getICCRDocTestData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO">
 	 	<![CDATA[
 		    SELECT DOCUMENT_ID, to_char(DATE_OF_TEST, 'MM/DD/YYYY') DATE_OF_TEST, CT.ACRF_TEST_DESC TEST_TYPE, CR.ACRF_RESULT_DESC TEST_RESULTS, TEST_RESULT_COPIES, TEST_RESULT_LOGS 

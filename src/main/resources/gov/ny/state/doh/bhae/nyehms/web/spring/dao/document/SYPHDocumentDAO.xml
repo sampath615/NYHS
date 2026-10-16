@@ -5,60 +5,6 @@
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SYPHDocumentDAO">	
  
 
-    <select id="getSYPHDoc" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SYPHDocVO">
-		<![CDATA[
-				select
-					std.DOCUMENT_ID,
-					pda.STATENO,
-					std.EHARS_IMPORT_DATE,
-					std.FNAME,
-					std.MNAME,
-					std.LNAME,
-					TO_CHAR(std.DOB,'MM/DD/YYYY')  DOB,
-					TO_CHAR(std.DOD,'MM/DD/YYYY')  DOD,
-					raw1.STREET,
-					std.PERSON_ADDRESS,
-					std.PERSON_CITY,
-					std.PERSON_STATE,
-					std.PERSON_ZIP,
-					std.PERSON_COUNTY,
-					std.PERSON_PHONE,
-					std.RACE_WHITE,
-					std.RACE_BLACK,
-					std.RACE_ASIAN,
-					std.RACE_INDIAN,
-					std.RACE_PACIFIC,
-					std.RACE_OTHER,
-					std.RACE_UNKNOWN,
-					std.ETHNICITY,
-					std.BIRTH_SEX,
-					std.CASEKEY,
-					std.DISEASE_CODE,
-					TO_CHAR(std.SYPHILIS_DIAGNOSIS_DATE,'MM/DD/YYYY')  SYPHILIS_DIAGNOSIS_DATE,					
-					TO_CHAR(std.RECEIVED_DATE,'MM/DD/YYYY')  RECEIVED_DATE,	
-					raw1.PROVIDERADDRESS,				
-					std.PROV_FNAME,
-					std.PROV_LNAME,
-					std.PROV_ADDRESS,
-					std.PROV_CITY,
-					std.PROV_STATE,
-					std.PROV_ZIP,
-					std.PROV_PHONE,
-					std.PROV_COUNTY,
-					'STD' as DOCUMENT_SOURCE_TABLE,
-				    D.PARENT_DOCUMENT_ID 
-		  FROM raw_syphilis_doc raw1
-          INNER JOIN std_syphilis_doc std
-             ON (std.document_id = raw1.document_id and raw1.DOCUMENT_ID=#{documentId})
-             INNER JOIN document_locator D
-             ON raw1.document_id=d.document_id
-          LEFT OUTER JOIN person_doc_association PDA
-             ON (raw1.document_id = PDA.document_id
-                 AND PDA.dissassociation_date IS NULL)  
- 			
-		]]>			
-    </select>
-    
 	<insert id="writeRawSYPHDocDataToStdTable" parameterType="java.util.Map">
 		<![CDATA[
 			INSERT INTO STD_SYPHILIS_DOC (DOCUMENT_ID,

@@ -18,7 +18,8 @@ import org.springframework.validation.BindingResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ICCRDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -30,6 +31,7 @@ public class ICCRDocumentService {
 	@Autowired private DocumentTransactionHelper documentTransactionHelper;
 	
 	@Autowired private ICCRDocumentDAO iccrDocumentDAO;
+	@Autowired private IccrDocRepository iccrDocRepository;
 	
 	private static Logger log = LoggerFactory.getLogger(ICCRDocumentService.class);
 
@@ -115,13 +117,13 @@ public class ICCRDocumentService {
 		
 	}
 
-	public ICCRDocVO getICCRDocument(int docId) {
+	public IccrDocData getICCRDocument(int docId) {
 		
-		ICCRDocVO iccrDocVO = iccrDocumentDAO.getICCRDocument(docId);
+		IccrDocData iccrDocVO = iccrDocRepository.findDocument(docId);
 		
 		List<ICCRTestVO> iccrDocTestList = iccrDocumentDAO.getICCRDocTestData(docId);
 		
-		iccrDocVO.setIccrTestList(iccrDocTestList);
+		iccrDocVO = iccrDocVO.withIccrTestList(iccrDocTestList);
 		
 		return iccrDocVO;
 	}

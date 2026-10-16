@@ -16,16 +16,6 @@ import org.springframework.dao.DataAccessException;
 public interface AIRSDocumentDAO {
 
     /**
-     * This method returns AIRS doc data fields for a given document id in the
-     * form of AIRSVo object.
-     *
-     * @param docId
-     * @return
-     * @throws DataAccessException
-     */
-    public AIRSDocVO getAIRSDoc(int docId) throws DataAccessException;
-
-    /**
      * This method will insert data into AIRS tables
      *
      * @param stdAIRSDocVO

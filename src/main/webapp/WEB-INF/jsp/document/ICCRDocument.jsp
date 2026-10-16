@@ -19,18 +19,18 @@
         
         
        <div class="pB30 pT20">
-			<c:if test="${stdICCRDocVO.PARENT_DOCUMENT_ID != null &&  stdICCRDocVO.PARENT_DOCUMENT_ID != 0}">
+			<c:if test="${stdICCRDocVO.parentDocumentId != null &&  stdICCRDocVO.parentDocumentId != 0}">
 
 				<div  class="floatLeft width70Perc" id="parentDocumentIdSection">
 		            <span class="parentIdSectionLabel bold">Parent DocumentId: </span>
-					<span class="parentIdSectionValue"><a href="#" onclick="loadDocumentDlg(${stdICCRDocVO.PARENT_DOCUMENT_ID}, '${param.documentType}')">${stdICCRDocVO.PARENT_DOCUMENT_ID}</a></span>
+					<span class="parentIdSectionValue"><a href="#" onclick="loadDocumentDlg(${stdICCRDocVO.parentDocumentId}, '${param.documentType}')">${stdICCRDocVO.parentDocumentId}</a></span>
 					
 		         </div>	
 	         </c:if>
 	         
 			<div  class="floatLeft">
 	            <span class="mL10 bold">Document ID: </span>
-				<span class=""><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+				<span class=""><form:input id="DOCUMENT_ID"  path="stdIccrDoc.documentId" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
 	         </div>	
 
 		</div>
@@ -40,15 +40,15 @@
             <div style="float:left; width: 40%">
 	            <div>
 	                <span class="ml10"> <spring:message code="label.stateNo" />: </span>
-	                <span class="ml10" style=""><form:input path="stateNo" class="standardInputSmallText readonly"/> </span>
+	                <span class="ml10" style=""><form:input id="stateNo"  path="stateno" class="standardInputSmallText readonly"/> </span>
 	            </div>    
             </div>
             <div style="float:left; width: 30%">
  	            <div>
  	                <span class=" ml10">	eHARS Import Date: </span>
  			 		<span class="ml10">
- 			 			<fmt:formatDate value="${stdICCRDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
-						<form:input path="EHARS_IMPORT_DATE" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/>
+ 			 			<fmt:formatDate value="${stdICCRDocVO.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+						<form:input id="EHARS_IMPORT_DATE"  path="eharsImportDate" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/>
  			 		</span>
  	           </div>                  
             </div>
@@ -66,19 +66,19 @@
                 
    			<div class="fieldHolder25">
                 <span class="pL10">First Name </span> 
-                <span class="pL5"><form:input path="FNAME" id="iccrFirstName" class="standardInputMedText" title="First Name" maxLength="30"/></span>
+                <span class="pL5"><form:input  path="stdIccrDoc.fname" id="iccrFirstName" class="standardInputMedText" title="First Name" maxLength="30"/></span>
             </div>
             <div class="fieldHolder25">
                	<span class="pL10">Last Name </span> 
-               	<span  class="pL5"><form:input path="LNAME" id="iccrLastName" class="standardInputMedText" title="Last Name" maxLength="30"/></span>
+               	<span  class="pL5"><form:input  path="stdIccrDoc.lname" id="iccrLastName" class="standardInputMedText" title="Last Name" maxLength="30"/></span>
             </div>            
             <div class="fieldHolder25">
                	<span class="pL10">Middle Name </span> 
-               	<span  class="pL5"><form:input path="MNAME" id="iccrMiddleName" class="standardInputMedText"  title="Middle Name" maxLength="30"/></span>
+               	<span  class="pL5"><form:input  path="stdIccrDoc.mname" id="iccrMiddleName" class="standardInputMedText"  title="Middle Name" maxLength="30"/></span>
             </div>
 			<div class="fieldHolder25">
 	       		<span class="pL10">Date of Birth </span>
-	       		<span  class="pL10"><form:input path="DOB" id="iccrDOB" class="dPicker mask standardInputSmallText" title="Date of Birth" maxLength="10" datevalidations="completeDate"/></span>
+	       		<span  class="pL10"><form:input  path="dob" id="iccrDOB" class="dPicker mask standardInputSmallText" title="Date of Birth" maxLength="10" datevalidations="completeDate"/></span>
 	       </div>            
            <br><br>        
                   
@@ -88,23 +88,23 @@
             <div class="personInfo pTRBL10">
                 <span class="personLabelDoc bold">Current Address </span>
                 <span> 
-                    <span class="pL10"><form:input path="PERSON_ADDRESS"  class="standardInputMedText  newAddress widgetAddressFieldsReadonly" title="Person Address" maxlength="50"/></span>
+                    <span class="pL10"><form:input id="PERSON_ADDRESS"  path="stdIccrDoc.personAddress"  class="standardInputMedText  newAddress widgetAddressFieldsReadonly" title="Person Address" maxlength="50"/></span>
                     
                     
                     <span class="pL10 bold">City</span>
-                    <span class="pL10"><form:input path="PERSON_CITY"  class="oAdrDlg standardInputSmallText newCity widgetAddressFieldsReadonly" title="City" maxlength="65"/></span>
+                    <span class="pL10"><form:input id="PERSON_CITY"  path="stdIccrDoc.personCity"  class="oAdrDlg standardInputSmallText newCity widgetAddressFieldsReadonly" title="City" maxlength="65"/></span>
                     
                     <span class="pL10 bold">State </span>
-                    <span  class="pL10"><form:input path="PERSON_STATE"  class="oAdrDlg standardInputSmallText newState widgetAddressFieldsReadonly" style="width:50px" title="State" maxlength="2"/></span>
+                    <span  class="pL10"><form:input id="PERSON_STATE"  path="stdIccrDoc.personState"  class="oAdrDlg standardInputSmallText newState widgetAddressFieldsReadonly" style="width:50px" title="State" maxlength="2"/></span>
                     
                     <span class="pL10 bold">Zip </span>
                     <span class="pL10"> 
-                        <form:input path="PERSON_ZIP"  class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" title="ZipCode" maxlength="5"/>
+                        <form:input id="PERSON_ZIP"  path="stdIccrDoc.personZip"  class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" title="ZipCode" maxlength="5"/>
                     </span>
                     
 					<span class="pL10 bold">County </span>
                     	<span class="pL10">  
-                    		<form:select path="PERSON_COUNTY"  cssClass="oAdrDlg roundedBrdr newCounty widgetAddressFieldsReadonly" title="County"> 
+                    		<form:select id="PERSON_COUNTY"  path="stdIccrDoc.personCounty"  cssClass="oAdrDlg roundedBrdr newCounty widgetAddressFieldsReadonly" title="County"> 
 									<form:option value=""></form:option>
 									<form:options items="${sessionScope.countyMap}"/>
 							</form:select> 
@@ -118,7 +118,7 @@
             <div class="personInfo pT10 pTRBL10">
             		<div>
 	            		<div class="floatLeft">   
-	                    	<span class="" style="padding-left:103px"><form:input path="rawPersonAddress"  class="standardInputMedText readonly" /></span>
+	                    	<span class="" style="padding-left:103px"><form:input id="rawPersonAddress"  path="rawpersonaddress"  class="standardInputMedText readonly" /></span>
 	                    	
 	                    	<div class="">
                     			<span style="padding-left:140px"> Street Address</span><span class="dispAddressStdRaw"> (Raw)</span>
@@ -127,7 +127,7 @@
 
 						<div class="fieldHolder25">
 				       		<span class="pL10">Phone</span>
-				       		<span  class="pL10"><form:input path="PERSON_PHONE" id="iccrPersonPhone" class="standardInputSmallText" title="Person Phone" maxLength="14"/></span>
+				       		<span  class="pL10"><form:input  path="stdIccrDoc.personPhone" id="iccrPersonPhone" class="standardInputSmallText" title="Person Phone" maxLength="14"/></span>
 				       </div>   
 					</div>
 		            
@@ -144,15 +144,15 @@
 	               
 	  			<div class="fieldHolder25">
 	               <span class="pL10">Provider Name </span> 
-	               <span class="pL5"><form:input path="PROV_NAME" id="iccrProvName" class="standardInputMedText" title="Provider Name" maxLength="100"/></span>
+	               <span class="pL5"><form:input  path="stdIccrDoc.provName" id="iccrProvName" class="standardInputMedText" title="Provider Name" maxLength="100"/></span>
 	           </div>
 	           <div class="fieldHolder25">
 	              	<span class="pL10">Provider Phone </span> 
-	              	<span  class="pL5"><form:input path="PROV_PHONE" id="iccrProvPhone" class="standardInputMedText" title="Provider Phone" maxLength="14"/></span>
+	              	<span  class="pL5"><form:input  path="stdIccrDoc.provPhone" id="iccrProvPhone" class="standardInputMedText" title="Provider Phone" maxLength="14"/></span>
 	           </div>            
 	           <div class="fieldHolder49">
 	              	<span class="pL10">Jurisdiction providing information</span> 
-	              	<span  class="pL5"><form:input path="JURISDICTION_PROVIDING_INFO" id="iccrJurisdiction" class="standardInputMedText"  title="Jurisdiction providing information" maxLength="30"/></span>
+	              	<span  class="pL5"><form:input  path="stdIccrDoc.jurisdictionProvidingInfo" id="iccrJurisdiction" class="standardInputMedText"  title="Jurisdiction providing information" maxLength="30"/></span>
 	           </div>
 	          <br><br>        
 	                 
@@ -161,23 +161,23 @@
              <div class="personInfo pTRBL10">
                 <span class="personLabelDoc bold">Address </span>
                 <span> 
-                    <span class="pL10"><form:input path="PROV_ADDRESS"  class="standardInputMedText  newAddress widgetAddressFieldsReadonly" title="Provider Address" maxlength="50"/></span>
+                    <span class="pL10"><form:input id="PROV_ADDRESS"  path="stdIccrDoc.provAddress"  class="standardInputMedText  newAddress widgetAddressFieldsReadonly" title="Provider Address" maxlength="50"/></span>
                     
                     
                     <span class="pL10 bold">City</span>
-                    <span class="pL10"><form:input path="PROV_CITY"  class="oAdrDlg standardInputSmallText newCity widgetAddressFieldsReadonly" title="City" maxlength="65"/></span>
+                    <span class="pL10"><form:input id="PROV_CITY"  path="stdIccrDoc.provCity"  class="oAdrDlg standardInputSmallText newCity widgetAddressFieldsReadonly" title="City" maxlength="65"/></span>
                     
                     <span class="pL10 bold">State </span>
-                    <span  class="pL10"><form:input path="PROV_STATE"  class="oAdrDlg standardInputSmallText newState widgetAddressFieldsReadonly" style="width:50px" title="State" maxlength="2"/></span>
+                    <span  class="pL10"><form:input id="PROV_STATE"  path="stdIccrDoc.provState"  class="oAdrDlg standardInputSmallText newState widgetAddressFieldsReadonly" style="width:50px" title="State" maxlength="2"/></span>
                     
                     <span class="pL10 bold">Zip </span>
                     <span class="pL10"> 
-                        <form:input path="PROV_ZIP"  class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" title="ZipCode" maxlength="5"/>
+                        <form:input id="PROV_ZIP"  path="stdIccrDoc.provZip"  class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" title="ZipCode" maxlength="5"/>
                     </span>
                     
 					<span class="pL10 bold">County </span>
                     	<span class="pL10">  
-                    		<form:select path="PROV_COUNTY"  cssClass="oAdrDlg roundedBrdr newCounty widgetAddressFieldsReadonly" title="County"> 
+                    		<form:select id="PROV_COUNTY"  path="stdIccrDoc.provCounty"  cssClass="oAdrDlg roundedBrdr newCounty widgetAddressFieldsReadonly" title="County"> 
 									<form:option value=""></form:option>
 									<form:options items="${sessionScope.countyMap}"/>
 							</form:select> 
@@ -191,7 +191,7 @@
             <div class="personInfo pT10 pTRBL10">
             		<div>
 	            		<div class="floatLeft">   
-	                    	<span class="" style="padding-left:62px"><form:input path="rawProvAddress"  class="standardInputMedText readonly" /></span>
+	                    	<span class="" style="padding-left:62px"><form:input id="rawProvAddress"  path="rawprovaddress"  class="standardInputMedText readonly" /></span>
 	                    	
 	                    	<div class="">
                     			<span style="padding-left:105px"> Street Address</span><span class="dispAddressStdRaw"> (Raw)</span>
@@ -244,12 +244,12 @@
                               <br/>
 		                             <div class="fieldHolder25">
 		                                <span class="pL10">Patient received results? </span> 
-										<span  class="pL5"><form:input path="RESULTS_RECEIVED" class="standardInputSmallText2"  title="Test Result" maxLength="20"/></span>                                       	
+										<span  class="pL5"><form:input id="RESULTS_RECEIVED"  path="resultsReceived" class="standardInputSmallText2"  title="Test Result" maxLength="20"/></span>                                       	
 		                             </div>
   									<div class="fieldHolder75">
 										<div class="fieldHolder10 mT10"><span class="pL10">Comments </span> </div>
 										<div class="fieldHolder49 mT10">
-										<span class="pL5">  <form:textarea title="Comments" maxlength="4000" cols="200" rows="3" path="COMMENTS" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>											                                   	
+										<span class="pL5">  <form:textarea id="COMMENTS" title="Comments" maxlength="4000" cols="200" rows="3"  path="stdIccrDoc.comments" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>											                                   	
 		                                </div>
 	                                </div>                                       
                            </div>	
@@ -264,7 +264,7 @@
 						<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 						<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 				</c:when>
- 				<c:when test="${stdICCRDocVO.stateNo != null && stdICCRDocVO.stateNo != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+ 				<c:when test="${stdICCRDocVO.stateno != null && stdICCRDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 						<c:if test="${userPermissions['90'] != null}" >
 							<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 						</c:if>

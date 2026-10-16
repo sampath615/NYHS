@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
 
 import java.util.List;
 import java.util.Map;
@@ -30,8 +29,6 @@ public interface STDConfDocumentDAO {
 	public int writeRawSTDConfDocDataToStdTable(Map<Object, Object> docVO);
 
 	public List<Map<String, String>> getDrugList(String refColumnName);
-
-	public STDConfDocVO getSTDConfDoc(int docId);
 
 	public List<Map<String, String>> getSTDConfRefData();
 }

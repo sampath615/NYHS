@@ -61,6 +61,43 @@ Manual checks for `77b99f6`: app starts cleanly on WebLogic (DONE — deployment
 
 ---
 
+## JPA Migration Log (branch `jpa-migration`)
+
+The MyBatis → Spring Data JPA migration happens on the branch `jpa-migration`, created from `spring-boot-migration` (Spring Boot 4.0.x: Spring 7, Hibernate 7.2, Spring Data JPA 4, Tomcat 11, Java 21, Jakarta). The per-module details (what each query became, what was verified, what is assumed) are in [`docs/JPA_MIGRATION.md`](docs/JPA_MIGRATION.md), section "Progress"; this log is the summary.
+
+**Status / resume here (21 document screens and the NYC PRF import done):**
+
+- **Done:** the NYC PRF module (document screen, partner list, and the import writing the standardized form and partners — no MyBatis left, `NycPRFDocumentDAO` deleted), the Old Cases screen, and the document screens Medicaid Old, CLIMS, NDI, NDI cause, Black Box (+ code lists), CASA, death, DOCCS, insurance death, NYC death, SSDM, NYC eHARS, STD old, AIRS, ICCR, syphilis and confirmed STD. Also the init failure reasons lookup (`initialize` module, by the project owner).
+- **Deployment:** the project owner deployed and tested the NYC PRF screens up to `ce0fe37`. **Not yet confirmed deployed:** the NYC PRF import (`5e68364`, `b6cf9a5`, `b57aba2`) and all document screens from `e242df6` on — check the startup log (Spring Data validates every `@Query` at startup) and open one document of each type.
+- **Uncommitted at the time of writing:** the batch-3 screens AIRS, ICCR, syphilis and confirmed STD (see the table below).
+- **Next candidates:** the remaining document views need more than a direct translation — `RASDocumentDAO.getRASDoc` (its VO is shared with `getSierraResponseData`), `AHIDocumentDAO.getAHIDoc` (VO used by assignment code, correlated subquery, `HH:MI:SS AM` format), `MedicaidDocumentDAO.getMedicaidDoc`, `TBDocumentDAO.getTBDoc`, `ADAPDocumentDAO.getADAPDoc` (VOs used outside their screen), `TrackingDocumentDAO` (PL/SQL function, `rownum`), `PartnerServicesDocumentDAO`; then the import inserts of the migrated screens (still MyBatis, e.g. `writeStdDocData` of CASA, Death, SSDM...), following the NYC PRF import.
+
+**Conventions (agreed with the project owner):**
+
+- JPQL / Spring Data only — **no native SQL**. Repositories extend `JpaRepository` (project owner's choice, `7f0fc51`); entities and repositories may live in `web.spring.entity`/`web.spring.repository` or in per-module packages (`web.spring.initialize.*`) — `JpaConfig` scans all of `web.spring` (`b3a3ee2`).
+- **No VOs, no hand-written getters/setters/constructors:** entities use Lombok `@Getter` (plus `@Builder`, protected no-arg and private all-args constructors when the application writes them), screens get a `record` (entity + extra values) built with JPQL `select new`. Values a service adds later are record components with a `withX(...)` method.
+- **Behaviour is kept, then verified:** every query is compared side by side with its original MyBatis statement (from Git, with the old VO) on the same H2 database (Oracle mode) — every property, not just a sample. Column types follow the old VO (`java.sql.Date` = date only, `java.util.Date` = `Timestamp`); primitive VO properties (`int`/`long`/`boolean`, which showed `0`/`false` for NULL) are read with `coalesce(..., 0/false)`; `TO_CHAR(x, 'MM/DD/YYYY')` becomes `format(x as 'MM/dd/yyyy')`, `NVL` `coalesce`, `||` `concat`; when a query selects two columns of the same name the first wins (as with JDBC/MyBatis). Database-side conversions of writes (upper/trim, `FN_TO_DATE`, implicit NLS conversions) are done in Java (`OracleConversions`) and compared on thousands of random records.
+- **JSPs:** form tags read the new paths (`<attr>.<entity>.<field>`) and keep the **HTML id** Spring generated before (explicit `id`, also for checkboxes/radio buttons and inside loops); **HTML `name` attributes change** — check the external JS (`${staticPath}`) for name-based selectors when deploying.
+- Keys are assumed (`DOCUMENT_ID`, ...) unless the project owner confirmed them (`STD_NYCPRF_PARTNER.PARTNRID` is unique and NOT NULL; `RAW_NYCPRF_PARTNER` is keyed by `PARTNERID`).
+- Tests: `src/test/.../repository/document/*Test` (H2 in Oracle mode, `db/*.sql`), `service/document/*MappingTest`; Spring's `@SpringJUnitConfig` with `@Import(JpaConfig.class)`. The side-by-side harnesses are throw-away tools outside the repository.
+
+| Commit(s) | Change | Notes |
+|---|---|---|
+| `213bb76`, `acaaaf2`, `add9319`, `55f85f5`, `f651721`, `f317202`, `08b6829` | NYC PRF partner list: MyBatis → Spring Data JPA; native SQL → JPQL; `NycPRFPartnerVO` → record `NycPrfPartnerData` (entity + received address); partner JSP fixed. | First module; `JpaConfig`, `JpaTransactionManager` (MyBatis, JDBC and JPA share one transaction). |
+| `204112a`, `86bf528`, `ce0fe37` | NYC PRF document screen: `NycprfDocRepository`; record wraps `StdNycprfDoc`; DOB/FIELD_PROC_DATE formatted in the JSP. | Deployed and tested by the project owner. |
+| `c1010d3`, `f6a30f5`, `4f371ef`, `7d78ca3`, `4871d5d`, `db85ec6`, `a34bba4`, `72ff46e`, `81f2749`, `a905ff6` | Project owner: scheduler/XML config to Java config, Logback, aspect and context-provider removal, Boot 4.0.8, root URL fix, init failure reasons via JPA, merge with `spring-boot-migration`. | — |
+| `7f0fc51` | Project owner: repositories extend `JpaRepository`. | — |
+| `5e68364`, `b6cf9a5`, `b57aba2` | NYC PRF import: the standardized form saved as an entity (`NycPrfStdDocMapping`, `saveAndFlush`), the partners read as entities and saved (`NycPrfStdPartnerMapping`, `saveAllAndFlush`); `OracleConversions`; partner keys `PARTNRID`/`PARTNERID`; cleanup of `DocumentTransactionHelper.writeNYCPRFDocAndPartnersData`. | Compared with the original inserts on 5,000 random forms and 774 random partners. Assumptions: `FN_TO_DATE` returns null for invalid dates; text dates are MM/DD/YYYY or YYYY-MM-DD; `CREATE_DATE` now keeps its time and comes from the application server's clock. |
+| `b3a3ee2` | `JpaConfig` scans all of `web.spring` (fixed the startup error `No qualifying bean of type InitFailureReasonRepository`). | — |
+| `0156bd2` | Removed the unused document-type branch of `DocumentController.getClericalDocumentAsPerson` (only CANCER and the dataflux page are used, per the project owner) with its 19 service/DAO methods and SQL; `NycPRFDocumentDAO` became empty and was deleted. | — |
+| `e242df6` | Old Cases screen. | — |
+| `73f58f7` | 13 document screens: Medicaid Old, CLIMS, NDI, NDI cause, Black Box (+ code lists), CASA, death, DOCCS, insurance death, NYC death, SSDM, NYC eHARS, STD old. | Side by side: all values identical (only `""` vs `null` for VO fields initialised to `""` — the JSPs test them with `!= null && != ''`). |
+| *(uncommitted)* | Batch 3: AIRS, ICCR, syphilis, confirmed STD screens (`AirsDocRepository`, `IccrDocRepository`, `SyphDocRepository`, `StdConfDocRepository`); `TO_CHAR` → `format`, the constant `'STD' as DOCUMENT_SOURCE_TABLE`, ICCR's `CODED_YES_NO_UNK` description (`CodedYesNoUnk`). `AIRSDocVO` stays (still returned by `getRawAIRSDocument`); `ICCRDocVO`, `SYPHDocVO`, `STDConfDocVO` deleted. | Side by side: 468 values identical; 43 tests; all JSP properties resolve; full compile unchanged. ICCR's `EHARS_IMPORT_DATE` was never selected, so it stays empty on the screen (`eharsImportDate`, always null). |
+
+**Lessons (keep applying them):** scripted edits must build their replacements in code — passing `$1` through a replacement string once wrote a literal `$1` into three files (caught by the compile); a file-name pattern once matched a second VO (`*DoccsDocVO` matched `DinDoccsDocVO`, stopped by the "other references" check); the JDBC/MyBatis "first column wins" rule for duplicated column names must be kept (caught by the side-by-side check on Black Box `STATENO`); Hibernate type-checks HQL inserts and adds `escape ''` to `LIKE` on H2 (which is NULL in Oracle mode) — not on Oracle; `Map.of(...).get(null)` throws (caught by the mapping tests).
+
+---
+
 ## 0. Facts and Numbers
 
 | Metric | Count |
@@ -352,7 +389,7 @@ Given the ~40x document-feed duplication (§4), the `documentintake` module is t
 
 ## 7. MyBatis → JPA Migration Candidates
 
-**No conversion has been performed.** Classification below is based on scanning the 76 mapper XML files for dynamic SQL (`<if>/<choose>/<foreach>`), `statementType="CALLABLE"`, and Oracle-specific syntax (`CONNECT BY`, `ROWNUM`, `LISTAGG`).
+**The migration has started** — see the "JPA Migration Log" near the top of this file and `docs/JPA_MIGRATION.md`; the classification below is the original analysis. It is based on scanning the 76 mapper XML files for dynamic SQL (`<if>/<choose>/<foreach>`), `statementType="CALLABLE"`, and Oracle-specific syntax (`CONNECT BY`, `ROWNUM`, `LISTAGG`).
 
 ### Easy JPA Candidates (single-table/two-table CRUD, no dynamic SQL, no stored procs)
 

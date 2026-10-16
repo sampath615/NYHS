@@ -33,7 +33,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.DinDoccsDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EPRFOOCDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
@@ -43,8 +42,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.QualCareDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SYPHDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAddressDocVO;
@@ -63,12 +60,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DoccsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.InsDeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SsdmDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AirsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.ClimsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.MedicaidOldDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
@@ -231,7 +232,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getSYPHDoc.html")
 	public String getSYPHDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		SYPHDocVO stdSYPHDocVO = syphDocumentService.getSYPHDoc(docId, dummyBindingResult, userObject,
+		SyphDocData stdSYPHDocVO = syphDocumentService.getSYPHDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -872,7 +873,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getSTDConfDoc.html")
 	public String getSTDConfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		STDConfDocVO stdConfDocVO = stdConfDocumentService.getSTDConfDoc(docId, dummyBindingResult, userObject,
+		StdConfDocData stdConfDocVO = stdConfDocumentService.getSTDConfDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		map.put("stdConfDocVO", stdConfDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
@@ -1311,7 +1312,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getAIRSForm.html")
 	public String getAIRSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		AIRSDocVO aIRSDocVO = aIRSDocumentService.getAIRSDocument(docId);
+		AirsDocData aIRSDocVO = aIRSDocumentService.getAIRSDocument(docId);
 		map.put("stdAIRSDocVO", aIRSDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -1368,7 +1369,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getICCRForm.html")
 	public String getICCRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		ICCRDocVO iccrDocVo = iccrDocumentService.getICCRDocument(docId);		
+		IccrDocData iccrDocVo = iccrDocumentService.getICCRDocument(docId);		
 		map.put("stdICCRDocVO", iccrDocVo);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);

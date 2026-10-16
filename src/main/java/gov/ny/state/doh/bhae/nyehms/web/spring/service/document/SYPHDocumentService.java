@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.SYPHDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.SYPHDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.SyphDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -24,20 +25,22 @@ public class SYPHDocumentService {
 	@Autowired
 	SYPHDocumentDAO	syphDocumentDAO;
 	@Autowired
+	SyphDocRepository syphDocRepository;
+	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
 
 	
 	private static Logger log = LoggerFactory.getLogger(SYPHDocumentService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	public SYPHDocVO getSYPHDoc(int docID, BindingResult result,
+	public SyphDocData getSYPHDoc(int docID, BindingResult result,
 			UserObject userObject, String sessionID) {
 		
 		boolean rollbackFlag = false;
-		SYPHDocVO stdSYPHDocVO = null;
+		SyphDocData stdSYPHDocVO = null;
 		log.debug(nyehmsLog + " fetching for docID : " + docID);
 		try {
-			stdSYPHDocVO = syphDocumentDAO.getSYPHDoc(docID);
+			stdSYPHDocVO = syphDocRepository.findDocument(docID);
 		} catch (DataAccessException e) {
 			rollbackFlag = true;
 			log.error(nyehmsLog + "  " + e.getMessage());

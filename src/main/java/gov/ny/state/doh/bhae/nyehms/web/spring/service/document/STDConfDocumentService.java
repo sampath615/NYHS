@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.STDConfDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.STDConfDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.StdConfDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
@@ -29,14 +30,16 @@ public class STDConfDocumentService {
     @Autowired
     STDConfDocumentDAO stdConfDocumentDAO;
     @Autowired
+    StdConfDocRepository stdConfDocRepository;
+    @Autowired
     CommonDocumentService commonDocumentService;
     
     private Map<String, String> drugListMap = new HashMap<>();
     
-    public STDConfDocVO getSTDConfDoc(int docId,
+    public StdConfDocData getSTDConfDoc(int docId,
 			BindingResult dummyBindingResult, UserObject userObject, String id){
     	
-    	return stdConfDocumentDAO.getSTDConfDoc(docId);
+    	return stdConfDocRepository.findDocument(docId);
     }
    
 

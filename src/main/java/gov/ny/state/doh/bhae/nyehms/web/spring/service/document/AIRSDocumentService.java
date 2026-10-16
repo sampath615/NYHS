@@ -20,6 +20,8 @@ import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ursdb.AIDADataDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.AIRSDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AIRSDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AirsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.AirsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftDetailsService;
@@ -40,6 +42,7 @@ public class AIRSDocumentService {
     private static Logger log = LoggerFactory.getLogger(AIRSDocumentService.class);
     
     @Autowired AIRSDocumentDAO airsDocumentDAO;
+    @Autowired private AirsDocRepository airsDocRepository;
     
     @Autowired private CommonService commonService;
     
@@ -55,20 +58,20 @@ public class AIRSDocumentService {
      * @param documentID
      * @return
      */
-    public AIRSDocVO getAIRSDocument(int documentID) {
-        AIRSDocVO aIRSDocumentVO = null;
-       	aIRSDocumentVO = airsDocumentDAO.getAIRSDoc(documentID);
-       	String airsVer = aIRSDocumentVO.getAIRS_VERSION();
+    public AirsDocData getAIRSDocument(int documentID) {
+        AirsDocData aIRSDocumentVO = null;
+       	aIRSDocumentVO = airsDocRepository.findDocument(documentID);
+       	String airsVer = aIRSDocumentVO.stdAirsDoc().getAirsVersion();
        	if (CommonUtil.isNotNullAndEmpty(airsVer)) {
        		airsVer = airsVer.replace(".", "");
        		int airsVerInt = Integer.parseInt(airsVer);
        		if(airsVer.startsWith("9") &&  airsVerInt != 904 && airsVerInt != 905) {
-       			aIRSDocumentVO.setAIRS_VER_TYPE("NEW");
+       			aIRSDocumentVO = aIRSDocumentVO.withAirsVerType("NEW");
        		} else {
-       			aIRSDocumentVO.setAIRS_VER_TYPE("OLD");
+       			aIRSDocumentVO = aIRSDocumentVO.withAirsVerType("OLD");
        		}
        	} else {
-       		aIRSDocumentVO.setAIRS_VER_TYPE("OLD");
+       		aIRSDocumentVO = aIRSDocumentVO.withAirsVerType("OLD");
        	}
         return aIRSDocumentVO;
     }

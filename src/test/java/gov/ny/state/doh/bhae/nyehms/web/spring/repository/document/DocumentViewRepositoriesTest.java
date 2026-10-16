@@ -20,20 +20,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.JpaConfig;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AirsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.ClimsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DoccsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.MedicaidOldDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
 
 /**
  * The Medicaid Old, CLIMS, NDI, NDI cause, Black Box, CASA, death, DOCCS, insurance death, NYC
- * death, SSDM, NYC eHARS and STD old document screens (moved from MyBatis to
+ * death, SSDM, NYC eHARS, STD old, AIRS, ICCR, syphilis and confirmed STD document screens (moved from MyBatis to
  * Spring Data JPA), against an in-memory H2 database in Oracle mode (db/document-views.sql). The
  * expected values are what the old MyBatis mappers returned for the same data (every property was
  * compared side by side when the screens were migrated).
@@ -91,6 +95,45 @@ class DocumentViewRepositoriesTest {
 
 	@Autowired
 	StdOldDocRepository stdOldDocRepository;
+
+	@Autowired
+	AirsDocRepository airsDocRepository;
+
+	@Autowired
+	IccrDocRepository iccrDocRepository;
+
+	@Autowired
+	SyphDocRepository syphDocRepository;
+
+	@Autowired
+	StdConfDocRepository stdConfDocRepository;
+
+	@Test
+	void formatsDatesAsTheFormerToChar() {
+		AirsDocData airs = airsDocRepository.findDocument(100);
+		assertThat(airs.dob()).isEqualTo("03/04/2023");                         // TO_CHAR(DOB, 'MM/DD/YYYY')
+		assertThat(airs.documentSourceTable()).isEqualTo("STD");                // a constant of the former query
+		assertThat(airs.withAirsVerType("NEW").airsVerType()).isEqualTo("NEW"); // worked out by AIRSDocumentService
+		assertThat(airsDocRepository.findDocument(200).dob()).isNull();
+
+		SyphDocData syph = syphDocRepository.findDocument(100);
+		assertThat(syph.syphilisDiagnosisDate()).isEqualTo("03/04/2023");
+		assertThat(syph.parentDocumentId()).isEqualTo(99);
+
+		StdConfDocData conf = stdConfDocRepository.findDocument(100);
+		assertThat(conf.x900dxdate()).isEqualTo("03/04/2023");
+		assertThat(conf.stateno()).isEqualTo("1234");
+	}
+
+	@Test
+	void readsAnIccrReportWithTheDescriptionOfItsCode() {
+		IccrDocData doc = iccrDocRepository.findDocument(100);
+
+		assertThat(doc.resultsReceived()).isEqualTo("Yes");                     // CODED_YES_NO_UNK of 'Y'
+		assertThat(doc.eharsImportDate()).isNull();                             // never read: shown empty, as before
+		assertThat(doc.withIccrTestList(List.of()).iccrTestList()).isEmpty();   // added by ICCRDocumentService
+		assertThat(iccrDocRepository.findDocument(200).resultsReceived()).isNull();
+	}
 
 	@Test
 	void readsACasaReportWithItsTimestampAndParentDocument() {
