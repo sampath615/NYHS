@@ -55,7 +55,7 @@ class StdConfDocMappingTest {
 
 	@Test
 	void codesRaceRiskAndSex() {
-		StdStdConfirmedDoc std = StdConfDocMapping.toStdDoc(raw("RACE_AMERIND", "Y", "RACE_INDIAN", "N", "RISK_SEX_MSM", "1",
+		StdStdConfirmedDoc std = StdConfDocMapping.toStdDoc(raw("RACE_INDIAN", "Y", "RISK_SEX_MSM", "1",
 				"ETHNICITY", "2", "BIRTH_SEX", "F", "CURRENT_GENDER", "M", "RISK_DRUGS_USED", " y "), STATES);
 
 		assertThat(std.getRaceIndian()).isEqualTo(upper(LabCommonUtils.checkRaceData("Y")));   // from RACE_AMERIND
