@@ -91,7 +91,7 @@ final class StdConfDocMapping {
 				.birthSex(upper(LabCommonUtils.checkBirthSexData(text(raw, "BIRTH_SEX"))))
 				.raceWhite(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_WHITE"))))
 				.raceBlack(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_BLACK"))))
-				.raceIndian(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_AMERIND"))))
+				.raceIndian(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_INDIAN"))))
 				.raceAsian(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_ASIAN"))))
 				.racePacific(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_PACIFIC"))))
 				.raceUnknown(upper(LabCommonUtils.checkRaceData(text(raw, "RACE_UNKNOWN"))))
