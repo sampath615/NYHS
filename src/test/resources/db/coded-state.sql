@@ -1,0 +1,6 @@
+-- Test data for CodedStateRepositoryTest (H2 in Oracle mode).
+CREATE TABLE CODED_STATE (STATE_CODE VARCHAR2(2), STATE_DESCRIPTION VARCHAR2(50));
+
+INSERT INTO CODED_STATE VALUES ('NY', 'New York');
+INSERT INTO CODED_STATE VALUES ('NJ', 'New Jersey');
+INSERT INTO CODED_STATE VALUES ('DC', 'District Of Columbia');

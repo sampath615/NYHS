@@ -180,10 +180,6 @@
 			SELECT  PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (#{_stateno}) CURRENT_STATENO from DUAL
 	</select> 					
 	
-	<select id="getStateValue" parameterType="String" resultType="String">
-		select STATE_CODE from CODED_STATE where upper(STATE_DESCRIPTION) = upper(#{pidState})
-	</select>
-	
 	<insert id="insertNyehmsAgreedTime" parameterType="java.util.Map" >
 		insert into USER_ACCESS_AUDIT_LOG(WORKER_ID, AGREED_DATE) values(#{WORKER_ID, jdbcType=DECIMAL}, SYSDATE)
 	</insert>

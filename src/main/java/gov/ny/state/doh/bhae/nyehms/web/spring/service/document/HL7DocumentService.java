@@ -1648,7 +1648,7 @@ public class HL7DocumentService {
 		String personState = resultSet.getString("PIDSTATE");
 
 		if (CommonUtil.isNotNullAndEmpty(personState)) {
-			stdHL7DocinsertVo.put("PERSON_STATE", commonDocumentService.validateState(personState, null, null, null));
+			stdHL7DocinsertVo.put("PERSON_STATE", commonDocumentService.validateState(personState));
 		}
 
 		stdHL7DocinsertVo.put("PROVIDER_FNAME", CommonUtil.NameValidation(resultSet.getString("PV1PROVIDERFIRSTNAME")));
@@ -1709,7 +1709,7 @@ public class HL7DocumentService {
 
 		if (CommonUtil.isNotNullAndEmpty(facilityState)) {
 			stdHL7DocinsertVo.put("FACILITY_STATE",
-					commonDocumentService.validateState(facilityState, null, null, null));
+					commonDocumentService.validateState(facilityState));
 		}
 		String faczipcode = null;
 		String FAC_ZIP = CommonUtil.formatZipAndPlus4Code(resultSet.getString("FACILITY_ZIP"));

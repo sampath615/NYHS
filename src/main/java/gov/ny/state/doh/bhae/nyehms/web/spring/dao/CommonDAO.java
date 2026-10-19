@@ -38,7 +38,6 @@ public interface CommonDAO {
 	
 	public String getCurrentActiveStateNo(String _stateno);
 	
-	public String getStateValue(String pidState);
 	public int insertNyehmsAgreedTime(Map<String, Object> inputParameter);
 	
 	public Map<String, String> getCountyNameByZip(String _zip);

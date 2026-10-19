@@ -45,7 +45,7 @@ public class STDConfDocumentService {
 	 */
 	public int writeRawSTDConfDocDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId) {
 		stdConfDocRepository.saveAndFlush(StdConfDocMapping.toStdDoc(docVO,
-				state -> commonDocumentService.validateState(state, null, null, null)));
+				state -> commonDocumentService.validateState(state)));
 		return 1;
 	}
 

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.CodedStateRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycEharsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
@@ -62,6 +64,7 @@ public class CommonDocumentService {
 	@Autowired private CommonExceptionHandler    commonExceptionHandler;
 	@Autowired private CommonDocLabsDAO          commonDocLabsDAO;	
 	@Autowired private NycEharsDocRepository nycEharsDocRepository;
+	@Autowired private CodedStateRepository codedStateRepository;
 	@Autowired private CommonDAO          commonDAO;
 	@Autowired private DocumentDAO               documentDAO;
 	@Autowired private ConnectionDAO             connectionDAO;
@@ -808,26 +811,30 @@ public class CommonDocumentService {
 		}
 	}
 	
-	public String validateState(String _state, List<String> errors, List<Integer> errorCodes, String _referer) {
-		String _tempVariable = _state;
-		
-		_state = _state.replaceAll("[^a-zA-Z ]", "").trim();
+	/**
+	 * A state as the documents store it: letters and spaces only, and a state name (more than 2 letters)
+	 * replaced by its code.
+	 *
+	 * @param state the state as received (not null)
+	 * @return the state code, or "" for a state name that is not known
+	 */
+	public String validateState(String state) {
+		return findStateCode(state).orElse("");
+	}
 
-		if (_state.length() > 2) {
-			_state = commonDAO.getStateValue(_state.toUpperCase());
-
-			if (_state == null || "".equals(_state)) {
-				if (errors != null) {
-					errorCodes.add(46);
-					errors.add("Invalid " + _referer + "  State(" + _tempVariable + ")");
-				}
-				return "";
-			} else {
-				return _state;
-			}
+	/**
+	 * A state as the documents store it (see {@link #validateState}).
+	 *
+	 * @param state the state as received (not null)
+	 * @return the state code, or empty for a state name that is not known (CODED_STATE)
+	 */
+	public Optional<String> findStateCode(String state) {
+		String cleaned = state.replaceAll("[^a-zA-Z ]", "").trim();
+		if (cleaned.length() <= 2) {
+			return Optional.of(cleaned);
 		}
-
-		return _state;
+		String stateCode = codedStateRepository.findStateCodeByName(cleaned);
+		return CommonUtil.isNotNullAndEmpty(stateCode) ? Optional.of(stateCode) : Optional.empty();
 	}
 	
 	public String getSubDocumentType(Integer documentId){

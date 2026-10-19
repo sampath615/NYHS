@@ -1012,17 +1012,27 @@ public class ManualQuartzJobService {
 		stdEcrlsLabDocVO.setPERSON_ZIP(CommonUtil.formatZipCode(ecrlsLabDocVO.getPIDZIPCODE()));
 
 		stdEcrlsLabDocVO.setPERSON_STATE(
-				commonDocumentService.validateState(ecrlsLabDocVO.getPIDSTATE().trim(), errors, errorCodes, "Person"));
-		stdEcrlsLabDocVO.setPROV_STATE(commonDocumentService.validateState(ecrlsLabDocVO.getZLRPROVIDERSTATE().trim(),
-				errors, errorCodes, "Provider"));
-		stdEcrlsLabDocVO.setFACILITY_STATE(commonDocumentService
-				.validateState(ecrlsLabDocVO.getZLRFACILITYSTATE().trim(), errors, errorCodes, "Facility"));
+				validStateOrError(ecrlsLabDocVO.getPIDSTATE().trim(), "Person", errors, errorCodes));
+		stdEcrlsLabDocVO.setPROV_STATE(validStateOrError(ecrlsLabDocVO.getZLRPROVIDERSTATE().trim(), "Provider", errors, errorCodes));
+		stdEcrlsLabDocVO.setFACILITY_STATE(validStateOrError(ecrlsLabDocVO.getZLRFACILITYSTATE().trim(), "Facility", errors, errorCodes));
 
 		if (errors.size() > 0) {
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * A state as the documents store it (CommonDocumentService.validateState); a state name that is not known is
+	 * the error 46 ("Invalid <referer>  State(<state>)") and stored as "".
+	 */
+	private String validStateOrError(String state, String referer, List<String> errors, List<Integer> errorCodes) {
+		return commonDocumentService.findStateCode(state).orElseGet(() -> {
+			errorCodes.add(46);
+			errors.add("Invalid " + referer + "  State(" + state + ")");
+			return "";
+		});
 	}
 
 	public void handleRaceEthnicityValidationForStdDocument(EcrlsLabDocVO ecrlsLabDocVO,
@@ -5616,7 +5626,7 @@ public class ManualQuartzJobService {
 				.addressValidation(ecrlsLabDocVO.getPIDADDRESSLINE1() + " " + ecrlsLabDocVO.getPIDADDRESSLINE2()));
 		ecrlsStdDocVO.setPERSON_CITY(ecrlsLabDocVO.getPIDCITY());
 		ecrlsStdDocVO.setPERSON_STATE(
-				commonDocumentService.validateState(ecrlsLabDocVO.getPIDSTATE().trim(), null, null, "Person"));
+				commonDocumentService.validateState(ecrlsLabDocVO.getPIDSTATE().trim()));
 
 		ecrlsStdDocVO.setPERSON_ZIP(CommonUtil.formatZipCode(ecrlsLabDocVO.getPIDZIPCODE()));
 
@@ -5634,8 +5644,7 @@ public class ManualQuartzJobService {
 				ecrlsLabDocVO.getZLRPROVIDERADDRESSLINE1() + " " + ecrlsLabDocVO.getZLRPROVIDERADDRESSLINE2());
 		ecrlsStdDocVO.setPROV_CITY(ecrlsLabDocVO.getZLRPROVIDERCITY());
 
-		ecrlsStdDocVO.setPROV_STATE(commonDocumentService.validateState(ecrlsLabDocVO.getZLRPROVIDERSTATE().trim(),
-				null, null, "Provider"));
+		ecrlsStdDocVO.setPROV_STATE(commonDocumentService.validateState(ecrlsLabDocVO.getZLRPROVIDERSTATE().trim()));
 
 		ecrlsStdDocVO.setPROV_ZIP(CommonUtil.formatZipCode(ecrlsLabDocVO.getZLRPROVIDERZIPCODE()));
 		// STD table
@@ -5651,8 +5660,7 @@ public class ManualQuartzJobService {
 				ecrlsLabDocVO.getZLRFACILITYADDRESSLINE1() + " " + ecrlsLabDocVO.getZLRFACILITYADDRESSLINE2());
 		ecrlsStdDocVO.setFACILITY_CITY(ecrlsLabDocVO.getZLRFACILITYCITY());
 
-		ecrlsStdDocVO.setFACILITY_STATE(commonDocumentService.validateState(ecrlsLabDocVO.getZLRFACILITYSTATE().trim(),
-				null, null, "Facility"));
+		ecrlsStdDocVO.setFACILITY_STATE(commonDocumentService.validateState(ecrlsLabDocVO.getZLRFACILITYSTATE().trim()));
 
 		ecrlsStdDocVO.setFACILITY_ZIP(CommonUtil.formatZipCode(ecrlsLabDocVO.getZLRFACILITYZIPCODE()));
 

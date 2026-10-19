@@ -323,7 +323,7 @@ public class DeathDocumentService {
 				stdDocData.put("FACILITY_STATE", "NY");
 			}else {
 				stdDocData.put("FACILITY_STATE", commonDocumentService
-						.validateState(_facilityState, null, null, null));
+						.validateState(_facilityState));
 			}
 			String _facilityZip = CommonUtil.formatZipAndPlus4Code((String) docVO.get("DEATH_FACILITY_ZIP"));
 			
