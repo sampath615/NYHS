@@ -1,13 +1,17 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.hibernate.annotations.Immutable;
 import org.springframework.data.domain.Persistable;
 
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,11 +20,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * An ICCR (Infection Control) report as received (table RAW_ICCR_DOC): entered on the ICCR data entry
- * screen, read by the ICCR document screen.
+ * An ICCR (Infection Control) report as received (table RAW_ICCR_DOC) with its tests (RAW_ICCR_TESTS): the
+ * form object of the ICCR data entry screen (ICCRDataEntryDoc.jsp; the posted form is bound to the fields, see
+ * {@code IccrDataEntryBinding}), read by the ICCR document screen.
  * <p>
- * Never updated: a row is inserted once ({@code RawIccrDocRepository.saveAndFlush}, built by
- * {@code IccrDocMapping}), so it is always new ({@link #isNew()}: save() inserts without a select first).
+ * Never updated: a row is inserted once with its tests ({@code RawIccrDocRepository.saveAndFlush}, built by
+ * {@code IccrDocMapping} from the posted form), so it is always new ({@link #isNew()}: save() inserts without a select first).
  * <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
  */
 @Entity
@@ -104,6 +109,11 @@ public class RawIccrDoc implements Persistable<Integer> {
 
 	@Column(name = "CURRENT_PROCESS_STATUS")
 	private Integer currentProcessStatus;
+
+	/** The tests of the report (RAW_ICCR_TESTS), in no particular order; the same test may be listed twice. */
+	@ElementCollection
+	@CollectionTable(name = "RAW_ICCR_TESTS", joinColumns = @JoinColumn(name = "DOCUMENT_ID"))
+	private List<RawIccrTest> iccrTestList;
 
 	@Override
 	public Integer getId() {

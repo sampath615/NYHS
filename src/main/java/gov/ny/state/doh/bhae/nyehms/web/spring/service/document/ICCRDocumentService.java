@@ -11,13 +11,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.AcrfTestResult;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.AcrfTestResultRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrDocRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrTestRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawIccrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -31,17 +29,16 @@ public class ICCRDocumentService {
 	
 	@Autowired private IccrDocRepository iccrDocRepository;
 	@Autowired private RawIccrDocRepository rawIccrDocRepository;
-	@Autowired private IccrTestRepository iccrTestRepository;
 	@Autowired private AcrfTestResultRepository acrfTestResultRepository;
 	
 	private static Logger log = LoggerFactory.getLogger(ICCRDocumentService.class);
 
 
-	public void saveICCRDataEntryForm(ICCRDataEntryVO iccrDataEntryVO, BindingResult bindingResult, UserObject userObject) {
+	public void saveICCRDataEntryForm(RawIccrDoc iccrDataEntryForm, BindingResult bindingResult, UserObject userObject) {
 		
 		try{
 			
-			documentTransactionHelper.insertICCRRawData(iccrDataEntryVO, userObject, bindingResult);
+			documentTransactionHelper.insertICCRRawData(iccrDataEntryForm, userObject, bindingResult);
 		
 			commonExceptionHandler.inspectDBTransacionResult(0, "ICCR Document Form saved successfully.", bindingResult);
 			
@@ -71,36 +68,18 @@ public class ICCRDocumentService {
 	/**
 	 * Saves an ICCR report entered on the data entry screen (RAW_ICCR_DOC) with the tests filled in
 	 * on it (RAW_ICCR_TESTS).
+	 *
+	 * @param iccrDataEntryForm the posted form
+	 * @param documentId the new document id of the report
+	 * @param workerId the worker who entered it
 	 */
-	public void insertICCRRawData(ICCRDataEntryVO iccrDataEntryVO, UserObject userObject) {
-		rawIccrDocRepository.saveAndFlush(IccrDocMapping.toRawDoc(iccrDataEntryVO));   // flush: insert now, before the tests
-
-		List<ICCRTestVO> iccrTestDataList = iccrDataEntryVO.getIccrTestList();
-		if (iccrTestDataList == null) {
-			return;
-		}
-		for (ICCRTestVO iccrTestVO : iccrTestDataList) {
-			if (isFilledIn(iccrTestVO)) {
-				iccrTestRepository.insertTest(iccrDataEntryVO.getDOCUMENT_ID(),
-						OracleConversions.fnToDate(iccrTestVO.getDATE_OF_TEST()),
-						iccrTestVO.getTEST_TYPE(),
-						iccrTestVO.getTEST_RESULTS(),
-						iccrTestVO.getTEST_RESULT_COPIES(),
-						iccrTestVO.getTEST_RESULT_LOGS());
-			}
-		}
-	}
-
-	/** A test row of the form is saved if its type, date ("../../...." is the empty date mask) or result is filled in. */
-	private static boolean isFilledIn(ICCRTestVO iccrTestVO) {
-		return CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_TYPE())
-				|| (!"../../....".equals(iccrTestVO.getDATE_OF_TEST()) && CommonUtil.isNotNullAndEmpty(iccrTestVO.getDATE_OF_TEST()))
-				|| CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_RESULTS());
+	public void insertICCRRawData(RawIccrDoc iccrDataEntryForm, int documentId, int workerId) {
+		rawIccrDocRepository.saveAndFlush(IccrDocMapping.toRawDoc(iccrDataEntryForm, documentId, workerId));
 	}
 
 	public IccrDocData getICCRDocument(int docId) {
 		IccrDocData iccrDocVO = iccrDocRepository.findDocument(docId);
-		return iccrDocVO.withIccrTestList(iccrTestRepository.findTestsOfDocument(docId));
+		return iccrDocVO.withIccrTestList(rawIccrDocRepository.findTestsOfDocument(docId));
 	}
 
 	/**

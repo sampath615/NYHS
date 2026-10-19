@@ -58,17 +58,17 @@
 			                                <div class="personInfo" style="height:35px">
 			                                			<div class="fieldHolder25">
 				                                            <span class="pL10"><spring:message code="label.firstname" /> </span> 
-				                                            <span class="pL5"><form:input path="FIRST_NAME" id="iccrFirstName" class="standardInputMedText required" cssErrorClass="error" title="First Name" maxLength="30"/></span>
+				                                            <span class="pL5"><form:input path="firstName" id="iccrFirstName" class="standardInputMedText required" cssErrorClass="error" title="First Name" maxLength="30"/></span>
 				                                            <div class="v_error iccrFirstName mL10 width250"></div> 
 				                                        </div>
 				                                        <div class="fieldHolder25">
 			                                            	<span class="pL10"><spring:message code="label.lastname" /></span> 
-			                                            	<span  class="pL5"><form:input path="LAST_NAME" id="iccrLastName" class="standardInputMedText required"  cssErrorClass="error" title="Last Name" maxLength="30"/></span>
+			                                            	<span  class="pL5"><form:input path="lastName" id="iccrLastName" class="standardInputMedText required"  cssErrorClass="error" title="Last Name" maxLength="30"/></span>
 			                                            	<div class="v_error iccrLastName mL10 width250"></div>
 			                                            </div>	                                        
 				                                        <div class="fieldHolder25">
 			                                            	<span class="pL10"><spring:message code="label.middleName" /> </span> 
-			                                            	<span  class="pL5"><form:input path="MIDDLE_NAME" id="iccrMiddleName" class="standardInputMedText" cssErrorClass="error" title="Middle Name" maxLength="30"/></span>
+			                                            	<span  class="pL5"><form:input path="middleName" id="iccrMiddleName" class="standardInputMedText" cssErrorClass="error" title="Middle Name" maxLength="30"/></span>
 			                                            	<div class="v_error iccrMiddleName mL10 width250"></div>
 			                                            </div>	                                        
 			                                </div>
@@ -76,13 +76,13 @@
 			                                <div class="personInfo" style="height:40px">
 				                               			<div class="fieldHolder25">
 				                                       		<span class="pL10">Date of Birth </span>
-				                                   			<span class="pL5"><form:input path="DOB" id="iccrDOB" class="dPicker standardInputSmallText required" datevalidations="completeDate" data-format="MM/dd/yyyy" type="text" title="Date Of Birth" maxlength="10"/> </span>
+				                                   			<span class="pL5"><form:input path="dob" id="iccrDOB" class="dPicker standardInputSmallText required" datevalidations="completeDate" data-format="MM/dd/yyyy" type="text" title="Date Of Birth" maxlength="10"/> </span>
 				                                   			<br><span class="pL10">(mm/dd/yyyy)</span>
 				                                       		<div class="v_error iccrDOB mL10 width250"></div>
 				                                       </div>
 			                                			<div class="fieldHolder25">
 				                                            <span class="pL10">Phone</span> 
-				                                            <span class="pL5"><form:input path="PERSON_PHONE" id="iccrPersonPhone" class="pNumber standardInputMedText phoneInputText" cssErrorClass="error" title="Person Phone" maxLength="14"/></span>
+				                                            <span class="pL5"><form:input path="personPhone" id="iccrPersonPhone" class="pNumber standardInputMedText phoneInputText" cssErrorClass="error" title="Person Phone" maxLength="14"/></span>
 				                                            <div class="v_error iccrPersonPhone mL10 width250"></div> 
 				                                        </div>
 	                                		</div>
@@ -91,24 +91,24 @@
 			                                	<div class="personInfo pTRBL10">
 								 	                <span class="personLabelDoc"> Person Address </span>
 							 		                <span> 	                	
-								 	                	<span class="pL10"> <form:input path="PERSON_ADDRESS" id="iccrPersonAddress" class="standardInputMedText newAddress widgetAddressFieldsReadonly" tabindex="-1" title="Address" maxLength="62"/>  </span>	 	        
+								 	                	<span class="pL10"> <form:input path="personAddress" id="iccrPersonAddress" class="standardInputMedText newAddress widgetAddressFieldsReadonly" tabindex="-1" title="Address" maxLength="62"/>  </span>	 	        
 								 	                	            	 	                    
 								 	                    <span class="pL20"><spring:message code="label.city" /></span>
-								 	                    <span class="pL10"><form:input path="PERSON_CITY" id="iccrPersonCity" class="standardInputSmallText newCity widgetAddressFieldsReadonly" tabindex="-1" title="City" maxLength="30"/></span>
+								 	                    <span class="pL10"><form:input path="personCity" id="iccrPersonCity" class="standardInputSmallText newCity widgetAddressFieldsReadonly" tabindex="-1" title="City" maxLength="30"/></span>
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.state" /> </span>
 								 	                    <span  class="pL10">
-															<form:input path="PERSON_STATE" id="iccrStateState" class="standardInputSmallText1 newState widgetAddressFieldsReadonly" tabindex="-1" title="State" maxLength="2"/>
+															<form:input path="personState" id="iccrStateState" class="standardInputSmallText1 newState widgetAddressFieldsReadonly" tabindex="-1" title="State" maxLength="2"/>
 														</span>
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.zip" /> </span>
 								 	                    <span class="pL10"> 
-								 	                       <form:input path="PERSON_ZIP" id="iccrZipZip" class="standardInputSmallText1 newZip widgetAddressFieldsReadonly" tabindex="-1" title="Zipcode" maxLength="5"/>
+								 	                       <form:input path="personZip" id="iccrZipZip" class="standardInputSmallText1 newZip widgetAddressFieldsReadonly" tabindex="-1" title="Zipcode" maxLength="5"/>
 								 	                    </span> 
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.county" /> </span>
 								 	                    <span class="pL10">
-								 	                    			<form:select path="PERSON_COUNTY"  id="iccrPersonCounty" cssClass="oAdrDlg newCounty standardInputSmallText1  newCounty widgetAddressFieldsReadonly" tabindex="-1" title="County" maxLength="3"> 
+								 	                    			<form:select path="personCounty"  id="iccrPersonCounty" cssClass="oAdrDlg newCounty standardInputSmallText1  newCounty widgetAddressFieldsReadonly" tabindex="-1" title="County" maxLength="3"> 
 																		<form:option value=""></form:option>
 																		<form:options items="${sessionScope.countyMap}"/>
 																	 </form:select>
@@ -123,18 +123,18 @@
 			                                <div class="personInfo" style="padding-top:10px;height:35px">
 				                                        <div class="fieldHolder25">
 			                                            	<span class="pL10">Provider Name</span> 
-			                                            	<span  class="pL5"><form:input path="PROV_NAME" id="iccrProvName" class="standardInputMedText"  cssErrorClass="error" title="Provider Name" maxLength="100"/></span>
+			                                            	<span  class="pL5"><form:input path="provName" id="iccrProvName" class="standardInputMedText"  cssErrorClass="error" title="Provider Name" maxLength="100"/></span>
 			                                            	<div class="v_error iccrProvName mL10 width250"></div>
 			                                            </div>	                                        
 				                                        <div class="fieldHolder25">
 			                                            	<span class="pL10">Provider Phone</span> 
-			                                            	<span  class="pL5"><form:input path="PROV_PHONE" id="iccrProvPhone" class="pNumber standardInputMedText phoneInputText"  cssErrorClass="error" title="Provider Phone" maxLength="14"/></span>
+			                                            	<span  class="pL5"><form:input path="provPhone" id="iccrProvPhone" class="pNumber standardInputMedText phoneInputText"  cssErrorClass="error" title="Provider Phone" maxLength="14"/></span>
 			                                            	<div class="v_error iccrProvPhone mL10 width250"></div>
 			                                            </div>	                                        
 			                                			<div class="fieldHolder49">
 				                                            <span class="pL10">Jurisdiction providing information </span> 
 				                                            <span class="mL5"> 
-																<form:select path="JURISDICTION_PROVIDING_INFO" id="iccrJurisdiction" class="standardInputMedText required" cssErrorClass="error" title="Jurisdiction providing information" maxLength="2" >
+																<form:select path="jurisdictionProvidingInfo" id="iccrJurisdiction" class="standardInputMedText required" cssErrorClass="error" title="Jurisdiction providing information" maxLength="2" >
 																	<form:option value="" label="--select--"></form:option>
 																	<form:options items="${sessionScope.stateMap}"/>
 																</form:select>	
@@ -148,24 +148,24 @@
 			                                	<div class="personInfo pTRBL10">
 								 	                <span class="personLabelDoc"> Provider Address </span>
 							 		                <span> 	                	
-								 	                	<span class="pL10"> <form:input path="PROV_ADDRESS" id="iccrProvAddress" class="standardInputMedText newAddress widgetAddressFieldsReadonly" tabindex="-1" title="Address" maxLength="62"/>  </span>	 	        
+								 	                	<span class="pL10"> <form:input path="provAddress" id="iccrProvAddress" class="standardInputMedText newAddress widgetAddressFieldsReadonly" tabindex="-1" title="Address" maxLength="62"/>  </span>	 	        
 								 	                	            	 	                    
 								 	                    <span class="pL20"><spring:message code="label.city" /></span>
-								 	                    <span class="pL10"><form:input path="PROV_CITY" id="iccrProvCity" class="standardInputSmallText newCity widgetAddressFieldsReadonly" tabindex="-1" title="City" maxLength="30"/></span>
+								 	                    <span class="pL10"><form:input path="provCity" id="iccrProvCity" class="standardInputSmallText newCity widgetAddressFieldsReadonly" tabindex="-1" title="City" maxLength="30"/></span>
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.state" /> </span>
 								 	                    <span  class="pL10">
-															<form:input path="PROV_STATE" id="iccrStateState" class="standardInputSmallText1 newState widgetAddressFieldsReadonly" tabindex="-1" title="State" maxLength="2"/>
+															<form:input path="provState" id="iccrStateState" class="standardInputSmallText1 newState widgetAddressFieldsReadonly" tabindex="-1" title="State" maxLength="2"/>
 														</span>
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.zip" /> </span>
 								 	                    <span class="pL10"> 
-								 	                       <form:input path="PROV_ZIP" id="iccrZipZip" class="standardInputSmallText1 newZip widgetAddressFieldsReadonly" tabindex="-1" title="Zipcode" maxLength="5"/>
+								 	                       <form:input path="provZip" id="iccrZipZip" class="standardInputSmallText1 newZip widgetAddressFieldsReadonly" tabindex="-1" title="Zipcode" maxLength="5"/>
 								 	                    </span> 
 								 	                    
 								 	                    <span class="pL20"><spring:message code="label.county" /> </span>
 								 	                    <span class="pL10">
-								 	                    			<form:select path="PROV_COUNTY"  id="iccrProvCounty" cssClass="oAdrDlg newCounty standardInputSmallText1  newCounty widgetAddressFieldsReadonly" tabindex="-1" title="County" maxLength="3"> 
+								 	                    			<form:select path="provCounty"  id="iccrProvCounty" cssClass="oAdrDlg newCounty standardInputSmallText1  newCounty widgetAddressFieldsReadonly" tabindex="-1" title="County" maxLength="3"> 
 																		<form:option value=""></form:option>
 																		<form:options items="${sessionScope.countyMap}"/>
 																	 </form:select>
@@ -193,16 +193,16 @@
 																	
 																	<div class="fieldHolder15">
 																		<span class="pL10">Date of Test</span>
-																		<span class="pL5"><form:input  path="iccrTestList[${statusCD.index}].DATE_OF_TEST"  id="iccrTest_${statusCD.index}_DateOfTest" class=" standardInputSmallText1 dPicker required" datevalidations="completeDate" data-format="MM/dd/yyyy" type="text" maxlength="10" title="Date Of Test" /></span>
+																		<span class="pL5"><form:input  path="iccrTestList[${statusCD.index}].dateOfTest"  id="iccrTest_${statusCD.index}_DateOfTest" class=" standardInputSmallText1 dPicker required" datevalidations="completeDate" data-format="MM/dd/yyyy" type="text" maxlength="10" title="Date Of Test" /></span>
 																		<br><span class="pL10">(mm/dd/yyyy)</span>
 																	 	<div class="v_error iccrTest_${statusCD.index}_DateOfTest mL10"></div>
 																	</div>
 																	
 																	<div class="fieldHolder25">
 																		<span class="pL10">Test Type</span>
-<%-- 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].TEST_TYPE"  id="iccrTest_${statusCD.index}_TestType" class="standardInputMedText required" title="Test Type" maxlength="20"/></span> --%>
+<%-- 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].testType"  id="iccrTest_${statusCD.index}_TestType" class="standardInputMedText required" title="Test Type" maxlength="20"/></span> --%>
 																		<span class="pL10">
-																			<form:select path="iccrTestList[${statusCD.index}].TEST_TYPE" id="iccrTest_${statusCD.index}_TestType" class="standardInputMedText required mR50" title="Test Type" onchange="changeICCRTestType(this,[${statusCD.index}])">
+																			<form:select path="iccrTestList[${statusCD.index}].testType" id="iccrTest_${statusCD.index}_TestType" class="standardInputMedText required mR50" title="Test Type" onchange="changeICCRTestType(this,[${statusCD.index}])">
 																				<form:option value="" label="--Select--"></form:option>
  																				<c:forEach items="${codedAcrfTestList}" var="codedValue">
 																					<form:option value="${codedValue.acrtTestCode}">${codedValue.acrtTestDesc}</form:option>
@@ -216,7 +216,7 @@
 																	<div class="fieldHolder20">
 																		<span class="pL10">Test Result</span> 
 																		<span class="pL10">
-																			<form:select path="iccrTestList[${statusCD.index}].TEST_RESULTS" id="iccrTest_${statusCD.index}_TestResult" class="standardInputSmallText required" title="Test Results">
+																			<form:select path="iccrTestList[${statusCD.index}].testResults" id="iccrTest_${statusCD.index}_TestResult" class="standardInputSmallText required" title="Test Results">
 																				<form:option value="" label="--Select--"></form:option>
   																				<c:forEach items="${codedAcrfTestResults}" var="codedValue">
 																					<form:option value="${codedValue.ACRF_RESULT_CODE}">${codedValue.ACRF_RESULT_DESC}</form:option>
@@ -229,20 +229,19 @@
 
 																	<div class="fieldHolder20">
 																		<span class="pL10">Copies/mL</span> 
- 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].TEST_RESULT_COPIES"  id="iccrTest_${statusCD.index}_TestResultCopies" class=" standardInputSmallText2 quanCP readonly" maxlength="10" title="Copies/mL" /></span>
+ 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].testResultCopies"  id="iccrTest_${statusCD.index}_TestResultCopies" class=" standardInputSmallText2 quanCP readonly" maxlength="10" title="Copies/mL" /></span>
 																	 	<div class="v_error iccrTest_${statusCD.index}_TestResultCopies mL10"></div>
 																	</div>
 																	
 																	<div class="fieldHolder15">
 																		<span class="pL10">Log</span> 
- 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].TEST_RESULT_LOGS"  id="iccrTest_${statusCD.index}_TestResultLogs" class=" standardInputSmallText2 quanLog readonly" maxlength="10" title="Log" /></span>
+ 																		<span class="pL10"><form:input  path="iccrTestList[${statusCD.index}].testResultLogs"  id="iccrTest_${statusCD.index}_TestResultLogs" class=" standardInputSmallText2 quanLog readonly" maxlength="10" title="Log" /></span>
 																	 	<div class="v_error iccrTest_${statusCD.index}_TestResultLogs mL10"></div>
 																	</div>
 																	
 											 						<div style="float:left; width:4%" id="iccrTest_${statusCD.index}_closeTest" >
 																			<span class="mL2" style="float:right; margin-top:4px;"><img class="cloningIcons" onclick="deleteTestDiv(this, 'testDiv');" src="${staticPath}/images/icons/Delete-icon.png" title="Click to Delete" style="vertical-align: middle; width: 14px;"/></span>
 																	</div>
-															 		<form:hidden id="iccrTest_${statusCD.index}_iccrDocId" path="iccrTestList[${statusCD.index}].ICCR_DOCUMENT_ID" />
 																</div>
 																
 															<script>  
@@ -260,7 +259,7 @@
 		                                            <div class="fieldHolder33">
 		                                            	<span class="pL10">Patient received results? </span> 
 														<span class="pL30">
-															<form:select path="RESULTS_RECEIVED" id="iccrResultReceived" class="standardInputSmallText mR50" title="Has Patient received results?">
+															<form:select path="resultsReceived" id="iccrResultReceived" class="standardInputSmallText mR50" title="Has Patient received results?">
 																<form:option value="" label="--Select--"></form:option>
 																<c:forEach items="${codedYesNoUnkownValues}" var="codedValue">
 																	<form:option value="${codedValue.ANS_CODE}">${codedValue.ANS_DESC}</form:option>
@@ -271,7 +270,7 @@
 		                                            </div>
 														<div class="fieldHolder10 mT10"><span class="pL50">Comments </span> </div>
 														<div class="fieldHolder49 mT10">
-															<span>  <form:textarea title="Comments" maxlength="4000" cols="200" rows="3" path="COMMENTS" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>											                                   	
+															<span>  <form:textarea id="COMMENTS" title="Comments" maxlength="4000" cols="200" rows="3" path="comments" style="width:65%; height:67px; border:1px solid gray;" class="roundedBorder"></form:textarea></span>											                                   	
 						                                </div>
 		                                </div>	
 			                                

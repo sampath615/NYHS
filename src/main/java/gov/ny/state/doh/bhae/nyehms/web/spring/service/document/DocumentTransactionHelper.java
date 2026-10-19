@@ -26,7 +26,7 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AHIDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
@@ -1517,7 +1517,7 @@ public class DocumentTransactionHelper {
 	}
 	
 	@Transactional
-	public void insertICCRRawData(ICCRDataEntryVO iccrDataEntryVO, UserObject userObject, BindingResult bindingResult) throws SQLException {
+	public void insertICCRRawData(RawIccrDoc iccrDataEntryForm, UserObject userObject, BindingResult bindingResult) throws SQLException {
 		
 		Map<Object, Object> map = new HashMap<>();
 		map.put("p_document_type", "ICCR");
@@ -1535,10 +1535,7 @@ public class DocumentTransactionHelper {
 		
 		newDocId=(Integer)map.get("p_new_doc_id");
 
-		iccrDataEntryVO.setDOCUMENT_ID(newDocId);
-		iccrDataEntryVO.setCREATE_UID(userObject.getWorkerId());
-		
-		iccrDocumentService.insertICCRRawData(iccrDataEntryVO, userObject);
+		iccrDocumentService.insertICCRRawData(iccrDataEntryForm, newDocId, userObject.getWorkerId());
 		
 	}
 	

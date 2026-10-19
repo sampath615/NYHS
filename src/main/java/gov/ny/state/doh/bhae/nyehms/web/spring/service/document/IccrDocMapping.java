@@ -1,27 +1,27 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.date;
-import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.fnToDate;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.oracleText;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.toInteger;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.toLong;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.upper;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrTest;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdIccrDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 /**
  * Builds the ICCR (Infection Control) report rows: the report as entered on the data entry screen
- * (RAW_ICCR_DOC) and the standardized report the import writes from it (STD_ICCR_DOC).
+ * (RAW_ICCR_DOC) with its tests (RAW_ICCR_TESTS) and the standardized report the import writes from it (STD_ICCR_DOC).
  * <p>
  * The cleaning the former SQL inserts did in Oracle is done here: text is trimmed of spaces and
- * upper-cased, an empty text is stored as null (as Oracle does), the entered date of birth goes
- * through FN_TO_DATE (see {@link OracleConversions}).
+ * upper-cased, an empty text is stored as null (as Oracle does); the entered dates went through FN_TO_DATE
+ * when the form was bound ({@link IccrDataEntryBinding}). See {@link OracleConversions}.
  */
 final class IccrDocMapping {
 
@@ -35,38 +35,56 @@ final class IccrDocMapping {
 	}
 
 	/**
-	 * The report as entered.
+	 * The report as entered, with the test rows that were filled in.
 	 *
-	 * @param form the data entry form, with its new document id and the worker who entered it
-	 * @return the new RAW_ICCR_DOC row
+	 * @param form the posted data entry form ({@link IccrDataEntryBinding})
+	 * @param documentId the new document id of the report
+	 * @param workerId the worker who entered it
+	 * @return the new RAW_ICCR_DOC row with its RAW_ICCR_TESTS rows
 	 */
-	static RawIccrDoc toRawDoc(ICCRDataEntryVO form) {
+	static RawIccrDoc toRawDoc(RawIccrDoc form, int documentId, int workerId) {
 		return RawIccrDoc.builder()
-				.documentId(form.getDOCUMENT_ID())
-				.firstName(upper(form.getFIRST_NAME()))
-				.middleName(upper(form.getMIDDLE_NAME()))
-				.lastName(upper(form.getLAST_NAME()))
-				.dob(fnToDate(form.getDOB()))
-				.personAddress(upper(form.getPERSON_ADDRESS()))
-				.personCity(upper(form.getPERSON_CITY()))
-				.personState(upper(form.getPERSON_STATE()))
-				.personZip(upper(form.getPERSON_ZIP()))
-				.personCounty(upper(form.getPERSON_COUNTY()))
-				.personPhone(upper(form.getPERSON_PHONE()))
-				.jurisdictionProvidingInfo(upper(form.getJURISDICTION_PROVIDING_INFO()))
-				.provName(upper(form.getPROV_NAME()))
-				.provAddress(upper(form.getPROV_ADDRESS()))
-				.provCity(upper(form.getPROV_CITY()))
-				.provState(upper(form.getPROV_STATE()))
-				.provZip(upper(form.getPROV_ZIP()))
-				.provCounty(upper(form.getPROV_COUNTY()))
-				.provPhone(upper(form.getPROV_PHONE()))
-				.resultsReceived(upper(form.getRESULTS_RECEIVED()))
-				.comments(upper(form.getCOMMENTS()))
-				.createUid(form.getCREATE_UID())
+				.documentId(documentId)
+				.firstName(upper(form.getFirstName()))
+				.middleName(upper(form.getMiddleName()))
+				.lastName(upper(form.getLastName()))
+				.dob(form.getDob())
+				.personAddress(upper(form.getPersonAddress()))
+				.personCity(upper(form.getPersonCity()))
+				.personState(upper(form.getPersonState()))
+				.personZip(upper(form.getPersonZip()))
+				.personCounty(upper(form.getPersonCounty()))
+				.personPhone(upper(form.getPersonPhone()))
+				.jurisdictionProvidingInfo(upper(form.getJurisdictionProvidingInfo()))
+				.provName(upper(form.getProvName()))
+				.provAddress(upper(form.getProvAddress()))
+				.provCity(upper(form.getProvCity()))
+				.provState(upper(form.getProvState()))
+				.provZip(upper(form.getProvZip()))
+				.provCounty(upper(form.getProvCounty()))
+				.provPhone(upper(form.getProvPhone()))
+				.resultsReceived(upper(form.getResultsReceived()))
+				.comments(upper(form.getComments()))
+				.createUid(workerId)
 				.createDate(new Timestamp(System.currentTimeMillis()))
 				.currentProcessStatus(ENTERED_PROCESS_STATUS)
+				.iccrTestList(filledInTests(form.getIccrTestList()))
 				.build();
+	}
+
+	/**
+	 * The test rows to save: those whose type, date or result is filled in. Their text is stored as entered
+	 * (the former insert did not trim or upper-case it).
+	 */
+	private static List<RawIccrTest> filledInTests(List<RawIccrTest> tests) {
+		if (tests == null) {
+			return List.of();
+		}
+		return tests.stream()
+				.filter(test -> test != null && (CommonUtil.isNotNullAndEmpty(test.getTestType())
+						|| test.getDateOfTest() != null
+						|| CommonUtil.isNotNullAndEmpty(test.getTestResults())))
+				.toList();
 	}
 
 	/**

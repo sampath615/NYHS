@@ -5,12 +5,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrTest;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdIccrDoc;
 
 /**
@@ -22,35 +23,36 @@ class IccrDocMappingTest {
 
 	@Test
 	void cleansTheEnteredReport() {
-		ICCRDataEntryVO form = new ICCRDataEntryVO();
-		form.setDOCUMENT_ID(12);
-		form.setFIRST_NAME("  jane ");
-		form.setLAST_NAME("o'neil");
-		form.setDOB(" 3/4/2023 ");
-		form.setPERSON_ZIP("  ");
-		form.setCOMMENTS("seen at clinic");
-		form.setCREATE_UID(900);
+		Timestamp dob = Timestamp.valueOf("2023-03-04 00:00:00");
+		RawIccrDoc form = RawIccrDoc.builder().documentId(1).createUid(5).currentProcessStatus(9)   // posted values the binder never takes
+				.firstName("  jane ").lastName("o'neil").dob(dob).personZip("  ").comments("seen at clinic").build();
 
-		RawIccrDoc raw = IccrDocMapping.toRawDoc(form);
+		RawIccrDoc raw = IccrDocMapping.toRawDoc(form, 12, 900);
 
 		assertThat(raw.getDocumentId()).isEqualTo(12);
-		assertThat(raw.getFirstName()).isEqualTo("JANE");                                // TRIM(UPPER(...))
+		assertThat(raw.getFirstName()).isEqualTo("JANE");                // TRIM(UPPER(...))
 		assertThat(raw.getLastName()).isEqualTo("O'NEIL");
 		assertThat(raw.getMiddleName()).isNull();
-		assertThat(raw.getPersonZip()).isNull();                                         // blank text is stored as null
+		assertThat(raw.getPersonZip()).isNull();                         // blank text is stored as null
 		assertThat(raw.getComments()).isEqualTo("SEEN AT CLINIC");
-		assertThat(raw.getDob()).isEqualTo(Timestamp.valueOf("2023-03-04 00:00:00"));   // FN_TO_DATE(..., 'MM/DD/YYYY')
+		assertThat(raw.getDob()).isEqualTo(dob);                         // already FN_TO_DATE'd by the binder
 		assertThat(raw.getCreateUid()).isEqualTo(900);
-		assertThat(raw.getCreateDate()).isNotNull();                                     // SYSDATE
+		assertThat(raw.getCreateDate()).isNotNull();                     // SYSDATE
 		assertThat(raw.getCurrentProcessStatus()).isEqualTo(1);
+		assertThat(raw.getIccrTestList()).isEmpty();
 	}
 
 	@Test
-	void anInvalidDateOfBirthIsStoredAsNull() {
-		ICCRDataEntryVO form = new ICCRDataEntryVO();
-		form.setDOB("02/30/2023");
+	void keepsTheTestRowsThatWereFilledIn() {
+		RawIccrTest typeOnly = RawIccrTest.builder().testType("VL").testResults(" det ").testResultCopies("").build();
+		RawIccrTest dateOnly = RawIccrTest.builder().dateOfTest(Timestamp.valueOf("2023-01-02 00:00:00")).build();
+		RawIccrTest empty = RawIccrTest.builder().testType("").testResults("").testResultCopies("200").build();
+		RawIccrDoc form = RawIccrDoc.builder().iccrTestList(List.of(typeOnly, empty, dateOnly, typeOnly)).build();
 
-		assertThat(IccrDocMapping.toRawDoc(form).getDob()).isNull();
+		List<RawIccrTest> tests = IccrDocMapping.toRawDoc(form, 12, 900).getIccrTestList();
+
+		assertThat(tests).containsExactly(typeOnly, dateOnly, typeOnly);   // also the same test twice
+		assertThat(tests.get(0).getTestResults()).isEqualTo(" det ");      // stored as entered, as before
 	}
 
 	@Test
