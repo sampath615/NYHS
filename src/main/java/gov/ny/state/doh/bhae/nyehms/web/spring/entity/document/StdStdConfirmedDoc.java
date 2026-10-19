@@ -1,25 +1,38 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.Immutable;
+import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
- * A confirmed STD (sexually transmitted disease) report, standardized (table STD_STD_CONFIRMED_DOC); the columns the confirmed STD document screen reads.
+ * A confirmed STD (sexually transmitted disease) report, standardized (table STD_STD_CONFIRMED_DOC); the columns the
+ * confirmed STD document screen reads and the import writes.
  * <p>
- * Read-only. <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
+ * Never updated: a row is inserted once by the import ({@code StdConfDocRepository.saveAndFlush}, built by
+ * {@code StdConfDocMapping}), so it is always new ({@link #isNew()}: save() inserts without a select first).
+ * Columns the former SQL insert wrote as text are text here too (Oracle converts the numeric ones).
+ * <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
  */
 @Entity
 @Immutable
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "STD_STD_CONFIRMED_DOC")
-public class StdStdConfirmedDoc {
+public class StdStdConfirmedDoc implements Persistable<Integer> {
 
 	@Id
 	@Column(name = "DOCUMENT_ID")
@@ -32,13 +45,13 @@ public class StdStdConfirmedDoc {
 	private Long hinserialno;
 
 	@Column(name = "DOB")
-	private Date dob;
+	private Timestamp dob;
 
 	@Column(name = "DIAG_DATE")
-	private Date diagDate;
+	private Timestamp diagDate;
 
 	@Column(name = "DATE_OF_DEATH")
-	private Date dateOfDeath;
+	private Timestamp dateOfDeath;
 
 	@Column(name = "ETHNICITY")
 	private String ethnicity;
@@ -212,16 +225,16 @@ public class StdStdConfirmedDoc {
 	private String x900positive;
 
 	@Column(name = "X900DXDATE")
-	private Date x900dxdate;
+	private Timestamp x900dxdate;
 
 	@Column(name = "CURRENT900TESTRESULT")
 	private String current900testresult;
 
 	@Column(name = "UPLOAD_DT")
-	private String uploadDt;
+	private Timestamp uploadDt;
 
 	@Column(name = "EHARS_IMPORT_DATE")
-	private Date eharsImportDate;
+	private Timestamp eharsImportDate;
 
 	@Column(name = "CURRENT_PROCESS_STATUS")
 	private String currentProcessStatus;
@@ -234,4 +247,81 @@ public class StdStdConfirmedDoc {
 
 	@Column(name = "PROV_COUNTY")
 	private String provCounty;
+
+	@Column(name = "PERSON_CENSUS_TRACT")
+	private String personCensusTract;
+
+	@Column(name = "PROV_CENSUS_TRACT")
+	private String provCensusTract;
+
+	@Column(name = "FILENAME")
+	private String filename;
+
+	@Column(name = "REVIEW_UID")
+	private String reviewUid;
+
+	@Column(name = "MATCH_CD")
+	private String matchCd;
+
+	@Column(name = "MATCH_PASS")
+	private String matchPass;
+
+	@Column(name = "EHARS_STATUS_CD")
+	private String eharsStatusCd;
+
+	@Column(name = "PERSON_LONGITUDE")
+	private String personLongitude;
+
+	@Column(name = "PROV_LONGITUDE")
+	private String provLongitude;
+
+	@Column(name = "PERSON_LATITUDE")
+	private String personLatitude;
+
+	@Column(name = "PROV_LATITUDE")
+	private String provLatitude;
+
+	@Column(name = "UPLOAD_ID")
+	private String uploadId;
+
+	@Column(name = "MATCHED_STATENO")
+	private String matchedStateno;
+
+	@Column(name = "MATCH_WEIGHT")
+	private BigDecimal matchWeight;
+
+	@Column(name = "QS_PARENT_DOC_ID")
+	private Long qsParentDocId;
+
+	@Column(name = "MATCHED_PROCESS_DATE")
+	private Timestamp matchedProcessDate;
+
+	@Column(name = "REVIEW_DATE")
+	private Timestamp reviewDate;
+
+	@Column(name = "FLUX_MATCH_CD")
+	private String fluxMatchCd;
+
+	@Column(name = "FLUX_POT_STATENO")
+	private String fluxPotStateno;
+
+	@Column(name = "FLUX_MATCHED_STATENO")
+	private String fluxMatchedStateno;
+
+	@Column(name = "FLUX_QS_PARENT_DOC_ID")
+	private Long fluxQsParentDocId;
+
+	@Column(name = "FLUX_MATCHED_PROCESS_DATE")
+	private Timestamp fluxMatchedProcessDate;
+
+	@Override
+	public Integer getId() {
+		return documentId;
+	}
+
+	/** Rows are only ever inserted. */
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 }

@@ -66,6 +66,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SsdmDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
@@ -882,7 +883,7 @@ public class DocumentController {
 		
 		
 		
-		List<Map<String, String>> documentRefData = stdConfDocumentService.getSTDConfRefData();
+		List<StdConfRefData> documentRefData = stdConfDocumentService.getSTDConfRefData();
 		
 		map.put("documentRefData", documentRefData);
 		

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -13,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.JpaConfig;
+import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdStdConfirmedDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.AirsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
@@ -32,6 +36,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
 
@@ -107,6 +112,9 @@ class DocumentViewRepositoriesTest {
 
 	@Autowired
 	StdConfDocRepository stdConfDocRepository;
+
+	@Autowired
+	DataSource dataSource;
 
 	@Test
 	void formatsDatesAsTheFormerToChar() {
@@ -254,5 +262,41 @@ class DocumentViewRepositoriesTest {
 				new BlackBoxRefData("OI_CD", "Only", "1"),
 				new BlackBoxRefData("TRANS_CATEG", "First", "1"),
 				new BlackBoxRefData("TRANS_CATEG", "Second", "2"));
+	}
+
+	@Test
+	void readsTheConfirmedStdCodeLists() {
+		assertThat(stdConfDocRepository.findRefData()).containsExactly(                 // by column and code
+				new StdConfRefData("DRUG_USED_LIST", "Crack", "1"),
+				new StdConfRefData("DRUG_USED_LIST", "Heroin", "3"),
+				new StdConfRefData("X900TEST", "First test", "1"),
+				new StdConfRefData("X900TEST", "Second test", "2"));
+		assertThat(stdConfDocRepository.findRefDataOfColumn("DRUG_USED_LIST")).containsExactlyInAnyOrder(
+				new StdConfRefData("DRUG_USED_LIST", "Crack", "1"),
+				new StdConfRefData("DRUG_USED_LIST", "Heroin", "3"));
+		assertThat(stdConfDocRepository.findRefDataOfColumn("NONE")).isEmpty();
+	}
+
+	@Test
+	@Transactional
+	void savesAStandardizedConfirmedStdReport() {
+		stdConfDocRepository.saveAndFlush(StdStdConfirmedDoc.builder()
+				.documentId(400)
+				.fname("JANE")
+				.casekey(12)
+				.matchWeight(new java.math.BigDecimal("12.5"))
+				.dob(Timestamp.valueOf("1980-01-02 00:00:00"))
+				.riskDrugUsedCrack("Y")
+				.currentProcessStatus("5")
+				.build());
+
+		Map<String, Object> row = new JdbcTemplate(dataSource).queryForMap("select * from STD_STD_CONFIRMED_DOC where DOCUMENT_ID = 400");
+		assertThat(row.get("FNAME")).isEqualTo("JANE");
+		assertThat(row.get("LNAME")).isNull();
+		assertThat(row.get("CASEKEY")).hasToString("12");
+		assertThat(row.get("MATCH_WEIGHT")).hasToString("12.5");
+		assertThat(row.get("DOB")).isEqualTo(Timestamp.valueOf("1980-01-02 00:00:00"));
+		assertThat(row.get("RISK_DRUG_USED_CRACK")).isEqualTo("Y");
+		assertThat(row.get("CURRENT_PROCESS_STATUS")).hasToString("5");   // text written to a number column, converted by the database
 	}
 }

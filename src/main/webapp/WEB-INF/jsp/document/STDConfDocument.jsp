@@ -474,8 +474,8 @@
 						<form:select id="NINEHUNDREDTEST"  path="stdStdConfirmedDoc.ninehundredtest" class="standardInputMedText " title="900 Test"   maxlength="50">
 							<form:option value="" ></form:option>
 							<c:forEach items="${documentRefData}" var="drugDetails">
-								<c:if test="${drugDetails.REF_COLUMN == 'X900TEST' }">
-									<form:option value="${drugDetails.LOOKUP_CD}" label="${drugDetails.LOOKUP_NAME}" name="${drugDetails.LOOKUP_NAME}"></form:option>
+								<c:if test="${drugDetails.refColumn == 'X900TEST' }">
+									<form:option value="${drugDetails.lookupCd}" label="${drugDetails.lookupName}" name="${drugDetails.lookupName}"></form:option>
 								</c:if>
 							</c:forEach>
 						
@@ -490,8 +490,8 @@
 						<form:select id="TESTTECHNOLOGY"  path="stdStdConfirmedDoc.testtechnology" class="standardInputMedText " title="Test Technology"   maxlength="50">
 							<form:option value="" ></form:option>
 							<c:forEach items="${documentRefData}" var="drugDetails">
-								<c:if test="${drugDetails.REF_COLUMN == 'TEST_TECHNOLOGY' }">
-									<form:option value="${drugDetails.LOOKUP_CD}" label="${drugDetails.LOOKUP_NAME}" name="${drugDetails.LOOKUP_NAME}"></form:option>
+								<c:if test="${drugDetails.refColumn == 'TEST_TECHNOLOGY' }">
+									<form:option value="${drugDetails.lookupCd}" label="${drugDetails.lookupName}" name="${drugDetails.lookupName}"></form:option>
 								</c:if>
 							</c:forEach>
 						</form:select>
@@ -505,8 +505,8 @@
 						<form:select id="X900POSITIVE"  path="stdStdConfirmedDoc.x900positive" class="standardInputMedText " title="900 Positive"   maxlength="50">
 							<form:option value="" ></form:option>
 							<c:forEach items="${documentRefData}" var="drugDetails">
-								<c:if test="${drugDetails.REF_COLUMN == 'X900POSITIVE' }">
-									<form:option value="${drugDetails.LOOKUP_CD}" label="${drugDetails.LOOKUP_NAME}" name="${drugDetails.LOOKUP_NAME}"></form:option>
+								<c:if test="${drugDetails.refColumn == 'X900POSITIVE' }">
+									<form:option value="${drugDetails.lookupCd}" label="${drugDetails.lookupName}" name="${drugDetails.lookupName}"></form:option>
 								</c:if>
 							</c:forEach>
 						</form:select>
@@ -528,8 +528,8 @@
 						<form:select id="CURRENT900TESTRESULT"  path="stdStdConfirmedDoc.current900testresult" class="standardInputMedText " title="900 Test Result">
 							<form:option value="" ></form:option>
 							<c:forEach items="${documentRefData}" var="drugDetails">
-								<c:if test="${drugDetails.REF_COLUMN == 'CURRENT900TESTRESULT' }">
-									<form:option value="${drugDetails.LOOKUP_CD}" label="${drugDetails.LOOKUP_NAME}" name="${drugDetails.LOOKUP_NAME}"></form:option>
+								<c:if test="${drugDetails.refColumn == 'CURRENT900TESTRESULT' }">
+									<form:option value="${drugDetails.lookupCd}" label="${drugDetails.lookupName}" name="${drugDetails.lookupName}"></form:option>
 								</c:if>
 							</c:forEach>
 						</form:select>
@@ -543,8 +543,8 @@
 						<form:select id="DISEASE"  path="stdStdConfirmedDoc.disease" class="standardInputMedText " title="Disease">
 							<form:option value="" ></form:option>
 							<c:forEach items="${documentRefData}" var="drugDetails">
-								<c:if test="${drugDetails.REF_COLUMN == 'DISEASE' }">
-									<form:option value="${drugDetails.LOOKUP_CD}" label="${drugDetails.LOOKUP_NAME}" name="${drugDetails.LOOKUP_NAME}"></form:option>
+								<c:if test="${drugDetails.refColumn == 'DISEASE' }">
+									<form:option value="${drugDetails.lookupCd}" label="${drugDetails.lookupName}" name="${drugDetails.lookupName}"></form:option>
 								</c:if>
 							</c:forEach>
 						</form:select>

@@ -75,6 +75,12 @@ final class OracleConversions {
 		return text == null ? null : new BigDecimal(text).longValueExact();
 	}
 
+	/** A number column: the number (text converted as Oracle does), or null when empty. */
+	static BigDecimal toDecimal(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : new BigDecimal(text);
+	}
+
 	/** FN_TO_DATE(TRIM(value), 'MM/DD/YYYY'): the date, or null when it is not a valid date. */
 	static Timestamp fnToDate(Object value) {
 		String text = trimmed(value);

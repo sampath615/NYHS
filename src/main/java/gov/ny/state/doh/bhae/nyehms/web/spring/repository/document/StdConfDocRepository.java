@@ -1,13 +1,17 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.repository.document;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdStdConfirmedDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData;
 
 /**
- * Spring Data JPA repository for the confirmed STD document (replaces STDConfDocumentDAO.getSTDConfDoc).
+ * Spring Data JPA repository for the confirmed STD document (replaces STDConfDocumentDAO: getSTDConfDoc, getSTDConfRefData,
+ * getDrugList; the import saves the standardized document with saveAndFlush, which replaces writeRawSTDConfDocDataToStdTable).
  */
 public interface StdConfDocRepository extends JpaRepository<StdStdConfirmedDoc, Integer> {
 
@@ -36,4 +40,28 @@ public interface StdConfDocRepository extends JpaRepository<StdStdConfirmedDoc, 
 			where rawStdConfirmedDoc.documentId = :documentId
 			""")
 	StdConfDocData findDocument(int documentId);
+
+	/**
+	 * The code lists of the confirmed STD reports, by coded column and code.
+	 */
+	@Query("""
+			select new gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData(refData.refColumn,
+					refData.lookupName, refData.lookupCd)
+			from CodedStdConfRefData refData
+			order by refData.refColumn, refData.lookupCd
+			""")
+	List<StdConfRefData> findRefData();
+
+	/**
+	 * The codes of one coded column, in no particular order (as before).
+	 *
+	 * @param refColumn the coded column (e.g. DRUG_USED_LIST)
+	 */
+	@Query("""
+			select new gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData(refData.refColumn,
+					refData.lookupName, refData.lookupCd)
+			from CodedStdConfRefData refData
+			where refData.refColumn = :refColumn
+			""")
+	List<StdConfRefData> findRefDataOfColumn(String refColumn);
 }
