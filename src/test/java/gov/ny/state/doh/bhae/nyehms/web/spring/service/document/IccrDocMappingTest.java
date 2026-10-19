@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ class IccrDocMappingTest {
 
 	@Test
 	void cleansTheEnteredReport() {
-		Timestamp dob = Timestamp.valueOf("2023-03-04 00:00:00");
+		LocalDate dob = LocalDate.of(2023, 3, 4);
 		RawIccrDoc form = RawIccrDoc.builder().documentId(1).createUid(5).currentProcessStatus(9)   // posted values the binder never takes
 				.firstName("  jane ").lastName("o'neil").dob(dob).personZip("  ").comments("seen at clinic").build();
 
@@ -35,7 +36,7 @@ class IccrDocMappingTest {
 		assertThat(raw.getMiddleName()).isNull();
 		assertThat(raw.getPersonZip()).isNull();                         // blank text is stored as null
 		assertThat(raw.getComments()).isEqualTo("SEEN AT CLINIC");
-		assertThat(raw.getDob()).isEqualTo(dob);                         // already FN_TO_DATE'd by the binder
+		assertThat(raw.getDob()).isEqualTo(dob);                         // read when the form was bound
 		assertThat(raw.getCreateUid()).isEqualTo(900);
 		assertThat(raw.getCreateDate()).isNotNull();                     // SYSDATE
 		assertThat(raw.getCurrentProcessStatus()).isEqualTo(1);
@@ -45,7 +46,7 @@ class IccrDocMappingTest {
 	@Test
 	void keepsTheTestRowsThatWereFilledIn() {
 		RawIccrTest typeOnly = RawIccrTest.builder().testType("VL").testResults(" det ").testResultCopies("").build();
-		RawIccrTest dateOnly = RawIccrTest.builder().dateOfTest(Timestamp.valueOf("2023-01-02 00:00:00")).build();
+		RawIccrTest dateOnly = RawIccrTest.builder().dateOfTest(LocalDate.of(2023, 1, 2)).build();
 		RawIccrTest empty = RawIccrTest.builder().testType("").testResults("").testResultCopies("200").build();
 		RawIccrDoc form = RawIccrDoc.builder().iccrTestList(List.of(typeOnly, empty, dateOnly, typeOnly)).build();
 

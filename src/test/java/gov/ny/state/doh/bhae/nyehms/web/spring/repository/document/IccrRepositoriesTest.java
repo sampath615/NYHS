@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.repository.document;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -85,7 +86,7 @@ class IccrRepositoriesTest {
 	@Test
 	@Transactional
 	void savesAReportWithItsTestsAlsoTheSameTestTwice() {
-		Timestamp date = Timestamp.valueOf("2023-05-06 00:00:00");
+		LocalDate date = LocalDate.of(2023, 5, 6);
 		RawIccrTest test = RawIccrTest.builder().dateOfTest(date).testType("VL").testResults("ND").testResultCopies("").testResultLogs("1.5").build();
 		RawIccrTest sameTest = RawIccrTest.builder().dateOfTest(date).testType("VL").testResults("ND").testResultCopies("").testResultLogs("1.5").build();
 
@@ -103,7 +104,7 @@ class IccrRepositoriesTest {
 		rawIccrDocRepository.saveAndFlush(RawIccrDoc.builder()
 				.documentId(400)
 				.firstName("JANE")
-				.dob(Timestamp.valueOf("2023-03-04 00:00:00"))
+				.dob(LocalDate.of(2023, 3, 4))
 				.createUid(900)
 				.createDate(Timestamp.valueOf("2024-01-02 03:04:05"))
 				.currentProcessStatus(1)

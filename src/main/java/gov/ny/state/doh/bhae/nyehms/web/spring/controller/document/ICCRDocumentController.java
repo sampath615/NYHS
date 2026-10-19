@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +27,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ICCRDocumentService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.IccrDataEntryBinding;
 
 @Controller
 public class ICCRDocumentController {
@@ -59,15 +56,13 @@ public class ICCRDocumentController {
 		return "dataentry/ICCRDataEntryDoc";
 	}
 	
-	/** The posted form is bound to the entity's fields (see IccrDataEntryBinding). */
-	@InitBinder("ICCRDataEntryVO")
-	public void initDataEntryBinder(WebDataBinder binder) {
-		IccrDataEntryBinding.configure(binder);
-	}
-
+	/**
+	 * Saves the posted data entry form. A date that is not a valid date is a binding error in {@code result} and
+	 * stays empty; the form is saved anyway, as before (the page validates the dates).
+	 */
 	@RequestMapping(value="/saveICCRDataForm", method = RequestMethod.POST)
 	public @ResponseBody Map<Object, Object> saveICCRDataForm(
-			@ModelAttribute("ICCRDataEntryVO") RawIccrDoc iccrDataEntryForm, HttpServletRequest request, BindingResult result, UserObject userObject) {
+			@ModelAttribute("ICCRDataEntryVO") RawIccrDoc iccrDataEntryForm, BindingResult result, HttpServletRequest request, UserObject userObject) {
 		
 
 		Map<Object, Object> targetMap= new HashMap<>();

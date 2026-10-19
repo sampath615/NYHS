@@ -1,10 +1,12 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.hibernate.annotations.Immutable;
 import org.springframework.data.domain.Persistable;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -21,8 +23,8 @@ import lombok.NoArgsConstructor;
 
 /**
  * An ICCR (Infection Control) report as received (table RAW_ICCR_DOC) with its tests (RAW_ICCR_TESTS): the
- * form object of the ICCR data entry screen (ICCRDataEntryDoc.jsp; the posted form is bound to the fields, see
- * {@code IccrDataEntryBinding}), read by the ICCR document screen.
+ * form object of the ICCR data entry screen (ICCRDataEntryDoc.jsp; the posted form is bound through the public
+ * constructor), read by the ICCR document screen.
  * <p>
  * Never updated: a row is inserted once with its tests ({@code RawIccrDocRepository.saveAndFlush}, built by
  * {@code IccrDocMapping} from the posted form), so it is always new ({@link #isNew()}: save() inserts without a select first).
@@ -33,7 +35,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor   // public: the posted data entry form is bound through it
 @Table(name = "RAW_ICCR_DOC")
 public class RawIccrDoc implements Persistable<Integer> {
 
@@ -51,7 +53,8 @@ public class RawIccrDoc implements Persistable<Integer> {
 	private String lastName;
 
 	@Column(name = "DOB")
-	private Timestamp dob;
+	@DateTimeFormat(pattern = "M/d/yyyy")   // as entered; not a valid date: left empty, as FN_TO_DATE did
+	private LocalDate dob;
 
 	@Column(name = "PERSON_ADDRESS")
 	private String personAddress;

@@ -20,8 +20,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
  * (RAW_ICCR_DOC) with its tests (RAW_ICCR_TESTS) and the standardized report the import writes from it (STD_ICCR_DOC).
  * <p>
  * The cleaning the former SQL inserts did in Oracle is done here: text is trimmed of spaces and
- * upper-cased, an empty text is stored as null (as Oracle does); the entered dates went through FN_TO_DATE
- * when the form was bound ({@link IccrDataEntryBinding}). See {@link OracleConversions}.
+ * upper-cased, an empty text is stored as null (as Oracle does), see {@link OracleConversions}; the entered dates
+ * were read when the form was bound (an invalid date is null, as FN_TO_DATE made it).
  */
 final class IccrDocMapping {
 
@@ -37,7 +37,7 @@ final class IccrDocMapping {
 	/**
 	 * The report as entered, with the test rows that were filled in.
 	 *
-	 * @param form the posted data entry form ({@link IccrDataEntryBinding})
+	 * @param form the posted data entry form; only its form fields are taken
 	 * @param documentId the new document id of the report
 	 * @param workerId the worker who entered it
 	 * @return the new RAW_ICCR_DOC row with its RAW_ICCR_TESTS rows

@@ -1,6 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -21,11 +23,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor   // public: the posted data entry form is bound through it
 public class RawIccrTest {
 
 	@Column(name = "DATE_OF_TEST")
-	private Timestamp dateOfTest;
+	@DateTimeFormat(pattern = "M/d/yyyy")   // as entered; not a valid date: left empty, as FN_TO_DATE did
+	private LocalDate dateOfTest;
 
 	@Column(name = "TEST_TYPE")
 	private String testType;
