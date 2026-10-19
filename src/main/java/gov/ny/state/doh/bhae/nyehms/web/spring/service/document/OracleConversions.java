@@ -75,6 +75,12 @@ final class OracleConversions {
 		return text == null ? null : new BigDecimal(text).longValueExact();
 	}
 
+	/** NVL(value, 0) of a number column written as text: the value as text, or "0" when empty. */
+	static String textOrZero(Object value) {
+		String text = oracleText(value);
+		return text == null || text.isEmpty() ? "0" : text;
+	}
+
 	/** A number column: the number (text converted as Oracle does), or null when empty. */
 	static BigDecimal toDecimal(Object value) {
 		String text = trimmed(value);

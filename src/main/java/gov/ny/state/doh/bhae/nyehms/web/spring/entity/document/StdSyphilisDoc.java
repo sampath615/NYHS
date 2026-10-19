@@ -1,32 +1,43 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import org.hibernate.annotations.Immutable;
+import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
- * A syphilis report, standardized (table STD_SYPHILIS_DOC); the columns the syphilis document screen reads.
+ * A syphilis report, standardized (); the columns the syphilis document screen reads and the import writes.
  * <p>
- * Read-only. <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
+ * Never updated: a row is inserted once by the import ({@code SyphDocRepository.saveAndFlush}, built by
+ * {@code SyphStdDocMapping}), so it is always new ({@link #isNew()}: save() inserts without a select first).
+ * Columns the former SQL insert wrote as text are text here too (Oracle converts the numeric ones).
+ * <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
  */
 @Entity
 @Immutable
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "STD_SYPHILIS_DOC")
-public class StdSyphilisDoc {
+public class StdSyphilisDoc implements Persistable<Integer> {
 
 	@Id
 	@Column(name = "DOCUMENT_ID")
 	private Integer documentId;
 
 	@Column(name = "EHARS_IMPORT_DATE")
-	private Date eharsImportDate;
+	private Timestamp eharsImportDate;
 
 	@Column(name = "FNAME")
 	private String fname;
@@ -38,10 +49,10 @@ public class StdSyphilisDoc {
 	private String lname;
 
 	@Column(name = "DOB")
-	private Date dob;
+	private Timestamp dob;
 
 	@Column(name = "DOD")
-	private Date dod;
+	private Timestamp dod;
 
 	@Column(name = "PERSON_ADDRESS")
 	private String personAddress;
@@ -95,10 +106,10 @@ public class StdSyphilisDoc {
 	private String diseaseCode;
 
 	@Column(name = "SYPHILIS_DIAGNOSIS_DATE")
-	private Date syphilisDiagnosisDate;
+	private Timestamp syphilisDiagnosisDate;
 
 	@Column(name = "RECEIVED_DATE")
-	private Date receivedDate;
+	private Timestamp receivedDate;
 
 	@Column(name = "PROV_FNAME")
 	private String provFname;
@@ -123,4 +134,51 @@ public class StdSyphilisDoc {
 
 	@Column(name = "PROV_COUNTY")
 	private String provCounty;
+
+	@Column(name = "CURRENT_PROCESS_STATUS")
+	private Integer currentProcessStatus;
+
+	@Column(name = "MATCHED_PROCESS_DATE")
+	private Timestamp matchedProcessDate;
+
+	@Column(name = "EHARS_STATUS_CD")
+	private String eharsStatusCd;
+
+	@Column(name = "MATCHED_STATENO")
+	private String matchedStateno;
+
+	@Column(name = "QS_PARENT_DOC_ID")
+	private Long qsParentDocId;
+
+	@Column(name = "REVIEW_UID")
+	private String reviewUid;
+
+	@Column(name = "REVIEW_DATE")
+	private Timestamp reviewDate;
+
+	@Column(name = "FLUX_MATCH_CD")
+	private String fluxMatchCd;
+
+	@Column(name = "FLUX_POT_STATENO")
+	private String fluxPotStateno;
+
+	@Column(name = "FLUX_MATCHED_STATENO")
+	private String fluxMatchedStateno;
+
+	@Column(name = "FLUX_QS_PARENT_DOC_ID")
+	private Long fluxQsParentDocId;
+
+	@Column(name = "FLUX_MATCHED_PROCESS_DATE")
+	private Timestamp fluxMatchedProcessDate;
+
+	@Override
+	public Integer getId() {
+		return documentId;
+	}
+
+	/** Rows are only ever inserted. */
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 }

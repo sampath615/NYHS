@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CASADocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CasaDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -9,7 +8,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -24,8 +22,6 @@ import org.springframework.validation.BindingResult;
 @Service
 public class CASADocumentService {
 	
-	@Autowired
-	CASADocumentDAO	casaDocumentDAO;
 	@Autowired
 	CasaDocRepository casaDocRepository;
 	@Autowired
@@ -99,69 +95,15 @@ public class CASADocumentService {
 		
 	}
 	
-	private int writeRawCasaDocDataToStdTable(Map<Object, Object> docVO,
-			BigDecimal documentId){
-		
-		docVO.put("GENDER", LabCommonUtils.checkCurrentGenderData((String)docVO.get("GENDER")));
-		
-		
-		docVO.put("RACE_INDIAN", "0");
-		docVO.put("RACE_BLACK", "0");
-		docVO.put("RACE_ASIAN", "0");
-		docVO.put("RACE_PACIFIC", "0");
-		docVO.put("RACE_WHITE", "0");
-		docVO.put("RACE_MULTIPLE", "0");
-		docVO.put("RACE_OTHER", "0");
-		docVO.put("RACE_UNKNOWN", "0");
-		
-		if(CommonUtil.isNotNullAndEmpty((String)docVO.get("RACE"))){
-			String race = ((String)docVO.get("RACE")).trim();
-			
-			if("4".equals(race)){
-				docVO.put("ETHNICITY", "09");
-				docVO.put("RACE_INDIAN", "1");
-			}else if("2".equals(race)){
-				docVO.put("ETHNICITY", "02");
-				docVO.put("RACE_BLACK", "1");
-			}else if("3".equals(race)){
-				docVO.put("RACE_ASIAN", "1");
-				docVO.put("ETHNICITY", "09");
-			}else if("1".equals(race)){
-				docVO.put("ETHNICITY", "02");
-				docVO.put("RACE_WHITE", "1");
-			}else if("5".equals(race)){
-				docVO.put("ETHNICITY", "01");
-				docVO.put("RACE_UNKNOWN", "1");
-			}else if("9".equals(race)){
-				docVO.put("ETHNICITY", "09");
-				docVO.put("RACE_OTHER", "1");
-			}else if("0".equals(race)){
-				docVO.put("ETHNICITY", "09");
-				docVO.put("RACE_UNKNOWN", "1");
-			}
-			
-		}
-		
-		docVO.put("DOB_TEXT", (String)docVO.get("DOB"));
-		docVO.put("SSN", CommonUtil.formatSSNValue((String)docVO.get("SSN")));
-		docVO.put("FNAME",CommonUtil.NameValidation((String)docVO.get("FNAME")));
-		docVO.put("LNAME",CommonUtil.NameValidation((String)docVO.get("LNAME")));
-		docVO.put("MNAME",CommonUtil.NameValidation((String)docVO.get("MNAME")));
-		
-		docVO.put("PERSON_ZIP", CommonUtil.zipValidation((String)docVO.get("ZIP")));
-		
-		
-		docVO.put("PERSON_COUNTY", (String)docVO.get("COUNTY_FIPS"));
-		
-		docVO.put("MEDICAID_NUMBER", CommonUtil.checkMedicaidNumberFormat((String)docVO.get("MEDICAID_NUMBER")));		
-		
-		
-		docVO.put("CURRENT_PROCESS_STATUS", 5);
-		
-		
-		return  casaDocumentDAO.writeStdDocData(docVO);
-		
-		
+	/**
+	 * Writes the standardized record (STD_CASA_DOC) of a received record.
+	 *
+	 * @param docVO the received record (a RAW_CASA_DOC row), value per column name; not changed
+	 * @return 1
+	 */
+	private int writeRawCasaDocDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId) {
+		casaDocRepository.saveAndFlush(CasaStdDocMapping.toStdDoc(docVO));
+		return 1;
 	}
 	
 	
