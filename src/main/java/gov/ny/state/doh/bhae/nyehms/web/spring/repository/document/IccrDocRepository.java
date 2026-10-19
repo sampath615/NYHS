@@ -7,7 +7,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdIccrDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
 
 /**
- * Spring Data JPA repository for the ICCR document (replaces ICCRDocumentDAO.getICCRDocument).
+ * Spring Data JPA repository for the ICCR document (replaces ICCRDocumentDAO.getICCRDocument; the import
+ * saves the standardized document with saveAndFlush, which replaces ICCRDocumentDAO.writeStdDocData).
  */
 public interface IccrDocRepository extends JpaRepository<StdIccrDoc, Integer> {
 

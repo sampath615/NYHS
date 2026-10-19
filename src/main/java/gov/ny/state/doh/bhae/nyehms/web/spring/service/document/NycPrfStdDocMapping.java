@@ -2,10 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.date;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.fnToDate;
+import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.toInteger;
+import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.toLong;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.trimmed;
 import static gov.ny.state.doh.bhae.nyehms.web.spring.service.document.OracleConversions.upper;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Map;
@@ -288,15 +289,5 @@ final class NycPrfStdDocMapping {
 	private static Object firstFilled(Map<Object, Object> raw, String field, String otherwise) {
 		Object value = raw.get(field);
 		return CommonUtil.isNotNullAndEmpty((String) value) ? value : raw.get(otherwise);
-	}
-
-	private static Integer toInteger(Object value) {
-		String text = trimmed(value);
-		return text == null ? null : new BigDecimal(text).intValueExact();
-	}
-
-	private static Long toLong(Object value) {
-		String text = trimmed(value);
-		return text == null ? null : new BigDecimal(text).longValueExact();
 	}
 }

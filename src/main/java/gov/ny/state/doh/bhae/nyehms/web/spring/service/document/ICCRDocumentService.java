@@ -1,25 +1,24 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ICCRDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AcrfTestResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.AcrfTestResultRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrTestRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawIccrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -30,8 +29,10 @@ public class ICCRDocumentService {
 	@Autowired private CommonExceptionHandler commonExceptionHandler;	
 	@Autowired private DocumentTransactionHelper documentTransactionHelper;
 	
-	@Autowired private ICCRDocumentDAO iccrDocumentDAO;
 	@Autowired private IccrDocRepository iccrDocRepository;
+	@Autowired private RawIccrDocRepository rawIccrDocRepository;
+	@Autowired private IccrTestRepository iccrTestRepository;
+	@Autowired private AcrfTestResultRepository acrfTestResultRepository;
 	
 	private static Logger log = LoggerFactory.getLogger(ICCRDocumentService.class);
 
@@ -63,85 +64,54 @@ public class ICCRDocumentService {
 		
 	}
 
-	public List<JSONObject> getCodedTestTypeResult(String testType) {
-		
-		List<JSONObject> codedTestTypeValues = iccrDocumentDAO.getCodedTestTypeResult(testType);
-		return codedTestTypeValues;
+	public List<AcrfTestResult> getCodedTestTypeResult(String testType) {
+		return acrfTestResultRepository.findCurrentResultsOfTest(testType);
 	}
 
+	/**
+	 * Saves an ICCR report entered on the data entry screen (RAW_ICCR_DOC) with the tests filled in
+	 * on it (RAW_ICCR_TESTS).
+	 */
 	public void insertICCRRawData(ICCRDataEntryVO iccrDataEntryVO, UserObject userObject) {
-		
-		int resultCount = iccrDocumentDAO.saveICCRDocumentData(iccrDataEntryVO);
-		
-		if(resultCount == 0){
-			
-			log.error("Failed while storing ICCR Document data.");
-			
-			throw new DataRetrievalFailureException("Error while saving ICCR Document, please contact the Helpline.");
-		}
-		
-		List <ICCRTestVO> iccrTestDataList = iccrDataEntryVO.getIccrTestList();
-		
-		if(iccrTestDataList != null && iccrTestDataList.size() > 0){
-			
-			List<ICCRTestVO> finalICCRTestDataList = new ArrayList<>();
+		rawIccrDocRepository.saveAndFlush(IccrDocMapping.toRawDoc(iccrDataEntryVO));   // flush: insert now, before the tests
 
-		
-			for (ICCRTestVO iccrTestVO : iccrTestDataList) {
-				if(CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_TYPE()) 
-						|| (!"../../....".equals(iccrTestVO.getDATE_OF_TEST()) && CommonUtil.isNotNullAndEmpty(iccrTestVO.getDATE_OF_TEST()) )
-						|| CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_RESULTS()) ) {
-					finalICCRTestDataList.add(iccrTestVO);
-				}
-			}
-			
-			
-			if(finalICCRTestDataList != null  && finalICCRTestDataList.size() > 0){
-				
-				Map<String, Object> inputParameterMap  = new HashMap<>();
-				
-				inputParameterMap.put("ICCR_DOCUMENT_ID", iccrDataEntryVO.getDOCUMENT_ID());
-				inputParameterMap.put("finalICCRTestDataList", finalICCRTestDataList);
-				
-				resultCount = iccrDocumentDAO.saveICCRTestData(inputParameterMap);
-				
-	
-				if(resultCount == 0){
-					
-					log.error("Failed while storing ICCR Test data.");
-					
-					throw new DataRetrievalFailureException("Error while saving ICCR Document, please contact the Helpline.");
-				}
+		List<ICCRTestVO> iccrTestDataList = iccrDataEntryVO.getIccrTestList();
+		if (iccrTestDataList == null) {
+			return;
+		}
+		for (ICCRTestVO iccrTestVO : iccrTestDataList) {
+			if (isFilledIn(iccrTestVO)) {
+				iccrTestRepository.insertTest(iccrDataEntryVO.getDOCUMENT_ID(),
+						OracleConversions.fnToDate(iccrTestVO.getDATE_OF_TEST()),
+						iccrTestVO.getTEST_TYPE(),
+						iccrTestVO.getTEST_RESULTS(),
+						iccrTestVO.getTEST_RESULT_COPIES(),
+						iccrTestVO.getTEST_RESULT_LOGS());
 			}
 		}
-		
+	}
+
+	/** A test row of the form is saved if its type, date ("../../...." is the empty date mask) or result is filled in. */
+	private static boolean isFilledIn(ICCRTestVO iccrTestVO) {
+		return CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_TYPE())
+				|| (!"../../....".equals(iccrTestVO.getDATE_OF_TEST()) && CommonUtil.isNotNullAndEmpty(iccrTestVO.getDATE_OF_TEST()))
+				|| CommonUtil.isNotNullAndEmpty(iccrTestVO.getTEST_RESULTS());
 	}
 
 	public IccrDocData getICCRDocument(int docId) {
-		
 		IccrDocData iccrDocVO = iccrDocRepository.findDocument(docId);
-		
-		List<ICCRTestVO> iccrDocTestList = iccrDocumentDAO.getICCRDocTestData(docId);
-		
-		iccrDocVO = iccrDocVO.withIccrTestList(iccrDocTestList);
-		
-		return iccrDocVO;
+		return iccrDocVO.withIccrTestList(iccrTestRepository.findTestsOfDocument(docId));
 	}
-	
 
+	/**
+	 * Writes the standardized report (STD_ICCR_DOC) of a received report.
+	 *
+	 * @param docVO the received report (a RAW_ICCR_DOC row), value per column name; not changed
+	 * @return 1
+	 */
 	public int writeRawICCRDocDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId) {
-
-		docVO.put("FNAME", CommonUtil.NameValidation((String)docVO.get("FIRST_NAME")));
-		docVO.put("MNAME", CommonUtil.NameValidation((String)docVO.get("MIDDLE_NAME")));
-		docVO.put("LNAME", CommonUtil.NameValidation((String)docVO.get("LAST_NAME")));
-		docVO.put("PERSON_ADDRESS", CommonUtil.addressValidation((String)docVO.get("PERSON_ADDRESS")));
-		
-		docVO.put("PROV_NAME", CommonUtil.NameValidation((String)docVO.get("PROV_NAME")));
-		docVO.put("PROV_ADDRESS", CommonUtil.addressValidation((String)docVO.get("PROV_ADDRESS")));		
-		
-		docVO.put("CURRENT_PROCESS_STATUS", 5);
-		
-    	return iccrDocumentDAO.writeStdDocData(docVO);
+		iccrDocRepository.saveAndFlush(IccrDocMapping.toStdDoc(docVO));
+		return 1;
 	}
 
 }

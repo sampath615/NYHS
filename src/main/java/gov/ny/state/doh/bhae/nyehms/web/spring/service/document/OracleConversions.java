@@ -63,6 +63,18 @@ final class OracleConversions {
 		return value.toString();
 	}
 
+	/** A number column written as TRIM(value): the whole number, or null when empty. */
+	static Integer toInteger(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : new BigDecimal(text).intValueExact();
+	}
+
+	/** A number column written as TRIM(value): the whole number, or null when empty. */
+	static Long toLong(Object value) {
+		String text = trimmed(value);
+		return text == null ? null : new BigDecimal(text).longValueExact();
+	}
+
 	/** FN_TO_DATE(TRIM(value), 'MM/DD/YYYY'): the date, or null when it is not a valid date. */
 	static Timestamp fnToDate(Object value) {
 		String text = trimmed(value);

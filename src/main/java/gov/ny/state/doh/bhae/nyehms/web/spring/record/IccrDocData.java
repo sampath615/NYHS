@@ -3,7 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.record;
 import java.sql.Date;
 import java.util.List;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.StdIccrDoc;
 
 /**
@@ -27,7 +26,7 @@ public record IccrDocData(StdIccrDoc stdIccrDoc,
 		String rawprovaddress,
 		String resultsReceived,
 		Integer parentDocumentId,
-		List<ICCRTestVO> iccrTestList,
+		List<IccrTestData> iccrTestList,
 		Date eharsImportDate) {
 
 	/** The document as read (used by the JPQL constructor expression). */
@@ -36,7 +35,7 @@ public record IccrDocData(StdIccrDoc stdIccrDoc,
 	}
 
 	/** The same document with {@code iccrTestList}. */
-	public IccrDocData withIccrTestList(List<ICCRTestVO> iccrTestList) {
+	public IccrDocData withIccrTestList(List<IccrTestData> iccrTestList) {
 		return new IccrDocData(stdIccrDoc, stateno, dob, rawpersonaddress, rawprovaddress, resultsReceived, parentDocumentId, iccrTestList, eharsImportDate);
 	}
 }

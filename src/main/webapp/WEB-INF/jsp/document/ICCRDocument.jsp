@@ -214,23 +214,23 @@
 										
 									<div>			
  										<div class="fieldHolder15">
-											<span>Date of Test <form:input  path="iccrTestList[${statusCD.index}].DATE_OF_TEST"  class="standardInputSmallText1" maxlength="10" title="Date of Test"/></span>
+											<span>Date of Test <form:input id="iccrTestList${statusCD.index}.DATE_OF_TEST" path="iccrTestList[${statusCD.index}].dateOfTest"  class="standardInputSmallText1" maxlength="10" title="Date of Test"/></span>
 										</div>
 										<div class="fieldHolder25">
 											<span >Test Type </span> 
-											<span  class="pL5"><form:input path="iccrTestList[${statusCD.index}].TEST_TYPE" class="standardInputMedText"  title="Test Type" maxLength="80"/></span>
+											<span  class="pL5"><form:input id="iccrTestList${statusCD.index}.TEST_TYPE" path="iccrTestList[${statusCD.index}].testType" class="standardInputMedText"  title="Test Type" maxLength="80"/></span>
 										</div>
 										<div class="fieldHolder25">
 											<span >Test Result </span> 
-											<span  class="pL5"><form:input path="iccrTestList[${statusCD.index}].TEST_RESULTS" class="standardInputMedText"  title="Test Result" maxLength="80"/></span>
+											<span  class="pL5"><form:input id="iccrTestList${statusCD.index}.TEST_RESULTS" path="iccrTestList[${statusCD.index}].testResults" class="standardInputMedText"  title="Test Result" maxLength="80"/></span>
 										</div>
 										<div class="fieldHolder15">
 											<span >Copies/mL </span> 
-											<span  class="pL5"><form:input path="iccrTestList[${statusCD.index}].TEST_RESULT_COPIES" class="standardInputSmallText2"  title="Copies/mL" maxLength="20"/></span>
+											<span  class="pL5"><form:input id="iccrTestList${statusCD.index}.TEST_RESULT_COPIES" path="iccrTestList[${statusCD.index}].testResultCopies" class="standardInputSmallText2"  title="Copies/mL" maxLength="20"/></span>
 										</div>
 										<div class="fieldHolder15">
 											<span >Log  </span> 
-											<span  class="pL5"><form:input path="iccrTestList[${statusCD.index}].TEST_RESULT_LOGS" class="standardInputSmallText2"  title="Log" maxLength="20"/></span>
+											<span  class="pL5"><form:input id="iccrTestList${statusCD.index}.TEST_RESULT_LOGS" path="iccrTestList[${statusCD.index}].testResultLogs" class="standardInputSmallText2"  title="Log" maxLength="20"/></span>
 										</div>
 									</div>					
 							 		

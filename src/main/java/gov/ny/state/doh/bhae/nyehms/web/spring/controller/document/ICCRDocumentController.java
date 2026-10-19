@@ -23,6 +23,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AcrfTestResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
@@ -77,9 +78,9 @@ public class ICCRDocumentController {
 	}	
 	
 	@RequestMapping(value = "/getICCRTestResult.json", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody List<JSONObject> getICCRTestResult(@RequestParam String testType, HttpServletRequest request) {
+	public @ResponseBody List<AcrfTestResult> getICCRTestResult(@RequestParam String testType, HttpServletRequest request) {
 
-		List<JSONObject> codedAcrfTestResults= iccrDocumentService.getCodedTestTypeResult(testType);
+		List<AcrfTestResult> codedAcrfTestResults= iccrDocumentService.getCodedTestTypeResult(testType);
 		
 		return codedAcrfTestResults;
 	}		
