@@ -7,7 +7,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -61,40 +60,14 @@ public class CASADocumentService {
 
 	public int validateAndwriteRawCasaDocDataToStdTable(
 			Map<Object, Object> docVO, BigDecimal documentId){
-		
-		int resultCount = 0;
 
-		int currentProcessStatus = 0;
+		if (!CasaStdDocMapping.isIdentifiable(docVO)) {
+			manualQuartzJobService.writeErrorCode(CommonConstants.STOPPED_AT_RAW_LAYER_PROCESS_STATUS, documentId, "CASA");
+			return 0;
+		}
+		return writeRawCasaDocDataToStdTable(docVO, documentId);
+	}
 
-		currentProcessStatus = validateCasaRecord(docVO);
-		
-		if(currentProcessStatus == CommonConstants.STOPPED_AT_RAW_LAYER_PROCESS_STATUS){
-			manualQuartzJobService.writeErrorCode(currentProcessStatus, documentId, "CASA");
-		}else{
-			resultCount =  writeRawCasaDocDataToStdTable(docVO, documentId);
-		}
-		
-		return resultCount;
-		
-		
-	}
-	
-	private int validateCasaRecord(Map<Object, Object> docVO){
-		
-		String DOB_TEXT = (String)docVO.get("DOB");
-		String SSN = (String)docVO.get("SSN");
-		String FNAME = (String)docVO.get("FNAME");
-		String LNAME = (String)docVO.get("LNAME");
-		
-		if(CommonUtil.isNullOrEmpty(DOB_TEXT) && CommonUtil.isNullOrEmpty(SSN) && CommonUtil.isNullOrEmpty(FNAME) && CommonUtil.isNullOrEmpty(LNAME)){
-			return CommonConstants.STOPPED_AT_RAW_LAYER_PROCESS_STATUS; 
-		}else{
-			return CommonConstants.RAW_NEW_RECORD_PROCESS_STATUS;
-		}
-		
-		
-	}
-	
 	/**
 	 * Writes the standardized record (STD_CASA_DOC) of a received record.
 	 *

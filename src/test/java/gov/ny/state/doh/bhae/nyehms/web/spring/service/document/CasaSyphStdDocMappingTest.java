@@ -47,6 +47,16 @@ class CasaSyphStdDocMappingTest {
 	}
 
 	@Test
+	void aCasaRecordNeedsADateOfBirthAnSsnOrAName() {
+		assertThat(CasaStdDocMapping.isIdentifiable(raw())).isFalse();                                   // stays at the raw layer
+		assertThat(CasaStdDocMapping.isIdentifiable(raw("DOB", " ", "SSN", "", "FNAME", null, "MNAME", "x"))).isFalse();
+		assertThat(CasaStdDocMapping.isIdentifiable(raw("DOB", "01/02/1980"))).isTrue();
+		assertThat(CasaStdDocMapping.isIdentifiable(raw("SSN", "123456789"))).isTrue();
+		assertThat(CasaStdDocMapping.isIdentifiable(raw("FNAME", "jo"))).isTrue();
+		assertThat(CasaStdDocMapping.isIdentifiable(raw("LNAME", "smith"))).isTrue();
+	}
+
+	@Test
 	void syphilisRenamesTheReceivedFields() {
 		StdSyphilisDoc std = SyphStdDocMapping.toStdDoc(raw("FIRSTNAME", "jo_ann", "LOCALITY", " troy ", "DISEASE_CD", " 710 ",
 				"DIAGNOSIS_DATE", Timestamp.valueOf("2021-05-06 07:08:09"), "RACE_CD", "3", "PROVIDERZIPCODE", "12207-1234"));

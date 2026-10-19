@@ -103,6 +103,17 @@ final class CasaStdDocMapping {
 				.build();
 	}
 
+	/**
+	 * Whether a received record can be standardized: it has a date of birth, an SSN, a first name or a last
+	 * name. A record with none of them stays at the raw layer.
+	 *
+	 * @param raw the received record, value per raw field name
+	 */
+	static boolean isIdentifiable(Map<Object, Object> raw) {
+		return CommonUtil.isNotNullAndEmpty(text(raw, "DOB")) || CommonUtil.isNotNullAndEmpty(text(raw, "SSN"))
+				|| CommonUtil.isNotNullAndEmpty(text(raw, "FNAME")) || CommonUtil.isNotNullAndEmpty(text(raw, "LNAME"));
+	}
+
 	/** The race code of the record (RACE, trimmed), or null when empty. */
 	private static String raceCode(Map<Object, Object> raw) {
 		String race = text(raw, "RACE");
