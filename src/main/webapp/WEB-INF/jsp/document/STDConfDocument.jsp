@@ -128,7 +128,7 @@
 	 	                    
 	 	                    <span class="pL30 bold">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="PERSON_STATE"  path ="PERSON_STATE" class="standardInputSmallText1 mR50 newState widgetAddressFieldsReadonly" title="State" >
+								<form:select id="PERSON_STATE"  path="stdStdConfirmedDoc.personState" class="standardInputSmallText1 mR50 newState widgetAddressFieldsReadonly" title="State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
@@ -587,7 +587,7 @@
 	 	                    
 	 	                    <span class="pL30 bold">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="PROVIDER_STATE"  path ="PROV_STATE" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly" title="State" >
+								<form:select id="PROVIDER_STATE"  path="stdStdConfirmedDoc.provState" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly" title="State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
