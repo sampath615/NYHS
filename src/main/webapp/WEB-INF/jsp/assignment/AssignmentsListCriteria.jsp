@@ -1,10 +1,5 @@
-<%@page import="gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%
-
-pageContext.setAttribute("ASSIGNMENT_30_DAY_NOTE", EnvironmentProperties.envProperties.getProperty("ASSIGNMENT_30_DAY_NOTE"));
-
-%>
+<%-- ASSIGNMENT_30_DAY_NOTE comes from application scope (config/JspGlobals) --%>
 
 <c:set var="userPermissions_workerRegion"
 	value="${sessionScope.userPermissions_workerRegion}" />

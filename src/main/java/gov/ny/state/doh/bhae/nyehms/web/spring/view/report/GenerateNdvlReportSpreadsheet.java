@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.report;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +17,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 
 @Component("ndvlReportSpreadsheet")
 public class GenerateNdvlReportSpreadsheet extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 	
 	@Override
@@ -32,11 +36,11 @@ public class GenerateNdvlReportSpreadsheet extends AbstractExcelReportView{
 		
     	List<Map<String, String>> ndvlReportDataList =  (List<Map<String, String>>)model.get("ndvlReportData");;
     	
-    	StringBuilder fileName = new StringBuilder(EnvironmentProperties.envProperties.getProperty("NDVL_REPORT_FILE_NAME"));
+    	StringBuilder fileName = new StringBuilder(spreadsheetProperties.ndvlReport().fileName());
 	    
 	    fileName.append(".xls");
 	    
-	    String[] PS_OOC_EXPS_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("NDVL_REPORT_SHEET_COLUMNS").split(",");
+	    String[] PS_OOC_EXPS_SHEET_COLUMNS = spreadsheetProperties.ndvlReport().columns().split(",");
 	    		
 	    setAttachmentHeaders(response, fileName);
 		

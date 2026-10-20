@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.scan;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ScanProperties;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -37,10 +38,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Service
 public class DocumentsScanService {
+
+	@Autowired
+	private ScanProperties scanProperties;
 	
 	private static Logger log = LoggerFactory.getLogger(DocumentsScanService.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
@@ -114,7 +117,7 @@ public class DocumentsScanService {
 		
 		try {
 						
-			obj_SFTPChannel.cd(EnvironmentProperties.envProperties.getProperty("SCANNED_FILES_ENCRYPT_LOCATION")+documentType+"/");
+			obj_SFTPChannel.cd(scanProperties.encryptLocation()+documentType+"/");
 			
 			String referenceFileName = docId+".pdf";
 			
@@ -265,7 +268,7 @@ public class DocumentsScanService {
 	
 	
     public void storeScannedImageFileToSchoit(String outputFileName,  
-                  MultipartFile file, String outputLocation, String documentType, BindingResult bindingResult, UserObject userObject){
+                  MultipartFile file, String documentType, BindingResult bindingResult, UserObject userObject){
            
            ChannelSftp obj_SFTPChannel = null;
            InputStream obj_InputStream = null;
@@ -298,7 +301,7 @@ public class DocumentsScanService {
                   
                   enc.init(Cipher.ENCRYPT_MODE, key);
                   
-                  outStream = obj_SFTPChannel.put(EnvironmentProperties.envProperties.getProperty(outputLocation)+documentType+"/"+outputFileName);
+                  outStream = obj_SFTPChannel.put(scanProperties.encryptLocation()+documentType+"/"+outputFileName);
                         
                   cos = new CipherOutputStream(outStream, enc);
                   
@@ -469,7 +472,7 @@ public class DocumentsScanService {
      
                
                
-       obj_SFTPChannel.rm(EnvironmentProperties.envProperties.getProperty("SCANNED_FILES_ENCRYPT_LOCATION")+scanDocType+"/"+documentId+".pdf");
+       obj_SFTPChannel.rm(scanProperties.encryptLocation()+scanDocType+"/"+documentId+".pdf");
                      
                
 		}finally {

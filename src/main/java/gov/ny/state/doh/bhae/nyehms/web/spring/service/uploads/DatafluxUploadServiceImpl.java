@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +31,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 /**
 * This class is service interface between the user data to Database(MyBatis related configuration)
@@ -42,6 +42,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 */
 @Service
 public class DatafluxUploadServiceImpl {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
@@ -328,14 +331,14 @@ public class DatafluxUploadServiceImpl {
 				throw new DataRetrievalFailureException("Oracle Datasource connection not available");
 			}
 			
-			String DATAFLUX_MATCH_COLUMNS = EnvironmentProperties.envProperties.getProperty("DATAFLUX_MATCH_SQL_COLUMNS");
+			String DATAFLUX_MATCH_COLUMNS = uploadProperties.dataflux().matchSqlColumns();
 			
 			
 			StringBuilder sqlQuery = new StringBuilder("insert into NYEHMS_SASDB_OWNER.ER_DAILY_DOC_STAGE(");
 			sqlQuery.append(DATAFLUX_MATCH_COLUMNS);
 			sqlQuery.append(") values(");
 			
-			sqlQuery.append(EnvironmentProperties.envProperties.getProperty("DATAFLUX_MATCH_SQL_COLUMNS_VALUES"));
+			sqlQuery.append(uploadProperties.dataflux().matchSqlColumnsValues());
 			
 			sqlQuery.append(")");
 			
@@ -350,7 +353,7 @@ public class DatafluxUploadServiceImpl {
 				
 				
 				
-				String DATAFLUX_MATCH_SQL_MAPPING = EnvironmentProperties.envProperties.getProperty("DATAFLUX_MATCH_SQL_MAPPING");
+				String DATAFLUX_MATCH_SQL_MAPPING = uploadProperties.dataflux().matchSqlMapping();
 				
 				int columnIndex = 1;
 				for (String columnName : DATAFLUX_MATCH_SQL_MAPPING.split(",")) {

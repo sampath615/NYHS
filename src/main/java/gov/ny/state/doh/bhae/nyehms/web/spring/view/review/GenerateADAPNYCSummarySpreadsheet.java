@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.review;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +18,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 
 @Component("generateADAPNYCSummaryFile")
 public class GenerateADAPNYCSummarySpreadsheet extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 
     	
@@ -101,11 +105,11 @@ public class GenerateADAPNYCSummarySpreadsheet extends AbstractExcelReportView{
         commonStyles.setFont(commonFont);//set it to bold
         
         
-        String[] ADAP_NYC_AGREE_SUMMARY_SPREAD_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_AGREE_SUMMARY_SPREAD_SHEET_COLUMNS").split(",");
+        String[] ADAP_NYC_AGREE_SUMMARY_SPREAD_SHEET_COLUMNS = spreadsheetProperties.adapNycSummary().agreeColumns().split(",");
         
-        String[] ADAP_NYC_DISAGREE_SUMMARY_SPREAD_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_DISAGREE_SUMMARY_SPREAD_SHEET_COLUMNS").split(",");
+        String[] ADAP_NYC_DISAGREE_SUMMARY_SPREAD_SHEET_COLUMNS = spreadsheetProperties.adapNycSummary().disagreeColumns().split(",");
         
-        String[] ADAP_NYC_SHIPPED_MATCH_SUMMARY = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_SHIPPED_MATCH_SUMMARY").split(",");
+        String[] ADAP_NYC_SHIPPED_MATCH_SUMMARY = spreadsheetProperties.adapNycSummary().shippedMatchSummary().split(",");
 
         
         

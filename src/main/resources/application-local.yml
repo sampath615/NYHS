@@ -30,11 +30,17 @@ nyehms:
     load-schedulers: false
     load-schedulers-data-from-property: true
     environment-name: 'local WLS'
+  # expected column layouts of uploaded files (UploadProperties)
+  upload:
+    cdc-return-column-names: 'stateno,cityno,last_name_sndx,dob,birth_sex,report_state_cd,stateno_x,cityno_x,last_name_sndx_x,dob_x,birth_sex_x,trans_categ,hiv_categ,hiv_dx_dt,rsh_state_cd,aids_categ,aids_dx_dt,rsa_state_cd,dod,rad_state_cd,death_state_cd,cur_state_cd,cur_address_dt,cd4cntpct_vl_recent_dt,care_nolab_dt,duplicate_status_warning'
+    # --- not read by any code yet: kept commented out for review (old key in brackets) ---
+    # cdc-file-path: 'H:/HAEGroup/Systems Development/Tracking Redesign (Phase 1)/Tracking Rewrite (Phase 2)/Deployments/Sampath/Record Search/'    # [CDC_FILE_PATH]
+  # scanned-document SFTP storage (ScanProperties)
+  scan:
+    encrypt-location: '/H:/Images/SCAN_DOCS/DEV/encrypt/'
+    # --- not read by any code yet: kept commented out for review (old key in brackets) ---
+    # location: '/data4/projects/NYEHMSQS/Data/'    # [SCANNED_FILES_LOCATION]
+    # encrypt-backup-location: '/data4/projects/NYEHMSQS/Data/encrypt_backup/'    # [ENCRYPT_BACKUP_LOCATION]
+    # decrypt-backup-location: '/data4/projects/NYEHMSQS/Data/decrypt_backup/'    # [DECRYPT_BACKUP_LOCATION]
+    # kex-algorithm: 'diffie-hellman-group14-sha1'    # [KexAlgorithm]
 
-CDC_FILE_PATH: 'H:/HAEGroup/Systems Development/Tracking Redesign (Phase 1)/Tracking Rewrite (Phase 2)/Deployments/Sampath/Record Search/'
-CDC_RETURN_COLUMN_NAMES: 'stateno,cityno,last_name_sndx,dob,birth_sex,report_state_cd,stateno_x,cityno_x,last_name_sndx_x,dob_x,birth_sex_x,trans_categ,hiv_categ,hiv_dx_dt,rsh_state_cd,aids_categ,aids_dx_dt,rsa_state_cd,dod,rad_state_cd,death_state_cd,cur_state_cd,cur_address_dt,cd4cntpct_vl_recent_dt,care_nolab_dt,duplicate_status_warning'
-SCANNED_FILES_LOCATION: '/data4/projects/NYEHMSQS/Data/'
-SCANNED_FILES_ENCRYPT_LOCATION: '/H:/Images/SCAN_DOCS/DEV/encrypt/'
-ENCRYPT_BACKUP_LOCATION: '/data4/projects/NYEHMSQS/Data/encrypt_backup/'
-DECRYPT_BACKUP_LOCATION: '/data4/projects/NYEHMSQS/Data/decrypt_backup/'
-KexAlgorithm: 'diffie-hellman-group14-sha1'

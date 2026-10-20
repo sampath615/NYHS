@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.reports;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,11 +47,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.reports.DocumentSummaryReportDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @Service
 public class DocumentSummaryReportsService {
+
+	@Autowired
+	private ReportProperties reportProperties;
 
 	private static Logger log = LoggerFactory.getLogger(DocumentSummaryReportsService.class);
 	
@@ -101,7 +104,7 @@ public class DocumentSummaryReportsService {
         
 		StringBuilder sqlString = new StringBuilder("");
         
-        InputStream stream = obj_SFTPChannel.get(EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME")+"DOCUMENT_REPORT/"+"sql.json");
+        InputStream stream = obj_SFTPChannel.get(reportProperties.outputPath()+"DOCUMENT_REPORT/"+"sql.json");
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(stream));
             String line;
@@ -210,7 +213,7 @@ public class DocumentSummaryReportsService {
 		
         template.process(inputData, responseContent);
 		try {
-        String filePath = EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME");
+        String filePath = reportProperties.outputPath();
         
         
         String fileName = (new StringBuilder(formatedDate).append("_").append("DOCUMENT_STATUS_REPORT.pdf").toString());

@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.StatusEmailProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AidaProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -27,7 +29,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftDetailsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
@@ -38,6 +39,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class AIRSDocumentService {
+
+	@Autowired
+	private StatusEmailProperties statusEmailProperties;
+
+	@Autowired
+	private AidaProperties aidaProperties;
 
 	@Autowired
 	private MailProperties mailProperties;
@@ -457,8 +464,9 @@ public class AIRSDocumentService {
 		try {
 			
 		
-			String tableName = EnvironmentProperties.envProperties.getProperty(parameterName+"_TABLE");
-			String columns = EnvironmentProperties.envProperties.getProperty(parameterName+"_COLUMNS");
+			AidaProperties.View aidaView = aidaProperties.view(parameterName);
+			String tableName = aidaView.table();
+			String columns = aidaView.columns();
 			
 			Map<String, String> inputParameterMap = new HashMap<>();
 			
@@ -490,7 +498,7 @@ public class AIRSDocumentService {
 		List<Map<String, Object>> errorList = airsDocumentDAO.checkForActiveErrors(inputParameterMap);
 		//
 		if(errorList.size() > 0 ) {
-			commonService.sendStatusSummary(errorList, "AIRS_AGENCY_STATUS_EMAIL_HEADERS", "AIRS_AGENCY_STATUS_EMAIL_COLUMNS", "AIRS_AGENCY", mailProperties.airsAgency().subject(), mailProperties.airsAgency().bodyMsg(),   null);
+			commonService.sendStatusSummary(errorList, statusEmailProperties.airsAgency(), "AIRS_AGENCY", mailProperties.airsAgency().subject(), mailProperties.airsAgency().bodyMsg());
 		}
 		
 	}

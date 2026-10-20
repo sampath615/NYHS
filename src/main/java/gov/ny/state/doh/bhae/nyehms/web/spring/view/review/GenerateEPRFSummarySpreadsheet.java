@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.review;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +21,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUpDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class GenerateEPRFSummarySpreadsheet extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 
     	
@@ -70,9 +74,9 @@ public class GenerateEPRFSummarySpreadsheet extends AbstractExcelReportView{
         commonStyles.setFont(commonFont);//set it to bold
         
         
-        String[] EPRF_SUMMARY_SPREAD_SHEET_DOC_COLUMNS = EnvironmentProperties.envProperties.getProperty("EPRF_SUMMARY_SPREAD_SHEET_DOC_COLUMNS").split(",");
-	    String[] EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS = EnvironmentProperties.envProperties.getProperty("EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS").split(",");
-	    String[] EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS = EnvironmentProperties.envProperties.getProperty("EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS").split(",");
+        String[] EPRF_SUMMARY_SPREAD_SHEET_DOC_COLUMNS = spreadsheetProperties.eprfSummary().docColumns().split(",");
+	    String[] EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS = spreadsheetProperties.eprfSummary().eharsColumns().split(",");
+	    String[] EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS = spreadsheetProperties.eprfSummary().eharsConclusions().split(",");
 	    
 	    int docColumnsLength = EPRF_SUMMARY_SPREAD_SHEET_DOC_COLUMNS.length;
 		int eharsColumnsLength = EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS.length;

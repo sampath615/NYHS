@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.config.LegacyEnvironmentBridge;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -22,7 +21,7 @@ public class NyehmsApplication extends SpringBootServletInitializer {
 
         // Profile comes from the server: -Dspring.profiles.active=local|dev|eval|prod
         return application.sources(NyehmsApplication.class)
-                .listeners(new LegacyEnvironmentBridge(), new RequireActiveProfile());
+                .listeners(new RequireActiveProfile());
 
     }
 

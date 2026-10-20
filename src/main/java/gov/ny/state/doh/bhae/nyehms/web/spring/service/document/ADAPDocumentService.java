@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -36,7 +37,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
@@ -46,6 +46,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class ADAPDocumentService {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 
     private static  Logger log = LoggerFactory.getLogger(ADAPDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
@@ -481,7 +484,7 @@ public class ADAPDocumentService {
 				int index = 0; 
 				
 				
-				String[] ADAP_RETURN_FILE_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("ADAP_RETURN_FILE_COLUMN_NAMES").split(",");
+				String[] ADAP_RETURN_FILE_COLUMN_NAMES = uploadProperties.adapReturnFileColumnNames().split(",");
 				
 				//String[] RIDR_DB_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("RIDR_DB_COLUMN_NAMES").split(",");
 				

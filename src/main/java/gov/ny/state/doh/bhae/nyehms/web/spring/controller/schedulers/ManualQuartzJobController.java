@@ -25,7 +25,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HL7DocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 /**
  * This controller is used to control the Scheduler jobs and get the statistics
@@ -162,15 +161,12 @@ public class ManualQuartzJobController {
 
 		Map<Object, Object> targetMap = new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		try {
-			EnvironmentProperties.envProperties.setProperty(parameterName, parameterValue);
-			commonExceptionHandler.inspectDBTransacionResult(0, "Successfully updated the Property.", bindingResult);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			log.error("Failed to update the Property value {} ",parameterName);
-			commonExceptionHandler.inspectDBTransacionResult(-1,
-					"Unable to update the Property value. please contact helpline.", bindingResult);
-		}
+		// Settings are now bound once at startup from application.yml / application-{profile}.yml
+		// (nyehms.* @ConfigurationProperties records), so they can no longer be changed at runtime.
+		// Change the yml and redeploy instead.
+		log.warn("Runtime property update requested for {} - not supported any more", parameterName);
+		commonExceptionHandler.inspectDBTransacionResult(-1,
+				"Updating properties at runtime is no longer supported. Change the application yml and redeploy.", bindingResult);
 		return targetMap;
 	}
 

@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.initialize;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ActiveStage;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class CryptoController {
+
+	@Autowired
+	private ActiveStage activeStage;
 
 	@Autowired
 	private AppProperties appProperties;
@@ -61,8 +65,7 @@ public class CryptoController {
         // send the parameters to the service for validation
         cryptoAuth = commonService.authenticateUser(request, userInitObj.getUserId(), cryptoNumber);
         
-        String stage = System.getProperty("stage");
-        boolean onDev = "DEV".equals(stage);
+        boolean onDev = "DEV".equals(activeStage.name());
         if (cryptoAuth || onDev) {
         	userInitObj.setCryptoCardAuthenticationSuccess(true);
         	session.setAttribute("userInitObj", userInitObj);

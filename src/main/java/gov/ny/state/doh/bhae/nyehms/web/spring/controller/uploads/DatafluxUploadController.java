@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.uploads;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -24,10 +25,12 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.DatafluxUploadServiceImpl;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Controller
 public class DatafluxUploadController {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 	
 	
 	@Autowired
@@ -95,7 +98,7 @@ public class DatafluxUploadController {
 			
 			map.put("columnList", matchingColumnNames);
 			
-			String[] DATAFLUX_MATCH_COLUMNS = EnvironmentProperties.envProperties.getProperty("DATAFLUX_MATCH_COLUMNS").split(",");
+			String[] DATAFLUX_MATCH_COLUMNS = uploadProperties.dataflux().matchColumns().split(",");
 			
 			map.put("MATCH_COLUMNS_LIST", DATAFLUX_MATCH_COLUMNS);
 			

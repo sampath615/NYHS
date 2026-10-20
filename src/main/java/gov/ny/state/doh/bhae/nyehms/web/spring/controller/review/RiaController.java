@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,9 +32,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RiaReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 @Controller
 public class RiaController {
+
+	@Autowired
+	private ReportProperties reportProperties;
 	
 	@Autowired
 	private RiaReviewService riaReviewService;
@@ -61,7 +64,7 @@ public class RiaController {
 		
 		map.put("riaDropDownList", riaDropDownList);
 		
-		map.put("REPORT_NAME", EnvironmentProperties.envProperties.getProperty("RIA_REVIEW"));
+		map.put("REPORT_NAME", reportProperties.riaReviewName());
 		
 		return "review/reviewRiaPage";
 	}
@@ -85,7 +88,7 @@ public class RiaController {
 		
 		map.put("reportType", reportType);
 		
-		map.put("REPORT_NAME", EnvironmentProperties.envProperties.getProperty(reportType+"_report"));
+		map.put("REPORT_NAME", reportProperties.names().get(reportType));
 		
 		return "review/ria/riaReport";
 	}

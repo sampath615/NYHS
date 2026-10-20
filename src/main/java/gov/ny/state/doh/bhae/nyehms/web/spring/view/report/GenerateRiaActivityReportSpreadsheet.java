@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.report;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +17,14 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 @Component("riaActivityReportSpreadsheet")
 public class GenerateRiaActivityReportSpreadsheet extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 	
 	@Override
@@ -31,13 +35,13 @@ public class GenerateRiaActivityReportSpreadsheet extends AbstractExcelReportVie
 		
     	List<Map<String, String>> riaActivityRecords =  (List<Map<String, String>>)model.get("riaActivityRecords");;
     	
-    	StringBuilder fileName = new StringBuilder(EnvironmentProperties.envProperties.getProperty("RIA_ACTIVITY_REPORT_FILE_NAME"));
+    	StringBuilder fileName = new StringBuilder(spreadsheetProperties.riaActivityReport().fileName());
     	String fromDate =  (String)model.get("fromDate");;
 		String toDate =  (String)model.get("toDate");;
 	    
 	    fileName.append(".xls");
 	    
-	    String[] PS_OOC_EXPS_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("RIA_ACTIVITY_REPORT_SHEET_COLUMNS").split(",");
+	    String[] PS_OOC_EXPS_SHEET_COLUMNS = spreadsheetProperties.riaActivityReport().columns().split(",");
 	    
     	fileName.append(fromDate).append(" to ").append(toDate);
 

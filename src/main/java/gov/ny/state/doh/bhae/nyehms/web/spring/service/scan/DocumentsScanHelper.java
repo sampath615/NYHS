@@ -35,7 +35,7 @@ public class DocumentsScanHelper {
 			
 			log.error("Created the Scanned DocumentId and Associted to STATENO, Started Encrypting the data");
 			
-			documentsScanService.storeScannedImageFileToSchoit(docId+".pdf", scannedFile, "SCANNED_FILES_ENCRYPT_LOCATION", documentType, bindingResult, userObject);
+			documentsScanService.storeScannedImageFileToSchoit(docId+".pdf", scannedFile, documentType, bindingResult, userObject);
 			
 			//documentsScanService.encryptAndSaveScanDocument(fileName, docId+".pdf", true, "SCANNED_FILES_LOCATION", "SCANNED_FILES_ENCRYPT_LOCATION", bindingResult, userObject);
 						

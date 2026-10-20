@@ -26,5 +26,7 @@ public record AppProperties(
         /* max rows fetched per Sierra (RAS) batch */
         int rasFetchRowLimit,
         /* HTML shown on the crypto-card acknowledgement page */
-        String acknowledgementMessage) {
+        String acknowledgementMessage,
+        /* note under the assignment list (published to JSPs by JspGlobals) */
+        String assignment30DayNote) {
 }

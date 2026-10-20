@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.StatusEmailProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ActiveStage;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -94,6 +96,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class ManualQuartzJobService {
+
+	@Autowired
+	private StatusEmailProperties statusEmailProperties;
+
+	@Autowired
+	private ActiveStage activeStage;
 
 	@Autowired
 	private AppProperties appProperties;
@@ -4482,9 +4490,7 @@ public class ManualQuartzJobService {
 
 		Map<String, String> schedulerMetaData = new TreeMap<>();
 
-		String stage = System.getProperty("stage");
-
-		if ("LOCAL".equals(stage)
+		if (activeStage.isLocal()
 				&& appProperties.loadSchedulersDataFromProperty()) {
 
 			try {
@@ -4591,16 +4597,16 @@ public class ManualQuartzJobService {
 				if ("Y".equals(schedulerMetaData.get("DATABASE_PROC_EMAIL_STATUS"))) {
 					
 					List<Map<String, Object>> assignmentList = schedulerJobsDAO.getAssignmentDetailedStatus();
-					commonService.sendStatusSummary(assignmentList, "ASSIGNMENT_STATUS_EMAIL_HEADERS", "ASSIGNMENT_STATUS_EMAIL_COLUMNS", "ASSIGNMENT", "Assignment Report",  null, "ASSIGNMENT_NO_DATA");
+					commonService.sendStatusSummary(assignmentList, statusEmailProperties.assignment(), "ASSIGNMENT", "Assignment Report",  null);
 					
 					List<Map<String, Object>> ahiReportList = schedulerJobsDAO.getAhiReportList();
-					commonService.sendStatusSummary(ahiReportList, "AHI_STATUS_EMAIL_HEADERS", "AHI_STATUS_EMAIL_COLUMNS", "AHI", "AHI Report",  null, "AHI_NO_DATA");
+					commonService.sendStatusSummary(ahiReportList, statusEmailProperties.ahi(), "AHI", "AHI Report",  null);
 					
 					List<Map<String, Object>> psMessageReport = schedulerJobsDAO.getPSMessageReport();
-					commonService.sendStatusSummary(psMessageReport, "PS_MESSAGE_EMAIL_HEADERS", "PS_MESSAGE_EMAIL_COLUMNS", "PS_MESSAGE", "PS Message Report",  null, "PS_MSG_NO_DATA");
+					commonService.sendStatusSummary(psMessageReport, statusEmailProperties.psMessage(), "PS_MESSAGE", "PS Message Report",  null);
 	
 					List<Map<String, Object>> psMessageNYCReport = schedulerJobsDAO.getPSMessageNYCReport();
-					commonService.sendStatusSummary(psMessageNYCReport, "PS_MESSAGE_NYC_EMAIL_HEADERS", "PS_MESSAGE_NYC_EMAIL_COLUMNS", "PS_NYC_PROV_FAC", "PS NYC Report",  "List of PS messages with NYC Provider/Facility", "PS_MESSAGE_NYC_NO_DATA");
+					commonService.sendStatusSummary(psMessageNYCReport, statusEmailProperties.psMessageNyc(), "PS_NYC_PROV_FAC", "PS NYC Report",  "List of PS messages with NYC Provider/Facility");
 				}
 
 		return transactionStatus;
@@ -6441,7 +6447,7 @@ public class ManualQuartzJobService {
 	public void sendHl7CCDRematchingRecordsDetails(Map<String, String> schedulerMetaData,
 			Map<String, String> statusObject, List<Map<String, String>> recordsDetailsList) {
 
-		String subject = System.getProperty("stage") + ": HL7 Rematched Against CCD Summary";
+		String subject = activeStage.name() + ": HL7 Rematched Against CCD Summary";
 
 		StringBuilder mailContent = new StringBuilder("");
 

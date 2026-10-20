@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.sierra;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.LabProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,7 +39,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.sierra.SierraResponseDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 
@@ -52,6 +52,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  */
 @Service
 public class SierraWebService {
+
+	@Autowired
+	private LabProperties labProperties;
 
 	@Autowired
 	private AppProperties appProperties;
@@ -177,7 +180,7 @@ public class SierraWebService {
 	resistanceMap.put("sequences", resistanceList);
 	
 
-	resistanceObj.put("query", EnvironmentProperties.envProperties.getProperty("SIERRA_QUERY"));
+	resistanceObj.put("query", labProperties.sierraQuery());
 	
 	resistanceObj.put("operationName", "example");
 	

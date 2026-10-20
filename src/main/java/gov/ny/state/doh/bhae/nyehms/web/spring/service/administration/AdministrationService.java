@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.administration;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ActiveStage;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ import gov.ny.state.doh.bhae.nyehms.webservice.oauth.WebServiceConstants;
 
 @Service
 public class AdministrationService {
+
+	@Autowired
+	private ActiveStage activeStage;
 	
 	private static Logger log = LoggerFactory.getLogger(AdministrationService.class);
 	
@@ -241,7 +245,7 @@ public class AdministrationService {
 	public void  validateUser(NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO, BindingResult result, UserObject userObject){
 		boolean errorFlag=false;
 		String workerId = null;
-		String userStage = System.getProperty("stage");
+		String userStage = activeStage.name();
 		try {
 			
 			
@@ -290,7 +294,7 @@ public class AdministrationService {
 	public void terminateUserFromHCS(String legacyUid, BindingResult bindingResult, UserObject userObject){
 		String transactionMessage=null;
 		boolean errorFlag=false;
-			String userStage = System.getProperty("stage");
+			String userStage = activeStage.name();
 			WebServiceConstants wsConstants = null;
 		try {
     		
@@ -355,7 +359,7 @@ public class AdministrationService {
 	public void  creatingNewUserInHcs(NyehmsWorkerRegionsViewVO nyehmsWorkerRegionsViewVO, BindingResult bindingResult, UserObject userObject){
 		boolean errorFlag=false;
 		WebServiceConstants wsConstants = null;
-		String userStage = System.getProperty("stage");
+		String userStage = activeStage.name();
 		try {
 			
 			// calling DAO for getting client secret, base url, endpoint url

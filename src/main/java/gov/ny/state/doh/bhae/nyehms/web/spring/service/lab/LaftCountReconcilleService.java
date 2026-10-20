@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ActiveStage;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -44,11 +46,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @Service
 public class LaftCountReconcilleService {
+
+	@Autowired
+	private UploadProperties uploadProperties;
+
+	@Autowired
+	private ActiveStage activeStage;
 
 	@Autowired LaftCountReconcileDAO laftCountReconcileDAO;
 	
@@ -279,7 +286,7 @@ public class LaftCountReconcilleService {
 			}
 		}
 		
-		String userStage = System.getProperty("stage");
+		String userStage = activeStage.name();
 		String[] recipientEmailAddressesTo = new String[]{"bhaelab@health.ny.gov"}; // "bhaelab@health.ny.gov";
 		String mailSubject = "Time Sensitive: Reconciliation of Counts " 
 				+ surveyStMonth + " " + surveyStYear + "-" + surveyEndMonth + " " + surveyEndYear;
@@ -404,7 +411,7 @@ public class LaftCountReconcilleService {
 				}
 				csvRowHeader = csvRowHeaderNew;				
 				
-				String[] UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES").split(",");
+				String[] UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES = uploadProperties.laftSurveyResponseColumnNames().split(",");
 				int UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES_LENGTH = UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES.length;
 				
 				for(int columnIndex = 0; columnIndex < UPLOAD_LAFT_SURVEY_RESPONSE_COLUMN_NAMES_LENGTH; columnIndex++){

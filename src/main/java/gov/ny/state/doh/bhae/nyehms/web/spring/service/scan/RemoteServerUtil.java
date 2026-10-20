@@ -1,8 +1,9 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.scan;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ScanProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -19,6 +20,9 @@ import com.jcraft.jsch.Session;
 
 @Service
 public class RemoteServerUtil {
+
+	@Autowired
+	private ScanProperties scanProperties;
 
 	private static Logger log = LoggerFactory.getLogger(RemoteServerUtil.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
@@ -99,7 +103,7 @@ public class RemoteServerUtil {
 			log.error("Set the User name and Host name");
 
 			
-			session.setPassword(CommonUtil.decryptValue(EnvironmentProperties.envProperties.getProperty("SCAN_PWD")));
+			session.setPassword(CommonUtil.decryptValue(scanProperties.password()));
 			//n@cS9102
 			
 			

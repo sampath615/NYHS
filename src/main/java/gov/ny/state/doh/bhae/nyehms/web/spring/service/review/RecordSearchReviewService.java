@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.review;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,12 +31,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 
 @Service
 public class RecordSearchReviewService {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 	
 	
 	private static Logger log = LoggerFactory.getLogger(RecordSearchReviewService.class);
@@ -516,7 +519,7 @@ public class RecordSearchReviewService {
 					rowCount++;
 					
 					if(rowCount == 1) {
-						CDC_RETURN_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("CDC_RETURN_COLUMN_NAMES").split(",");
+						CDC_RETURN_COLUMN_NAMES = uploadProperties.cdcReturnColumnNames().split(",");
 						
 						RIDR_COLUMN_NAMES_LENGTH = CDC_RETURN_COLUMN_NAMES.length;
 						
