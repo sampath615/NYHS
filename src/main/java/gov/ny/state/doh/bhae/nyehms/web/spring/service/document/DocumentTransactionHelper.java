@@ -1,6 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.sql.Date;
@@ -56,6 +57,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Component
 public class DocumentTransactionHelper {
+
+	@Autowired
+	private MailProperties mailProperties;
 
 	private static Logger log = LoggerFactory.getLogger(DocumentTransactionHelper.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
@@ -1312,7 +1316,7 @@ public class DocumentTransactionHelper {
 					" " + userObject.getUserLastName() + " " + new SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date());
 		}
 		
-		ahiDocumentService.sendEmailNotificationToAHIUsers(userObject, EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_SUBJECT"), emailContent);
+		ahiDocumentService.sendEmailNotificationToAHIUsers(userObject, mailProperties.ahiDocument().subject(), emailContent);
 		
 		
 	}

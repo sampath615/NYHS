@@ -37,6 +37,46 @@ logging:
     file: '%d{"dd/MMM/yyyy HH:mm:ss,SSS"} %5p %c{0}:%L:%M - %m%n'
     console: '%d{"dd/MMM/yyyy HH:mm:ss,SSS"} %5p %c{0}:%L:%M - %m%n'
 
+nyehms:
+  mail:
+    help-line:
+      from: ''
+      to: ''
+      subject: 'NYEHMS Helpline Message'
+    acrf:
+      to: ''
+      cc: ''
+    bureau-director:
+      to: ''
+      cc: ''
+      subject: 'OOC/DNLTC Provider Portal Submission Summary'
+      header: 'Send Summary Email to Data to Care Unit'
+      warning-msg: '<strong style="color:Red">Warning!</strong> Do not email patient identifying information (name, race, date of birth, SSN etc.).'
+      hicapp-msg-content: 'Data to Care Unit,<br/><br/>We received an out-of-care list from _FACILITY_NAME_, a health center participating in HICAPP.<br/><br/>Review of surveillance data and Accurint searches were conducted.<br/><br/>The file from _FACILITY_NAME_ contained _TOTAL_PATIENTS_COUNT_ patient(s) <br/> _PATIENT_INFORMATION_<br/>Okay to provide this information back to the health center? <br/><br/>Thanks, <br/>_USER_FULL_NAME_'
+      general-msg-content: 'Data to Care Unit,<br/><br/>We received an out-of-care list from _FACILITY_NAME_ in _PROV_COUNTY_ County.<br/><br/>Review of surveillance data and Accurint searches were conducted.<br/><br/>The file from _FACILITY_NAME_  contained _TOTAL_PATIENTS_COUNT_ patient(s) <br/> _PATIENT_INFORMATION_<br/>Okay to provide this information back to the health center? <br/><br/>Thanks, <br/>_USER_FULL_NAME_'
+    ahi-document:
+      to: ''
+      cc: ''
+      subject: 'New AHI Document Submitted'
+    airs-agency:
+      subject: 'AIRS Agency Ids do not exist status'
+      body-msg: 'The following agencies submitted AIRS extracts but are not in the BHAE AIRS agency reference table. The extracts are NOT matched or processed in NYEHMS. Please follow up with the agency if they should not be submitting extracts or contact BHAE with the agency information that should be added to the reference table.'
+    ps-message:
+      dod-to: ''
+      dod-cc: ''
+      upload-cc: ''
+    ehars-loader-to: ''
+    record-search-upload-cc: ''
+    error-notifications-to: ''
+    document-status-report-to: 'sampath.anumolu@health.ny.gov,joyce.chicoine@health.ny.gov'
+    hiv-document-update-date-to: ''
+  # login/logout, by-pass, load-schedulers and environment-name are set per profile
+  app:
+    load-schedulers-data-from-property: false
+    priority-assignment-period: 30
+    ras-fetch-row-limit: 5000
+    acknowledgement-message: '<div id="acknowledgementMessage"><h4 id="confirmMessageContent" class="font12pt" style="color:InactiveCaptionText">Clicking ''Agree'' is an acknowledgment that the user, by accessing this system, is accepting responsibility for protecting privileged, confidential and/or protected health information (PHI) according to HIPAA, NYS Public Health Law and other federal and state privacy laws. The user shall not at this time or at any time in the future disclose information obtained from this system to any other person unless that person is legally authorized and has official reasons to obtain the information. The NYEHMS application maintains user search history; access to patient records are audited to ensure compliance with security and confidentiality standards.</h4><span  class="font12pt bold" style="color:InactiveCaptionText">While telecommuting, I agree to the following: </span><ul style="color:InactiveCaptionText"><li class="font12pt bold" >I will only access confidential HIV or STI information for legitimate public health purposes in accordance to the Confidentiality and Data Security protocol.</li><li class="font12pt bold">I will adhere to the procedures outlined in the attestation I signed and remotely access confidential HIV or STI information when/if physical security precautions are optimal.</li><li class="font12pt bold">I will not use VPN from any public environment (e.g., library, coffee shop, restaurant, train, airplane, temporary/unsecure co-working office space, etc..) where others could, intentionally or unwittingly, observe my screen. </li><li class="font12pt bold">I understand and agree that I am bound by these policies, even upon resignation, termination or completion of my activities.</li></ul></div>'
+
 # ---------- NYEHMS settings (same in every environment) ----------
 # Read by code through EnvironmentProperties.envProperties (filled from Spring at startup).
 # Formerly CommonEnvironment.properties + values identical in all *_environment.properties.
@@ -53,7 +93,6 @@ STAGE_CD4_OI_DX-1: 'Stage 1, CD4 cnt>=500 or pct>=26'
 STAGE_CD4_OI_DX-2: 'Stage 2, 200<=CD4 cnt <=499 or 14<=CD4 pct<=25'
 STAGE_CD4_OI_DX-3: 'Stage 3, OI or CD4 cnt<200 or CD4 pct<14'
 STAGE_CD4_OI_DX-9: 'Stage Unknown'
-RAS_FETCH_ROW_LIMIT: '5000'
 SIERRA_QUERY: 'query example($sequences: [UnalignedSequenceInput]!) {  currentVersion { text, publishDate },  sequenceAnalysis(sequences: $sequences) {       inputSequence {      header,      sequence,      MD5,      SHA512    },    validationResults {      level,      message    },    alignedGeneSequences {      gene {        name,        refSequence,        length,        drugClasses {          name,          fullName,          drugs {            name,            displayAbbr,            fullName          }        },        mutationTypes      },      firstAA,      lastAA,      firstNA,      lastNA,      matchPcnt,      prettyPairwise {        positionLine,        refAALine,        alignedNAsLine,        mutationLine      },      mutations {        reference,        position,        AAs,        triplet,        insertedNAs,        isInsertion,        isDeletion,        isIndel,        isAmbiguous,        isApobecMutation,        isApobecDRM,        hasStop,        isUnusual,        types,        primaryType,        comments {          boundMutation { AAs },          type,          text        },        text,        shortText      },      APOBEC: mutations(filterOptions: [APOBEC]) {        position,        AAs,        text      },      APOBEC_DRM: mutations(filterOptions: [APOBEC_DRM]) {        text      },      DRM: mutations(filterOptions: [DRM]) {        text      },      SDRM: mutations(filterOptions: [SDRM]) {        text      },      unusualMutations: mutations(filterOptions: [UNUSUAL]) {        text      },      treatmentSelectedMutations: mutations(        filterOptions: [PI_TSM, NRTI_TSM, NNRTI_TSM, INSTI_TSM]      ) {        text      },      frameShifts {        position,        isInsertion,        isDeletion,        size,        NAs,        text      }    },    firstTenCloseSubtypes: subtypesV2(first: 10) {      displayWithoutDistance,      distancePcnt,      referenceAccession    },    bestMatchingSubtype { display },    mixturePcnt,    mutations {      position,      AAs,      shortText    },    frameShifts {      text    },    drugResistance {      gene {        name,        refSequence,        length,        drugClasses { name },        mutationTypes      },      drugScores {        drugClass {          name,          fullName,          drugs {            name,            displayAbbr,            fullName          }        },        drug { displayAbbr },        SIR,        score,        level,        text,        partialScores {          mutations {            text          },          score        }      },      mutationsByTypes {        mutationType,        mutations {          reference,          position,          AAs,          triplet,          insertedNAs,          isInsertion,          isDeletion,          isIndel,          isAmbiguous,          isApobecMutation,          isApobecDRM,          hasStop,          isUnusual,          text,          shortText        }      }      commentsByTypes {        commentType,        comments {          type,          text,          highlightText        }      }    }      }}'
 ASSIGNMENT_STATUS_EMAIL_HEADERS: 'REGION,ASSIGNMENTS'
 ASSIGNMENT_STATUS_EMAIL_COLUMNS: 'REGION,ASSIGNMENTS'
@@ -69,8 +108,6 @@ PS_MESSAGE_NYC_EMAIL_COLUMNS: 'TRIGGERING DOC ID,MESSAGE TYPE,STATENO,COUNTY'
 PS_MESSAGE_NYC_NO_DATA: 'No PS messages with NYC provider/facility created today'
 AIRS_AGENCY_STATUS_EMAIL_HEADERS: 'Agency ID,Date submitted,Count'
 AIRS_AGENCY_STATUS_EMAIL_COLUMNS: 'AGENCY_ID,CREATE_DATE,TOTAL_COUNT'
-AIRS_AGENCY_EMAIL_SUBJECT: 'AIRS Agency Ids do not exist status'
-AIRS_AGENCY_EMAIL_BODY_MSG: 'The following agencies submitted AIRS extracts but are not in the BHAE AIRS agency reference table. The extracts are NOT matched or processed in NYEHMS. Please follow up with the agency if they should not be submitting extracts or contact BHAE with the agency information that should be added to the reference table.'
 LAB_REPORT_COUNT_DATA_SET1: 'HIV Laboratory Reporting* Volume by <br/> Receive Date and Test Type'
 LAB_REPORT_COUNT_DATA_SET2: 'HIV Laboratory Reporting* Volume by <br/> Receive Date and Test Type'
 LAB_REPORT_COUNT_DATA_SET3: 'HIV Laboratory Reporting* Volume by <br/> Receive Date and Test Type'
@@ -85,17 +122,14 @@ LOINC_MONTHLY_REPORT_COLUMNS1: 'CLIA,Reporting Lab,Test Type'
 LOINC_MONTHLY_REPORT_BYREGION_COLUMNS1: 'RWR,Provider County,CLIA,Reporting Lab,Test Type'
 LOINC_MONTHLY_REPORT_COLUMNS2: 'Total,Average,Difference,Percent Change,LAFT Staff,Priority 1,Priority 2'
 LOINC_MONTHLY_REPORT_DATEFORMAT: 'MMMyyyy'
-ACKNOWLEDGEMENT_MESSAGE: '<div id="acknowledgementMessage"><h4 id="confirmMessageContent" class="font12pt" style="color:InactiveCaptionText">Clicking ''Agree'' is an acknowledgment that the user, by accessing this system, is accepting responsibility for protecting privileged, confidential and/or protected health information (PHI) according to HIPAA, NYS Public Health Law and other federal and state privacy laws. The user shall not at this time or at any time in the future disclose information obtained from this system to any other person unless that person is legally authorized and has official reasons to obtain the information. The NYEHMS application maintains user search history; access to patient records are audited to ensure compliance with security and confidentiality standards.</h4><span  class="font12pt bold" style="color:InactiveCaptionText">While telecommuting, I agree to the following: </span><ul style="color:InactiveCaptionText"><li class="font12pt bold" >I will only access confidential HIV or STI information for legitimate public health purposes in accordance to the Confidentiality and Data Security protocol.</li><li class="font12pt bold">I will adhere to the procedures outlined in the attestation I signed and remotely access confidential HIV or STI information when/if physical security precautions are optimal.</li><li class="font12pt bold">I will not use VPN from any public environment (e.g., library, coffee shop, restaurant, train, airplane, temporary/unsecure co-working office space, etc..) where others could, intentionally or unwittingly, observe my screen. </li><li class="font12pt bold">I understand and agree that I am bound by these policies, even upon resignation, termination or completion of my activities.</li></ul></div>'
 QUEST_CLIAS: '05D0550302,31D0696246,39D0656976,49D0221801,39D0183896'
 QUEST_LOINC_CODES: '20447-9,29541-0'
 QUEST_TEST_RESULT: '<20,<1.30'
 LABCORP_CLIAS: '34D0655059'
 LABCORP_LOINC_CODES: '20447-9,25836-8,41498-7'
 LABCORP_TEST_RESULT: '<20,<40,<200'
-PRIORITY_ASSIGNMENT_PERIOD: '30'
 ASSIGNMENT_30_DAY_NOTE: 'Note: Assignments (Highlighted in orange font) were created more than 60 days if created before 12/31/2024 and 30 days if created after 12/31/2024.'
 SCAN_PWD: 'bnkwM2VoJDA4I20yMXM1OUwkMmEzY0Q3Nw=='
-DOCUMENT_STATUS_REPORT_TO: 'sampath.anumolu@health.ny.gov,joyce.chicoine@health.ny.gov'
 riaEligibility_report: 'RIA Eligibility Report'
 riaFollowup_report: 'RIA Follow-up Report'
 treatment_report: 'RIA Treatment Start Date Report'
@@ -114,17 +148,10 @@ DATAFLUX_MATCH_SQL_MAPPING: 'DOCUMENT_ID,PERSON_FIRST_NAME,PERSON_LAST_NAME,PERS
 DATAFLUX_MATCH_SQL_COLUMNS_VALUES: '?,trim(upper(regexp_replace(regexp_replace(regexp_replace(? ,''[-|/|:|_|,|(|)]'','' ''), ''s{2,}'', '' ''),''[`|''''|;]'',''''))),trim(upper(regexp_replace(regexp_replace(regexp_replace(? ,''[-|/|:|_|,|(|)]'','' ''), ''s{2,}'', '' ''),''[`|''''|;]'',''''))),trim(upper(regexp_replace(regexp_replace(regexp_replace(? ,''[-|/|:|_|,|(|)]'','' ''), ''s{2,}'', '' ''),''[`|''''|;]'',''''))),trim(upper(regexp_replace(regexp_replace(regexp_replace(? ,''[-|/|:|_|,|(|)]'','' ''), ''s{2,}'', '' ''),''[`|''''|;]'',''''))),to_char(FN_TO_DATE(trim(upper(?)), ''MM/DD/YYYY''), ''MM/DD/YYYY''),trim(upper(?)),trim(upper(?)),trim(upper(?)),trim(upper(?)),substr(regexp_replace(trim(upper(?)) , ''D''),0, 5),trim(upper(?)),trim(upper(?)),trim(upper(?)),to_char(FN_TO_DATE(trim(upper(?)), ''MM/DD/YYYY''), ''MM/DD''),to_char(FN_TO_DATE(trim(upper(?)), ''MM/DD/YYYY''), ''MM/YYYY''),?'
 
 fromEmail_schedulerStatus: 'sampath.anumolu@health.ny.gov'
-installationDate: '01/01/2000'
-helpLineSubject: 'NYEHMS Helpline Message'
 RIDR_COLUMN_NAMES: 'Record No.,Newly Reported to CDC*,Reporting Jurisdiction,STATENO,Last Name Soundex,Date of Birth,Sex at Birth,Date of Death,Transmission Category,HIV Case Definition Category,Date of HIV Infection Diagnosis,Residence at HIV Infection Diagnosis,AIDS Case Definition Category,Date of AIDS Diagnosis,Residence at AIDS Diagnosis,Duplicate Status,Newly Reported to CDC*,Reporting Jurisdiction,STATENO,Date of Death,Transmission Category,HIV Case Definition Category,Date of HIV Infection Diagnosis,Residence at HIV Infection Diagnosis,AIDS Case Definition Category,Date of AIDS Diagnosis,Residence at AIDS Diagnosis,Duplicate Status'
 RIDR_DB_COLUMN_NAMES: 'record_no,NYS_newly_reported_cdc,NYS_Reporting_Jurisdiction,NYS_stateno,NYS_Last_Name_Soundex,NYS_DATE_OF_BIRTH,NYS_SEX_AT_BIRTH,NYS_DATE_OF_DEATH,NYS_Transmission_Category,NYS_HIV_Case_Def_Category,NYS_Date_HIV_Infection_Diag,NYS_Resi_HIV_Infection_Diag,NYS_AIDS_Case_Def_Category,NYS_Date_AIDS_Diag,NYS_Resi_at_AIDS_Diag,NYS_duplicate_status,newly_reported_cdc,Reporting_Jurisdiction,stateno,DATE_OF_DEATH,Transmission_Category,HIV_Case_Def_Category,Date_HIV_Infection_Diag,Resi_HIV_Infection_Diag,AIDS_Case_Def_Category,Date_AIDS_Diag,Resi_at_AIDS_Diag,duplicate_status'
 CLUSTER_BHAE_COLUMN_NAMES: 'NYEHMS_STATENO,DOCUMENT_ID,IDENTIFICATION_METHOD_CODE,IDENTIFICATION_DATE'
 CLUSTER_BHAE_DB_COLUMN_NAMES: 'UPLOAD_NYEHMS_STATENO,DEMO_DOCUMENT_ID,IDENTIFICATION_METHOD_CODE,IDENTIFICATION_DATE'
-EMAIL_BUREAU_DIRECTOR_HEADER: 'Send Summary Email to Data to Care Unit'
-EMAIL_BUREAU_DIRECTOR_WARNING_MSG: '<strong style="color:Red">Warning!</strong> Do not email patient identifying information (name, race, date of birth, SSN etc.).'
-EMAIL_BUREAU_DIRECTOR_SUBJECT: 'OOC/DNLTC Provider Portal Submission Summary'
-HICAPP_EMAIL_BUREAU_DIRECTOR_MSG_CONTENT: 'Data to Care Unit,<br/><br/>We received an out-of-care list from _FACILITY_NAME_, a health center participating in HICAPP.<br/><br/>Review of surveillance data and Accurint searches were conducted.<br/><br/>The file from _FACILITY_NAME_ contained _TOTAL_PATIENTS_COUNT_ patient(s) <br/> _PATIENT_INFORMATION_<br/>Okay to provide this information back to the health center? <br/><br/>Thanks, <br/>_USER_FULL_NAME_'
-GENERAL_EMAIL_BUREAU_DIRECTOR_MSG_CONTENT: 'Data to Care Unit,<br/><br/>We received an out-of-care list from _FACILITY_NAME_ in _PROV_COUNTY_ County.<br/><br/>Review of surveillance data and Accurint searches were conducted.<br/><br/>The file from _FACILITY_NAME_  contained _TOTAL_PATIENTS_COUNT_ patient(s) <br/> _PATIENT_INFORMATION_<br/>Okay to provide this information back to the health center? <br/><br/>Thanks, <br/>_USER_FULL_NAME_'
 EPRF_SUMMARY_SPREAD_SHEET_DOC_COLUMNS: 'Medical Record Number,First Name,Last Name,DOB,Last Provider Visit Date,Last VL Date,Last VL Result,Last CD4 Date,Last CD4 Count,Last CD4 Percent,Provider County'
 EPRF_SUMMARY_SPREAD_SHEET_EHARS_COLUMNS: 'NYEHMS Match Result,Final Match Review Status,STATENO,NYS eHARS STATENO,NYC eHARS STATENO,NYC CITYNO,Last HIV Lab Type,Last HIV Lab Date,Last HIV Lab Result,Months Since Last HIV Lab,NYS Vital Status,NYC Vital Status,Meets CDC Case Definition in UPS or NYC,Meets CDC Eligibility Definition in UPS or NYC'
 EPRF_SUMMARY_SPREAD_SHEET_EHARS_CONCLUSIONS: 'Confirmatory Result Reported,Submitting Provider Present,Review Comment,Internal Conclusion,Care Status'
@@ -134,7 +161,6 @@ ADAP_RETURN_FILE_COLUMN_NAMES: 'INS_NO,STDRPTS_ID,STATENO,FNAME,LNAME,MNAME,SUFF
 ADAP_NYC_AGREE_SUMMARY_SPREAD_SHEET_COLUMNS: 'STATENO,CITYNO'
 ADAP_NYC_DISAGREE_SUMMARY_SPREAD_SHEET_COLUMNS: 'STATENO,CITYNO,USER_CITYNO,COMMENTS'
 ADAP_NYC_SHIPPED_MATCH_SUMMARY: 'MATCH CD, COUNT'
-EMAIL_AHI_DOCUMENT_SUBJECT: 'New AHI Document Submitted'
 UPDATE_RETURN_MESSAGE_COLUMN_NAMES: 'DOCUMENT_ID,DATE OF DEATH,DISPOSITION CODE,FIELD NOTES'
 UPLOAD_RECORD_SEARCH_COLUMN_NAMES: 'STATENO,COMMENTS'
 UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAME: 'STATENO'

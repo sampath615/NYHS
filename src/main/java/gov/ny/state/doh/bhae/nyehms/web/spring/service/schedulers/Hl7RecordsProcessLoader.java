@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.CommonSchedulerHelper;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 /**
  * Quartz scheduler class to run hl7 clean hit records
@@ -24,6 +24,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
  ***/
 @Component
 public class Hl7RecordsProcessLoader {
+
+	@Autowired
+	private AppProperties appProperties;
 
 	@Autowired
 	ManualQuartzJobService manualQuartzJobService;
@@ -49,10 +52,10 @@ public class Hl7RecordsProcessLoader {
 		
 		synchronized (this) {
 			
-			log.error("Checking before properties : {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties : {}",appProperties.loadSchedulers());
 			
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"
-			if("N".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(!appProperties.loadSchedulers()){
 				log.error("You are running locally with a loadSchedulers property of N");
 			}else{
 				

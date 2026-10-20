@@ -1,16 +1,20 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.LegacyEnvironmentBridge;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationListener;
 
 @SpringBootApplication
+@ConfigurationPropertiesScan
 public class NyehmsApplication extends SpringBootServletInitializer {
 
     @Override
@@ -30,8 +34,9 @@ public class NyehmsApplication extends SpringBootServletInitializer {
         super.onStartup(servletContext);
         servletContext.setAttribute("contextPath", servletContext.getContextPath());
         // cache-busting version on static JS/CSS URLs (?v=${buildDate})
+        // (startup date, so every redeploy gets fresh URLs)
         servletContext.setAttribute("buildDate",
-                EnvironmentProperties.envProperties.getProperty("installationDate"));
+                LocalDate.now().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
     }
 
     /**

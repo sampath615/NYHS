@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.StatusReportsService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +22,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MonthlyDocumentStatusLoader{
+
+	@Autowired
+	private AppProperties appProperties;
 	
 	/*
 	 * Reference to Log
@@ -45,7 +48,7 @@ public class MonthlyDocumentStatusLoader{
 		
 		synchronized(this){
 			
-			log.error("Checking before properties   {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties   {}",appProperties.loadSchedulers());
 			
 			Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
 			
@@ -53,7 +56,7 @@ public class MonthlyDocumentStatusLoader{
 			// Checking Server IP address, scheduler calling from and is
 			
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers")) && expectedServerIpAddress.equals(runningServerIpAddress)){
+			if(appProperties.loadSchedulers() && expectedServerIpAddress.equals(runningServerIpAddress)){
 				
 				
 				

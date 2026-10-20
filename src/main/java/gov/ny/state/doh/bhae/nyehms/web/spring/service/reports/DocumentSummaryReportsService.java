@@ -18,6 +18,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.util.ByteArrayDataSource;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
@@ -58,6 +59,9 @@ public class DocumentSummaryReportsService {
 	RemoteServerUtil remoteServer;
 	@Autowired
 	SendEmail sendEmail;
+
+	@Autowired
+    MailProperties mailProperties;
 
 	@Autowired
 	private DocumentSummaryReportDAO documentSummaryReportDAO ;
@@ -221,11 +225,11 @@ public class DocumentSummaryReportsService {
  	        byteArrayDataSource = new ByteArrayDataSource(obj_InputStream, "application/pdf"); 
  	        messageBodyPart2 = new MimeBodyPart();
  	        messageBodyPart2.setDataHandler(new DataHandler(byteArrayDataSource));
- 	        messageBodyPart2.setFileName(fileName);  
-	     	        
- 	       String[] emailTo = EnvironmentProperties.envProperties.getProperty("DOCUMENT_STATUS_REPORT_TO").split(",");
+ 	        messageBodyPart2.setFileName(fileName);
+
+			String[] emailTo = mailProperties.documentStatusReportTo().split(",");
      	   String[] emailCC = {};
-           sendEmail.sendemailAttachments(emailTo, "Document Status Report "+slashedFormatedDate, "Please see attached document status report.", EnvironmentProperties.envProperties.getProperty("helpLineFrom"), emailCC, CommonConstants.RESPONSE_CONTENT_TYPE_HTML, messageBodyPart2);
+           sendEmail.sendemailAttachments(emailTo, "Document Status Report "+slashedFormatedDate, "Please see attached document status report.", mailProperties.helpLine().from(), emailCC, CommonConstants.RESPONSE_CONTENT_TYPE_HTML, messageBodyPart2);
      	        
      	      
      	        

@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.ajax.json.JsonObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
@@ -7,7 +8,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -36,6 +36,9 @@ Ex: Login, logout, errorpage etc..
 
 @Controller
 public class CommonController {	
+
+	@Autowired
+	private AppProperties appProperties;
 	
 	@Autowired UserAuthorization userAuthorization;
 	@Autowired GetGridObject     getGridObject;
@@ -84,7 +87,7 @@ public class CommonController {
 		}
 		log.debug(nyehmsLog+" User Object ::: {}",userObject);
 		//Validate the user against DB		
-		if(userObject!=null && "Y".equals(EnvironmentProperties.envProperties.getProperty("byPass"))){
+		if(userObject!=null && appProperties.byPass()){
 			session.setAttribute("UserObj", userObject);
 			//If the User initialize object is not loaded loading the method to validate the USer details  
 			Map<String, String> targetMap= new HashMap<>();
@@ -127,7 +130,7 @@ public class CommonController {
 			if(user != null){
 				map.put("TRANSACTION_MESSAGE","User not available");
 			}
-			returnString = EnvironmentProperties.envProperties.getProperty("loginPage");
+			returnString = appProperties.loginPage();
 			//returnString = "login/Login";
 		}
 		return returnString;
@@ -145,7 +148,7 @@ public class CommonController {
 		if (session != null) {
 			session.invalidate();
 		}
-		String logoutUrl = EnvironmentProperties.envProperties.getProperty("loggout_url");
+		String logoutUrl = appProperties.logoutUrl();
 		log.debug("User logged out, redirecting to {}", logoutUrl);
 		if (logoutUrl == null || logoutUrl.isBlank()) {
 			return new RedirectView("/", true);       // app root → appInitialize

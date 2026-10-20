@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -80,7 +81,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -94,6 +94,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class ManualQuartzJobService {
+
+	@Autowired
+	private AppProperties appProperties;
 
 	/*
 	 * Reference to Log
@@ -4482,7 +4485,7 @@ public class ManualQuartzJobService {
 		String stage = System.getProperty("stage");
 
 		if ("LOCAL".equals(stage)
-				&& "Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulersDataFromProperty"))) {
+				&& appProperties.loadSchedulersDataFromProperty()) {
 
 			try {
 

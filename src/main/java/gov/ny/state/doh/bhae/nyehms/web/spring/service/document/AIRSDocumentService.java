@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
@@ -37,6 +38,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class AIRSDocumentService {
+
+	@Autowired
+	private MailProperties mailProperties;
 
     private static Logger log = LoggerFactory.getLogger(AIRSDocumentService.class);
     
@@ -486,7 +490,7 @@ public class AIRSDocumentService {
 		List<Map<String, Object>> errorList = airsDocumentDAO.checkForActiveErrors(inputParameterMap);
 		//
 		if(errorList.size() > 0 ) {
-			commonService.sendStatusSummary(errorList, "AIRS_AGENCY_STATUS_EMAIL_HEADERS", "AIRS_AGENCY_STATUS_EMAIL_COLUMNS", "AIRS_AGENCY", EnvironmentProperties.envProperties.getProperty("AIRS_AGENCY_EMAIL_SUBJECT"), EnvironmentProperties.envProperties.getProperty("AIRS_AGENCY_EMAIL_BODY_MSG"),   null);
+			commonService.sendStatusSummary(errorList, "AIRS_AGENCY_STATUS_EMAIL_HEADERS", "AIRS_AGENCY_STATUS_EMAIL_COLUMNS", "AIRS_AGENCY", mailProperties.airsAgency().subject(), mailProperties.airsAgency().bodyMsg(),   null);
 		}
 		
 	}

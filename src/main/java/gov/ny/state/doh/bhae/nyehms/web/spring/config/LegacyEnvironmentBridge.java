@@ -1,7 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.config;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -41,8 +39,7 @@ public class LegacyEnvironmentBridge implements ApplicationListener<ApplicationE
             }
         }
 
-        // Same extras the old listener set
-        legacy.setProperty("installationDate", new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+        // Same extra the old listener set
         String[] profiles = env.getActiveProfiles();
         System.setProperty("stage", profiles.length > 0 ? profiles[0].toUpperCase() : "PROD");
     }

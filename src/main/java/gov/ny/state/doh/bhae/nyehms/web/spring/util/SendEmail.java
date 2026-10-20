@@ -1,27 +1,22 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
-import java.util.Map;
-import java.util.Properties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * This class is used to send the Emails in different formats
@@ -29,17 +24,31 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
  * @author ska03
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class SendEmail {
 
 	private static final String SMTP_HOST_NAME = "mailhost.health.state.ny.us";
 	private static final String emailSubjectTxt = "Error in NYEHMS Run Time";
 	private static final String emailFromAddress = "hinweb@health.state.ny.gov";
 	
-	@Autowired CommonService commonService;
-	
-	private static Logger log = LoggerFactory.getLogger(SendEmail.class);
+	@Autowired private CommonService commonService;
+	private final MailProperties mailProperties;
+	private final Environment environment;
+	//private static Logger log = LoggerFactory.getLogger(SendEmail.class);
 
-	
+	@jakarta.annotation.PostConstruct
+	void logMailConfig() {
+		log.info("MAIL CHECK -> stage={}, mail={}", stage(), mailProperties);
+	}
+
+	/** LOCAL / DEV / EVAL / PROD, from spring.profiles.active (replaces System.getProperty("stage")). */
+	private String stage() {
+		return String.join(",", environment.getActiveProfiles()).toUpperCase();
+	}
+
+
+
 	/**
 	 * This method is used to send an Email with a default subject, default
 	 * from address, default email host, and a list of recipients taken
@@ -52,12 +61,12 @@ public class SendEmail {
 	public void sendDefaultEMail(String emailBody)
 	{
 		try {
-			String[] sendTo = EnvironmentProperties.envProperties.getProperty("error_email_notifications_to").split(",");
-			new SendEmail().sendSSLMessage(sendTo, System.getProperty("stage")+" : "+emailSubjectTxt, emailBody,
+			String[] sendTo = mailProperties.errorNotificationsTo().split(",");
+			this.sendSSLMessage(sendTo, stage() +" : "+emailSubjectTxt, emailBody,
 					emailFromAddress, null, null,
 					CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 		} catch (Exception e) {
-			log.error("Email Sent failed.");
+			log.error("Email Sent failed.", e);
 		}
 	}
 
@@ -141,14 +150,13 @@ public class SendEmail {
 		Message msg = new MimeMessage(session);
 		InternetAddress addressFrom = new InternetAddress(emailFromAddress);
 		msg.setFrom(addressFrom);
-		String[] sendTo = EnvironmentProperties.envProperties.getProperty("error_email_notifications_to").split(",");
+		String[] sendTo = mailProperties.errorNotificationsTo().split(",");
 		InternetAddress[] addressTo = new InternetAddress[sendTo.length];
 		for (int i = 0; i < sendTo.length; i++) {
 			addressTo[i] = new InternetAddress(sendTo[i]);
 		}
 		msg.setRecipients(Message.RecipientType.TO, addressTo);
-		String stage = System.getProperty("stage");
-		msg.setSubject(stage+" : "+emailSubjectTxt);
+		msg.setSubject(stage() + " : " + emailSubjectTxt);
 		String[] exceptionMessagestack = (String[]) messageParametersAndValues
 				.get("logStackFrames");
 		StringBuilder stringBuilder = new StringBuilder("<HTML><BODY>");
@@ -200,15 +208,15 @@ public class SendEmail {
 		if ((recipientEmailAddressesTo != null && recipientEmailAddressesTo.length > 0)
 				|| (recipientEmailAddressesCC != null && recipientEmailAddressesCC.length > 0)) {
 			sendSSLMessage(recipientEmailAddressesTo, subject, message,
-					EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC, null,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
 					messageType);
 		} else {
 			log.error("Didn't find Email Notification list, sent to Nyehms helpline");
 
 			log.error(message);
 
-			sendSSLMessage(EnvironmentProperties.envProperties.getProperty("helpLineTo").split(","), subject, message,
-					EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC, null,
+			sendSSLMessage(mailProperties.helpLine().to().split(","), subject, message,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
 					messageType);
 
 		}
@@ -226,7 +234,7 @@ public class SendEmail {
 		Session session = Session.getDefaultInstance(props, null);
 		session.setDebug(debug);
 		Message msg = new MimeMessage(session);
-		InternetAddress addressFrom = new InternetAddress(EnvironmentProperties.envProperties.getProperty("helpLineFrom"));
+		InternetAddress addressFrom = new InternetAddress(mailProperties.helpLine().from());
 		msg.setFrom(addressFrom);
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
 		messageBodyPart.setContent(message, "text/html");

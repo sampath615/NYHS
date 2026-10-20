@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -15,10 +16,12 @@ import org.springframework.stereotype.Component;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.CommonSchedulerHelper;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Component
 public class CCDLoader {
+
+	@Autowired
+	private AppProperties appProperties;
 
 	private static Logger log = LoggerFactory.getLogger(CCDLoader.class);
 
@@ -64,13 +67,13 @@ public class CCDLoader {
 		synchronized (this) { // if this is present it prevents multiple simultaneous instances
 			// We like to be able to run multiple simultaneous instances
 			
-			log.error("Checking before properties : {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties : {}",appProperties.loadSchedulers());
 			
 			// To avoid local environment scheduler calls, for local environment
 			// this property will be set it to "N"
 			// schedulerStatusObject : is used to track the complete job status
 			// (SUCCESS/FAILURE)
-			if("N".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(!appProperties.loadSchedulers()){
 				log.error("You are running locally with a loadSchedulers property of N");
 			}else{
 				

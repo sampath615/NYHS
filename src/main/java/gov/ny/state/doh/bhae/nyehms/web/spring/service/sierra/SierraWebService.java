@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.sierra;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -51,6 +52,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  */
 @Service
 public class SierraWebService {
+
+	@Autowired
+	private AppProperties appProperties;
 
 	private static Logger log = LoggerFactory.getLogger(SierraWebService.class);
     //private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
@@ -149,7 +153,7 @@ public class SierraWebService {
 	   Map<String, Integer> inputParameterMap = new HashMap<>();
 	   
 	   inputParameterMap.put("DOC_ID", maxDocumentId);
-	   inputParameterMap.put("ROW_LIMIT", Integer.parseInt(EnvironmentProperties.envProperties.getProperty("RAS_FETCH_ROW_LIMIT")));
+	   inputParameterMap.put("ROW_LIMIT", appProperties.rasFetchRowLimit());
 	   
 	   return sierraResponseDAO.getRasDocIdsToParse(inputParameterMap);
 	   

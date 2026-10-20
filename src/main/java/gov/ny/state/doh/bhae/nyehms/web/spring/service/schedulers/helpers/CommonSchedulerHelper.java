@@ -1,12 +1,16 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Component
 public class CommonSchedulerHelper {
+
+	@Autowired
+	private AppProperties appProperties;
 	
 
 	
@@ -25,7 +29,7 @@ public class CommonSchedulerHelper {
 			String databaseName) {
 
 		StringBuilder statusMailSubject = new StringBuilder(schedulerName + " ON ");
-		statusMailSubject.append(EnvironmentProperties.envProperties.getProperty("environmentName"));
+		statusMailSubject.append(appProperties.environmentName());
 		statusMailSubject.append(" BY ");
 		if(CommonUtil.isNullOrEmpty(initiator)){
 			statusMailSubject.append("QUARTZ");

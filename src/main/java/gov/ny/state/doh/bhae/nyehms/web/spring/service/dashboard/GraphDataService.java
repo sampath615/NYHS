@@ -1,9 +1,9 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.dashboard;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.dashboard.GraphDataDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,6 +23,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GraphDataService {
+
+	@Autowired
+	private AppProperties appProperties;
 //
 //    @Autowired
 //    private ConnectionDAO connectionDAO;
@@ -54,7 +57,7 @@ public class GraphDataService {
     	inputParameterMap.put("previousYear", calendar.get(Calendar.YEAR)-1);
     	inputParameterMap.put("workerId", userObject.getWorkerId());
     	
-    	inputParameterMap.put("PRIORITY_ASSIGNMENT_PERIOD", Integer.parseInt(EnvironmentProperties.envProperties.getProperty("PRIORITY_ASSIGNMENT_PERIOD")));
+    	inputParameterMap.put("PRIORITY_ASSIGNMENT_PERIOD", appProperties.priorityAssignmentPeriod());
 		
     	
     	List<Map<String, Object>> workerTallyGraphData = graphDataDAO.getWorkerTallyGraphData(inputParameterMap);

@@ -4,8 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.mail.MessagingException;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import jakarta.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 /**
@@ -29,13 +32,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  * @author vxp06
  */
 @Controller
+@Slf4j
+@RequiredArgsConstructor
 public class EmailController {
 
-	private static Logger log = LoggerFactory.getLogger(EmailController.class);
-	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
-	
+	private final CommonExceptionHandler commonExceptionHandler;
+	private final SendEmail sendEmail;
+	private final MailProperties mailProperties;
 	/**
 	 * This method will return helpline.jsp page
 	 * 
@@ -65,13 +68,12 @@ public class EmailController {
 		String transactionMessage = "Mail successfully sent to NYEHMS Helpdesk"; 
 		String[] cc = new String[1];
 
-		String[] sendTo = new String[1];
-		sendTo[0] = EnvironmentProperties.envProperties.getProperty("helpLineTo");
+		String[] sendTo = mailProperties.helpLine().to().split(",");
 		
 		String  emailSubjectTxt = request.getParameter("emailSubject");
 		
 		if(emailSubjectTxt == null || "".equals(emailSubjectTxt)){
-			emailSubjectTxt = EnvironmentProperties.envProperties.getProperty("helpLineSubject");
+			emailSubjectTxt = mailProperties.helpLine().subject();
 		}
 		
 		String emailMsgTxt = request.getParameter("emailMessageTxt");
@@ -88,11 +90,11 @@ public class EmailController {
 			emailFromAddress = userObject.getUserId() + "@health.ny.gov";
 			cc[0] = emailFromAddress;
 		} else {
-			emailFromAddress = EnvironmentProperties.envProperties.getProperty("helpLineFrom");
+			emailFromAddress = mailProperties.helpLine().from();
 		}
 		
 		try {
-			new SendEmail().sendSSLMessage(sendTo, emailSubjectTxt,
+			sendEmail.sendSSLMessage(sendTo, emailSubjectTxt,
 					emailMsgTxt, emailFromAddress, cc,  null,
 					CommonConstants.RESPONSE_CONTENT_TYPE_PLAIN);
 			

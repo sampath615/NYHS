@@ -17,6 +17,7 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -109,6 +110,8 @@ public class FileUploadService {
 	@Autowired ConnectionDAO connectionDAO;
 	
 	@Autowired SendEmail sendEmail;
+
+	@Autowired MailProperties mailProperties;
 	
 	@Autowired ClusterDocumentService clusterDocumentService;
 	
@@ -1609,9 +1612,9 @@ public class FileUploadService {
 				
 				
 				sendEmail.sendSSLMessage(
-						EnvironmentProperties.envProperties.getProperty("HIV_DOCUMENT_UPDATE_DATE_TO").split(","),
+						mailProperties.hivDocumentUpdateDateTo().split(","),
 						"Updating HIV Data status", mailContent.toString(),
-						 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), userObject.getEmailAddress().split(","), null,
+						mailProperties.helpLine().from(), userObject.getEmailAddress().split(","), null,
 						CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 				
 				

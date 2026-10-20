@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.review;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Service
 public class DocumentReviewTransactionHelper {
+
+	@Autowired
+	private MailProperties mailProperties;
 	
 	private static Logger log = LoggerFactory.getLogger(DocumentReviewTransactionHelper.class);
 	
@@ -376,11 +379,11 @@ public class DocumentReviewTransactionHelper {
 					
 					if(fileFollowUpData.getFILE_CATEGORY().indexOf("HICAPP") != -1){
 						
-						messageContent = EnvironmentProperties.envProperties.getProperty("HICAPP_EMAIL_BUREAU_DIRECTOR_MSG_CONTENT");
+						messageContent = mailProperties.bureauDirector().hicappMsgContent();
 
 					}else{
 						
-						messageContent = EnvironmentProperties.envProperties.getProperty("GENERAL_EMAIL_BUREAU_DIRECTOR_MSG_CONTENT");
+						messageContent = mailProperties.bureauDirector().generalMsgContent();
 					}
 					
 					
@@ -442,9 +445,9 @@ public class DocumentReviewTransactionHelper {
 
 					map.put("emailMessageContent", messageContent);
 					
-					map.put("EMAIL_BUREAU_DIRECTOR_HEADER", EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_HEADER"));
+					map.put("EMAIL_BUREAU_DIRECTOR_HEADER", mailProperties.bureauDirector().header());
 					
-					map.put("EMAIL_BUREAU_DIRECTOR_WARNING_MSG", EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_WARNING_MSG"));
+					map.put("EMAIL_BUREAU_DIRECTOR_WARNING_MSG", mailProperties.bureauDirector().warningMsg());
 					
 				}
 				

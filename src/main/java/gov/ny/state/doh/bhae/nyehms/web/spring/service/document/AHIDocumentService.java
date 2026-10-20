@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +30,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -37,6 +37,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 @Service
 public class AHIDocumentService {
+
+	@Autowired
+	private MailProperties mailProperties;
 	
 	@Autowired private CommonExceptionHandler commonExceptionHandler;	
 	@Autowired private DocumentTransactionHelper documentTransactionHelper;
@@ -156,7 +159,7 @@ public class AHIDocumentService {
 
 	public void sendEmail(BindingResult result, UserObject userObject) throws MessagingException {
 		
-		String subject = EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_SUBJECT");
+		String subject = mailProperties.ahiDocument().subject();
 		
 		//String[] recipientEmailAddresses = address_to.split(",");
 		

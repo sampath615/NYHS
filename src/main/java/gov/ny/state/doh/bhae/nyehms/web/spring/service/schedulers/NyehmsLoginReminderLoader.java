@@ -1,18 +1,19 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class NyehmsLoginReminderLoader{
+
+	@Autowired
+	private AppProperties appProperties;
 	
 	/*
 	 * Reference to Log
@@ -41,6 +45,9 @@ public class NyehmsLoginReminderLoader{
 	@Autowired
 	SendEmail sendEmail;
 
+	@Autowired
+    MailProperties mailProperties;
+
 	public void sendNyehmsLoginReminderEmail(){
 		
 		String runningServerIpAddress = null;
@@ -53,10 +60,10 @@ public class NyehmsLoginReminderLoader{
 		
 		synchronized(this){
 			
-			log.error("Checking before properties   {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties   {}",appProperties.loadSchedulers());
 			
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(appProperties.loadSchedulers()){
 											
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table). Most of the Scheduler input parameters will be inputed from Metadata table
 				Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
@@ -104,10 +111,8 @@ public class NyehmsLoginReminderLoader{
 										
 									
 									message.append("</ul>");
-//									sendEmail.sendemailAttachments(userDetails.get("EMAIL_ADDR").split(","), "We are going to deactivate you account, "+userDetails.get("FIRST_NAME"), message.toString(), EnvironmentProperties.envProperties.getProperty("helpLineFrom"), EnvironmentProperties.envProperties.getProperty("helpLineFrom").split(","), CommonConstants.RESPONSE_CONTENT_TYPE_HTML, 
-//											messageBodyPart2);
-									sendEmail.sendSSLMessage(userDetails.get("EMAIL_ADDR").split(","), "We are going to deactivate your account, "+userDetails.get("FIRST_NAME"), message.toString(),  
-											EnvironmentProperties.envProperties.getProperty("helpLineFrom"),  EnvironmentProperties.envProperties.getProperty("helpLineFrom").split(","), null, CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
+									sendEmail.sendSSLMessage(userDetails.get("EMAIL_ADDR").split(","), "We are going to deactivate your account, "+userDetails.get("FIRST_NAME"), message.toString(),
+											mailProperties.helpLine().from(),  mailProperties.helpLine().from().split(","), null, CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 								}catch(Exception e) {
 									log.error("Failed to send email reminder email to: {}",userDetails.get("USERNAME"));
 									log.error(e.getMessage());

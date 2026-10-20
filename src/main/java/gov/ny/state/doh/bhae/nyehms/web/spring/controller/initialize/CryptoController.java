@@ -1,8 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.initialize;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class CryptoController {
+
+	@Autowired
+	private AppProperties appProperties;
 
 	private static Logger log = LoggerFactory.getLogger(CryptoController.class);
 
@@ -67,7 +70,7 @@ public class CryptoController {
 
             //return "forward:/web/login?user=" + userInitObj.getUserId();
             
-            map.put("ACKNOWLEDGEMENT_MESSAGE", EnvironmentProperties.envProperties.getProperty("ACKNOWLEDGEMENT_MESSAGE"));
+            map.put("ACKNOWLEDGEMENT_MESSAGE", appProperties.acknowledgementMessage());
             
             return "initialize/AllowApplicationAccess";
             
