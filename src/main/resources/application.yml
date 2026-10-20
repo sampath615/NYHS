@@ -17,6 +17,13 @@ spring:
       max-request-size: '409657600B'
   main:
     allow-circular-references: 'true'
+  # Jackson 3 set up to write JSON exactly like the Jackson 2 setup it replaced
+  # (same property names, java.util.Date / Timestamp as epoch milliseconds). The pages expect this.
+  jackson:
+    use-jackson2-defaults: true
+    datatype:
+      datetime:
+        write-dates-as-timestamps: true
   jpa:
     hibernate:
       ddl-auto: 'none'

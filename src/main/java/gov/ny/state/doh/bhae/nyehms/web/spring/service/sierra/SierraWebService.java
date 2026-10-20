@@ -3,8 +3,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.sierra;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.LabProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,18 +21,14 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
-import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpContent;
-import com.google.api.client.http.HttpRequest;
-import com.google.api.client.http.HttpRequestFactory;
-import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.apache.ApacheHttpTransport;
-import com.google.api.client.http.json.JsonHttpContent;
-import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -78,19 +77,21 @@ public class SierraWebService {
 	
 	final String query = "query example($sequences: [UnalignedSequenceInput]!) {  currentVersion { text, publishDate },  sequenceAnalysis(sequences: $sequences) {       inputSequence {      header,      sequence,      MD5,      SHA512    },    validationResults {      level,      message    },    alignedGeneSequences {      gene {        name,        refSequence,        length,        drugClasses {          name,          fullName,          drugs {            name,            displayAbbr,            fullName          }        },        mutationTypes      },      firstAA,      lastAA,      firstNA,      lastNA,      matchPcnt,      prettyPairwise {        positionLine,        refAALine,        alignedNAsLine,        mutationLine      },      mutations {        reference,        position,        AAs,        triplet,        insertedNAs,        isInsertion,        isDeletion,        isIndel,        isAmbiguous,        isApobecMutation,        isApobecDRM,        hasStop,        isUnusual,        types,        primaryType,        comments {          boundMutation { AAs },          type,          text        },        text,        shortText      },      APOBEC: mutations(filterOptions: [APOBEC]) {        position,        AAs,        text      },      APOBEC_DRM: mutations(filterOptions: [APOBEC_DRM]) {        text      },      DRM: mutations(filterOptions: [DRM]) {        text      },      SDRM: mutations(filterOptions: [SDRM]) {        text      },      unusualMutations: mutations(filterOptions: [UNUSUAL]) {        text      },      treatmentSelectedMutations: mutations(        filterOptions: [PI_TSM, NRTI_TSM, NNRTI_TSM, INSTI_TSM]      ) {        text      },      frameShifts {        position,        isInsertion,        isDeletion,        size,        NAs,        text      }    },    firstTenCloseSubtypes: subtypesV2(first: 10) {      displayWithoutDistance,      distancePcnt,      referenceAccession    },    bestMatchingSubtype { display },    mixturePcnt,    mutations {      position,      AAs,      shortText    },    frameShifts {      text    },    drugResistance {      gene {        name,        refSequence,        length,        drugClasses { name },        mutationTypes      },      drugScores {        drugClass {          name,          fullName,          drugs {            name,            displayAbbr,            fullName          }        },        drug { displayAbbr },        SIR,        score,        level,        text,        partialScores {          mutations {            text          },          score        }      },      mutationsByTypes {        mutationType,        mutations {          reference,          position,          AAs,          triplet,          insertedNAs,          isInsertion,          isDeletion,          isIndel,          isAmbiguous,          isApobecMutation,          isApobecDRM,          hasStop,          isUnusual,          text,          shortText        }      }      commentsByTypes {        commentType,        comments {          type,          text,          highlightText        }      }    }      }}";
 	
-	HttpTransport HTTP_TRANSPORT = new ApacheHttpTransport();
-	
-	HttpRequestFactory requestFactory = HTTP_TRANSPORT.createRequestFactory();
-	
-	GenericUrl url = new GenericUrl(PostUrl.replaceAll(" ", "%20"));
-	
-	Map<String, Object> resistanceObj = new HashMap<>();
-	
-	HttpRequest request = null;
-	
-	HttpContent content = null;
-	
-	HttpResponse response = null;
+	/**
+	 * HTTP client for the Sierra GraphQL service (replaces google-http-client + its Jackson 2 adapter).
+	 * Same behaviour as before: no proxy, 20 s connect and read timeouts, JSON body written by Jackson.
+	 */
+	private final RestClient sierraClient = createSierraClient();
+
+	private static RestClient createSierraClient() {
+		HttpClient httpClient = HttpClient.newBuilder()
+				.proxy(HttpClient.Builder.NO_PROXY)
+				.connectTimeout(Duration.ofSeconds(20))
+				.build();
+		JdkClientHttpRequestFactory requestFactory = new JdkClientHttpRequestFactory(httpClient);
+		requestFactory.setReadTimeout(Duration.ofSeconds(20));
+		return RestClient.builder().requestFactory(requestFactory).build();
+	}
 	
 	private Map<String, Integer> geneMap = new HashMap<>();
 	
@@ -166,6 +167,8 @@ public class SierraWebService {
 	   	
 	
 	
+	Map<String, Object> resistanceObj = new HashMap<>();
+
 	Map<String, List<Map<String, Object>>> resistanceMap = new HashMap<>();
 	
 	Map<String, Object> resistance1 = new HashMap<>();
@@ -187,19 +190,22 @@ public class SierraWebService {
 	
 	resistanceObj.put("variables", resistanceMap);
 	
-	content = new JsonHttpContent(new JacksonFactory(), resistanceObj);
+	ResponseEntity<byte[]> response;
+	try {
+		response = sierraClient.post()
+				.uri(URI.create(PostUrl))
+				.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))   // same header as before: application/json; charset=UTF-8
+				.body(resistanceObj)
+				.retrieve()
+				.toEntity(byte[].class);
+	} catch (RestClientResponseException e) {
+		log.error("Unable to get the sierra response {}", e.getStatusCode().value());
+		throw new DataRetrievalFailureException("No Sierra response", e);
+	}
 	
-	request = requestFactory.buildPostRequest(url, content);
-	
-	//System.out.println("HttpRequest request" + request);
-	
-	response = request.execute();
-	
-	//System.out.println(response.getStatusCode());
-	
-	if(response.getStatusCode() == 200) {
+	if(response.getStatusCode().value() == 200 && response.getBody() != null) {
 		
-		JsonElement jsonElement = new JsonParser().parse(new InputStreamReader(response.getContent(), "utf-8"));
+		JsonElement jsonElement = new JsonParser().parse(new String(response.getBody(), StandardCharsets.UTF_8));
 		JsonObject jsonObj = jsonElement.getAsJsonObject();
 		if(!jsonObj.isJsonNull()) {
 			return jsonObj.getAsJsonObject("data");
@@ -208,7 +214,7 @@ public class SierraWebService {
 		}
 		
 	}else {
-		log.error("Unable to get the sierra response {}",response.getStatusCode());
+		log.error("Unable to get the sierra response {}",response.getStatusCode().value());
 		throw new DataRetrievalFailureException("No Sierra response");
 	}
 	

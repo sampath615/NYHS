@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.DatafluxUploadServiceImpl;
@@ -50,7 +48,7 @@ public class DatafluxUploadController {
 	}
 	
 	@RequestMapping(value="/uploadDatafluxMatchingData", method = RequestMethod.POST)
-	public String getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam Map<String, String> data, @RequestParam("fileData") MultipartFile fileData, UserObject userObject) throws ParseException, JsonParseException, JsonMappingException, IOException{
+	public String getLoincDescriptionsForTestType(HttpServletRequest request, @RequestParam Map<String, String> data, @RequestParam("fileData") MultipartFile fileData, UserObject userObject) throws ParseException, IOException{
 		
 		
 		HttpSession session = request.getSession();

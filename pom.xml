@@ -33,13 +33,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
-			<exclusions>
-				<!-- Jackson 2 only for now; Jackson 3 migration is a later step -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-jackson</artifactId>
-				</exclusion>
-			</exclusions>
+			<!-- includes spring-boot-starter-jackson: Jackson 3 (tools.jackson), configured under spring.jackson.* -->
 		</dependency>
 		<!-- External Tomcat 11 provides the servlet container: do not package embedded Tomcat -->
 		<dependency>
@@ -157,11 +151,7 @@
 			<artifactId>quartz</artifactId>
 		</dependency>
 		<!-- ===== JSON / HTTP ===== -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.22.3</version>
-		</dependency>
+		<!-- Jackson comes from spring-boot-starter-webmvc (Jackson 3). Do not add com.fasterxml.jackson.core:jackson-databind (Jackson 2). -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
@@ -171,16 +161,6 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.17.0-rc</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-jackson2</artifactId>
-			<version>1.11.0-beta</version>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor.netty</groupId>
