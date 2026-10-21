@@ -5,7 +5,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

@@ -122,12 +122,7 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-		<!-- ===== Logging (Spring Boot default: SLF4J + Logback, configured in application.yml) ===== -->
-		<!-- Routes old log4j 1.x API calls (org.apache.log4j) to SLF4J -> Logback -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-		</dependency>
+
 		<!-- ===== Persistence: MyBatis (existing DAOs, being migrated to JPA) ===== -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -166,11 +161,10 @@
 			<groupId>io.projectreactor.netty</groupId>
 			<artifactId>reactor-netty-http</artifactId>
 		</dependency>
-		<!-- ===== Mail (plain library, not provided by Tomcat) ===== -->
+		<!-- ===== Mail: Jakarta Mail (Angus) + Spring JavaMailSender, configured by spring.mail.* ===== -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.5</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		<!-- ===== NYS DOH internal libraries (from the internal repository) ===== -->
 		<dependency>

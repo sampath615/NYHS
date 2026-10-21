@@ -17,6 +17,12 @@ spring:
       max-request-size: '409657600B'
   main:
     allow-circular-references: 'true'
+  # SMTP server for all NYEHMS mail (was SendEmail.SMTP_HOST_NAME). Same in every environment.
+  mail:
+    host: 'mailhost.health.state.ny.us'
+    properties:
+      # as before: JavaMail protocol debug output to the console (Session.setDebug(true))
+      mail.debug: 'true'
   # Jackson 3 set up to write JSON exactly like the Jackson 2 setup it replaced
   # (same property names, java.util.Date / Timestamp as epoch milliseconds). The pages expect this.
   jackson:

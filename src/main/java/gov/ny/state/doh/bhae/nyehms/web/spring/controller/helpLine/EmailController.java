@@ -3,7 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.helpLine;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import jakarta.servlet.http.HttpServletRequest;

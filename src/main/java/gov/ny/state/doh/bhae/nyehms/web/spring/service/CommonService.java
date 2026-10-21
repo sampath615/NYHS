@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import jakarta.annotation.PostConstruct;
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;

@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
