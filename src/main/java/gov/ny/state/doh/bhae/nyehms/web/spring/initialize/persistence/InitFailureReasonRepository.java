@@ -1,6 +1,5 @@
-package gov.ny.state.doh.bhae.nyehms.web.spring.initialize.repository;
+package gov.ny.state.doh.bhae.nyehms.web.spring.initialize.persistence;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.entity.InitFailureReason;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

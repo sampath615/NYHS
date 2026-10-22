@@ -1,4 +1,4 @@
-package gov.ny.state.doh.bhae.nyehms.web.spring.initialize.entity;
+package gov.ny.state.doh.bhae.nyehms.web.spring.initialize.persistence;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

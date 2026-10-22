@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.repository.InitFailureReasonRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.persistence.InitFailureReasonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
