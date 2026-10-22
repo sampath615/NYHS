@@ -13,7 +13,6 @@
 						<td><a class="a_demo_search"  href="${contextPath}/web/getSearchView"> SEARCH </a></td>
 					</c:if>
 					<td><a class="a_demo_four" href="${contextPath}/web/helpline"> HELPLINE </a></td>
-			<%-- 		<td><a class="a_demo_mess" href="${contextPath}/web/messageBox"> MESSAGING <span id='messCount' class='badge'><span></a></td>		 --%>			
 					<td><a class="a_demo_log" href="${contextPath}/web/logout"> LOG OUT </a></td>
 				</tr>
 			</table>

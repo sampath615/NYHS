@@ -334,14 +334,6 @@ public class CommonController {
 	}
 	
     
-    @RequestMapping(value = "/getReciepientDetails.json",  method = RequestMethod.POST, produces = "application/json")
-    	public @ResponseBody List<JSONObject> getReciepientDetails(HttpServletRequest request) {
-            
-            List<JSONObject> reciepientDetails = commonService.getReciepientDetails();            
-            return reciepientDetails;
-        
-    }
-    
     @RequestMapping(value="/getPsMessageTypes.html",
 			method = RequestMethod.POST,
 			produces = "text/html")

@@ -50,8 +50,6 @@ public interface CommonDAO {
 	public String getEharsStateno(String stateno);
 	public Map<String, String> getNYCStatenoDetails(String stateno1);
 	
-	public List<JSONObject> getReciepientDetails() throws DataAccessException;
-	
 	public List<Map<String, String>> getCRFReqActivityList() throws DataAccessException;
 	public List<String> getDocumentListForReminder();
 	public List<Map<String, String>> nyehmsInactiveUserDetailsList();

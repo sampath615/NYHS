@@ -229,9 +229,6 @@ select CITYNO, EHARS_STATENO, NYEHMS_STATENO  from EHARS_PERSON_NYC where NYEHMS
 	</select>
 	
 	  	  	
-  	<select id="getReciepientDetails" resultType="org.json.simple.JSONObject">
-        select LEGACY_UID USER_ID, FULL_NAME, WORKER_ID from NYEHMS_USERS_VW where (END_DATE is NULL or END_DATE > SYSDATE) and LEGACY_UID is NOT null and IS_LOCKED != 'Y' order by FULL_NAME asc
-    </select>
     
     
   <resultMap type="java.util.Map" id="crfReqActivityList"> 	

@@ -869,24 +869,6 @@ private static String getINIPath() {
 	}
 	
 
-    @Autowired
-    public List<JSONObject> getReciepientDetails(){
-    	
-    	List<JSONObject> reciepientDetailsList = null;
-		
-    	try {
-		
-    		reciepientDetailsList = commonDAO.getReciepientDetails();
-    			
-    	}catch (DataAccessException e) {
-            log.error( e.getMessage());
-        }
-		
-		
-		return reciepientDetailsList;
-	
-	}
-    
 	public JSONObject getCRFReqActivityList()  {
 		
 		List<Map<String, String>> crfReqActivityList = commonDAO.getCRFReqActivityList();
