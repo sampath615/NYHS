@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<html>
+<!Doctype html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Portal System Message</title>
@@ -67,7 +67,7 @@
 							<select name="moduleName" id="moduleName" class="required" title="Module Name">
 								<option  value="" >Select</option>
 								<c:forEach items="${moduleNames}" var="moduleName">
-									<option value="${moduleName.PP_MODULE_CD}" >${moduleName.PP_MODULE_NAME}</option>
+									<option value="${moduleName.code()}" >${moduleName.name()}</option>
 								</c:forEach>
 							</select>
 						</div>
