@@ -25,17 +25,19 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ADAPDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DoccsDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycDeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.CodedStateRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.DeathDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycDeathDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawDeathDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawNycDeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycEharsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
@@ -71,8 +73,10 @@ public class CommonDocumentService {
 	@Autowired private LabDocumentDAO            labDocumentDAO;
 	@Autowired private ADAPDocumentDAO           adapDocumentDAO;
 	@Autowired private MedicaidDocumentDAO       medicaidDocumentDAO;
-	@Autowired private DeathDocumentDAO          deathDocumentDAO;
-	@Autowired private NycDeathDocumentDAO       nycDeathDocumentDAO;
+	@Autowired private DeathDocRepository        deathDocRepository;
+	@Autowired private NycDeathDocRepository     nycDeathDocRepository;
+	@Autowired private RawDeathDocRepository     rawDeathDocRepository;
+	@Autowired private RawNycDeathDocRepository  rawNycDeathDocRepository;
 	@Autowired private DoccsDocumentDAO          doccsDocumentDAO;
 	@Autowired private PRFDocumentDAO            prfDocumentDAO;
 	@Autowired private TBDocumentDAO            tbDocumentDAO;
@@ -536,9 +540,11 @@ public class CommonDocumentService {
 		}else if("STD_LAB".equals(documentType)){
 			resultcount = labDocumentDAO.insertRawStdDocument(rawDocData);
 		}else if("DTH".equals(documentType)){
-			resultcount = deathDocumentDAO.insertRawDTHDocument(rawDocData);
+			rawDeathDocRepository.saveAndFlush(DeathDocMapping.toRawDoc(rawDocData));
+			resultcount = 1;
 		}else if("NYC_DTH".equals(documentType)){
-			resultcount = nycDeathDocumentDAO.insertNycRawDTHDocument(rawDocData);
+			rawNycDeathDocRepository.saveAndFlush(NycDeathDocMapping.toRawDoc(rawDocData));
+			resultcount = 1;
 		}else if("ADAP".equals(documentType)){
 			resultcount = adapDocumentDAO.insertRawADAPDocument(rawDocData);
 /*		}else if("AIRS".equals(documentType)){
@@ -604,9 +610,11 @@ public class CommonDocumentService {
 		}else if("STD_LAB".equals(documentType)){
 			resultcount = labDocumentDAO.insertStdStdDocument(stdDocData);
 		}else if("DTH".equals(documentType)){
-			resultcount = deathDocumentDAO.writeStdDocData(stdDocData);
+			deathDocRepository.saveAndFlush(DeathDocMapping.toStdDoc(stdDocData));
+			resultcount = 1;
 		}else if("NYC_DTH".equals(documentType)){
-			resultcount = nycDeathDocumentDAO.writeNycStdDeathDocData(stdDocData);
+			nycDeathDocRepository.saveAndFlush(NycDeathDocMapping.toStdDoc(stdDocData));
+			resultcount = 1;
 		}else if("ADAP".equals(documentType)){
 			stdDocData.put("FLAG_CHOSEN_PROVIDER", "RX");
 			resultcount = adapDocumentDAO.writeStdDocData(stdDocData);

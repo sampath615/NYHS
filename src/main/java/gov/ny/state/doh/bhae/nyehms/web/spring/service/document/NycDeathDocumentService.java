@@ -3,8 +3,9 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDAO;
 import gov.ny.state.doh.bhae.nyehms.utils.County;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycDeathDocumentDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathFacility;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycDeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CodedDeathPfiRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycDeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -40,7 +41,7 @@ import org.springframework.validation.BindingResult;
 public class NycDeathDocumentService {
 
 	@Autowired
-	NycDeathDocumentDAO nycDeathDocumentDAO;
+	CodedDeathPfiRepository codedDeathPfiRepository;
 	@Autowired
 	NycDeathDocRepository nycDeathDocRepository;
 	@Autowired
@@ -157,7 +158,7 @@ public class NycDeathDocumentService {
 	 * {@link NycDeathDocumentService#getStandardizedNycDeathData(Map, BigDecimal)}
 	 *  to create the
 	 * standardized data, then calls
-	 * {@link NycDeathDocumentDAO#writeNycStdDeathDocData(Map)}
+	 * {@code NycDeathDocMapping.toStdDoc} and {@code nycDeathDocRepository.saveAndFlush}
 	 *  a method to insert the standardized
 	 * data into the database
 	 */
@@ -192,8 +193,8 @@ public class NycDeathDocumentService {
 		
 		setNYCFacilityData(pFI, nycInstCode, stdDocData);
 		
-		int resultCount = nycDeathDocumentDAO.writeNycStdDeathDocData(stdDocData);
-		return resultCount;
+		nycDeathDocRepository.saveAndFlush(NycDeathDocMapping.toStdDoc(stdDocData));
+		return 1;
 	}
 	
 	public void setNYCFacilityData(String pFI, String nycInstCode, Map<Object, Object>  stdDocData){
@@ -650,18 +651,32 @@ public class NycDeathDocumentService {
 	 */
 	public Map<String, String> getNycFacilityInfo(String pfi, String nycFacCode) {
 		
-		Map<String, String> deathDocFacilityInfo = null;
-		
+		DeathFacility facility = null;
 		if (CommonUtil.isNotNullAndEmpty(pfi) && !pfi.equals("9999")) {
-			deathDocFacilityInfo = nycDeathDocumentDAO.getFacilityInfoFromPFI(pfi);
+			facility = codedDeathPfiRepository.findFacilityByPfi(pfi);
 		} else if (nycFacCode != null) {
-			deathDocFacilityInfo = nycDeathDocumentDAO.getFacilityInfoFromNycFacCode(nycFacCode);
+			facility = codedDeathPfiRepository.findFacilityByNycFacCode(nycFacCode);
 		}
-		
-		if (deathDocFacilityInfo == null) {
-			deathDocFacilityInfo = new HashMap<String, String>();
-		} 
+		// only the columns with a value, as the former MyBatis map (a missing column does not overwrite)
+		Map<String, String> deathDocFacilityInfo = new HashMap<>();
+		if (facility != null) {
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_TYPE", facility.facilityType());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_NAME", facility.facilityName());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_ADDRESS", facility.facilityAddress());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_CITY", facility.facilityCity());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_STATE", facility.facilityState());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_ZIP", facility.facilityZip());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_PLUS4", facility.facilityPlus4());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_PHONE", facility.facilityPhone());
+			putIfNotNull(deathDocFacilityInfo, "FACILITY_COUNTY", facility.facilityCounty());
+		}
 		return deathDocFacilityInfo;
+	}
+
+	private static void putIfNotNull(Map<String, String> map, String key, String value) {
+		if (value != null) {
+			map.put(key, value);
+		}
 	}
 
 

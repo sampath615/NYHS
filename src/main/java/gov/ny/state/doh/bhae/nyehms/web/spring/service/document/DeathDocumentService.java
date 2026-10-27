@@ -3,9 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDAO;
 import gov.ny.state.doh.bhae.nyehms.utils.County;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DeathDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathFacility;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.CodedCountyRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CodedDeathPfiRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CodedInstituteRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.DeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -38,7 +41,11 @@ import org.springframework.validation.BindingResult;
 public class DeathDocumentService {
 
 	@Autowired
-	DeathDocumentDAO deathDocumentDAO;
+	CodedCountyRepository codedCountyRepository;
+	@Autowired
+	CodedDeathPfiRepository codedDeathPfiRepository;
+	@Autowired
+	CodedInstituteRepository codedInstituteRepository;
 	@Autowired
 	DeathDocRepository deathDocRepository;
 	@Autowired
@@ -350,7 +357,7 @@ public class DeathDocumentService {
 			
 			String deathCounty = (String) docVO.get("DEATH_CNTY");
 			if (CommonUtil.isNotNullAndEmpty(deathCounty) && !"70".equals(deathCounty)) {
-				stdDocData.put("DEATH_COUNTY", deathDocumentDAO.getNysFipsCounty(deathCounty));
+				stdDocData.put("DEATH_COUNTY", codedCountyRepository.findFipsCodeOfCounty(deathCounty));
 			}else if("70".equals(deathCounty) && CommonUtil.isNotNullAndEmpty(deathCity)){
 				stdDocData.put("DEATH_COUNTY", County.getFipsFromGaz(deathCity));
 			}else if("80".equals(deathCounty)){
@@ -485,9 +492,8 @@ public class DeathDocumentService {
 		
 		
 		
-		int resultCount = deathDocumentDAO.writeStdDocData(stdDocData);
-		
-		return resultCount;
+		deathDocRepository.saveAndFlush(DeathDocMapping.toStdDoc(stdDocData));
+		return 1;
 	}
 	
 	private void setFacilityData(String instCode, String pfi, Map<Object, Object> stdDocData){
@@ -507,7 +513,6 @@ public class DeathDocumentService {
 				nysCountyCd = instCode.substring(0, 2);
 				String inst = instCode.substring(2, 5);
 				stdDocData.put("INST", inst);
-				//nysCountyFipsCd = deathDocumentDAO.getNysFipsCounty(nysCountyCd);
 				nysCountyFipsCd = County.getFipsFromGaz(nysCountyCd);
 			}
 		}
@@ -525,18 +530,17 @@ public class DeathDocumentService {
 
 		boolean hasFacilityInfo = false;
 		if (CommonUtil.isNotNullAndEmpty(pfi) && !"9999".equals(pfi)) {
-			Map<String, String>  deathDocFacility = deathDocumentDAO.getFacilityNameByPFI(pfi.trim());
-			
-			if(deathDocFacility != null && deathDocFacility.size() > 0){
-				stdDocData.put("FACILITY_NAME", deathDocFacility.get("FACILITY_NAME"));
-				stdDocData.put("FACILITY_TYPE", deathDocFacility.get("FACILITY_TYPE"));
-				stdDocData.put("FACILITY_PHONE", deathDocFacility.get("FACILITY_PHONE"));
-				stdDocData.put("FACILITY_ADDRESS", deathDocFacility.get("FACILITY_ADDRESS"));
-				stdDocData.put("FACILITY_CITY", deathDocFacility.get("FACILITY_CITY"));
-				stdDocData.put("FACILITY_STATE", deathDocFacility.get("FACILITY_STATE"));
-				stdDocData.put("FACILITY_ZIP", deathDocFacility.get("FACILITY_ZIP"));
-				stdDocData.put("FACILITY_PLUS4", deathDocFacility.get("FACILITY_PLUS4"));
-				stdDocData.put("FACILITY_COUNTY", deathDocFacility.get("FACILITY_COUNTY"));
+			DeathFacility deathDocFacility = codedDeathPfiRepository.findFacilityByPfi(pfi.trim());
+			if(deathDocFacility != null && !deathDocFacility.isEmpty()){
+				stdDocData.put("FACILITY_NAME", deathDocFacility.facilityName());
+				stdDocData.put("FACILITY_TYPE", deathDocFacility.facilityType());
+				stdDocData.put("FACILITY_PHONE", deathDocFacility.facilityPhone());
+				stdDocData.put("FACILITY_ADDRESS", deathDocFacility.facilityAddress());
+				stdDocData.put("FACILITY_CITY", deathDocFacility.facilityCity());
+				stdDocData.put("FACILITY_STATE", deathDocFacility.facilityState());
+				stdDocData.put("FACILITY_ZIP", deathDocFacility.facilityZip());
+				stdDocData.put("FACILITY_PLUS4", deathDocFacility.facilityPlus4());
+				stdDocData.put("FACILITY_COUNTY", deathDocFacility.facilityCounty());
 				hasFacilityInfo = true;
 			} 
 			
@@ -552,7 +556,7 @@ public class DeathDocumentService {
 				} else if (instCode.equals("188") && (nysCounty.equals("70") || nysCounty.equals("71") || nysCounty.equals("72"))) {
 					stdDocData.put("FACILITY_NAME", "NYC HOSPITAL (NYC RECORDS)");
 				} else {
-					stdDocData.put("FACILITY_NAME", deathDocumentDAO.getFacilityName(instCode));
+					stdDocData.put("FACILITY_NAME", codedInstituteRepository.findDescriptionOfInstitute(instCode));
 					stdDocData.put("FACILITY_COUNTY", nysCountyFipsCd);
 				}
 

@@ -1,14 +1,21 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.Immutable;
+import org.springframework.data.domain.Persistable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * An NYC death certificate, standardized (table STD_NYC_DEATH_DOC); the columns the NYC death document screen reads.
@@ -18,15 +25,18 @@ import lombok.Getter;
 @Entity
 @Immutable
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "STD_NYC_DEATH_DOC")
-public class StdNycDeathDoc {
+public class StdNycDeathDoc implements Persistable<Integer> {
 
 	@Id
 	@Column(name = "DOCUMENT_ID")
 	private Integer documentId;
 
 	@Column(name = "EHARS_IMPORT_DATE")
-	private Date eharsImportDate;
+	private Timestamp eharsImportDate;
 
 	@Column(name = "DEATH_CERT")
 	private String deathCert;
@@ -38,7 +48,7 @@ public class StdNycDeathDoc {
 	private String deathCounty;
 
 	@Column(name = "NYC_SHIP_DATE")
-	private Date nycShipDate;
+	private Timestamp nycShipDate;
 
 	@Column(name = "DOD_TEXT")
 	private String dodText;
@@ -252,4 +262,116 @@ public class StdNycDeathDoc {
 
 	@Column(name = "OI_CAUSE")
 	private String oiCause;
+
+	@Column(name = "CREATE_DATE")
+	private Timestamp createDate;
+
+	@Column(name = "REVIEW_DATE")
+	private Timestamp reviewDate;
+
+	@Column(name = "MATCH_WEIGHT")
+	private BigDecimal matchWeight;
+
+	@Column(name = "CURRENT_PROCESS_STATUS")
+	private Integer currentProcessStatus;
+
+	@Column(name = "QS_PARENT_DOC_ID")
+	private Long qsParentDocId;
+
+	@Column(name = "RACE_MULTIPLE")
+	private String raceMultiple;
+
+	@Column(name = "EHARS_STATUS_CD")
+	private String eharsStatusCd;
+
+	@Column(name = "PERSON_LATITUDE")
+	private String personLatitude;
+
+	@Column(name = "FACILITY_LATITUDE")
+	private String facilityLatitude;
+
+	@Column(name = "CREATE_UID")
+	private String createUid;
+
+	@Column(name = "MATCHED_STATENO")
+	private String matchedStateno;
+
+	@Column(name = "PERSON_LONGITUDE")
+	private String personLongitude;
+
+	@Column(name = "FACILITY_LONGITUDE")
+	private String facilityLongitude;
+
+	@Column(name = "MATCH_CD")
+	private String matchCd;
+
+	@Column(name = "NYS_COUNTY")
+	private String nysCounty;
+
+	@Column(name = "INST")
+	private String inst;
+
+	@Column(name = "PERSON_PLUS4")
+	private String personPlus4;
+
+	@Column(name = "MATCH_PASS")
+	private String matchPass;
+
+	@Column(name = "NYC_FAC_CODE")
+	private String nycFacCode;
+
+	@Column(name = "SUFFIX")
+	private String suffix;
+
+	@Column(name = "DEATH_FILE")
+	private String deathFile;
+
+	@Column(name = "PERSON_CENSUS_TRACT")
+	private String personCensusTract;
+
+	@Column(name = "FACILITY_CENSUS_TRACT")
+	private String facilityCensusTract;
+
+	@Column(name = "ORIG_FACILITY_ADDRESS")
+	private String origFacilityAddress;
+
+	@Column(name = "REVIEW_UID")
+	private String reviewUid;
+
+	@Column(name = "MATCHED_PROCESS_DATE")
+	private Timestamp matchedProcessDate;
+
+	/**
+	 * Written as ORA_HASH of the text built by the mapping (the former insert hashed the same text in
+	 * Oracle); read as the stored number.
+	 */
+	@Column(name = "HASH_NUMBER")
+	@ColumnTransformer(write = "ORA_HASH(?)")
+	private String hashNumber;
+
+	@Column(name = "FLUX_MATCH_CD")
+	private String fluxMatchCd;
+
+	@Column(name = "FLUX_POT_STATENO")
+	private String fluxPotStateno;
+
+	@Column(name = "FLUX_MATCHED_STATENO")
+	private String fluxMatchedStateno;
+
+	@Column(name = "FLUX_QS_PARENT_DOC_ID")
+	private Long fluxQsParentDocId;
+
+	@Column(name = "FLUX_MATCHED_PROCESS_DATE")
+	private Timestamp fluxMatchedProcessDate;
+
+	@Override
+	public Integer getId() {
+		return documentId;
+	}
+
+	/** Rows are only ever inserted. */
+	@Override
+	public boolean isNew() {
+		return true;
+	}
 }

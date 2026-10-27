@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * The value conversions the former SQL inserts of the imports left to Oracle (UPPER, TRIM, the
@@ -75,6 +76,21 @@ final class OracleConversions {
 		return text == null ? null : new BigDecimal(text).longValueExact();
 	}
 
+	/**
+	 * The text the former inserts hashed with ORA_HASH: TRIM(UPPER(field1)) || TRIM(UPPER(field2)) || ...; Oracle
+	 * concatenates an empty part as nothing, and an all-empty text is null.
+	 */
+	static String hashText(Map<Object, Object> raw, String... fields) {
+		StringBuilder text = new StringBuilder();
+		for (String field : fields) {
+			String part = upper(raw.get(field));
+			if (part != null) {
+				text.append(part);
+			}
+		}
+		return text.length() == 0 ? null : text.toString();
+	}
+
 	/** NVL(value, 0) of a number column written as text: the value as text, or "0" when empty. */
 	static String textOrZero(Object value) {
 		String text = oracleText(value);
@@ -100,10 +116,16 @@ final class OracleConversions {
 		}
 	}
 
-	/** A date column: a date as it is (with its time); text as MM/DD/YYYY or YYYY-MM-DD. */
+	/**
+	 * A date column: a date as it is (with its time), a java.sql.Date as its day (bound with setDate, as a
+	 * date only); text as MM/DD/YYYY or YYYY-MM-DD.
+	 */
 	static Timestamp date(Object value) {
 		if (value == null || value instanceof Timestamp) {
 			return (Timestamp) value;
+		}
+		if (value instanceof java.sql.Date day) {
+			return Timestamp.valueOf(day.toLocalDate().atStartOfDay());
 		}
 		if (value instanceof java.util.Date date) {
 			return new Timestamp(date.getTime());
