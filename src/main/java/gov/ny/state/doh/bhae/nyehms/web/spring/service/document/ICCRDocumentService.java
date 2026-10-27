@@ -1,85 +1,93 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.validation.BindingResult;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.record.AcrfTestResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.AcrfTestResult;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.IccrDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.AcrfTestResultRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.IccrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawIccrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
+/**
+ * The ICCR reports: the data entry screen (RAW_ICCR_DOC with its tests), the ICCR document screen, and the import
+ * that standardizes a received report (STD_ICCR_DOC).
+ */
 @Service
+@RequiredArgsConstructor
 public class ICCRDocumentService {
-	
-	@Autowired private CommonExceptionHandler commonExceptionHandler;	
-	@Autowired private DocumentTransactionHelper documentTransactionHelper;
-	
-	@Autowired private IccrDocRepository iccrDocRepository;
-	@Autowired private RawIccrDocRepository rawIccrDocRepository;
-	@Autowired private AcrfTestResultRepository acrfTestResultRepository;
-	
-	private static Logger log = LoggerFactory.getLogger(ICCRDocumentService.class);
 
+	private static final Logger log = LoggerFactory.getLogger(ICCRDocumentService.class);
+	private static final String DOCUMENT_TYPE = "ICCR";
 
+	private final CommonExceptionHandler commonExceptionHandler;
+	private final CommonDocumentService commonDocumentService;
+	private final PlatformTransactionManager transactionManager;
+	private final IccrDocRepository iccrDocRepository;
+	private final RawIccrDocRepository rawIccrDocRepository;
+	private final AcrfTestResultRepository acrfTestResultRepository;
+
+	/**
+	 * Saves an ICCR report entered on the data entry screen as a new document: a new document id, then the report
+	 * (RAW_ICCR_DOC) with the tests filled in on it (RAW_ICCR_TESTS), in one transaction. The outcome (success or
+	 * the error) is reported through {@code bindingResult}.
+	 */
 	public void saveICCRDataEntryForm(RawIccrDoc iccrDataEntryForm, BindingResult bindingResult, UserObject userObject) {
-		
-		try{
-			
-			documentTransactionHelper.insertICCRRawData(iccrDataEntryForm, userObject, bindingResult);
-		
+		try {
+			new TransactionTemplate(transactionManager).executeWithoutResult(status -> {
+				int documentId = newDocumentId();
+				rawIccrDocRepository.saveAndFlush(IccrDocMapping.toRawDoc(iccrDataEntryForm, documentId, userObject.getWorkerId()));
+			});
 			commonExceptionHandler.inspectDBTransacionResult(0, "ICCR Document Form saved successfully.", bindingResult);
-			
-		}catch(DataAccessException exception){
-			
-    		log.error("Error while Saving ICCR Document Form.  {}",exception.getMessage());
-    		
-    		commonExceptionHandler.handleException(exception, userObject, userObject.getSessionId());
-    		
-    		commonExceptionHandler.inspectDBTransacionResult(-1, exception.getMessage(), bindingResult);
-    		
+		} catch (DataAccessException exception) {
+			log.error("Error while Saving ICCR Document Form.  {}", exception.getMessage());
+			commonExceptionHandler.handleException(exception, userObject, userObject.getSessionId());
+			commonExceptionHandler.inspectDBTransacionResult(-1, exception.getMessage(), bindingResult);
 		} catch (Exception exception) {
-			
-			log.error("Error while Saving ICCR Document Form.  {}",exception.getMessage());
-    		
-    		commonExceptionHandler.handleException(exception, userObject, userObject.getSessionId());
-    		
-    		commonExceptionHandler.inspectDBTransacionResult(-1, "Error while Saving ICCR Document Form, please contact the Helpline.", bindingResult);
+			log.error("Error while Saving ICCR Document Form.  {}", exception.getMessage());
+			commonExceptionHandler.handleException(exception, userObject, userObject.getSessionId());
+			commonExceptionHandler.inspectDBTransacionResult(-1, "Error while Saving ICCR Document Form, please contact the Helpline.", bindingResult);
 		}
-		
 	}
 
+	/** A new ICCR document id (the database's document locator procedure). */
+	private int newDocumentId() {
+		Map<Object, Object> map = new HashMap<>();
+		map.put("p_document_type", DOCUMENT_TYPE);
+		map.put("p_new_doc_id", "");
+		map.put("p_parent_doc_id", "");
+		try {
+			commonDocumentService.getNewDocId(map);
+		} catch (DataAccessException e) {
+			log.error("Failed to create the ICCR document  : {}", e.getMessage());
+			throw new DataRetrievalFailureException("Failed to create the ICCR document");
+		}
+		return (Integer) map.get("p_new_doc_id");
+	}
+
+	/** The current results of a test type, for the data entry screen's result list. */
 	public List<AcrfTestResult> getCodedTestTypeResult(String testType) {
 		return acrfTestResultRepository.findCurrentResultsOfTest(testType);
 	}
 
-	/**
-	 * Saves an ICCR report entered on the data entry screen (RAW_ICCR_DOC) with the tests filled in
-	 * on it (RAW_ICCR_TESTS).
-	 *
-	 * @param iccrDataEntryForm the posted form
-	 * @param documentId the new document id of the report
-	 * @param workerId the worker who entered it
-	 */
-	public void insertICCRRawData(RawIccrDoc iccrDataEntryForm, int documentId, int workerId) {
-		rawIccrDocRepository.saveAndFlush(IccrDocMapping.toRawDoc(iccrDataEntryForm, documentId, workerId));
-	}
-
+	/** An ICCR report with its tests for the document screen. */
 	public IccrDocData getICCRDocument(int docId) {
-		IccrDocData iccrDocVO = iccrDocRepository.findDocument(docId);
-		return iccrDocVO.withIccrTestList(rawIccrDocRepository.findTestsOfDocument(docId));
+		return iccrDocRepository.findDocument(docId).withIccrTestList(rawIccrDocRepository.findTestsOfDocument(docId));
 	}
 
 	/**
@@ -92,5 +100,4 @@ public class ICCRDocumentService {
 		iccrDocRepository.saveAndFlush(IccrDocMapping.toStdDoc(docVO));
 		return 1;
 	}
-
 }

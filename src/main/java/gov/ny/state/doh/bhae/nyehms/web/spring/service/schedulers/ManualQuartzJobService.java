@@ -103,6 +103,8 @@ public class ManualQuartzJobService {
 	@Autowired
 	private SchedulerJobsDAO schedulerJobsDAO;
 	@Autowired
+	private RawRecordStatusService rawRecordStatusService;
+	@Autowired
 	private EcrlsDataDAO eclrsDataDAO;
 	@Autowired
 	private DocumentDAO documentDAO;
@@ -495,7 +497,7 @@ public class ManualQuartzJobService {
 //		hasErrors = checkLabProcessValidationExist(filterTypeAndFilterConditions, filterTypes, documentId,
 
 	public int makeDocumentAsInactivate(int documentId) {
-		return schedulerJobsDAO.makeDocumentAsInactivate(documentId);
+		return rawRecordStatusService.makeDocumentAsInactivate(documentId);
 	}
 
 	/**
@@ -1878,62 +1880,13 @@ public class ManualQuartzJobService {
 	}
 
 	public int writeErrorCode(int statusCode, Number documentId, String documentType) {
-
-		Map<Object, Object> inputOutputParamters = new HashMap<>();
-
-		String rawTableName = LabCommonUtils.getRawTableName(documentType);
-
-		inputOutputParamters.put("rawTableName", rawTableName);
-		inputOutputParamters.put("statusCode", statusCode);
-		inputOutputParamters.put("documentId", documentId);
-
-		int resultCount = schedulerJobsDAO.writeErrorCode(inputOutputParamters);
-
-		return resultCount;
+		return rawRecordStatusService.writeErrorCode(statusCode, documentId, documentType);
 	}
 
 	public int addValidationError(Number documentId, String errors, int currentProcessStatus,
 			boolean havingSoftCheckValidationErrors, Number previousProcessStatus, String documentType) {
-
-		Map<Object, Object> inputOutputParamters = new HashMap<>();
-		inputOutputParamters.put("currentProcessStatus", currentProcessStatus);
-
-		inputOutputParamters.put("errorMessage", errors);
-
-		inputOutputParamters.put("documentId", documentId);
-		if (currentProcessStatus == CommonConstants.RAW_RECORD_PROFICIENCY_ERROR_PROCESS_STATUS) {
-			inputOutputParamters.put("activeFlag", 'N');
-		} else {
-			inputOutputParamters.put("activeFlag", 'Y');
-		}
-		inputOutputParamters.put("createdId", "NYEHMS");
-		inputOutputParamters.put("previousProcessStatus", previousProcessStatus);
-		inputOutputParamters.put("documentType", documentType);
-
-		if (havingSoftCheckValidationErrors) {
-			inputOutputParamters.put("repiseFlag", "S");
-		} else {
-			inputOutputParamters.put("repiseFlag", "H");
-		}
-
-		int resultCount = schedulerJobsDAO.addValidationError(inputOutputParamters);
-
-		if (resultCount == 0) {
-			throw new DataRetrievalFailureException("Failed to add the validation error for ");
-		} else {
-
-			BigDecimal _value = (BigDecimal) inputOutputParamters.get("processErrorId");
-			int processErrorId = _value.intValue();
-
-			if (processErrorId == 0) {
-				throw new DataRetrievalFailureException(
-						"Failed to add the validation error, unable to get the ErrorId for ");
-			}
-
-			return processErrorId;
-
-		}
-
+		return rawRecordStatusService.addValidationError(documentId, errors, currentProcessStatus, havingSoftCheckValidationErrors,
+				previousProcessStatus, documentType);
 	}
 
 	public void writeErrorCodesMasterDetail(int processErrorId, List<Integer> errorCodes) {

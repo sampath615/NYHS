@@ -335,8 +335,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNYCEHARS.html")
 	public String getNYCEHARSDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NycEharsDocData nYCEHARSDocVO = commonDocumentService.getNycEHARSDoc(docId, dummyBindingResult, userObject,
-				request.getSession().getId());
+		NycEharsDocData nYCEHARSDocVO = commonDocumentService.getNycEHARSDoc(docId);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
 		
@@ -363,8 +362,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNYCLab.html")
 	public String getNYCLabDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NYCLabDocVO nYCLabDocVO = commonDocumentService.getNycLabDoc(docId, dummyBindingResult, userObject,
-				request.getSession().getId());
+		NYCLabDocVO nYCLabDocVO = commonDocumentService.getNycLabDoc(docId);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
 		map.put("nyehmsStatenoDetails", nyehmsStatenoDetails);
@@ -840,8 +838,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNycPrfDoc.html")
 	public String getNycPrfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NycPrfDocData nycPRFDocVO = nycPRFDocumentService.getNycPRFDoc(docId, dummyBindingResult, userObject,
-				request.getSession().getId());
+		NycPrfDocData nycPRFDocVO = nycPRFDocumentService.getNycPRFDoc(docId);
 		map.put("nycPRFDocVO", nycPRFDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
@@ -874,8 +871,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getSTDConfDoc.html")
 	public String getSTDConfDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		StdConfDocData stdConfDocVO = stdConfDocumentService.getSTDConfDoc(docId, dummyBindingResult, userObject,
-				request.getSession().getId());
+		StdConfDocData stdConfDocVO = stdConfDocumentService.getSTDConfDoc(docId);
 		map.put("stdConfDocVO", stdConfDocVO);
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);

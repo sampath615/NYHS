@@ -5,56 +5,48 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.SyphDocRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
+/**
+ * The syphilis reports (STD_SYPHILIS_DOC): the syphilis document screen and the import that standardizes a received
+ * report (RAW_SYPHILIS_DOC).
+ */
 @Service
+@RequiredArgsConstructor
 public class SYPHDocumentService {
-	
-	@Autowired
-	SyphDocRepository syphDocRepository;
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
 
-	
-	private static Logger log = LoggerFactory.getLogger(SYPHDocumentService.class);
-	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
+	private static final Logger log = LoggerFactory.getLogger(SYPHDocumentService.class);
+	private static final String NYEHMS_LOG = AppConstants.nyehmLogDebugString.getName();
 
-	public SyphDocData getSYPHDoc(int docID, BindingResult result,
-			UserObject userObject, String sessionID) {
-		
-		boolean rollbackFlag = false;
-		SyphDocData stdSYPHDocVO = null;
-		log.debug(nyehmsLog + " fetching for docID : " + docID);
+	private final SyphDocRepository syphDocRepository;
+	private final CommonExceptionHandler commonExceptionHandler;
+
+	/**
+	 * A syphilis report for the document screen.
+	 *
+	 * @return the report, or null if there is none or it could not be read (the error is then logged and reported
+	 *         through {@code result})
+	 */
+	public SyphDocData getSYPHDoc(int docID, BindingResult result, UserObject userObject, String sessionID) {
+		log.debug("{} fetching for docID : {}", NYEHMS_LOG, docID);
 		try {
-			stdSYPHDocVO = syphDocRepository.findDocument(docID);
-		} catch (DataAccessException e) {
-			rollbackFlag = true;
-			log.error(nyehmsLog + "  " + e.getMessage());
-			commonExceptionHandler.handleException(e, userObject, sessionID);
+			return syphDocRepository.findDocument(docID);
 		} catch (Exception e) {
-			rollbackFlag = true;
-			log.error(nyehmsLog + "  " + e.getMessage());
+			log.error("{}  {}", NYEHMS_LOG, e.getMessage());
 			commonExceptionHandler.handleException(e, userObject, sessionID);
-		} finally {
-			if (rollbackFlag) {
-				commonExceptionHandler.populateBindObjTrsnFail(result);
-			}
+			commonExceptionHandler.populateBindObjTrsnFail(result);
+			return null;
 		}
-
-		return stdSYPHDocVO;
-		
 	}
 
-	
 	/**
 	 * Writes the standardized report (STD_SYPHILIS_DOC) of a received report.
 	 *
@@ -65,8 +57,4 @@ public class SYPHDocumentService {
 		syphDocRepository.saveAndFlush(SyphStdDocMapping.toStdDoc(docVO));
 		return 1;
 	}
-	
-	
-	
-
 }

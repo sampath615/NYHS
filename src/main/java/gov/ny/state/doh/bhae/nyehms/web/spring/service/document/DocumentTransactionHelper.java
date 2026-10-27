@@ -26,7 +26,6 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.entity.document.RawIccrDoc;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.AHIDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ClusterDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
@@ -64,7 +63,6 @@ public class DocumentTransactionHelper {
 	@Autowired	LabDocumentService labDocumentService;
 	@Autowired	DoccsDocumentService doccsDocumentService;
 	@Autowired	PRFDocumentService pRFDocumentService;
-	@Autowired    NycPRFDocumentService nycPrfDocumentService;
 	@Autowired	MedicaidDocumentService medicaidDocumentService;
 	@Autowired    ManualQuartzJobService manualQuartzJobService;
 	@Autowired	ProviderService providerService;
@@ -80,7 +78,6 @@ public class DocumentTransactionHelper {
 	@Autowired NonCaseDocumentService nonCaseDocumentService;
 	@Autowired	RASDocumentService rasDocumentService;
 	@Autowired	AssignmentService assignmentService;
-	@Autowired ICCRDocumentService iccrDocumentService;
 	@Autowired LaftFollowupDocumentService laftFollowupDocumentService;
 	/*
 	 * Because of AOP, we cannot call Transaction methods with in the same class as this is AOP feature.
@@ -854,21 +851,6 @@ public class DocumentTransactionHelper {
 		 
 	}
 
-	/**
-	 * Writes the standardized NYC PRF form and, once it is written, its partners; both or neither.
-	 *
-	 * @param docVO      the received form (RAW_NYCPRF_DOC), value per field name
-	 * @param documentId its document id
-	 * @return the number of standardized forms written
-	 */
-	@Transactional
-	public int writeNYCPRFDocAndPartnersData(Map<Object, Object> docVO, BigDecimal documentId) {
-		int formsWritten = nycPrfDocumentService.writeRawNycPRFRecordDataToStdTable(docVO);
-		if (formsWritten > 0) {
-			nycPrfDocumentService.writeRawNycPRFPartnerDataFromRawTable(documentId);
-		}
-		return formsWritten;
-	}
 
 	@Transactional
 	public int writePRFDocAndPartnersData(Map<Object, Object> docVO,
@@ -1513,29 +1495,6 @@ public class DocumentTransactionHelper {
 		}
 		
 		commonExceptionHandler.inspectDBTransacionResult(0, "Successfully updated the Provider details for HIV Error document(s)", bindingResult);
-		
-	}
-	
-	@Transactional
-	public void insertICCRRawData(RawIccrDoc iccrDataEntryForm, UserObject userObject, BindingResult bindingResult) throws SQLException {
-		
-		Map<Object, Object> map = new HashMap<>();
-		map.put("p_document_type", "ICCR");
-		map.put("p_new_doc_id", "");
-		map.put("p_parent_doc_id", "");
-
-		int newDocId=0;
-		
-		try {
-			commonDocumentService.getNewDocId(map);
-		} catch (DataAccessException e) {
-			log.error("Failed to create the ICCR document  : {}",e.getMessage());
-			throw new DataRetrievalFailureException("Failed to create the ICCR document");
-		} 
-		
-		newDocId=(Integer)map.get("p_new_doc_id");
-
-		iccrDocumentService.insertICCRRawData(iccrDataEntryForm, newDocId, userObject.getWorkerId());
 		
 	}
 	

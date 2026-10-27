@@ -2151,9 +2151,7 @@ public class QuartzSchedulerTransactionHelper {
 	}
 
 	public void loadDocumentReferenceVariables(String documentType, Map<String, String> schedulerMetaData) {
-		if("STD_CONF".equals(documentType)){
-			stdConfDocumentService.loadSTDConfReferenceVariables();
-		}else if("HIV_LAB".equals(documentType)){
+		if("HIV_LAB".equals(documentType)){
 			manualQuartzJobService.loadHIVDocumentReferenceVariable(schedulerMetaData);
 		}else if("ADAP".equals(documentType)){
 			adapDocumentService.loadReferenceVariables();
@@ -2164,9 +2162,7 @@ public class QuartzSchedulerTransactionHelper {
 	}
 
 	public void resetDocumentReferenceVariables(String documentType) {
-		if("STD_CONF".equals(documentType)){
-			stdConfDocumentService.resetDocumentReferenceVariables();
-		}else if("HIV_LAB".equals(documentType)){
+		if("HIV_LAB".equals(documentType)){
 			manualQuartzJobService.resetHIVDocumentReferenceVariable();
 		}else if("ADAP".equals(documentType)){
 			adapDocumentService.resetDocumentReferenceVariables();

@@ -1,19 +1,16 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.StdConfDocRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
+import lombok.RequiredArgsConstructor;
 
 /**
  * The confirmed STD (PS confirmed STD) reports: the document screen, the code lists, and the import writing the
@@ -22,18 +19,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
  * @author vxp06
  */
 @Service
+@RequiredArgsConstructor
 public class STDConfDocumentService {
 
-	@Autowired
-	StdConfDocRepository stdConfDocRepository;
-	@Autowired
-	CommonDocumentService commonDocumentService;
+	private final StdConfDocRepository stdConfDocRepository;
+	private final CommonDocumentService commonDocumentService;
 
-	private Map<String, String> drugListMap = new HashMap<>();
-
-	public StdConfDocData getSTDConfDoc(int docId,
-			BindingResult dummyBindingResult, UserObject userObject, String id){
-
+	/** A confirmed STD report for the document screen, or null if there is none. */
+	public StdConfDocData getSTDConfDoc(int docId) {
 		return stdConfDocRepository.findDocument(docId);
 	}
 
@@ -44,30 +37,17 @@ public class STDConfDocumentService {
 	 * @return 1
 	 */
 	public int writeRawSTDConfDocDataToStdTable(Map<Object, Object> docVO, BigDecimal documentId) {
-		stdConfDocRepository.saveAndFlush(StdConfDocMapping.toStdDoc(docVO,
-				state -> commonDocumentService.validateState(state)));
+		stdConfDocRepository.saveAndFlush(StdConfDocMapping.toStdDoc(docVO, commonDocumentService::validateState));
 		return 1;
 	}
 
-	public void loadSTDConfReferenceVariables() {
-		for (StdConfRefData drug : stdConfDocRepository.findRefDataOfColumn("DRUG_USED_LIST")) {
-			drugListMap.put(drug.lookupCd(), drug.lookupName());
-		}
-	}
-
-	public void resetDocumentReferenceVariables(){
-		if(drugListMap != null && drugListMap.size() > 0){
-			drugListMap.clear();
-		}
-	}
-
 	/** The code lists of the confirmed STD reports, by coded column and code. */
-	public List<StdConfRefData> getSTDConfRefData(){
+	public List<StdConfRefData> getSTDConfRefData() {
 		return stdConfDocRepository.findRefData();
 	}
 
 	/** The codes of each coded column, in code order. */
-	public Map<String, List<String>> getStdConfLookupData(){
+	public Map<String, List<String>> getStdConfLookupData() {
 		return stdConfDocRepository.findRefData().stream().collect(Collectors.groupingBy(
 				StdConfRefData::refColumn, Collectors.mapping(StdConfRefData::lookupCd, Collectors.toList())));
 	}

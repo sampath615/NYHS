@@ -15,7 +15,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
  * The standardized NYC PRF form built from a received record: the rules of the former
- * NycPRFDocumentService.writeRawNycPRFRecordDataToStdTable plus the cleaning its SQL insert did
+ * NycPRFDocumentService.writeNYCPRFDocAndPartnersData plus the cleaning its SQL insert did
  * in Oracle (upper/trim, FN_TO_DATE, empty text stored as null).
  */
 class NycPrfStdDocMappingTest {
