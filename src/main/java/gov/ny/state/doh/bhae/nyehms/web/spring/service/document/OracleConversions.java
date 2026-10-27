@@ -19,6 +19,9 @@ final class OracleConversions {
 	/** The date format of the forms (FN_TO_DATE(..., 'MM/DD/YYYY')). */
 	private static final DateTimeFormatter FORM_DATE = DateTimeFormatter.ofPattern("M/d/uuuu").withResolverStyle(ResolverStyle.STRICT);
 
+	/** The text of a date as TO_CHAR(..., 'MM/DD/YYYY'). */
+	private static final DateTimeFormatter TEXT_DATE = DateTimeFormatter.ofPattern("MM/dd/uuuu");
+
 	private OracleConversions() {
 	}
 
@@ -114,6 +117,20 @@ final class OracleConversions {
 		} catch (DateTimeParseException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * TO_CHAR(value, 'MM/DD/YYYY') of a date; null for null. Oracle cannot format text this way (it tries a number
+	 * conversion and fails), so text is refused the same way.
+	 */
+	static String dateText(Object value) {
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof java.util.Date date) {
+			return TEXT_DATE.format(new Timestamp(date.getTime()).toLocalDateTime());
+		}
+		throw new IllegalArgumentException("Not a date: " + value);
 	}
 
 	/**

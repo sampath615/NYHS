@@ -41,7 +41,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.QualCareDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAddressDocVO;
@@ -56,6 +55,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRaceVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.QualCareDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.CasaDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.DeathDocData;
@@ -1671,7 +1671,7 @@ public class DocumentController {
 			userObject = new UserObject();
 		}
 		
-		QualCareDocVO qualCareDocVO = qualCareDocumentService.getQualCareDocument(docId);
+		QualCareDocData qualCareDocVO = qualCareDocumentService.getQualCareDocument(docId);
 		
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId, userObject);
 		
