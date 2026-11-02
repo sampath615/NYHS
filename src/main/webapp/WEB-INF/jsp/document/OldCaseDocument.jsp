@@ -81,7 +81,7 @@
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="STATE"  path ="STATE" class="standardInputSmallText1 mR50 readonly">
+								<form:select id="STATE"  path ="stdOldCasesDoc.state" class="standardInputSmallText1 mR50 readonly">
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
