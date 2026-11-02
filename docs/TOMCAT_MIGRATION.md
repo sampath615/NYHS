@@ -21,6 +21,7 @@
 | AspectJ | `aspectjtools` 1.6.12 | `aspectjweaver` 1.9.22.1 |
 | MyBatis | `mybatis` 3.3.0, `mybatis-spring` 1.2.3 | `mybatis` 3.5.19, `mybatis-spring` 4.0.0 |
 | Oracle JDBC | `ojdbc6` 11.1 in the WAR | `ojdbc11` 23.5 in `$CATALINA_HOME/lib` (provided) |
+| SQL Server JDBC (eHARS) | `sqljdbc4` 4.0 (removed from the pom in `020ee5b`) | `mssql-jdbc` 12.8.1.jre11 in `$CATALINA_HOME/lib` (provided); `sqljdbc4` fails on Java 11+ with `ClassNotFoundException: javax.xml.bind.DatatypeConverter` |
 | Quartz | 2.2.1 | 2.5.2 |
 | Apache POI | 3.15 | 5.4.1 (with `commons-io` 2.18.0) |
 | docx4j | 8.x (JAXB 2, `javax`) | 11.5.14 (Jakarta JAXB) + ImportXHTML 11.4.8 |
@@ -85,7 +86,7 @@ Also check `endec`, `BSIDJavaAPI` and `SymJavaAPI` the same way (they compiled h
 ## 5. Tomcat 11 set-up
 
 1. **JDK 21** and **Tomcat 11.0.x**.
-2. Copy **`ojdbc11.jar`** to `$CATALINA_HOME/lib`.
+2. Copy **`ojdbc11.jar`** to `$CATALINA_HOME/lib`. Copy **`mssql-jdbc-12.8.1.jre11.jar`** there too (eHARS) and **remove any `sqljdbc4.jar`** (old driver, needs `javax.xml.bind`). This driver version encrypts by default: if the eHARS server certificate is not trusted by the JVM, add `;encrypt=true;trustServerCertificate=true` (or import the certificate) to `nyehms.db.ehars.url`.
 3. In `$CATALINA_BASE/conf/catalina.properties` add `nyehms.db.app.url/user/password`, `nyehms.db.urs.url/user/password`, `nyehms.db.ehars.url/user/password`.
 4. Set the application stage as on WebLogic, e.g. `CATALINA_OPTS=-Dstage=PROD` in `bin/setenv.sh` (`setenv.bat` on Windows).
 5. Build: `mvn clean package` with `JAVA_HOME` = JDK 21 (needs the internal repository for the HIN, `endec`, BSID, Symantec and `hapi` artifacts).

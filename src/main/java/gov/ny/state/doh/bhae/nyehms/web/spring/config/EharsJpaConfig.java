@@ -23,14 +23,14 @@ import jakarta.persistence.EntityManagerFactory;
  * eHARS data, as it did with plain JDBC, and does not stop the application from starting.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = EharsJpaConfig.BASE_PACKAGE + ".repository",
+@EnableJpaRepositories(basePackages = EharsJpaConfig.BASE_PACKAGE,
 		entityManagerFactoryRef = "eharsEntityManagerFactory", transactionManagerRef = EharsJpaConfig.TRANSACTION_MANAGER)
 public class EharsJpaConfig {
 
 	/** The transaction manager of the eHARS unit; name it in {@code @Transactional} for code that needs a transaction there. */
 	public static final String TRANSACTION_MANAGER = "eharsTransactionManager";
 
-	/** Where the eHARS entities and repositories are. */
+	/** The eHARS unit: its entities and repositories anywhere under this package (appDS has {@link JpaConfig#BASE_PACKAGE}). */
 	static final String BASE_PACKAGE = "gov.ny.state.doh.bhae.nyehms.ehars";
 
 	@Bean
@@ -39,7 +39,7 @@ public class EharsJpaConfig {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setPersistenceUnitName("ehars");
 		factory.setDataSource(eharsDS);
-		factory.setPackagesToScan(BASE_PACKAGE + ".entity");
+		factory.setPackagesToScan(BASE_PACKAGE);
 		factory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		factory.setJpaPropertyMap(Map.of(
 				// never create, change or validate the schema: the eHARS database is not ours

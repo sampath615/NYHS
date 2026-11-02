@@ -152,6 +152,14 @@
 			<version>23.5.0.24.07</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- eHARS (SQL Server); the container pool loads the driver: copy mssql-jdbc-12.8.1.jre11.jar to $CATALINA_HOME/lib
+		     and remove any old sqljdbc4.jar there (it needs javax.xml.bind, which Java 11+ no longer has) -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>12.8.1.jre11</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
