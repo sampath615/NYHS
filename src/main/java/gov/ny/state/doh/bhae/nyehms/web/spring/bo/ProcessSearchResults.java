@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProcessSearchResults {
 	
-	private static Logger log = LoggerFactory.getLogger(ProcessSearchResults.class);
+	private static final Logger log = LoggerFactory.getLogger(ProcessSearchResults.class);
 	
 	//Replace the results row (each element) with identifier for italics and multiple value indicators. 
 	public void	getProcessedPersonSearchResults

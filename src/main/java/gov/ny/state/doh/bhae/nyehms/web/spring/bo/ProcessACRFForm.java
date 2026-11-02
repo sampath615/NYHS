@@ -40,7 +40,7 @@ public class ProcessACRFForm {
 	@Autowired
 	CommonDocumentService commonDocumentService;
 
-	private static Logger log = LoggerFactory.getLogger(ProcessACRFForm.class);
+	private static final Logger log = LoggerFactory.getLogger(ProcessACRFForm.class);
 
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
