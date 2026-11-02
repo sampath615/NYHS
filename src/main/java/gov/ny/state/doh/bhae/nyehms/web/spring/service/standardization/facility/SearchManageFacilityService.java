@@ -7,6 +7,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.R
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+@RequiredArgsConstructor
 @Service
 public class SearchManageFacilityService {
 	/*
@@ -27,8 +28,7 @@ public class SearchManageFacilityService {
 	/*
 	 * Reference to MasterFacilityDetailsDAO by Spring dependency injection
 	 */
-	@Autowired
-	MasterFacilityDetailsDAO masterFacilityDetailsDAO;
+	private final MasterFacilityDetailsDAO masterFacilityDetailsDAO;
 	
 
 	/**

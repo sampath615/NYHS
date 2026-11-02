@@ -22,7 +22,7 @@ public class OrphanSubFacilityService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(OrphanSubFacilityService.class);
+	private static final Logger log = LoggerFactory.getLogger(OrphanSubFacilityService.class);
 
 	/*
 	 * Reference to custom exception handler by means of dependency injection 

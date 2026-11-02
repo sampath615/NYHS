@@ -4,21 +4,20 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.Faci
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityDetailsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+@RequiredArgsConstructor
 @Service
 public class FacilityManualReviewService {
-	@Autowired
-	FacilityManualReviewDAO facilityManualReviewDAO;
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
+	private final FacilityManualReviewDAO facilityManualReviewDAO;
+	private final CommonExceptionHandler commonExceptionHandler;
 	private static final String MATCH_RAW_FACILITY_SUCCESS_MESSAGE="Raw facility has been Standardized";
 	private static final String UNMATCH_RAW_FACILITY_SUCCESS_MESSAGE="Raw facility has been moved from Clerical to Unstandardized list";
 	public void matchRawFacility(long newRawFacilityId,

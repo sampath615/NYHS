@@ -8,6 +8,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.S
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +18,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -26,24 +26,23 @@ import org.springframework.validation.BindingResult;
  * The service implementation class for facility operations
  * This class is annotated as @Service in order to load as a Spring managed bean
  */
+@RequiredArgsConstructor
 @Service
 public class UnStandardizedFacilityService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(UnStandardizedFacilityService.class);
+	private static final Logger log = LoggerFactory.getLogger(UnStandardizedFacilityService.class);
 	/*
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages
 	 */
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 
 	/*
 	 * Reference to RawProviderAddressDAO by means of dependency injection    
 	 */
-	@Autowired
-	private RawSubFacilityDAO rawSubFacilityDAO;
+	private final RawSubFacilityDAO rawSubFacilityDAO;
 	/*
 	 * Success message when a facility is flagged as provider 
 	 */
@@ -51,15 +50,13 @@ public class UnStandardizedFacilityService {
 	/*
 	 * Reference to MasterFacilityDetailsDAO by means of dependency injection    
 	 */
-	@Autowired
-	private MasterFacilityDetailsDAO masterFacilityDetailsDAO;
+	private final MasterFacilityDetailsDAO masterFacilityDetailsDAO;
 	/*
 	 * Flag the facility data as a provider and copy it to facility data.
 	 * @param facilityId Unique identifier of the facility data to be moved
 	 * @return success or failure message based on the transaction   
 	 */
-	@Autowired
-	FacilityStandardizationTransactionHelper facilityStandardizationTransactionHelper;
+	private final FacilityStandardizationTransactionHelper facilityStandardizationTransactionHelper;
 	private static final String STANDARDIZE_BY_CREATING_MASTER_AND_SUB_FACILITIES_SUCCESS_MESSAGE="The facilities have been created and the raw sub facility has been standardized";
 	/*
 	 * Move the facility data and copy it to provider data.

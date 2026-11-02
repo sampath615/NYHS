@@ -58,7 +58,7 @@ public class FacilityService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(FacilityService.class);
+	private static final Logger log = LoggerFactory.getLogger(FacilityService.class);
 
 	
 	@Autowired
