@@ -5,13 +5,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.ModuleAndPe
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SearchManageProfileService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -22,18 +22,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /*
  * Spring controller class for search manage profile
  */
+@RequiredArgsConstructor
 @Controller
 public class SearchManageProfileController {
 	/*
 	 * GetGridObject reference
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/*
 	 * SearchManageProfileService reference
 	 */
-	@Autowired
-	private SearchManageProfileService searchManageProfileService;
+	private final SearchManageProfileService searchManageProfileService;
 	/*
 	 * Get the permissions grouped by module and sub modules
 	 * @param roleCode the role code for which the permissions are needed

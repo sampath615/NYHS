@@ -6,13 +6,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessa
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -23,18 +23,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class SystemMessageController {
 	/*
 	 * Reference to GetGridObject
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/*
 	 * Reference to SystemMessageService 
 	 */
-	@Autowired
-	private SystemMessageService systemMessageService;
+	private final SystemMessageService systemMessageService;
 	
 	/*
 	 * Redirect to system message manage page

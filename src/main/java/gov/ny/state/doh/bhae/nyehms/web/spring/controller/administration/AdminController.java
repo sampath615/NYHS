@@ -3,11 +3,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.administration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -30,16 +30,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class AdminController {
 
 	/*	private Log log = LogFactory.getLog(this.getClass());
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();*/
 
-	@Autowired private AdministrationService administrationService ;
-	@Autowired         GetGridObject getGridObject;
-	@Autowired         DateUtil dateUtil;
-	@Autowired         TransactionService transactionService;
+	private final AdministrationService administrationService;
+	private final GetGridObject getGridObject;
+	private final DateUtil dateUtil;
+	private final TransactionService transactionService;
 
 	/**
 	 * This method is used to load the initial variables like Regions and Roles and 
