@@ -8,6 +8,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -18,25 +19,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 /*
  * The service implementation class for System message
  */
+@RequiredArgsConstructor
 @Service
 public class SystemMessageService {
 	/*
 	 * Reference to SystemMessageDAO
 	 */
-	@Autowired
-	SystemMessageDAO systemMessageDAO;
+	private final SystemMessageDAO systemMessageDAO;
 	/*
 	 * Reference to DateUtil
 	 */
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 	/**
 	 * Get the list of system messages

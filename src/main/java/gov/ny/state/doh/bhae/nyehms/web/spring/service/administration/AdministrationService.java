@@ -39,7 +39,7 @@ import gov.ny.state.doh.bhae.nyehms.webservice.oauth.WebServiceConstants;
 @Service
 public class AdministrationService {
 	
-	private static Logger log = LoggerFactory.getLogger(AdministrationService.class);
+	private static final Logger log = LoggerFactory.getLogger(AdministrationService.class);
 	
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
