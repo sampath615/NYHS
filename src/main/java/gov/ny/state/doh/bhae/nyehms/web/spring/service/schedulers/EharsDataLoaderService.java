@@ -15,7 +15,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
 import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.EharsDataLoaderDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 
 
 /**
@@ -31,7 +31,7 @@ public class EharsDataLoaderService {
 	
 	
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private JpaConnections jpaConnections;
 	
 	@Autowired
 	private EharsDataLoaderDAO eharsDataLoaderDAO;
@@ -50,7 +50,7 @@ public class EharsDataLoaderService {
 		
 		try {
 			
-			sqlConnection = connectionDAO.getSqlServerConnectionObj();
+			sqlConnection = jpaConnections.eharsConnection();
 			
 			if(sqlConnection == null) {
 				log.debug("EHARS Datasource connection not available. ");
@@ -58,7 +58,7 @@ public class EharsDataLoaderService {
 				throw new DataRetrievalFailureException("EHARS Datasource connection not available");
 			}
 			
-			oracleConnection = connectionDAO.getConnectionObj();
+			oracleConnection = jpaConnections.appConnection();
 			
 			if(oracleConnection == null) {
 				log.debug("Oracle Datasource connection not available. ");

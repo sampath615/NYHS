@@ -25,7 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -50,7 +50,7 @@ public class DatafluxUploadServiceImpl {
 	
 	private final CommonDAO commonDAO;
 	
-	private final ConnectionDAO connectionDAO;
+	private final JpaConnections jpaConnections;
 	
 
 	
@@ -320,7 +320,7 @@ public class DatafluxUploadServiceImpl {
 		
 		try {
 			
-			oracleConnection = connectionDAO.getConnectionObj();
+			oracleConnection = jpaConnections.appConnection();
 			
 			if(oracleConnection == null) {
 				log.error("Oracle Datasource connection not available. ");

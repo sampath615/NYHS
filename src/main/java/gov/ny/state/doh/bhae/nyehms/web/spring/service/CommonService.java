@@ -36,7 +36,9 @@ import org.springframework.validation.ObjectError;
 import CRYPTOCard.API.CRYPTOCardAPI;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceException;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -52,7 +54,7 @@ public class CommonService {
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired         CommonDAO              commonDAO;
-	@Autowired private ConnectionDAO          connectionDAO;
+	@PersistenceContext private EntityManager entityManager;
 	@Autowired private CommonExceptionHandler commonExceptionHandler;	
 	@Autowired	       CommonUtil             commonUtil;
 	@Autowired  private SendEmail sendEmail;
@@ -553,59 +555,59 @@ private static String getINIPath() {
 			BindingResult dummyBindingResult, UserObject userObject){
 		String sqlQuery = "";
 		if("ECLRS".equals(docType) || "VL".equals(docType) || "QUAN_VL".equals(docType) || "LOW_CD4".equals(docType) || "HCD4".equals(docType) || "VHCD4".equals(docType) || "CD4".equals(docType) || "WB".equals(docType) || "SCREEN".equals(docType) || "DIFFERENTIATING".equals(docType) || "QUAL_VL".equals(docType) || "GENOTYPE".equals(docType) || "RESISTANCE".equals(docType) || "IFA".equals(docType) || "P24".equals(docType) || "CULTURE".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_HIV_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_HIV_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
 		}else if("HIV_LAB".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_HIV_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_HIV_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
 		}else if("STD_LAB".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_STD_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_STD_ECLRS_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+) and rownum < 2";
 		}else if("TB".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_TB_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_TB_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
 		}else if("DTH".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_DEATH_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_DEATH_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
 		}else if("NYC_DTH".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_NYC_DEATH_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_NYC_DEATH_DOC docTable , SUB_FACILITY subFacility WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
 		}else if("CASA".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  '' as EHARS_FAC_UID   from STD_CASA_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  '' as EHARS_FAC_UID   from STD_CASA_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("DOCCS".equals(docType)){
-			sqlQuery = "select * from (select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID , fn_to_date(ADMIN_DATE_TEXT, 'MM/DD/YYYY') from STD_DIN_DOCCS_DOC docTable,  SUB_FACILITY subFacility WHERE  docTable.DOCCS_DOC_ID = "+documentId+" and docTable.CURRENT_FACILITY_NAME  = subFacility.FACILITY_NAME(+) order by fn_to_date(ADMIN_DATE_TEXT, 'MM/DD/YYYY') desc ) where rownum < 2";
+			sqlQuery = "select * from (select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID , fn_to_date(ADMIN_DATE_TEXT, 'MM/DD/YYYY') from STD_DIN_DOCCS_DOC docTable,  SUB_FACILITY subFacility WHERE  docTable.DOCCS_DOC_ID = :documentId and docTable.CURRENT_FACILITY_NAME  = subFacility.FACILITY_NAME(+) order by fn_to_date(ADMIN_DATE_TEXT, 'MM/DD/YYYY') desc ) where rownum < 2";
 		}else if("PRF".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_PRF_DOC  docTable , SUB_FACILITY subFacility WHERE   docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_PRF_DOC  docTable , SUB_FACILITY subFacility WHERE   docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME = subFacility.FACILITY_NAME(+)  and rownum < 2";
 		}else if("NYC_PRF".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_NYCPRF_DOC  docTable  WHERE   docTable.DOCUMENT_ID = "+documentId+"  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_NYCPRF_DOC  docTable  WHERE   docTable.DOCUMENT_ID = :documentId  and rownum < 2";
 		}else if("ACRF".equals(docType)){
 			sqlQuery = "";
 		}else if("AIRS".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_AIRS_DOC   docTable,  SUB_FACILITY subFacility  WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME  = subFacility.FACILITY_NAME(+) and   rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_AIRS_DOC   docTable,  SUB_FACILITY subFacility  WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME  = subFacility.FACILITY_NAME(+) and   rownum < 2";
 		}else if("ADAP".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME , docTable.LNAME, '' as EHARS_FAC_UID  from STD_ADAP_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME , docTable.LNAME, '' as EHARS_FAC_UID  from STD_ADAP_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("SSDM".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_SSDM_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_SSDM_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("LEG_PS".equals(docType) || "LEGACY_PS".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_LEGACY_PS_ASSIGN  docTable  WHERE   docTable.DOCUMENT_ID = "+documentId+"  and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_LEGACY_PS_ASSIGN  docTable  WHERE   docTable.DOCUMENT_ID = :documentId  and rownum < 2";
 		}else if("NDI".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_SSDM_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID   from STD_SSDM_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("NYC_IJR".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_NYCIJR_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_NYCIJR_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("ICCR".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_ICCR_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_ICCR_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("OLDHARS".equals(docType)){
 			//tableName = contextPath + "/web/getOLDHARSForm.html";
 		}else if("EHARS".equals(docType)){
 			//tableName = contextPath + "/web/getEHARSForm.html";
 		}else if(docType=="OLD_CASES"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_OLD_CASES_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_OLD_CASES_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if(docType=="TRK_ALIAS"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from NYEHMS_USER_ENTERED_ALIAS docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from NYEHMS_USER_ENTERED_ALIAS docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if(docType=="TRK_ADDR"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from NYEHMS_USER_ENTERED_ADDRESS docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from NYEHMS_USER_ENTERED_ADDRESS docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if("MED".equals(docType) || "INS".equals(docType)){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_MEDICAID_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_MEDICAID_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if(docType=="MED_OLD" || docType=="INS_OLD"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_MED_OLD_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_MED_OLD_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}else if(docType=="STD_OLD"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_STD_OLD_DOC   docTable,  SUB_FACILITY subFacility  WHERE  docTable.DOCUMENT_ID = "+documentId+" and docTable.FACILITY_NAME  = subFacility.FACILITY_NAME(+) and   rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME,  subFacility.EHARS_FAC_UID   from STD_STD_OLD_DOC   docTable,  SUB_FACILITY subFacility  WHERE  docTable.DOCUMENT_ID = :documentId and docTable.FACILITY_NAME  = subFacility.FACILITY_NAME(+) and   rownum < 2";
 		}else if(docType=="STD_OLD"){
-			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_STD_CONFIRMED_DOC docTable WHERE  docTable.DOCUMENT_ID = "+documentId+" and rownum < 2";
+			sqlQuery = "select docTable.FNAME, docTable.MNAME, docTable.LNAME, '' as EHARS_FAC_UID  from STD_STD_CONFIRMED_DOC docTable WHERE  docTable.DOCUMENT_ID = :documentId and rownum < 2";
 		}
 		
 		JSONObject documentData = new JSONObject();
@@ -613,58 +615,27 @@ private static String getINIPath() {
 		if("".equals(sqlQuery)){
 			return documentData;
 		}
-		Connection connection = connectionDAO.getConnectionObj();
-		
-		Statement statement = null;
-		ResultSet resultSet = null;
-		
-		
-		
 		try {
-			if (connection != null) {
-				
-				if(log.isDebugEnabled()){
-					log.debug("Oracle server database Connection is available "+connection);
-				}
-				statement = connection.createStatement();
-				
-				resultSet = statement.executeQuery(sqlQuery);
-				
-				while(resultSet.next()){
-					documentData.put("FNAME", resultSet.getString(1));
-					documentData.put("MNAME", resultSet.getString(2));
-					documentData.put("LNAME", resultSet.getString(3));
-					documentData.put("EHARS_FAC_UID", resultSet.getString(4));
-				}
-				
-				if(log.isDebugEnabled()){
-					log.debug("Documnent data "+documentData.toString());
-				}
-		
+			for (Object row : entityManager.createNativeQuery(sqlQuery).setParameter("documentId", documentId).getResultList()) {
+				Object[] columns = (Object[]) row;
+				documentData.put("FNAME", text(columns[0]));
+				documentData.put("MNAME", text(columns[1]));
+				documentData.put("LNAME", text(columns[2]));
+				documentData.put("EHARS_FAC_UID", text(columns[3]));
 			}
-		} catch (SQLException sqlException) {
-
-			log.error("Exception while retrieving triggering document data "
-					+ sqlException.getMessage());
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException sqlException) {
-				log.error("Exception while closing the connection"
-						+ sqlException.getMessage());
-			}
+			log.debug("Documnent data {}", documentData);
+		} catch (PersistenceException | DataAccessException exception) {
+			log.error("Exception while retrieving triggering document data {}", exception.getMessage());
 		}
-		
-		
 		return documentData;
+	}
+
+	/** A column as getString read it (whole numbers without a decimal part). */
+	private static String text(Object value) {
+		if (value instanceof java.math.BigDecimal number) {
+			return number.toPlainString();
+		}
+		return value == null ? null : value.toString();
 	}
 	
 	public String getSoundexValue(String name){

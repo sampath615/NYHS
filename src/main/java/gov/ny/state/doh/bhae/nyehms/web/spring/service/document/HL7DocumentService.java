@@ -92,7 +92,7 @@ import ca.uhn.hl7v2.validation.impl.NoValidation;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HITDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HL7DocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7AddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7Dg1VO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.hl7.RawHL7DocVO;
@@ -138,7 +138,7 @@ public class HL7DocumentService {
 	@Autowired
 	HITDocumentDAO hitDocumentDAO;
 	@Autowired
-	ConnectionDAO connectionDAO;
+	JpaConnections jpaConnections;
 	@Autowired
 	ManualQuartzJobService manualQuartzJobService;
 
@@ -2192,7 +2192,7 @@ public class HL7DocumentService {
 		Set<String> raceCodeErrors = new HashSet<>();
 		try {
 			log.error("Before fetching the RAW HL7 Data");
-			conn = connectionDAO.getConnectionObj();
+			conn = jpaConnections.appConnection();
 			StringBuilder sqlQuery = new StringBuilder("");
 			
 			sqlQuery.append("SELECT H.*,\r\n" + 
@@ -2461,7 +2461,7 @@ public class HL7DocumentService {
 		Set<String> raceCodeErrors = new HashSet<>();
 		try {
 			log.error("Before fetching the RAW HL7 Data");
-			conn = connectionDAO.getConnectionObj();
+			conn = jpaConnections.appConnection();
 			StringBuilder sqlQuery = new StringBuilder("");
 			sqlQuery.append("WITH data AS ")
 					.append("(select distinct old_mpi not_in_std_mpi, current_mpi in_std_mpi from mpi_change ")

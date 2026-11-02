@@ -24,7 +24,7 @@ import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HITDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitErrorVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.HitLoadLogVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
@@ -48,7 +48,7 @@ public class HITCommonDocumentService {
 	@Autowired
 	HITDocumentDAO hitDocumentDAO;
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private JpaConnections jpaConnections;
 	@Autowired
 	PreMatchHITSchedulerHelper preMatchHITSchedulerHelper;
 	@Autowired
@@ -155,7 +155,7 @@ public class HITCommonDocumentService {
 			
 			if("HL7".equals(recordType) || "HIE_DTH".equals(recordType)) {
 				
-					conn = connectionDAO.getConnectionObj();
+					conn = jpaConnections.appConnection();
 					String sqlString = getUphnRowsWithJdbc(maxUphnTranxInIdCheckedFromLog, maxUphnTranxInIdNow,
 							rowFetchLimit, recordType, theNewHitLoadLogVO);
 					st = conn.createStatement();
@@ -201,7 +201,7 @@ public class HITCommonDocumentService {
 			ResultSet rs = null;
 			Statement st = null;
 			try {
-				conn = connectionDAO.getConnectionObj();
+				conn = jpaConnections.appConnection();
 				String sqlString = getUphnRowsWithFromHitError(recordType);
 				st = conn.createStatement();
 				rs = st.executeQuery(sqlString);

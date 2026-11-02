@@ -63,7 +63,7 @@ import gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms.SchedulerJobsDA
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabProcessDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.EcrlsReAssignDocs;
@@ -113,7 +113,7 @@ public class ManualQuartzJobService {
 	@Autowired
 	private Scheduler schedulerFactoryBean;
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private JpaConnections jpaConnections;
 	@Autowired
 	private LabProcessDAO labProcessDAO;
 	@Autowired
@@ -2215,7 +2215,7 @@ public class ManualQuartzJobService {
 
 		InputStream obj_InputStream = null;
 
-		Connection connection = connectionDAO.getConnectionObj();
+		Connection connection = jpaConnections.appConnection();
 
 		PreparedStatement ps = null;
 
@@ -3319,7 +3319,7 @@ public class ManualQuartzJobService {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = null;
 		JSONObject statusObject = new JSONObject();
-		Connection connection = connectionDAO.getConnectionObj();
+		Connection connection = jpaConnections.appConnection();
 		Statement st = null;
 		ResultSet rs = null;
 		java.util.Properties config = new java.util.Properties();
@@ -3735,7 +3735,7 @@ public class ManualQuartzJobService {
 		String transactionStatus = CommonConstants.TRANSACTION_STATUS_SUCCESS;
 		String transactionMessage = null;
 
-		Connection connection = connectionDAO.getConnectionObj();
+		Connection connection = jpaConnections.appConnection();
 
 		Statement st = null;
 

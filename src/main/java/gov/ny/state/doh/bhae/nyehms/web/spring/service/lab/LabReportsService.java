@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.ClinicalLaboratoryVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FeedbackReportOverallSummaryVO;
@@ -64,7 +64,7 @@ public class LabReportsService {
 	private LabReportsDAO labReportsDAO ;
 	
 	@Autowired
-	private ConnectionDAO connectionDAO ;
+	private JpaConnections jpaConnections ;
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;
@@ -841,7 +841,7 @@ public class LabReportsService {
 		String transactionMessage=null;
 		Integer statusCode;
 		
-		Connection connection = connectionDAO.getConnectionObj();
+		Connection connection = jpaConnections.appConnection();
 		
 		CallableStatement callableStatement = null;
 		

@@ -53,7 +53,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClusterDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.CommonDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO;
@@ -109,7 +109,7 @@ public class FileUploadService {
 	
 	@Autowired FileUploadDAO fileUploadDAO;
 	
-	@Autowired ConnectionDAO connectionDAO;
+	@Autowired JpaConnections jpaConnections;
 	
 	@Autowired SendEmail sendEmail;
 	
@@ -1854,7 +1854,7 @@ public class FileUploadService {
 	@Transactional
 	public void uploadPSConfirmedSTDData(String fileName, List<Map<String, Object>> stdConfirmDataList, int workerId) throws SQLException {
 		
-		Connection conn = connectionDAO.getConnectionObj();
+		Connection conn = jpaConnections.appConnection();
 		PreparedStatement ps = null;
 		
 		final int batchSize = 1000;

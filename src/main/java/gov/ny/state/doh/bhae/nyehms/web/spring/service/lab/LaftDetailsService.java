@@ -20,7 +20,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.JpaConnections;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LaftDetailsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftDetailsVO;
@@ -57,7 +57,7 @@ public class LaftDetailsService {
 	private DocumentTransactionHelper documentTransactionHelper;
 	
 	@Autowired
-	private ConnectionDAO connectionDAO ;
+	private JpaConnections jpaConnections ;
 	
 	private static final Logger log = LoggerFactory.getLogger(LaftDetailsService.class);
 	
@@ -207,7 +207,7 @@ public class LaftDetailsService {
 		String transactionMessage=null;
 		Integer transactionStatusCode;
 		
-		Connection connection = connectionDAO.getConnectionObj();
+		Connection connection = jpaConnections.appConnection();
 		OracleConnection oracleConnection = null;
 			try {
 				if(connection != null){
