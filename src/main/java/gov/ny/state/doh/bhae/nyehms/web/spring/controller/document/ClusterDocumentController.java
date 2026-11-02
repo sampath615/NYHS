@@ -10,6 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ClusterDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -30,19 +30,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class ClusterDocumentController {
 	
-	private static Logger log = LoggerFactory.getLogger(ClusterDocumentController.class);
+	private static final Logger log = LoggerFactory.getLogger(ClusterDocumentController.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 	
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	
-	@Autowired
-	private ClusterDocumentService clusterDocumentService;
+	private final ClusterDocumentService clusterDocumentService;
 	
-	@Autowired	DocumentTransactionHelper documentTransactionHelper;
+	private final DocumentTransactionHelper documentTransactionHelper;
 	
 	
 	@RequestMapping(value = "/getClusterForm.html")

@@ -3,12 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -27,27 +27,23 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class ClericalReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
 	
-	@Autowired
-	ClericalReviewService clericalReviewService;
+	private final ClericalReviewService clericalReviewService;
 	
-	@Autowired
-	NycIJRDocumentService nycIJRDocumentService;
+	private final NycIJRDocumentService nycIJRDocumentService;
 	
 
-	@Autowired
-	ADAPDocumentService adapDocumentService;
+	private final ADAPDocumentService adapDocumentService;
 	
-	@Autowired
-	PersionService personService;
+	private final PersionService personService;
 
-	@Autowired
-	EPRFOOCDocumentService  ePRFOOCDocumentService;
+	private final EPRFOOCDocumentService ePRFOOCDocumentService;
 	@RequestMapping("/getClericalReview")
 	public String getClericalReview(Map<String, Object> map, HttpServletRequest request) {
 		

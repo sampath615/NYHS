@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -22,13 +22,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransact
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NonCaseDocumentService;
 
 
+@RequiredArgsConstructor
 @Controller
 public class NonCaseDocumentController {
 	
-	@Autowired private DocumentTransactionHelper documentTransactionHelper;
+	private final DocumentTransactionHelper documentTransactionHelper;
 	
 
-	@Autowired private NonCaseDocumentService nonCaseDocumentService;
+	private final NonCaseDocumentService nonCaseDocumentService;
 	
 
 

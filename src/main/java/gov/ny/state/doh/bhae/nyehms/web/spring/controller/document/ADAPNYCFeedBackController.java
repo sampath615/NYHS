@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,17 +26,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ADAPDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentReviewTransactionHelper;
 
+@RequiredArgsConstructor
 @Controller
 public class ADAPNYCFeedBackController {
 	
 
 	
-	@Autowired
-	ADAPDocumentService aDAPDocumentService;
+	private final ADAPDocumentService aDAPDocumentService;
 	
 
-	@Autowired
-	DocumentReviewTransactionHelper documentReviewTransactionHelper;
+	private final DocumentReviewTransactionHelper documentReviewTransactionHelper;
 	
 	@RequestMapping("/createNYCFile")
 	public String createNYCFile(Map<String, Object> map, HttpServletRequest request) {

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -34,20 +34,21 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentReviewTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class AHIDocumentController {
 	
-	private static Logger log = LoggerFactory.getLogger(AHIDocumentController.class);
+	private static final Logger log = LoggerFactory.getLogger(AHIDocumentController.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 	
-	@Autowired GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	
-	@Autowired	DocumentReviewTransactionHelper documentReviewTransactionHelper;
-	@Autowired	AHIDocumentService ahiDocumentService;
-	@Autowired	ACRFDocumentService acrfFDocumentService;
-	@Autowired	CommonDocumentService commonDocumentService;
-	@Autowired	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired	private PersionService personService;
+	private final DocumentReviewTransactionHelper documentReviewTransactionHelper;
+	private final AHIDocumentService ahiDocumentService;
+	private final ACRFDocumentService acrfFDocumentService;
+	private final CommonDocumentService commonDocumentService;
+	private final DocumentTransactionHelper documentTransactionHelper;
+	private final PersionService personService;
 
 	@RequestMapping(value = "/getAHIForm.html")
 	public String getAHIDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)

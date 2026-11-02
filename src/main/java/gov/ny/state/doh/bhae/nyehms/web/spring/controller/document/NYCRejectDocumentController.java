@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -20,11 +20,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.NYCRejectDocumentService;
 
 
+@RequiredArgsConstructor
 @Controller
 public class NYCRejectDocumentController {
 	
 	
-	@Autowired NYCRejectDocumentService nycRejectDocumentService;
+	private final NYCRejectDocumentService nycRejectDocumentService;
 	
 	@RequestMapping(value = "/getNYCRejectDoc.html")
 	public String getNYCRejectDocAsHTML(@RequestParam(required=false) Integer docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)

@@ -2,12 +2,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -21,14 +21,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.RASDocumentService;
 
+@RequiredArgsConstructor
 @Controller
 public class RASDocumentController {
 	
-	private static Logger log = LoggerFactory.getLogger(RASDocumentController.class);
+	private static final Logger log = LoggerFactory.getLogger(RASDocumentController.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 	
-	@Autowired
-	RASDocumentService rasDocumentService;
+	private final RASDocumentService rasDocumentService;
 	
 	
 	@RequestMapping(value = "/getRASForm.html")

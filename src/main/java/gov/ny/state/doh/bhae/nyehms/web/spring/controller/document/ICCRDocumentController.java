@@ -3,12 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -28,14 +28,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ACRFDocumentServ
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.ICCRDocumentService;
 
+@RequiredArgsConstructor
 @Controller
 public class ICCRDocumentController {
 	
 
 	
-	@Autowired	CommonDocumentService commonDocumentService;
-	@Autowired	ICCRDocumentService iccrDocumentService;
-	@Autowired	ACRFDocumentService acrfFDocumentService;
+	private final CommonDocumentService commonDocumentService;
+	private final ICCRDocumentService iccrDocumentService;
+	private final ACRFDocumentService acrfFDocumentService;
 	
 	@RequestMapping("/dataEntryICCRDocument")
 	public String dataEntryICCRDoc(HttpServletRequest request, Map<String, Object> map, UserObject userObject) {
