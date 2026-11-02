@@ -42,7 +42,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 @Service
 public class DocumentsScanService {
 	
-	private static Logger log = LoggerFactory.getLogger(DocumentsScanService.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentsScanService.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired

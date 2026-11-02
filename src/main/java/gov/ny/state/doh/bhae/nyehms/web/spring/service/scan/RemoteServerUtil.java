@@ -20,7 +20,7 @@ import com.jcraft.jsch.Session;
 @Service
 public class RemoteServerUtil {
 
-	private static Logger log = LoggerFactory.getLogger(RemoteServerUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(RemoteServerUtil.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	private java.util.Properties config = new java.util.Properties();

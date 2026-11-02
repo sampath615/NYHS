@@ -17,7 +17,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 @Component
 public class DocumentsScanHelper {
 	
-	private static Logger log = LoggerFactory.getLogger(DocumentsScanHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentsScanHelper.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired
