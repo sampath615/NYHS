@@ -39,7 +39,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 public class RiaReviewService {
 
 	
-	private static Logger log = LoggerFactory.getLogger(RiaReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(RiaReviewService.class);
 	
 	@Autowired
     RiaRecordsReviewDAO riaRecordsReviewDAO;

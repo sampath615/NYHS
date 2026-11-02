@@ -39,7 +39,7 @@ public class DocumentsReviewService {
 	@Autowired
 	private DocumentReviewTransactionHelper documentReviewTransactionHelper;
 	
-	private static Logger log = LoggerFactory.getLogger(DocumentsReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentsReviewService.class);
 	
 	
 	@Autowired

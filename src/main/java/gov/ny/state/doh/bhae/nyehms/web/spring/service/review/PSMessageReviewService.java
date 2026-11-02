@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -34,17 +34,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 * @author  
 * @version 
 */
+@RequiredArgsConstructor
 @Service
 public class PSMessageReviewService {
 
 	
-	private static Logger log = LoggerFactory.getLogger(PSMessageReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(PSMessageReviewService.class);
 	
-	@Autowired
-    PSMessageReviewDAO psMessageReviewDAO;
+	private final PSMessageReviewDAO psMessageReviewDAO;
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 	/**
 	 * {@inheritDoc}

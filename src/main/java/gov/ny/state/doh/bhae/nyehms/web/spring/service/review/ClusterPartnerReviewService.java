@@ -33,7 +33,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 public class ClusterPartnerReviewService {
 	
 	
-	private static Logger log = LoggerFactory.getLogger(ClusterPartnerReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(ClusterPartnerReviewService.class);
 
 	
 	@Autowired

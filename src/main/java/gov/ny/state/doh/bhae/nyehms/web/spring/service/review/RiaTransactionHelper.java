@@ -23,7 +23,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 @Component
 public class RiaTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(RiaTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(RiaTransactionHelper.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired	CommonExceptionHandler commonExceptionHandler;	

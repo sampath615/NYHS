@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,6 @@ import org.docx4j.wml.STPageOrientation;
 import org.docx4j.wml.SectPr;
 import org.docx4j.wml.SectPr.PgMar;
 import org.docx4j.wml.SectPr.PgSz;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -58,18 +58,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
+@RequiredArgsConstructor
 @Service
 public class PerinatalService {
 
 	private static final ObjectFactory factory = Context.getWmlObjectFactory();
 
-	private static Logger log = LoggerFactory.getLogger(PerinatalService.class);
+	private static final Logger log = LoggerFactory.getLogger(PerinatalService.class);
 
-	@Autowired
-	PerinatalReviewDAO perinatalReviewDAO;
+	private final PerinatalReviewDAO perinatalReviewDAO;
 
-	@Autowired
-	RemoteServerUtil remoteServer;
+	private final RemoteServerUtil remoteServer;
 
 	
 	

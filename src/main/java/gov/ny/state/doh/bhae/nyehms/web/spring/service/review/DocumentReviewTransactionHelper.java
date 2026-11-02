@@ -39,7 +39,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 @Service
 public class DocumentReviewTransactionHelper {
 	
-	private static Logger log = LoggerFactory.getLogger(DocumentReviewTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentReviewTransactionHelper.class);
 	
 	@Autowired
 	EPRFOOCDocumentService ePRFOOCDocumentService;

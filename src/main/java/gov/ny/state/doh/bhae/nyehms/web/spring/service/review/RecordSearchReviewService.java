@@ -9,13 +9,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,22 +34,20 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 
+@RequiredArgsConstructor
 @Service
 public class RecordSearchReviewService {
 	
 	
-	private static Logger log = LoggerFactory.getLogger(RecordSearchReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(RecordSearchReviewService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	@Autowired
-	private RecordSearchReviewDAO recordSearchReviewDAO;
+	private final RecordSearchReviewDAO recordSearchReviewDAO;
 
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 	
-	@Autowired
-	private SendEmail sendEmail;
+	private final SendEmail sendEmail;
 
 	
 	public int changeRecordSearchStatusForMultipleStatenos(
