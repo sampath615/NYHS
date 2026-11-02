@@ -45,7 +45,7 @@ public class MergeUnMergePersonTransactionHelper {
 	CommonDocumentService commonDocumentService;
 	
 
-	private static Logger log = LoggerFactory.getLogger(MergeUnMergePersonTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(MergeUnMergePersonTransactionHelper.class);
 
 
 	@Transactional

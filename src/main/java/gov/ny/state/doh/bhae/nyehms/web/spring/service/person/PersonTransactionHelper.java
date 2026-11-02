@@ -43,7 +43,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Component
 public class PersonTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(PersonTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(PersonTransactionHelper.class);
 	
     @Autowired
 	private PersionService personService;

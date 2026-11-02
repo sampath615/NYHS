@@ -40,7 +40,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 @Service
 public class MergeUnMergePersonService {
 
-	private static Logger log = LoggerFactory.getLogger(MergeUnMergePersonService.class);
+	private static final Logger log = LoggerFactory.getLogger(MergeUnMergePersonService.class);
 
 	@Autowired
 	private MergeUnMergePersonDAO mergeUnMergePersonDAO;

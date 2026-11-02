@@ -49,7 +49,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Service
 public class PersionService {
 
-	private static Logger log = LoggerFactory.getLogger(PersionService.class);
+	private static final Logger log = LoggerFactory.getLogger(PersionService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 	@Autowired
