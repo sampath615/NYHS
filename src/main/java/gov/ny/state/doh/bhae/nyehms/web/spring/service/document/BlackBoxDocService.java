@@ -1,8 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxDocData;
@@ -15,13 +15,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.BlackBoxDocRe
  *
  * @author ska03
  */
+@RequiredArgsConstructor
 @Component
 public class BlackBoxDocService {
 
     //private Log log = LogFactory.getLog(this.getClass());
  
-	@Autowired
-    BlackBoxDocRepository blackBoxDocRepository;
+	private final BlackBoxDocRepository blackBoxDocRepository;
  
     /**
      * {@inheritDoc}

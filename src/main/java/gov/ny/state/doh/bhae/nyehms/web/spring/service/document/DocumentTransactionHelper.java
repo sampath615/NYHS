@@ -56,7 +56,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Component
 public class DocumentTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(DocumentTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentTransactionHelper.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired	CommonExceptionHandler commonExceptionHandler;	

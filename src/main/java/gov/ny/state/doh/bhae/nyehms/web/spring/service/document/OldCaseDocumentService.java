@@ -5,10 +5,10 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.OldCasesDocRe
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -18,16 +18,15 @@ import org.springframework.validation.BindingResult;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class OldCaseDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(OldCaseDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(OldCaseDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    @Autowired
-    OldCasesDocRepository oldCasesDocRepository;
-    @Autowired
-    CommonExceptionHandler commonExceptionHandler;
+    private final OldCasesDocRepository oldCasesDocRepository;
+    private final CommonExceptionHandler commonExceptionHandler;
     
     public OldCaseDocData getOldCaseDocVO(int docId, BindingResult result, UserObject userObject,
             String sessionID) {

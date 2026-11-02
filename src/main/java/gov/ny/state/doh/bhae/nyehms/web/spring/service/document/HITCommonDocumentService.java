@@ -43,7 +43,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 @Service
 public class HITCommonDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(HITCommonDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(HITCommonDocumentService.class);
 
 	@Autowired
 	HITDocumentDAO hitDocumentDAO;

@@ -45,7 +45,7 @@ public class AHIDocumentService {
 	@Autowired CommonService commonService;
 	
 	
-	private static Logger log = LoggerFactory.getLogger(AHIDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(AHIDocumentService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 
 	public List<Map<String, String>> getAHICISTIConditionList() {

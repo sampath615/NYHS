@@ -126,7 +126,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Service
 public class HL7DocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(HL7DocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(HL7DocumentService.class);
 	
 
 	@Autowired

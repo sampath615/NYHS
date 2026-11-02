@@ -33,7 +33,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 public class ClericalReviewService {
 	
 	
-	private static Logger log = LoggerFactory.getLogger(ClericalReviewService.class);
+	private static final Logger log = LoggerFactory.getLogger(ClericalReviewService.class);
 	
 	@Autowired
 	private CommonExceptionHandler commonExceptionHandler;

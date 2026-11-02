@@ -27,7 +27,7 @@ import org.springframework.validation.BindingResult;
 @Service
 public class DoccsDocumentService {
 	
-	private static Logger log = LoggerFactory.getLogger(DoccsDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(DoccsDocumentService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired

@@ -7,6 +7,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -25,16 +25,15 @@ import org.springframework.validation.BindingResult;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class TBDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(TBDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(TBDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    @Autowired
-    TBDocumentDAO tbDocumentDAO;
-    @Autowired
-    CommonExceptionHandler commonExceptionHandler;
+    private final TBDocumentDAO tbDocumentDAO;
+    private final CommonExceptionHandler commonExceptionHandler;
     
     private final static Map<String, String> stateCodeMap = new HashMap<>();
     

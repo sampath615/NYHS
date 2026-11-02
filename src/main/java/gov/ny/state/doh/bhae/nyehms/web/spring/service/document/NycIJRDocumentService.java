@@ -8,10 +8,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +26,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class NycIJRDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(NycIJRDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(NycIJRDocumentService.class);
     //private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 
-    @Autowired
-    NycIJRDocumentDAO nycIJRDocumentDAO;
+    private final NycIJRDocumentDAO nycIJRDocumentDAO;
 
     /**
      * This method will return NYC_IJR document for a given document id

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -27,18 +27,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 
+@RequiredArgsConstructor
 @Service
 public class MedicaidDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(MedicaidDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(MedicaidDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    @Autowired
-    MedicaidDocumentDAO medicaidDocumentDAO;
-    @Autowired
-    InsDeathDocRepository insDeathDocRepository;
-    @Autowired
-    CommonExceptionHandler commonExceptionHandler;
+    private final MedicaidDocumentDAO medicaidDocumentDAO;
+    private final InsDeathDocRepository insDeathDocRepository;
+    private final CommonExceptionHandler commonExceptionHandler;
 
         /**
      * This function will return the TB document for a given docId

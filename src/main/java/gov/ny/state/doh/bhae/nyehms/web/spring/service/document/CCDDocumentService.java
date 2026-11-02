@@ -64,7 +64,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Service
 public class CCDDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(CCDDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(CCDDocumentService.class);
 	@Autowired
 	private HITCommonDocumentService hitCommonDocumentService;
 	@Autowired

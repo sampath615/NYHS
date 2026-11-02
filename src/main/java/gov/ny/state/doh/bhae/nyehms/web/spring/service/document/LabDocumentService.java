@@ -35,7 +35,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 @Service
 public class LabDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(LabDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(LabDocumentService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired

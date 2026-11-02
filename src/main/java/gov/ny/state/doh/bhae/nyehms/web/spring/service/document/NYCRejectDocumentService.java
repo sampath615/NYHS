@@ -3,8 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -13,12 +13,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.NYCRejectVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
+@RequiredArgsConstructor
 @Service
 public class NYCRejectDocumentService {
 	
 	
-	@Autowired	
-	NYCRejectDocumentDAO nycRejectDocumentDAO;
+	private final NYCRejectDocumentDAO nycRejectDocumentDAO;
 
 	public void updateNYCRejectDocumentComments(int documentId, String comments, UserObject userObject) {
 

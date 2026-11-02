@@ -40,7 +40,7 @@ public class HIEDTHDocumentService {
 	public static final String SALT = "";
 	public static final String STRENGTH = "strong";
 	public static final String UPHN_SECRET_KEY = "KfCxa7zbxOrqXAbraDgBrM";
-	private static Logger log = LoggerFactory.getLogger(HIEDTHDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(HIEDTHDocumentService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 	@Autowired
 	HIEDTHDocumentDAO hiedthDocumentDAO;

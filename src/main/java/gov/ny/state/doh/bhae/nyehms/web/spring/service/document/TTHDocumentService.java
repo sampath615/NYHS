@@ -2,10 +2,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.UnexpectedRollbackException;
@@ -19,19 +19,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 
+@RequiredArgsConstructor
 @Service
 public class TTHDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(TTHDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(TTHDocumentService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
-	@Autowired
-	TTHDocumentDAO tTHDocumentDAO;
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;	
+	private final TTHDocumentDAO tTHDocumentDAO;
+	private final CommonExceptionHandler commonExceptionHandler;	
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
+	private final CommonDocumentService commonDocumentService;
 		
 //	@Override
 //	public ADAPDocVO getADAPDoc(int docId, 

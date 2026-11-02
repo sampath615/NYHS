@@ -8,28 +8,28 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.HIEDTHDocumentDAO;
 import us.ny.state.health.hie.endec.EnDecrypter;
 
+@RequiredArgsConstructor
 @Service
 public class HIEDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(HIEDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(HIEDocumentService.class);
 
 
 	public static final String SALT = "";
 	public static final String STRENGTH = "strong";
 	public static final String UPHN_SECRET_KEY = "KfCxa7zbxOrqXAbraDgBrM";
 	
-	@Autowired
-	HIEDTHDocumentDAO hieDTHDocumentDAO;
+	private final HIEDTHDocumentDAO hieDTHDocumentDAO;
 	
 	public String convertBlobtoEncryptedEncodedString(Blob blob) {
 		StringBuilder strOut = new StringBuilder();

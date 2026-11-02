@@ -3,8 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -12,12 +12,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.RASDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.RASDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
+@RequiredArgsConstructor
 @Service
 public class RASDocumentService {
 	
 	
-	@Autowired
-	RASDocumentDAO rasDocumentDAO;
+	private final RASDocumentDAO rasDocumentDAO;
 
 	public RASDocVO getRASDocVO(int documentId, boolean sierraFlag, BindingResult result, UserObject userObject) {
 		

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +19,6 @@ import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -43,18 +43,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class ADAPDocumentService {
 
-    private static  Logger log = LoggerFactory.getLogger(ADAPDocumentService.class);
+    private static final  Logger log = LoggerFactory.getLogger(ADAPDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    @Autowired
-    ADAPDocumentDAO aDAPDocumentDAO;
-    @Autowired
-    private CommonExceptionHandler commonExceptionHandler;
-    @Autowired
-    CommonService commonService;
+    private final ADAPDocumentDAO aDAPDocumentDAO;
+    private final CommonExceptionHandler commonExceptionHandler;
+    private final CommonService commonService;
     
     private Map<String, Map<String, String>> zipCodeReferenceMap = new HashMap<>();
 

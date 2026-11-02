@@ -4,8 +4,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiCauseDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NdiDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NdiDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class NDIDocumentService {
 
     //private Log log = LogFactory.getLog(this.getClass());
  
  
-    @Autowired
-    NdiDocRepository ndiDocRepository;
+    private final NdiDocRepository ndiDocRepository;
  
     /**
      * {@inheritDoc}

@@ -31,7 +31,7 @@ import org.springframework.validation.BindingResult;
 public class CommonDocumentEditService {
 	
 	
-	private static Logger log = LoggerFactory.getLogger(CommonDocumentEditService.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonDocumentEditService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	@Autowired

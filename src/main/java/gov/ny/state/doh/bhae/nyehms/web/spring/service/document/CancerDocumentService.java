@@ -2,8 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -14,12 +14,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
+@RequiredArgsConstructor
 @Service
 public class CancerDocumentService {
 	
-	@Autowired private CancerDocumentDAO cancerDocumentDAO;
+	private final CancerDocumentDAO cancerDocumentDAO;
 	
-	@Autowired CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 
 	public PersonViewVO getClericalDocumentAsPerson(int documentId) {

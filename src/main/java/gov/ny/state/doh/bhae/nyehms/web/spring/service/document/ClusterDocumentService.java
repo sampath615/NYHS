@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -38,39 +38,37 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
+@RequiredArgsConstructor
 @Service
 public class ClusterDocumentService {
 	
-	private static Logger log = LoggerFactory.getLogger(ClusterDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(ClusterDocumentService.class);
 
 	
-	@Autowired
-	private ClusterDocumentDAO clusterDocumentDAO;
+	private final ClusterDocumentDAO clusterDocumentDAO;
 	
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired CommonDocumentService commonDocumentService;
+	private final CommonDocumentService commonDocumentService;
 	
-	@Autowired FileUploadDAO fileUploadDAO;
+	private final FileUploadDAO fileUploadDAO;
 	
-	@Autowired SendEmail sendEmail;
+	private final SendEmail sendEmail;
 	
-	@Autowired private RecordSearchReviewDAO recordSearchReviewDAO;	
+	private final RecordSearchReviewDAO recordSearchReviewDAO;	
 	
-	@Autowired
-	private CommonDocLabsDAO commonDocLabsDAO;
+	private final CommonDocLabsDAO commonDocLabsDAO;
 	
-	@Autowired CommonService commonService;
+	private final CommonService commonService;
 	
-	@Autowired ConnectionDAO connectionDAO;
+	private final ConnectionDAO connectionDAO;
 	
-	@Autowired DateUtil dateUtil;
+	private final DateUtil dateUtil;
 	
 	List<String> statenoNotFoundInEhars = new ArrayList<>();
 	
-	@Autowired	CommonUtil commonUtil;
+	private final CommonUtil commonUtil;
 
 	public ClusterDocVO getClusterDocVO(int documentId, BindingResult result, UserObject userObject) {
 		

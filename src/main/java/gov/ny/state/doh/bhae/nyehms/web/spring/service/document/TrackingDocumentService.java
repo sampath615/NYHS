@@ -6,10 +6,10 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAliasDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -20,18 +20,17 @@ import org.springframework.validation.BindingResult;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class TrackingDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(TrackingDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(TrackingDocumentService.class);
 
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
     
-    @Autowired
-    TrackingDocumentDAO trackingDocumentDAO;
+    private final TrackingDocumentDAO trackingDocumentDAO;
 
-    @Autowired
-    CommonExceptionHandler commonExceptionHandler;
+    private final CommonExceptionHandler commonExceptionHandler;
     /**
      * This function will return the Tracking Address document for a given docId
      *

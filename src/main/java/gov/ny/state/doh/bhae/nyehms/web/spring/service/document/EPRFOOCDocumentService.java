@@ -56,7 +56,7 @@ public class EPRFOOCDocumentService {
 	@Autowired
 	DocumentTransactionHelper documentTransactionHelper;
 	
-	private static Logger log = LoggerFactory.getLogger(EPRFOOCDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(EPRFOOCDocumentService.class);
 
 	
 	

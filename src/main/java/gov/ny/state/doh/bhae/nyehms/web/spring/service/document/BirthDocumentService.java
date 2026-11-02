@@ -2,8 +2,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.BirthDocumentDAO;
@@ -16,14 +16,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  *
  * @author ska03
  */
+@RequiredArgsConstructor
 @Service
 public class BirthDocumentService {
 
     
     final String ONE = "1";
     final String ZERO = "0";    
-    @Autowired
-    BirthDocumentDAO birthDocumentDAO;
+    private final BirthDocumentDAO birthDocumentDAO;
 
     public int insertRawBirthMomDataToStdTable(int bthDocumentId, String birthMatchId, Map<String, Object> documentMatchData) {
     	

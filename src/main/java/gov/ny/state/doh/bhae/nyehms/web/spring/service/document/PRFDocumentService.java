@@ -43,7 +43,7 @@ import org.springframework.validation.BindingResult;
 @Service
 public class PRFDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(PRFDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(PRFDocumentService.class);
     //private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired

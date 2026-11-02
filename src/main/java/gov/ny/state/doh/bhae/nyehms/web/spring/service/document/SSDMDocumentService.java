@@ -7,13 +7,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -26,19 +26,17 @@ import org.springframework.validation.BindingResult;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class SSDMDocumentService {
 
-	private static Logger log = LoggerFactory.getLogger(SSDMDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(SSDMDocumentService.class);
 
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    @Autowired
-    SSDMDocumentDAO ssdmDocumentDAO;
-    @Autowired
-    SsdmDocRepository ssdmDocRepository;
-    @Autowired
-    private CommonExceptionHandler commonExceptionHandler;
+    private final SSDMDocumentDAO ssdmDocumentDAO;
+    private final SsdmDocRepository ssdmDocRepository;
+    private final CommonExceptionHandler commonExceptionHandler;
 
     /**
      * This method is called from controller to get data for a given SSDM doc

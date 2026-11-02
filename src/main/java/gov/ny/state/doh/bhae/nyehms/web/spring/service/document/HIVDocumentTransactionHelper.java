@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Component;
@@ -25,23 +25,18 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  * 
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class HIVDocumentTransactionHelper {
 
 
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
-	@Autowired
-	CommonDocumentEditService commonDocumentEditService;
-	@Autowired
-	LabDocumentService labDocumentService;
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
-	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
-	CommonService commonService;
+	private final CommonDocumentService commonDocumentService;
+	private final CommonDocumentEditService commonDocumentEditService;
+	private final LabDocumentService labDocumentService;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final DocumentTransactionHelper documentTransactionHelper;
+	private final CommonService commonService;
 
 	@Transactional
 	public void editHivDocumentWithNYCData(Integer documentId,

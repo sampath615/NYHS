@@ -3,8 +3,8 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.ClimsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.ClimsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,11 @@ import org.springframework.stereotype.Service;
  * @author skg02
  *
  */
+@RequiredArgsConstructor
 @Service
 public class CLIMSDocumentService {
 
-    @Autowired private CommonExceptionHandler commonExceptionHandler;
+    private final CommonExceptionHandler commonExceptionHandler;
     /**
      * This method will return CLIMS document for a given document id
      * {@inheritDoc}
@@ -24,7 +25,7 @@ public class CLIMSDocumentService {
      * @return
      */
     
-    @Autowired ClimsDocRepository climsDocRepository;
+    private final ClimsDocRepository climsDocRepository;
     
 	public ClimsDocData getCLIMSDocument(int documentID) throws DataAccessException {
 		return climsDocRepository.findDocument(documentID);
