@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -55,23 +55,19 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 
+@RequiredArgsConstructor
 @Controller
 public class LabReportsController {
 	
 
-	@Autowired
-	private LabReportsService reportsService;
+	private final LabReportsService reportsService;
 	
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 
-	@Autowired
-	private ProviderService providerService;
-	@Autowired
-	private TransactionService transactionService;
+	private final ProviderService providerService;
+	private final TransactionService transactionService;
 	
-	@Autowired
-	private LabDocumentService labDocumentService; 
+	private final LabDocumentService labDocumentService; 
 
 	
 	@RequestMapping("/getReports")

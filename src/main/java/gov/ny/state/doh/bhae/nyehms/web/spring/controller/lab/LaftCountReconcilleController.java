@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,13 +26,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftCountReconcilleSe
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.FileUploadService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class LaftCountReconcilleController {
 	
-	@Autowired GetGridObject getGridObject;
-	@Autowired	LaftCountReconcilleService laftCountReconcilleService;
-	@Autowired	ClepAuditResultsService clepAuditResultsService;
-	@Autowired	private FileUploadService fileUploadService;
+	private final GetGridObject getGridObject;
+	private final LaftCountReconcilleService laftCountReconcilleService;
+	private final ClepAuditResultsService clepAuditResultsService;
+	private final FileUploadService fileUploadService;
 	
 	@RequestMapping("/laftCountReconcile")
 	public String getLaftCountReconcile(Map<String, Object> map, HttpServletRequest request) {

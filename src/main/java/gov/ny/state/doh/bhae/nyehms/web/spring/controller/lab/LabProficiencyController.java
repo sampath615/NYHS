@@ -3,11 +3,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,13 +22,13 @@ import com.google.gson.JsonParser;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LabProficiencyService;
 
+@RequiredArgsConstructor
 @Controller
 public class LabProficiencyController {
 
 
     
-    @Autowired
-    private LabProficiencyService labProficiencyService;
+    private final LabProficiencyService labProficiencyService;
 
     /**
      * This method will be called from menu bar (Lab -> Proficiency) tab This

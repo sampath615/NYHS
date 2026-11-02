@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -31,14 +31,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.FileUploadService
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class ClepAuditResultsController {
 	
-	@Autowired	ClepAuditResultsService clepAuditResultsService;
+	private final ClepAuditResultsService clepAuditResultsService;
 	
-	@Autowired	private FileUploadService fileUploadService;
+	private final FileUploadService fileUploadService;
 	
-	@Autowired	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	
     @RequestMapping("/submitLabRptResults")
     public String getLabProficiencyDetails(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {

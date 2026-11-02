@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -37,16 +37,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
  *Description 	: This class used to Load the Document Errors and fixing it
  */
 
+@RequiredArgsConstructor
 @Controller
 public class LaftDetailsController {
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 
-	@Autowired
-	private LaftDetailsService laftDetailsService;
+	private final LaftDetailsService laftDetailsService;
 	
-	@Autowired
-	private ProviderService providerService;
+	private final ProviderService providerService;
 	
 	/*
 	 * Redirect to provider, facility, person search page 

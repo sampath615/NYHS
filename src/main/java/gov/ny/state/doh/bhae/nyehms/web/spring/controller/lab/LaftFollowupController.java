@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -20,11 +20,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class LaftFollowupController {
 	
-	@Autowired private LaftFollowupDocumentService laftFollowupDocumentService;
-	@Autowired GetGridObject getGridObject;
+	private final LaftFollowupDocumentService laftFollowupDocumentService;
+	private final GetGridObject getGridObject;
 
 	
 

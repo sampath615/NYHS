@@ -3,12 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -36,19 +36,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.transaction.TransactionSe
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 
+@RequiredArgsConstructor
 @Controller
 public class LabLoincResultDomainMappingController {
 	
 
-	@Autowired
-	private LoincResultDomainMappingService loincResultDomainMappingService;
+	private final LoincResultDomainMappingService loincResultDomainMappingService;
 	
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	
 
-	@Autowired
-	private TransactionService transactionService;
+	private final TransactionService transactionService;
 	
 
 	@RequestMapping("/addNewLoinc.html")

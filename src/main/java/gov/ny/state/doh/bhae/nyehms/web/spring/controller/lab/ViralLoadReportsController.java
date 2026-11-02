@@ -3,12 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -27,19 +27,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 
+@RequiredArgsConstructor
 @Controller
 public class ViralLoadReportsController {
 
 
 	
-	@Autowired
-	private ViralLoadReportsService viralLoadReportsService; 
+	private final ViralLoadReportsService viralLoadReportsService; 
 	
-	@Autowired
-	private RiaReviewService riaReviewService;
+	private final RiaReviewService riaReviewService;
 	
-	@Autowired
-	private LaftFollowupDocumentService laftFollowupDocumentService;
+	private final LaftFollowupDocumentService laftFollowupDocumentService;
 	
 
 	
