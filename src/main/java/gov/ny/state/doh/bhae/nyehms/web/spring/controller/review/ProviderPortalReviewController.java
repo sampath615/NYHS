@@ -5,6 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.EPRFFollowUp
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.EPRFOOCDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentReviewTransactionHelper;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -27,15 +27,14 @@ import org.springframework.web.servlet.ModelAndView;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class ProviderPortalReviewController {
 
 	
-	@Autowired
-	EPRFOOCDocumentService ePRFOOCDocumentService;
+	private final EPRFOOCDocumentService ePRFOOCDocumentService;
 	
-	@Autowired
-	DocumentReviewTransactionHelper documentReviewTransactionHelper;
+	private final DocumentReviewTransactionHelper documentReviewTransactionHelper;
 
 	
 	@RequestMapping("/providerPortalFileReview")

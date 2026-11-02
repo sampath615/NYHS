@@ -14,6 +14,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.DocumentsReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,6 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -34,32 +34,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class DocumentReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	
-	@Autowired
-	DocumentsReviewService documentsReviewService;
+	private final DocumentsReviewService documentsReviewService;
 	
-	@Autowired private NonCaseDocumentService nonCaseDocumentService;
+	private final NonCaseDocumentService nonCaseDocumentService;
 	
-	@Autowired
-	CommonDocumentService commonDocumentService;
+	private final CommonDocumentService commonDocumentService;
 	
 
-	@Autowired
-	AssignmentService assignmentService;
+	private final AssignmentService assignmentService;
 	
 	
-	@Autowired
-	PRFDocumentService pRFDocumentService;
+	private final PRFDocumentService pRFDocumentService;
 	
-	@Autowired
-	LabDocumentService labDocumentService;
+	private final LabDocumentService labDocumentService;
 	
 
 	

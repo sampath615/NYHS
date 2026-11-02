@@ -3,11 +3,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.PerinatalService;
+@RequiredArgsConstructor
 @Controller
 public class PerinatalController {
 	
-	@Autowired
-	private PerinatalService perinatalService;
+	private final PerinatalService perinatalService;
 
 	@RequestMapping(value="/loadFacilityMonitoringReport")	
 	public String loadFacilityMonitoringReport(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {

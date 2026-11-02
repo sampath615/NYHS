@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -29,15 +29,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RecordSearchReview
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class RecordSearchReviewController {
 
 	
-	@Autowired
-	RecordSearchReviewService recordSearchReviewService;
+	private final RecordSearchReviewService recordSearchReviewService;
 		
-	@Autowired
-	DocumentReviewTransactionHelper documentReviewTransactionHelper;
+	private final DocumentReviewTransactionHelper documentReviewTransactionHelper;
 	/**
 	 * 
 	 * @param stateno

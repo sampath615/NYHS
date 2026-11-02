@@ -3,12 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -24,14 +24,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class NBSReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
 	
-	@Autowired
-	NBSReviewService nbsReviewService;
+	private final NBSReviewService nbsReviewService;
 	
 	@RequestMapping(value="/checkForClimsRecId.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<String, Boolean> checkForClimsRecId(@RequestParam String stateno, HttpServletRequest request, UserObject userObject)

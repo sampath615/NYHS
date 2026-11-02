@@ -2,11 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -20,14 +20,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 /*
  * Spring controller class for system message
  */
+@RequiredArgsConstructor
 @Controller
 public class CancerDocReviewController {
 	/*
 	 * Reference to GetGridObject
 	 */
 	
-	@Autowired
-	CancerDocumentService cancerDocumentService;
+	private final CancerDocumentService cancerDocumentService;
 	
 	
 	
