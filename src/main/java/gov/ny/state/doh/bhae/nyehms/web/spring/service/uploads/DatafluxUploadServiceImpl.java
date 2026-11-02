@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -17,7 +18,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 //import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -40,22 +40,21 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 * @author  
 * @version 
 */
+@RequiredArgsConstructor
 @Service
 public class DatafluxUploadServiceImpl {
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired PersonDAO personDAO;
+	private final PersonDAO personDAO;
 	
-	@Autowired CommonDAO commonDAO;
+	private final CommonDAO commonDAO;
 	
-	@Autowired
-	private ConnectionDAO connectionDAO;
+	private final ConnectionDAO connectionDAO;
 	
 
 	
-	private static Logger log = LoggerFactory.getLogger(DatafluxUploadServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(DatafluxUploadServiceImpl.class);
 	
 	
 	

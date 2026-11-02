@@ -119,7 +119,7 @@ public class FileUploadService {
 	
 	@Autowired STDConfDocumentService stdConfDocumentService;
 	
-	private static Logger log = LoggerFactory.getLogger(FileUploadService.class);
+	private static final Logger log = LoggerFactory.getLogger(FileUploadService.class);
 	
 //	@Override
 //	public Map<Object, Object> uploadUpdatedDispositionsFile(MultipartFile updatedDispositionFile,

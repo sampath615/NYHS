@@ -37,7 +37,7 @@ import org.springframework.validation.BindingResult;
 @Component
 public class FileUploadTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(FileUploadTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(FileUploadTransactionHelper.class);
 	
 	@Autowired
 	FileUploadService fileUploadService;
