@@ -4,20 +4,20 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.report.SearchHistoryDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
+@RequiredArgsConstructor
 @Service
 public class SearchHistoryService {
 	
-	@Autowired
-	SearchHistoryDAO searchHistoryDAO;
+	private final SearchHistoryDAO searchHistoryDAO;
 
 	public Map<String, String> getSearchedWorkerNames() {
 		

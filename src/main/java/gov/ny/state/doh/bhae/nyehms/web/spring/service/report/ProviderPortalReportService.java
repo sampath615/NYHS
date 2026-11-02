@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -22,10 +22,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.reports.ProvPortalSubmissi
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
+@RequiredArgsConstructor
 @Service
 public class ProviderPortalReportService {
 	
-	@Autowired ProviderPortalReportDAO providerPortalReportDAO;
+	private final ProviderPortalReportDAO providerPortalReportDAO;
 
 	public List<JSONObject> getProvPortalSubmittedProviders(String fileType) {
 		

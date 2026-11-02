@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import lombok.RequiredArgsConstructor;
 
 import javax.activation.DataHandler;
 import javax.mail.internet.MimeBodyPart;
@@ -34,7 +35,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
@@ -63,20 +63,18 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 * @author  
 * @version 
 */
+@RequiredArgsConstructor
 @Service
 public class StatusReportsService {
 
-	@Autowired
-	private StatusLabReportsDAO statusLabReportsDAO ;	
+	private final StatusLabReportsDAO statusLabReportsDAO;	
 
-	@Autowired
-	RemoteServerUtil remoteServer;
+	private final RemoteServerUtil remoteServer;
 	
-	@Autowired
-	SendEmail sendEmail;
+	private final SendEmail sendEmail;
 	
 	
-	private static Logger log = LoggerFactory.getLogger(StatusReportsService.class);	
+	private static final Logger log = LoggerFactory.getLogger(StatusReportsService.class);	
 
 	
 	public void generateLabReportCount(String sqlQuery){

@@ -3,20 +3,20 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.report;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.report.ProviderReportDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 
+@RequiredArgsConstructor
 @Service
 public class ProviderReportService {
 
-	@Autowired
-	private ProviderReportDAO providerReportDAO;
+	private final ProviderReportDAO providerReportDAO;
 	
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getProviderReportByYear(String caseType, String region, String prfSubmitted, String fromYear, String toYear, String ahi, UserObject userObject,
