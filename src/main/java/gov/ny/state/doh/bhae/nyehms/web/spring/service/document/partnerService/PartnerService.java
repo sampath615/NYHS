@@ -7,6 +7,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.Ps
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsPartnerView;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
 //import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO;
 import java.sql.Connection;
@@ -19,7 +20,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -31,21 +31,19 @@ import org.springframework.validation.BindingResult;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class PartnerService {
 
-	@Autowired
-	private ConnectionDAO connectionDAO ;
+	private final ConnectionDAO connectionDAO;
 	
 	
-	@Autowired
-	private PartnerServicesDocumentDAO partnerServicesDocumentDAO ;
+	private final PartnerServicesDocumentDAO partnerServicesDocumentDAO;
 	
 	
-	@Autowired
-    private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	private static Logger log = LoggerFactory.getLogger(PartnerService.class);
+	private static final Logger log = LoggerFactory.getLogger(PartnerService.class);
 
 	
 	/**

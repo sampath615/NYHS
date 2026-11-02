@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.activation.DataHandler;
 import javax.mail.MessagingException;
@@ -24,7 +25,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 
@@ -48,19 +48,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
+@RequiredArgsConstructor
 @Service
 public class DocumentSummaryReportsService {
 
-	private static Logger log = LoggerFactory.getLogger(DocumentSummaryReportsService.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentSummaryReportsService.class);
 	
 
-	@Autowired
-	RemoteServerUtil remoteServer;
-	@Autowired
-	SendEmail sendEmail;
+	private final RemoteServerUtil remoteServer;
+	private final SendEmail sendEmail;
 
-	@Autowired
-	private DocumentSummaryReportDAO documentSummaryReportDAO ;
+	private final DocumentSummaryReportDAO documentSummaryReportDAO;
 	
 	private static Configuration prepareConfiguration() {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);

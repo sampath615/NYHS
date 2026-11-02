@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -22,16 +22,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Service
 public class MessageBoxService {
 
-	private static Logger log = LoggerFactory.getLogger(MessageBoxService.class);
+	private static final Logger log = LoggerFactory.getLogger(MessageBoxService.class);
     
 
-    @Autowired
-    private CommonExceptionHandler commonExceptionHandler;
-    @Autowired
-    private MessageBoxDAO messageBoxDAO;
+    private final CommonExceptionHandler commonExceptionHandler;
+    private final MessageBoxDAO messageBoxDAO;
 
     /**
      * {@inheritDoc}

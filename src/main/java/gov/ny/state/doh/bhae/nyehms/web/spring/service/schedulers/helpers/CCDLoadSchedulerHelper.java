@@ -29,7 +29,7 @@ public class CCDLoadSchedulerHelper {
 		ccdDocumentDAO = ccdddao;
 	}
 
-	private static Logger log = LoggerFactory.getLogger(CCDLoadSchedulerHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(CCDLoadSchedulerHelper.class);
 
 	/**
 	 * Inserts a row into RAW_CCD_DOC and zero or more rows into each of the

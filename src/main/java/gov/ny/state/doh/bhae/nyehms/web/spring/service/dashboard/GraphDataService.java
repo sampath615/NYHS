@@ -4,6 +4,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.dashboard.GraphDataDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,14 +21,14 @@ import org.springframework.stereotype.Component;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class GraphDataService {
 //
 //    @Autowired
 //    private ConnectionDAO connectionDAO;
 	
-	@Autowired
-	GraphDataDAO graphDataDAO;
+	private final GraphDataDAO graphDataDAO;
 
     public List<JSONObject> getWorkerTallyCounts(UserObject userObject){
     	

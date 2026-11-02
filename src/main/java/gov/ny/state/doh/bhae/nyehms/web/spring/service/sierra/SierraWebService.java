@@ -52,7 +52,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 @Service
 public class SierraWebService {
 
-	private static Logger log = LoggerFactory.getLogger(SierraWebService.class);
+	private static final Logger log = LoggerFactory.getLogger(SierraWebService.class);
     //private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
     @Autowired

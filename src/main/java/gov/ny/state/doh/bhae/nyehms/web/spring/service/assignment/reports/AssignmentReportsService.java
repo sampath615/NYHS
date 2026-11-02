@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -29,6 +29,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
+@RequiredArgsConstructor
 @Service
 public class AssignmentReportsService {
 
@@ -36,12 +37,10 @@ public class AssignmentReportsService {
 
 	
 	
-	@Autowired
-	private AssignmentReportsDAO assignmentReportsDAO;
+	private final AssignmentReportsDAO assignmentReportsDAO;
 	
 
-	@Autowired
-	private ConnectionDAO connectionDAO;
+	private final ConnectionDAO connectionDAO;
 
 
 

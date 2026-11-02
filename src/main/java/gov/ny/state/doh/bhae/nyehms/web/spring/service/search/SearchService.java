@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -20,18 +20,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
+@RequiredArgsConstructor
 @Service
 public class SearchService {
 	
-	private static Logger log = LoggerFactory.getLogger(SearchService.class);
+	private static final Logger log = LoggerFactory.getLogger(SearchService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
-	@Autowired
-	private SearchDAO searchDAO;
-	@Autowired
-	private DocumentDAO documentDAO;
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final SearchDAO searchDAO;
+	private final DocumentDAO documentDAO;
+	private final CommonExceptionHandler commonExceptionHandler;
 
 	public List<String> getpersonSearchResultsRowIds(
 			SearchPersonCriteriaVO searchPersonCriteriaVO, String searchBy,

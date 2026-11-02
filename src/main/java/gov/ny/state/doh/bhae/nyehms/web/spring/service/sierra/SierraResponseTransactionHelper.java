@@ -28,7 +28,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 @Component
 public class SierraResponseTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(SierraResponseTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(SierraResponseTransactionHelper.class);
 
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	

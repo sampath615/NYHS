@@ -4,11 +4,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.repository.InitFailureReasonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -24,22 +24,20 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.InitializeUtil;
 
+@RequiredArgsConstructor
 @Service
 public class InitializeService {
 	
-	private static Logger log = LoggerFactory.getLogger(InitializeService.class);
+	private static final Logger log = LoggerFactory.getLogger(InitializeService.class);
 
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	InitializeUtil initializeUtil = new InitializeUtil();
 	
-	@Autowired
-	InitializeDAO initializeDAO;
+	private final InitializeDAO initializeDAO;
 
-	@Autowired
-	InitFailureReasonRepository initFailureReasonRepository;
+	private final InitFailureReasonRepository initFailureReasonRepository;
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;	
+	private final CommonExceptionHandler commonExceptionHandler;	
 
 	public List<String> getActiveMACAddressesList(BindingResult result, UserInitObject userInitObject, String sessionID){
 	

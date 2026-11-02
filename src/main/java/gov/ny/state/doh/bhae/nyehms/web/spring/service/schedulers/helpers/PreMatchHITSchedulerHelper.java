@@ -63,7 +63,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 @Component
 public class PreMatchHITSchedulerHelper {
 
-	private static Logger log = LoggerFactory.getLogger(PreMatchHITSchedulerHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(PreMatchHITSchedulerHelper.class);
 
 	@Autowired
 	private CommonDocumentService commonDocumentService;
