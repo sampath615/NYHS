@@ -26,7 +26,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 public class LabProficiencyVO {
 
-	private static Logger log = LoggerFactory.getLogger(LabProficiencyVO.class);
+	private static final Logger log = LoggerFactory.getLogger(LabProficiencyVO.class);
 	
     private Connection conn;
     

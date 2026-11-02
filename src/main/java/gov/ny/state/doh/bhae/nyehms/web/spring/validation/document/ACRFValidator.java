@@ -14,7 +14,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 @Component
 public class ACRFValidator implements Validator {
 	
-	private static Logger log = LoggerFactory.getLogger(ACRFValidator.class);
+	private static final Logger log = LoggerFactory.getLogger(ACRFValidator.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 
 	@Override

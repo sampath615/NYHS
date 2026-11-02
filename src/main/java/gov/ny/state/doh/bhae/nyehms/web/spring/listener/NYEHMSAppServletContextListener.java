@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class NYEHMSAppServletContextListener implements ServletContextListener {
 
-	private static Logger logger = LoggerFactory.getLogger(NYEHMSAppServletContextListener.class);
+	private static final Logger logger = LoggerFactory.getLogger(NYEHMSAppServletContextListener.class);
 
 	private final String STAGE_FILE_PATH = "/usr/local/bin/stage";
 

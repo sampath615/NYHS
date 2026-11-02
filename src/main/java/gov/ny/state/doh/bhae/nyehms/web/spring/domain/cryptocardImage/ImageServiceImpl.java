@@ -1,7 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.domain.cryptocardImage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 
@@ -10,6 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class ImageServiceImpl implements ImageService {
     
@@ -21,8 +22,7 @@ public class ImageServiceImpl implements ImageService {
      * @return ArrayList
      */
 	
-	@Autowired
-	CommonDAO commonDAO;
+	private final CommonDAO commonDAO;
 	 String seasonNameAndDay = null;
     @Override
     public String getImage() {

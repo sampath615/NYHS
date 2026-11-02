@@ -21,7 +21,7 @@ public class JdbcConnectionDAO implements ConnectionDAO {
 	private DataSource dataSource;
 	private DataSource sqlDataSource;
 
-	private static Logger log = LoggerFactory.getLogger(JdbcConnectionDAO.class);
+	private static final Logger log = LoggerFactory.getLogger(JdbcConnectionDAO.class);
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;

@@ -6,6 +6,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -23,7 +24,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -33,28 +33,26 @@ import org.springframework.validation.ObjectError;
  * Though the advice are defined separate for read and write methods, Spring AOP gives enough flexibility to swap the advice roles or scale monitoring
  * by adjusting the PointCut definitions with each advice. Hence for any future requirements please re-define or add new PointCuts if the current ones look insufficient
  */
+@RequiredArgsConstructor
 @Component
 @Aspect
 public class ServiceLayerExceptionHandlingAspect {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(ServiceLayerExceptionHandlingAspect.class);
+	private static final Logger log = LoggerFactory.getLogger(ServiceLayerExceptionHandlingAspect.class);
 	/*
 	 * Reference to SendEmail Java Mail component
 	 */
-	@Autowired
-	SendEmail sendEmail;
+	private final SendEmail sendEmail;
 	/*
 	 * Reference to CommonExceptionHandler
 	 */
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	/*
 	 * Reference to CommonDAO
 	 */
-	@Autowired
-	CommonDAO commonDAO;
+	private final CommonDAO commonDAO;
 	/*
 	 * An Around advice to monitor the execution of all service layer write methods. If the write method encounter an exception during its execution this advice take the help of
 	 * AfterThrowing advice as defined below @see public void readMethodExceptionHandlingAdvice(JoinPoint,Throwable)

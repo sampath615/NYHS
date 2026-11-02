@@ -24,7 +24,7 @@ public class SchedulerLayerExceptionHandlingAspect {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(SchedulerLayerExceptionHandlingAspect.class);
+	private static final Logger log = LoggerFactory.getLogger(SchedulerLayerExceptionHandlingAspect.class);
 	/*
 	 * Reference to SendEmail Java Mail component
 	 */

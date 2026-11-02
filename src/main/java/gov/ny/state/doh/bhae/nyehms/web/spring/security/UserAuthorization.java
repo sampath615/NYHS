@@ -2,6 +2,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.security;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.CommonDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -9,21 +10,19 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
 
+@RequiredArgsConstructor
 @Component
 public class UserAuthorization {
 	
-	@Autowired
-	CommonDAO commonDAO;
+	private final CommonDAO commonDAO;
 	
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	private static Logger log = LoggerFactory.getLogger(UserAuthorization.class);
+	private static final Logger log = LoggerFactory.getLogger(UserAuthorization.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 		
 	public boolean isPermitted(UserObject userObject, String module, int permissionId, String sessionId){

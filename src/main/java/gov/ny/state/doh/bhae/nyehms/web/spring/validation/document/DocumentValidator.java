@@ -25,7 +25,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.TBDocValidato
 @Component
 public class DocumentValidator implements Validator {	
 	
-	private static Logger log = LoggerFactory.getLogger(DocumentValidator.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentValidator.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	

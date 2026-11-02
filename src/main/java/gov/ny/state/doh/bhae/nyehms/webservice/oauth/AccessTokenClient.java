@@ -34,7 +34,7 @@ public class AccessTokenClient {
 
 	private WebClient webClient;
 
-	private static Logger log = LoggerFactory.getLogger(AccessTokenClient.class);
+	private static final Logger log = LoggerFactory.getLogger(AccessTokenClient.class);
 	
 	
 	@Autowired
