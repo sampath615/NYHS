@@ -3,13 +3,13 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.ProviderManualReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@RequiredArgsConstructor
 @Controller
 public class ProviderManualReviewController {
-	@Autowired
-	private ProviderManualReviewService providerManualReviewService;
-	@Autowired
-	GetGridObject getGridObject;
+	private final ProviderManualReviewService providerManualReviewService;
+	private final GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawProviderAddress.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> matchRawProviderAddress(long newRawProviderAddressId,long matchingRawProviderAddressId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<>();

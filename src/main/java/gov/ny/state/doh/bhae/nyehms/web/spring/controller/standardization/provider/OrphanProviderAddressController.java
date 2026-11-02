@@ -5,13 +5,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.S
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.OrphanProviderAddressService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -28,18 +28,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * unlinked from its parent provider. An orphan address can again become a child of another provider
  * once it gets linked to that provider  
  */
+@RequiredArgsConstructor
 @Controller
 public class OrphanProviderAddressController {
 	/*
 	 * The spring injected GetGridObject reference
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/*
 	 * The spring injected reference of the service implementation 
 	 */
-	@Autowired
-	OrphanProviderAddressService orphanProviderAddressService; 
+	private final OrphanProviderAddressService orphanProviderAddressService; 
 	/*
 	 * Get a list of orphan provider addresses 
 	 * @param request HTTPRequest reference

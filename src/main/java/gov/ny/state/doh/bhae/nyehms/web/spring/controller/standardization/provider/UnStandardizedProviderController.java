@@ -6,13 +6,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.UnStandardizedProviderService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -29,16 +29,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * unstandardized provider operations.  
  *
  */
+@RequiredArgsConstructor
 @Controller
 public class UnStandardizedProviderController {
 	/*
 	 * Reference to service locator by means of dependency injection
 	 */
-	@Autowired
-	UnStandardizedProviderService unStandardizedProviderService;
+	private final UnStandardizedProviderService unStandardizedProviderService;
 	
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/**
 	 * Handler method for moving provider data to facility. Accepts json request 
 	 * via HTTP POST method

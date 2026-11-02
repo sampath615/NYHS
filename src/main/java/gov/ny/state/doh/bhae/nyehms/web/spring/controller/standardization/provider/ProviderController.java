@@ -2,11 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.standardization.provi
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,16 +26,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class ProviderController {
 
-	@Autowired
-	private ProviderService providerService;
-	@Autowired
-	GetGridObject getGridObject;
-	@Autowired
-	CommonUtil commonUtil;
-	@Autowired CommonService     commonService;
+	private final ProviderService providerService;
+	private final GetGridObject getGridObject;
+	private final CommonUtil commonUtil;
+	private final CommonService commonService;
 
 	@RequestMapping("/ProviderStdznHome")
 	public String getProviderStdznHome (Map<String, Object> map, HttpServletRequest request) {
