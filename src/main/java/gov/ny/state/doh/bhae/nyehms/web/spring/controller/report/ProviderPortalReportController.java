@@ -2,11 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +20,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.ProviderPortalReportService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 
+@RequiredArgsConstructor
 @Controller
 public class ProviderPortalReportController {
 	
-	 @Autowired ProviderPortalReportService providerPortalReportService;
+	 private final ProviderPortalReportService providerPortalReportService;
 	
 	@RequestMapping("/provPortalSNPSubmission")
 	public String provPortalSNPSubmission(Map<String, Object> map, HttpServletRequest request) {

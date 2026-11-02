@@ -1,10 +1,10 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +18,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.SearchHistoryServi
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class SearchHistoryController {
 	
-	@Autowired GetGridObject getGridObject;
-	@Autowired SearchHistoryService searchHistoryService;
+	private final GetGridObject getGridObject;
+	private final SearchHistoryService searchHistoryService;
 	
 	@RequestMapping(value="/searchHistoryReport")	
 	public String getSearchHistoryReport(HttpServletRequest request, Map<String, Object> map) {

@@ -2,11 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,18 +30,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
  *   3) by PRF Received
  */
 
+@RequiredArgsConstructor
 @Controller
 public class ProviderReportController {
 	
 
-	@Autowired
-	private ProviderReportService providerReportService;
+	private final ProviderReportService providerReportService;
 	
-	@Autowired
-	private AdministrationService administrationService;	
+	private final AdministrationService administrationService;	
 	
-	@Autowired
-	private AssignmentService assignmentService;
+	private final AssignmentService assignmentService;
 
 	@RequestMapping(value = "/getproviderReportsByYear")
 	public String getproviderReportsByYear(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {

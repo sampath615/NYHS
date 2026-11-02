@@ -2,13 +2,13 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.report;
 
 import java.math.BigInteger;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author rzp05
@@ -32,12 +32,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.report.ClericalReportServ
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class ClericalReviewReportController {
 
-	@Autowired
-	private ClericalReportService clericalReportService;
-	@Autowired         GetGridObject getGridObject;
+	private final ClericalReportService clericalReportService;
+	private final GetGridObject getGridObject;
 	
 	@RequestMapping(value = "/getclericalReviewReportbyStaff")
 	public String getclericalReviewReportbyStaff(Map<String, Object> map, HttpServletRequest request, UserObject userObject) {
