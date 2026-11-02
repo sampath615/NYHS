@@ -30,7 +30,7 @@ public class EharsJpaConfig {
 	/** The transaction manager of the eHARS unit; name it in {@code @Transactional} for code that needs a transaction there. */
 	public static final String TRANSACTION_MANAGER = "eharsTransactionManager";
 
-	/** The eHARS unit: its entities and repositories anywhere under this package (appDS has {@link JpaConfig#BASE_PACKAGE}). */
+	/** The eHARS unit: its entities anywhere under this package, its repositories in {@code .repository} (appDS has {@link JpaConfig#BASE_PACKAGE}). */
 	static final String BASE_PACKAGE = "gov.ny.state.doh.bhae.nyehms.ehars";
 
 	@Bean
