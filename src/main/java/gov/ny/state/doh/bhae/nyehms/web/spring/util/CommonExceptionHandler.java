@@ -28,7 +28,7 @@ public class CommonExceptionHandler {
 	@Autowired	
 	DateUtil dateUtil;
 		
-	private static Logger log = LoggerFactory.getLogger(CommonExceptionHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonExceptionHandler.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	//common tasks when exception occurs in the system

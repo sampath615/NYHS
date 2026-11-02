@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class InitializeUtil {
 	
-	private static Logger log = LoggerFactory.getLogger(InitializeUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(InitializeUtil.class);
 	private String nyehmsDebugLog = AppConstants.nyehmLogDebugString.getName();
 	
 	HttpSession session = null;

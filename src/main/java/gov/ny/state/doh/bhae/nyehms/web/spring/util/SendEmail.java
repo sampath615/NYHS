@@ -37,7 +37,7 @@ public class SendEmail {
 	
 	@Autowired CommonService commonService;
 	
-	private static Logger log = LoggerFactory.getLogger(SendEmail.class);
+	private static final Logger log = LoggerFactory.getLogger(SendEmail.class);
 
 	
 	/**

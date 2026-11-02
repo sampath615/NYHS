@@ -24,7 +24,7 @@ import ca.uhn.hl7v2.model.v25.datatype.TS;
 @Component
 public class CommonUtil {
 
-	private static Logger log = LoggerFactory.getLogger(CommonUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonUtil.class);
 	private static final Pattern spanishRegExPattern = Pattern.compile("[\\p{InCombiningDiacriticalMarks}\\p{IsLm}]+");
 	private static final Pattern unknownCharactersPattern = Pattern.compile("[\\p{IsSk}]+");
 	private static final Pattern notAsciiCharactersPattern = Pattern.compile("[^\\p{ASCII}]+");

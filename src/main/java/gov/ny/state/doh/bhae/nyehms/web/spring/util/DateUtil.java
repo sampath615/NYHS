@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DateUtil {
 	
-	private static Logger log = LoggerFactory.getLogger(DateUtil.class);
+	private static final Logger log = LoggerFactory.getLogger(DateUtil.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 	
 	private final DateFormat nyehmsTimeStampFromatter = new SimpleDateFormat("MM/dd/yyyy");
