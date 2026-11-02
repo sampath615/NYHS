@@ -41,7 +41,7 @@ public class ClepAuditResultsService {
 	@Autowired 
 	private CommonExceptionHandler commonExceptionHandler;	
 	
-	private static Logger log = LoggerFactory.getLogger(ClepAuditResultsService.class);
+	private static final Logger log = LoggerFactory.getLogger(ClepAuditResultsService.class);
 	
 	public JSONObject getPFILabDataInfo(String userEnteredPfi) {
 		return clepAuditResultsDAO.getPFILabDataInfo(userEnteredPfi);

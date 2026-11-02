@@ -36,7 +36,7 @@ public class LoincResultDomainMappingService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(LoincResultDomainMappingService.class);
+	private static final Logger log = LoggerFactory.getLogger(LoincResultDomainMappingService.class);
 
 	
 	@Autowired

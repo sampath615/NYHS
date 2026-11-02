@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,14 +24,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
+@RequiredArgsConstructor
 @Service
 public class LaftFollowupDocumentService {
 	
-	private static Logger log = LoggerFactory.getLogger(LaftFollowupDocumentService.class);
+	private static final Logger log = LoggerFactory.getLogger(LaftFollowupDocumentService.class);
 	
-	@Autowired LaftFollowupDocumentDAO laftFollowupDocumentDAO;
-	@Autowired CommonExceptionHandler commonExceptionHandler;
-	@Autowired SendEmail sendEmail;
+	private final LaftFollowupDocumentDAO laftFollowupDocumentDAO;
+	private final CommonExceptionHandler commonExceptionHandler;
+	private final SendEmail sendEmail;
 
 	public List<Map<String, String>> getLaftFollowupReasons() {
 

@@ -58,7 +58,7 @@ public class LaftCountReconcilleService {
 	
 	@Autowired SendEmail sendEmail;
 	
-	private static Logger log = LoggerFactory.getLogger(LaftCountReconcilleService.class);
+	private static final Logger log = LoggerFactory.getLogger(LaftCountReconcilleService.class);
 	
 	String surveyStDay;
 	String surveyStMonth;

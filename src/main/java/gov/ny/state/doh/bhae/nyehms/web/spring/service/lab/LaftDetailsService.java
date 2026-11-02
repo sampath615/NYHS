@@ -59,7 +59,7 @@ public class LaftDetailsService {
 	@Autowired
 	private ConnectionDAO connectionDAO ;
 	
-	private static Logger log = LoggerFactory.getLogger(LaftDetailsService.class);
+	private static final Logger log = LoggerFactory.getLogger(LaftDetailsService.class);
 	
 	
 	/**

@@ -75,7 +75,7 @@ public class LabReportsService {
 
 	
 	
-	private static Logger log = LoggerFactory.getLogger(LabReportsService.class);
+	private static final Logger log = LoggerFactory.getLogger(LabReportsService.class);
 	
 
 	private final static String ADD_NEW_LOCAL_CODES_AND_LINK_LOINC_CODES_SUCCESS_MESSAGE="LOINC codes has been linked to newly created Local Code";

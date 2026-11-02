@@ -8,6 +8,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabProficiencyConditio
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabProficiencyVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.UpdateLabProficiencyDataVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -18,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -32,12 +32,13 @@ import com.google.gson.JsonObject;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Component
 public class LabProficiencyService {
 
-    @Autowired private ConnectionDAO connectionDAO;
+    private final ConnectionDAO connectionDAO;
     
-    @Autowired LabProcessDAO labProcessDAO;
+    private final LabProcessDAO labProcessDAO;
 
 	/**
 	 * @Inheritdoc
