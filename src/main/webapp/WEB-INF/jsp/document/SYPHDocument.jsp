@@ -240,7 +240,7 @@
 	 	                    <span class="pL10"><form:input id="PROV_CITY"  path="stdSyphilisDoc.provCity" class="oAdrDlg standardInputSmallText1 newCity widgetAddressFieldsReadonly" title="Provider City" maxlength="60"/></span>
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="PROV_STATE"  path ="PROV_STATE" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly" title="Provider State" >
+								<form:select id="PROV_STATE"  path ="stdSyphilisDoc.provState" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly" title="Provider State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>

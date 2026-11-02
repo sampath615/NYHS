@@ -6,7 +6,7 @@
 
 
 	 <resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO" id="searchPersonResult"> 	
- 	  		<result property="stateNo" column="STATE_NO"/>
+ 	  		<result property="stateNo" column="STATENO"/>
  	  		<result property="firstName" column="FIRST_NAME"/>
  	  		<result property="lastName" column="LAST_NAME"/>
  	  		<result property="dateOfBirth" column="DATE_OF_BIRTH"/>

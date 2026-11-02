@@ -23,7 +23,7 @@ import jakarta.persistence.EntityManagerFactory;
  * eHARS data, as it did with plain JDBC, and does not stop the application from starting.
  */
 @Configuration
-@EnableJpaRepositories(basePackages = EharsJpaConfig.BASE_PACKAGE,
+@EnableJpaRepositories(basePackages = EharsJpaConfig.BASE_PACKAGE+ ".repository",
 		entityManagerFactoryRef = "eharsEntityManagerFactory", transactionManagerRef = EharsJpaConfig.TRANSACTION_MANAGER)
 public class EharsJpaConfig {
 

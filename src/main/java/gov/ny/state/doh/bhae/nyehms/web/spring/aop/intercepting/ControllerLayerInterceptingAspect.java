@@ -19,7 +19,7 @@ public class ControllerLayerInterceptingAspect {
 	/*
 	 * A before advice which intercepts any controller methods (JoinPoints) to read the sessionId from HttpServeltRequest and set the same in UserObject 
 	 */
-	@Before(value="execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.standardization..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.administration..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.person..*.*(..))  || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.reports..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.messageBox..*.*(..))")
+	@Before(value="execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.standardization..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.administration..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.person..*.*(..))  || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.report..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.controller.messageBox..*.*(..))")
 	public void controllerMethodAdvice(JoinPoint proceedingJoinPoint){
 		UserObject userObject=null;
 		HttpServletRequest httpServletRequest=null;
