@@ -5,13 +5,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.M
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.OrphanSubFacilityService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -20,18 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+@RequiredArgsConstructor
 @Controller
 public class OrphanSubFacilityController {
 	/*
 	 * The spring injected GetGridObject reference
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/*
 	 * The spring injected reference of the service implementation 
 	 */
-	@Autowired
-	OrphanSubFacilityService orphanSubFacilityService; 
+	private final OrphanSubFacilityService orphanSubFacilityService; 
 	/*
 	 * Get a list of orphan sub facilities 
 	 * @param request HTTPRequest reference

@@ -9,6 +9,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.FacilityService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -29,15 +29,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@RequiredArgsConstructor
 @Controller
 public class FacilityController {
 
-	@Autowired
-	private FacilityService facilityService;
-	@Autowired
-	GetGridObject getGridObject;
-	@Autowired
-	CommonUtil commonUtil;
+	private final FacilityService facilityService;
+	private final GetGridObject getGridObject;
+	private final CommonUtil commonUtil;
 
 	//controllers for New Page Raw Standard 	
 

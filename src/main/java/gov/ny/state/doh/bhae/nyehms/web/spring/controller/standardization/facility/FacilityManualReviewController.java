@@ -3,6 +3,7 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.FacilityManualReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,6 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@RequiredArgsConstructor
 @Controller
 public class FacilityManualReviewController {
-	@Autowired
-	private FacilityManualReviewService facilityManualReviewService;
-	@Autowired
-	GetGridObject getGridObject;
+	private final FacilityManualReviewService facilityManualReviewService;
+	private final GetGridObject getGridObject;
 	@RequestMapping(value="/matchRawFacility.json", method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody Map<Object,Object> matchRawFacility(long newRawFacilityId,long matchingRawFacilityId,HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<>();

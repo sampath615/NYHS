@@ -6,6 +6,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.MasterFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +14,6 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -29,16 +29,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * unstandardized facility operations.  
  *
  */
+@RequiredArgsConstructor
 @Controller
 public class UnStandardizedFacilityController {
 	/*
 	 * Reference to service interface by means of dependency injection
 	 */
-	@Autowired
-	UnStandardizedFacilityService unStandardizedFacilityService;
+	private final UnStandardizedFacilityService unStandardizedFacilityService;
 	
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/**
 	 * Handler method for moving facility data to provider. 
 	 * @param facilityId the facility to be moved as provider

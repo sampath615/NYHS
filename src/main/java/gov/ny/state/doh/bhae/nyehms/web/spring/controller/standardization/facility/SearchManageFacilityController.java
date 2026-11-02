@@ -7,13 +7,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.S
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.SearchManageFacilityService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -24,18 +24,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /*
  * The controller for searching and managing facilities
  */
+@RequiredArgsConstructor
 @Controller
 public class SearchManageFacilityController {
 	/*
 	 * Reference to SearchManageFacilityService by Spring dependency injection
 	 */
-	@Autowired
-	SearchManageFacilityService searchManageFacilityService;
+	private final SearchManageFacilityService searchManageFacilityService;
 	/*
 	 * Reference to GetGridObject by Spring dependency injection
 	 */
-	@Autowired
-	GetGridObject getGridObject;
+	private final GetGridObject getGridObject;
 	/**
 	 * Handler method for getting Master facilities, their sub facilities and nested raw facilities
 	 * by passing the Master facility search criteria
