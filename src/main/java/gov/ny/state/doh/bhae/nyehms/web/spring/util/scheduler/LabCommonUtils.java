@@ -903,7 +903,71 @@ public class LabCommonUtils {
         }
         return queryString.toString();
 	}
-    
+
+	/**
+	 * The same conditions as {@link #getQueryCondition(List)}, with the values as bind parameters ("?") instead of quoted
+	 * text: each value is added to {@code parameters}, in the order of the "?" in the result. The operator between two
+	 * conditions may only be AND, OR or blank.
+	 *
+	 * @param jsonArray the conditions (FIELD_NAME, CONDITION, VALUE, OPERATOR)
+	 * @param parameters receives the values
+	 * @return the conditions, e.g. {@code (UPPER(PIDLASTNAME) LIKE ?) AND (UPPER(PIDCITY) = ?)}
+	 * @throws IllegalArgumentException for any other operator
+	 */
+	public static String getQueryCondition(List<JSONObject> jsonArray, List<Object> parameters) {
+		StringBuilder queryString = new StringBuilder();
+		for (JSONObject jsonElement : jsonArray) {
+			String fieldName = getFieldName(jsonElement.get("FIELD_NAME").toString());
+			if (fieldName.isEmpty()) {
+				continue;   // not a filter field (as before)
+			}
+			String queryCondition = getFilterCondition(jsonElement, parameters);
+			queryString.append(LEFT_BRACKET).append("UPPER(").append(fieldName).append(")").append(SPACE).append(queryCondition).append(RIGHT_BRACKET);
+			Object operator = jsonElement.get("OPERATOR");
+			if (operator != null) {
+				String text = operator.toString();
+				if (!text.isBlank() && !"AND".equalsIgnoreCase(text.trim()) && !"OR".equalsIgnoreCase(text.trim())) {
+					throw new IllegalArgumentException("Not a filter operator: " + text);
+				}
+				queryString.append(SPACE).append(text);
+			}
+		}
+		return queryString.toString();
+	}
+
+	/** {@link #getFilterCondition(JSONObject)} with the value as a bind parameter. */
+	private static String getFilterCondition(JSONObject jsonElement, List<Object> parameters) {
+		String condition = jsonElement.get("CONDITION").toString();
+		String value = jsonElement.get("VALUE") != null ? jsonElement.get("VALUE").toString().toUpperCase() : null;
+		boolean empty = "".equals(value) || value == null;
+		if ("LIKE".equalsIgnoreCase(condition)) {
+			parameters.add(PERCENTAGE + value + PERCENTAGE);
+			return "LIKE ?";
+		} else if ("STARTWITH".equals(condition)) {
+			parameters.add(value + PERCENTAGE);
+			return "LIKE ?";
+		} else if ("EQUAL".equals(condition)) {
+			if (empty) {
+				return " is null ";
+			}
+			parameters.add(value);
+			return EQUALS + " ?";
+		} else if ("NOTEQUAL".equals(condition)) {
+			if (empty) {
+				return "is not null ";
+			}
+			parameters.add(value);
+			return NOT_EQUALS + " ?";
+		} else if ("NOTSTARTWITH".equals(condition)) {
+			parameters.add(value + PERCENTAGE);
+			return NOT_LIKE + " ?";
+		} else if ("NOTLIKE".equals(condition)) {
+			parameters.add(PERCENTAGE + value + PERCENTAGE);
+			return NOT_LIKE + " ?";
+		}
+		return "";
+	}
+
     private static  String getFilterCondition(JSONObject jsonElement){
     	
     	String condition = jsonElement.get("CONDITION").toString();
