@@ -7,6 +7,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.S
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,15 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+@RequiredArgsConstructor
 @Service
 public class SearchManageProviderService {
 
-	@Autowired
-	ProviderDetailsDAO providerDetailsDAO;
+	private final ProviderDetailsDAO providerDetailsDAO;
 	/*
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages

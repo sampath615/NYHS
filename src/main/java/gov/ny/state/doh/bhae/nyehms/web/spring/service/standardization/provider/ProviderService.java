@@ -41,7 +41,7 @@ public class ProviderService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(ProviderService.class);
+	private static final Logger log = LoggerFactory.getLogger(ProviderService.class);
 	@Autowired
 	ProviderStandardizationTransactionHelper standardizationTransactionHelper;
 	@Autowired

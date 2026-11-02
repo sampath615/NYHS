@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
@@ -17,7 +18,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -39,35 +39,31 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
  * The implementation class for UnStandardizedProviderService for unstandardized provider operations
  * Annotated as a spring managed service bean 
  */
+@RequiredArgsConstructor
 @Service
 public class UnStandardizedProviderService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(UnStandardizedProviderService.class);
+	private static final Logger log = LoggerFactory.getLogger(UnStandardizedProviderService.class);
 
 
 	/*
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages
 	 */
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 
 	/*
 	 * Reference to RawProviderAddressDAO by means of dependency injection    
 	 */
-	@Autowired
-	private RawProviderAddressDAO rawProviderAddressDAO;
+	private final RawProviderAddressDAO rawProviderAddressDAO;
 	
-	@Autowired
-	private ProviderDetailsDAO providerDetailsDAO;
+	private final ProviderDetailsDAO providerDetailsDAO;
 	
-	@Autowired
-	ProviderStandardizationTransactionHelper standardizationTransactionHelper;
+	private final ProviderStandardizationTransactionHelper standardizationTransactionHelper;
 	
-	@Autowired
-	CommonService commonService;
+	private final CommonService commonService;
 	
 	/*
 	 * Success message when a provider is flagged as facility 

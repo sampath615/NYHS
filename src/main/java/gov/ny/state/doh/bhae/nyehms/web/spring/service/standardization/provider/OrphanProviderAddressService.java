@@ -27,7 +27,7 @@ public class OrphanProviderAddressService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(OrphanProviderAddressService.class);
+	private static final Logger log = LoggerFactory.getLogger(OrphanProviderAddressService.class);
 	/*
 	 * Reference to custom exception handler by means of dependency injection 
 	 * which logs and email error messages

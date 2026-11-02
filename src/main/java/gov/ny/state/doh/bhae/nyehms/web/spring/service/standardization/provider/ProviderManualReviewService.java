@@ -5,22 +5,21 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.P
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+@RequiredArgsConstructor
 @Service
 public class ProviderManualReviewService {
-	@Autowired
-	ProviderManualReviewDAO providerManualReviewDAO;
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
+	private final ProviderManualReviewDAO providerManualReviewDAO;
+	private final CommonExceptionHandler commonExceptionHandler;
 	private static final String MATCH_RAW_FACILITY_SUCCESS_MESSAGE="Raw provider address has been standardized";
 	private static final String UNMATCH_RAW_FACILITY_SUCCESS_MESSAGE="Raw provider address has been moved from Clerical to Unstandardized list";
 	public void matchRawProviderAddress(long newRawProviderAddressId,
