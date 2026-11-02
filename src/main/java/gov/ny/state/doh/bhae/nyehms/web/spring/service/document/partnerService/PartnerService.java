@@ -2,26 +2,29 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.document.partnerService;
 
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PartnerServicesDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.LegacyPsPersonPartnerRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsAssignmentView;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsPartnerView;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 //import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO;
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 /**
@@ -35,7 +38,12 @@ import org.springframework.validation.BindingResult;
 @Service
 public class PartnerService {
 
-	private final ConnectionDAO connectionDAO;
+	private final LegacyPsPersonPartnerRepository legacyPsPersonPartnerRepository;
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	private static final String PARTNER_RISK_QUERY = "select * FROM    persons_partner pp LEFT OUTER JOIN ps_partner_risks ppr ON pp.partnrid = ppr.partner_id where PARTNRID = ? AND assignment_id = ?";
 	
 	
 	private final PartnerServicesDocumentDAO partnerServicesDocumentDAO;
@@ -86,50 +94,40 @@ public class PartnerService {
     }
 
     /**
-     * This will return JSON object for LEGACY_PS_PERSON_PARTNER_VW
+     * The partner and risk details of a partner of an assignment (persons_partner with its ps_partner_risks).
+     * <p>
+     * The query reads every column of both tables ({@code select *}), whose exact split between the two tables is not
+     * known here, so it runs as SQL on the JPA session's connection; its values are bound, no longer part of the SQL.
+     * An SQL error is logged and gives null, as before.
      *
-     * @param partnerId
-     * @param assignment_id
-     * @return
+     * @return the partner; the last row if there are several; null if there is none
      */
+    @Transactional(readOnly = true)
     public PsPartnerView getPartnerRiskData(String partnerId, String assignment_id) {
-
-        // check for null or empty arguments
         if (partnerId == null || partnerId.isEmpty()) {
             throw new IllegalArgumentException("partnerId should not be null");
         }
+        return entityManager.unwrap(Session.class).doReturningWork(connection -> {
+            try (PreparedStatement statement = connection.prepareStatement(PARTNER_RISK_QUERY)) {
+                statement.setString(1, partnerId);
+                statement.setString(2, assignment_id);
+                try (ResultSet rs = statement.executeQuery()) {
+                    PsPartnerView obj = null;
+                    while (rs.next()) {
+                        obj = partnerView(rs);
+                    }
+                    return obj;
+                }
+            } catch (SQLException ex) {
+                log.error("SQL Exception occured", ex);
+                return null;
+            }
+        });
+    }
 
-        // get the connection object
-        Connection conn = connectionDAO.getConnectionObj();
+    private static PsPartnerView partnerView(ResultSet rs) throws SQLException {
 
-        Statement statement = null;
-        PsPartnerView obj = null;
-        ResultSet rs = null;
-
-        String query = "select * FROM    persons_partner pp LEFT OUTER JOIN ps_partner_risks ppr ON pp.partnrid = ppr.partner_id where PARTNRID=" + partnerId + " AND assignment_id =" + assignment_id;
-        
-//        SELECT   STATENO, PARTNRID,  WORK_TYPE, ASSIGNMENT_ID, GENRL_CD, RRT_CD, TESTLOC_CD, P_RISK_CD, RACE_CD, ETHNICCD,FNAME, MNAME, LNAME, ADDRESS, CITY,"
-//                + "     STATE, ZIPCODE, PLUS4, TRACT_CENSUS, TRACT_SUFFIX_CENSUS,TELEPHONE, SPOUSE,"
-//                + "    GENDER, DVSCREEN,  RISK_VIOLENCE, AGE,  NOTIF_DT, HDISP_DT, F_EXP_DT, L_EXP_DT, EXP_FREQ,"
-//                + "     HDISP_UID, REFERRED_BY, PREGNANT, NUMBER_OF_WEEKS_PREGNANT,DISCL_CD, DISCL_DT, CASEWORKER_UID_DISCLOSURE_INTE, STATUS_PROVIDER,"
-//                + "    STATUSDT_PROVIDER,    EXAM_DT_PARTNER, TEST_TYPE_PARTNER, RESULT_PARTNER, EXAM_PROVIDER_PARTNER, HEIGHT_PARTNER, BUILD_PARTNER, HAIR_PARTNER, COMPLEXION_PARTNER,"
-//                + "     PLACE_OF_EMPLOYMENT_PARTNER, HDISP_CD,PARTNER_CO_FIPS, POSTESTC, REFPCD,REFLABCD, STATUS_CD_PARTNER_ASSIGNMENT, MARITALCD, INVEST_AGEN,"
-//                + "     REFPART, REFPOSTLAB, OOJ_NO, OOJ_AR, REFOOJ, REFOOJCD, DUE_DATE, PART_LAT, PART_LONG, UPDATE_UID, UPDATE_DT, CREATEID,"
-//                + "     CREATEDT, HIGH_PRIORITY, FLAG_CD, HEIGHT, RACE_INDIAN, RACE_BLACK, RACE_ASIAN, RACE_PACIFIC, RACE_WHITE, RACE_MULTIPLE,RACE_OTHER, RACE_UNKNOWN,"
-//                + "     ALIAS_LNAME,   ALIAS_FNAME,     ALIAS_MNAME,  EMAIL_ADDRESS, CELL_PHONE, PAGER, DOB_TEXT, HIV_STATUS_PARTNER_CD, TEST_DT_PARTNER, WEIGHT, WORK_PHONE, WORK_HOURS,"
-//                + "     PARTNER_ELICITED_BY_PNAP,   PARTNER_ELICITED_BY_ACT, RACE_OTHER_TEXT, SUFFIX, AKA, MAIDEN, COUNTRY_CD, BIRTH_SEX, ADD_GENDER, TYPE_REFERRAL,"
-//                + "     PARTNER_TYPE,     NOTIFY,     NOTIFY_PLAN,     NOTIFY_METHOD,     PREV_HIV_TEST,     SELF_RPT_RES,     DATE_LAST_HIV_TEST,     REF_TO_TESTING,     REF_DATE,"
-//                + "     TESTED,     POSTESTC_NEW,     OTHER_IDENTIFIERS,     REF2,     ATTEND_FIRST_APPT,     WEB_ADDRESS_SCREEN,     RACE_ASIAN_SUB,     RACE_PACIFIC_SUB,     FIELD_TESTING,"
-//                + "     INTERNET_OUTCOME,     TEST_RESULTS,     DATE_COLLECTED,     SWM,     SWF,     SEX_W_TRANS,     SHARED_DRUG_EQUIP,     IDU,     COMMENTS,     RISK_OTHER from LEGACY_PS_PERSON_PARTNER_VW WHERE PARTNRID=" + partnerId + " AND assignment_id =" + assignment_id;
-
-        try {
-
-            statement = conn.createStatement();
-            rs = statement.executeQuery(query);
-
-            while (rs.next()) {
-
-                obj = new PsPartnerView(rs.getString("STATENO"),
+        return new PsPartnerView(rs.getString("STATENO"),
                         rs.getInt("PARTNRID"),
                         rs.getString("WORK_TYPE"),
                         rs.getInt("ASSIGNMENT_ID"),
@@ -260,27 +258,6 @@ public class PartnerService {
                         rs.getString("IDU"),
                         rs.getString("COMMENTS"),
                         rs.getString("RISK_OTHER"));
-            }
-
-        } catch (SQLException ex) {
-        	log.error("SQL Exception occured",ex);
-        }
-        finally{
-        	try {
-                if (conn != null) {
-                	conn.close();
-                }
-                if (statement != null) {
-                	statement.close();
-                }
-                if(rs != null){
-                	rs.close();
-                }
-            } catch (SQLException sqlException) {
-                  log.error("Exception while updating LOINC details of LOINC Code {}",sqlException.getMessage());
-            }
-        }
-        return obj;
     }
 
     /**
@@ -291,43 +268,12 @@ public class PartnerService {
      * @return
      */
     public List<Integer> getPartnerList(int assignmentId) {
-
-        // get the connection object
-        Connection conn = connectionDAO.getConnectionObj();
-
-        Statement statement = null;
-        ResultSet rs = null;
-        ArrayList<Integer> partnerList = new ArrayList<>();
-       // String partnerListQuery = "SELECT partnrid FROM NYEHMSLOCAL_OWNER.LEGACY_PS_PERSON_PARTNER_VW where assignment_id =" + assignmentId;
-        String partnerListQuery = "SELECT partnrid FROM LEGACY_PS_PERSON_PARTNER_VW where assignment_id =" + assignmentId;
-
-
         try {
-            statement = conn.createStatement();
-            rs = statement.executeQuery(partnerListQuery);
-            while (rs.next()) {
-                partnerList.add(rs.getInt("partnrid"));
-            }
-
-        } catch (SQLException ex) {
-        	log.error("SQL Exception occured",ex);
-        }finally{
-        	try {
-                if (conn != null) {
-                	conn.close();
-                }
-                if (statement != null) {
-                	statement.close();
-                }
-                if(rs != null){
-                	rs.close();
-                }
-            } catch (SQLException sqlException) {
-                  log.error("Exception while updating LOINC details of LOINC Code {}",sqlException.getMessage());
-            }
+            return legacyPsPersonPartnerRepository.findPartnerIdsOfAssignment(assignmentId);
+        } catch (DataAccessException ex) {
+            log.error("SQL Exception occured", ex);
+            return new ArrayList<>();
         }
-
-        return partnerList;
     }
     
     public List<Map<String, String>> getCodedSexualBehaviors(){

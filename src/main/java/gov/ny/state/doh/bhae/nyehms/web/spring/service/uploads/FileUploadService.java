@@ -65,6 +65,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentSe
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.DocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HIVDocumentTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.STDConfDocumentService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.upload.CdcRidrInfoRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
@@ -89,6 +90,8 @@ public class FileUploadService {
 	private CommonExceptionHandler commonExceptionHandler;
 	
 	@Autowired PersonDAO personDAO;
+	@Autowired
+	private CdcRidrInfoRepository cdcRidrInfoRepository;
 	
 	@Autowired CommonDAO commonDAO;
 	
@@ -353,98 +356,12 @@ public class FileUploadService {
 	
 	
 	@Transactional
-	public void uploadRidrDataAsBatch(String fileName, List<Map<String, Object>> ridrDataList, int workerId) throws SQLException{
-		
-
-		Connection connection = connectionDAO.getConnectionObj();
-		
-
-		PreparedStatement ps = null;
-		
-		
-		try{
-			
-			ps = connection.prepareStatement("insert into CDC_RIDR_INFO(RIDR_ID, 					 record_no, NYS_newly_reported_cdc, NYS_Reporting_Jurisdiction, NYS_stateno, NYS_Last_Name_Soundex, NYS_DATE_OF_BIRTH, NYS_SEX_AT_BIRTH, NYS_DATE_OF_DEATH, NYS_Transmission_Category, NYS_HIV_Case_Def_Category, NYS_Date_HIV_Infection_Diag, NYS_Resi_HIV_Infection_Diag, NYS_AIDS_Case_Def_Category, NYS_Date_AIDS_Diag, NYS_Resi_at_AIDS_Diag, NYS_duplicate_status, newly_reported_cdc, Reporting_Jurisdiction, stateno, DATE_OF_DEATH, Transmission_Category, HIV_Case_Def_Category, Date_HIV_Infection_Diag, Resi_HIV_Infection_Diag, AIDS_Case_Def_Category, Date_AIDS_Diag, Resi_at_AIDS_Diag, duplicate_status, merged_cdc, CREATED_DT, CREATED_UID, FILE_NAME) "
-					+ "values(				  CDC_RIDR_INFO_SEQ.nextval, ?		  , ?					  , ?						  , ?		   , ?					  , ?				 , ?			   , ?				  , ?						 , ?					    , ?							 , ?						  , ?						  , ?				  , ?					 , ?				   , ?				   , ?					   ,?	    , ?			   , ?					  , ?					 , ?					  , ?					   , ?					   , ?			   , ?				  , ?			    , ?		    , SYSDATE   , '"+workerId+"', ?)");
-			
-			
-			
-			
-			int index = 0;
-			
-			for (Map<String, Object> map : ridrDataList) {
-				
-				index++;
-				
-				
-				ps.setString(1, (String)map.get("record_no"));
-				ps.setString(2, (String)map.get("NYS_newly_reported_cdc"));
-				ps.setString(3, (String)map.get("NYS_Reporting_Jurisdiction"));
-				ps.setString(4, (String)map.get("NYS_stateno"));
-				ps.setString(5, (String)map.get("NYS_Last_Name_Soundex"));
-				ps.setString(6, (String)map.get("NYS_DATE_OF_BIRTH"));
-				ps.setString(7, (String)map.get("NYS_SEX_AT_BIRTH"));
-				ps.setString(8, (String)map.get("NYS_DATE_OF_DEATH"));
-				ps.setString(9, (String)map.get("NYS_Transmission_Category"));
-				ps.setString(10, (String)map.get("NYS_HIV_Case_Def_Category"));
-				ps.setString(11, (String)map.get("NYS_Date_HIV_Infection_Diag"));
-				ps.setString(12, (String)map.get("NYS_Resi_HIV_Infection_Diag"));
-				ps.setString(13, (String)map.get("NYS_AIDS_Case_Def_Category"));
-				ps.setString(14, (String)map.get("NYS_Date_AIDS_Diag"));
-				ps.setString(15, (String)map.get("NYS_Resi_at_AIDS_Diag"));
-				ps.setString(16, (String)map.get("NYS_duplicate_status"));
-				ps.setString(17, (String)map.get("newly_reported_cdc"));
-				ps.setString(18, (String)map.get("Reporting_Jurisdiction"));
-				ps.setString(19, (String)map.get("stateno"));
-				ps.setString(20, (String)map.get("DATE_OF_DEATH"));
-				ps.setString(21, (String)map.get("Transmission_Category"));
-				ps.setString(22, (String)map.get("HIV_Case_Def_Category"));
-				ps.setString(23, (String)map.get("Date_HIV_Infection_Diag"));
-				ps.setString(24, (String)map.get("Resi_HIV_Infection_Diag"));
-				ps.setString(25, (String)map.get("AIDS_Case_Def_Category"));
-				ps.setString(26, (String)map.get("Date_AIDS_Diag"));
-				ps.setString(27, (String)map.get("Resi_at_AIDS_Diag"));
-				ps.setString(28, (String)map.get("duplicate_status"));
-				ps.setString(29, (String)map.get("merged_cdc"));
-				ps.setString(30, fileName);
-				
-				
-				//ps.executeUpdate();
-
-				ps.addBatch();
-				
-				
-				
-				
-				
-			}
-			
-			if(index != 0){
-				
-				ps.executeBatch();
-				
-			}
-			
-			
-			
-		}finally{
-		
-		
-		
-			try{
-				if(connection != null){
-					connection.close();
-				}
-				if(ps != null){
-					ps.close();
-				}
-
-			} catch (SQLException e) {
-				log.error("Exception occured while closing the connection objects   {}", e.getMessage());
-			}
-		
-		
-		}
+	/**
+	 * Stores the rows of an uploaded CDC RIDR file (CDC_RIDR_INFO), in JDBC batches, in the caller's transaction.
+	 */
+	public void uploadRidrDataAsBatch(String fileName, List<Map<String, Object>> ridrDataList, int workerId) {
+		cdcRidrInfoRepository.saveAll(ridrDataList.stream().map(row -> CdcRidrInfoMapping.toRow(row, fileName, workerId)).toList());
+		cdcRidrInfoRepository.flush();
 	}
 	
 	

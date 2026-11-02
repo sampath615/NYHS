@@ -45,7 +45,10 @@ public class JpaConfig {
 		factory.setJpaPropertyMap(Map.of(
 				// never create, change or validate the schema: the tables are owned by the database team
 				"hibernate.hbm2ddl.auto", "none",
-				"hibernate.show_sql", "false"));
+				"hibernate.show_sql", "false",
+				// inserts of many rows (uploads, imports) go to the database in JDBC batches
+				"hibernate.jdbc.batch_size", "1000",
+				"hibernate.order_inserts", "true"));
 		return factory;
 	}
 
