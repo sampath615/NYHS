@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.person;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -40,21 +40,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.DocumentValidator;
 
+@RequiredArgsConstructor
 @Controller
 public class HITDocumentController {
 
 
 
-	@Autowired
-	HL7DocumentService hl7DocumentService;
-	@Autowired
-	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired
-	CCDDocumentService ccdDocumentService;
-	@Autowired
-	HIEDTHDocumentService HIEDTHDocumentService;
-	@Autowired
-	GetGridObject getGridObject;
+	private final HL7DocumentService hl7DocumentService;
+	private final DocumentTransactionHelper documentTransactionHelper;
+	private final CCDDocumentService ccdDocumentService;
+	private final HIEDTHDocumentService HIEDTHDocumentService;
+	private final GetGridObject getGridObject;
 	BindingResult dummyBindingResult = BindingResults.newDummy();
 
 	@InitBinder

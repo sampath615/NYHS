@@ -22,6 +22,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +36,6 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -49,17 +49,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+@RequiredArgsConstructor
 @Controller
 public class PersonController {
 	
-	@Autowired private PersionService personService;
-	@Autowired private AssignmentService assignmentService;
-	@Autowired private ACRFDocumentService aCRFDocumentService;
-	@Autowired private CommonDocumentEditService commonDocumentEditService;
-	@Autowired GetGridObject getGridObject;
-	@Autowired DateUtil dateUtil;
+	private final PersionService personService;
+	private final AssignmentService assignmentService;
+	private final ACRFDocumentService aCRFDocumentService;
+	private final CommonDocumentEditService commonDocumentEditService;
+	private final GetGridObject getGridObject;
+	private final DateUtil dateUtil;
 	
-	private static Logger log = LoggerFactory.getLogger(PersonController.class);
+	private static final Logger log = LoggerFactory.getLogger(PersonController.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 
 	/**

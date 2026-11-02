@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -13,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -133,55 +133,56 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.DocumentValid
  */
 @SessionAttributes(value = "stdPRFDocVO") // using this to store object as
 											// session variable
+@RequiredArgsConstructor
 @Controller
 public class DocumentController {
 
-	private static Logger log = LoggerFactory.getLogger(DocumentController.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentController.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-	@Autowired	DeathDocumentService deathDocumentSrvice;
-	@Autowired	NycDeathDocumentService nycDeathDocumentService;
-	@Autowired	CASADocumentService casaDocumentService;
-	@Autowired	SYPHDocumentService syphDocumentService;
-	@Autowired	TBDocumentService tbDocumentSrvice;
-	@Autowired	TrackingDocumentService trackingDocumentService;
-	@Autowired	OldCaseDocumentService oldCaseDocumentService;
-	@Autowired	MedicaidDocumentService medicaidDocumentSrvice;
-	@Autowired	MedicaidOldDocumentService medicaidOldDocumentSrvice;
-	@Autowired	DoccsDocumentService doccsDocumentService;
-	@Autowired	LabDocumentService labDocumentService;
-	@Autowired	SSDMDocumentService ssdmDocumentService;
-	@Autowired	ADAPDocumentService adapDocumentService;
-	@Autowired	DeathDocumentService deathDocumentService;
-	@Autowired	PRFDocumentService pRFDocumentService;
-	@Autowired	NycPRFDocumentService nycPRFDocumentService;
-	@Autowired	DocumentTransactionHelper documentTransactionHelper;
-	@Autowired	UserAuthorization userAuthorization;
-	@Autowired	ProcessACRFForm processACRFForm;
-	@Autowired	ACRFDocumentService acrfFDocumentService;
-	@Autowired	GetGridObject getGridObject;
-	@Autowired	AIRSDocumentService aIRSDocumentService;
-	@Autowired	NycIJRDocumentService nycIJRDocumentService;
-	@Autowired	NDIDocumentService nDIDocumentService;
-	@Autowired	EPRFOOCDocumentService ePRFOOCDocumentService;
-	@Autowired  CLIMSDocumentService cLIMSDocumentService;
-	@Autowired	LaftDetailsService laftDetailsService;
-	@Autowired	CommonDocumentService commonDocumentService;
-	@Autowired	CCDDocumentService ccdDocumentService;
-	@Autowired	STDConfDocumentService stdConfDocumentService;
-	@Autowired  ICCRDocumentService iccrDocumentService;
-	@Autowired  LaftFollowupDocumentService laftFollowupDocumentService;
-	@Autowired	NonCaseDocumentService nonCaseDocumentService;
-	@Autowired	HIEDTHDocumentService HIEDTHDocumentService;
-	@Autowired	BlackBoxDocService blackBoxDocService;
-	@Autowired	FacilityService facilityService;
-	@Autowired	private CommonExceptionHandler commonExceptionHandler;
-	@Autowired	CommonService commonService;
-	@Autowired QualCareDocumentService qualCareDocumentService;
-	@Autowired CancerDocumentService cancerDocumentService;
-	@Autowired NBSReviewService nbsReviewService;
-	@Autowired ClusterPartnerReviewService clusterPartnerReviewService;
-	@Autowired AssignmentService assignmentService;
+	private final DeathDocumentService deathDocumentSrvice;
+	private final NycDeathDocumentService nycDeathDocumentService;
+	private final CASADocumentService casaDocumentService;
+	private final SYPHDocumentService syphDocumentService;
+	private final TBDocumentService tbDocumentSrvice;
+	private final TrackingDocumentService trackingDocumentService;
+	private final OldCaseDocumentService oldCaseDocumentService;
+	private final MedicaidDocumentService medicaidDocumentSrvice;
+	private final MedicaidOldDocumentService medicaidOldDocumentSrvice;
+	private final DoccsDocumentService doccsDocumentService;
+	private final LabDocumentService labDocumentService;
+	private final SSDMDocumentService ssdmDocumentService;
+	private final ADAPDocumentService adapDocumentService;
+	private final DeathDocumentService deathDocumentService;
+	private final PRFDocumentService pRFDocumentService;
+	private final NycPRFDocumentService nycPRFDocumentService;
+	private final DocumentTransactionHelper documentTransactionHelper;
+	private final UserAuthorization userAuthorization;
+	private final ProcessACRFForm processACRFForm;
+	private final ACRFDocumentService acrfFDocumentService;
+	private final GetGridObject getGridObject;
+	private final AIRSDocumentService aIRSDocumentService;
+	private final NycIJRDocumentService nycIJRDocumentService;
+	private final NDIDocumentService nDIDocumentService;
+	private final EPRFOOCDocumentService ePRFOOCDocumentService;
+	private final CLIMSDocumentService cLIMSDocumentService;
+	private final LaftDetailsService laftDetailsService;
+	private final CommonDocumentService commonDocumentService;
+	private final CCDDocumentService ccdDocumentService;
+	private final STDConfDocumentService stdConfDocumentService;
+	private final ICCRDocumentService iccrDocumentService;
+	private final LaftFollowupDocumentService laftFollowupDocumentService;
+	private final NonCaseDocumentService nonCaseDocumentService;
+	private final HIEDTHDocumentService HIEDTHDocumentService;
+	private final BlackBoxDocService blackBoxDocService;
+	private final FacilityService facilityService;
+	private final CommonExceptionHandler commonExceptionHandler;
+	private final CommonService commonService;
+	private final QualCareDocumentService qualCareDocumentService;
+	private final CancerDocumentService cancerDocumentService;
+	private final NBSReviewService nbsReviewService;
+	private final ClusterPartnerReviewService clusterPartnerReviewService;
+	private final AssignmentService assignmentService;
 
 	// Crate a dummy BindingResult for the JSON calls as they don't have that
 	// object to pass to service layer

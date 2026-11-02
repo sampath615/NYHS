@@ -6,13 +6,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -42,14 +42,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 
+@RequiredArgsConstructor
 @Controller
 public class MergeUnMergePersonController {
 
-	@Autowired         GetGridObject getGridObject;
-	@Autowired         DateUtil dateUtil;
-	@Autowired private PersionService personService;
-	@Autowired         MergeUnMergePersonService mergeUnMergePersonService;
-	@Autowired         MergeUnMergePersonTransactionHelper mergeUnMergePersonTransactionHelper;
+	private final GetGridObject getGridObject;
+	private final DateUtil dateUtil;
+	private final PersionService personService;
+	private final MergeUnMergePersonService mergeUnMergePersonService;
+	private final MergeUnMergePersonTransactionHelper mergeUnMergePersonTransactionHelper;
 	
 
 
