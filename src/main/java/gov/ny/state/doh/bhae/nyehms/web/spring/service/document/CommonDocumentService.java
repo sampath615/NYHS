@@ -1,9 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -34,7 +30,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycEharsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.CodedStateRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.DeathDocRepository;
@@ -73,7 +68,7 @@ public class CommonDocumentService {
 	private final CodedStateRepository codedStateRepository;
 	private final CommonDAO commonDAO;
 	private final DocumentDAO documentDAO;
-	private final ConnectionDAO connectionDAO;
+	private final EharsDataService eharsDataService;
 	private final LabDocumentDAO labDocumentDAO;
 	private final ADAPDocumentDAO adapDocumentDAO;
 	private final MedicaidDocumentDAO medicaidDocumentDAO;
@@ -185,27 +180,10 @@ public class CommonDocumentService {
 		return commonDocLabsDAO.getPSMessageReferenceData(columnName);
 	}
 
-	/**
-	 * The eHARS country codes (code to description, by description), read from the eHARS database. An error is logged
-	 * and gives the codes read so far.
-	 */
+	/** The eHARS country codes (code to description, by description); empty if eHARS cannot be read. */
 	public Map<String, String> getEharsCodedCountryValues() {
 		Map<String, String> countryCodes = new LinkedHashMap<>();
-		try (Connection connection = connectionDAO.getSqlServerConnectionObj()) {
-			if (connection == null) {
-				return countryCodes;
-			}
-			log.debug("SQL server database Connection is available {}", connection);
-			try (Statement statement = connection.createStatement();
-					ResultSet resultSet = statement.executeQuery("select country_cd, descr from country_code order by descr")) {
-				while (resultSet.next()) {
-					countryCodes.put(resultSet.getString(1), resultSet.getString(2));
-				}
-			}
-			log.debug("Ehars Country codes  : {}", countryCodes);
-		} catch (SQLException sqlException) {
-			log.error("Exception while retrieving the Ehars data from SQL Server {}", sqlException.getMessage());
-		}
+		eharsDataService.getCountryCodes().forEach(country -> countryCodes.put(country.code(), country.name()));
 		return countryCodes;
 	}
 

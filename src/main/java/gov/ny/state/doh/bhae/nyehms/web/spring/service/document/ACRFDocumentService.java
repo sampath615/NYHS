@@ -5,7 +5,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.administration.NyehmsWorkerRe
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.PcrfDocDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestResultVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedParentTestTypeVO;
@@ -23,16 +22,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment.AssignmentTran
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +65,7 @@ public class ACRFDocumentService {
 	private ProcessACRFForm processACRFForm;
 	
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private EharsDataService eharsDataService;
 	
 	
 	
@@ -1067,116 +1061,23 @@ public class ACRFDocumentService {
 	
 	
 	public List<Map<String, String>> getStandardFacilityDetails(){
-		
-		String[] eharsFacUids =  acrfLabDAO.getEharsStandardFacilityDetails();
-		
-		List<Map<String, String>> eharsFacilities = new ArrayList<>();
-		
-		Connection connection = connectionDAO.getSqlServerConnectionObj();
-		
-		Statement statement = null;
-		ResultSet resultSet = null;
-
-		try {
-			if (connection != null) {
-				
-				if(log.isDebugEnabled()){
-					log.debug("SQL server database Connection is available {}",connection);
-				}
-				statement = connection.createStatement();
-				
-				StringBuilder queryString =new StringBuilder("select facility_uid, name1 from facility_code where facility_uid in ('");
-				
-				queryString.append(StringUtils.join(eharsFacUids,"','"));
-				queryString.append("') order by name1");
-				resultSet = statement.executeQuery(queryString.toString());
-				
-				while(resultSet.next()){
-					Map<String, String> _eharsFacility = new HashMap<>();
-					_eharsFacility.put("facility_uid", resultSet.getString(1));
-					_eharsFacility.put("facility_name", resultSet.getString(2));
-					eharsFacilities.add(_eharsFacility);
-					
-				}
-			}
-		}catch (SQLException sqlException) {
-
-			log.error("Exception while retrieving the Ehars data from SQL Server {}"
-					, sqlException.getMessage());
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException sqlException) {
-				log.error("Exception while closing the connection {}", sqlException.getMessage());
-			}
-		}
-		return eharsFacilities;
+		return eharsDataService.getFacilityNames(acrfLabDAO.getEharsStandardFacilityDetails()).stream().map(facility -> {
+			Map<String, String> eharsFacility = new HashMap<>();
+			eharsFacility.put("facility_uid", facility.code());
+			eharsFacility.put("facility_name", facility.name());
+			return eharsFacility;
+		}).toList();
 	}
-	
-	
+
 	public List<Map<String, String>> getCodedValues(String fieldName){
-		
-		
-		List<Map<String, String>> codedValues = new ArrayList<>();
-		
-		Connection connection = connectionDAO.getSqlServerConnectionObj();
-		
-		Statement statement = null;
-		ResultSet resultSet = null;
-
-		try {
-			if (connection != null) {
-				
-				if(log.isDebugEnabled()){
-					log.debug("SQL server database Connection is available "+connection);
-				}
-				statement = connection.createStatement();
-				
-				StringBuilder queryString =new StringBuilder("select lookup_cd, lookup_name from lookup_code where lookup_type = '"+fieldName+"'");
-				
-				
-				queryString.append(" order by lookup_name");
-				resultSet = statement.executeQuery(queryString.toString());
-				
-				while(resultSet.next()){
-					Map<String, String> _codedValue = new HashMap<>();
-					_codedValue.put("lookup_cd", resultSet.getString(1));
-					_codedValue.put("lookup_name", resultSet.getString(2));
-					codedValues.add(_codedValue);
-					
-				}
-			}
-		}catch (SQLException sqlException) {
-
-			log.error("Exception while retrieving the Ehars data from SQL Server {}",
-					sqlException.getMessage());
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException sqlException) {
-				log.error("Exception while closing the connection {}",
-						 sqlException.getMessage());
-			}
-		}
-		return codedValues;
+		return eharsDataService.getCodesOfField(fieldName).stream().map(code -> {
+			Map<String, String> codedValue = new HashMap<>();
+			codedValue.put("lookup_cd", code.code());
+			codedValue.put("lookup_name", code.name());
+			return codedValue;
+		}).toList();
 	}
-	
+
 	public List<Map<String, String>> getDocumentSourceList(){
 		
 		return acrfLabDAO.getDocumentSourceList();

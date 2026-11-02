@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -34,6 +35,7 @@ public class JpaConfig {
 	static final String BASE_PACKAGE = "gov.ny.state.doh.bhae.nyehms.web.spring";
 
 	@Bean
+	@Primary
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Qualifier("appDS") DataSource appDS) {
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setPersistenceUnitName("nyehms");
@@ -54,7 +56,8 @@ public class JpaConfig {
 	 * share one connection and one transaction.
 	 */
 	@Bean
-	public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+	@Primary
+	public JpaTransactionManager transactionManager(@Qualifier("entityManagerFactory") EntityManagerFactory entityManagerFactory) {
 		return new JpaTransactionManager(entityManagerFactory);
 	}
 }

@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.FacilityCodedDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDetailsDAO;
@@ -13,14 +12,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.R
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityForRawFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.EharsDataService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -43,7 +39,7 @@ public class FacilityService {
 	private SubFacilityDAO subFacilityDAO;
 	
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private EharsDataService eharsDataService;
 	
 	/*
 	 * Reference to MasterFacilityDetailsDAO by means of dependency injection    
@@ -388,60 +384,17 @@ public class FacilityService {
 		
 		Map<String, String> subFacility = new HashMap<>();
 		
-		Connection connection = connectionDAO.getSqlServerConnectionObj();
-		
-		Statement statement = null;
-		ResultSet resultSet = null;
-
-		try {
-			if (connection != null) {
-				
-				if(log.isDebugEnabled()){
-					log.debug("SQL server database Connection is available {}",connection);
-				}
-				statement = connection.createStatement();
-				
-				StringBuilder queryString =new StringBuilder("select fc.street_address1, fc.city_name, fc.county_fips, fc.state_cd , fc.zip_cd, fc.phone, fc.country_cd, lc.lookup_descr from  facility_code fc, lookup_code lc  where fc.facility_uid ='");
-				
-				queryString.append(facilityUid);
-				
-				queryString.append("' and fc.facility_type_cd = lc.lookup_cd and  lc.lookup_type = 'FACILITY_TYPE'");
-				
-				resultSet = statement.executeQuery(queryString.toString());
-			
-	        	    
-				while(resultSet.next()){
-					subFacility.put("FACILITYID", subFacilityId);
-					subFacility.put("ADDRESS", resultSet.getString(1));
-					subFacility.put("CITY", resultSet.getString(2));
-					subFacility.put("COUNTY_FIPS", resultSet.getString(3));
-					subFacility.put("STATE", resultSet.getString(4));
-					subFacility.put("ZIPCODE", resultSet.getString(5));
-					subFacility.put("PHONE", resultSet.getString(6));
-					subFacility.put("COUNTRY", resultSet.getString(7));
-					subFacility.put("TYPECD", resultSet.getString(8));
-					
-					
-				}
-			}
-		}catch (SQLException sqlException) {
-
-			log.error("Exception while retrieving the Ehars data from SQL Server {}",sqlException.getMessage());
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException sqlException) {
-				log.error("Exception while closing the connection {}",sqlException.getMessage());
-			}
-		}
+		eharsDataService.getFacilityDetails(facilityUid).ifPresent(details -> {
+			subFacility.put("FACILITYID", subFacilityId);
+			subFacility.put("ADDRESS", details.address());
+			subFacility.put("CITY", details.city());
+			subFacility.put("COUNTY_FIPS", details.countyFips());
+			subFacility.put("STATE", details.state());
+			subFacility.put("ZIPCODE", details.zipCode());
+			subFacility.put("PHONE", details.phone());
+			subFacility.put("COUNTRY", details.country());
+			subFacility.put("TYPECD", details.typeDescription());
+		});
 		
 		if(subFacility == null || subFacility.size()  == 0){
 //			throw new DataRetrievalFailureException("Unable to get the Facility information, please contact helpline.");

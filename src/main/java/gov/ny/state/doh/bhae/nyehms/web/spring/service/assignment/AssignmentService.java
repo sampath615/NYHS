@@ -1,10 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.assignment;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,7 +31,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.EharsVariableConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocLabsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AssignmentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.ConnectionDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentActivityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentDetailsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.assignment.AssignmentUpdateVO;
@@ -81,7 +75,7 @@ public class AssignmentService {
 	private CommonExceptionHandler commonExceptionHandler;
 
 	@Autowired
-	private ConnectionDAO connectionDAO;
+	private EharsPersonViewReader eharsPersonViewReader;
 
 	@Autowired
 	DateUtil dateUtil;
@@ -637,112 +631,22 @@ public class AssignmentService {
 	public Map<String, String> loadEharsPersonViewDetails(String stateno,
 			BindingResult dummyBindingResult, UserObject userObject,
 			String sessionID) {
-
-		Connection connection = connectionDAO.getSqlServerConnectionObj();
-		
-		Statement statement = null;
-		ResultSet resultSet = null;
-
 		Map<String, String> eharsPersonData = new LinkedHashMap<>();
-	
 		try {
-			if (connection != null) {
-				
-				if(log.isDebugEnabled()){
-					log.debug("SQL server database Connection is available "+connection);
-				}
-				statement = connection.createStatement();
-				
-				if(log.isDebugEnabled()){
-					log.debug("Statement object for SQL server database "+statement);
-				}
-				
-				
-				
-				
-
-				if(stateno != null || !"".equals(stateno)){
-					
-					
-					Map<String, String> map = new HashMap<>();
-					map.put("p_stateno", stateno);
-					
-					assignmentDAO.eharsPersonViewQuery(map);
-					
-					String sqlQuery = map.get("p_ehars_sql");
-					
-					resultSet = statement.executeQuery(sqlQuery);
-					if (log.isDebugEnabled()) {
-						log.debug("Loading Ehars data {}", sqlQuery);
-					}
-
-					ResultSetMetaData rsMetaData = resultSet.getMetaData();
-
-					int columnCount = rsMetaData.getColumnCount();
-					List<String> columnNames = new ArrayList<>();
-					for (int columnIndex = 0; columnIndex < columnCount; columnIndex++) {
-						columnNames.add(rsMetaData.getColumnName(columnIndex + 1));
-
-					}
-
-					while (resultSet.next()) {
-
-						for (String columnName : columnNames) {
-
-							String columnValue = resultSet.getString(columnName);
-							String fieldName = EharsVariableConstants.EHARS_VAR_NAME_MAP.get(columnName);
-
-				           eharsPersonData.put(fieldName, columnValue);
-						}
-
-					}
-					//eharsPersonData.forEach((k,v) -> System.out.println(k + "=" + v));
-					if (log.isDebugEnabled()) {
-						log.debug("Results retuned in the Query  {}", eharsPersonData);
-					}
-				}
-				// If no ehars data available for stateno then loading the
-				// column names with the Empty values
-				if (eharsPersonData.size() == 0) {
-					if (log.isDebugEnabled()) {
-						log.debug("Creating the empty column names");
-					}
-					for (String columnName : EharsVariableConstants.EHARS_VAR_NAME_MAP.keySet()) {
-
-						eharsPersonData.put(EharsVariableConstants.EHARS_VAR_NAME_MAP.get(columnName), "");
-
-					}
-				}
-
-			}else{
-				log.error("Connection is null while retrieving the data from the Ehars");
+			Map<String, String> map = new HashMap<>();
+			map.put("p_stateno", stateno);
+			assignmentDAO.eharsPersonViewQuery(map);
+			String sqlQuery = map.get("p_ehars_sql");
+			log.debug("Loading Ehars data {}", sqlQuery);
+			eharsPersonData.putAll(eharsPersonViewReader.read(sqlQuery));
+			// no eHARS data for the stateno: the fields are shown empty
+			if (eharsPersonData.isEmpty()) {
+				EharsVariableConstants.EHARS_VAR_NAME_MAP.values().forEach(fieldName -> eharsPersonData.put(fieldName, ""));
 			}
-		} catch (SQLException sqlException) {
-
-			log.error("Exception while retrieving the Ehars data from SQL Server {}"
-					, sqlException.getMessage());
-		} catch (Exception sqlException) {
-
-			log.error("Exception while retrieving the Ehars data from SQL Server {}"
-					, sqlException.getMessage());
-		} finally {
-			try {
-				if (connection != null) {
-					connection.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (resultSet != null) {
-					resultSet.close();
-				}
-			} catch (SQLException sqlException) {
-				log.error("Exception while closing the connection {}"
-						, sqlException.getMessage());
-			}
+		} catch (Exception e) {
+			log.error("Exception while retrieving the Ehars data from SQL Server {}", e.getMessage());
 		}
-
-	return eharsPersonData;
+		return eharsPersonData;
     }
 	
 	/**
