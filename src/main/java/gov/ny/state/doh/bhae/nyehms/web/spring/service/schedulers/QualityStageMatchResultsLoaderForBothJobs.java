@@ -5,6 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificati
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
+import lombok.RequiredArgsConstructor;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -15,21 +16,21 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * Module to perform all POST-MATCH processing
  * @author ska03
  */
+@RequiredArgsConstructor
 @Component
 public class QualityStageMatchResultsLoaderForBothJobs{
 	
-	private static Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);
-	@Autowired SendEmail sendEmail;
-	@Autowired ManualQuartzJobService manualQuartzJobService;
-	@Autowired QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
-	@Autowired SchedulerNotificationVO schedulerNotificationVO;
+	private static final Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);
+	private final SendEmail sendEmail;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
+	private final SchedulerNotificationVO schedulerNotificationVO;
 	
 	/**
 	 * Drives the POST-MATCH document processing steps in a two-job scenario:

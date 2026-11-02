@@ -70,7 +70,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Component
 public class QuartzSchedulerTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(QuartzSchedulerTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(QuartzSchedulerTransactionHelper.class);
 
 	@Autowired private ManualQuartzJobService    manualQuartzJobService;
 	@Autowired private AIRSDocumentService       airsDocumentService;

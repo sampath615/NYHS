@@ -15,7 +15,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunDocumentFileReminderLoaderJob extends QuartzJobBean{
 		private DocumentFileReminderLoader documentFileReminderLoader;
 		
-		private static Logger log = LoggerFactory.getLogger(RunDocumentFileReminderLoaderJob.class);
+		private static final Logger log = LoggerFactory.getLogger(RunDocumentFileReminderLoaderJob.class);
 		
 		
 		public void setDocumentFileReminderLoader(DocumentFileReminderLoader documentFileReminderLoader) {

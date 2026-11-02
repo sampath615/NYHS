@@ -5,11 +5,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
@@ -22,19 +22,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
  * @author rzp05
  *
  ***/
+@RequiredArgsConstructor
 @Component
 public class Hl7RecordsProcessLoader {
 
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 	
-	@Autowired
-	RawRecordsCleaner rawRecordsCleaner;
+	private final RawRecordsCleaner rawRecordsCleaner;
 	
-	@Autowired
-	private CommonSchedulerHelper commonSchedulerHelper;
+	private final CommonSchedulerHelper commonSchedulerHelper;
 	
-	private static Logger log = LoggerFactory.getLogger(Hl7RecordsProcessLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(Hl7RecordsProcessLoader.class);
 	
 	public void processHl7Records(String initiator) {
 		

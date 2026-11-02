@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HITMessageCountLoader {
 
-	private static Logger log = LoggerFactory.getLogger(HITMessageCountLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(HITMessageCountLoader.class);
 
 	@Autowired
 	private CommonSchedulerHelper commonSchedulerHelper;

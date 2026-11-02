@@ -15,7 +15,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunPrfReviewStatusLoaderJob extends QuartzJobBean{
 		private PrfReviewStatusLoader prfReviewStatusLoader;
 		
-		private static Logger log = LoggerFactory.getLogger(RunPrfReviewStatusLoaderJob.class);
+		private static final Logger log = LoggerFactory.getLogger(RunPrfReviewStatusLoaderJob.class);
 		
 		
 		public void setPrfReviewStatusLoader(PrfReviewStatusLoader prfReviewStatusLoader) {

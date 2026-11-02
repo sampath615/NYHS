@@ -5,11 +5,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
@@ -17,20 +17,18 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumen
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.CommonSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
+@RequiredArgsConstructor
 @Component
 public class CCDLoader {
 
-	private static Logger log = LoggerFactory.getLogger(CCDLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(CCDLoader.class);
 
 	
-	@Autowired
-	private HITCommonDocumentService hitCommonDocumentService;
+	private final HITCommonDocumentService hitCommonDocumentService;
 	
-	@Autowired
-	private ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 
-	@Autowired
-	private CommonSchedulerHelper commonSchedulerHelper;
+	private final CommonSchedulerHelper commonSchedulerHelper;
 
 
 	/**

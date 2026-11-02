@@ -4,10 +4,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
@@ -21,22 +21,20 @@ import org.springframework.stereotype.Component;
  * @author ska03
  *
  */
+@RequiredArgsConstructor
 @Component
 public class DocumentFileReminderLoader{
 	
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(DocumentFileReminderLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentFileReminderLoader.class);
 	
-	@Autowired
-	CommonService commonService;
+	private final CommonService commonService;
 	
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 	
-	@Autowired
-	SendEmail sendEmail;
+	private final SendEmail sendEmail;
 
 	public void sendDocumentFileReminderEmail(){
 		

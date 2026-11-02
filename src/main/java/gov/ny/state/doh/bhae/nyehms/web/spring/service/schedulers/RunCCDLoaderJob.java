@@ -18,7 +18,7 @@ public class RunCCDLoaderJob extends QuartzJobBean {
 
 	private CCDLoader ccdLoader;
 
-	private static Logger log = LoggerFactory.getLogger(RunCCDLoaderJob.class);
+	private static final Logger log = LoggerFactory.getLogger(RunCCDLoaderJob.class);
 
 	public void setCcdLoader(CCDLoader ccdLoader) {
 		this.ccdLoader = ccdLoader;

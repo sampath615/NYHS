@@ -98,7 +98,7 @@ public class ManualQuartzJobService {
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(ManualQuartzJobService.class);
+	private static final Logger log = LoggerFactory.getLogger(ManualQuartzJobService.class);
 
 	@Autowired
 	private SchedulerJobsDAO schedulerJobsDAO;

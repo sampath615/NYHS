@@ -17,7 +17,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunMonthlyDocumentStatusLoaderJob extends QuartzJobBean{
 		private MonthlyDocumentStatusLoader monthlyDocumentStatusLoader;
 		
-		private static Logger log = LoggerFactory.getLogger(RunMonthlyDocumentStatusLoaderJob.class);
+		private static final Logger log = LoggerFactory.getLogger(RunMonthlyDocumentStatusLoaderJob.class);
 		
 		
 		public void setMonthlyDocumentStatusLoader(MonthlyDocumentStatusLoader monthlyDocumentStatusLoader) {

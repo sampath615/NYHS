@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.PRFDocumentService;
@@ -20,23 +20,21 @@ import org.springframework.stereotype.Component;
  * @author ska03
  *
  */
+@RequiredArgsConstructor
 @Component
 public class PrfReviewStatusLoader{
 	
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(PrfReviewStatusLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(PrfReviewStatusLoader.class);
 	
-	@Autowired
-	PRFDocumentService pRFDocumentService;
+	private final PRFDocumentService pRFDocumentService;
 	
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 	
 	
-	@Autowired
-	SendEmail sendEmail;
+	private final SendEmail sendEmail;
 
 	public void loadPrfReviewStatus(){
 		

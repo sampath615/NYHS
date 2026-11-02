@@ -3,10 +3,10 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.AIRSDocumentService;
@@ -22,23 +22,24 @@ import org.springframework.stereotype.Component;
  * @author ska03
  *
  */
+@RequiredArgsConstructor
 @Component
 public class WeeklyDocumentStatusLoader{
 	
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(WeeklyDocumentStatusLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(WeeklyDocumentStatusLoader.class);
 	
-	@Autowired ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 	
-	@Autowired AIRSDocumentService aIRSDocumentService;
+	private final AIRSDocumentService aIRSDocumentService;
 	
-	@Autowired SendEmail sendEmail;
+	private final SendEmail sendEmail;
 	
-	@Autowired StatusReportsService statusReportsService;
+	private final StatusReportsService statusReportsService;
 	
-	@Autowired DocumentSummaryReportsService documentSummaryReportsService;
+	private final DocumentSummaryReportsService documentSummaryReportsService;
 	
 	public void loadWeeklyStatus(String initiator){
 		

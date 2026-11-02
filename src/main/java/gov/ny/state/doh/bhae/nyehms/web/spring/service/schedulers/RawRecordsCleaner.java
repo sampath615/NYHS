@@ -6,11 +6,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
@@ -35,26 +35,20 @@ import org.springframework.stereotype.Component;
  * 
  * @author ska03
  */
+@RequiredArgsConstructor
 @Component
 public class RawRecordsCleaner {
 
-	private static Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);
-	@Autowired
-	QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
-	@Autowired
-	LabDocumentService labDocumentService;
-	@Autowired
-	AIRSDocumentService airsDocumentService;
-	@Autowired
-	PreMatchHITSchedulerHelper preMatchHITSchedulerHelper;
+	private static final Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);
+	private final QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final LabDocumentService labDocumentService;
+	private final AIRSDocumentService airsDocumentService;
+	private final PreMatchHITSchedulerHelper preMatchHITSchedulerHelper;
 
-	@Autowired
-	HITCommonDocumentService hitCommonDocumentService;
+	private final HITCommonDocumentService hitCommonDocumentService;
 
-	@Autowired
-	SchedulerNotificationVO schedulerNotificationVO;
+	private final SchedulerNotificationVO schedulerNotificationVO;
 	
 //	@Autowired
 //	DatafluxJobExce datafluxJobExce;

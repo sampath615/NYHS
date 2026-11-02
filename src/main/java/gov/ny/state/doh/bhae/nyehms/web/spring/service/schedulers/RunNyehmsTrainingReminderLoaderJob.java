@@ -15,7 +15,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunNyehmsTrainingReminderLoaderJob extends QuartzJobBean{
 		private NyehmsTrainingReminderLoader nyehmsTrainingReminderLoader;
 		
-		private static Logger log = LoggerFactory.getLogger(RunNyehmsTrainingReminderLoaderJob.class);
+		private static final Logger log = LoggerFactory.getLogger(RunNyehmsTrainingReminderLoaderJob.class);
 
 		
 		

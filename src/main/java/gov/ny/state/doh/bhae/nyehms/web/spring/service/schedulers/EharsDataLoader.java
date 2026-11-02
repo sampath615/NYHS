@@ -5,12 +5,12 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
@@ -23,19 +23,20 @@ import org.springframework.stereotype.Component;
  * @author ska03
  *
  */
+@RequiredArgsConstructor
 @Component
 public class EharsDataLoader{
 	
 	/*
 	 * Reference to Log
 	 */
-	private static Logger log = LoggerFactory.getLogger(EharsDataLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(EharsDataLoader.class);
 	
-	@Autowired EharsDataLoaderService eharsDataLoaderService;
+	private final EharsDataLoaderService eharsDataLoaderService;
 	
-	@Autowired ManualQuartzJobService manualQuartzJobService;
+	private final ManualQuartzJobService manualQuartzJobService;
 	
-	@Autowired SendEmail sendEmail;
+	private final SendEmail sendEmail;
 	
 	public void loadEharsDataInToNyehmsTables(String initiator){
 		

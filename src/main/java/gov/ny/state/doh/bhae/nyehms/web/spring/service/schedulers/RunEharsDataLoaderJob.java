@@ -16,7 +16,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class RunEharsDataLoaderJob extends QuartzJobBean{
 		private EharsDataLoader eharsDataLoader;
 		
-		private static Logger log = LoggerFactory.getLogger(RunEharsDataLoaderJob.class);
+		private static final Logger log = LoggerFactory.getLogger(RunEharsDataLoaderJob.class);
 
 		
 		

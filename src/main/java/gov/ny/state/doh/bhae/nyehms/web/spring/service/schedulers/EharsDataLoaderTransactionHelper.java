@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class EharsDataLoaderTransactionHelper {
 
-	private static Logger log = LoggerFactory.getLogger(EharsDataLoaderTransactionHelper.class);
+	private static final Logger log = LoggerFactory.getLogger(EharsDataLoaderTransactionHelper.class);
 
 	@Autowired private EharsDataLoaderService    eharsDataLoaderService;
 

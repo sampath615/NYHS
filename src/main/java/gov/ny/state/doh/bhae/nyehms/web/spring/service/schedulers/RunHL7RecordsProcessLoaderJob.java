@@ -19,7 +19,7 @@ public class RunHL7RecordsProcessLoaderJob extends QuartzJobBean{
 		this.hl7RecordsProcessLoader = hl7RecordsProcessLoader;
 	}
 
-	private static Logger log = LoggerFactory.getLogger(RunHL7RecordsProcessLoaderJob.class);
+	private static final Logger log = LoggerFactory.getLogger(RunHL7RecordsProcessLoaderJob.class);
 	
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {

@@ -5,11 +5,11 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
@@ -22,15 +22,16 @@ import org.springframework.stereotype.Component;
  * the second job if a two-job scenario.
  * @author ska03
  */
+@RequiredArgsConstructor
 @Component
 public class QualityStageLoader{
 
-	private static Logger log = LoggerFactory.getLogger(QualityStageLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(QualityStageLoader.class);
 
-	@Autowired SendEmail                         sendEmail;
-	@Autowired QuartzSchedulerTransactionHelper  quartzSchedulerTransactionHelper;
-	@Autowired ManualQuartzJobService            manualQuartzJobService;
-	@Autowired SchedulerNotificationVO			 schedulerNotificationVO;
+	private final SendEmail sendEmail;
+	private final QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final SchedulerNotificationVO schedulerNotificationVO;
 
 	/**
 	 * Drives the POST-MATCH document processing steps (one job scenario) or

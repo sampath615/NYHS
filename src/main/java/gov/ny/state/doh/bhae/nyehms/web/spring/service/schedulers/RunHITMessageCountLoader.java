@@ -20,7 +20,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.controller.schedulers.ManualQuart
 public class RunHITMessageCountLoader extends QuartzJobBean {
 
 	private HITMessageCountLoader hitMessageCountLoader;
-	private static Logger log = LoggerFactory.getLogger(RunHITMessageCountLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(RunHITMessageCountLoader.class);
 
 	
 
