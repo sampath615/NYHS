@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.initialize;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,7 +14,6 @@ import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class CryptoController {
 
-	private static Logger log = LoggerFactory.getLogger(CryptoController.class);
+	private static final Logger log = LoggerFactory.getLogger(CryptoController.class);
 
-    @Autowired
-    private CommonService commonService;
+    private final CommonService commonService;
 
     /**
      * This method will validate crypto card number and user id and return

@@ -3,11 +3,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.sierra;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,11 +26,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.sierra.SierraWebService;
  *Description 	: This class used to Load the Document Errors and fixing it
  */
 
+@RequiredArgsConstructor
 @Controller
 public class RASController {
 	
-	@Autowired
-	SierraWebService sierraWebService;
+	private final SierraWebService sierraWebService;
 	
 	@RequestMapping("/getRASErrors")
 	public String getRASErrors(Map<String, Object> pMap) {

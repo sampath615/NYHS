@@ -3,6 +3,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.schedulers;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -10,7 +11,6 @@ import jakarta.servlet.http.HttpSession;
 import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -33,18 +33,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
  * 
  * @author ska03
  */
+@RequiredArgsConstructor
 @Controller
 public class ManualQuartzJobController {
 
-	private static Logger log = LoggerFactory.getLogger(ManualQuartzJobController.class);
+	private static final Logger log = LoggerFactory.getLogger(ManualQuartzJobController.class);
 
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
-	@Autowired
-	CommonExceptionHandler commonExceptionHandler;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired
-	HL7DocumentService hl7DocumentService;
+	private final HL7DocumentService hl7DocumentService;
 
 	/**
 	 * This method is used to load the Quartz scheduler manual page.

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -18,7 +19,6 @@ import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -40,24 +40,21 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class InitializeController {
 
-	private static Logger log = LoggerFactory.getLogger(InitializeController.class);
+	private static final Logger log = LoggerFactory.getLogger(InitializeController.class);
 
     private String nyehmsDebugLog = AppConstants.nyehmLogDebugString.getName();
     
-    @Autowired
-	UserAuthorization userAuthorization;
+    private final UserAuthorization userAuthorization;
     
-    @Autowired
-    InitializeService initializeService;
+    private final InitializeService initializeService;
 
-    @Autowired
-    private SendEmail sendEmail;
+    private final SendEmail sendEmail;
 
-    @Autowired
-    DateUtil dateUtil;
+    private final DateUtil dateUtil;
 
     Map<String, String> targetMap = new HashMap<>();
     BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");

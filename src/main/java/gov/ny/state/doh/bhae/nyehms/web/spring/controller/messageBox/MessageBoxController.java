@@ -2,11 +2,11 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.messageBox;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -23,12 +23,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.messageBox.MessageBoxServ
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class MessageBoxController {
 
 
-    @Autowired
-    MessageBoxService messageBoxService;
+    private final MessageBoxService messageBoxService;
 
     /**
      * This method will return MessageBox.jsp page

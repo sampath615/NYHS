@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,7 +14,6 @@ import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -29,17 +29,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumen
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.ManualQuartzJobService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
+@RequiredArgsConstructor
 @Controller
 public class ExperimentalController {
 
-	@Autowired
-	ManualQuartzJobService manualQuartzJobService;
-	@Autowired
-	CCDDocumentDAO ccdDocumentDAO;
-	@Autowired
-	HITCommonDocumentService hitCommonDocumentService;
+	private final ManualQuartzJobService manualQuartzJobService;
+	private final CCDDocumentDAO ccdDocumentDAO;
+	private final HITCommonDocumentService hitCommonDocumentService;
 
-	private static Logger log = LoggerFactory.getLogger(ExperimentalController.class);
+	private static final Logger log = LoggerFactory.getLogger(ExperimentalController.class);
 
 	@RequestMapping(value = "/experimentHome")
 	public String experimentHome(HttpServletRequest request, Map<String, String> map, UserObject userObject) {

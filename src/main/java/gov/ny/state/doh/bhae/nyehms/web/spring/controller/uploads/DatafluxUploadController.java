@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,12 +26,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.DatafluxUploadServiceImpl;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
+@RequiredArgsConstructor
 @Controller
 public class DatafluxUploadController {
 	
 	
-	@Autowired
-	private DatafluxUploadServiceImpl datafluxUploadServiceImpl;
+	private final DatafluxUploadServiceImpl datafluxUploadServiceImpl;
 	
 	
 	

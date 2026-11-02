@@ -1,13 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.cryptocardImage;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.cryptocardImage.ImageService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class ImageController {
 
-    @Autowired
-    private ImageService imageService;
+    private final ImageService imageService;
 
     /**
      * This method will listen to request with path /getAllGraphData and will

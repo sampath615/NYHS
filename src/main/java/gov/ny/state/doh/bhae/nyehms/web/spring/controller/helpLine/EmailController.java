@@ -2,13 +2,13 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.helpLine;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import javax.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -28,13 +28,13 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
  * 
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class EmailController {
 
-	private static Logger log = LoggerFactory.getLogger(EmailController.class);
+	private static final Logger log = LoggerFactory.getLogger(EmailController.class);
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 	/**
 	 * This method will return helpline.jsp page

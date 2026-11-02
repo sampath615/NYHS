@@ -12,6 +12,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.person.PersionService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.search.SearchService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +24,6 @@ import jakarta.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -39,17 +39,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *Description 	: This will handle all requests and responses related to Search Engine.
  */
 
+@RequiredArgsConstructor
 @Controller
 public class SearchEngineController {	
-	private static Logger log = LoggerFactory.getLogger(SearchEngineController.class);
+	private static final Logger log = LoggerFactory.getLogger(SearchEngineController.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
 
-	@Autowired GetGridObject getGridObject;		
-	@Autowired SearchService searchService;
-	@Autowired private PersionService personService;
-	@Autowired private NonCaseDocumentService nonCaseDocumentService;
-	@Autowired private ClusterDocumentService clusterDocumentService;
-	@Autowired private LaftFollowupDocumentService laftFollowupDocumentService;
+	private final GetGridObject getGridObject;		
+	private final SearchService searchService;
+	private final PersionService personService;
+	private final NonCaseDocumentService nonCaseDocumentService;
+	private final ClusterDocumentService clusterDocumentService;
+	private final LaftFollowupDocumentService laftFollowupDocumentService;
 	/**
 	 * 
 	 * @param pMap

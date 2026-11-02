@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -30,20 +30,17 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
+@RequiredArgsConstructor
 @Controller
 public class FileUploadController {
 	
 
-	@Autowired
-	private FileUploadService fileUploadService;
+	private final FileUploadService fileUploadService;
 	
-	@Autowired
-	private CommonExceptionHandler commonExceptionHandler;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
-	@Autowired
-	private ClusterDocumentService clusterDocumentService;
-	@Autowired
-	CommonDocumentService commonDocumentService;
+	private final ClusterDocumentService clusterDocumentService;
+	private final CommonDocumentService commonDocumentService;
 	
 	@RequestMapping("/updatedDispositions")
 	public String updatedDispositionsPage(Map<String, Object> map, HttpServletRequest request) {

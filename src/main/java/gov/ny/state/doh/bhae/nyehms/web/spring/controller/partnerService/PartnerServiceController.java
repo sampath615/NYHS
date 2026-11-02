@@ -5,6 +5,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.Ps
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.partnerService.PartnerService;
+import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -26,14 +26,13 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author vxp06
  */
+@RequiredArgsConstructor
 @Controller
 public class PartnerServiceController {
 	
-	@Autowired
-	private PartnerService partnerService;
+	private final PartnerService partnerService;
 	
-	@Autowired
-    CommonDocumentService commonDocumentService;
+	private final CommonDocumentService commonDocumentService;
 
     /**
      * This will be called from the menu and we will return the web page link

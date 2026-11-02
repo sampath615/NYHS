@@ -2,12 +2,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.controller.scan;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -25,13 +25,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 
 
+@RequiredArgsConstructor
 @Controller
 public class DocumentsScanController {	
-	private static Logger log = LoggerFactory.getLogger(DocumentsScanController.class);
+	private static final Logger log = LoggerFactory.getLogger(DocumentsScanController.class);
 	
-	@Autowired DocumentsScanService documentsScanService;
-	@Autowired CommonService commonService;
-	@Autowired CommonExceptionHandler commonExceptionHandler;
+	private final DocumentsScanService documentsScanService;
+	private final CommonService commonService;
+	private final CommonExceptionHandler commonExceptionHandler;
 	
 	@RequestMapping(value="/getScannedImageContent.html", method = RequestMethod.POST )
 	public String getScannedImageContent(

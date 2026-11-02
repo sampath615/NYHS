@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,7 +18,6 @@ import jakarta.servlet.http.HttpSession;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -69,53 +69,40 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
+@RequiredArgsConstructor
 @Controller
 public class AssignmentController {
 
-	private static Logger log = LoggerFactory.getLogger(AssignmentController.class);
+	private static final Logger log = LoggerFactory.getLogger(AssignmentController.class);
 	
 
-	@Autowired
-	private AssignmentService assignmentService;
+	private final AssignmentService assignmentService;
 	
-	@Autowired private NonCaseDocumentService nonCaseDocumentService;
+	private final NonCaseDocumentService nonCaseDocumentService;
 	
 	
-	@Autowired
-	private AssignmentReportsService assignmentReportsService;
+	private final AssignmentReportsService assignmentReportsService;
 	
-	@Autowired
-	private AdministrationService administrationService;
+	private final AdministrationService administrationService;
 	
-	@Autowired
-	private LabDocumentService labDocumentService;
+	private final LabDocumentService labDocumentService;
 	
-	@Autowired
-	private ADAPDocumentService aDAPDocumentService;
+	private final ADAPDocumentService aDAPDocumentService;
 	
-	@Autowired
-	private PRFDocumentService pRFDocumentService;
+	private final PRFDocumentService pRFDocumentService;
 	
-	@Autowired
-	private MedicaidDocumentService medicaidDocumentService;
+	private final MedicaidDocumentService medicaidDocumentService;
 
-	@Autowired
-	CommonDocumentService commonDocumentService;
-	@Autowired
-	private DocumentTransactionHelper documentTransactionHelper;
+	private final CommonDocumentService commonDocumentService;
+	private final DocumentTransactionHelper documentTransactionHelper;
 	
-	@Autowired 
-	private LaftFollowupDocumentService laftFollowupDocumentService;
+	private final LaftFollowupDocumentService laftFollowupDocumentService;
 	
-	@Autowired
-	private SearchManageProfileService searchManageProfileService;
+	private final SearchManageProfileService searchManageProfileService;
 
-	@Autowired
-	CommonService commonService;
-	@Autowired
-	GetGridObject getGridObject;
-	@Autowired
-	DateUtil dateUtil;
+	private final CommonService commonService;
+	private final GetGridObject getGridObject;
+	private final DateUtil dateUtil;
 
 	private static final Map<Integer, String> monthMap = new HashMap<>();
     
