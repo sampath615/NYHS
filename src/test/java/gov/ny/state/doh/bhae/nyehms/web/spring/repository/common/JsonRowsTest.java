@@ -74,6 +74,16 @@ class JsonRowsTest {
 	}
 
 	@Test
+	void readsTextColumnsIntoPlainMaps() {
+		List<java.util.Map<String, String>> maps = jsonRows.textMaps(
+				"select ID \"value\", NAME \"label\" from JSON_ROWS_TEST where ID is not null order by ID", List.of("value", "label"));
+
+		assertThat(maps).hasSize(2);
+		assertThat(maps.get(0)).isExactlyInstanceOf(java.util.HashMap.class).containsEntry("value", "1").containsEntry("label", "one");
+		assertThat(maps.get(1)).containsOnlyKeys("value");             // a number read as text, the null name left out
+	}
+
+	@Test
 	void readsASingleColumn() {
 		assertThat(jsonRows.list("select NAME from JSON_ROWS_TEST where ID = 1", List.of(text("NAME"))))
 				.singleElement().satisfies(row -> assertThat(row.get("NAME")).isEqualTo("one"));

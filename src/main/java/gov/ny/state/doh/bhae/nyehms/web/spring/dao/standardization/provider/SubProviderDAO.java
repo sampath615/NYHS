@@ -13,8 +13,6 @@ public interface SubProviderDAO {
 	//Adding New Provider Address
     public void addNewProvider(Map<Object, Object> map);
     
-    public List<Map<String, String>> getActiveProviders(String providerName);
-
 	public int unableStandardizeRawProviderRecord(Map<Object, Object> map);
 
 	public int unableStandardizeProviderAddressRecord(Map<Object, Object> map);

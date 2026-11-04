@@ -1,7 +1,9 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.repository.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.hibernate.metamodel.model.domain.BasicDomainType;
@@ -89,6 +91,29 @@ public class JsonRows {
 		return ((List<Object>) query.getResultList()).stream()
 				.map(row -> toJson(columns, columns.size() == 1 ? new Object[] {row} : (Object[]) row))
 				.collect(Collectors.toCollection(ArrayList::new));    // a modifiable list (may hold null), as MyBatis returned
+	}
+
+	/**
+	 * The rows of a query whose columns are all text, as plain maps: what a MyBatis {@code resultMap} of type
+	 * {@code java.util.Map} with {@code javaType="String"} columns returned (name the keys with column aliases).
+	 *
+	 * @return one HashMap per row (a row of nulls only stays a null element)
+	 */
+	@Transactional(readOnly = true)
+	public List<Map<String, String>> textMaps(String sql, List<String> labels, Object... parameters) {
+		List<Column> columns = labels.stream().map(JsonRows::text).toList();
+		List<Map<String, String>> maps = new ArrayList<>();
+		for (JSONObject row : list(sql, columns, parameters)) {
+			Map<String, String> map = null;
+			if (row != null) {
+				map = new HashMap<>();
+				for (Object key : row.keySet()) {
+					map.put((String) key, (String) row.get(key));
+				}
+			}
+			maps.add(map);
+		}
+		return maps;
 	}
 
 	/**

@@ -196,17 +196,4 @@
 		)}
   </select>
   
-  <select id="getMasterProvRecords" resultType="org.json.simple.JSONObject">
-  	select RAW_PROVIDER_ADDRESS_ID "value", PROVIDER_LNAME ||', ' || PROVIDER_FNAME "label" from raw_provider_address where MASTER_PROV = 'Y'
-  </select>
-  	  
-  	  
-  <select id="getMasterProvData" parameterType="String" resultType="org.json.simple.JSONObject">
-  	select PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX, ADDRESS, city, state, COUNTY_FIPS,
-  	
-  	case when length(substr(regexp_replace(zipcode, '\D'),0, 5)) = 5 then substr(regexp_replace(zipcode , '\D'),0, 5) else null end  zipcode,
-  	case when length(substr(regexp_replace(phone, '\D'),0, 10)) = 10 then substr(regexp_replace(phone, '\D'),0, 10) else null end  phone , 
-  	
-  	NPI  from raw_provider_address where raw_provider_address_id = #{providerId}
-  </select>
 </mapper>

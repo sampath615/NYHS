@@ -5,7 +5,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.R
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface RawProviderAddressDAO {
@@ -43,9 +42,5 @@ public interface RawProviderAddressDAO {
 	
 	@Transactional
 	public void flagSelectedRawProviderAsFacilty(Map<Object,Object> inOutParamaterMap);
-
-	public List<JSONObject> getMasterProvRecords();
-
-	public JSONObject getMasterProvData(String providerId);
 
 }

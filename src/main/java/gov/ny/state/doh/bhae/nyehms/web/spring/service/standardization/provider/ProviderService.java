@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.SubP
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAndAddressVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.JsonRows;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.JsonRows.Column;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -55,6 +58,35 @@ public class ProviderService {
 
 	@Autowired
 	private MergeAndUnlinkProvDAO mergeAndUnlinkDAO;
+
+	@Autowired
+	private JsonRows jsonRows;
+
+	/*
+	 * Reads formerly in RawProviderAddressDAO (getMasterProvRecords, getMasterProvData) and SubProviderDAO
+	 * (getActiveProviders), run as JPA native queries with their SQL unchanged (JsonRows); the master provider rows
+	 * are read with getObject as MyBatis read them, the active providers as text with the keys value/label.
+	 */
+
+	private static final String MASTER_PROVIDERS = """
+			select RAW_PROVIDER_ADDRESS_ID "value", PROVIDER_LNAME ||', ' || PROVIDER_FNAME "label" from raw_provider_address where MASTER_PROV = 'Y'
+			""";
+
+	private static final List<Column> MASTER_PROVIDERS_COLUMNS = List.of(JsonRows.value("value"), JsonRows.value("label"));
+
+	private static final String MASTER_PROVIDER_DATA = """
+			select PROVIDER_FNAME, PROVIDER_MNAME, PROVIDER_LNAME, PROVIDER_SUFFIX, ADDRESS, city, state, COUNTY_FIPS,
+			case when length(substr(regexp_replace(zipcode, '\\D'),0, 5)) = 5 then substr(regexp_replace(zipcode , '\\D'),0, 5) else null end  zipcode,
+			case when length(substr(regexp_replace(phone, '\\D'),0, 10)) = 10 then substr(regexp_replace(phone, '\\D'),0, 10) else null end  phone ,
+			NPI  from raw_provider_address where raw_provider_address_id = ?1
+			""";
+
+	private static final List<Column> MASTER_PROVIDER_DATA_COLUMNS = Stream.of("PROVIDER_FNAME", "PROVIDER_MNAME", "PROVIDER_LNAME",
+			"PROVIDER_SUFFIX", "ADDRESS", "CITY", "STATE", "COUNTY_FIPS", "ZIPCODE", "PHONE", "NPI").map(JsonRows::value).toList();
+
+	private static final String ACTIVE_PROVIDERS = """
+			select PROVIDER_ID "value", PROVIDER_FULLNAME "label" from nyehms_provider_names_list_vw where PROVIDER_FNAME like ?1 or PROVIDER_LNAME like ?2
+			""";
 	
 	
 	
@@ -422,7 +454,7 @@ public class ProviderService {
 		
 		providerName = providerName+"%";
 		
-		List<Map<String, String>> activeProvidersList = subProviderDAO.getActiveProviders(providerName);
+		List<Map<String, String>> activeProvidersList = jsonRows.textMaps(ACTIVE_PROVIDERS, List.of("value", "label"), providerName, providerName);
 	
 		
 		return activeProvidersList;
@@ -599,11 +631,11 @@ public class ProviderService {
 	}
 	
 	public List<JSONObject> getMasterProvRecords(){
-		return rawProviderAddressDAO.getMasterProvRecords();
+		return jsonRows.list(MASTER_PROVIDERS, MASTER_PROVIDERS_COLUMNS);
 	}
-	
+
 	public JSONObject getMasterProvData(String providerId) {
-		return rawProviderAddressDAO.getMasterProvData(providerId);
+		return jsonRows.one(MASTER_PROVIDER_DATA, MASTER_PROVIDER_DATA_COLUMNS, providerId);
 	}
 	
 }

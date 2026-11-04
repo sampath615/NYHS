@@ -20,15 +20,6 @@
 		)}
 	</select>
 	
-	<select id="getActiveProviders" resultMap="activeProviderDetails" parameterType="String">
-		select PROVIDER_ID, PROVIDER_FULLNAME from nyehms_provider_names_list_vw where PROVIDER_FNAME like #{providerName} or PROVIDER_LNAME like #{providerName} 
-	</select>
-	
-  	<resultMap type="java.util.Map" id="activeProviderDetails"> 	
- 	  	<result property="value"  column="PROVIDER_ID"  jdbcType="VARCHAR" javaType="String"/>
-		<result property="label" column="PROVIDER_FULLNAME" jdbcType="VARCHAR" javaType="String"/>
- 	</resultMap>
- 	
 	 <update id="unableStandardizeRawProviderRecord" parameterType="java.util.Map">
 		update RAW_PROVIDER_ADDRESS set SUB_PROVIDER_ADDRESS_ID  = 0, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{userId}  where RAW_PROVIDER_ADDRESS_ID = #{recordId} 
 	</update>

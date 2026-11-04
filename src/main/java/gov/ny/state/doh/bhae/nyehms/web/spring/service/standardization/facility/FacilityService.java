@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.FacilityCodedDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MasterFacilityDetailsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.MergeAndUnlinkDAO;
@@ -11,6 +10,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.M
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.RawSubFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityForRawFacilityVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.JsonRows;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.EharsDataService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -53,7 +53,14 @@ public class FacilityService {
 	@Autowired
 	private MergeAndUnlinkDAO mergeAndUnlinkDAO;
 	@Autowired
-	private FacilityCodedDAO facilityCodedDAO;
+	private JsonRows jsonRows;
+
+	/** The current eHARS facility types (formerly FacilityCodedDAO.getFacilityTypeCodes; keys code/desc). */
+	private static final String FACILITY_TYPE_CODES = """
+			SELECT   FACILITY_TYPE_CODE "code", FACILITY_TYPE_DESCRIPTION "desc"
+			FROM     CODED_EHARS_FACILITY WHERE END_DATE IS NULL OR END_DATE > SYSDATE
+			ORDER BY SORT_ORDER
+			""";
 	
 	/*
 	 * Reference to Log
@@ -339,7 +346,7 @@ public class FacilityService {
 	//Coded Tables
 	public Map<String, String> getFacilityTypeCodes(BindingResult result, UserObject userObject){
 		Map<String, String> facilityTypeCodes = new LinkedHashMap<>();
-			List<Map<String, String>> statusMapList = facilityCodedDAO.getFacilityTypeCodes();
+			List<Map<String, String>> statusMapList = jsonRows.textMaps(FACILITY_TYPE_CODES, List.of("code", "desc"));
 			for(Map<String, String> statusMap : statusMapList){
 				facilityTypeCodes.put(statusMap.get("code"), statusMap.get("desc"));
 			}
