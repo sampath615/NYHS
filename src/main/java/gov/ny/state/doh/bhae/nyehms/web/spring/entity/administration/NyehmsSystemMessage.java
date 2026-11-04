@@ -2,7 +2,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.entity.administration;
 
 import java.sql.Timestamp;
 
-import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,14 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * A system message (table NYEHMS_SYSTEM_MESSAGES): inserted by SystemMessageDAO.saveSystemMessageDetails, changed by
- * JPQL updates.
+ * A system message (table NYEHMS_SYSTEM_MESSAGES), inserted and changed by SystemMessageDAO.
  * <p>
  * <b>Assumed:</b> MSG_ID is filled by the database on insert (identity column or trigger; the former insert did not
- * set it), so Hibernate reads it back after the insert. FLAG_DELETED is not written on insert (its default applies,
- * as before). LAST_UPDATED_DATE is the database clock (SYSDATE) when not given, as before.
+ * set it). FLAG_DELETED is not written on insert, so its default applies. A change writes only the changed columns.
  */
 @Entity
+@DynamicUpdate
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -52,10 +51,20 @@ public class NyehmsSystemMessage {
 	@Column(name = "LAST_UPDATED_BY")
 	private Long lastUpdatedBy;
 
-	@ColumnTransformer(write = "coalesce(?, SYSDATE)")
 	@Column(name = "LAST_UPDATED_DATE")
 	private Timestamp lastUpdatedDate;
 
 	@Column(name = "FLAG_DELETED", insertable = false)
 	private String flagDeleted;
+
+	/** Changes the message, as the system message screen saves it. */
+	public void change(Timestamp effectiveStartDate, Timestamp effectiveEndDate, String msgBody, String flagDeleted, Long lastUpdatedBy,
+			Timestamp lastUpdatedDate) {
+		this.effectiveStartDate = effectiveStartDate;
+		this.effectiveEndDate = effectiveEndDate;
+		this.msgBody = msgBody;
+		this.flagDeleted = flagDeleted;
+		this.lastUpdatedBy = lastUpdatedBy;
+		this.lastUpdatedDate = lastUpdatedDate;
+	}
 }

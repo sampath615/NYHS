@@ -2,7 +2,7 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.entity.administration;
 
 import java.sql.Timestamp;
 
-import org.hibernate.annotations.ColumnTransformer;
+import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,13 +17,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * A provider portal outage message (table PORTAL_MODULE_OUTAGE): read, inserted and updated by SystemMessageDAO.
+ * A provider portal outage message (table PORTAL_MODULE_OUTAGE), read, inserted and changed by SystemMessageDAO.
  * <p>
  * <b>Assumed:</b> MSG_ID is filled by the database on insert (identity column or trigger; the former insert did not
- * set it). FLAG_DELETED is not written on insert (its default applies, as before). CREATE_DATE and UPDATE_DATE are
- * the database clock (SYSDATE) when not given, as before.
+ * set it). FLAG_DELETED is not written on insert, so its default applies. A change writes only the changed columns.
  */
 @Entity
+@DynamicUpdate
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -69,14 +69,34 @@ public class PortalModuleOutage {
 	@Column(name = "CREATE_BY")
 	private String createBy;
 
-	@ColumnTransformer(write = "coalesce(?, SYSDATE)")
 	@Column(name = "CREATE_DATE")
 	private Timestamp createDate;
 
 	@Column(name = "UPDATE_BY")
 	private String updateBy;
 
-	@ColumnTransformer(write = "coalesce(?, SYSDATE)")
 	@Column(name = "UPDATE_DATE")
 	private Timestamp updateDate;
+
+	/** Changes the message: its modules, dates and text. */
+	public void change(PortalModuleOutage changes, String updateBy, Timestamp updateDate) {
+		this.admin = changes.admin;
+		this.prfDe = changes.prfDe;
+		this.oocInq = changes.oocInq;
+		this.dnltcInq = changes.dnltcInq;
+		this.snpId = changes.snpId;
+		this.airsEpi = changes.airsEpi;
+		this.startDate = changes.startDate;
+		this.endDate = changes.endDate;
+		this.displayMsg = changes.displayMsg;
+		this.updateBy = updateBy;
+		this.updateDate = updateDate;
+	}
+
+	/** Sets the deleted flag (the screen's delete). */
+	public void flagDeleted(String flagDeleted, String updateBy, Timestamp updateDate) {
+		this.flagDeleted = flagDeleted;
+		this.updateBy = updateBy;
+		this.updateDate = updateDate;
+	}
 }
