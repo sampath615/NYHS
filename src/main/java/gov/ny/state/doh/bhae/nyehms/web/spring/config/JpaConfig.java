@@ -13,6 +13,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.jpa.NyehmsDialectResolver;
 import jakarta.persistence.EntityManagerFactory;
 
 /**
@@ -48,7 +49,10 @@ public class JpaConfig {
 				"hibernate.show_sql", "false",
 				// inserts of many rows (uploads, imports) go to the database in JDBC batches
 				"hibernate.jdbc.batch_size", "1000",
-				"hibernate.order_inserts", "true"));
+				"hibernate.order_inserts", "true",
+				// Oracle / H2 dialects whose native query results are typed as JDBC getObject types them (as MyBatis
+				// read them): any NUMBER a BigDecimal, text a String (see GetObjectTypes)
+				"hibernate.dialect_resolvers", NyehmsDialectResolver.class.getName()));
 		return factory;
 	}
 
