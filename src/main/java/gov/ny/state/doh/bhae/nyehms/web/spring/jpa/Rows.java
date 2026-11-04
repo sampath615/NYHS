@@ -130,6 +130,14 @@ public final class Rows {
 		if (value instanceof Clob clob) {
 			value = text(clob);
 		}
+		if (type == char.class || type == Character.class) {
+			// CharacterTypeHandler: the first character of getString (an empty text is null in Oracle)
+			if (value instanceof Character character) {
+				return character;
+			}
+			String text = value instanceof BigDecimal number ? number.toPlainString() : value.toString();
+			return text.isEmpty() ? null : text.charAt(0);
+		}
 		if (type == Object.class) {
 			return value;
 		}

@@ -182,6 +182,7 @@ public class NativeStatements {
 
 	private static final Map<Class<?>, BasicTypeReference<?>> SCALAR_TYPES = Map.ofEntries(
 			Map.entry(String.class, StandardBasicTypes.STRING),
+			Map.entry(char.class, StandardBasicTypes.STRING), Map.entry(Character.class, StandardBasicTypes.STRING),
 			Map.entry(int.class, StandardBasicTypes.INTEGER), Map.entry(Integer.class, StandardBasicTypes.INTEGER),
 			Map.entry(long.class, StandardBasicTypes.LONG), Map.entry(Long.class, StandardBasicTypes.LONG),
 			Map.entry(short.class, StandardBasicTypes.SHORT), Map.entry(Short.class, StandardBasicTypes.SHORT),
