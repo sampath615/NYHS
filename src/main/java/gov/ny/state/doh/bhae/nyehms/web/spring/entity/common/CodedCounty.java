@@ -25,4 +25,11 @@ public class CodedCounty {
 
 	@Column(name = "COUNTY_CD")
 	private String countyCd;
+
+	@Column(name = "COUNTY_NAME")
+	private String countyName;
+
+	/** The order of the counties in the partner services (PS) reports. */
+	@Column(name = "PS_SORT_ORDER")
+	private Integer psSortOrder;
 }
