@@ -1,88 +1,87 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.config;
 
+import com.zaxxer.hikari.HikariDataSource;
+
 import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO;
+
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
+
+import org.springframework.core.env.Environment;
+
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 /**
+
  * Data sources, transaction management and the raw JDBC connection DAO.
  * <p>
- * Replaces spring-datasource.xml and the transactionManager, tx:annotation-driven
- * and connectionDAO entries of spring-config.xml.
- * <p>
- * The three pools are container managed: Tomcat defines them in
- * META-INF/context.xml and the connection settings come from catalina.properties
- * (see docs/TOMCAT_MIGRATION.md). The names are looked up under java:comp/env/.
+ * The three pools are application managed (HikariCP), built from
+ * nyehms.db.* in application-{profile}.yml. Replaces the container-managed
+ * JNDI pools from META-INF/context.xml + catalina.properties.
  */
+
 @Configuration
 @EnableTransactionManagement
 public class DataSourceConfig {
 
-    /*
-     * destroyMethod = "" on the three data sources: the pools belong to Tomcat, so
-     * Spring must not call close() on them when the application context shuts down
-     * (without it Spring infers and calls the pool's close() method).
-     */
+    /** Oracle: main NYEHMS database (was BHAE_NYEHMS_DS_ONE_GL). */
 
-    /**
-     * Oracle: main NYEHMS database (was WebLogic data source BHAE_NYEHMS_DS_ONE_GL).
-     * Used by the MyBatis session factories, the transaction manager and raw JDBC
-     * (ConnectionDAO).
-     */
-    @Bean(destroyMethod = "")
+    @Bean
     @Primary
-    public DataSource appDS() {
-        return jndiDataSource("jdbc/BHAE_NYEHMS_DS_ONE_GL");
+    public DataSource appDS(Environment env) {
+
+        HikariDataSource ds = pool(env, "app", "oracle.jdbc.OracleDriver", 2);
+        ds.setConnectionInitSql("alter session set current_schema=" + env.getRequiredProperty("nyehms.db.app.schema"));
+
+        return ds;
+
     }
 
-    /**
-     * Oracle: URS database (was WebLogic data source BHAE_NYEHMS_URS); ursSessionFactory.
-     */
-    @Bean(destroyMethod = "")
-    public DataSource ursDS() {
-        return jndiDataSource("jdbc/BHAE_NYEHMS_URS");
+    /** Oracle: URS database (was BHAE_NYEHMS_URS). */
+
+    @Bean
+    public DataSource ursDS(Environment env) {
+
+        return pool(env, "urs", "oracle.jdbc.OracleDriver", 3);
     }
 
-    /**
-     * eHARS database (was WebLogic data source BHAE_EHARS_DS_ONE); raw JDBC via
-     * ConnectionDAO.getSqlServerConnectionObj().
-     */
-    @Bean(destroyMethod = "")
-    public DataSource eharsDS() {
-        return jndiDataSource("jdbc/BHAE_EHARS_DS_ONE");
-    }
+    /** SQL Server: eHARS database (was BHAE_EHARS_DS_ONE). */
 
-    /**
-     * The only transaction manager: @Transactional always means the main NYEHMS
-     * database (appDS), exactly as before.
-     */
-/*    @Bean
-    public DataSourceTransactionManager transactionManager(@Qualifier("appDS") DataSource appDS) {
-        return new DataSourceTransactionManager(appDS);
-    }*/
+    @Bean
+    public DataSource eharsDS(Environment env) {
+        return pool(env, "ehars", "com.microsoft.sqlserver.jdbc.SQLServerDriver", 20);
+    }
 
     @Bean
     public JdbcConnectionDAO connectionDAO(@Qualifier("appDS") DataSource appDS,
                                            @Qualifier("eharsDS") DataSource eharsDS) {
+
         JdbcConnectionDAO connectionDAO = new JdbcConnectionDAO();
         connectionDAO.setDataSource(appDS);
         connectionDAO.setSqlDataSource(eharsDS);
         return connectionDAO;
     }
 
-    /*
-     * Same as <jee:jndi-lookup resource-ref="true" expected-type="javax.sql.DataSource">:
-     * JndiDataSourceLookup prefixes java:comp/env/ and fails at startup if the name is missing.
-     */
-    private static DataSource jndiDataSource(String jndiName) {
-        return new JndiDataSourceLookup().getDataSource(jndiName);
-    }
-}
+    private static HikariDataSource pool(Environment env, String name, String driver, int maxSize) {
 
+        String p = "nyehms.db." + name + ".";
+        HikariDataSource ds = new HikariDataSource();
+        ds.setPoolName(name + "DS");
+        ds.setDriverClassName(driver);
+        ds.setJdbcUrl(env.getRequiredProperty(p + "url"));
+        ds.setUsername(env.getRequiredProperty(p + "user"));
+        ds.setPassword(env.getRequiredProperty(p + "password"));
+        ds.setMaximumPoolSize(maxSize);
+        ds.setConnectionTimeout(30_000);   // was maxWaitMillis
+        return ds;
+
+    }
+
+}

@@ -44,3 +44,22 @@ nyehms:
     # decrypt-backup-location: '/data4/projects/NYEHMSQS/Data/decrypt_backup/'    # [DECRYPT_BACKUP_LOCATION]
     # kex-algorithm: 'diffie-hellman-group14-sha1'    # [KexAlgorithm]
 
+  # NYEHMS datasources
+  db:
+    app:
+      url: 'jdbc:oracle:thin:@(DESCRIPTION_LIST=(LOAD_BALANCE=off)(FAILOVER=on)(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=npede-scan.health.ny.gov)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=shadowdev_oltp.health.ny.gov)))(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=espede-scan.health.ny.gov)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=shadowdev_oltp.health.ny.gov))))'
+      user: nyehms
+      password: 'ENC(IxyTW+DaDtvMspJ93PUw2cDh56LqifQ8LIbKJ0wO71hQ/EiJTrY=)'
+      schema: NYEHMSLOCAL_OWNER
+    urs:
+      url: 'jdbc:oracle:thin:@(DESCRIPTION_LIST=(LOAD_BALANCE=off)(FAILOVER=on)(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=npede-scan.health.ny.gov)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=shadowdev_oltp.health.ny.gov)))(DESCRIPTION=(CONNECT_TIMEOUT=5)(TRANSPORT_CONNECT_TIMEOUT=3)(RETRY_COUNT=3)(ADDRESS_LIST=(LOAD_BALANCE=on)(ADDRESS=(PROTOCOL=TCP)(HOST=espede-scan.health.ny.gov)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=shadowdev_oltp.health.ny.gov))))'
+      user: nyehms
+      password: 'ENC(IxyTW+DaDtvMspJ93PUw2cDh56LqifQ8LIbKJ0wO71hQ/EiJTrY=)'
+    ehars:
+      url: 'jdbc:sqlserver://ophepi07test2.svc.ny.gov:1433;databaseName=ehars;encrypt=true;trustServerCertificate=true'
+      user: nyehms
+      password: 'ENC(AJgZU+f5X7LlVdbtZe1s77+q0Yjkv8Y1sBQsdwWl1fb6BjM=)'
+
+
+
+
