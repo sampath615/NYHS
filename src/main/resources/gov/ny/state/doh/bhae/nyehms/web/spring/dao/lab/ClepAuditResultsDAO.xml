@@ -4,21 +4,6 @@
 
 <mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.ClepAuditResultsDAO">
 
-	<select id="getPFILabDataInfo" parameterType="String" resultType="org.json.simple.JSONObject">
-	
-		select PFI, CLIA, LAB_NAME, ADDRESS, CITY, STATE, ZIP, COUNTRY, LAFT_STAFF, CLA.APPROVAL_STATUS_DESC
-		from lab_physical_facility lpf, CODED_LAB_APPROVAL_STATUS cla
-		where PFI = #{userEnteredPfi}
-		and LPF.APPROVAL_STATUS_CODE = CLA.APPROVAL_STATUS_CODE (+)
-	
-	</select>
-
-	<select id="seachAccessionNoinDB" parameterType="String" resultType="org.json.simple.JSONObject">
-	
-		select count(ACCESSION_NUMBER) count from STD_HIV_ECLRS_DOC where ACCESSION_NUMBER = #{accessionNo}
-	
-	</select>
-	
 	<insert id="saveLaftClepAuditSurveyData" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.CLEPLabResultVO"
 			useGeneratedKeys="true" keyProperty="surveyNumber" keyColumn="SURVEY_NUMBER">
 		<![CDATA[
@@ -56,30 +41,6 @@
 
 	</insert>	
 	
-	<select id="getClepLabResultForReview"	resultType="org.json.simple.JSONObject">
-		<![CDATA[
-			  SELECT survey_number, To_Char(receive_date, 'MM/DD/YYYY') receive_date, ls.pfi, clia, lab_name, lpf.approval_status_code, cla.approval_status_desc, laft_staff,
-			                          review_completed, review_completed_by, To_Char(review_completed_date, 'MM/DD/YYYY') review_completed_date,
-			                          To_Char(survey_date, 'MM/DD/YYYY') survey_date, To_Char(create_date, 'MM/DD/YYYY') create_date , address, city, state, zip, country
-			                          ,         CASE 
-			                                                  WHEN NOT EXISTS (SELECT 1
-			                                                                                                     FROM laft_clep_audit_accession_data a
-			                                                                                                    WHERE a.survey_number = ls.survey_number) THEN 'Y'
-			                                                  WHEN (SELECT COUNT(*)
-			                                                                          FROM laft_clep_audit_accession_data a
-			                                                                 WHERE a.survey_number = ls.survey_number
-			                                                                           AND a.accession_number IS NOT NULL
-			                                                                           AND Nvl(reported_in_nyehms, 'N') != 'Y') > 0 THEN 'Y'
-			                                                  ELSE 'N'
-			                                      END attention_needed
-			    FROM laft_clep_audit_survey_form ls, lab_physical_facility lpf, coded_lab_approval_status cla
-			   WHERE ls.pfi = lpf.pfi
-			     AND lpf.approval_status_code = cla.approval_status_code (+)
-			ORDER BY survey_number DESC
-		]]>
-	</select>
-
-
 	<select id="getClepSurveyData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.CLEPLabResultVO">
 	
       select SURVEY_NUMBER surveyNumber, ls.PFI userEnteredPfi, TO_CHAR(SURVEY_DATE, 'MM/DD/YYYY') labDateOfSurvey, SURVEYOR labSurveyorName, 
@@ -134,32 +95,6 @@
 		</foreach>
 	</insert>	
 	
-	<select id="getHivSurveyFilenameCt" parameterType="String" resultType="int">
-		SELECT COUNT(*) FROM LAFT_CLEP_AUDIT_SURVEY_UPLOAD WHERE CLEP_FILE_NAME = #{uploadFilename}
-	</select>
-	
-	<select id="getUploadedHIVSurveyFilenames"	resultType="org.json.simple.JSONObject">
-		select distinct CLEP_FILE_NAME, FILE_UPLOAD_BY,  TO_CHAR(FILE_UPLOAD_DATE, 'MM/DD/YYYY') FILE_UPLOAD_DATE
-		from LAFT_CLEP_AUDIT_SURVEY_UPLOAD
-	</select>
-	
-	<select id="getUploadedHIVSurveyData" parameterType="java.util.Map" resultType="org.json.simple.JSONObject">
-		select  u.PFI_UPLOAD_PK, u.PFI, u.CLIA, u.LAB_NAME, To_Char(u.SURVEY_BEGIN_DATE, 'MM/DD/YYYY') SURVEY_BEGIN_DATE, To_Char(u.SURVEY_END_DATE, 'MM/DD/YYYY') SURVEY_END_DATE, 
-		    u.ASSIGNED_STAFF_ID, To_Char(u.ASSIGNED_DATE, 'MM/DD/YYYY') ASSIGNED_DATE, u.ASSIGNED_BY, To_Char(u.SURVEY_CLOSE_DATE, 'MM/DD/YYYY') SURVEY_CLOSE_DATE, u.SURVEY_CLOSE_BY, u.COMMENTS,
-		    CASE 
-        		WHEN u.SURVEY_NUMBER != 0 THEN 'Yes'
-        		ELSE 'No' 
-    		END AUDIT_FORM_RECEIVED,
-		    NVL(u.SURVEY_NUMBER, 0)  SURVEY_NUMBER, To_Char(f.RECEIVE_DATE, 'MM/DD/YYYY') RECEIVE_DATE, 
-		    CLEP_FILE_NAME, FILE_UPLOAD_BY, To_Char(FILE_UPLOAD_DATE, 'MM/DD/YYYY') FILE_UPLOAD_DATE
-		from LAFT_CLEP_AUDIT_SURVEY_UPLOAD u, LAFT_CLEP_AUDIT_SURVEY_FORM f
-		where u.SURVEY_NUMBER  = f.SURVEY_NUMBER (+)
-			<if test="uploadedFilename != 'All'">
-				and CLEP_FILE_NAME = #{uploadedFilename}
-			</if>
-			
-	</select>	
-	
 	<select id="getClepSurveyUploadData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.CLEPUploadSurveyVO">
 	
       select PFI_UPLOAD_PK uploadNumber, SURVEY_NUMBER surveyNumber, CLEP_FILE_NAME clepFilename, To_Char(FILE_UPLOAD_DATE, 'MM/DD/YYYY') clepFilUploadDate,
@@ -181,21 +116,6 @@
 	</update>	
 	
 	
-	<select id="getLabRecruitmentAssessmentForFollowup"	resultType="org.json.simple.JSONObject">
-		<![CDATA[
-		SELECT a.survey_number, a.pfi, b.clia, b.lab_name, c.approval_status_desc, a.inst_based_reportable_hiv, a.lab_uses_eclrs,
-		    a.recruit_assess_staff_assign, TO_CHAR(a.recruit_assess_date_assign, 'MM/DD/YYYY') recruit_assess_date_assign, d.recruit_assess_outcome_desc, 
-		    a.recruit_assess_comments, TO_CHAR(a.recruit_assess_date_complete, 'MM/DD/YYYY') recruit_assess_date_complete, a.recruit_assess_staff_complete
-		  FROM laft_clep_audit_survey_form a
-		  JOIN lab_physical_facility b ON b.pfi = a.pfi
-		  LEFT OUTER JOIN coded_lab_approval_status c ON Nvl(b.approval_status_code, 0) = c.approval_status_code
-		  LEFT OUTER JOIN coded_lab_recruit_assess_outcome d ON Nvl(a.recruit_assess_outcome , 0) = d.recruit_assess_outcome
-		WHERE (a.inst_based_reportable_hiv = 'Y' OR a.lab_uses_eclrs = 'Y')
-		   AND Nvl(b.approval_status_code, 2) IN (2, 4, 5)
-		   ORDER BY survey_number DESC
-		]]>
-	</select>	
-	
 	<select id="getLabRecruitmentAssessmentData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.CLEPLabResultVO">
         
          select SURVEY_NUMBER surveyNumber, ls.PFI userEnteredPfi, lpf.CLIA pfiLabClia, lpf.LAB_NAME pfiLabName, CLA.APPROVAL_STATUS_DESC pfiLabApprovalStatus,
@@ -210,11 +130,6 @@
 	
 	</select>	
 
-	<select id="getRecruitAssessmentOutcomeList" resultType="java.util.Map">
-		select RECRUIT_ASSESS_OUTCOME, RECRUIT_ASSESS_OUTCOME_DESC from CODED_LAB_RECRUIT_ASSESS_OUTCOME
-	</select>
-	
-	
 	<update id="updateRecruitmentAssessmentFollowupData" parameterType="java.util.Map">
 		UPDATE LAFT_CLEP_AUDIT_SURVEY_FORM
 		SET RECRUIT_ASSESS_STAFF_ASSIGN = #{recruitAssessStaffAssign,jdbcType=VARCHAR}, RECRUIT_ASSESS_DATE_ASSIGN = FN_TO_DATE(#{recruitAssessDateAssign,jdbcType=DATE},'MM/DD/YYYY'),
