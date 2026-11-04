@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.MergeAndUnlinkProvDAO">
+
+  	<select id="unlinkRawProviderAndAddress" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_unlink_raw_provider_address(
+			#{p_tounlink_ids, jdbcType=VARCHAR, mode=IN},
+			#{p_parent_id,    jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,      jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,     jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,      jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="unlinkSubProviderAddress" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_unlink_sub_provider_address(
+			#{p_tounlink_ids, jdbcType=VARCHAR, mode=IN},
+			#{p_parent_id,    jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,      jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,     jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,      jdbcType=VARCHAR, mode=OUT}		 
+		)}
+	</select>
+  
+  	<select id="mergeSubProviderAddress" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_merge_sub_prov_addresses(
+			#{p_sub_prov_addrs_list,     jdbcType=VARCHAR, mode=IN},
+			#{p_retained_sub_prov_addrs, jdbcType=BIGINT,  mode=IN},
+			#{p_sub_prov,                jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,                 jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,                jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,                 jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+	<select id="mergeSubProviders" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_merge_sub_providers(
+			#{p_sub_prov_list,     jdbcType=VARCHAR, mode=IN},
+			#{p_retained_sub_prov, jdbcType=BIGINT,  mode=IN},
+			#{p_user_id,           jdbcType=BIGINT,  mode=IN},
+			#{p_code_out,          jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,           jdbcType=VARCHAR, mode=OUT}	 
+		)}
+	</select>
+	
+</mapper>

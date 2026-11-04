@@ -1,0 +1,336 @@
+package gov.ny.state.doh.bhae.nyehms.web.spring.util;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
+
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import java.util.Map;
+
+/**
+ * This class is used to send the Emails in different formats
+ * 
+ * @author ska03
+ */
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class SendEmail {
+
+	private static final String emailSubjectTxt = "Error in NYEHMS Run Time";
+	private static final String emailFromAddress = "hinweb@health.state.ny.gov";
+	
+	@Autowired private CommonService commonService;
+	private final MailProperties mailProperties;
+	private final Environment environment;
+	/** Spring Boot's mail sender, SMTP host from spring.mail.host in application.yml. */
+	private final JavaMailSender mailSender;
+	//private static Logger log = LoggerFactory.getLogger(SendEmail.class);
+
+	@jakarta.annotation.PostConstruct
+	void logMailConfig() {
+		log.info("MAIL CHECK -> stage={}, mail={}", stage(), mailProperties);
+	}
+
+	/** LOCAL / DEV / EVAL / PROD, from spring.profiles.active (replaces System.getProperty("stage")). */
+	private String stage() {
+		return String.join(",", environment.getActiveProfiles()).toUpperCase();
+	}
+
+
+
+	/**
+	 * This method is used to send an Email with a default subject, default
+	 * from address, default email host, and a list of recipients taken
+	 * from the environment properties file.
+	 * This method will be used when we get any validation errors while loading the NYEHMS
+	 * Crypto card page
+	 * 
+	 * @param emailBody
+	 */
+	public void sendDefaultEMail(String emailBody)
+	{
+		try {
+			String[] sendTo = mailProperties.errorNotificationsTo().split(",");
+			this.sendSSLMessage(sendTo, stage() +" : "+emailSubjectTxt, emailBody,
+					emailFromAddress, null, null,
+					CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
+		} catch (Exception e) {
+			log.error("Email Sent failed.", e);
+		}
+	}
+
+	/**
+	 * This method is used to send a fully customized email.
+	 * 
+	 * @param recipients An array of email address Strings
+	 * @param subject Email subject
+	 * @param message Body message
+	 * @param from From Address
+	 * @param cc An array of CC Strings
+	 * @param bcc An array of BCC Strings
+	 * @param messageType Email content type
+	 * @throws MessagingException
+	 */
+	public void sendSSLMessage(String recipients[], String subject,
+			String message, String from, String cc[],  String bcc[],  String messageType)
+			throws MessagingException 
+	{
+		MimeMessage msg = mailSender.createMimeMessage();
+		InternetAddress addressFrom = new InternetAddress(from);
+		msg.setFrom(addressFrom);
+		
+		
+		InternetAddress[] addressTo = null;
+		
+		if(recipients != null && recipients.length > 0) {
+			
+			addressTo = new InternetAddress[recipients.length];
+			for (int i = 0; i < recipients.length; i++) {
+				addressTo[i] = new InternetAddress(recipients[i]);
+			}
+			
+		}
+		
+		msg.setRecipients(Message.RecipientType.TO, addressTo);
+		if(cc != null && cc.length > 0){
+			InternetAddress[] addressCC = new InternetAddress[cc.length];
+			for (int i = 0; i < cc.length; i++) {
+				addressCC[i] = new InternetAddress(cc[i]);
+			}
+			msg.setRecipients(Message.RecipientType.CC, addressCC);
+		}
+
+		if(bcc != null && bcc.length > 0){
+			InternetAddress[] addressBCC = new InternetAddress[bcc.length];
+			for (int i = 0; i < bcc.length; i++) {
+				addressBCC[i] = new InternetAddress(bcc[i]);
+			}
+			msg.setRecipients(Message.RecipientType.BCC, addressBCC);
+		}
+		
+		msg.setSubject(subject);
+		msg.setContent(message, messageType);
+		send(msg);
+	}
+
+	/**
+	 * This method is used when we get any errors in the applications, will send
+	 * that error to the Admin with detailed Exception details
+	 * 
+	 * @param messageParametersAndValues
+	 * @throws MessagingException
+	 */
+	public void sendHTMLMessage(Map<Object, Object> messageParametersAndValues)
+			throws MessagingException
+	{
+		MimeMessage msg = mailSender.createMimeMessage();
+		InternetAddress addressFrom = new InternetAddress(emailFromAddress);
+		msg.setFrom(addressFrom);
+		String[] sendTo = mailProperties.errorNotificationsTo().split(",");
+		InternetAddress[] addressTo = new InternetAddress[sendTo.length];
+		for (int i = 0; i < sendTo.length; i++) {
+			addressTo[i] = new InternetAddress(sendTo[i]);
+		}
+		msg.setRecipients(Message.RecipientType.TO, addressTo);
+		msg.setSubject(stage() + " : " + emailSubjectTxt);
+		String[] exceptionMessagestack = (String[]) messageParametersAndValues
+				.get("logStackFrames");
+		StringBuilder stringBuilder = new StringBuilder("<HTML><BODY>");
+		stringBuilder
+				.append("<B> An error has occured while accessing NYEHMS, please see details below </B><BR>");
+		stringBuilder.append("<TABLE border='1'");
+		stringBuilder.append("<TR><TD>User</TD><TD>"
+				+ messageParametersAndValues.get("p_user_id") + "</TD></TR>");
+		stringBuilder.append("<TR><TD>Date</TD><TD>"
+				+ messageParametersAndValues.get("p_log_date") + "</TD></TR>");
+		stringBuilder.append("<TR><TD>Error point</TD><TD>"
+				+ exceptionMessagestack[1] + "</TD></TR>");
+		stringBuilder.append("<TR><TD>Error type</TD><TD>"
+				+ messageParametersAndValues.get("p_log_error") + "</TD></TR>");
+		stringBuilder.append("<TR><TD>Error log ref#</TD><TD>"
+				+ messageParametersAndValues.get("appLogId") + "</TD></TR>");
+		stringBuilder.append("</TABLE></BODY></HTML>");
+		msg.setContent(stringBuilder.toString(), "text/html");
+		send(msg);
+	}
+
+	public void processEmail(String userEmailAddress, String subject, String message, String NotificationIdentifier,
+			String messageType) throws MessagingException {
+
+		Map<String, String> notificationList = commonService.getNotificationList(NotificationIdentifier);
+
+		String[] recipientEmailAddressesTo = null;
+
+		if (notificationList.get("T") != null) {
+			recipientEmailAddressesTo = notificationList.get("T").split(",");
+		}
+
+		if (message.contains("HL7 Manual Process Initiated by")) {
+			recipientEmailAddressesTo = null;
+		}
+
+		if (message.contains("LAFT has commented on follow-up")) {
+			recipientEmailAddressesTo = userEmailAddress.split(",");
+		} else if (CommonUtil.isNotNullAndEmpty(userEmailAddress)) {
+			recipientEmailAddressesTo = ArrayUtils.addAll(recipientEmailAddressesTo, userEmailAddress);
+
+		}
+
+		String[] recipientEmailAddressesCC = null;
+
+		if (notificationList.get("C") != null) {
+			recipientEmailAddressesCC = notificationList.get("C").split(",");
+		}
+		if ((recipientEmailAddressesTo != null && recipientEmailAddressesTo.length > 0)
+				|| (recipientEmailAddressesCC != null && recipientEmailAddressesCC.length > 0)) {
+			sendSSLMessage(recipientEmailAddressesTo, subject, message,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
+					messageType);
+		} else {
+			log.error("Didn't find Email Notification list, sent to Nyehms helpline");
+
+			log.error(message);
+
+			sendSSLMessage(mailProperties.helpLine().to().split(","), subject, message,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
+					messageType);
+
+		}
+
+	}
+	
+	public void sendemailAttachmentsByIdentifier(String subject,
+			String message, String messageType, String NotificationIdentifier, MimeBodyPart attachPart)
+			throws MessagingException 
+	{
+		MimeMessage msg = mailSender.createMimeMessage();
+		InternetAddress addressFrom = new InternetAddress(mailProperties.helpLine().from());
+		msg.setFrom(addressFrom);
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(message, "text/html");
+		
+		
+		Map<String, String> notificationList = commonService.getNotificationList(NotificationIdentifier);
+
+		String[] recipientEmailAddressesTo = null;
+
+		if (notificationList.get("T") != null) {
+			recipientEmailAddressesTo = notificationList.get("T").split(",");
+		}
+
+		if (message.contains("HL7 Manual Process Initiated by")) {
+			recipientEmailAddressesTo = null;
+		}
+		
+		InternetAddress[] addressTo = null;
+		
+		if(recipientEmailAddressesTo != null &&recipientEmailAddressesTo.length > 0) {
+			
+			addressTo = new InternetAddress[recipientEmailAddressesTo.length];
+			for (int i = 0; i < recipientEmailAddressesTo.length; i++) {
+				addressTo[i] = new InternetAddress(recipientEmailAddressesTo[i]);
+			}
+			
+		}
+		
+		msg.setRecipients(Message.RecipientType.TO, addressTo);
+
+
+		String[] recipientEmailAddressesCC = null;
+
+		if (notificationList.get("C") != null) {
+			recipientEmailAddressesCC = notificationList.get("C").split(",");
+			
+			InternetAddress[] addressCC = new InternetAddress[recipientEmailAddressesCC.length];
+			for (int i = 0; i < recipientEmailAddressesCC.length; i++) {
+				addressCC[i] = new InternetAddress(recipientEmailAddressesCC[i]);
+			}
+			msg.setRecipients(Message.RecipientType.CC, addressCC);
+		}
+				
+		BodyPart messageBodyPart2 = new MimeBodyPart();  
+		messageBodyPart2.setText(message);  
+	    
+	    
+		Multipart multipart = new MimeMultipart();  
+		multipart.addBodyPart(messageBodyPart);
+		multipart.addBodyPart(attachPart);
+	    //multipart.addBodyPart(messageBodyPart2);  
+	    
+		msg.setSubject(subject);
+		msg.setContent(multipart);
+		send(msg);
+	}
+	
+	
+	public void sendemailAttachments(String recipients[], String subject,
+			String message, String from, String cc[],  String messageType, MimeBodyPart attachPart)
+			throws MessagingException 
+	{
+		MimeMessage msg = mailSender.createMimeMessage();
+		InternetAddress addressFrom = new InternetAddress(from);
+		msg.setFrom(addressFrom);
+		MimeBodyPart messageBodyPart = new MimeBodyPart();
+		messageBodyPart.setContent(message, "text/html");
+		
+		
+		InternetAddress[] addressTo = null;
+		
+		if(recipients != null && recipients.length > 0) {
+			
+			addressTo = new InternetAddress[recipients.length];
+			for (int i = 0; i < recipients.length; i++) {
+				addressTo[i] = new InternetAddress(recipients[i]);
+			}
+			
+		}
+		
+		msg.setRecipients(Message.RecipientType.TO, addressTo);
+		if(cc != null && cc.length > 0){
+			InternetAddress[] addressCC = new InternetAddress[cc.length];
+			for (int i = 0; i < cc.length; i++) {
+				addressCC[i] = new InternetAddress(cc[i]);
+			}
+			msg.setRecipients(Message.RecipientType.CC, addressCC);
+		}
+		
+		BodyPart messageBodyPart2 = new MimeBodyPart();  
+		messageBodyPart2.setText(message);  
+	    
+	    
+		Multipart multipart = new MimeMultipart();  
+		multipart.addBodyPart(messageBodyPart);
+		multipart.addBodyPart(attachPart);
+	    //multipart.addBodyPart(messageBodyPart2);  
+	    
+		msg.setSubject(subject);
+		msg.setContent(multipart);
+		send(msg);
+	}
+
+	/**
+	 * Sends through Spring's JavaMailSender. Its failures are MailException (unchecked);
+	 * they are turned back into MessagingException because callers catch that, as with Transport.send.
+	 */
+	private void send(MimeMessage msg) throws MessagingException {
+		try {
+			mailSender.send(msg);
+		} catch (MailException e) {
+			throw new MessagingException(e.getMessage(), e);
+		}
+	}
+
+}

@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.assignment.AcrfDocLabsDAO">
+		
+	<insert id="addRawAcrfCd4Data" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT INTO ${tableName} (	DOCUMENT_ID, 
+										CD4_COUNT, 
+										CD4_PERCENT, 
+										COLLECTION_DATE, 
+										CLOSEST_TO_CURRENT_DX, 
+										FIRST_LOW_CD4,
+										FACILITY_NAME,
+										FACILITY_EHARS_UID,
+										CLIA,
+										LAB_NAME,
+										PROV_NAME,
+										PROV_FNAME, 
+										PROV_LNAME, 
+										PROV_MNAME, 
+										PROV_SUFFIX,
+										MANUFACTURER,
+										UPDATED_BY, 
+										UPDATED_DATE)
+			VALUES
+										(#{rawAcrfCd4Tst.documentId} 
+										, #{rawAcrfCd4Tst.cd4Count:DECIMAL} 
+										, #{rawAcrfCd4Tst.cd4Percent:DECIMAL} 
+										, #{rawAcrfCd4Tst.collectionDate}   
+										, #{rawAcrfCd4Tst.closestToCurrentDx} 
+										, #{rawAcrfCd4Tst.firstLowCd4}
+										, #{rawAcrfCd4Tst.facilityName,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.facilityEharsUid,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.clia,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.labName,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.providerName,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.providerFname,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.providerLname,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.providerMname,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.providerSuffix,jdbcType=VARCHAR}
+										, #{rawAcrfCd4Tst.manufacturer,jdbcType=VARCHAR}
+										, #{workerId,jdbcType=VARCHAR}
+										, SYSDATE
+										)			
+			
+			
+			
+				]]>
+	</insert>
+	
+	<select id="updateRawAcrfCd4Data" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE ${tableName} 
+						SET
+							CD4_COUNT=#{rawAcrfCd4Tst.cd4Count:DECIMAL}
+						,	CD4_PERCENT=#{rawAcrfCd4Tst.cd4Percent:DECIMAL}
+						, 	COLLECTION_DATE=#{rawAcrfCd4Tst.collectionDate} 
+						,	CLOSEST_TO_CURRENT_DX=#{rawAcrfCd4Tst.closestToCurrentDx}
+						, 	FIRST_LOW_CD4 = #{rawAcrfCd4Tst.firstLowCd4}
+						, 	FACILITY_NAME = #{rawAcrfCd4Tst.facilityName,jdbcType=VARCHAR}
+						, 	FACILITY_EHARS_UID = #{rawAcrfCd4Tst.facilityEharsUid,jdbcType=VARCHAR}
+						, 	CLIA = #{rawAcrfCd4Tst.clia,jdbcType=VARCHAR}
+						, 	LAB_NAME = #{rawAcrfCd4Tst.labName,jdbcType=VARCHAR}
+						, 	PROV_NAME = #{rawAcrfCd4Tst.providerName,jdbcType=VARCHAR}
+						, 	PROV_FNAME = #{rawAcrfCd4Tst.providerFname,jdbcType=VARCHAR}
+						, 	PROV_LNAME = #{rawAcrfCd4Tst.providerLname,jdbcType=VARCHAR}
+						, 	PROV_MNAME = #{rawAcrfCd4Tst.providerMname,jdbcType=VARCHAR}
+						, 	PROV_SUFFIX = #{rawAcrfCd4Tst.providerSuffix,jdbcType=VARCHAR}
+						, 	MANUFACTURER = #{rawAcrfCd4Tst.manufacturer,jdbcType=VARCHAR}
+						, UPDATED_BY = #{workerId,jdbcType=VARCHAR}  
+						, UPDATED_DATE = SYSDATE
+			WHERE			
+						DOCUMENT_ID=#{rawAcrfCd4Tst.documentId}	AND CD4_SRC_ID=#{rawAcrfCd4Tst.cd4SrcId} 	
+				]]>
+	</select> 
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfCd4TstVO" id="selectRawAcrfCd4TstResult">
+		<result property="cd4SrcId" column="CD4_SRC_ID"/>
+		<result property="documentId" column="DOCUMENT_ID" />
+		<result property="acrfSrcId" column="ACRF_SRC_ID"/>
+		<result property="cd4Count" column="CD4_COUNT" javaType="Integer" jdbcType="DECIMAL"/>
+		<result property="cd4Percent" column="CD4_PERCENT" javaType="Float" jdbcType="DECIMAL"/>
+		<result property="collectionDate" column="COLLECTION_DATE"/>
+		<result property="closestToCurrentDx" column="CLOSEST_TO_CURRENT_DX"/>
+		<result property="firstLowCd4" column="FIRST_LOW_CD4"/>
+		<result property="facilityName" column="FACILITY_NAME"/>
+		<result property="facilityEharsUid" column="FACILITY_EHARS_UID"/>	
+		<result property="clia" column="CLIA"/>		
+		<result property="labName" column="LAB_NAME"/>	
+		<result property="providerName" column="PROV_NAME"/>
+		<result property="providerFname" column="PROV_FNAME"/>	
+		<result property="providerLname" column="PROV_LNAME"/>	
+		<result property="providerMname" column="PROV_MNAME"/>	
+		<result property="providerSuffix" column="PROV_SUFFIX"/>		
+		<result property="manufacturer" column="MANUFACTURER"/>			
+	</resultMap>	
+	
+	
+	
+	<select id="getRawArvMedicationsData" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.CodedArvMedicationsVO">  
+		<![CDATA[
+		SELECT 
+					  rowid arvSrcId, ARV_USE_TYPE arvUseType, ARV_MEDICATION arvMedications, ARV_BEGIN_DATE arvMedicationsDateBegan, ARV_END_DATE arvMedicationsDateOfLastUse, ARV_OTHER_USE_TYPE otherArvUseType 
+		FROM 
+					${tableName} 
+		WHERE 
+					${CRF_COLUMN_ID}=#{documentId}
+		]]>
+	</select>
+	
+	
+	<select id="getRawAcrfRidrData" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.AcrfRidrVO">  
+		<![CDATA[
+		SELECT 
+					  rowid RIDR_ROWID, DUPLICATE_STATUS, STATE_CD , STATENO, COMMENTS  
+		FROM 
+					RAW_ACRF_RIDR_INFO 
+		WHERE 
+					ACRF_DOC_ID=#{rawAcrfDocId}
+		]]>
+	</select>
+	
+	
+	
+	<select id="getRawAcrfCd4Data" parameterType="java.util.Map" resultMap="selectRawAcrfCd4TstResult">  
+		<![CDATA[
+		SELECT 
+					   CD4_SRC_ID
+					,  DOCUMENT_ID
+					,  CD4_COUNT
+					,  CD4_PERCENT
+					,  CLOSEST_TO_CURRENT_DX
+					,  FIRST_LOW_CD4
+					,  COLLECTION_DATE
+					,  FACILITY_NAME
+					,  FACILITY_EHARS_UID
+					,  CLIA
+					,  LAB_NAME
+					,  PROV_NAME, PROV_FNAME, PROV_LNAME, PROV_MNAME, PROV_SUFFIX
+					,  MANUFACTURER
+		FROM 
+					${tableName}
+		WHERE 
+					DOCUMENT_ID=#{documentId} order by CLOSEST_TO_CURRENT_DX asc
+		]]>
+	</select>	
+		
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.RawAcrfLabsVO" id="acrfLabsRawTblResult">
+		<result property="labSrcId" column="LAB_SRC_ID"/>
+		<result property="documentId" column="DOCUMENT_ID"/>
+		<result property="acrfSrcId" column="ACRF_SRC_ID"/>
+		<result property="parentTestType" column="PARENT_TEST_TYPE"/>
+		<result property="acrfTestCode" column="ACRF_TEST_CODE"/>
+		<result property="acrfResultCode" column="ACRF_RESULT_CODE"/>
+		<result property="collectionDate" column="COLLECTION_DATE"/>
+		<result property="rapidTest" column="RAPID_TEST"/>
+		<result property="copiesMl" column="COPIES_ML"/>
+		<result property="log" column="LOG"/>
+		<result property="otherTest" column="OTHER_TEST"/>	
+		<result property="manufacturer" column="MANUFACTURER"/>
+		<result property="facilityName" column="FACILITY_NAME"/>
+		<result property="facilityEharsUid" column="FACILITY_EHARS_UID"/>
+		<result property="labName" column="LAB_NAME"/>
+		<result property="clia" column="CLIA"/>
+		<result property="providerName" column="PROV_NAME"/>
+		<result property="providerFname" column="PROV_FNAME"/>	
+		<result property="providerLname" column="PROV_LNAME"/>	
+		<result property="providerMname" column="PROV_MNAME"/>	
+		<result property="providerSuffix" column="PROV_SUFFIX"/>
+		
+		<result property="indexValue" column="INDEX_VALUE"/>
+		<result property="hiv12AbAnalyteResult" column="HIV12_AB_ANALYTE_RESULT"/>
+		<result property="hiv1AbAnalyteResult" column="HIV1_AB_ANALYTE_RESULT"/>
+		<result property="hiv1AbAnalyteResultIndex" column="HIV1_AB_ANALYTE_RESULT_INDEX"/>
+		<result property="hiv2AbAnalyteResult" column="HIV2_AB_ANALYTE_RESULT"/>
+		<result property="hiv2AbAnalyteResultIndex" column="HIV2_AB_ANALYTE_RESULT_INDEX"/>
+		<result property="hiv1AgAnalyteResult" column="HIV1_AG_ANALYTE_RESULT"/>
+		<result property="hiv1AgAnalyteResultIndex" column="HIV1_AG_ANALYTE_RESULT_INDEX"/>
+		
+		<result property="hiv1CmlAnalyteResult" column="HIV1_CML_ANALYTE_RESULT"/>
+		<result property="hiv1LogAnalyteResult" column="HIV1_LOG_ANALYTE_RESULT"/>
+		<result property="dignosticAlgorithm" column="DIAGNOSTIC_ALGORITHM_STEP"/>
+	    <result property="rapidTestType" column="RAPID_TEST_TYPE"/>
+	    
+	    <result property="interpretation" column="INTERPRETATION"/>
+	    <result property="analyteInterpretation" column="ANALYTE_INTERPRETATION"/>
+	    
+	    
+		<result property="testSection" column="TEST_SECTION"/>
+		
+		
+		
+	</resultMap>	
+	
+	
+	<select id="getRawACRFLabs" parameterType="java.util.Map" resultMap="acrfLabsRawTblResult">
+		<![CDATA[
+		SELECT
+				  lab.LAB_SRC_ID
+				,  lab.DOCUMENT_ID
+				,  lab.RAPID_TEST
+				,  lab.COPIES_ML
+				,  lab.LOG
+				,  lab.COLLECTION_DATE
+				,  lab.${testCodeColumn} ACRF_TEST_CODE
+				,  lab.PARENT_TEST_TYPE
+				,  lab.${resultCodeColumn} ACRF_RESULT_CODE
+				,  lab.OTHER_TEST
+				, lab.MANUFACTURER 
+				, lab.FACILITY_NAME
+				, lab.FACILITY_EHARS_UID
+				, lab.LAB_NAME
+				, CLIA
+				, lab.PROV_NAME, lab.PROV_FNAME, lab.PROV_LNAME, lab.PROV_MNAME, lab.PROV_SUFFIX
+				, lab.INDEX_VALUE	
+				, lab.HIV1_CML_ANALYTE_RESULT		
+				, lab.HIV1_LOG_ANALYTE_RESULT      		
+				, lab.HIV12_AB_ANALYTE_RESULT		
+				, lab.HIV1_AB_ANALYTE_RESULT      
+				, lab.HIV1_AB_ANALYTE_RESULT_INDEX
+				, lab.HIV2_AB_ANALYTE_RESULT		
+				, lab.HIV2_AB_ANALYTE_RESULT_INDEX
+				, lab.HIV1_AG_ANALYTE_RESULT		
+				, lab.HIV1_AG_ANALYTE_RESULT_INDEX
+				, lab.DIAGNOSTIC_ALGORITHM_STEP
+				, lab.RAPID_TEST_TYPE
+				, lab.INTERPRETATION
+				, lab.ANALYTE_INTERPRETATION
+	    		, acrf_test.TEST_SECTION
+				
+				
+		
+		FROM 
+				${tableName}  lab, CODED_ACRF_TEST acrf_test
+		WHERE 
+				DOCUMENT_ID =#{documentId} 
+				
+				and lab.parent_test_type = acrf_test.parent_test_type_code
+		]]>
+				
+		<choose>
+			<when test="tableName == 'RAW_PCRF_LABS'">
+				and lab.PCRF_TEST_CODE = acrf_test.ACRF_TEST_CODE
+			</when>
+			<otherwise>
+				and lab.ACRF_TEST_CODE = acrf_test.ACRF_TEST_CODE
+			</otherwise>
+		</choose>		
+				
+		<![CDATA[
+				order by LAB_SRC_ID
+		]]>
+	</select>
+	
+	
+	<insert id="addRawACRFLabs" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="labSrcId" keyColumn="LAB_SRC_ID">
+		<![CDATA[
+			INSERT INTO ${tableName} (
+										DOCUMENT_ID, 
+										PARENT_TEST_TYPE, 
+										${testCodeColumn}, 
+										${resultCodeColumn},
+										COLLECTION_DATE,
+										RAPID_TEST,
+										COPIES_ML,
+										LOG,
+										OTHER_TEST,
+										MANUFACTURER,
+										FACILITY_NAME,
+										FACILITY_EHARS_UID,
+										LAB_NAME,
+										CLIA,
+										PROV_NAME,
+										PROV_FNAME, 
+										PROV_LNAME, 
+										PROV_MNAME, 
+										PROV_SUFFIX,
+										INDEX_VALUE	,
+										HIV1_CML_ANALYTE_RESULT,
+										HIV1_LOG_ANALYTE_RESULT,			
+										HIV12_AB_ANALYTE_RESULT,	
+										HIV1_AB_ANALYTE_RESULT,      
+										HIV1_AB_ANALYTE_RESULT_INDEX,
+										HIV2_AB_ANALYTE_RESULT		,
+										HIV2_AB_ANALYTE_RESULT_INDEX,
+										HIV1_AG_ANALYTE_RESULT		,
+										HIV1_AG_ANALYTE_RESULT_INDEX,
+										DIAGNOSTIC_ALGORITHM_STEP,
+										
+				
+										RAPID_TEST_TYPE,
+										INTERPRETATION,
+										ANALYTE_INTERPRETATION,
+										UPDATED_BY, 
+										UPDATED_DATE
+										
+										) 
+										VALUES 
+										
+										(#{rawAcrfLabs.documentId} 
+										, #{rawAcrfLabs.parentTestType} 
+										, #{rawAcrfLabs.acrfTestCode} 
+										, #{rawAcrfLabs.acrfResultCode} 
+										, #{rawAcrfLabs.collectionDate}   
+										, #{rawAcrfLabs.rapidTest} 
+										, #{rawAcrfLabs.copiesMl} 
+										, #{rawAcrfLabs.log} 
+										, trim(upper(#{rawAcrfLabs.otherTest}))
+										, #{rawAcrfLabs.manufacturer,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.facilityName,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.facilityEharsUid,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.labName,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.clia,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.providerName,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.providerFname,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.providerLname,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.providerMname,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.providerSuffix,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.indexValue,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1CmlAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1LogAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv12AbAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1AbAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1AbAnalyteResultIndex,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv2AbAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv2AbAnalyteResultIndex,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1AgAnalyteResult,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.hiv1AgAnalyteResultIndex,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.dignosticAlgorithm,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.rapidTestType,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.interpretation,jdbcType=VARCHAR}
+										, #{rawAcrfLabs.analyteInterpretation,jdbcType=VARCHAR}
+										, #{workerId,jdbcType=VARCHAR}
+										, SYSDATE
+										
+										)
+			
+		]]>
+	</insert>	
+	
+	<update id="deleteRawArvMedication" parameterType="java.util.Map">
+			delete from ${tableName} where rowid = #{arvSrcId}
+	</update>	
+	
+	
+	<update id="deleteRawAcrfRidrData" parameterType="String">
+			delete from RAW_ACRF_RIDR_INFO where rowid = #{ridr_ROWID}
+	</update>	
+	
+	
+	
+	<update id="updateRawArvMedication" parameterType="java.util.Map">
+		<![CDATA[
+			update ${tableName} set 
+										${CRF_COLUMN_ID} = #{codedArvMedicationsVO.documentId,jdbcType=VARCHAR},
+										ARV_USE_TYPE =  #{codedArvMedicationsVO.arvUseType,jdbcType=VARCHAR},
+										ARV_MEDICATION = #{codedArvMedicationsVO.arvMedications,jdbcType=VARCHAR} ,
+										ARV_BEGIN_DATE = #{codedArvMedicationsVO.arvMedicationsDateBegan,jdbcType=VARCHAR} ,
+										ARV_END_DATE = #{codedArvMedicationsVO.arvMedicationsDateOfLastUse,jdbcType=VARCHAR},
+										ARV_OTHER_USE_TYPE = #{codedArvMedicationsVO.otherArvUseType,jdbcType=VARCHAR} where rowid = #{codedArvMedicationsVO.arvSrcId}
+		]]>
+	</update>
+	
+	
+	<update id="updateRawAcrfRidrData" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.AcrfRidrVO">
+		<![CDATA[
+			update RAW_ACRF_RIDR_INFO set 
+										ACRF_DOC_ID = #{documentId,jdbcType=VARCHAR},
+										DUPLICATE_STATUS =  #{DUPLICATE_STATUS,jdbcType=VARCHAR},
+										STATE_CD = #{STATE_CD,jdbcType=VARCHAR} ,
+										STATENO = #{STATENO,jdbcType=VARCHAR} ,
+										COMMENTS = #{COMMENTS,jdbcType=VARCHAR} where rowid = #{RIDR_ROWID}
+		]]>
+	</update>	
+		
+	
+	<insert id="addRawArvMedication" parameterType="java.util.Map">
+		<![CDATA[
+			INSERT INTO ${tableName} (
+										${CRF_COLUMN_ID}, ARV_USE_TYPE, ARV_MEDICATION, ARV_BEGIN_DATE, ARV_END_DATE, ARV_OTHER_USE_TYPE) 
+										
+										VALUES 
+										
+										(#{codedArvMedicationsVO.documentId,jdbcType=VARCHAR} 
+										, #{codedArvMedicationsVO.arvUseType,jdbcType=VARCHAR} 
+										, #{codedArvMedicationsVO.arvMedications,jdbcType=VARCHAR} 
+										, #{codedArvMedicationsVO.arvMedicationsDateBegan,jdbcType=VARCHAR} 
+										, #{codedArvMedicationsVO.arvMedicationsDateOfLastUse,jdbcType=VARCHAR}   
+										, #{codedArvMedicationsVO.otherArvUseType,jdbcType=VARCHAR}
+										)
+			
+		]]>
+	</insert>	
+	
+	
+	<insert id="addRawAcrfRidrInfo" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.AcrfRidrVO">
+		<![CDATA[
+			INSERT INTO RAW_ACRF_RIDR_INFO (
+										ACRF_DOC_ID, DUPLICATE_STATUS, STATE_CD, STATENO, COMMENTS) 
+										
+										VALUES 
+										
+										(#{documentId,jdbcType=VARCHAR} 
+										, #{DUPLICATE_STATUS,jdbcType=VARCHAR} 
+										, #{STATE_CD,jdbcType=VARCHAR} 
+										, #{STATENO,jdbcType=VARCHAR} 
+										, #{COMMENTS,jdbcType=VARCHAR}   
+										)
+			
+		]]>
+	</insert>	
+	
+	
+		
+	
+	<update id="updateRawACRFLabs" parameterType="java.util.Map">
+		<![CDATA[
+			UPDATE ${tableName} 
+							SET							 
+						 	PARENT_TEST_TYPE=#{rawAcrfLabs.parentTestType} 
+						, 	${testCodeColumn}=#{rawAcrfLabs.acrfTestCode}
+						,	${resultCodeColumn}= #{rawAcrfLabs.acrfResultCode}
+						,	COLLECTION_DATE=#{rawAcrfLabs.collectionDate} 
+						,	RAPID_TEST= #{rawAcrfLabs.rapidTest}
+						,	COPIES_ML= #{rawAcrfLabs.copiesMl} 
+						,	LOG=#{rawAcrfLabs.log}
+						,	OTHER_TEST= trim(upper(#{rawAcrfLabs.otherTest}))
+						,   MANUFACTURER = #{rawAcrfLabs.manufacturer,jdbcType=VARCHAR}
+						,   FACILITY_NAME = #{rawAcrfLabs.facilityName,jdbcType=VARCHAR}
+						,   FACILITY_EHARS_UID = #{rawAcrfLabs.facilityEharsUid,jdbcType=VARCHAR}
+						,   LAB_NAME = #{rawAcrfLabs.labName,jdbcType=VARCHAR}
+						,   CLIA = #{rawAcrfLabs.clia,jdbcType=VARCHAR}
+						,   PROV_NAME = #{rawAcrfLabs.providerName,jdbcType=VARCHAR}
+						, 	PROV_FNAME = #{rawAcrfLabs.providerFname,jdbcType=VARCHAR}
+						, 	PROV_LNAME = #{rawAcrfLabs.providerLname,jdbcType=VARCHAR}
+						, 	PROV_MNAME = #{rawAcrfLabs.providerMname,jdbcType=VARCHAR}
+						, 	PROV_SUFFIX = #{rawAcrfLabs.providerSuffix,jdbcType=VARCHAR}
+						, INDEX_VALUE = #{rawAcrfLabs.indexValue,jdbcType=VARCHAR}
+						, HIV1_CML_ANALYTE_RESULT     =      #{rawAcrfLabs.hiv1CmlAnalyteResult,jdbcType=VARCHAR}
+						, HIV1_LOG_ANALYTE_RESULT     =      #{rawAcrfLabs.hiv1LogAnalyteResult,jdbcType=VARCHAR}
+						, HIV12_AB_ANALYTE_RESULT     =      #{rawAcrfLabs.hiv12AbAnalyteResult,jdbcType=VARCHAR}
+						, HIV1_AB_ANALYTE_RESULT     =      #{rawAcrfLabs.hiv1AbAnalyteResult,jdbcType=VARCHAR}
+						, HIV1_AB_ANALYTE_RESULT_INDEX	= #{rawAcrfLabs.hiv1AbAnalyteResultIndex,jdbcType=VARCHAR}
+						, HIV2_AB_ANALYTE_RESULT	=		 #{rawAcrfLabs.hiv2AbAnalyteResult,jdbcType=VARCHAR}
+						, HIV2_AB_ANALYTE_RESULT_INDEX	= #{rawAcrfLabs.hiv2AbAnalyteResultIndex,jdbcType=VARCHAR}
+						, HIV1_AG_ANALYTE_RESULT	=		 #{rawAcrfLabs.hiv1AgAnalyteResult,jdbcType=VARCHAR}
+						, HIV1_AG_ANALYTE_RESULT_INDEX	= #{rawAcrfLabs.hiv1AgAnalyteResultIndex,jdbcType=VARCHAR}
+						, DIAGNOSTIC_ALGORITHM_STEP	= #{rawAcrfLabs.dignosticAlgorithm,jdbcType=VARCHAR}
+						, RAPID_TEST_TYPE	= #{rawAcrfLabs.rapidTestType,jdbcType=VARCHAR}
+						, INTERPRETATION	= #{rawAcrfLabs.interpretation,jdbcType=VARCHAR}
+						, ANALYTE_INTERPRETATION	= #{rawAcrfLabs.analyteInterpretation,jdbcType=VARCHAR}
+						, UPDATED_BY = #{workerId,jdbcType=VARCHAR}  
+						, UPDATED_DATE = SYSDATE
+						WHERE 
+							DOCUMENT_ID=#{rawAcrfLabs.documentId}	AND LAB_SRC_ID=#{rawAcrfLabs.labSrcId}
+																
+			
+		]]>
+	</update>
+	
+	
+	<update id="deleteRawAcrfCd4Data" parameterType="java.util.Map">
+		delete from ${tableName} where CD4_SRC_ID=#{rawAcrfCd4Tst.cd4SrcId} 	
+	</update>
+	
+	
+	<update id="deleteRawACRFLabs" parameterType="java.util.Map">
+		delete from ${tableName} where LAB_SRC_ID=#{labSrcId}
+	</update>
+	
+	
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestVO" id="getCodedAcrfTestTypesMap">
+		<result property="acrtTestCode" column="ACRF_TEST_CODE"/>
+		<result property="parentTestTypeCode" column="PARENT_TEST_TYPE_CODE"/>
+		<result property="acrtTestDesc" column="ACRF_TEST_DESC"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="createId" column="CREATE_ID"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="testSection" column="TEST_SECTION"/>
+		<result property="endId" column="END_ID"/>			
+	</resultMap>
+	
+	
+	<select id="getCodedAcrfResultTypes" resultMap="getCodedAcrfTestTypesMap">
+		<![CDATA[
+			select ACRF_TEST_CODE, PARENT_TEST_TYPE_CODE, ACRF_TEST_DESC, TEST_SECTION from CODED_ACRF_TEST where END_DATE is NULL or END_DATE > SYSDATE order by SORT_ORDER			
+		]]>	
+	</select>
+	
+	
+	
+	
+	
+	
+	
+		
+			
+			
+	<select id="getCodedAcrfTestResultTypes" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedAcrfTestResultVO">	
+				SELECT 
+					ACRF_RESULT_CODE acrfResultCode, 
+					ACRF_RESULT_DESC acrfResultDesc, 
+					PARENT_TEST_TYPE parentTestType,
+					ACRF_TEST_CODE acrfTestCode,
+					ACRF_REVISION acrfRevison  
+				FROM 
+					CODED_ACRF_TEST_RESULT				where  END_DATE is null and (ACRF_REVISION is null or ACRF_REVISION like '%'||#{acrfRevison}||'%')
+				<if test="whereCondition=='yes'">
+				 	and PARENT_TEST_TYPE=#{parentTestType} AND ACRF_TEST_CODE=#{acrfTestCode}  
+				 	
+				</if>
+				
+				order by SORT_ORDER asc
+	</select>
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.CodedParentTestTypeVO" id="getCodedParentTestTypesMap">
+		<result property="parentTestTypeCode" column="PARENT_TEST_TYPE_CODE"/>
+		<result property="parentTestTypeDesc" column="PARENT_TEST_TYPE_DESC"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="createId" column="CREATE_ID"/>
+		<result property="endDate" column="END_DATE"/>
+		<result property="endId" column="END_ID"/>			
+	</resultMap>	
+	
+	<select id="getCodedParentTestTypes" resultMap="getCodedParentTestTypesMap">
+		<![CDATA[			
+			SELECT * FROM CODED_PARENT_TEST_TYPE          
+		]]>	
+	</select>	
+	
+	 <update id="updateSurveillanceAssignmentWithAcrfDocId" parameterType="java.util.Map">
+
+	   UPDATE SURVEILLANCE_ASSIGNMENT set  ${crfDocColumnName} = #{crfDocumentId}, LAST_UPDATED_BY = #{lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE  where DOCUMENT_ID = #{documentId} 
+
+    </update>
+    
+	 <update id="updateSurveillanceAssignmentWithReabAcrfDocId" parameterType="java.util.Map">
+
+	   UPDATE SURVEILLANCE_ASSIGNMENT set  ${crfDocColumnName} = #{crfDocumentId} where DOCUMENT_ID = #{documentId} 
+
+    </update>    
+    
+ 	<select id="getEharsStandardFacilityDetails" resultType="String">  
+		select DISTINCT(EHARS_FAC_UID) from SUB_FACILITY where  SUB_FACILITY_ID > 0 and EHARS_FAC_UID is not null
+	</select>
+	
+	
+ 	<select id="getDocumentSourceList" resultType="java.util.Map">  
+		select DOCUMENT_SOURCE_CODE, DOCUMENT_SOURCE_DESCRIPTION from CODED_DOCUMENT_SOURCE order by DOCUMENT_SOURCE_DESCRIPTION
+	</select>
+	
+	
+ 	<select id="getAcrfOtherIdTypeList" resultType="java.util.Map">  
+		select OTHER_ID_TYPE, OTHER_ID_TYPE_DESC  from CODED_ACRF_OTHER_ID_TYPE order by    SORT_ORDER
+	</select>
+	
+	
+ 	<select id="getACRFReferenceData" resultType="java.util.Map" parameterType="String">  
+		select LOOKUP_CD, LOOKUP_NAME  from CODED_ACRF_REF_DATA where REF_COLUMN = #{referenceColumn} order by LOOKUP_NAME
+	</select>
+	
+	<select id="getClinicalLaboratoryDetails" resultType="java.util.Map">
+		SELECT CLIA, LAB_NAME  FROM lab_physical_facility WHERE flag_active = 'Y' and CLIA != '-9999' order by lab_name
+	</select>
+</mapper>

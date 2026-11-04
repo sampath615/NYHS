@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycPRFPartnerDAO">	
+
+
+  <select id="getNycPRFPartner" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycPRFPartnerVO" parameterType="int" >
+   SELECT DISTINCT std.PATIENT_ID ,
+       std.NYCPRF_DOCUMENT_ID  ,
+       std.FNAME,
+       std.MNAME,
+       std.LNAME,
+       std.ALT_NAME ,
+       std.ADDRESS as STD_ADDRESS,
+       std.CITY,
+       std.STATE,
+       std.ZIP,
+      std.PLUS4,
+       std.HOME_PHONE,
+       std.CELL_PHONE,
+       std.PAGER,
+       std.EMAIL,
+       std.DOB_TEXT,
+       std.AGE,
+       std.CURRENT_GENDER ,
+       std.ETHNICITY,
+       std.RACE_WHITE,
+       std.RACE_BLACK,
+       std.RACE_ASIAN,
+       std.RACE_INDIAN,
+       std.RACE_PACIFIC,
+       std.RACE_UNKNOWN,
+       std.RACE_OTHER,
+       std.RACE_OTHER_TEXT,
+       std.COMPLEXION_PARTNER ,
+       std.HAIR_PARTNER ,
+       std.HEIGHT,
+       std.WEIGHT,
+       std.PLACE_OF_EMPLOYMENT,
+       std.WORK_HOURS,
+       std.WORK_PHONE,
+       std.MARITAL_CODE ,
+       std.PREGNANT,
+       std.SPOUSE,
+       std.DVSCREEN ,
+       std.RISK_VIOLENCE ,
+       std.PARTNER_ASSISTANCE_STATUS,
+       std.PARTNER_TEST_DATE_TEXT ,
+       std.PARTNER_STATUS,
+       std.PARTNER_TEST_DATE_TEXT ,
+       std.HDISP_DT HDISP_DT  ,
+       std.CREATE_UID ,
+       std.CREATE_DATE,
+       std.INFORMED_DATE,
+       std.HIGH_PRIORITY,
+       std.ELICITED_BY_PNAP,
+       std.ELICITED_BY_ACT,
+       raw1.PRTADDRESS  as raw_address
+  FROM RAW_NYCPRF_PARTNER    RAW1 , STD_NYCPRF_PARTNER   std
+  WHERE Raw1.PATIENTID   = std.PATIENT_ID  
+AND  RAW1.NYCPRF_DOCUMENT_ID = #{docId}
+  </select>
+  
+  
+  
+</mapper>

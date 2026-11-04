@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ClericalReviewDAO">
+
+	<resultMap id="clericalReviewDocAndStatenos" type="java.util.Map">
+		<result column="DOCUMENT_ID" property="documentId" jdbcType="DECIMAL" />
+		<result column="DOCUMENT_TYPE_CODE" property="documentType"
+			jdbcType="VARCHAR" />
+			<result column="TEST_TYPE_CD" property="testTypeCd"
+			jdbcType="VARCHAR" />
+			
+		<collection javaType="ArrayList" ofType="String" column="DOCUMENT_ID"
+			property="stateno">
+			<result column="POT_STATENO" property="stateno" jdbcType="VARCHAR"				 />
+		</collection>
+	</resultMap>
+
+
+	
+	<select id="getClericalDocuments" resultType="int" parameterType="java.util.Map">
+		select DISTINCT(DOCUMENT_ID) from RAW_DOCUMENT_MATCH_SUMMARY where  
+		
+		<if test="documentToReview != 'ALL' and documentToReview != ''">
+			document_type_code = #{documentToReview} and 
+		</if>
+		
+		flag_match_cd = #{reviewType}
+		and document_id = qs_parent_doc_id
+	</select>
+	
+	
+	
+	
+	
+	<select id="getPotentialStatenosForDinDoccsDocument" resultType="String" parameterType="Integer">
+		select DISTINCT(POT_STATENO) from nyehms_Sasdb_owner.er_person_clusters_Stage where document_id in (select document_id from std_din_doccs_doc where doccs_doc_id in (select doccs_doc_id from std_din_doccs_doc where document_id = #{documentId})) and MATCH_CD = 'C'
+	</select>
+	 
+	
+	<select id="getDocumentIdAndPotentialMatchesForStatenos"
+		resultMap="clericalReviewDocAndStatenos" parameterType="java.util.Map">
+		
+		 SELECT match_res_id,
+            match_summ_id,
+            document_id,
+            document_type_code,
+            pot_stateno,
+            TEST_TYPE_CD 
+       FROM (SELECT t_rdmr.match_res_id,
+                    t_rdmr.match_summ_id,
+                    t_rdmr.document_id,
+                    t_dl.DOCUMENT_TYPE_CODE document_type_code,
+                    t_dl.TEST_TYPE_CD TEST_TYPE_CD,
+                    t_rdmr.pot_stateno,
+                    MOD (match_summ_id * EXTRACT (SECOND FROM SYSTIMESTAMP),
+                         1500)
+                       rand_order -- just for randomness of ordering and to give simultaneous users potentially different docs to review
+               FROM    raw_document_match_results t_rdmr
+                    INNER JOIN
+                       document_locator t_dl
+                    ON t_dl.document_id = t_rdmr.document_id
+              WHERE t_rdmr.match_cd = #{reviewType} and t_dl.document_id = #{documentId}
+                    AND EXISTS
+                           (SELECT 1
+                              FROM raw_document_match_summary t_rdms
+                             WHERE t_rdms.document_id = t_rdms.qs_parent_doc_id
+                                   AND t_rdms.match_summ_id =
+                                          t_rdmr.match_summ_id
+                                   AND t_rdms.flag_match_cd = #{reviewType}
+                                   AND t_rdms.reviewed_date IS NULL))
+   ORDER BY rand_order
+		
+	</select>
+	
+	<select id="getTotalDocCountToReviewInDataFluxStage" parameterType="java.util.Map" resultType="int">
+			select count(DOCUMENT_ID) from nyehms_Sasdb_owner.er_person_clusters_Stage where REVIEW_DATE is null and current_process_Status in (17) and doc_type = #{documentType}  
+		
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND file_name =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	
+	</select>
+	
+	<select id="getDatafluxStagedDocumentToReview" resultType="java.util.Map" parameterType="java.util.Map">
+	  <![CDATA[
+		select DOCUMENT_ID, MATCH_CD, FUZZY_CLUSTER_ID, CLUSTER_ID, POT_STATENO, DOC_TYPE from (select DOCUMENT_ID, MATCH_CD, 
+		
+		
+		FUZZY_CLUSTER_ID, CLUSTER_ID, POT_STATENO, DOC_TYPE,
+		
+		MOD (DOCUMENT_ID * TO_NUMBER(to_char(SYSTIMESTAMP,'FF')),
+                         1500)
+                       rand_order from nyehms_Sasdb_owner.er_person_clusters_Stage where REVIEW_DATE is null and current_process_Status in (17)  and doc_type = #{documentType}  
+		]]>
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND file_name =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	        <![CDATA[
+	   ORDER BY rand_order ) where ROWNUM < 2 ]]>
+	</select>
+	
+	
+	<select id="getClusterPartnerReviewDocuments" parameterType="java.util.Map" resultType="int">
+		 select count(DOCUMENT_ID) from ${tableName} where REVIEW_DT is null and current_process_Status in (17)  
+		
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	         
+	</select>
+	
+	
+	
+	<select id="getDocumentsCountToReviewWithSearchCriteria" parameterType="java.util.Map" resultType="int">
+	  select count(DOCUMENT_ID) from ${tableName} where REVIEW_DT is null and current_process_Status in (17)  
+		
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND ${fileName} =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	        
+	</select>
+	
+	<select id="getQualityStagedDocumentToReview" resultType="java.util.Map">
+	  <![CDATA[
+		select DOCUMENT_ID, MATCH_CD from (select DOCUMENT_ID, MATCH_CD, MOD (DOCUMENT_ID * TO_NUMBER(to_char(SYSTIMESTAMP,'FF')),
+                         1500)
+                       rand_order from ${tableName} where REVIEW_DT is null and current_process_Status in (17)  
+		]]>
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND ${fileName} =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	        <![CDATA[
+	   ORDER BY rand_order ) where ROWNUM < 2 ]]>
+	</select>
+	
+	
+	<select id="getDocumentsCountToReviewWithSearchCriteriaByParent" parameterType="java.util.Map" resultType="int">
+	  select count(distinct(QS_PARENT_DOC_ID)) from ${tableName} where 
+	  
+	  	  <choose>
+	  	  	<when test="documentType == 'RESISTANCE'">
+	  	  		REVIEW_DATE is null
+	  	  	</when>
+	  	  	<otherwise>
+	  	  		REVIEW_DT is null	
+	  	  	</otherwise>
+	  	  </choose>
+		   
+	  
+		  and current_process_Status in (17)  
+		
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND ${fileName} =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	        
+	</select>
+	
+	<select id="getQualityStagedDocumentToReviewByParent" resultType="java.util.Map">
+
+		select QS_PARENT_DOC_ID DOCUMENT_ID, MATCH_CD from (select QS_PARENT_DOC_ID, MATCH_CD, MOD (QS_PARENT_DOC_ID * TO_NUMBER(to_char(SYSTIMESTAMP,'FF')),
+                         1500)
+                       rand_order from ${tableName} where 
+                       
+                
+	  	  <choose>
+	  	  	<when test="documentType == 'RESISTANCE'">
+	  	  		REVIEW_DATE is null
+	  	  	</when>
+	  	  	<otherwise>
+	  	  		REVIEW_DT is null	
+	  	  	</otherwise>
+	  	  </choose>
+                       
+                       
+                        and current_process_Status in (17)  
+		
+		  <if test="filterCriteriaForStatusCode != null and filterCriteriaForStatusCode != '' and filterCriteriaForStatusCode != 'ALL'" >
+	        AND MATCH_CD =  #{filterCriteriaForStatusCode} 
+	      </if>
+	      <if test="filterCriteriaForFileName != null and filterCriteriaForFileName != '' and filterCriteriaForFileName != 'ALL'" >
+	        AND ${fileName} =  #{filterCriteriaForFileName} 
+	      </if>
+	      <if test="filterCriteriaForFileType != null and filterCriteriaForFileType != '' and filterCriteriaForFileType != 'ALL'" >
+	        AND FILE_TYPE_CD =  #{filterCriteriaForFileType} 
+	      </if>
+	        
+	   ORDER BY rand_order )	  <![CDATA[  where  ROWNUM < 2 ]]>
+	</select>
+	
+	
+	<select id="getStatnosForClericalDocument" resultType="String" parameterType="bigdecimal">
+		select distinct(POT_STATENO) from RAW_DOCUMENT_MATCH_RESULTS where document_id = #{document_id} and POT_STATENO is not null
+	</select>
+	
+	<select id="getMatchingStatnoForDocument" parameterType="java.util.Map" resultType="String">
+		select MATCHED_STATENO from ${tableName} where document_id = #{DOCUMENT_ID}
+	</select>
+	
+	<select id="matchDocumentToStateno" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.pr_match_document_to_stateno(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+			#{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	      
+	
+	
+	<select id="noMatchForADocument" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.pr_no_match_for_document(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{P_document_type,jdbcType=VARCHAR,mode=IN},
+			#{p_stateno_out,jdbcType=VARCHAR,mode=OUT},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+	
+	
+	<select id="qualityStagedDocumentManualReviewForEPRFOOC" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.pr_EPRF_QS_review(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+		    #{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+		    #{p_mtch_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+	
+	<select id="qualityStagedDocumentManualReviewForNycIJR" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.PR_NYCIJR_QS_REVIEW(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+		    #{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+		    #{p_mtch_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+
+	<select id="qualityStagedDocumentManualReviewForICCR" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.pr_iccr_qs_review(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+		    #{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+		    #{p_mtch_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+		<select id="qualityStagedDocumentManualReviewForADAP" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.PR_ADAP_QS_REVIEW(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+		    #{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+		    #{p_mtch_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+	
+	<select id="qualityStagedDocumentManualReviewForResistance" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_clerical_review.pr_resistance_qs_review(
+		    #{p_raw_document_id,jdbcType=INTEGER,mode=IN},
+		    #{p_mtch_stateno,jdbcType=VARCHAR,mode=IN},
+		    #{p_mtch_cd,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_msg_out,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+	
+	
+	<select id="getQualityStageStatusCodesForTheFileName" parameterType="java.util.Map" resultType="String">
+			select distinct(MATCH_CD) from ${stdTableName} where REVIEW_DT is null and current_process_Status = 17
+			      <if test="fileName != null and fileName != '' and fileName != 'ALL'" >
+			        AND ${fileNameRefColumn} =  #{fileName} 
+			      </if>
+	</select>
+		
+	
+	<select id="getClericalReviewAvailabeDocumentTypes" resultType="String">
+		select distinct(DOCUMENT_TYPE_CODE) from NYEHMS_DOCUMENT_CLERIC_RVW_VW
+	</select>			
+	
+	<select id="getClericalLabDeathReviewAvailabeDocumentTypes" resultType="String">
+	
+		select distinct DOCUMENT_TYPE_CODE from RAW_DOCUMENT_MATCH_SUMMARY where FLAG_MATCH_CD = 'P' and document_id = qs_parent_doc_id
+	
+	</select>
+	
+	<select id="getDatafluxAvailabeDocumentTypes" resultType="String" parameterType="java.util.Map">
+		select distinct doc_type from nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE where match_cd = #{p_reviewType} and current_process_Status = 17 and doc_type not in ('ADAP')
+		
+		
+			and doc_type IN (SELECT *
+                             FROM TABLE(get_user_permissions(#{p_module_id}, #{p_worker_id})))
+		
+		
+	</select>
+	
+	<select id="getDatafluxClericalDocuments" resultType="int" parameterType="java.util.Map">
+		select DISTINCT(DOCUMENT_ID) from nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE where  
+		
+		  <choose>
+	  	  	<when test="documentToReview != 'ALL' and documentToReview != ''">
+	  	  		doc_type = #{documentToReview} and 
+	  	  	</when>
+	  	  	<when test="documentToReview == 'ALL'">
+	  	  		doc_type not in ('ADAP')  and 
+	  	  	</when>
+	  	  </choose>
+	  	  
+		match_cd = #{reviewType}
+	</select>
+	
+	<select id="getDatafluxClericalReviewDocumentDetails" resultType="java.util.Map" parameterType="java.util.Map">
+		
+		SELECT Distinct a.fuzzy_cluster_id, a.cluster_id, a.match_cd, a.document_id, a.POT_STATENO, d.document_type_code, d.TEST_TYPE_CD
+  FROM nyehms_sasdb_owner.er_person_clusters_stage a, document_locator d
+WHERE a.document_id = #{documentId}
+   AND a.document_id = d.document_id
+		
+	</select>
+	
+	
+	<select id="getClusterPartnerReviewDocumentDetails" resultType="java.util.Map" parameterType="java.util.Map">
+		
+   
+   SELECT Distinct PARTNER_ID fuzzy_cluster_id, '' cluster_id, flux_match_cd match_cd, PARTNER_ID document_id, FLUX_POT_STATENO POT_STATENO, 'CLUST_PART' document_type_code, '' TEST_TYPE_CD
+  FROM NYEHMS_CLUSTER_PARTNERS
+WHERE document_id = #{documentId}
+		
+	</select>
+	
+	
+	<select id="getDatafluxDocumentIdAndPotentialMatchesForStatenos"
+		parameterType="java.util.Map" resultType="String">
+		
+		select pdoc.stateno pot_stateno from nyehms_Sasdb_owner.ER_PERSON_CLUSTERS clust, person_doc_Association pdoc, document_locator doc_loc where doc_loc.document_id = pdoc.document_id and pdoc.document_id = clust.document_id and 
+ dissassociation_Date is null and  FUZZY_CLUSTER_ID in ( select FUZZY_CLUSTER_ID from nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE where document_id = #{documentId})
+ 	</select>
+ 	
+ 	<select id="getDatafluxFileNamesToReview" parameterType="String" resultType="String">
+ 		select distinct FILE_NAME from nyehms_sasdb_owner.er_person_clusters_Stage where doc_type = #{docType} and current_process_STatus = 17
+ 	</select>
+	
+	
+	
+	<update id="updateMatchDetailsInStageTable" parameterType="java.util.Map">
+		update nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE set current_process_Status = #{CURRENT_PROCESS_STATUS}, MATCHED_STATENO = #{stateno,jdbcType=VARCHAR}, match_cd = #{UPDATED_MATCH_CD},  REVIEW_UID = #{p_worker_id}, REVIEW_DATE = sysdate where 
+		<choose>
+			<when test="p_fuzzy_cluster_id != null">
+				fuzzy_cluster_id = #{p_fuzzy_cluster_id}
+			</when>
+			<when test="p_cluster_id != null">
+				CLUSTER_ID = #{p_cluster_id}
+			</when>
+		</choose>
+		and match_Cd = #{ACTUAL_MATCH_CD} and current_process_Status=17
+		<if test="p_document_id != null">
+		and document_id = #{p_document_id}		
+		</if>
+	</update>
+	
+	<select id="isTheDocumentValidToProcess" parameterType="java.util.Map" resultType="String">
+		select distinct 'Y' from  nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE where 
+		<choose>
+			<when test="p_fuzzy_cluster_id != null">
+				fuzzy_cluster_id = #{p_fuzzy_cluster_id}
+			</when>
+			<when test="p_cluster_id != null">
+				CLUSTER_ID = #{p_cluster_id}
+			</when>
+		</choose>
+		and current_process_Status = 17 and (valid_parent in ('Y', 'P') or doc_type in ('HIV_LAB', 'PRF', 'NYC_PRF', 'ADAP'))
+	</select>
+
+
+		<select id="processDatafluxStageDocument" parameterType="java.util.Map"  statementType="CALLABLE" >
+		{call  pkg_process_dataflux_results.pr_process_match_results(
+		    #{p_cluster_id,jdbcType=INTEGER,mode=IN},
+		    #{p_fuzzy_cluster_id,jdbcType=INTEGER,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out,jdbcType=INTEGER,mode=OUT},
+			#{p_err_msg,jdbcType=VARCHAR,mode=OUT},
+			#{p_user_msg,jdbcType=VARCHAR,mode=OUT}
+			
+		)}
+	</select>
+	
+	
+
+	
+	
+		<update id="updateNotaMatchDetailsInStageTable" parameterType="java.util.Map">
+		update nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE set match_cd = 'C_N',  REVIEW_UID = #{worker_id}, REVIEW_DATE = sysdate where fuzzy_cluster_id = #{fuzzyClusterId}   and match_Cd = 'C' and current_process_Status=17
+	</update>
+
+	<update id="updateNotaMatchDetailsInClustersTable" parameterType="java.util.Map">
+		update nyehms_Sasdb_owner.ER_PERSON_CLUSTERS set match_cd = 'C_N', current_process_Status = 47, REVIEW_UID = #{worker_id}, REVIEW_DATE = sysdate  where fuzzy_cluster_id = #{fuzzyClusterId}   and match_Cd = 'C' and current_process_Status=17
+	</update>
+	
+	<select id="getDFStatusCodesForTheFileName" parameterType="java.util.Map" resultType="String">
+		select distinct(MATCH_CD) from nyehms_Sasdb_owner.ER_PERSON_CLUSTERS_STAGE where REVIEW_DATE is null and current_process_Status = 17 and DOC_TYPE = #{documentType} 
+			      <if test="fileName != null and fileName != '' and fileName != 'ALL'" >
+			        AND file_name =  #{fileName} 
+			      </if>		
+	</select>		
+</mapper>

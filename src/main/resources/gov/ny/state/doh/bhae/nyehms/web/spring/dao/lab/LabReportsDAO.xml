@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LabReportsDAO">
+
+
+ 	 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FeedbackReportOverallSummaryVO" id="feedBackMedicalReport"> 
+		
+	 	<result property="generateTotalPRFS" column="G_TOTAL_PRFS"   jdbcType="VARCHAR"/>
+	 	<result property="raceFilledCount" column="RACE_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="raceFilledPercentage" column="RACE_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="genderFilledCount" column="GENDER_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="genderFilledPercenage" column="GENDER_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="dobFilledCount" column="DOB_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="dobFilledPercentage" column="DOB_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="ethnicityFilledCount" column="ETH_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="ethnicityFilledPercentage" column="ETH_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="dodFilledCount" column="DOD_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="dodFilledPercentage" column="DOD_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="allRiskFilledCount" column="ALL_RISK_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="allRiskFilledPercentage" column="ALL_RISK_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="percentageCompleted14Days" column="PCT_COMPLETED_14_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageCompleted29Days" column="PCT_COMPLETED_29_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageCompleted44Days" column="PCT_COMPLETED_44_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageCompleted59Days" column="PCT_COMPLETED_59_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageCompletedDaysUnknown" column="PCT_DAYS_UNKNOWN"   jdbcType="VARCHAR"/>
+	 	
+	 	
+	 	<result property="percentageInFormed2Days" column="PCT_INFORMED_2_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageInFormed6Days" column="PCT_INFORMED_6_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageInFormed2Weeks" column="PCT_INFORMED_2_WEEKS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageInFormed2PlusWeeks" column="PCT_INFORMED_2_PLUS_WEEKS"   jdbcType="VARCHAR"/>
+	 	<result property="percentageInFormedDausUnkonwn" column="PCT_INFORMED_UNKNOWN"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="testingTreatmentHistoryCount" column="TTH_COMP_COUNT"   jdbcType="VARCHAR"/>
+	 	<result property="testingTreatmentHistoryPercentage" column="TTH_COMP_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="dohAssistanceRequiredCount" column="DOH_ASSISTANCE_REQ_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="dohAssistanceRequiredPercent" column="DOH_ASSISTANCE_REQ_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="totalPartnersReported" column="TOTAL_PARTNERS_REPORTED"   jdbcType="VARCHAR"/>
+	 	<result property="numberAssistanceStatusProvided" column="NUM_ASSISTANCE_STATUS_PROVIDED"   jdbcType="VARCHAR"/>
+	 	<result property="percentAssistanceStatusProvided" column="PCT_ASSISTANCE_STATUS_PROVIDED"   jdbcType="VARCHAR"/>
+	 	<result property="numberPartnerNotified" column="NUM_PARTNER_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	<result property="percentPartnerNotified" column="PCT_PARTNER_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	<result property="numberPartnerNotNotified" column="NUM_PARTNER_NOT_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	<result property="percentPartnerNotNotified" column="PCT_PARTNER_NOT_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="initialDiagnoseCount" column="INIT_DIAG_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="aidsDiagnoseCount" column="AIDS_DIAG_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="hivDiagnoseCount" column="HIV_DIAG_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="topRiskReportedCategory" column="TOP_RISK_REPORTED_CAT"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="partnerContactNamedCount" column="PRTNRS_CDNT_NAMED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="partnerContactNamedPercentage" column="PRTNRS_CDNT_NAMED_PCT"   jdbcType="VARCHAR"/>
+	 	
+		<result property="address1" column="address_line1"   jdbcType="VARCHAR"/>
+		<result property="address2" column="address_line2"   jdbcType="VARCHAR"/>
+	 	<result property="phoneNumber" column="phone_number"   jdbcType="VARCHAR"/>
+	 	<result property="providerName" column="PROVIDER_NAME"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="newlyDiagnosedHIVPercentage" column="new_diag_inf_pct"   jdbcType="VARCHAR"/>
+	 	<result property="totalHIVIncidenceReported" column="total_hiv_incidence_reported"   jdbcType="VARCHAR"/>
+	 		 	
+	 	</resultMap>
+	 	
+	 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.FeedbackReportStateSummaryVO" id="feedBackMedicalReportState"> 
+	 	
+	 	<result property="generateStatePRFS" column="G_STATE_PRFS"   jdbcType="VARCHAR"/>
+	 	<result property="stateRaceFilledCount" column="ST_RACE_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateRaceFilledPercentage" column="ST_RACE_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateGenderFilledCount" column="ST_GENDER_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateGenderFilledPercenage" column="ST_GENDER_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateDobFilledCount" column="ST_DOB_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateDobFilledPercentage" column="ST_DOB_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateEthnicityFilledCount" column="ST_ETH_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateEthnicityFilledPercentage" column="ST_ETH_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateDodFilledCount" column="ST_DOD_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateDodFilledPercentage" column="DOD_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateAllRiskFilledCount" column="ST_ALL_RISK_FILLED_CNT"   jdbcType="VARCHAR"/>
+	 	<result property="stateAllRiskFilledPercentage" column="ST_ALL_RISK_FILLED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageCompleted14Days" column="ST_PCT_COMPLETED_14_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageCompleted29Days" column="ST_PCT_COMPLETED_29_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageCompleted44Days" column="ST_PCT_COMPLETED_44_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageCompleted59Days" column="ST_PCT_COMPLETED_59_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageCompletedDaysUnknown" column="ST_PCT_DAYS_UNKNOWN"   jdbcType="VARCHAR"/>
+	 	
+	 	
+	 	<result property="statePercentageInFormed2Days" column="ST_PCT_INFORMED_2_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageInFormed6Days" column="ST_PCT_INFORMED_6_DAYS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageInFormed2Weeks" column="ST_PCT_INFORMED_2_WEEKS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageInFormed2PlusWeeks" column="ST_PCT_INFORMED_2_PLUS_WEEKS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageInFormedDausUnkonwn" column="ST_PCT_INFORMED_UNKNOWN"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="stateTestingTreatmentHistoryPercentage" column="ST_TTH_EXIST_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="stateDohAssistanceRequiredPercent" column="ST_DOH_ASSISTANCE_REQ_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="statePartnerContactNamedPercentage" column="ST_PRTNRS_CDNT_NAMED_PCT"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentageAssistanceStatusProvided" column="ST_PCT_ASST_STATUS"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentagePartnerNotified" column="ST_PCT_PARTNER_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	<result property="statePercentagePartnerNotNotified" column="ST_PCT_PARTNER_NOT_NOTIFIED"   jdbcType="VARCHAR"/>
+	 	
+	 	</resultMap>
+	 	
+
+
+	<select id="getFeedbackMedicalReport" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  pkg_reporting.pr_gen_provider_summary_rpt(
+			#{p_provider_id,jdbcType=VARCHAR,mode=IN},
+			#{p_overall_summary,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=feedBackMedicalReport},
+			#{p_state_summary,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=feedBackMedicalReportState}
+		)}  
+	</select> 
+	
+	
+   
+	<resultMap id="getClinicalLaboratoriesList" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.ClinicalLaboratoryVO" >
+	    <result column="CLIA" property="clia" jdbcType="VARCHAR" />
+	    
+	    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabFacilitiesVO" column="CLIA" property="labFacilities">
+		    <id column="PFI"  property="pfi" jdbcType="VARCHAR" />
+		    <result column="LAB_NAME" property="labName" jdbcType="VARCHAR" />
+		    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		    <result column="CITY" property="city" jdbcType="VARCHAR" />
+		    <result column="STATE" property="state" jdbcType="VARCHAR" />
+		    <result column="ZIP" property="zipCode" jdbcType="VARCHAR" />
+		    <result column="COUNTRY" property="country" jdbcType="VARCHAR" />
+		    <result column="FLAG_ACTIVE" property="flagActive" jdbcType="VARCHAR" />
+		    <result column="LAFT_STAFF" property="laftStaffAssigned" jdbcType="VARCHAR" />
+		</collection>
+		
+		
+    </resultMap>
+    
+     <resultMap id="labFacilitiesList" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabFacilitiesVO" >
+		    <id column="PFI"  property="pfi" jdbcType="VARCHAR" />
+		    <result column="LAB_NAME" property="labName" jdbcType="VARCHAR" />
+		    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+		    <result column="CITY" property="city" jdbcType="VARCHAR" />
+		    <result column="STATE" property="state" jdbcType="VARCHAR" />
+		    <result column="ZIP" property="zipCode" jdbcType="VARCHAR" />
+		    <result column="COUNTRY" property="country" jdbcType="VARCHAR" />
+		    <result column="FLAG_ACTIVE" property="flagActive" jdbcType="VARCHAR" />
+		    <result column="LAFT_STAFF" property="laftStaffAssigned" jdbcType="VARCHAR" />
+		    
+		</resultMap>
+    
+	<select id="getLabSearchResults" parameterType="java.util.Map" resultMap="getClinicalLaboratoriesList">
+			SELECT * FROM TABLE(pkg_lab_maintenance.fn_lab_search (#{p_clia}, #{p_pfi}, #{p_lab_name}, #{p_address}, #{p_city}, #{p_state}, #{p_zip}, #{p_country}, #{p_submission_type}))
+	</select> 	
+	
+	<select id="getLabDetails" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  pkg_lab_maintenance.pr_fetch_lab_profile(
+			#{p_pfi,jdbcType=VARCHAR,mode=IN},
+			#{p_permits,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getLabPermits},
+			#{p_loinc_codes,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getLabLoincCodes},
+			#{p_local_codes,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getLabLocalCodes},
+			#{p_map_codes,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getLabMapCodes}
+		)}  
+	</select> 
+	
+	
+	<resultMap id="getLabPermits" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabPermitsVO" >
+    	<result column="LAB_PERMIT_ID" property="labPermitId" jdbcType="VARCHAR" />
+        <result column="PERMIT_CD" property="permitCode" jdbcType="VARCHAR" />
+	    <result column="PERMIT_DESCRIPTION" property="permitDescription" jdbcType="VARCHAR" />
+	    <result column="DATE_VALID_FROM" property="dateValidFrom" jdbcType="VARCHAR" />
+	    <result column="DATE_VALID_TILL" property="dateValidTill" jdbcType="VARCHAR" />
+	    <result column="BHAE_CERTIFICATION_DATE" property="bhaeCertDate" jdbcType="VARCHAR" />
+	    <result column="PERMIT_FLAG_ACTIVE" property="permitFlagActive" jdbcType="VARCHAR" />
+	    <result column="PERMIT_LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	    <result column="PERMIT_LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+	    <result column="BHAE_REPORTING_STATUS" property="reportingStatus" jdbcType="VARCHAR" />
+	    <result column="permit_comments" property="comments" jdbcType="VARCHAR" />
+	    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInstrumentDetailsVO" column="LAB_PERMIT_ID" property="instrumentDetails">
+		    <id column="LPI_ID"  property="lpiId" jdbcType="VARCHAR" />
+		    <result column="HIV_INSTRUMENT_ID" property="hivInstrumentId" jdbcType="VARCHAR" />
+		    <result column="HIV_INSTRUMENT_CD" property="hivInstrumentCode" jdbcType="VARCHAR" />
+		    <result column="INSTRUMENT_NAME" property="instrumentName" jdbcType="VARCHAR" />
+		    <result column="INST_FLAG_ACTIVE" property="instrumentFlagActive" jdbcType="VARCHAR" />
+		    <result column="INST_LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+		    <result column="INST_LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+		    <result column="PERMIT_INSTR_STARTDATE" property="dateValidFrom" jdbcType="VARCHAR" />
+	    	<result column="PERMIT_INSTR_ENDDATE" property="dateValidTill" jdbcType="VARCHAR" />
+		 </collection>
+	</resultMap>
+	
+	
+	<resultMap id="getLabLoincCodes" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO" >
+    	<result column="LAB_LOINC_MAP_ID" property="loincMapId" jdbcType="VARCHAR" />
+        <result column="LOINC_CD" property="loincCode" jdbcType="VARCHAR" />
+	    <result column="DESCRIPTION" property="loincDescription" jdbcType="VARCHAR" />
+	    <result column="UNIT_OF_RESULT" property="unitOfResult" jdbcType="VARCHAR" />
+	    <result column="TEST_TYPE" property="testType" jdbcType="VARCHAR" />
+	    <result column="FLAG_ACTIVE" property="flagActive" jdbcType="VARCHAR" />
+	    <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	    <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+	    <result column="START_DATE" property="dateValidFrom" jdbcType="VARCHAR" />
+	    <result column="END_DATE" property="dateValidTill" jdbcType="VARCHAR" />
+	    <result column="TEST_KIT" property="testKit" jdbcType="VARCHAR" />
+	    <result column="TEST_KIT_DESC" property="testKitDesc" jdbcType="VARCHAR" />
+	    <result column="INSTRUMENT" property="instrument" jdbcType="VARCHAR" />
+	    <result column="INSTRUMENT_DESC" property="instrumentDesc" jdbcType="VARCHAR" />
+	    <result column="VL_DETECTION_LEVEL" property="vlDetectionLevel" jdbcType="VARCHAR" />
+	    <result column="DETECTION_DESC" property="vlDetectionLevelDesc" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	
+	<resultMap id="getLabLocalCodes" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLocalCodesMappingVO" >
+    	<result column="LAB_LOCAL_CD_MAP_ID" property="localCodeMapId" jdbcType="VARCHAR" />
+        <result column="LOCAL_CD" property="localCode" jdbcType="VARCHAR" />
+	    <result column="LOCALCD_FLAG_ACTIVE" property="localCodeFlagActive" jdbcType="VARCHAR" />
+	    <result column="LOCALCD_LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+	    <result column="LOCALCD_LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+	    <result column="LC_CODE_START_DATE" property="dateValidFrom" jdbcType="VARCHAR" />
+	    <result column="LC_CODE_END_DATE" property="dateValidTill" jdbcType="VARCHAR" />
+	    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabLoincMappingVO" column="LAB_LOCAL_CD_MAP_ID" property="loincMappingDetails">
+	    	<id column="LAB_LOCAL_CD_LOINC_MAP_ID"  property="localCodeLoincMapId" jdbcType="VARCHAR" />
+	        <result column="LAB_LOINC_MAP_ID"  property="loincMapId" jdbcType="VARCHAR" />
+		    <result column="LOINC_CD" property="loincCode" jdbcType="VARCHAR" />
+		    <result column="DESCRIPTION" property="loincDescription" jdbcType="VARCHAR" />
+		    <result column="FLAG_ACTIVE" property="flagActive" jdbcType="VARCHAR" />
+		    <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+		    <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" />
+		    <result column="LOINC_START_DATE" property="dateValidFrom" jdbcType="VARCHAR" />
+	    	<result column="LOINC_END_DATE" property="dateValidTill" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	
+	<resultMap id="getLabMapCodes" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabTestMappingVO" >
+    	<result column="lab_local_cd_map_id" property="localCodeMapId" jdbcType="VARCHAR" javaType="String" />
+        <result column="lab_local_test_cd" property="testCode" jdbcType="VARCHAR" javaType="String"/>
+	    <result column="lab_local_test_desc" property="testDescription" jdbcType="VARCHAR" javaType="String" />
+	    <result column="FLAG_ACTIVE" property="flagActive" jdbcType="VARCHAR" javaType="String" />
+	    <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" javaType="String" />
+	    <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="VARCHAR" javaType="String" />
+	    <result column="START_DATE" property="dateValidFrom" jdbcType="VARCHAR" javaType="String" />
+	    <result column="END_DATE" property="dateValidTill" jdbcType="VARCHAR" javaType="String" />
+	</resultMap>
+	
+	  <resultMap type="java.util.Map" id="permitCodesAndDescriptionsMap"> 	
+ 	  	<result property="permitCode"  column="PERMIT_CD"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="permitDescription" column="PERMIT_DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getActiveAssociatedPermitCodesAndDescriptions" parameterType="String" resultMap="permitCodesAndDescriptionsMap">
+		SELECT PERMIT_CD,PERMIT_DESCRIPTION   FROM coded_permits cp 
+             WHERE NOT EXISTS (SELECT permit_cd FROM lab_permits lp 
+                 WHERE lp.pfi = #{pfi}
+                      AND (lp.DATE_VALID_TILL IS NULL OR lp.DATE_VALID_TILL > SYSDATE)
+                      AND lp.permit_cd = cp.permit_cd)
+		 
+	</select>
+	
+	<select id="getPermitCodesAndDescriptionsForEdit" parameterType="String" resultMap="permitCodesAndDescriptionsMap">
+		SELECT PERMIT_CD,PERMIT_DESCRIPTION   FROM coded_permits		 
+	</select>	
+	
+	<resultMap type="java.util.Map" id="instrumentCodesAndDescriptionsMap"> 	
+ 	  	<result property="instrumentId"  column="HIV_INSTRUMENT_ID"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="instrumentName" column="INSTRUMENT_NAME" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getActiveAssociatedInstrumentCodesAndDescriptions" parameterType="long"  resultMap="instrumentCodesAndDescriptionsMap">
+		          SELECT *  FROM CODED_HIV_INSTRUMENTS chi 
+             WHERE NOT EXISTS (SELECT HIV_INSTRUMENT_ID FROM LAB_PERMIT_INSTRUMENTS lpi
+                 WHERE lpi.LAB_PERMIT_ID = #{labPermitId}
+                      AND (lpi.END_DATE IS NULL OR lpi.END_DATE > SYSDATE) 
+                      AND lpi.HIV_INSTRUMENT_ID = chi.HIV_INSTRUMENT_ID)
+                      AND HIV_INSTRUMENT_CD IS NOT NULL ORDER BY INSTRUMENT_NAME
+	</select>
+	
+	<select id="getInstrumentCodesAndDescriptions" resultMap="instrumentCodesAndDescriptionsMap">
+		 SELECT * FROM CODED_HIV_INSTRUMENTS WHERE HIV_INSTRUMENT_CD IS NOT NULL ORDER BY INSTRUMENT_NAME
+	</select>
+	
+	<resultMap type="java.util.Map" id="loincCodesAndDescriptionsMap"> 	
+ 	  	<result property="loincCd"  column="LOINC_CD"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="loincDescription" column="DESCRIPTION" jdbcType="VARCHAR" javaType="String"/>
+		<result property="loincMapId" column="LAB_LOINC_MAP_ID" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	    
+			
+	<select id="getActiveAndNonAssociatedLabLoincDescriptionDetails" parameterType="String"  resultMap="loincCodesAndDescriptionsMap">
+	<![CDATA[
+		select cl.LOINC_CD,CLT.DESCRIPTION  from LAB_LOINC cl, CODED_LAB_TEST_TYPE CLT where CL.TEST_TYPE_CD = CLT. TEST_TYPE_CD and cl.LOINC_CD NOT in  (select llm.LOINC_CD from LAB_LOINC_MAPPING llm where llm.PFI = #{pfi} and (llm.END_DATE IS NULL or llm.END_DATE > SYSDATE))
+	]]> 
+	</select>
+	
+	<select id="getActiveAssociatedLabLoincDescriptionDetails" parameterType="String"  resultMap="loincCodesAndDescriptionsMap">
+	<![CDATA[
+		select llm.LAB_LOINC_MAP_ID, cl.LOINC_CD,clt.DESCRIPTION from LAB_LOINC_MAPPING llm, LAB_LOINC cl,  CODED_LAB_TEST_TYPE CLT
+                where PFI = #{pfi} and llm.LOINC_CD = cl.LOINC_CD  and cl.TEST_TYPE_CD = CLT.TEST_TYPE_CD 
+                and (llm.END_DATE IS NULL or llm.END_DATE > SYSDATE)
+                			 ]]> 
+	</select>
+		
+	<update id="updateLabPermitDetails" parameterType="java.util.Map">
+	   UPDATE LAB_PERMITS set DATE_VALID_FROM =to_date(#{dateValidFrom}, 'MM/DD/YYYY'), DATE_VALID_TILL= to_date(#{dateValidTill}, 'MM/DD/YYYY'), BHAE_CERTIFICATION_DATE= to_date(#{bhaeCertDate}, 'MM/DD/YYYY'), 
+	   LAST_UPDATED_BY = #{lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE, COMMENTS = #{comments} where LAB_PERMIT_ID = #{labPermitId} 
+    </update>
+    	
+    <update id="updateLabInstrumentDetails" parameterType="java.util.Map">
+	   UPDATE LAB_PERMIT_INSTRUMENTS set  START_DATE = to_date(#{instrumentDateValidFrom}, 'MM/DD/YYYY'), END_DATE = to_date(#{instrumentDateValidTill}, 'MM/DD/YYYY'), LAST_UPDATED_BY = #{lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE where LPI_ID = #{lpiId} 
+    </update>
+    
+    <update id="updateLabLocalCodeDetails" parameterType="java.util.Map">
+	   UPDATE LAB_LOCAL_CODES set   LAST_UPDATED_BY = #{p_lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE, START_DATE = to_date(#{dateValidFrom}, 'MM/DD/YYYY'), END_DATE = to_date(#{dateValidTill}, 'MM/DD/YYYY') where LAB_LOCAL_CD_MAP_ID = #{p_localCodeMapId} 
+    </update>
+
+    <update id="saveLabFacilityDetails" parameterType="java.util.Map">
+	   UPDATE  LAB_PHYSICAL_FACILITY set LAB_NAME =#{p_lab_name}, ADDRESS=#{p_address}, LAFT_STAFF = #{p_laftStaffAssigned}, CITY=#{p_city}, 
+	   STATE=#{p_state}, ZIP=#{p_zip}, COUNTRY=#{p_country},  FLAG_ACTIVE=#{p_flag_active}, LAST_UPDATED_BY=#{p_lastUpdatedBy}, 
+	   LAST_UPDATED_DATE= SYSDATE, FLAG_SERVES_NYC= #{p_flagServersNYC}, FLAG_BLOOD_BANK = #{p_flagBloodBank}, APPROVAL_STATUS_CODE=#{p_approvalStatusCode},
+	   LOW_VOLUME=#{p_lowVolume}, PHY_OFF_LAB=#{p_physicianOfficeLab}, REFERS_DTA_TESTING_TO=#{p_refersDTATestingTo}, PERFORMS_DTA=#{p_performsDTA}
+	   where PFI = #{p_pfi} and CLIA = #{p_clia}  
+    </update>
+    
+  	 <insert id="addNewPermitCodeToFacility" parameterType="java.util.Map">
+  		 insert into LAB_PERMITS(PFI,  PERMIT_CD,  DATE_VALID_FROM, DATE_VALID_TILL, BHAE_CERTIFICATION_DATE, COMMENTS, LAST_UPDATED_BY, LAST_UPDATED_DATE) 
+  		  VALUES (#{pfi}, #{permitCode}, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'),  to_date(#{bhaeCertDate}, 'MM/DD/YYYY'),
+  		  #{comments}, #{lastUpdatedBy} , SYSDATE)
+	</insert>
+	
+	<insert id="addNewCommunicationToFacility" parameterType="java.util.Map">
+		insert into lab_interaction_history (interaction_date, interaction_by, communication_type, interaction_notes, pfi) 
+    	values (to_date(#{interactionDate}, 'MM/DD/YYYY'), #{interactionBy}, #{communicationType}, #{interactionNotes}, #{pfi})
+	</insert>
+	
+    
+    <insert id="addNewInstrumentToPermit" parameterType="java.util.Map">
+		 insert into LAB_PERMIT_INSTRUMENTS(LAB_PERMIT_ID,  HIV_INSTRUMENT_ID,  LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE ) VALUES (#{labPermitId}, #{instrumentId}, #{lastUpdatedBy}, SYSDATE, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'))
+	</insert>
+     
+    
+    <select id="getLoincMapId" parameterType="java.util.Map" resultType="String">
+			SELECT LAB_LOINC_MAP_ID FROM LAB_LOINC_MAPPING where PFI = #{pfi} and LOINC_CD = #{loincCode}
+	</select>
+	
+	
+    <select id="checkForLocalCodeExistance" parameterType="String" resultType="String">
+			SELECT PFI FROM LAB_LOCAL_CODES where LOCAL_CD = #{loincCode}
+	</select>
+	
+	
+	
+    <select id="getLoincsForPfi" parameterType="String" resultType="String">
+			select LOINC_CD from LAB_LOINC_MAPPING  where PFI = #{pfi} and (END_DATE is null or END_DATE > SYSDATE)
+	</select>
+	
+	
+    <select id="getLoincReferenceValues" parameterType="String" resultType="org.json.simple.JSONObject">
+			select testType.DESCRIPTION, testType.UNIT_OF_RESULT from LAB_LOINC LL, CODED_LAB_TEST_TYPE  testType where LL.TEST_TYPE_CD = testType.TEST_TYPE_CD and ll.LOINC_CD = #{loincCode}
+	</select>
+	
+	
+    
+    <insert id="addNewLabLoincToFacility" parameterType="java.util.Map">
+		 insert into LAB_LOINC_MAPPING(PFI,  LOINC_CD,  LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE, TEST_KIT, INSTRUMENT, VL_DETECTION_LEVEL) 
+		 VALUES (#{pfi}, #{loincCode}, #{lastUpdatedBy}, SYSDATE, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'), #{testKit, jdbcType=DECIMAL}, #{instrument, jdbcType=DECIMAL}, #{vlDetectionLevel})
+	</insert>
+
+	<insert id="addNewLabTestToFacility" parameterType="java.util.Map">
+		 insert into LAB_LOCAL_CD_TEST_CD_MAPPING(LAB_LOCAL_CD_MAP_ID, LAB_LOCAL_TEST_DESC, LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE) VALUES (#{localCodeMapId}, #{testDescription}, #{lastUpdatedBy}, SYSDATE, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'))
+	</insert>
+	
+	<insert id="addNewLabLocalCodeToFacility" parameterType="java.util.Map">
+		 insert into LAB_LOCAL_CODES(PFI,  LOCAL_CD,  LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE ) VALUES (#{pfi}, #{localCode}, #{lastUpdatedBy}, SYSDATE, to_date(#{dateValidFrom}, 'MM/DD/YYYY'), to_date(#{dateValidTill}, 'MM/DD/YYYY'))
+	</insert>
+	
+	
+	<select id="getLabLocalCodeMapId" parameterType="java.util.Map" resultType="long">
+			SELECT LAB_LOCAL_CD_MAP_ID FROM LAB_LOCAL_CODES where PFI = #{pfi} and LOCAL_CD = #{localCode}
+	</select> 	
+	 
+     <update id="updateLabLoincCodeDetails" parameterType="java.util.Map">
+	   UPDATE LAB_LOINC_MAPPING set   START_DATE = to_date(#{dateValidFrom}, 'MM/DD/YYYY'),  END_DATE =to_date(#{dateValidTill}, 'MM/DD/YYYY'), 
+	   LAST_UPDATED_BY = #{lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE,  TEST_KIT = #{testKit}, INSTRUMENT = #{instrument}, VL_DETECTION_LEVEL = #{vlDetectionLevel} 
+	   where LAB_LOINC_MAP_ID = #{loincMapId}
+    </update>
+    
+    
+    <update id="updateLabLocalCodeLoincDetails" parameterType="java.util.Map">
+	   UPDATE LAB_LOCAL_CD_LOINC_MAPPING set END_DATE = to_date(#{p_endDate}, 'MM/DD/YYYY') , LAST_UPDATED_BY = #{p_lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE where LAB_LOINC_MAP_ID = #{p_loincMapId} and (END_DATE IS NULL OR END_DATE > SYSDATE) 
+    </update>
+    
+    <update id="updateLabLocalCodeMappingDetails" parameterType="java.util.Map">
+	   UPDATE LAB_LOCAL_CD_TEST_CD_MAPPING set  LAB_LOCAL_TEST_DESC = #{p_testDescription}, LAST_UPDATED_BY = #{p_lastUpdatedBy}, LAST_UPDATED_DATE = SYSDATE, START_DATE = to_date(#{testCodeDateValidFrom}, 'MM/DD/YYYY'),  END_DATE =to_date(#{testCodeDateValidTill}, 'MM/DD/YYYY') where LAB_LOCAL_CD_MAP_ID = #{p_localCodeMapId} and LAB_LOCAL_TEST_CD = #{p_testCode}
+    </update>
+    
+    
+ 
+     <insert id="linkLoincCodesToLoclCode" parameterType="java.util.Map">
+		 insert into LAB_LOCAL_CD_LOINC_MAPPING(LAB_LOCAL_CD_MAP_ID,  LAB_LOINC_MAP_ID, LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE) 
+		 <foreach collection="loincMapIds"  item="loincMapId" index="index" separator=" Union all ">
+		select #{localCodeMapId}, #{loincMapId}, #{lastUpdatedBy}, SYSDATE, SYSDATE, (select Max(END_DATE) from LAB_LOINC_MAPPING where LAB_LOINC_MAP_ID = #{loincMapId}) from dual 
+	</foreach>
+	
+	</insert>
+
+	
+	
+	
+	<select id="getSelectedLoincCodesOfLocalCode" parameterType="long" resultType="long">
+		select LAB_LOINC_MAP_ID from LAB_LOCAL_CD_LOINC_MAPPING where LAB_LOCAL_CD_MAP_ID = #{localCodeMapId} and (END_DATE IS NULL or END_DATE > SYSDATE)
+	</select>
+	
+	 
+	<select id="getCommunicationHistory" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInteractionHistoryVO">
+		select INTERACTION_ID interactionId, INTERACTION_NOTES interactionNotes, lct.COMMUNICATION_TYPE_DESCRIPTION communicationType, lih.INTERACTION_BY workerId, 
+		(u.last_name || ', ' || u.first_name || ' (' || U.LEGACY_UID || ')') interactionBy, TO_CHAR(INTERACTION_DATE, 'MM/DD/YYYY') interactionDate
+		from LAB_INTERACTION_HISTORY lih join coded_lab_communication_type lct on lih.communication_type = lct.communication_type
+        join nyehms_users u on lih.interaction_by = u.worker_id where PFI = #{pfi} ORDER BY  INTERACTION_DATE DESC
+	</select>
+	 
+	<select id="getLabCommunication" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabInteractionHistoryVO">
+		select INTERACTION_ID interactionId, u.legacy_uid interactionBy, TO_CHAR(INTERACTION_DATE, 'MM/DD/YYYY') interactionDate, 
+		COMMUNICATION_TYPE communicationType, INTERACTION_NOTES interactionNotes
+		from LAB_INTERACTION_HISTORY lih join NYEHMS_USERS u on lih.INTERACTION_BY = u.worker_id where INTERACTION_ID = #{labInteractionId}
+	</select>
+	
+	
+	<insert id="addLabInteractionNotes" parameterType="java.util.Map">	
+		 insert into LAB_INTERACTION_HISTORY(PFI, INTERACTION_DATE,  INTERACTION_BY,  COMMUNICATION_TYPE, INTERACTION_NOTES) VALUES (#{pfi}, SYSDATE, #{p_lastUpdatedBy}, #{interactionContactType}, #{interactionNotes,jdbcType=CLOB})
+	</insert>	
+	
+	<insert id="addNewAlternativeContact" parameterType="java.util.Map">	
+		 insert into LAB_ALTERNATIVE_CONTACTS(PFI, CONTACT_NAME, PHONE, EMAIL, FAX ) VALUES (#{pfi}, #{alternativeContactName}, #{alternativeContactPhone}, #{alternativeContactEmail}, #{alternativeContactFax})
+	</insert>	
+		
+	 <insert id="addNewClia" parameterType="String">
+		 insert into CLINICAL_LABORATORY(CLIA) VALUES (#{clia})
+	</insert>	
+	
+	<insert id="addNewLabFacilitiesToClia" parameterType="java.util.Map">
+		 insert into LAB_PHYSICAL_FACILITY(PFI,  LAB_NAME, ADDRESS, CITY, STATE, ZIP, COUNTRY,  CLIA,  LAST_UPDATED_BY, LAST_UPDATED_DATE, LAFT_STAFF) 
+		 <foreach collection="labFacilitiyDetails"  item="labFacilitiyVO" index="index" separator=" Union all ">
+		select #{labFacilitiyVO.pfi}, #{labFacilitiyVO.labName}, #{labFacilitiyVO.address},#{labFacilitiyVO.city},#{labFacilitiyVO.state},#{labFacilitiyVO.zipCode},#{labFacilitiyVO.country}, #{clia},  #{lastUpdatedBy}, SYSDATE, #{labFacilitiyVO.laftStaffAssigned} from dual 
+	</foreach>
+	
+	</insert>
+	
+	<select id="getClinicalLabarotories"  resultType="String">
+		select CLIA  from  CLINICAL_LABORATORY ORDER BY CLIA
+	</select>
+	
+	
+	<select id="getlastEcrlsImportDate" parameterType="String"  resultType="String">
+		select TO_CHAR(MAX(MSHCREATEDATE), 'MM/DD/YYYY')  from  RAW_HIV_ECLRS_DOC  where  MSHLABPFI = #{pfi} 
+	</select>
+	
+	
+	
+	<select id="getInteractionContactTypes"  resultType="org.json.simple.JSONObject">
+		select COMMUNICATION_TYPE, COMMUNICATION_TYPE_DESCRIPTION  from  coded_lab_communication_type where END_DATE is null order by SORT_ORDER
+	</select>
+	
+	
+	
+	<select id="getFacilitiesDataForClia" parameterType="java.util.Map"  resultMap="labFacilitiesList">
+		SELECT PFI,LAB_NAME,ADDRESS,CITY,STATE,ZIP,COUNTRY,FLAG_ACTIVE, LAFT_STAFF FROM TABLE(pkg_lab_maintenance.fn_lab_search (#{p_clia}, null, null, null, null, null, null, null, null))
+	</select>
+	
+	<select id="checkCliaExiststence" parameterType="String"  resultType="String">
+		select CLIA  from  CLINICAL_LABORATORY where CLIA = #{clia}
+	</select>
+	
+	<select id="checkPFIExistence" parameterType="String"  resultType="String">
+		select PFI  from  LAB_PHYSICAL_FACILITY where PFI = #{pfi}
+	</select>
+	
+		
+ 		
+	
+	
+	<insert id="addNewContactToFacility"  parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabNewContactVO" useGeneratedKeys="true" keyProperty="CONTACTID" keyColumn="CONTACT_ID">
+		 insert into LAB_ALTERNATIVE_CONTACTS(PFI,  CONTACT_NAME, PHONE, EMAIL, CONTACT_TYPE_CODE, SEND_REPORT_CARD, SEND_COUNT_REPORT, QA, CREATED_BY, CREATED_DATE,NOTES, MAIN_CONTACT, PHONE_EXT) 
+		 values(#{PFI}, #{NAME}, #{PHONE},#{EMAIL},#{CONTACTTYPE},#{REPORTCARD},#{COUNTS},#{QA}, #{userModified}, SYSDATE, #{NOTES}, #{MAINCONTACT}, #{PHONEEXT}) 
+	</insert>
+	
+	<insert id="addNewSubmissionTypeToFacility"  parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO" useGeneratedKeys="true" keyProperty="LAB_SUBMIT_ID" keyColumn="LAB_SUBMIT_ID">
+		 insert into LAB_SUBMISSION_TYPE_MAPPING(PFI,  SUBMISSION_TYPE_CD, LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE, LIS_VENDOR) 
+		 values(#{PFI}, #{SUBMISSION_TYPE_CD}, #{userModified},SYSDATE,to_date(#{START_DATE}, 'MM/DD/YYYY'), to_date(#{END_DATE} , 'MM/DD/YYYY'), #{LIS_VENDOR})   
+	</insert>
+	
+	<update id="updateSubmissionData" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabSubmissionTypeVO">
+	   UPDATE LAB_SUBMISSION_TYPE_MAPPING set PRIMARY_SUBMISSION = #{PRIMARY_SUBMISSION}, START_DATE = to_date(#{START_DATE}, 'MM/DD/YYYY'),END_DATE = to_date(#{END_DATE}, 'MM/DD/YYYY')
+	   , LAST_UPDATED_BY = #{userModified}, LAST_UPDATED_DATE = SYSDATE where LAB_SUBMIT_ID = #{LAB_SUBMIT_ID}
+	</update>
+	
+	<update id="updatePFILabContact" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabNewContactVO">
+	   UPDATE LAB_ALTERNATIVE_CONTACTS set  PHONE = #{PHONE},  PHONE_EXT = #{PHONEEXT},  EMAIL = #{EMAIL}, SEND_REPORT_CARD = #{REPORTCARD} ,SEND_COUNT_REPORT = #{COUNTS}, MAIN_CONTACT = #{MAINCONTACT},
+	   QA = #{QA}, LAST_UPDATED_BY = #{userModified}, NOTES = #{NOTES}, LAST_UPDATED_DATE = SYSDATE where CONTACT_ID = #{CONTACTID}
+	</update>
+	
+	
+	<insert id="addNewLabContactsToPFI" parameterType="java.util.Map">
+		 insert into LAB_ALTERNATIVE_CONTACTS(PFI,  CONTACT_NAME, PHONE, EMAIL, CONTACT_TYPE_CODE, SEND_REPORT_CARD, SEND_COUNT_REPORT, QA, CREATED_BY, CREATED_DATE) 
+		 <foreach collection="pfiContactList"  item="pfiContact" index="index" separator=" Union all ">
+			select #{pfi}, #{pfiContact.NAME}, #{pfiContact.PHONE},#{pfiContact.EMAIL},#{pfiContact.CONTACTTYPE},#{pfiContact.REPORTCARD},#{pfiContact.COUNTS}, #{pfiContact.QA}, #{workerId}, SYSDATE from dual 
+		</foreach>
+	</insert>
+	
+	<insert id="addNewSubmissionDataTypesToPFI" parameterType="java.util.Map">
+		 insert into LAB_SUBMISSION_TYPE_MAPPING(PFI,  SUBMISSION_TYPE_CD, LAST_UPDATED_BY, LAST_UPDATED_DATE, START_DATE, END_DATE) 
+		 <foreach collection="newSubmissionDataList"  item="submissionData" index="index" separator=" Union all ">
+			select #{pfi}, #{submissionData.SUBMISSION_TYPE_CD}, #{workerId},SYSDATE,to_date(#{submissionData.START_DATE}, 'MM/DD/YYYY'),to_date(#{submissionData.END_DATE}, 'MM/DD/YYYY') from dual 
+		</foreach>
+	</insert>
+	
+	
+	
+	
+
+	
+	<select id="geLabPhysicalFacilityDetails" parameterType="java.util.Map"  resultType="org.json.simple.JSONObject">
+		select PFI,CLIA,LAB_NAME,ADDRESS,CITY,STATE,ZIP,COUNTRY,FLAG_ACTIVE, FLAG_SERVES_NYC, FLAG_BLOOD_BANK, LAFT_STAFF, APPROVAL_STATUS_CODE, LOW_VOLUME, PHY_OFF_LAB, REFERS_DTA_TESTING_TO, PERFORMS_DTA 
+		from LAB_PHYSICAL_FACILITY where PFI = #{pfi} and CLIA = #{clia}
+	</select>
+	
+	
+	<select id="geLabContactsForPFI" parameterType="String"  resultType="org.json.simple.JSONObject">
+		select labContact.CONTACT_ID contactId, to_char(labContact.RETIRED_DATE, 'MM/DD/YYYY') retiredDate, labContact.CONTACT_NAME name, labContact.PHONE phone, labContact.PHONE_EXT phoneExt, labContact.EMAIL email, labContact.CONTACT_TYPE_CODE contactType, labContact.SEND_REPORT_CARD reportCard, labContact.SEND_COUNT_REPORT counts, labContact.SEND_DONOR_REPORT Donor, labContact.QA QA, 
+ contactType.CONTACT_TYPE_DESC CONTACTTYPEDESC, labContact.MAIN_CONTACT MAINCONTACT, labContact.notes NOTES  from LAB_ALTERNATIVE_CONTACTS labContact, CODED_PFI_CONTACT_TYPE contactType where labContact.PFI = #{pfi} and contactType.CONTACT_TYPE_CODE  = labContact.CONTACT_TYPE_CODE and RETIRED_DATE is null
+ 
+	</select>
+	
+		
+	<select id="getsubmissionDataTypesForPFI" parameterType="String"  resultType="org.json.simple.JSONObject">
+		select submissionTypeData.LAB_SUBMIT_ID, submissionTypeData.SUBMISSION_TYPE_CD, TO_CHAR(submissionTypeData.START_DATE, 'MM/DD/YYYY') START_DATE,
+        TO_CHAR(submissionTypeData.END_DATE, 'MM/DD/YYYY') END_DATE, submissionDesc.DESCRIPTION, submissionTypeData.PRIMARY_SUBMISSION PRIMARY_SUBMISSION, submissionTypeData.PFI, 
+        submissionTypeData.LIS_VENDOR , vendor.LIS_VENDOR_DESC
+        from LAB_SUBMISSION_TYPE_MAPPING submissionTypeData
+        LEFT JOIN CODED_LAB_LIS_VENDOR vendor ON (submissionTypeData.LIS_VENDOR = vendor.LIS_VENDOR_CD )
+        JOIN CODED_LAB_SUBMISSION_TYPE submissionDesc on (submissionTypeData.SUBMISSION_TYPE_CD  = submissionDesc.SUBMISSION_TYPE_CD )
+        where submissionTypeData.PFI = #{pfi} 
+ 
+	</select>
+	
+	
+	
+	<select id="getLabSubmissionTypesForPFI" parameterType="String"  resultType="org.json.simple.JSONObject">
+		select labContact.CONTACT_ID contactId, to_char(labContact.RETIRED_DATE, 'MM/DD/YYYY') retiredDate, labContact.CONTACT_NAME name, labContact.PHONE phone, labContact.EMAIL email, labContact.CONTACT_TYPE_CODE contactType, labContact.SEND_REPORT_CARD reportCard, labContact.SEND_COUNT_REPORT counts, labContact.SEND_DONOR_REPORT Donor, labContact.SEND_STARHS_REPORT starhs, 
+ contactType.CONTACT_TYPE_DESC CONTACTTYPEDESC, labContact.MAIN_CONTACT MAINCONTACT  from LAB_ALTERNATIVE_CONTACTS labContact, CODED_PFI_CONTACT_TYPE contactType where labContact.PFI = #{pfi} and contactType.CONTACT_TYPE_CODE  = labContact.CONTACT_TYPE_CODE   
+ 
+	</select>
+	
+	
+	
+	
+	
+	<update id="deleteContactForPFI" parameterType="java.util.Map">
+	   UPDATE LAB_ALTERNATIVE_CONTACTS set  RETIRED_DATE = SYSDATE, LAST_UPDATED_BY = ${workerId}, LAST_UPDATED_DATE = SYSDATE where CONTACT_ID = #{contactId}
+    </update>
+    
+    
+	<update id="deleteSubmissionTypeForPFI" parameterType="java.util.Map">
+	   UPDATE LAB_SUBMISSION_TYPE_MAPPING set  END_DATE = SYSDATE , LAST_UPDATED_BY = ${workerId}, LAST_UPDATED_DATE = SYSDATE where LAB_SUBMIT_ID = #{submissionTypeId}
+    </update>
+    
+    
+	
+	<select id="getExistingTestCodeRecordsCount" parameterType="java.util.Map"  resultType="int">
+		select count(*) from LAB_LOCAL_CD_TEST_CD_MAPPING where LAB_LOCAL_TEST_DESC = #{testDescription} and LAB_LOCAL_CD_MAP_ID = #{localCodeMapId} 
+	</select>
+	
+	<select id="checkForActiveLoincsAssociatedToLocalCode" parameterType="java.util.Map"  resultType="int">
+		select count(*) from LAB_LOCAL_CD_LOINC_MAPPING where LAB_LOINC_MAP_ID = #{p_loincMapId} and (END_DATE IS NULL OR END_DATE > SYSDATE)  
+	</select>
+	
+	
+	<select id="getSubmissionTypes" resultType="org.json.simple.JSONObject" parameterType="String">
+		select * from CODED_LAB_SUBMISSION_TYPE where SUBMISSION_TYPE_CD not in (select SUBMISSION_TYPE_CD from LAB_SUBMISSION_TYPE_MAPPING  where PFI = #{pfi} and (END_DATE is null or END_DATE > SYSDATE))   
+	</select>
+	
+	<select id="getPrimarySubmissionTypes" resultType="org.json.simple.JSONObject" parameterType="String">
+		select * from LAB_SUBMISSION_TYPE_MAPPING where PRIMARY_SUBMISSION = 'Y' and PFI = #{pfi} and (END_DATE is null or END_DATE > SYSDATE)
+	</select>
+						
+	
+	<update id="changeCliaForPfi" parameterType="java.util.Map">
+	   UPDATE LAB_PHYSICAL_FACILITY set CLIA = #{clia}, LAST_UPDATED_BY = #{workerId}, LAST_UPDATED_DATE = SYSDATE  where PFI = #{pfi} 
+    </update>
+	
+	<select id="getLabReportCount" resultMap="labReportsCountMap" parameterType="java.util.Map">
+		${SQL_QUERY}
+	</select>
+	
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabReportsCountVO" id="labReportsCountMap" > 
+		
+	 	<result column="DATASET" property="dataSet"   jdbcType="DECIMAL" javaType="Integer"/>
+	 	<result column="WEEK_START_DT" property="weekStartDate"   jdbcType="VARCHAR" javaType="String"/>
+	 	<result column="WEEK_END_DT" property="weekEndDate"   jdbcType="VARCHAR" javaType="String"/>
+	 	<result column="REPORT_TEST_NAME" property="reportTestType"   jdbcType="VARCHAR" javaType="String"/>
+	 	<result column="WEEK_NO" property="weekNumber"   jdbcType="DECIMAL" javaType="Integer"/>
+	 	<result column="CNT" property="count"   jdbcType="DECIMAL" javaType="Integer"/>
+	 	<result column="PERCENTAGE" property="percentage"   jdbcType="DECIMAL" javaType="Float"/>
+ 	</resultMap>    	
+ 	
+ 	<resultMap type="java.util.Map" id="pfiContactTypeMap"> 	
+ 	  	<result property="CONTACT_TYPE_CODE"  column="CONTACT_TYPE_CODE"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="CONTACT_TYPE_DESC" column="CONTACT_TYPE_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+	
+	<select id="getPFIContactTypeMap" resultMap="pfiContactTypeMap">
+		 select CONTACT_TYPE_CODE, CONTACT_TYPE_DESC from CODED_PFI_CONTACT_TYPE where END_DATE is null order by SORT_ORDER
+	</select>
+ 	
+ 	<resultMap type="java.util.Map" id="labApprovalStatusMap"> 	
+ 	  	<result property="APPROVAL_STATUS_CODE"  column="APPROVAL_STATUS_CODE"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="CONTACT_TYPE_DESC" column="CONTACT_TYPE_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+	
+	<select id="getLabApprovalStatusMap" resultMap="labApprovalStatusMap">
+		 select APPROVAL_STATUS_CODE, APPROVAL_STATUS_DESC from CODED_LAB_APPROVAL_STATUS order by SORT_ORDER
+	</select>
+	
+	<select id="getNycNysCommReportData" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO">
+		SELECT a.clia, a.pfi, a.lab_name facilityName, Nvl(a.flag_serves_nyc, 'N') nycLab, a.laft_staff staffName,
+		         pkg_trk_common.fn_get_fullname (u.last_name,
+		                                         u.first_name,
+		                                         u.middle_name,
+		                                         NULL) laft_staff_name,
+		         clobbytes(b.interaction_notes) comments, To_char(b.interaction_date, 'MM/DD/YYYY') as communicateDate,
+		         c.communication_type_description communicationType
+		    FROM lab_physical_facility a
+		    LEFT OUTER JOIN lab_interaction_history b ON (a.pfi = b.pfi)
+		    LEFT OUTER JOIN coded_lab_communication_type c ON b.communication_type = c.communication_type
+		    LEFT OUTER JOIN nyehms_users u ON (a.laft_staff = u.legacy_uid and u.end_date is null)
+		   WHERE a.pfi != '-999'
+		     AND Trunc(b.interaction_date) BETWEEN To_Date(#{p_from_date}, 'MM/DD/YYYY') AND To_Date(#{p_to_date}, 'MM/DD/YYYY')
+		ORDER BY interaction_date, pfi        
+	</select>	
+	
+	<select id="getLabListByApprovalStatus" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO">
+	WITH loinc_data AS
+	(  
+	 SELECT Distinct a.clia, a.pfi, a.lab_name facilityName, Nvl(a.flag_serves_nyc, 'N') nycLab,
+        b.approval_status_desc apporvalStatus, a.laft_staff staffName, performs_dta performDTA,
+        flag_blood_bank donorLab,a.address, a.city, a.state, a.zip, a.phy_off_lab phyofflab,
+        pkg_trk_common.fn_get_fullname (u.last_name,
+                                          u.first_name,
+                                          u.middle_name,
+                                          NULL) userName,
+        COUNT(Distinct a.pfi) OVER (PARTITION BY 1) statusRecCt,
+        COUNT(Distinct a.pfi) OVER (PARTITION BY b.approval_status_code) totalRecCt,
+        c.description lab_submission_type,
+        m.loinc_cd loinc, t.test_type testType,
+        To_char(m.start_date, 'MM/DD/YYYY') testingStartDate,
+        t.contact_name contactName, t.email contactEmail, t.phone contactPhone
+	   FROM lab_physical_facility a
+	   LEFT OUTER JOIN coded_lab_approval_status b ON (a.approval_status_code = b.approval_status_code)
+	   LEFT OUTER JOIN nyehms_users u ON (a.laft_staff = u.legacy_uid and u.end_date is null)
+	   LEFT OUTER JOIN lab_submission_type_mapping l ON l.pfi = a.pfi AND l.end_date IS NULL
+	   LEFT OUTER JOIN coded_lab_submission_type c ON c.submission_type_cd = l.submission_type_cd
+	   LEFT OUTER JOIN lab_loinc_mapping m ON m.pfi = a.pfi AND m.end_date IS NULL
+	   LEFT OUTER JOIN lab_loinc ll ON ll.loinc_cd = m.loinc_cd
+	   LEFT OUTER JOIN coded_lab_test_type t ON t.test_type_cd = ll.test_type_cd
+	   LEFT OUTER JOIN lab_alternative_contacts t ON t.pfi = a.pfi AND t.main_contact = 'Y' AND t.retired_date IS NULL
+	  WHERE a.pfi != '-999'
+	   <if test="approvalStatus != 0 ">
+	            AND b.approval_status_code IN        (
+	                                                            SELECT Trim(regexp_substr(#{approvalStatus}, '[^,]+', 1, level))
+	                                                               FROM dual
+	                                                CONNECT BY regexp_substr(#{approvalStatus}, '[^,]+', 1, level) IS NOT NULL
+	                                                )
+	   </if>
+	)
+  SELECT clia, pfi, facilityName, nyclab, apporvalstatus, staffname, performDTA, donorlab, address, city, state, zip, phyofflab, username, statusrecct, totalrecct,
+  		Listagg(lab_submission_type, ', ') WITHIN GROUP (ORDER BY loinc) rptFileType , loinc, testType, testingStartDate, contactName, contactEmail, contactPhone
+  FROM loinc_data
+  GROUP BY clia, pfi, facilityName, nyclab, apporvalstatus, staffname, performDTA, donorlab, address, city, state, zip, phyofflab, username, statusrecct, totalrecct, loinc, testType, testingStartDate, contactName, contactEmail, contactPhone
+  ORDER BY pfi
+	</select>		
+	
+	<select id="getCountListByApprovalStatus" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabOpsReportsVO">
+		SELECT a.clia, a.pfi, a.lab_name facilityName, Nvl(a.flag_serves_nyc, 'N') nycLab, a.performs_dta performDTA, flag_blood_bank donorLab, b.approval_status_desc apporvalStatus,
+				a.laft_staff staffName,a.address, a.city, a.state, a.zip
+		    FROM lab_physical_facility a
+		    LEFT OUTER JOIN coded_lab_approval_status b ON (a.approval_status_code = b.approval_status_code)
+		   WHERE a.pfi != '-999'
+		ORDER BY b.approval_status_desc
+	</select>		
+	
+	<resultMap type="java.util.Map" id="vlLowestLevelOfDetectionMap"> 	
+ 	  	<result property="detectionCd"  column="DETECTION_CD"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="detectionDesc" column="DETECTION_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getVLDetectionLevelsCodesAndDescriptions" parameterType="String" resultMap="vlLowestLevelOfDetectionMap">
+		SELECT DETECTION_CD, DETECTION_DESC FROM CODED_VL_DETECTION_LEVELS order by SORT_ORDER
+	</select>	
+	
+	<resultMap type="java.util.Map" id="testKitMap"> 	
+ 	  	<result property="testKitCd"  column="TEST_KIT_CD"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="testKitDesc" column="TEST_KIT_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getTestKitCodesAndDescriptions" parameterType="String" resultMap="testKitMap">
+		SELECT TEST_KIT_CD, TEST_KIT_DESC FROM CODED_LAB_TEST_KIT order by SORT_ORDER
+	</select>	
+	
+	<resultMap type="java.util.Map" id="labInstrumentMap"> 	
+ 	  	<result property="instrumentCd"  column="INSTRUMENT_CD"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="instrumentDesc" column="INSTRUMENT_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 	
+	<select id="getLabInstrumentCodesAndDescriptions" parameterType="String" resultMap="labInstrumentMap">
+		SELECT INSTRUMENT_CD, INSTRUMENT_DESC FROM CODED_LAB_INSTRUMENT order by SORT_ORDER
+	</select>	
+
+	<resultMap type="java.util.Map" id="refersDATTestingToMap"> 	
+ 	  	<result property="labName"  column="LAB_NAME"  jdbcType="VARCHAR" javaType="String"/>
+		<result property="labDesc" column="LAB_DESC" jdbcType="VARCHAR" javaType="String"/>
+ 	</resultMap>
+ 		
+	<select id="getRefersDTATestingToMap" parameterType="String" resultMap="refersDATTestingToMap">
+		select distinct LAB_NAME, LAB_NAME LAB_DESC from lab_physical_facility where LAB_NAME  not in ('DEFAULT', 'TEST') order by LAB_NAME
+	</select>	
+	
+	<select id="getLabLisVendors" resultType="org.json.simple.JSONObject" parameterType="String">
+		select LIS_VENDOR_CD, LIS_VENDOR_DESC from CODED_LAB_LIS_VENDOR
+	</select>    	
+</mapper>
+

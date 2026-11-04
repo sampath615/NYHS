@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.provider.ProviderDetailsDAO">
+
+<resultMap id="getProvAndAddrssResultList" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.ProviderDetailsVO" >
+    <result column="PROVIDER_ID" property="providerId" jdbcType="DECIMAL" />
+    <result column="PROVIDER_FNAME"  property="providerFname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_MNAME"  property="providerMname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_LNAME"  property="providerLname"  jdbcType="VARCHAR" />
+    <result column="PROVIDER_FULLNAME"  property="providerFullName"  jdbcType="VARCHAR" />
+    <result column="NPI" property="providerNPI" jdbcType="VARCHAR" />
+    <result column="SPECIALITY" property="providerSpeciality" jdbcType="VARCHAR" />
+    <result column="PROVIDER_SUFFIX" property="providerSuffix" jdbcType="VARCHAR" />
+
+    <collection ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.SubProviderAddressVO" column="PROVIDER_ID" property="subProviderAddresses">
+	     <id column="SUB_PROVIDER_ADDRESS_ID"  property="subProviderAddressId" jdbcType="DECIMAL" />
+	    <result column="COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />
+	    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+	    <result column="CITY" property="city" jdbcType="VARCHAR" />
+	    <result column="STATE" property="state" jdbcType="VARCHAR" />
+	    <result column="ZIPCODE" property="zipcode" jdbcType="VARCHAR" />
+	    <result column="PLUS4" property="plus4" jdbcType="VARCHAR" />
+	    
+	    <collection ofType="String" column="SUB_PROVIDER_ADDRESS_ID" property="phone">
+    		<result column="PHONE_NUMBER" property="phone" jdbcType="VARCHAR" />	    	
+    	</collection>
+	    
+	    <collection property="rawProviderAddresses" column="SUB_PROVIDER_ADDRESS_ID" ofType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO">
+	    	<id column="raw_provider_address_id" property="rawProviderAddressId" jdbcType="DECIMAL" />
+		    <result column="raw_address" property="address" jdbcType="VARCHAR" />
+		    <result column="raw_city" property="city" jdbcType="VARCHAR" />
+		    <result column="raw_state" property="state" jdbcType="VARCHAR" />
+		    
+		    <result column="RAW_COUNTY_FIPS" property="countyFips" jdbcType="VARCHAR" />
+		    <result column="raw_zipcode" property="zipcode" jdbcType="VARCHAR" />
+		    <result column="raw_plus4" property="plus4" jdbcType="VARCHAR" />
+		    <result column="raw_phone" property="phone" jdbcType="VARCHAR" />
+		    <result column="raw_provider_fname" property="rawProviderFname" jdbcType="VARCHAR" />
+		    <result column="raw_provider_mname" property="rawProviderMname" jdbcType="VARCHAR" />
+		    <result column="raw_provider_lname" property="rawProviderLname" jdbcType="VARCHAR" />
+		    <result column="raw_provider_fullname" property="rawProviderFullName" jdbcType="VARCHAR" />
+		    <result column="RAW_NPI" property="rawProviderNPI" jdbcType="VARCHAR" />
+		    <result column="raw_provider_suffix" property="rawProviderSuffix" jdbcType="VARCHAR" />
+		    <result column="AUTO_ASSIGN_FUTURE" property="autoAssignFuture" jdbcType="VARCHAR" />
+	    </collection>
+    </collection>
+  </resultMap>
+  
+  
+  
+  
+   <select id="getSrchProviderDetailsWithAddressList" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_sub_provider_search (
+		 #{p_provider_fname,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_lname,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_mname,jdbcType=VARCHAR,mode=IN},
+			#{p_address,jdbcType=VARCHAR,mode=IN},
+			#{p_city,jdbcType=VARCHAR,mode=IN},
+			#{p_state,jdbcType=VARCHAR,mode=IN},
+			#{p_zipcode,jdbcType=VARCHAR,mode=IN},
+			#{p_county_fips,jdbcType=VARCHAR,mode=IN},
+			#{p_phone,jdbcType=VARCHAR,mode=IN},
+			#{p_provider_npi,jdbcType=VARCHAR,mode=IN},
+			#{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getProvAndAddrssResultList}
+		)}
+		    	     
+  </select>
+  
+  
+   <select id="getRawProviderDetails" parameterType="java.util.Map"  resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.provider.RawProviderAddressVO">
+   
+   select RAW_PROVIDER_ADDRESS_ID rawProviderAddressId, ADDRESS address, CITY city, STATE state, COUNTY_FIPS countyFips, ZIPCODE zipcode, PLUS4 plus4, PHONE phone, pkg_trk_common.fn_get_fullname (PROVIDER_LNAME,
+                                            PROVIDER_FNAME,
+                                            PROVIDER_MNAME,
+                                            PROVIDER_SUFFIX)  rawProviderFullName, NPI rawProviderNPI from RAW_PROVIDER_ADDRESS
+   
+   <trim prefix="where" suffixOverrides="and">
+   		<if test="p_provider_fname != null">
+   			PROVIDER_FNAME like #{p_provider_fname} and 
+   		</if>
+   		<if test="p_provider_lname != null">
+   			PROVIDER_LNAME like #{p_provider_lname} and 
+   		</if>
+   		<if test="p_provider_mname != null">
+   			PROVIDER_MNAME like #{p_provider_mname} and 
+   		</if>
+   		<if test="p_address != null">
+   			ADDRESS like #{p_address} and 
+   		</if>
+   		<if test="p_city != null">
+   			CITY like #{p_city} and 
+   		</if>
+   		<if test="p_state != null">
+   			STATE = #{p_state} and 
+   		</if>
+   		<if test="p_zipcode != null">
+   			ZIPCODE like #{p_zipcode} and 
+   		</if>
+   		<if test="p_county_fips != null">
+   			COUNTY_FIPS = #{p_county_fips} and 
+   		</if>
+   		<if test="p_phone != null">
+   			PHONE like #{p_phone} and 
+   		</if>
+   		<if test="p_provider_npi != null">
+   			NPI like #{p_provider_npi} and 
+   		</if>
+   
+   </trim>
+  </select>
+  
+  
+  
+
+	
+	
+	<select id="getProviderDetailsByProviderAddress" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_prov_search_by_address (
+		#{p_address,jdbcType=VARCHAR,mode=IN},
+		#{p_city,jdbcType=VARCHAR,mode=IN},
+		#{p_state,jdbcType=VARCHAR,mode=IN},
+		#{p_zipcode,jdbcType=VARCHAR,mode=IN},
+		#{p_county_fips,jdbcType=VARCHAR,mode=IN},
+		#{p_phone,jdbcType=VARCHAR,mode=IN},
+		#{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getProvAndAddrssResultList}
+	)}
+		    	     
+  </select>
+
+  
+  <select id="getProviderDetailsByProvider" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_prov_search_by_name (
+		#{p_fname,jdbcType=VARCHAR,mode=IN},
+		#{p_lname,jdbcType=VARCHAR,mode=IN},
+		#{p_mname,jdbcType=VARCHAR,mode=IN},
+		#{p_npi,jdbcType=VARCHAR,mode=IN},
+		#{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getProvAndAddrssResultList}
+	)}
+		    	     
+  </select>
+  
+  
+  <select id="getProviderDetailsByRawProviderAddress" parameterType="java.util.Map"  statementType="CALLABLE">
+   {call PKG_STANDARDIZATION.pr_prov_search_by_raw (
+		#{p_raw_fname,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_lname,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_mname,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_address,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_city,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_state,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_zipcode,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_county_fips,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_phone,jdbcType=VARCHAR,mode=IN},
+		#{p_raw_npi,jdbcType=VARCHAR,mode=IN},
+		#{p_sub_prov_out,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=getProvAndAddrssResultList}
+	)}
+		    	     
+  </select>
+  
+  
+        
+      
+</mapper>

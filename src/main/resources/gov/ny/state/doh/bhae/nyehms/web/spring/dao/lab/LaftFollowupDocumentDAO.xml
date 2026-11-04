@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.lab.LaftFollowupDocumentDAO">
+
+		
+	<select id="getLaftFollowupReasons" resultType="java.util.Map">
+		select REASON_ID, REASON_DESC from CODED_LAFT_FOLLOWUP_REASON
+	</select>
+	
+	<insert id="flagLaftFollowupDocument" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="followupId"  keyColumn="FOLLOWUP_ID_PK">
+		INSERT INTO NYEHMS_FLAG_LAFT_FOLLOWUP (FLAGGED_DOC_ID, DOCUMENT_ID, STATENO, REASON_ID, CREATE_UID, CREATE_DATE)
+		VALUES(#{triggeringDocId, jdbcType=DECIMAL}, #{triggeringDocId, jdbcType=DECIMAL}, #{triggeringStateno, jdbcType=VARCHAR}, #{reason, jdbcType=DECIMAL}, #{workerId, jdbcType=VARCHAR}, SYSDATE)
+	</insert>	
+	
+	<select id="isLaftFollowupActive" parameterType="int" resultType="int">
+		select count(*) as ct from NYEHMS_FLAG_LAFT_FOLLOWUP where DOCUMENT_ID = #{documentId} and RESOLUTION_ID is null
+	</select>	
+
+	<select id="getLAFTFollowupDetails" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftFollowupDetailsVO">
+        SELECT distinct f.followup_id_pk followupidpk, f.document_id documentid, pdc.stateno stateno, f.reason_id reasonid, frea.reason_desc reasondesc, f.create_uid createuid, usr.full_name createname, 
+        to_char(create_date, 'MM/DD/YYYY') createdate, f.resolution_id resolutionid, fres.resolution_desc resolutiondesc, 
+        f.resolution_uid resolutionuid, usr2.full_name resolvername, to_char(resolution_date, 'MM/DD/YYYY') resolutiondate
+        FROM NYEHMS_FLAG_LAFT_FOLLOWUP f, CODED_LAFT_FOLLOWUP_REASON frea, CODED_LAFT_FOLLOWUP_RESOLUTION fres,
+        	NYEHMS_USERS_VW usr, NYEHMS_USERS_VW usr2, person_doc_association pdc
+        WHERE f.document_id = #{documentId} and f.document_id = pdc.document_id and f.create_uid = usr.worker_id(+)
+        and f.reason_id = frea.reason_id (+)
+        and f.resolution_id = fres.resolution_id (+) and f.resolution_uid = usr2.worker_id(+)
+ 		and pdc.association_status_code not in ('DISASSOC_UNMRG', 'DISASSOC_MRG')        
+        order by resolutiondate desc,  createdate desc
+	</select>
+	
+	<select id="getFlaggedLaftFollowupData" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftFollowupDetailsVO">
+        SELECT distinct f.followup_id_pk followupidpk, f.document_id documentid, pdc.stateno stateno, f.reason_id reasonid, frea.reason_desc reasondesc
+                , create_uid createuid, usr.full_name createname, to_char(create_date, 'MM/DD/YYYY') createdate 
+        FROM NYEHMS_FLAG_LAFT_FOLLOWUP f, CODED_LAFT_FOLLOWUP_REASON frea, NYEHMS_USERS_VW usr, person_doc_association pdc
+        WHERE f.resolution_id is null and f.document_id = pdc.document_id
+        and pdc.dissassociation_date is null and f.create_uid = usr.worker_id(+)
+        AND f.reason_id = frea.reason_id (+)		
+	</select>
+	
+	<select id="getResolveAndCommentsData" parameterType="int" resultType="java.util.Map">
+        SELECT document_id, stateno, nu.EMAIL_ADDR
+        FROM NYEHMS_FLAG_LAFT_FOLLOWUP nf, NYEHMS_USERS_VW nu
+        WHERE followup_id_pk = #{followupIdPk}
+        and nf.CREATE_UID = nu.WORKER_ID(+)
+        
+	</select>	
+	
+	<select id="getLaftFollowupResolutions" resultType="java.util.Map">
+		select RESOLUTION_ID, RESOLUTION_DESC from CODED_LAFT_FOLLOWUP_RESOLUTION where RESOLUTION_ID != 12
+	</select>
+	
+	<update id="resolveLaftFollowupDocuments" parameterType="java.util.Map">
+		UPDATE NYEHMS_FLAG_LAFT_FOLLOWUP 
+		SET RESOLUTION_ID = #{resolutionId}, RESOLUTION_UID = #{workerId}, RESOLUTION_DATE = SYSDATE 
+		WHERE FOLLOWUP_ID_PK = #{followupIdPk} and RESOLUTION_ID is null
+	</update>	
+	
+	<insert id="LaftFollowupCommentsUpdate" parameterType="java.util.Map">
+		INSERT INTO NYEHMS_LAFT_FOLLOWUP_COMMENTS (FOLLOWUP_ID_PK, COMMENTS, LAFT_USER, COMMENT_DATE, INITIAL_COMMENT) 
+		VALUES (#{followupIdPk, jdbcType=DECIMAL}, #{comments, jdbcType=VARCHAR}, #{workerId, jdbcType=VARCHAR}, SYSDATE, #{initialComments, jdbcType=VARCHAR})
+	</insert>		
+	
+	<select id="getFlaggedLaftResolvedData" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LaftFollowupDetailsVO">
+        SELECT f.followup_id_pk followupidpk, f.document_id documentid, pdc.stateno stateno, f.reason_id reasonid, frea.reason_desc reasondesc, f.create_uid createuid, usr.full_name createname, 
+        to_char(create_date, 'MM/DD/YYYY') createdate, f.resolution_id resolutionid, fres.resolution_desc resolutiondesc, 
+        f.resolution_uid resolutionuid, usr2.full_name resolvername, to_char(resolution_date, 'MM/DD/YYYY') resolutiondate
+        FROM NYEHMS_FLAG_LAFT_FOLLOWUP f, CODED_LAFT_FOLLOWUP_REASON frea, CODED_LAFT_FOLLOWUP_RESOLUTION fres,
+        	NYEHMS_USERS_VW usr, NYEHMS_USERS_VW usr2, person_doc_association pdc
+        WHERE f.resolution_id is not null and f.document_id = pdc.document_id 
+        and f.create_uid = usr.worker_id(+)
+        and f.reason_id = frea.reason_id (+)
+        and f.resolution_id = fres.resolution_id (+) 
+        and f.resolution_uid = usr2.worker_id(+)
+        and pdc.association_status_code not in ('DISASSOC_UNMRG', 'DISASSOC_MRG')
+	</select>	
+	
+	<select id="getFlaggedLaftFollowupDocumentComments" parameterType="int" resultType="String">
+		SELECT usr.full_name || ' ' || to_char(fc.comment_date, 'MM/DD/YYYY HH:MI:SS AM') || '  ' || fc.comments as reviewComments
+        FROM NYEHMS_LAFT_FOLLOWUP_COMMENTS fc , NYEHMS_USERS_VW usr
+        WHERE followup_id_pk = #{followupIdPk}
+        and initial_comment is null
+        and fc.laft_user = usr.worker_id(+)  order by comment_date desc
+	</select>	
+
+	<select id="getFlaggedLaftFollowupInitialComments" parameterType="int" resultType="String">
+		SELECT to_char(fc.comment_date, 'MM/DD/YYYY HH:MI:SS AM') || '  ' || fc.comments as initialComments
+        FROM NYEHMS_LAFT_FOLLOWUP_COMMENTS fc , NYEHMS_USERS_VW usr
+        WHERE followup_id_pk = #{followupIdPk}
+        and initial_comment = 'Y'
+        and fc.laft_user = usr.worker_id(+)  order by comment_date desc
+	</select>								
+							
+	<update id="updateLaftFollowupDocumentId" parameterType="java.util.Map">
+		UPDATE NYEHMS_FLAG_LAFT_FOLLOWUP 
+		SET DOCUMENT_ID = #{newDocumentId}
+		WHERE DOCUMENT_ID = #{flaggedDocumentId}
+	</update>	
+	
+	<update id="updateLaftFollowupResolutionForDeletedDocs" parameterType="java.util.Map">
+		UPDATE NYEHMS_FLAG_LAFT_FOLLOWUP 
+		SET RESOLUTION_ID = 12, RESOLUTION_UID = #{workerId}, RESOLUTION_DATE = SYSDATE 
+		WHERE DOCUMENT_ID = #{documentId} and RESOLUTION_ID is null
+	</update>		
+								
+</mapper>
+

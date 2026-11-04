@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.ICCRDocumentDAO">
+
+	<select id="getCodedTestTypeResult" parameterType="String" resultType="org.json.simple.JSONObject">
+		SELECT ACRF_RESULT_CODE, ACRF_RESULT_DESC FROM CODED_ACRF_TEST_RESULT WHERE END_DATE is null  AND ACRF_TEST_CODE = #{testType}
+	</select>	
+	
+	<insert id="saveICCRDocumentData" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRDataEntryVO">
+		<![CDATA[
+			INSERT INTO RAW_ICCR_DOC (
+				DOCUMENT_ID,
+				FIRST_NAME,
+				MIDDLE_NAME,
+				LAST_NAME,
+				DOB,
+				PERSON_ADDRESS,
+				PERSON_CITY,
+				PERSON_STATE,
+				PERSON_ZIP,
+				PERSON_COUNTY,
+				PERSON_PHONE,
+				JURISDICTION_PROVIDING_INFO,
+				PROV_NAME,
+				PROV_ADDRESS,
+				PROV_CITY,
+				PROV_STATE,
+				PROV_ZIP,
+				PROV_COUNTY,
+				PROV_PHONE,
+				RESULTS_RECEIVED,
+				COMMENTS,
+				CREATE_UID,
+				CREATE_DATE,
+				CURRENT_PROCESS_STATUS
+				) VALUES (
+				 #{DOCUMENT_ID} 
+				, trim(upper(#{FIRST_NAME,jdbcType=VARCHAR})) 
+				, trim(upper(#{MIDDLE_NAME,jdbcType=VARCHAR})) 
+				, trim(upper(#{LAST_NAME,jdbcType=VARCHAR}))
+				, FN_TO_DATE(#{DOB,jdbcType=DATE},'MM/DD/YYYY')
+	 			, trim(upper(#{PERSON_ADDRESS,jdbcType=VARCHAR}))
+				, trim(upper(#{PERSON_CITY,jdbcType=VARCHAR}))
+				, trim(upper(#{PERSON_STATE,jdbcType=VARCHAR}))
+				, trim(upper(#{PERSON_ZIP,jdbcType=VARCHAR}))
+				, trim(upper(#{PERSON_COUNTY,jdbcType=VARCHAR}))
+				, trim(upper(#{PERSON_PHONE,jdbcType=VARCHAR}))						 
+				, trim(upper(#{JURISDICTION_PROVIDING_INFO,jdbcType=VARCHAR}))		
+	 			, trim(upper(#{PROV_NAME,jdbcType=VARCHAR}))
+				, trim(upper(#{PROV_ADDRESS,jdbcType=VARCHAR}))
+				, trim(upper(#{PROV_CITY,jdbcType=VARCHAR}))
+				, trim(upper(#{PROV_STATE,jdbcType=VARCHAR}))
+				, trim(upper(#{PROV_ZIP,jdbcType=VARCHAR}))
+				, trim(upper(#{PROV_COUNTY,jdbcType=VARCHAR}))						 
+				, trim(upper(#{PROV_PHONE,jdbcType=VARCHAR}))									 
+				, trim(upper(#{RESULTS_RECEIVED,jdbcType=VARCHAR}))									 
+				, trim(upper(#{COMMENTS,jdbcType=VARCHAR}))					
+				, #{CREATE_UID,jdbcType=DECIMAL}
+				, SYSDATE	
+				, 1			
+				)
+		]]>
+	</insert>
+	
+    <select id="getICCRDocument" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ICCRDocVO">
+		 		<![CDATA[
+         select
+         PDOC.STATENO stateNo,
+             std.DOCUMENT_ID, 
+        std.LNAME, 
+        std.FNAME, 
+        std.MNAME, 
+        to_char(std.DOB,'MM/DD/YYYY') DOB, 
+        std.PERSON_ADDRESS, 
+        raw1.PERSON_ADDRESS rawPersonAddress,
+        std.PERSON_CITY, 
+        std.PERSON_STATE, 
+        std.PERSON_ZIP, 
+        std.PERSON_COUNTY,        
+        std.PERSON_PHONE,
+        std.PROV_NAME,
+        std.JURISDICTION_PROVIDING_INFO,      
+        std.PROV_ADDRESS, 
+        raw1.PROV_ADDRESS rawProvAddress,        
+        std.PROV_CITY, 
+        std.PROV_STATE, 
+        std.PROV_ZIP, 
+        std.PROV_COUNTY, 
+        std.PROV_NAME, 
+        std.PROV_PHONE,
+        c1.ANS_DESC RESULTS_RECEIVED,
+        std.COMMENTS,
+        D.PARENT_DOCUMENT_ID    
+                  FROM RAW_ICCR_DOC raw1
+          INNER JOIN STD_ICCR_DOC std
+             ON (std.document_id = raw1.document_id and  raw1.DOCUMENT_ID=#{docId})
+             LEFT OUTER JOIN CODED_YES_NO_UNK c1
+                    ON (std.RESULTS_RECEIVED = c1.ANS_CODE)                   
+             INNER JOIN document_locator D
+             ON raw1.document_id=d.document_id
+          LEFT OUTER JOIN person_doc_association PDOC
+             ON (raw1.document_id = PDOC.document_id
+                 AND PDOC.dissassociation_date IS NULL)								 			
+		 			
+		 			]]>	 				
+    </select>
+
+	<select id="getICCRDocTestData" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.dataentry.ICCRTestVO">
+	 	<![CDATA[
+		    SELECT DOCUMENT_ID, to_char(DATE_OF_TEST, 'MM/DD/YYYY') DATE_OF_TEST, CT.ACRF_TEST_DESC TEST_TYPE, CR.ACRF_RESULT_DESC TEST_RESULTS, TEST_RESULT_COPIES, TEST_RESULT_LOGS 
+		    FROM RAW_ICCR_TESTS rt, CODED_ACRF_TEST ct, CODED_ACRF_TEST_RESULT cr
+		    WHERE DOCUMENT_ID = #{docId}  and RT.TEST_TYPE = CT.ACRF_TEST_CODE(+) and RT.TEST_RESULTS = CR.ACRF_RESULT_CODE(+)
+		]]>	
+    </select>		
+	
+	<insert id="saveICCRTestData" parameterType="java.util.Map">
+	
+	 insert into RAW_ICCR_TESTS(DOCUMENT_ID, DATE_OF_TEST, TEST_TYPE, TEST_RESULTS, TEST_RESULT_COPIES, TEST_RESULT_LOGS ) 
+		 <foreach collection="finalICCRTestDataList"  item="iccrTestVO" index="index" separator=" Union all ">
+				select #{ICCR_DOCUMENT_ID}, FN_TO_DATE(#{iccrTestVO.DATE_OF_TEST,jdbcType=DATE},'MM/DD/YYYY'), #{iccrTestVO.TEST_TYPE,jdbcType=VARCHAR}, 
+							#{iccrTestVO.TEST_RESULTS,jdbcType=VARCHAR},  TO_CHAR(#{iccrTestVO.TEST_RESULT_COPIES,jdbcType=VARCHAR}), TO_CHAR(#{iccrTestVO.TEST_RESULT_LOGS,jdbcType=VARCHAR}) from dual
+		</foreach>
+
+	</insert>
+		
+  	<insert id="writeStdDocData" parameterType="java.util.Map" >
+			insert into STD_ICCR_DOC(PERSON_ADDRESS, PROV_ADDRESS, PERSON_CENSUS_TRACT, PROV_CENSUS_TRACT, PERSON_ZIP, PROV_ZIP, RESULTS_RECEIVED, EHARS_STATUS_CD, COMMENTS, FNAME, MNAME, LNAME, PERSON_CITY, PROV_CITY, PERSON_COUNTY, PROV_COUNTY, MATCH_CD, PERSON_PHONE, PROV_PHONE, PERSON_STATE, JURISDICTION_PROVIDING_INFO, PROV_STATE, PERSON_LONGITUDE, PROV_LONGITUDE, PROV_NAME, PERSON_LATITUDE, PROV_LATITUDE, CREATE_UID, MATCHED_STATENO, REVIEW_UID, DOCUMENT_ID, CURRENT_PROCESS_STATUS, MATCH_PASS, MATCH_WEIGHT, DOB, CREATE_DATE, MATCHED_PROCESS_DATE, EHARS_IMPORT_DATE, REVIEW_DT,FLUX_MATCH_CD, FLUX_POT_STATENO, FLUX_MATCHED_STATENO, FLUX_QS_PARENT_DOC_ID, FLUX_MATCHED_PROCESS_DATE)
+			values(trim(upper(#{PERSON_ADDRESS,jdbcType=VARCHAR})), trim(upper(#{PROV_ADDRESS,jdbcType=VARCHAR})), trim(upper(#{PERSON_CENSUS_TRACT,jdbcType=VARCHAR})), trim(upper(#{PROV_CENSUS_TRACT,jdbcType=VARCHAR})), trim(upper(#{PERSON_ZIP,jdbcType=VARCHAR})), trim(upper(#{PROV_ZIP,jdbcType=VARCHAR})), trim(upper(#{RESULTS_RECEIVED,jdbcType=VARCHAR})), trim(upper(#{EHARS_STATUS_CD,jdbcType=VARCHAR})), trim(upper(#{COMMENTS,jdbcType=VARCHAR})), trim(upper(#{FNAME,jdbcType=VARCHAR})), trim(upper(#{MNAME,jdbcType=VARCHAR})), trim(upper(#{LNAME,jdbcType=VARCHAR})), trim(upper(#{PERSON_CITY,jdbcType=VARCHAR})), trim(upper(#{PROV_CITY,jdbcType=VARCHAR})), trim(upper(#{PERSON_COUNTY,jdbcType=VARCHAR})), trim(upper(#{PROV_COUNTY,jdbcType=VARCHAR})), trim(upper(#{MATCH_CD,jdbcType=VARCHAR})), trim(upper(#{PERSON_PHONE,jdbcType=VARCHAR})), trim(upper(#{PROV_PHONE,jdbcType=VARCHAR})), trim(upper(#{PERSON_STATE,jdbcType=VARCHAR})), trim(upper(#{JURISDICTION_PROVIDING_INFO,jdbcType=VARCHAR})), trim(upper(#{PROV_STATE,jdbcType=VARCHAR})), trim(upper(#{PERSON_LONGITUDE,jdbcType=VARCHAR})), trim(upper(#{PROV_LONGITUDE,jdbcType=VARCHAR})), trim(upper(#{PROV_NAME,jdbcType=VARCHAR})), trim(upper(#{PERSON_LATITUDE,jdbcType=VARCHAR})), trim(upper(#{PROV_LATITUDE,jdbcType=VARCHAR})), trim(upper(#{CREATE_UID,jdbcType=VARCHAR})), trim(upper(#{MATCHED_STATENO,jdbcType=VARCHAR})), trim(upper(#{REVIEW_UID,jdbcType=VARCHAR})), trim(upper(#{DOCUMENT_ID,jdbcType=DECIMAL})), trim(upper(#{CURRENT_PROCESS_STATUS,jdbcType=DECIMAL})), trim(upper(#{MATCH_PASS,jdbcType=DECIMAL})), trim(upper(#{MATCH_WEIGHT,jdbcType=DECIMAL})), #{DOB,jdbcType=DATE}, #{CREATE_DATE,jdbcType=DATE}, #{MATCHED_PROCESS_DATE,jdbcType=DATE}, #{EHARS_IMPORT_DATE,jdbcType=DATE}, #{REVIEW_DT,jdbcType=DATE},#{FLUX_MATCH_CD, jdbcType=VARCHAR},#{FLUX_POT_STATENO, jdbcType=VARCHAR},#{FLUX_MATCHED_STATENO, jdbcType=VARCHAR},#{FLUX_QS_PARENT_DOC_ID, jdbcType=DECIMAL},#{FLUX_MATCHED_PROCESS_DATE,jdbcType=DATE})
+  
+	</insert>		
+	
+      <select id="getStdICCRDocumentForClericalReview" parameterType="int" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO">
+  			select FNAME, LNAME, MNAME, DOB, PERSON_ADDRESS, PERSON_STATE, PERSON_CITY, COUNTY_NAME PERSON_COUNTY, PERSON_ZIP
+ 			from STD_ICCR_DOC s, CODED_COUNTY c
+			where s.PERSON_COUNTY = c.COUNTY_FIPS_CODE(+)  and s.DOCUMENT_ID = #{docId}
+  </select>
+  	
+</mapper>

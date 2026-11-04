@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.upload.FileUploadDAO">
+
+	<select id="validateClusterId" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM NYEHMS_UPLOAD_CLUSTER WHERE CLUSTER_ID = #{clusterId}
+	</select>
+	
+	<select id="errorCountinUpload" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM RAW_CLUSTER_DOC WHERE CLUSTER_ID_PK = #{clusterIdPk} AND CURRENT_PROCESS_STATUS in (39,40)
+	</select>  	
+
+	
+	<update id="identifyCDCRidrDuplicates" parameterType="String">
+			<![CDATA[
+				MERGE INTO NYEHMS_OWNER.CDC_RIDR_INFO  out
+                USING (
+                        SELECT *
+                        FROM
+                        (
+                        SELECT a.rowid row_id ,  pdoc.ASSOCIATION_DATE
+                               
+                              , ROW_NUMBER() OVER (PARTITION BY pdoc.stateno, a.REPORTING_JURISDICTION, a.STATENO  ORDER BY pdoc.ASSOCIATION_DATE  DESC) rn
+                          FROM CDC_RIDR_INFO  a, RAW_ACRF_RIDR_INFO  b, RAW_ACRF_DOC  c , person_doc_association  pdoc , coded_state st
+                        WHERE 
+                            a.FILE_NAME = #{fileName}
+                            and a.RESOLVED_DATE is null
+                            and b.ACRF_DOC_ID = c.document_id
+                            and c.DOCUMENT_SOURCE  in ('A06.18', 'A06.29') 
+                            and c.document_id = pdoc.document_id
+                            and pdoc.DISSASSOCIATION_DATE is null
+                            
+                            AND ABS(Trunc(pdoc.ASSOCIATION_DATE ) - Trunc(SYSDATE)) <= 90
+                            
+                             
+                            and upper(st.STATE_DESCRIPTION) = upper(a.REPORTING_JURISDICTION)
+                            and b.STATE_CD =  st.state_code
+                            and b.STATENO  =  a.STATENO
+                            and pdoc.stateno =  PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (a.NYS_STATENO)
+                            
+   
+                        )
+                        WHERE rn = 1
+                ) m
+                ON (out.rowid = m.row_id)
+                WHEN MATCHED THEN
+                UPDATE SET PARENT_DOC_EXISTS = 'Y', PARENT_DOC_CREATE_DT = ASSOCIATION_DATE
+			]]>
+	</update>
+	
+ 	<update id="deleteTempSTDConfirmTableData">
+	   DELETE FROM STG_STD_CONFIRMED_DOC
+    </update>	
+ 
+ 	<insert id="moveSTDConfirmDocumentID">
+ 	
+	   INSERT INTO 
+	   		document_locator (DOCUMENT_ID, DOCUMENT_TYPE_CODE, IS_ACTIVE, RECEIVED_DATE)
+            SELECT DOCUMENT_ID, 'STD_CONF', 'Y', SYSDATE
+            FROM stg_std_confirmed_doc
+
+    </insert>	
+            
+ 	<insert id="moveSTDConfirmFromTempToRaw">
+       INSERT INTO raw_std_confirmed_doc
+                  (DOCUMENT_ID
+                , CASEKEY
+                , HINSERIALNO
+                , FNAME
+                , MNAME
+                , LNAME
+                , PERSON_ADDRESS
+                , PERSON_CITY
+                , PERSON_STATE
+                , PERSON_ZIP
+                , PERSON_COUNTY
+                , PERSON_PHONE
+                , DOB
+                , ETHNICITY
+                , BIRTH_SEX
+                , CURRENT_GENDER
+                , DATE_OF_DEATH
+                , PROV_FNAME
+                , PROV_LNAME
+                , PROV_PHONE
+                , PROV_ADDRESS
+                , PROV_CITY
+                , PROV_ST
+                , PROV_ZIP
+                , RACE_WHITE
+                , RACE_BLACK
+                , RACE_INDIAN
+                , RACE_ASIAN
+                , RACE_PACIFIC
+                , RACE_UNKNOWN
+                , RACE_OTHER
+                , DIAG_DATE
+                , DISEASE
+                , RISK_SEX_MALE
+                , RISK_SEX_FEMALE
+                , RISK_SEX_TRANSGENDER
+                , RISK_SEX_IDU
+                , RISK_SEX_DRUGS
+                , RISK_SEX_EXCHANGED
+                , RISK_SEX_ANONYMOUS
+                , RISK_SEX_MSM
+                , RISK_SEX_WITHOUT_CONDOM
+                , RISK_DRUGS_USED
+                , RISK_DRUG_USED_LIST
+                , RISK_DRUG_OTHER_TEXT
+                , RISK_DRUG_INCARCERATED
+                , RISK_DRUG_PARAPHENALIA
+                , RISK_IDU
+                , RISK_OTHER_TEXT
+                , FIELDNOTE
+                , NINEHUNDREDTEST
+                , TESTTECHNOLOGY
+                , X900POSITIVE
+                , X900DXDATE
+                , CURRENT900TESTRESULT
+                , UPLOAD_ID
+                , UPLOAD_DT
+                , CURRENT_PROCESS_STATUS
+                , FILENAME    )
+            SELECT DOCUMENT_ID
+                , CASEKEY
+                , HINSERIALNO
+                , FNAME
+                , MNAME
+                , LNAME
+                , PERSON_ADDRESS
+                , PERSON_CITY
+                , PERSON_STATE
+                , PERSON_ZIP
+                , PERSON_COUNTY
+                , PERSON_PHONE
+                , TO_DATE(DOB, 'MM/DD/YYYY')
+                , ETHNICITY
+                , BIRTH_SEX
+                , CURRENT_GENDER
+                , TO_DATE(DATE_OF_DEATH, 'MM/DD/YYYY')
+                , PROV_FNAME
+                , PROV_LNAME
+                , PROV_PHONE
+                , PROV_ADDRESS
+                , PROV_CITY
+                , PROV_ST
+                , PROV_ZIP
+                , RACE_WHITE
+                , RACE_BLACK
+                , RACE_INDIAN
+                , RACE_ASIAN
+                , RACE_PACIFIC
+                , RACE_UNKNOWN
+                , RACE_OTHER
+                , TO_DATE(DIAG_DATE, 'MM/DD/YYYY')
+                , DISEASE
+                , RISK_SEX_MALE
+                , RISK_SEX_FEMALE
+                , RISK_SEX_TRANSGENDER
+                , RISK_SEX_IDU
+                , RISK_SEX_DRUGS
+                , RISK_SEX_EXCHANGED
+                , RISK_SEX_ANONYMOUS
+                , RISK_SEX_MSM
+                , RISK_SEX_WITHOUT_CONDOM
+                , RISK_DRUGS_USED
+                , RISK_DRUG_USED_LIST
+                , RISK_DRUG_OTHER_TEXT
+                , RISK_DRUG_INCARCERATED
+                , RISK_DRUG_PARAPHENALIA
+                , RISK_IDU
+                , RISK_OTHER_TEXT
+                , FIELDNOTE
+                , NINEHUNDREDTEST
+                , TESTTECHNOLOGY
+                , X900POSITIVE
+                , TO_DATE(X900DXDATE, 'MM/DD/YYYY')
+                , CURRENT900TESTRESULT
+                , UPLOAD_ID
+                , UPLOAD_DT
+                , CURRENT_PROCESS_STATUS
+                , FILENAME
+                 FROM stg_std_confirmed_doc
+
+    </insert>	    
+	
+	<insert id="insertNYCSurvRejectDataRow" parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UploadNYCSurvRejectVO">
+		insert into NYC_SURVEILLANCE_REJECT (
+			DOCUMENT_ID
+			, STATENO
+			, NYCNUMBER
+			, REJECT_DOCUMENT_ID
+			, DISPOSITION_CODE
+			, STATUSNOTES
+			, STATUSNONCASE
+			, STATUS_UPDATE_DATE
+			, STATENO2
+			, UPLOAD_FILENAME
+			, UPLOAD_UID
+			, UPLOAD_DATE )
+		values (#{DOCUMENT_ID,			jdbcType=INTEGER},
+				#{STATENO,				jdbcType=VARCHAR},
+				#{NYCNUMBER,			jdbcType=VARCHAR},
+				#{REJECT_DOCUMENT_ID,	jdbcType=INTEGER},
+				#{DISPOSITION_CODE,		jdbcType=VARCHAR},
+				#{STATUSNOTES,			jdbcType=VARCHAR},
+				#{STATUSNONCASE,		jdbcType=VARCHAR},
+				#{STATUS_UPDATE_DATE,	jdbcType=VARCHAR},
+				#{STATENO2,				jdbcType=VARCHAR},
+				#{UPLOAD_FILENAME,		jdbcType=VARCHAR},
+				#{UPLOAD_UID,			jdbcType=VARCHAR},				
+				SYSDATE
+			)
+	</insert>
+	
+	
+	<select id="getCurrentActiveStatenoList" parameterType="java.util.Map" resultType="java.util.Map">
+		 <foreach collection="STATENOS"  item="stateno" index="index" separator=" Union all ">
+			SELECT  #{stateno} ACTUAL_STATENO, PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (#{stateno}) CURRENT_STATENO from DUAL 
+		</foreach>
+	</select>	
+</mapper>

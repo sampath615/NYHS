@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+
+<mapper
+	namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.review.RecordSearchReviewDAO">
+
+	<update id="changeRecordSearchStatus" parameterType="java.util.Map">
+	   UPDATE NYEHMS_FLAG_RECORD_SEARCH set 
+	   
+	   UNFLAG_UID = #{p_workerId}, 
+<!-- 	   UNFLAG_REASON = #{},  -->
+<!-- 		FLAG_STATUS = #{p_flagStatus}, -->
+	   UNFLAG_COMMENTS = #{p_requestComments}, 
+	   UNFLAG_DATE = SYSDATE
+	   
+	   where  STATENO in
+	   
+	    <foreach collection="p_stateno_list" item="stateno"  open="(" separator="," close=")">
+	    	#{stateno}
+	    </foreach>
+	    
+	    and UNFLAG_DATE is null
+    </update>
+	
+	 <update id="updateRecordSearchStatenosWithFileName" parameterType="java.util.Map">
+    	update NYEHMS_FLAG_RECORD_SEARCH set SENT_FILE_NAME = #{fileName}, GENERATE_UID = #{workerId}, GENERATE_DATE = SYSDATE, UNFLAG_DATE = SYSDATE, UNFLAG_COMMENTS = 'Waiting for CDC match' where STATENO IN 
+    		<foreach item="stateno" index="index" collection="p_stateno_list" open="(" separator="," close=")">
+						        	#{stateno}
+						  		 </foreach> and UNFLAG_DATE is null
+    
+    </update>
+    
+     <update id="updateRecordSearchStatenosWithFileNameForAllRecords" parameterType="java.util.Map">
+    	update NYEHMS_FLAG_RECORD_SEARCH set SENT_FILE_NAME = #{fileName}, GENERATE_UID = #{workerId}, GENERATE_DATE = SYSDATE, UNFLAG_DATE = SYSDATE, UNFLAG_COMMENTS = 'Waiting for CDC match' where  UNFLAG_DATE is null
+    
+    </update>
+    
+    
+    <update id="updateNoCDCRecordsInFlaggingTable" parameterType="java.util.Map">
+    	update NYEHMS_FLAG_RECORD_SEARCH flagging set NO_CDC_DATA = 'Y', UNFLAG_DATE = null where not exists (select 1 from NYEHMS_REC_SEARCH_SENT sent where sent.STATENO = flagging.stateno and  SENT_FILE_NAME = #{fileName})
+    		
+    	 and  SENT_FILE_NAME = #{fileName} 
+    	
+    
+    </update>
+    
+    
+    
+	
+	<select id="checkForExistingRecordSearchStateno" parameterType="java.util.Map" resultType="int">
+    	select count(*) from NYEHMS_FLAG_RECORD_SEARCH where STATENO = #{p_stateno} and UNFLAG_DATE is null
+    </select>
+    <select id="checkNewRecordsForTheSTATENO" parameterType="java.util.Map" resultType="int">
+    
+    	select count(*) from PERSON_DOC_ASSOCIATION where stateno = #{p_stateno} and DISSASSOCIATION_DATE is null and ASSOCIATION_DATE > (select NVL(MAX(GENERATE_DATE), '01-Jan-1900' ) from NYEHMS_FLAG_RECORD_SEARCH where stateno  = #{p_stateno})
+    
+    </select>
+	
+	<insert id="addRecordSearchFlagStatusEntry" parameterType="java.util.Map">
+		insert into NYEHMS_FLAG_RECORD_SEARCH(STATENO, FLAG_ORIGIN, COMMENTS, CREATE_UID, CREATE_DATE)
+			 values(#{p_stateno, jdbcType=VARCHAR}, #{FLAG_ORIGIN, jdbcType=VARCHAR}, #{p_requestComments, jdbcType=VARCHAR}, #{p_workerId, jdbcType=VARCHAR}, SYSDATE)
+	
+	</insert>
+	
+	<insert id="insertAutoRecordSearchEntry" parameterType="java.util.Map">
+		insert into NYEHMS_FLAG_RECORD_SEARCH(STATENO, FLAG_ORIGIN, COMMENTS, CREATE_UID, CREATE_DATE)
+			 values(#{STATENO, jdbcType=VARCHAR}, 'Automatic', #{p_requestComments, jdbcType=VARCHAR}, #{p_workerId, jdbcType=VARCHAR}, SYSDATE)
+	
+	</insert>
+	
+	
+	<select id="checkRecordSearchStatenoExists" parameterType="UpdatedDispositionsVO" resultType="java.util.Map">
+    	select PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (s.stateno) STATENO,  
+				
+				case when r.stateno is null or  r.UNFLAG_DATE is not null then 'N'
+				
+				else 'Y' end FLAG from NYEHMS_STD_MESSAGE_SENT s, NYEHMS_FLAG_RECORD_SEARCH r
+				
+				 where s.document_id = #{DOCUMENT_ID, jdbcType=DECIMAL}
+				  
+				 and PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (s.stateno) = r.stateno (+)  and r.UNFLAG_DATE(+) is null
+    </select>
+	
+	
+	<update id="updateAutoRecordSearchEntry" parameterType="java.util.Map">
+	   UPDATE NYEHMS_FLAG_RECORD_SEARCH set 
+	   
+	   COMMENTS = COMMENTS || '   |    ' || #{p_requestComments}
+	    	   
+	   where  STATENO = #{STATENO} and UNFLAG_DATE is null
+    </update>
+	
+	
+
+	
+	<select id="getRecordSearchStatenos" resultType="org.json.simple.JSONObject">
+    	select STATENO, FLAG_ORIGIN, NO_CDC_DATA, COMMENTS, FULL_NAME CREATE_UID, TO_CHAR(CREATE_DATE, 'MM/DD/YYY') CREATE_DATE, (select count(*) from NYEHMS_FLAG_RECORD_SEARCH where STATENO = r_search.STATENO) HISTORY  from NYEHMS_FLAG_RECORD_SEARCH r_search, NYEHMS_USERS_VW usr  where   
+    	
+    	r_search.CREATE_UID = usr.WORKER_ID and  UNFLAG_DATE is null 
+    	
+    	
+    </select>
+    
+    
+    <select id="getRecordSearchStatenoFlagHistory" parameterType="String" resultType="java.util.Map">
+    		SELECT 
+       FLAG_ORIGIN,
+       COMMENTS,
+       (SELECT FULL_NAME FROM NYEHMS_USERS_VW WHERE WORKER_ID = r_search.CREATE_UID) CREATE_UID,
+       TO_CHAR (CREATE_DATE, 'MM/DD/YYY') CREATE_DATE,
+       UNFLAG_COMMENTS,
+       (SELECT FULL_NAME FROM NYEHMS_USERS_VW WHERE WORKER_ID = r_search.UNFLAG_UID) UNFLAG_UID,
+       TO_CHAR (UNFLAG_DATE, 'MM/DD/YYY') UNFLAG_DATE
+	       
+	  FROM NYEHMS_FLAG_RECORD_SEARCH r_search
+	 WHERE r_search.STATENO = #{stateno}  order by r_search.CREATE_DATE asc
+    		  
+    </select>
+	
+	
+	    <insert id="storeCDCReturnData" parameterType="java.util.Map">
+    	insert into NYEHMS_REC_SEARCH_SENT(SENT_FILE_NAME, SENT_FILE_SEQ, LNAME_SOUNDEX, DOB_TEXT, BIRTH_SEX, STATENO, CITYNO, EHARS_STATENO, CREATE_UID, CREATE_DATE)  
+    	
+    	 <foreach collection="cdcReturnData"  item="rowData" index="index" separator=" Union all ">
+			select #{fileName, jdbcType=VARCHAR}, #{rowData.ROWNUM, jdbcType=DECIMAL}, #{rowData.LNAME_SOUNDEX, jdbcType=VARCHAR}, #{rowData.DOB_TEXT, jdbcType=VARCHAR}, #{rowData.BIRTH_SEX, jdbcType=VARCHAR}, #{rowData.STATENO, jdbcType=VARCHAR}, #{rowData.CITYNO, jdbcType=VARCHAR}, #{rowData.EHARS_STATENO, jdbcType=VARCHAR}, #{workerId}, SYSDATE from dual 
+		</foreach>
+	
+	</insert>
+	
+	<select id="getCDCPendingReturnData" parameterType="String" resultType="java.util.Map">
+		select SENT_FILE_NAME, LNAME_SOUNDEX, to_char(fn_to_date(DOB_TEXT, 'MM/DD/YYYY'), 'MM/DD/YYYY') DOB_TEXT, BIRTH_SEX, STATENO, CITYNO, EHARS_STATENO from NYEHMS_REC_SEARCH_SENT where SENT_FILE_NAME = #{cdcFileName}
+	</select>
+
+
+	<select id="getCDCPendingReturnFileNames" resultType="java.util.Map">
+		
+		
+		select distinct rec_search.SENT_FILE_NAME, TO_CHAR(rec_search.GENERATE_DATE, 'MM/DD/YYYY') GENERATEDATE,  TRUNC(rec_search.GENERATE_DATE),  users.LAST_NAME || ', ' || users.FIRST_NAME GENERATEDBY
+		
+		from NYEHMS_FLAG_RECORD_SEARCH rec_search, NYEHMS_USERS users  where 
+		
+		rec_search.UPLOAD_DATE is null 
+		
+        and SENT_FILE_NAME is not null
+		
+		and rec_search.GENERATE_UID = users.WORKER_ID(+) order by TRUNC(rec_search.GENERATE_DATE) desc 
+		
+	</select>	
+	
+	
+								
+	
+	<insert id="uploadCDCFileData" parameterType="java.util.Map">
+	
+		insert into NYEHMS_REC_SEARCH_RETURN(SENT_FILE_NAME, SENT_FILE_SEQ, LNAME_SOUNDEX, DOB_TEXT, BIRTH_SEX, STATENO, STATE_CD,
+		CITYNO, trans_categ,	hiv_categ,	hiv_dx_dt,	rsh_state_cd,	aids_categ,	aids_dx_dt,	rsa_state_cd,	dod,	rad_state_cd,	death_state_cd,	cur_state_cd,	cur_address_dt,	cd4cntpct_vl_recent_dt,	care_nolab_dt, ridrDuplicateStatusWarningName)  
+    	
+    	 <foreach collection="fileDataList" item="fileData" separator=" Union all ">
+			select #{fileName, jdbcType=VARCHAR}, #{fileData.sentFileSeq, jdbcType=DECIMAL}, #{fileData.last_name_sndx_x, jdbcType=VARCHAR}, to_char(fn_to_Date(trim(#{fileData.dob_x, jdbcType=VARCHAR}), 'MM/DD/YYYY'), 'MM/DD/YYYY'), #{fileData.sex_x, jdbcType=VARCHAR}, #{fileData.stateno_x, jdbcType=VARCHAR}, #{fileData.report_state_cd, jdbcType=VARCHAR},
+			
+			trim(#{fileData.cityno_x, jdbcType=VARCHAR}), trim(#{fileData.trans_categ, jdbcType=VARCHAR}), trim(#{fileData.hiv_categ, jdbcType=VARCHAR}), trim(#{fileData.hiv_dx_dt, jdbcType=VARCHAR}), trim(#{fileData.rsh_state_cd, jdbcType=VARCHAR}), trim(#{fileData.aids_categ, jdbcType=VARCHAR}), trim(#{fileData.aids_dx_dt, jdbcType=VARCHAR}), 
+			trim(#{fileData.rsa_state_cd, jdbcType=VARCHAR}), trim(#{fileData.dod, jdbcType=VARCHAR}), trim(#{fileData.rad_state_cd, jdbcType=VARCHAR}), trim(#{fileData.death_state_cd, jdbcType=VARCHAR}), trim(#{fileData.cur_state_cd, jdbcType=VARCHAR}), trim(#{fileData.cur_address_dt, jdbcType=VARCHAR}),
+			 trim(#{fileData.cd4cntpct_vl_recent_dt, jdbcType=VARCHAR}), trim(#{fileData.care_nolab_dt, jdbcType=VARCHAR}),trim(#{fileData.duplicate_status_warning, jdbcType=VARCHAR})
+			
+			 from dual 
+		</foreach>
+	
+	</insert>
+
+	<update id="updateCDCReturnDataInfo" parameterType="java.util.Map">
+	
+	
+		update NYEHMS_FLAG_RECORD_SEARCH set UPLOAD_UID = #{workerId}, UPLOAD_DATE = SYSDATE where UPLOAD_DATE is null and SENT_FILE_NAME = #{fileName} 
+		
+<!-- 		and SENT_FILE_SEQ in  -->
+		
+<!-- 						        	#{trackId} -->
+	</update>
+    
+    <select id="generateCDCReturnData" parameterType="java.util.Map" resultType="java.util.Map">
+    <![CDATA[
+		
+    
+    		WITH query1 AS
+(
+SELECT  Distinct doc_attr.last_name, SOUNDEX(doc_attr.last_name) lname_soundex, 
+        date_of_birth,
+        CASE 
+            WHEN doc_attr.date_of_birth IS NOT NULL THEN To_Char(doc_attr.date_of_birth, 'YYYYMMDD') 
+            ELSE doc_attr.dob_text 
+        END dob_text, 
+        doc_attr.birth_sex, 
+        pdoc.stateno,
+        pdoc.association_date,
+        Add_Months(Max(pdoc.association_date) over (partition by pdoc.stateno), -24)  max_assoc_dt,
+        Nvl(Max(rec.generate_date) over (partition by pdoc.stateno),to_date('01/01/1900', 'MM/DD/YYYY')) file_gen_dt
+        ,(SELECT m.cityno
+           FROM nyehms_ehars_stateno_map m
+          WHERE m.nyehms_stateno = pdoc.stateno
+            AND m.cityno IS NOT NULL
+            AND ROWNUM = 1) cityno ,
+         (SELECT m.EHARS_STATENO
+           FROM nyehms_ehars_stateno_map m
+          WHERE m.nyehms_stateno = pdoc.stateno
+            AND m.EHARS_STATENO IS NOT NULL
+            AND ROWNUM = 1) EHARS_STATENO 
+  FROM document_person_attr doc_attr, person_doc_association pdoc, nyehms_flag_record_search rec
+WHERE pdoc.document_id = doc_attr.document_id 
+   AND (doc_attr.last_name IS NOT NULL 
+        AND doc_attr.date_of_birth IS NOT NULL)
+   AND pdoc.stateno IN 
+      ]]>
+      
+      <choose>
+      	<when test="selectedStatenos == 'ALL'">
+    		  	 (select STATENO from NYEHMS_FLAG_RECORD_SEARCH where UNFLAG_DATE is null) 
+      	</when>
+      	<otherwise>
+   				<foreach item="stateno" index="index" collection="p_stateno_list" open="(" separator="," close=")">
+						        	#{stateno}
+						  		 </foreach>
+	   	
+      	
+      	</otherwise>
+      	
+      </choose>
+   					  		 
+						  		     <![CDATA[
+AND pdoc.dissassociation_date IS null
+  AND pdoc.stateno = rec.stateno(+)
+),
+query2 AS (SELECT level l FROM dual CONNECT BY LEVEL <=2)
+,query3 AS (
+SELECT Distinct a.lname_soundex, 
+        a.dob_text, 
+        case when birth_sex is null and l = 1 then 'M' 
+            when birth_sex is null and l != 1 then 'F' 
+            when birth_sex is not null then birth_sex
+        end birth_sex, 
+        a.stateno,
+        date_of_birth
+        ,cityno
+        , EHARS_STATENO
+  FROM query1 a, query2 where   a.lname_soundex is not null
+   AND a.association_date > max_assoc_dt
+   AND a.association_date > file_gen_dt
+ORDER BY lname_soundex, date_of_birth
+)
+SELECT ROWNUM, a.*
+FROM query3 a
+
+    ]]>
+    </select>
+    
+    
+    
+    <select id="getCDCReportingStateCodesToProcess" resultType="String">
+	
+	
+         select DISTINCT STATE_CD state  from NYEHMS_REC_SEARCH_RETURN where (ACRF_DOC_ID is null and DISCARDED_DATE is null and RIDR_SAME_AS is null)
+    
+         ORDER BY state ASC 
+		
+	</select>
+	
+	
+	<select id="getRecordSearchViewResults" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.review.RecordSearchResultsVO">
+		
+		select rec_return.ROWID recordSearchReturnRowId, rec_sent.STATENO nysStateno, rec_sent.EHARS_STATENO eharsStateno, rec_sent.SENT_FILE_NAME fileName, rec_sent.LNAME_SOUNDEX nysLnameSoundex, rec_sent.DOB_TEXT nysDobText, rec_sent.BIRTH_SEX nysBirthSex,
+                  rec_return.STATENO  reportingStateno, rec_return.STATE_CD  reportingStatecd, rec_return.LNAME_SOUNDEX  reportingLnameSoundex, rec_return.DOB_TEXT  reportingDobText, rec_return.BIRTH_SEX  reportingBirthSex, rec_return.TYPE   reportingType,
+                  
+                  rec_search.COMMENTS comments, usr.FULL_NAME creatUid ,
+                  TO_CHAR(rec_return.PARENT_DOC_CREATE_DT, 'MM/DD/YYYY') parentDocCreatedDate,
+                  PARENT_DOC_EXISTS parentDocExists
+                  
+                  from
+                  
+                  NYEHMS_REC_SEARCH_RETURN rec_return,
+                  NYEHMS_REC_SEARCH_SENT rec_sent
+                   ,NYEHMS_FLAG_RECORD_SEARCH rec_search , NYEHMS_USERS_VW usr     
+        
+        
+                   where 
+                  
+                       rec_return.SENT_FILE_NAME = rec_sent.SENT_FILE_NAME
+                        and rec_sent.SENT_FILE_NAME = rec_search.SENT_FILE_NAME(+) 
+                        and rec_sent.STATENO = rec_search.STATENO (+)
+                        
+                        and rec_search.CREATE_UID = usr.WORKER_ID(+) 
+                        
+                        
+                        
+                  and rec_sent.SENT_FILE_SEQ = rec_return.SENT_FILE_SEQ
+                  and (rec_return.ACRF_DOC_ID is null and rec_return.DISCARDED_DATE is null and rec_return.RIDR_SAME_AS is null)
+                  
+                  <if test="stateValue != 'ALL'">
+                  	and rec_return.STATE_CD = #{stateValue}
+                  </if>		
+	</select>
+		
+	<update id="updateRecordSearchDocumentWithAcrf" parameterType="java.util.Map">
+		update NYEHMS_REC_SEARCH_RETURN set ACRF_DOC_ID = #{documentId},
+		CREATE_UID = #{p_workerId}, 
+		CREATE_DATE = SYSDATE
+		 where 
+		
+		SENT_FILE_NAME = #{sentFileName}
+		
+		and STATENO in 
+		
+		<foreach collection="duplicateStatenos" item="stateno"  open="(" separator="," close=")">
+	    	#{stateno}
+	    </foreach>
+	</update>
+	
+	<select id="downloadCDCReturnFile" parameterType="String" resultType="java.util.Map">
+		select LNAME_SOUNDEX, to_char(fn_to_date(DOB_TEXT, 'MM/DD/YYYY'), 'MM/DD/YYYY') DOB_TEXT, BIRTH_SEX, STATENO, CITYNO, EHARS_STATENO from NYEHMS_REC_SEARCH_SENT where SENT_FILE_NAME = #{cdcFileName} order by SENT_FILE_SEQ
+	</select>
+	
+	
+	<select id="checkFileNameExists" parameterType="java.util.Map" resultType="int">
+	
+		<![CDATA[
+		select count(*) from NYEHMS_FLAG_RECORD_SEARCH where SENT_FILE_NAME = #{fileName} and rownum < 2
+			]]>
+		
+	</select>
+	
+	<select id="getSentFileName" parameterType="String" resultType="String">
+		select SENT_FILE_NAME from NYEHMS_REC_SEARCH_RETURN where ROWID = #{acrfReferenceRowId}
+	</select>
+	
+	<update id="discardCDCFeedbackRecords" parameterType="java.util.Map">
+		update NYEHMS_REC_SEARCH_RETURN set DISCARDED_DATE = SYSDATE, DISCARDED_BY = #{p_workerId} where 
+
+  		ROWID in 
+	    <foreach collection="p_cdcRecords" item="row_id"  open="(" separator="," close=")">
+	    	#{row_id}
+	    </foreach>
+	</update>
+	
+	
+	<select id="getPendingResolutionStates" parameterType="java.util.Map" resultType="String">
+		select distinct STATE_CD from NYEHMS_REC_SEARCH_RETURN where SENT_FILE_NAME = #{sentFileName} and SENT_FILE_SEQ in (
+		
+		select SENT_FILE_SEQ  from NYEHMS_REC_SEARCH_SENT    where STATENO  = #{nyehmsStateno} and    SENT_FILE_NAME = #{sentFileName} ) and (ACRF_DOC_ID is null and DISCARDED_DATE is null  and RIDR_SAME_AS is null)
+	</select>
+
+		
+	<update id="replaceRecordSearchStateno" parameterType="java.util.Map">
+	
+	update NYEHMS_FLAG_RECORD_SEARCH set STATENO = #{recSearchStatenoToReplace}, COMMENTS = COMMENTS || '   |    ' || #{recSearchComments} where STATENO = #{recSearchSourceStateno} and UNFLAG_DATE is null and SENT_FILE_NAME is null
+	
+	</update>
+	
+	<update id="rejectCDCFileFromSentTable" parameterType="java.util.Map">
+		update NYEHMS_REC_SEARCH_SENT set END_DATE = SYSDATE, END_DATED_UID = #{workerId} where SENT_FILE_NAME = #{cdcFileName} and UPLOAD_DATE is null
+	</update>
+	
+	<update id="rejectCDCFileFromFlaggingTable" parameterType="java.util.Map">
+		update NYEHMS_FLAG_RECORD_SEARCH set SENT_FILE_NAME = null, GENERATE_UID = #{workerId}, GENERATE_DATE = SYSDATE where SENT_FILE_NAME = #{cdcFileName} and UPLOAD_DATE is null
+	</update>
+	
+	<select id="getRecordSearchStatenoHistory" parameterType="String" resultType="java.util.Map">
+		WITH data AS
+(
+SELECT DISTINCT a.STATENO,To_Char(a.UNFLAG_DATE, 'MM/DD/YYYY hh:mi:ss AM') UNFLAG_DATE, UNFLAG_COMMENTS, To_Char(a.create_date, 'MM/DD/YYYY hh:mi:ss AM') CREATE_DATE, a.COMMENTS, 
+        To_Char(a.generate_date,  'MM/DD/YYYY  hh:mi:ss AM') GENERATE_DATE, a.SENT_FILE_NAME
+        , (SELECT Count(*) 
+             FROM nyehms_rec_search_sent d
+            WHERE d.sent_file_name = a.sent_file_name
+              AND d.stateno = a.stateno) SENT_COUNT
+        , c.STATE_CD
+FROM nyehms_flag_record_search a
+    left outer JOIN nyehms_rec_search_sent b 
+    ON (b.sent_file_name = a.sent_file_name
+        AND b.stateno = a.stateno)
+    left outer JOIN nyehms_rec_search_return c
+    ON (c.sent_file_name = b.sent_file_name
+        AND c.sent_file_seq = b.sent_file_seq)
+WHERE a.stateno = #{stateNo}
+)
+SELECT stateno, UNFLAG_DATE, UNFLAG_COMMENTS, sent_file_name, create_date, comments, generate_date, sent_count
+        ,listagg(state_cd, ',') within GROUP (order by stateno) AS state_cd 
+<!--         ,wm_concat(state_cd)  state_cd   -->
+FROM data
+GROUP BY stateno, UNFLAG_DATE, UNFLAG_COMMENTS, sent_file_name, create_date, comments, generate_date, sent_count
+ORDER BY create_date DESC
+	
+	</select>
+
+	
+	<update id="identifyCDCNoMatches" parameterType="java.util.Map">
+		MERGE INTO nyehms_flag_record_search a
+USING (   
+WITH data AS
+(  
+SELECT Distinct s.sent_file_name, s.stateno sent_stateno, FIRST_VALUE(r.stateno IGNORE NULLS) OVER (PARTITION BY s.stateno) ret_stateno
+  FROM nyehms_flag_record_search a
+  JOIN nyehms_rec_search_sent s ON s.sent_file_name = a.sent_file_name AND s.stateno = a.stateno and s.sent_file_name = #{fileName}
+  LEFT JOIN nyehms_rec_search_return r ON r.sent_file_name = s.sent_file_name AND s.sent_file_seq = r.sent_file_seq
+)
+SELECT *
+  FROM data
+WHERE ret_stateno IS NULL
+) b
+ON (b.sent_file_name = a.sent_file_name AND b.sent_stateno = a.stateno)
+WHEN MATCHED THEN
+UPDATE SET unflag_comments = 'No match found'
+WHERE unflag_date IS NOT NULL
+	</update>
+	
+	<update id="identifyCDCMatches" parameterType="java.util.Map">
+		update nyehms_flag_record_search set unflag_comments = 'CDC match' where unflag_comments = 'Waiting for CDC match' and sent_file_name = #{fileName}
+	</update>		
+	
+	
+	
+	
+	<select id="identifyCDCReturnFileDuplicates" parameterType="java.util.Map" >
+			
+		<![CDATA[
+				MERGE INTO NYEHMS_OWNER.NYEHMS_REC_SEARCH_RETURN  out
+                USING (
+                        SELECT *
+                        FROM
+                        (
+                        SELECT a.rowid row_id ,  pdoc.ASSOCIATION_DATE
+                               
+                              , ROW_NUMBER() OVER (PARTITION BY pdoc.stateno, A.STATE_CD, A.STATENO   ORDER BY pdoc.ASSOCIATION_DATE  DESC) rn
+                          FROM NYEHMS_REC_SEARCH_RETURN   a, NYEHMS_REC_SEARCH_SENT    sent, RAW_ACRF_RIDR_INFO  b, RAW_ACRF_DOC  c , person_doc_association  pdoc 
+                        WHERE 
+                            a.sent_file_name = #{fileName}
+                            and a.ACRF_DOC_ID is null and a.DISCARDED_DATE is null and  a.RIDR_SAME_AS is null
+                            and b.ACRF_DOC_ID = c.document_id
+                            and c.DOCUMENT_SOURCE in ('A06.18', 'A06.29') 
+                            and c.document_id = pdoc.document_id
+                            and pdoc.DISSASSOCIATION_DATE is null
+                            
+                            AND ABS(Trunc(pdoc.ASSOCIATION_DATE ) - Trunc(SYSDATE)) <= 180
+                            
+                            and a.sent_file_name = sent.sent_File_name
+                            and a.sent_file_seq = sent.sent_file_Seq 
+                            and b.STATE_CD =  a.STATE_CD
+                            and b.STATENO  =  a.STATENO
+                            and pdoc.stateno =  PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (sent.STATENO )
+                            
+   
+                        )
+                        WHERE rn = 1
+                ) m
+                ON (out.rowid = m.row_id)
+                WHEN MATCHED THEN
+                UPDATE SET PARENT_DOC_EXISTS = 'Y', PARENT_DOC_CREATE_DT = ASSOCIATION_DATE
+						]]>
+	</select>
+	
+	<select id="checkForRIDREharsData" resultType="int" >
+		select count(*) from EHARS_RIDR
+	</select>
+	
+	<update id="updateSameAsRecordsReturnFile">
+		update NYEHMS_REC_SEARCH_RETURN set ridr_same_as = 'Y', DISCARDED_DATE = SYSDATE, DISCARDED_BY = '900'  where rowid in (
+SELECT REC_RETN.rowId row_id
+  FROM NYEHMS_REC_SEARCH_SENT rec_sent,
+       NYEHMS_REC_SEARCH_RETURN rec_retn,
+       EHARS_RIDR ehars
+ WHERE     rec_sent.sent_file_name = rec_retn.sent_file_name
+       AND rec_sent.sent_file_seq = rec_retn.sent_file_seq
+       AND rec_retn.acrf_doc_id IS NULL
+       AND rec_retn.DISCARDED_DATE IS NULL
+       AND rec_retn.RIDR_SAME_AS IS NULL
+       AND rec_retn.STATE_CD = ehars.RIDR_STATE_CD
+       AND REC_RETN.STATENO = ehars.RIDR_STATENO
+       AND REC_SENT.EHARS_STATENO = ehars.EHARS_STATENO)		
+	</update>
+	
+	<update id="updateRecordsWorkedPreviously">
+		update NYEHMS_REC_SEARCH_RETURN set DISCARDED_DATE = SYSDATE, DISCARDED_BY = '900'  where rowid in (
+SELECT REC_RETN.rowId row_id
+  
+  FROM NYEHMS_REC_SEARCH_SENT rec_sent,
+       NYEHMS_REC_SEARCH_RETURN rec_retn,
+       NYEHMS_REC_SEARCH_RETURN rec_retn_old,
+       NYEHMS_REC_SEARCH_SENT rec_sent_old
+              
+ WHERE     rec_sent.sent_file_name = rec_retn.sent_file_name
+       AND rec_sent.sent_file_seq = rec_retn.sent_file_seq
+       AND rec_sent_old.sent_file_name = rec_retn_old.sent_file_name
+       AND rec_sent_old.sent_file_seq = rec_retn_old.sent_file_seq
+       AND rec_retn.acrf_doc_id IS NULL
+       AND rec_retn.DISCARDED_DATE IS NULL
+       AND rec_retn.STATE_CD = rec_retn_old.STATE_CD
+       AND rec_retn.STATENO = rec_retn_old.STATENO
+       AND rec_sent.EHARS_STATENO = rec_sent_old.EHARS_STATENO
+       and rec_retn_old.create_uid != '900')
+	</update>
+	
+	
+	
+	
+	
+	<select id="getRecordSearchSentSeq" parameterType="java.util.Map" resultType="Integer">
+		select SENT_FILE_SEQ from NYEHMS_REC_SEARCH_SENT where SENT_FILE_NAME=#{fileName} and LNAME_SOUNDEX=#{last_name_sndx} and DOB_TEXT=#{dob, jdbcType=VARCHAR} and BIRTH_SEX=#{sex}
+		<choose>
+			<when test="stateno != null and stateno != ''">
+				and EHARS_STATENO = #{stateno}
+			</when>
+			<otherwise>
+				and EHARS_STATENO is null
+			</otherwise>
+		
+		</choose>
+		
+		
+		<if test="cityno != null and cityno != ''">		
+			and CITYNO = #{cityno}
+		</if>
+	</select>
+	
+</mapper>

@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.person.PersonDAO">
+
+
+ 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO" id="personViewMappingResult"> 
+		<result property="FNAME" column="FIRST_NAME"  />
+	 	<result property="MNAME" column="MIDDLE_NAME"  />
+	 	<result property="LNAME" column="LAST_NAME"  />        
+	 	<result property="SUFFIX" column="SUFFIX"  />
+	 	<result property="GENDER" column="CURRENT_GENDER"  />
+	 	<result property="birthSex" column="BIRTH_SEX"  />        
+	 	<result property="stateOfDeath" column="STATE_OF_DEATH"  />
+	 	<result property="dateOfDeath" column="DATE_OF_DEATH"  />
+	 	<result property="SSN" column="SSN"  />
+	 	<result property="NYSID" column="NYSID"  />       
+	 	<result property="DIN" column="DIN"  />              
+	 	<result property="MED_RECORD_NUMBER" column="MED_RECORD"  />		
+	 	<result property="MEDICAID_NUMBER" column="MEDICAID_NUMBER"  />
+	 	<result property="INSURANCE_NUMBER" column="INSURANCE"  />        
+	 	<result property="DOB" column="BIRTH_DATE"  />
+	 	<result property="BIRTH_COUNTRY" column="BIRTH_COUNTRY"  />
+	 	<result property="ETHNICITY" column="ETHNICITY"  />        
+	 	<result property="race" column="RACE"  />
+	 	<result property="PERSON_ADDRESS" column="ADDRESS"  />           	
+	 	<result property="PERSON_STATE" column="STATE"  />
+	 	<result property="PERSON_CITY" column="CITY"  />
+	 	<result property="country" column="COUNTRY"  />
+	 	<result property="PERSON_COUNTY" column="COUNTY"  />
+	 	<result property="PERSON_ZIP" column="ZIPCODE"  />
+	 	<result property="PERSON_PLUS4" column="plus4"  />
+	 	<result property="homePhone" column="HOME_PHONE"  />
+	 	<result property="cellPhone" column="CELL_PHONE"  />
+	 	<result property="workPhone" column="WORK_PHONE"  />
+	 	<result property="emerPhone" column="EMERGENCY_CONTACT"  />
+	 	<result property="pager" column="PAGER"  />		
+	 	<result property="email" column="EMAIL"  />     
+	 	<result property="web" column="WEB"  />
+	 	
+	 	<result property="firstNameExists" column="FIRST_NAME_EXISTS"  />
+	 	<result property="lastNameExists" column="LAST_NAME_EXISTS"  />
+	 	<result property="middleNameExists" column="MIDDLE_NAME_EXISTS"  />
+	 	<result property="suffixExists" column="SUFFIX_EXISTS"  />
+	 	<result property="currentGenderExists" column="CURRENT_GENDER_EXISTS"  />
+	 	<result property="birthSexExists" column="BIRTH_SEX_EXISTS"  />
+	 	<result property="sodExists" column="STATE_OF_DEATH_EXISTS"  />
+	 	<result property="dodExists" column="DATE_OF_DEATH_EXISTS"  />
+	 	<result property="ssnExists" column="SSN_EXISTS"  />
+	 	<result property="nysidExists" column="NYSID_EXISTS"  />
+	 	<result property="dinExists" column="DIN_EXISTS"  />
+	 	<result property="medRecordExists" column="MED_RECORD_EXISTS"  />
+	 	<result property="insuranceExists" column="INSURANCE_EXISTS"  />
+	 	<result property="birthDateExists" column="BIRTH_DATE_EXISTS"  />
+	 	<result property="birthCountryExists" column="BIRTH_COUNTRY_EXISTS"  />
+	 	<result property="ethnicityExists" column="ETHNICITY_EXISTS"  />
+	 	<result property="MEDICAID_NUMBER_EXISTS" column="MEDICAID_NUMBER_EXISTS"  />
+	 	
+	 	<result property="homePhoneExists" column="HOME_PHONE_EXISTS"  />
+	 	<result property="addressExists" column="ADDRESS_EXISTS"  />
+	 	<result property="badMergeFlag" column="BAD_MERGE_FLAG"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="recordSearchFlag" column="FLAG_STATENO_EXISTS"   jdbcType="VARCHAR"/>
+	 	<result property="recordSearchComments" column="FLAG_COMMENTS"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="sentToCDC" column="FLAG_SENT_CDC"   jdbcType="VARCHAR"/>
+	 	<result property="rasDocActive" column="ras_doc_exists"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="statenoFlaggedEarlier" column="STATENO_FLAGGED_EARLIER"   jdbcType="VARCHAR"/>
+	 	
+	 	<result property="nonCaseHistory" column="NON_CASE_FLAG_PREV"   jdbcType="VARCHAR"/>
+	 	<result property="nonCaseDocStatus" column="NON_CASE_FLAG_NEW"   jdbcType="VARCHAR"/>
+	 	<result column="DUPLICATE_STATENO" property="DUPLICATE_STATENO" jdbcType="VARCHAR"/>
+	 	
+	 	
+	 	
+	</resultMap>
+	
+	<select id="getPersonViewData" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_PERSON.PR_NYEHMS_PERSON_DETAILS(
+			#{p_data_req_type,jdbcType=VARCHAR,mode=IN},
+			#{p_state_no,jdbcType=VARCHAR,mode=IN},
+			#{p_date,jdbcType=TIMESTAMP,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=personViewMappingResult},
+			#{p_doc_timeline,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=personDocHistoryVOResultMap},
+			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN},
+			 #{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}  
+	</select> 	
+ 	
+ 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRaceVO" id="personRaceMappingResult"> 	
+ 	 	 <result property="RACE_WHITE" column="RACE_WHITE"/>  
+	 	 <result property="RACE_BLACK" column="RACE_BLACK"/>  
+	 	 <result property="RACE_ASIAN" column="RACE_ASIAN"/>  
+		 <result property="RACE_INDIAN" column="RACE_INDIAN"/>  
+		 <result property="RACE_PACIFIC" column="RACE_PACIFIC"/>
+		 <result property="RACE_MULTIPLE" column="RACE_MULTIPLE"/>	
+		 <result property="RACE_UNKNOWN" column="RACE_UNKNOWN"/>
+		 <result property="RACE_OTHER" column="RACE_OTHER"/>
+		 <result property="RACE_OTHER_TEXT" column="RACE_OTHER_TEXT"/>
+		 <result property="raceAsianSub" column="RACE_ASIAN_SUB"/>
+		 <result property="racePacificSub" column="RACE_PACIFIC_SUB"/>
+ 	</resultMap>
+ 	
+ 	<select id="getPersonRaceData" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_PERSON.PR_GETRACE(			
+			#{p_state_no,jdbcType=INTEGER,mode=IN},
+			#{p_date,jdbcType=TIMESTAMP,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=personRaceMappingResult}
+		)}  
+	</select> 
+ 	
+ 	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonRisksVO" id="personRisksMappingResult"> 	
+ 	 	 <result property="swm" column="SWM"/>  
+	 	 <result property="swf" column="SWF"/>  
+	 	 <result property="idu" column="IDU"/>  
+		 <result property="sexPartnerIdu" column="SEX_PARTNER_IDU"/>  
+		 <result property="sexPartnerHiv" column="SEX_PARTNER_HIV"/>
+		 <result property="recvBloodProd" column="RECV_BLOOD_PROD"/>	
+		 <result property="perinatal" column="PERINATAL"/>
+		 <result property="other" column="OTHER"/>
+		 <result property="unknown" column="UNKNOWN"/>
+		 <result property="sexPartnerMsm" column="SEX_PARTNER_MSM"/>
+		 <result property="recvClottingFactor" column="RECV_CLOTTING_FACTOR"/>
+		 <result property="sexPartnerHemophiliac" column="SEX_PARTNER_HEMOPHILIAC"/>
+		 <result property="sexPartnerTransfusion" column="SEX_PARTNER_TRANSFUSION"/>
+		 <result property="sexPartnerTransplant" column="SEX_PARTNER_TRANSPLANT"/>
+		 <result property="recvTransplant" column="RECV_TRANSPLANT"/>
+		 <result property="healthCareWorker" column="HEALTHCARE_WORKER"/>
+		 <result property="riskOtherTxt" column="RISK_OTHER_TXT"/>
+		 <result property="countryRecvBloodProd" column="COUNTRY_RECV_BLOOD_PROD"/>
+		 <result property="dateRecvBloodProd" column="DATE_RECV_BLOOD_PROD"/>
+		 <result property="dateRecvClottingFactor" column="DATE_RECV_CLOTTING_FACTOR"/>
+		 <result property="cloattingFactorDisorder" column="CLOTTING_FACTOR_DISORDER"/>
+		 <result property="occupationalSetting" column="OCCUPATIONAL_SETTING"/> 	
+ 	</resultMap>
+ 	 	
+ 	<select id="getPersonRisksData" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_PERSON.PR_GETRISKS(			
+			#{p_state_no,jdbcType=VARCHAR,mode=IN},
+			#{p_date,jdbcType=TIMESTAMP,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=personRisksMappingResult},
+			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN} 
+		)}  
+	</select>  	 
+	
+	<resultMap type="String" id="personHistoryData">
+	
+		<result property="COLUMN_VALUE" column="COLUMN_VALUE"  jdbcType="VARCHAR"/>
+	</resultMap>
+	 	
+ 	<select id="getStatenoHistory" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  pkg_consolidation.pr_get_stateno_history(			
+			#{p_state_no,jdbcType=VARCHAR,mode=IN},
+			#{p_stateno_hist,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=personHistoryData}
+		)}  
+	</select>  	 
+	
+<!-- 	     		<![CDATA[select EHARS_STATENO from NYEHMS_EHARS_STATENO_MAP where NYEHMS_STATENO = #{stateNo} and STATUS_FLAG not in ('D', 'M', 'P') and EHARS_STATENO != (select EHARS_STATENO from nyehms_ehars_stateno_map where NYEHMS_STATENO = #{stateNo} and STATUS_FLAG not in ('D', 'M', 'P') and rownum < 2)]]> -->
+	
+<!-- 	     		<![CDATA[select EHARS_STATENO from EHARS_PERSON_NYC where NYEHMS_STATENO = #{stateNo} and EHARS_STATENO != (select EHARS_STATENO from EHARS_PERSON_NYC where NYEHMS_STATENO = #{stateNo} and rownum < 2)]]> -->
+		
+	<select id="checkStatenoIsActive" parameterType="String" resultType="String">
+		select FLAG_ACTIVE from PERSON where STATENO = #{stateNo}
+	</select>
+	
+	
+		
+	
+	<select id="getPersonDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+		select DOCUMENT_ID documentId, DOCUMENT_TYPE_CODE documentType, TO_CHAR(RECIEVE_DT, 'MM/DD/YYYY') recievedDate,PROVIDER_NAME providerName,PROVIDER_ADDRESS providerAddress, ASSOCIATION_DATE associationDate, FIRST_NAME firstName, LAST_NAME lastName, DATE_OF_BIRTH dateOfBirth, DATE_OF_DEATH dateOfDeath, SSN ssn, ETHNICITY ethnicity, RACE race, ADDRESS address, SURV_ASSIGNMENT_ID assignmentId, SURV_STATUS assignmentStatus, SENT_MESSAGE_FLAG sentMessageFlag, RETURN_MESSAGE_FLAG returnMessageFlag, ALT_ACRF_INFO altValues, ASSOCIATION_STATUS_CODE associationStatus, RAS_DOC_ID rasDocId, SIERRA_FLAG sierraFlag, DISCARD_STATUS discardStatus, HL7_EXISTS hl7Exists, nyc_reject_doc_ind nycRejectDocInd, DEMO_DOCUMENT_ID demoDocId, LAFT_FOLLOWUP_EXISTS laftFollowupExists from  NYEHMS_DOCUMENT_TIMELINE_VW
+		  where  STATENO = #{p_stateNo} 
+		  and doc_type_code IN (SELECT *
+                             FROM TABLE(get_user_permissions(#{p_module_id}, #{p_worker_id})))
+                             
+                             
+                             
+          <if test="p_documentType != '' and p_documentType != null">
+         		and doc_type_code = #{p_documentType}          
+          </if>
+		  order by RECIEVE_DT desc nulls last
+	</select>  	 
+	
+	
+	<select id="getHIVDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+		select DOCUMENT_ID documentId, DOCUMENT_TYPE_CODE documentType, TO_CHAR(RECIEVE_DT, 'MM/DD/YYYY') recievedDate,PROVIDER_NAME providerName,PROVIDER_ADDRESS providerAddress, ASSOCIATION_DATE associationDate, FIRST_NAME firstName, LAST_NAME lastName, DATE_OF_BIRTH dateOfBirth, SSN ssn, ETHNICITY ethnicity, RACE race, ADDRESS address, SURV_ASSIGNMENT_ID assignmentId, SURV_STATUS assignmentStatus,   TO_CHAR(COLLECTION_DATE, 'MM/DD/YYYY') collectionDate, SENT_MESSAGE_FLAG sentMessageFlag, RETURN_MESSAGE_FLAG returnMessageFlag, ACCESSION_NUMBER accessionNumber, TEST_RESULT testResult, ASSOCIATION_STATUS_CODE associationStatus, RAS_DOC_ID rasDocId, SIERRA_FLAG sierraFlag, DISCARD_STATUS discardStatus, nyc_reject_doc_ind nycRejectDocInd, DEMO_DOCUMENT_ID demoDocId, LAFT_FOLLOWUP_EXISTS laftFollowupExists from  NYEHMS_DOC_TIMELINE_HIV_VW where  
+		STATENO = #{p_stateNo} 
+		and doc_type_code IN (SELECT *
+                             FROM TABLE(get_user_permissions(#{p_module_id}, #{p_worker_id})))
+		order by COLLECTION_DATE desc nulls last 
+	</select>  	 
+	
+	
+	
+	
+	
+	
+	
+  
+
+	
+	
+	
+	
+	
+   
+   	
+	
+	
+	
+	
+    
+	
+	
+	
+	
+	<select id="getDocumentDetailsFromStageTable" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+	<![CDATA[
+select
+stage.DOCUMENT_ID documentId,
+#{documentType} documentType,
+PERSON_FIRST_NAME firstName,
+PERSON_LAST_NAME lastName,
+PERSON_DOB_TEXT dateOfBirth,
+DOD_TEXT dateOfDeath,
+FILE_TYPE_CD fileType,
+SSN ssn,
+DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race,
+e.ETHNICITY_DESCRIPTION ethnicity,
+PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP address,
+CALC_COLLECTION_DATE collectionDate,
+DF_PROV_ADDRESS_STND || ', ' || DF_PROV_CITY_STND || ', ' || DF_PROV_STATE_STND || ', ' || DF_PROV_ZIP_STND providerAddress,
+DF_PROV_FNAME_STND providerName, 
+case when stage.RECEIVED_DATE is null then TO_CHAR(doc.RECEIVED_DATE, 'MM/DD/YYYY')
+    else to_char(stage.RECEIVED_DATE, 'MM/DD/YYYY') end recievedDate
+from
+nyehms_Sasdb_owner.er_person_clusters_stage stage, document_locator doc, CODED_ETHNICITY e where  doc.document_id = stage.document_id and stage.DOCUMENT_ID = #{documentId}  AND stage.ETHNICITY_CODE = e.ETHNICITY_CODE (+) 
+	     			]]>
+		
+	</select>
+	
+	<select id="getNBSDocumentDetails"  parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+	
+	select
+nbs.DOCUMENT_ID documentId,
+'NBS' documentType,
+INFANT_FNAME  firstName,
+INFANT_LNAME  lastName,
+TO_CHAR(BIRTH_DATE, 'MM/DD/YYYY')  dateOfBirth,
+'' dateOfDeath,
+'' ssn,
+DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) ||  DECODE(  race_white , 1 , 'WHT/' ,NULL) ||  DECODE(  race_other , 1 , 'OTH/' ,NULL)  race,
+e.ETHNICITY_DESCRIPTION ethnicity,
+MOTHER_ADDRESS || ', ' || MOTHER_CITY  || ', ' || MOTHER_STATE  || ', ' || MOTHER_ZIP  address,
+'' collectionDate,
+'' providerAddress,
+'' providerName, 
+'' recievedDate
+from
+STD_NBS_DOC nbs, document_locator doc, CODED_ETHNICITY e where  doc.document_id = nbs.document_id AND nbs.ETHNICITY = e.ETHNICITY_CODE (+)
+
+
+ and nbs.DOCUMENT_ID = #{documentId}
+	</select>
+	<select id="getClusterDocumentDetailsFromStageTable" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+	<![CDATA[
+	
+	select
+stage.PARTNER_ID  documentId,
+'CLUST_PART' documentType,
+FIRST_NAME  firstName,
+LAST_NAME  lastName,
+TO_CHAR(DATE_OF_BIRTH, 'MM/DD/YYYY')  dateOfBirth,
+TO_CHAR(DATE_OF_DEATH , 'MM/DD/YYYY') dateOfDeath,
+'' ssn,
+DECODE( RACE_AMERIND , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL)  || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race,
+e.ETHNICITY_DESCRIPTION ethnicity,
+STREET  || ', ' || CITY  || ', ' || STATE  || ', ' || ZIPCODE  address,
+'' providerAddress,
+'' providerName
+
+from
+nyehms_cluster_partners stage, CODED_ETHNICITY e where  stage.partner_id = #{documentId}  AND stage.ETHNICITY = e.ETHNICITY_CODE (+)
+]]>
+		
+	</select>
+	
+	
+	
+	
+	
+	<select id="getLabDocumentDetails" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO">
+	<![CDATA[
+	    select DOCUMENT_ID documentId,   #{documentType} as documentType, FNAME firstName, LNAME lastName, DOB_TEXT dateOfBirth, SSN ssn, e.ETHNICITY_DESCRIPTION ethnicity,  PERSON_ADDRESS || ', ' || PERSON_CITY || ', ' || PERSON_STATE || ', ' || PERSON_ZIP address,  PROV_ADDRESS || ', ' || PROV_CITY || ', ' || PROV_STATE || ', ' || PROV_ZIP 
+               AS providerAddress, pkg_trk_common.fn_get_fullname (PROV_LNAME,
+                                            PROV_FNAME,
+                                            PROV_MNAME,
+                                            NULL) as providerName, TO_CHAR(DATE_RECEIVED,'MM/DD/YYYY') recievedDate , TO_CHAR(COLLECTION_DATE,'MM/DD/YYYY') collectionDate, ACCESSION_NUMBER accessionNumber, TEST_RESULT  testResult, DECODE( race_indian , 1 , 'IND/' ,NULL) || DECODE(  race_black , 1 , 'BLK/' ,NULL) || DECODE(  race_asian , 1 , 'ASI/' ,NULL) || DECODE(  race_pacific , 1 , 'PAC/' ,NULL) || DECODE(  race_white , 1 , 'WHT/' ,NULL) || DECODE(  race_multiple , 1 , 'MUL/' ,NULL) || DECODE(  race_other , 1 , 'OTH/' ,NULL) || DECODE(  race_unknown , 1 , 'UNK' ,NULL) race   from  ${tableName} , CODED_ETHNICITY e where  DOCUMENT_ID = #{documentId}  AND ETHNICITY = e.ETHNICITY_CODE (+)    
+	     			]]>
+		
+	</select> 
+	
+	 
+	
+	
+	
+	
+	
+	
+ 		
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonFieldVO" id="PersonFieldVOResultMap">
+		<result property="fieldId" column="FIELD_ID"/>
+		<result property="field" column="COLUMN_VALUE"/>
+	</resultMap>
+	
+	<select id="getFieldValsWithBestIndicator" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_PERSON.PR_SHOW_MULTIVALUES(			
+			#{tblField,jdbcType=VARCHAR,mode=IN},
+			#{stateNo,jdbcType=VARCHAR,mode=IN},
+			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN},  
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=PersonFieldVOResultMap},
+			#{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}  
+	</select>  	 
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonFieldDocsVO" id="PersonFieldDocsVOResultMap">
+		<result property="field" column="COLUMN_VALUE"/>
+		<result property="documentId" column="DOCUMENT_ID"/>
+		<result property="documentType" column="DOCUMENT_TYPE"/>
+		<result property="startDate" column="A_DATE"/>
+		<result property="docEditiedFlag" column="DOC_EDITED_FLAG"/>		
+	</resultMap>
+	
+	<resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonDocHistoryVO" id="personDocHistoryVOResultMap">
+		<result property="documentId" column="DOCUMENT_ID"/>
+		<result property="documentType" column="DOCUMENT_TYPE_CODE"/>
+		<result property="associationDate" column="ASSOCIATION_DATE" jdbcType="TIMESTAMP" />
+		<result property="firstName" column="FIRST_NAME"/>
+		<result property="lastName" column="LAST_NAME"/>
+		<result property="dateOfBirth" column="DATE_OF_BIRTH" jdbcType="TIMESTAMP" />		
+		<result property="ssn" column="SSN"/>
+		<result property="ethnicity" column="ETHNICITY"/>
+		<result property="race" column="RACE"/>
+		<result property="address" column="ADDRESS"/>
+	</resultMap>
+	
+	
+	
+	<select id="getFieldDocsWithBestIndicator" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_PERSON.PR_SHOW_MULTIVALUES(			
+			#{tblField,jdbcType=VARCHAR,mode=IN},
+			#{stateNo,jdbcType=VARCHAR,mode=IN},
+			#{p_calling_app_name,jdbcType=VARCHAR,mode=IN},  
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=PersonFieldDocsVOResultMap},
+			 #{p_module_id,jdbcType=INTEGER,mode=IN},
+			 #{p_worker_id,jdbcType=VARCHAR,mode=IN}
+		)}  
+	</select>
+	
+	<select id="deleteDocument" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call PKG_DOCUMENT_MANAGEMENT.pr_delete_indicate_document(			
+			#{p_document_id,jdbcType=VARCHAR,mode=IN},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_code_out ,jdbcType=INTEGER,mode=OUT},  
+			#{p_msg_out,jdbcType=VARCHAR, mode=OUT}
+		)}  
+	</select>
+	
+	<select id="getEharsStateno" parameterType="String" resultType="String">
+		<![CDATA[
+	     		select distinct EHARS_STATENO from nyehms_ehars_stateno_map where NYEHMS_STATENO = #{stateNo} and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P')    
+	     			]]>    
+		
+	</select> 
+	
+	
+	<select id="getEharsStatenoMappings" parameterType="java.util.Map" resultType="java.util.Map">
+		
+	     		select EHARS_STATENO, NYEHMS_STATENO from nyehms_ehars_stateno_map where NYEHMS_STATENO in 
+	     		
+	     		<foreach item="stateno" index="index" collection="statenos" open="(" separator="," close=")">
+						        	#{stateno}
+						  		 </foreach>
+						  		 
+						  		  and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P')   
+	        
+		
+	</select> 
+	
+	
+		<select id="getNyehmsStatenoForTheDocument" parameterType="int" resultType="String">
+		<![CDATA[
+	     		select STATENO from PERSON_DOC_ASSOCIATION where DOCUMENT_ID = #{docId}  and  ASSOCIATION_STATUS_CODE = 'ASSOC' and rownum < 2   
+	     			]]>    
+		
+	</select>  
+	
+	
+	
+	<select id="getNycEharsDetails" parameterType="String" resultType="String">
+		<![CDATA[
+	     		select distinct EHARS_STATENO from ehars_person_nyc where nyehms_stateno = #{stateNo}   
+	     			]]>    
+		
+	</select>  
+	
+		<select id="getNycCityNoDetails" parameterType="String" resultType="String">
+		<![CDATA[
+	     		select distinct CITYNO from ehars_person_nyc where nyehms_stateno = #{stateNo}   
+	     			]]>    
+		
+	</select>  
+	
+	
+	
+	<select id="getOriginCategories" resultType="java.util.Map">
+	     		select ORIGIN_CODE, ORIGIN_DESC, ORIGIN_TYPE from CODED_MERGE_ORIGINS where ORIGIN_TYPE is not null and END_DATE is null order by SORT_ORDER   
+	</select>  
+	
+	
+	<select id="getTriggeredMessageTypesForDocument" parameterType="java.util.Map" resultType="String">
+	     		select DISTINCT(TRIGGER_MSG_TYPE) from NYEHMS_STD_MESSAGE_SENT where
+	     		<choose>
+	     			<when test="stateno != '' and stateno != null">
+	     				STATENO = #{stateno}
+	     			</when>
+	     			<otherwise>
+	     				FOLLOW_UP_DOC_ID = #{documentId}	
+	     			</otherwise>
+	     		</choose> 
+	     		
+	     		
+	     		
+	</select>  
+
+	
+	<select id="triggerPsMessage" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call PKG_PS_MESSAGE_PROCESS.pr_manual_create_ps_message(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},			
+			#{p_document_id,jdbcType=INTEGER,mode=IN},
+			#{p_document_type,jdbcType=VARCHAR,mode=IN},
+			#{p_TRIGGER_MSG_TYPE,jdbcType=VARCHAR,mode=IN},
+			#{p_workerId,jdbcType=VARCHAR,mode=IN},
+			#{p_code_out ,jdbcType=INTEGER,mode=OUT},  
+			#{p_msg_out,jdbcType=VARCHAR, mode=OUT},
+			#{p_test_type_code,jdbcType=VARCHAR, mode=IN},
+			#{p_interpret_cd,jdbcType=VARCHAR, mode=IN},
+			#{p_change_address,jdbcType=VARCHAR, mode=IN},
+			#{p_new_address,jdbcType=VARCHAR, mode=IN},
+			#{p_new_state,jdbcType=VARCHAR, mode=IN},
+			#{p_new_city,jdbcType=VARCHAR, mode=IN},
+			#{p_new_zip,jdbcType=VARCHAR, mode=IN},
+			#{p_new_county_fips,jdbcType=VARCHAR, mode=IN}
+		)}  
+	</select>
+	
+	<select id="checkForExistingUpdatedMessageDocIds" parameterType="java.util.Map" resultType="int">
+		select DOCUMENT_ID from UPDATE_PS_RETURN_MESSAGE where DOCUMENT_ID in 
+		
+		
+	     		<foreach item="docId" index="index" collection="returnMessageDocIds" open="(" separator="," close=")">
+						        	#{docId}
+						  		 </foreach>
+						  		 
+	</select>
+	
+	<select id="checkExistingDateOfDeathForMessageDocIds" parameterType="java.util.Map" resultType="java.util.Map">
+	SELECT  distinct p.stateno, d.document_id, sent.FOLLOW_UP_DOC_ID 
+FROM person_doc_association p , document_person_attr d, NYEHMS_STD_MESSAGE_SENT sent
+WHERE Date_of_Death IS NOT NULL
+AND p.document_id =d.document_id
+and d.document_id =sent.document_id
+and D.document_id IN 
+
+	<foreach item="docId" index="index" collection="docIdsDateOfDeathNull" open="(" separator="," close=")">
+						        	#{docId}
+						  		 </foreach>
+
+AND DISSASSOCIATION_DATE IS NULL
+	
+	</select>
+	
+	
+	
+	<select id="getReturnDocIdNotExistInTable" parameterType="java.util.Map" resultType="int">
+		select DOCUMENT_ID from NYEHMS_STD_MESSAGE_RETURN where DOCUMENT_ID not in 
+		
+		
+	     		<foreach item="docId" index="index" collection="returnMessageDocIds" open="(" separator="," close=")">
+						        	#{docId}
+						  		 </foreach>
+						  		 
+	</select>
+	
+	<select  id="checkForDuplicateDispositionCode"  parameterType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.UpdatedDispositionsVO" resultType="int">
+		select count(*) from UPDATE_PS_RETURN_MESSAGE where DOCUMENT_ID = #{DOCUMENT_ID, jdbcType=DECIMAL} and NVL(DATE_OF_DEATH, '01-Jan-1900') = NVL(#{DATE_OF_DEATH, jdbcType=DATE}, '01-Jan-1900') and NVL(LATEST_DISPOSITION_CODE, '999') = NVL(#{LATEST_DISPOSITION_CODE, jdbcType=INTEGER}, '999')	and NVL(FIELDNOTES, 'XX') = NVL(#{FIELDNOTES, jdbcType=VARCHAR}, 'XX')
+	</select>
+	
+	
+	<select id="getStatenoClusterAssociation" parameterType="String" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.uploads.ClusterUploadVO">
+        WITH stateno_in_clust AS
+        (
+            SELECT nucl.cluster_id, nucl.cluster_type, pdoc.stateno curr_stateno, pdoc.document_id, scdoc.nyehms_stateno_at_upload org_stateno, nucl.cluster_identify_date clusterDate
+            FROM person_doc_association pdoc, std_cluster_doc scdoc, nyehms_upload_cluster nucl
+            WHERE pdoc.stateno = #{stateNo}
+            AND pdoc.dissassociation_date IS NULL
+            AND pdoc.document_id = scdoc.document_id
+            AND scdoc.cluster_id_pk = nucl.cluster_id_pk
+        ), stateno_not_in_clust AS
+        (
+            SELECT ucl.cluster_id, ucl.cluster_type, ucl.cluster_identify_date clusterDate
+            FROM nyehms_upload_cluster ucl, nyehms_upload_cluster_files uclf
+            WHERE ucl.cluster_id_pk = uclf.cluster_id_pk  AND ucl.cluster_type != 'BHAE_TS' AND NOT EXISTS (SELECT 1 FROM stateno_in_clust a WHERE a.cluster_id = ucl.cluster_id)
+        )
+        SELECT Distinct curr_stateno, cluster_id clusterId, cluster_type clusterType, clusterDate
+        FROM stateno_in_clust
+        UNION
+        SELECT Distinct NULL curr_stateno, cluster_id clusterId, cluster_type clusterType, clusterDate
+        FROM stateno_not_in_clust
+	</select>
+	
+	<update id="deletePendingPSMessageDocuments" parameterType="java.util.Map">
+	
+		update NYEHMS_STD_MESSAGE_SENT set PROCESS_IND = 'R_X', REVIEW_COMMENTS = 'Triggering Document Deleted', REVIEW_UID = #{p_workerId}, REVIEW_DATE = sysdate where FOLLOW_UP_DOC_ID = #{p_document_id} and process_ind = 'R'
+	
+	</update>
+	
+	<update id="deletePendingRiaDocument" parameterType="java.util.Map">
+	
+		update NYEHMS_RIA_DOC set STATENO_DELETED = 'Y', COMMENTS = 'Triggering Document Deleted', LAST_UPDATED_BY = #{p_workerId}, LAST_UPDATED_DATE = sysdate where LAB_DOC_ID = #{p_document_id} and COMPLETE_DATE is null
+	
+	</update>
+	
+	
+	
+	<select id="getNYSEharsDxDetails" parameterType="String" resultType="java.util.Map">
+		<![CDATA[	
+			     		select STAGE_ZERO_DX, STAGE_CD4_OI_DX from nyehms_ehars_stateno_map where NYEHMS_STATENO in 
+	     		
+						        	#{stateno}
+						  		 
+						  		  and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P')   and rownum < 2
+	
+		]]>
+	
+	</select>
+	<select id="getNYCEharsDxDetails" parameterType="String" resultType="java.util.Map">
+		<![CDATA[	
+			     		select STAGE_ZERO_DX, STAGE_CD4_OI_DX from ehars_person_nyc where NYEHMS_STATENO in 
+	     		
+						        	#{stateno}
+						  		 
+						  		  and NVL(STATUS_FLAG, 'XX') not in ('D', 'M', 'P')   and rownum < 2
+	
+		]]>
+	
+	</select>
+			
+</mapper>

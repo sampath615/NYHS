@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.standardization.facility.SubFacilityDAO">
+
+ 
+  <resultMap id="subFacForRawFacResult" type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.standardization.facility.SubFacilityForRawFacilityVO" >
+    <result column="SUB_FACILITY_ID" 	   property="subFacilityId"      jdbcType="DECIMAL" />
+    <result column="INPUT_RAW_FACILITY_ID" property="inputRawFacilityId" jdbcType="DECIMAL" />
+  </resultMap>
+   <select id="getStdIdsForRawIds" parameterType="java.util.Map" statementType="CALLABLE"> 
+     {CALL PKG_STANDARDIZATION.PR_SUB_FACILITIES_BY_RAW(
+  		#{rawIds,     				jdbcType=VARCHAR,  mode=IN},
+		#{subFacForRawFacRefCursor, jdbcType=CURSOR,  mode=OUT, javaType=java.sql.ResultSet, resultMap=subFacForRawFacResult}
+	)}
+  </select>
+
+  <select id="insertNewStdFacility" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.PR_LINK_RAW_NEW_SUB_FACILITY(
+			#{p_raw_sub_facility_id, jdbcType=BIGINT,  mode=IN},
+			#{p_facility_name,       jdbcType=VARCHAR, mode=IN},
+			#{p_facility_department, jdbcType=VARCHAR, mode=IN},
+			#{p_county_fips,         jdbcType=VARCHAR, mode=IN},
+			#{p_address,             jdbcType=VARCHAR, mode=IN},
+			#{p_city,                jdbcType=VARCHAR, mode=IN},
+			#{p_state,               jdbcType=VARCHAR, mode=IN},
+			#{p_zipcode,             jdbcType=VARCHAR, mode=IN},
+			#{p_plus4,               jdbcType=VARCHAR, mode=IN},
+			#{p_phone,               jdbcType=VARCHAR, mode=IN},
+			#{p_user_id,             jdbcType=BIGINT,  mode=IN},
+			#{p_master_facility_id,  jdbcType=BIGINT,mode=IN},
+			#{p_facility_npi,  jdbcType=VARCHAR,mode=IN},
+			#{p_sub_facility_id_out, jdbcType=BIGINT,mode=OUT},
+			#{p_code_out,            jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,             jdbcType=VARCHAR, mode=OUT}	 
+		)}
+  </select>
+  
+  
+  <select id="addNewStdFacility" parameterType="java.util.Map" statementType="CALLABLE">
+		{call PKG_STANDARDIZATION.pr_add_sub_facility(
+			#{p_master_facility_id,  jdbcType=BIGINT,mode=IN},
+			#{p_facility_name,       jdbcType=VARCHAR, mode=IN},
+			#{p_facility_department, jdbcType=VARCHAR, mode=IN},
+			#{p_county_fips,         jdbcType=VARCHAR, mode=IN},
+			#{p_address,             jdbcType=VARCHAR, mode=IN},
+			#{p_city,                jdbcType=VARCHAR, mode=IN},
+			#{p_state,               jdbcType=VARCHAR, mode=IN},
+			#{p_zipcode,             jdbcType=VARCHAR, mode=IN},
+			#{p_plus4,               jdbcType=VARCHAR, mode=IN},
+			#{p_phone,               jdbcType=VARCHAR, mode=IN},
+			#{p_user_id,             jdbcType=BIGINT,  mode=IN},
+			#{p_facility_npi,  jdbcType=VARCHAR,mode=IN},
+			#{p_sub_facility_id_out, jdbcType=BIGINT,mode=OUT},
+			#{p_code_out,            jdbcType=INTEGER, mode=OUT},
+			#{p_msg_out,             jdbcType=VARCHAR, mode=OUT}	 
+		)}
+  </select>
+  
+  <!-- TODO May be removed -->
+  
+    <select id="getSubFacilityId" parameterType="String" resultType="String">
+    <![CDATA[ 
+     	select SUB_FACILITY_ID from SUB_FACILITY  where EHARS_FAC_UID = #{facilityUid} and rownum < 2	
+     	]]>
+  </select> 
+  
+  <select id="checkRawFacilitiesForStandardFacilities" resultType="int" parameterType="int">
+		<![CDATA[
+			select count(*) from  RAW_FACILITY  where  SUB_FACILITY_ID = #{subFacilityId} and rownum < 2			
+		]]>	
+	</select>
+	
+	
+	<insert id="createRawFacilitiyForStandardFacility" parameterType="java.util.Map">
+		insert into RAW_FACILITY(RAW_SUB_FACILITY_ID, SUB_FACILITY_ID, FACILITY_TYPE_CODE, FACILITY_NAME, FACILITY_DEPARTMENT, LEGACY_FACILITY_ID, LEGACY_FACILITY_TYPE, ADDRESS, 
+CITY, STATE, ZIPCODE, PLUS4,   CREATE_UID,  DATE_CREATED, PHONE, COUNTY_FIPS, NPI )
+                SELECT RAW_FACILITY_SEQ.NEXTVAL, SUB_FACILITY_ID, FACILITY_TYPE_CODE, FACILITY_NAME, FACILITY_DEPARTMENT, LEGACY_FACILITY_ID, LEGACY_FACILITY_TYPE, ADDRESS, 
+CITY, STATE, ZIPCODE, PLUS4,  #{workerId} as CREATE_UID, SYSDATE as DATE_CREATED, #{phone}, COUNTY_FIPS, NPI  from  SUB_FACILITY where SUB_FACILITY_ID = #{standardFacilityId}
+	</insert>
+  
+  <update id="unableStandardizeRawFacilityRecord" parameterType="java.util.Map">
+		update RAW_FACILITY set SUB_FACILITY_ID  = 0, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{userId} where RAW_SUB_FACILITY_ID = #{recordId} 
+	</update>
+	
+	<update id="unableStandardizeSubFacilityRecord" parameterType="java.util.Map">
+		update SUB_FACILITY set MASTER_FACILITY_ID  = 0, LAST_UPDATED_DATE = SYSDATE, LAST_UPDATED_BY = #{userId} where SUB_FACILITY_ID = #{recordId} 
+	</update>
+	
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gov.ny.state.doh.bhae.nyehms.web.spring.dao.search.SearchDAO">
+
+
+	 <resultMap type="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO" id="searchPersonResult"> 	
+ 	  		<result property="stateNo" column="STATE_NO"/>
+ 	  		<result property="firstName" column="FIRST_NAME"/>
+ 	  		<result property="lastName" column="LAST_NAME"/>
+ 	  		<result property="dateOfBirth" column="DATE_OF_BIRTH"/>
+ 	  		<result property="ssn" column="SSN"/>
+ 	  		<result property="din" column="DIN"/>
+ 	  		<result property="nysid" column="NYSID"/>
+ 	  		<result property="dateOfDeath" column="DATE_OF_DEATH"/>	
+ 	  		<result property="visibleToWorker" column="VISIBLE_TO_WORKER"/>  	
+ 	  		<result property="flaggedSameOrBadInd" column="flag_bad_or_same"/>
+ 	 </resultMap>
+	
+	<select id="searchPersonFields" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_SEARCH.PR_PERSON_SEARCH(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},		
+			#{p_first_name,jdbcType=VARCHAR,mode=IN},				
+			#{p_last_name,jdbcType=VARCHAR,mode=IN},
+			#{p_date_of_birth,jdbcType=DATE,mode=IN},
+			#{p_date_of_death,jdbcType=DATE,mode=IN},
+			#{p_ssn,jdbcType=VARCHAR,mode=IN},
+			#{p_nysid,jdbcType=VARCHAR,mode=IN},
+			#{p_din,jdbcType=VARCHAR,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=searchPersonResult},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_cityno,jdbcType=VARCHAR,mode=IN} 
+		)}  
+	</select>
+	
+	
+	<select id="searchPersonFieldsWithQuickSearch" parameterType="java.util.Map" statementType="CALLABLE">	
+		{call  PKG_SEARCH.PR_PERSON_SEARCH_QUICK(
+			#{p_stateno,jdbcType=VARCHAR,mode=IN},		
+			#{p_first_name,jdbcType=VARCHAR,mode=IN},				
+			#{p_last_name,jdbcType=VARCHAR,mode=IN},
+			#{p_date_of_birth,jdbcType=DATE,mode=IN},
+			#{p_date_of_death,jdbcType=DATE,mode=IN},
+			#{p_ssn,jdbcType=VARCHAR,mode=IN},
+			#{p_nysid,jdbcType=VARCHAR,mode=IN},
+			#{p_din,jdbcType=VARCHAR,mode=IN},
+			#{refCursor,jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet, resultMap=rowIdMap},
+			#{p_worker_id,jdbcType=INTEGER,mode=IN},
+			#{p_cityno,jdbcType=VARCHAR,mode=IN}
+		)}  
+	</select> 
+ 	 
+ 	 <resultMap type="String" id="rowIdMap"> 
+		<result property="RWID" column="RWID"  jdbcType="VARCHAR"/>        
+	</resultMap>
+	
+	<select id="getTheActiveStateNo" parameterType="String" resultType="java.util.Map">
+			SELECT  PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (#{_stateno}) currentStateno, (select flag_active from person where stateno = #{_stateno}) as flagActive from DUAL
+	</select> 	
+	
+
+<select id="personSearchResultsWithQuickSearch" parameterType="java.util.Map" resultType="gov.ny.state.doh.bhae.nyehms.web.spring.domain.search.SearchPersonCriteriaVO">
+SELECT stateNo,
+                 ( SELECT CASE WHEN ( SELECT COUNT(*) FROM  nyehms_duplicate_statenos d WHERE     (   s.stateno = d.stateno_1 OR s.stateno = d.stateno_2) AND status_cd = 'NEW') >0
+                          THEN 'S'
+                          WHEN ( SELECT COUNT(*) FROM  nyehms_new_flagged_badmerge_vw d WHERE  d.stateno = s.stateno ) >0
+                          THEN 'B'
+                          ELSE NULL
+                          END
+     FROM DUAL)                     
+          AS flaggedSameOrBadInd, 
+                Trim(TO_CHAR (REGEXP_SUBSTR (first_name, '[-a-z-A-Z-0-9 ''.]+', 1, 2)))
+                   firstName,
+                
+                Trim(TO_CHAR (REGEXP_SUBSTR (last_name, '[-a-z-A-Z-0-9 ''.]+', 1, 2)))
+                   lastName,
+              
+                TO_CHAR (REGEXP_SUBSTR (date_of_birth, '[a-z-A-Z-0-9 |/-]+'))
+                   dateOfBirth,
+               
+                TO_CHAR (REGEXP_SUBSTR (date_of_death, '[a-z-A-Z-0-9 |/-]+'))
+                   dateOfDeath,
+               
+                TO_CHAR (REGEXP_SUBSTR (ssn, '[-a-z-A-Z-0-9 ''.]+')) ssn,
+                
+                TO_CHAR (REGEXP_SUBSTR (din, '[-a-z-A-Z-0-9 ''.]+')) din,
+                
+                TO_CHAR (REGEXP_SUBSTR (nysid, '[-a-z-A-Z-0-9 ''.]+')) nysid
+               
+           FROM stateno_doc_attr_metadata s
+           WHERE ROWID IN 
+           <foreach item="id" index="index" collection="rowIdList" open="(" separator="," close=")" >
+                #{id}
+            </foreach>
+            
+            <if test="sortByColumn != null and sortByColumn != ''">
+            	order by ${sortByColumn} ${sortOrder}
+            </if>
+            
+           
+	</select>
+	
+	
+	<select id="getNyehmsStatenoUsingCityNo" parameterType="String" resultType="java.util.Map">
+		<![CDATA[
+		select PKG_CONSOLIDATION.FN_GIVE_CURRENT_STATENO (NYEHMS_STATENO) currentStateno from EHARS_PERSON_NYC where CITYNO = #{cityNo} and rownum < 2
+						      ]]>   
+		
+	</select>
+</mapper>
