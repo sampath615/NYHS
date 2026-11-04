@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.stereotype.Component;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.NycIJRDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.NycIjrDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycijrDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -34,7 +34,7 @@ public class NycIJRDocumentService {
     //private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
 
-    private final NycIJRDocumentDAO nycIJRDocumentDAO;
+    private final NycijrDocRepository nycijrDocRepository;
 
     /**
      * This method will return NYC_IJR document for a given document id
@@ -43,11 +43,8 @@ public class NycIJRDocumentService {
      * @param documentID
      * @return
      */
-    public NycIJRDocVO getNYCIJRDocument(int docId) {
-
-        NycIJRDocVO nycIJRDocVO = null;
-        nycIJRDocVO = nycIJRDocumentDAO.getNycIJRDocument(docId);
-        return nycIJRDocVO;
+    public NycIjrDocData getNYCIJRDocument(int docId) {
+        return nycijrDocRepository.findDocument(docId);
     }
     
     public int writeRawNycIJRDocDataToStdTable(Map<Object, Object> docVO,
@@ -223,11 +220,12 @@ public class NycIJRDocumentService {
 		docVO.put("CURRENT_PROCESS_STATUS", 5);
 		
 		
-    	return nycIJRDocumentDAO.writeStdDocData(docVO);
+    	nycijrDocRepository.saveAndFlush(NycIjrStdDocMapping.toStdDoc(docVO));
+    	return 1;
     }
     
     public List<String> getFileNames(){
-    	return nycIJRDocumentDAO.getFileNames();
+    	return nycijrDocRepository.findFileNamesToReview();
     }
     
     

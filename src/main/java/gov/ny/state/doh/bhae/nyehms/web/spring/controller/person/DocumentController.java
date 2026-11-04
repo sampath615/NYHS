@@ -37,7 +37,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.MedicaidDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NBSDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NonCaseDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NycIJRDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
@@ -1348,8 +1347,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getNYCIJRForm.html")
 	public String getNYCIJRDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		NycIJRDocVO nycIJRDocVO = nycIJRDocumentService.getNYCIJRDocument(docId);
-		map.put("stdNYCIJRDocVO", nycIJRDocVO);
+		map.put("stdNYCIJRDocVO", nycIJRDocumentService.getNYCIJRDocument(docId));
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);
 		map.put("nyehmsStatenoDetails", nyehmsStatenoDetails);
