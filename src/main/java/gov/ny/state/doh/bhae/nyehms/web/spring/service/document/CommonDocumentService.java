@@ -25,7 +25,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.DocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.LabDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.MedicaidDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.PRFDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.NYCLabDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PSMessageVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.person.PersonViewVO;
@@ -37,6 +36,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycDeathDocRe
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.NycEharsDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawDeathDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawNycDeathDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.RawTbDocRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.TbDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
@@ -78,7 +79,8 @@ public class CommonDocumentService {
 	private final RawNycDeathDocRepository rawNycDeathDocRepository;
 	private final DoccsDocumentDAO doccsDocumentDAO;
 	private final PRFDocumentDAO prfDocumentDAO;
-	private final TBDocumentDAO tbDocumentDAO;
+	private final TbDocRepository tbDocRepository;
+	private final RawTbDocRepository rawTbDocRepository;
 
 	// ---------- code lists
 
@@ -423,7 +425,10 @@ public class CommonDocumentService {
 				yield 1;
 			}
 			case "ADAP" -> adapDocumentDAO.insertRawADAPDocument(rawDocData);
-			case "TB" -> tbDocumentDAO.insertRawEditedTBDocument(rawDocData);
+			case "TB" -> {
+				rawTbDocRepository.saveAndFlush(TbDocMapping.toRawCopy(rawDocData));
+				yield 1;
+			}
 			case "MED", "INS" -> writeRawMedicaidCopy(rawDocData, oldDocumentId, userObject);
 			case "PRF" -> writeRawPrfCopy(rawDocData, oldDocumentId);
 			default -> 0;
@@ -482,7 +487,10 @@ public class CommonDocumentService {
 				stdDocData.put("FLAG_CHOSEN_PROVIDER", "RX");
 				yield adapDocumentDAO.writeStdDocData(stdDocData);
 			}
-			case "TB" -> tbDocumentDAO.insertStdEditedTBDocument(stdDocData);
+			case "TB" -> {
+				tbDocRepository.saveAndFlush(TbDocMapping.toStdCopy(stdDocData));
+				yield 1;
+			}
 			case "MED", "INS" -> medicaidDocumentDAO.writeStdDocData(stdDocData) > 0
 					? medicaidDocumentDAO.storeRawMedicaidProvidersDataInStd((Integer) stdDocData.get("DOCUMENT_ID"))
 					: 0;

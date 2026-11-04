@@ -1,7 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.dao.document.TBDocumentDAO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.TbDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.TbDocRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
@@ -15,7 +15,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -32,7 +31,7 @@ public class TBDocumentService {
 	private static final Logger log = LoggerFactory.getLogger(TBDocumentService.class);
     private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
-    private final TBDocumentDAO tbDocumentDAO;
+    private final TbDocRepository tbDocRepository;
     private final CommonExceptionHandler commonExceptionHandler;
     
     private final static Map<String, String> stateCodeMap = new HashMap<>();
@@ -62,32 +61,18 @@ public class TBDocumentService {
      * @param sessionID
      * @return
      */
-    public TBDocVO getTBDoc(int docId, BindingResult result, UserObject userObject,
+    public TbDocData getTBDoc(int docId, BindingResult result, UserObject userObject,
             String sessionID) {
-
-        boolean rollbackFlag = false;
-        TBDocVO tBDocVO = null;
         log.debug(nyehmsLog + " fetching for docId : " + docId);
         try {
-            tBDocVO = tbDocumentDAO.getTBDoc(docId);
-            
-            if(tBDocVO == null){
-            	tBDocVO = new TBDocVO();
-            }
-        } catch (DataAccessException e) {
-            rollbackFlag = true;
-            commonExceptionHandler.handleException(e, userObject, sessionID);
-            log.error(nyehmsLog + "  " + e.getMessage());
+            TbDocData document = tbDocRepository.findDocument(docId);
+            return document == null ? TbDocData.empty() : document;
         } catch (Exception e) {
-            rollbackFlag = true;
             commonExceptionHandler.handleException(e, userObject, sessionID);
             log.error(nyehmsLog + "  " + e.getMessage());
-        } finally {
-            if (rollbackFlag) {
-                commonExceptionHandler.populateBindObjTrsnFail(result);
-            }
+            commonExceptionHandler.populateBindObjTrsnFail(result);
+            return null;
         }
-        return tBDocVO;
     }
     
     public int writeRawTBDocDataToStdTable(Map<Object, Object> docVO,
@@ -237,7 +222,8 @@ public class TBDocumentService {
     	docVO.put("CURRENT_PROCESS_STATUS",5);
     	
 
-    	return tbDocumentDAO.writeRawTBDocDataToStdTable(docVO);
+    	tbDocRepository.saveAndFlush(TbDocMapping.toStdDoc(docVO));
+    	return 1;
     }
 
 }

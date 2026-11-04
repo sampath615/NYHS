@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.validation.document;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.LabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.LabDocValidator;
-import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.TBDocValidator;
 
 /*
  * Author : Srikar Kummamuri
@@ -39,11 +37,7 @@ public class DocumentValidator implements Validator {
 		
 		log.debug(nyehmsLog+"************************* Incoming Object is {}",command.getClass());
 		
-		if(command instanceof TBDocVO){
-			log.debug(nyehmsLog+" ------ Calling tbDocValidator");
-			TBDocValidator tbDocValidator = new TBDocValidator();
-			tbDocValidator.validate(command, errors);
-		}else if(command instanceof LabDocVO){
+		if(command instanceof LabDocVO){
 			log.debug(nyehmsLog+"-------- Calling labDocValidator");
 			LabDocValidator labDocValidator = new LabDocValidator();
 			labDocValidator.validate(command, errors);

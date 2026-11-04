@@ -41,7 +41,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFDocumentVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PRFPartnerVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.PrfFormVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.StdEcrlsLabDocVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TBDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAddressDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.TRKAliasDocVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.acrf.AcrfFormVO;
@@ -68,6 +67,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdConfRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.StdOldDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.SyphDocData;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.TbDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.BlackBoxRefData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.AirsDocData;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.ClimsDocData;
@@ -315,7 +315,7 @@ public class DocumentController {
 	@RequestMapping(value = "/getTBDoc.html")
 	public String getTBDocAsHTML(@RequestParam int docId, Map<String, Object> map, HttpServletRequest request, UserObject userObject)
 	{
-		TBDocVO tBDocVO = tbDocumentSrvice.getTBDoc(docId, dummyBindingResult, userObject,
+		TbDocData tBDocVO = tbDocumentSrvice.getTBDoc(docId, dummyBindingResult, userObject,
 				request.getSession().getId());
 		Map<String, Object> nyehmsStatenoDetails = documentTransactionHelper.getStatenoDetailsOfDocument(docId,
 				userObject);

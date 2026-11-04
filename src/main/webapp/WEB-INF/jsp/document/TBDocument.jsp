@@ -19,18 +19,18 @@
 		    <div class="pB30 pT20">
 		
 					
-			<c:if test="${stdTBDocVO.PARENT_DOCUMENT_ID != null &&  stdTBDocVO.PARENT_DOCUMENT_ID != 0}">
+			<c:if test="${stdTBDocVO.parentDocumentId != null &&  stdTBDocVO.parentDocumentId != 0}">
 
 				<div  class="floatLeft width70Perc" id="parentDocumentIdSection">
 		            <span class="parentIdSectionLabel bold mL10">Parent DocumentId: </span>
-					<span class="parentIdSectionValue "><a href="#" onclick="loadDocumentDlg(${stdTBDocVO.PARENT_DOCUMENT_ID}, '${param.documentType}')">${stdTBDocVO.PARENT_DOCUMENT_ID}</a></span>
+					<span class="parentIdSectionValue "><a href="#" onclick="loadDocumentDlg(${stdTBDocVO.parentDocumentId}, '${param.documentType}')">${stdTBDocVO.parentDocumentId}</a></span>
 					
 		         </div>	
 	         </c:if>
 	         
 			<div  class="floatRight">
 	            <span class="mL10 bold">Document ID: </span>
-				<span class=" "><form:input path="DOCUMENT_ID" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+				<span class=" "><form:input id="DOCUMENT_ID"  path="stdTbDoc.documentId" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
 	         </div>	
 
 		</div>
@@ -42,21 +42,21 @@
  	         <div style="float:left; width: 40%">
  	            <div >
  	                <span class=" ml10"><spring:message code="label.stateNo" />: </span>
- 	                 <span class="ml10"><form:input path="STATENO" value="${STATENO}" class="standardInputSmallText readonly" maxlength="10" readonly="true"/> </span>
+ 	                 <span class="ml10"><form:input id="STATENO"  path="stateno" value="${STATENO}" class="standardInputSmallText readonly" maxlength="10" readonly="true"/> </span>
  	            </div>    
  	          </div>
  	          <div style="float:left;  width: 30%">
  	         	<div >
  	                <span class="ml10"> eHARS Import Date: </span>
- 	                <fmt:formatDate value="${stdTBDocVO.EHARS_IMPORT_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
- 			 		<span class="ml10"><form:input path="EHARS_IMPORT_DATE" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
+ 	                <fmt:formatDate value="${stdTBDocVO.stdTbDoc.eharsImportDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedDate" />
+ 			 		<span class="ml10"><form:input id="EHARS_IMPORT_DATE"  path="stdTbDoc.eharsImportDate" value= "${theFormattedDate}" class="standardInputSmallText ml10 readonly" readonly="true"/> </span>
  	            </div>    
  	         </div>
  	         <div style="float:left; width: 30%; text-align: right">
  	            <div >
  	                <span class=" ml10">	NYC SHIP Date:  </span>
- 	                <fmt:formatDate value="${stdTBDocVO.NYC_SHIP_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
- 			 		<span class="ml10 "><form:input path="NYC_SHIP_DATE" value="${theFormattedNYC_SHIP_DATE_TEXT}" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
+ 	                <fmt:formatDate value="${stdTBDocVO.stdTbDoc.nycShipDate}"  type="date" pattern="MM/dd/yyyy" var="theFormattedNYC_SHIP_DATE_TEXT" ></fmt:formatDate>
+ 			 		<span class="ml10 "><form:input id="NYC_SHIP_DATE"  path="stdTbDoc.nycShipDate" value="${theFormattedNYC_SHIP_DATE_TEXT}" class="standardinputSmallText ml10 readonly" maxlength="6" readonly="true"/></span>
  	           </div>                  
  	         </div>     
  		</div>
@@ -72,17 +72,17 @@
 			<div class="mL20 mT20 ">
 				<div class="fieldHolder25">
 					<span class=""> First Name</span> 
-					<span class="mL20"> <form:input path="FNAME" id="TB_FNAME" class="standardInputSmallText required" maxlength="20" title="First Name"/> </span>
+					<span class="mL20"> <form:input path="stdTbDoc.fname" id="TB_FNAME" class="standardInputSmallText required" maxlength="20" title="First Name"/> </span>
 					<div class="v_error TB_FNAME "></div>
 				</div>
 				<div class="fieldHolder25">
 					<span class=""> Middle Name</span>
-					<span class="mL20"> <form:input path="MI" id="TB_MNAME" class="standardInputSmallText" maxlength="25"  title="Middle Name"/>  </span>
+					<span class="mL20"> <form:input path="stdTbDoc.mi" id="TB_MNAME" class="standardInputSmallText" maxlength="25"  title="Middle Name"/>  </span>
 					<div class=" v_error TB_MNAME "></div>
 				</div>
 				<div class="fieldHolder25">
 					<span class=""> Last Name</span>
-					<span class="mL20"> <form:input path="LNAME"  id="TB_LNAME" title="Last Name" class="required standardInputSmallText" maxlength="25"/>  </span>
+					<span class="mL20"> <form:input path="stdTbDoc.lname"  id="TB_LNAME" title="Last Name" class="required standardInputSmallText" maxlength="25"/>  </span>
 					<div class=" v_error TB_LNAME "></div>
 				</div>
 					
@@ -91,12 +91,12 @@
 								
 				<div class="fieldHolder25"> 
 					<span class=""> Date of Birth </span>
-					<span class="ml10"> <form:input id="DATE_OF_BIRTH" path="DOB_TEXT" class="dPicker mask standardInputSmallText" datevalidations="completeDate"  maxlength="10" title="Date of Birth"  /> </span>
+					<span class="ml10"> <form:input id="DATE_OF_BIRTH" path="stdTbDoc.dobText" class="dPicker mask standardInputSmallText" datevalidations="completeDate"  maxlength="10" title="Date of Birth"  /> </span>
 					<div class=" v_error DATE_OF_BIRTH "></div>
 				</div>
 				<div class="fieldHolder25"> 
 					<span class=""> Date of Death </span>
-					<span class="ml10"> <form:input id="DATE_OF_DEATH" path="DOD_TEXT" class="dPicker mask standardInputSmallText" datevalidations="completeDate"  maxlength="10" title="Date of Death" /> </span>
+					<span class="ml10"> <form:input id="DATE_OF_DEATH" path="stdTbDoc.dodText" class="dPicker mask standardInputSmallText" datevalidations="completeDate"  maxlength="10" title="Date of Death" /> </span>
 					<div class=" v_error DATE_OF_DEATH "></div>
 				</div>					
 			</div>
@@ -105,14 +105,14 @@
  	            <div class="personInfo pTRBL10">
  	                <span class="personLabelDoc"> Address </span>
  		                <span> 	                	
-	 	                	<span class="pL10"> <form:input path="PERSON_ADDRESS" class="standardinputText newAddress widgetAddressFieldsReadonly" maxlength="80" title="Address" />  </span>	 	        
+	 	                	<span class="pL10"> <form:input id="PERSON_ADDRESS"  path="stdTbDoc.personAddress" class="standardinputText newAddress widgetAddressFieldsReadonly" maxlength="80" title="Address" />  </span>	 	        
 	 	                	            	 	                    
 	 	                    <span class="pL30">City</span>
-	 	                    <span class="pL10"><form:input path="PERSON_CITY" class="standardInputSmallText1 newCity widgetAddressFieldsReadonly"  maxlength="30" title="City" /></span>
+	 	                    <span class="pL10"><form:input id="PERSON_CITY"  path="stdTbDoc.personCity" class="standardInputSmallText1 newCity widgetAddressFieldsReadonly"  maxlength="30" title="City" /></span>
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="PERSON_STATE"  path ="PERSON_STATE" class="standardInputSmallText1 mR50 newState widgetAddressFieldsReadonly" title="State" >
+								<form:select id="PERSON_STATE"  path="stdTbDoc.personState" class="standardInputSmallText1 mR50 newState widgetAddressFieldsReadonly" title="State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
@@ -121,12 +121,12 @@
 	 	                    
 	 	                    <span class="pL30">Zip </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="PERSON_ZIP" class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" maxlength="5" title="Zip Code" /> - <form:input path="PERSON_PLUS4" title="Plus4"  class="nOnly standardInputSmallText1" maxlength="4"/>
+	 	                       <form:input id="PERSON_ZIP"  path="stdTbDoc.personZip" class="oAdrDlg nOnly standardInputSmallText1 newZip widgetAddressFieldsReadonly" maxlength="5" title="Zip Code" /> - <form:input id="PERSON_PLUS4"  path="stdTbDoc.personPlus4" title="Plus4"  class="nOnly standardInputSmallText1" maxlength="4"/>
 	 	                    </span> 
 	 	                    
 	 	                    <span class="pL30">County </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:select id="PERSON_COUNTY"   path="PERSON_COUNTY" class="standardInputSmallText1 newCounty widgetAddressFieldsReadonly" title="County" >
+	 	                       <form:select id="PERSON_COUNTY"   path="stdTbDoc.personCounty" class="standardInputSmallText1 newCounty widgetAddressFieldsReadonly" title="County" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.countyMap}"/>
 							    </form:select>
@@ -140,7 +140,7 @@
  	              	 
  	              	<span class="pL30">Phone </span>
                     <span class="pL10"> 
-                       <form:input path="PERSON_PHONE" title="Phone"  class=" standardInputSmallText" maxlength="20"/>
+                       <form:input id="PERSON_PHONE"  path="stdTbDoc.personPhone" title="Phone"  class=" standardInputSmallText" maxlength="20"/>
                     </span> 
                     <span style="float: right;" class="mr50">
 							<a href="javascript:openAddressWidget('tbDocumentPersonAddressDtls');" class="inlineEditButton displayNone editAddress">Edit</a>
@@ -163,41 +163,41 @@
 					Race 
 				</div>
 				<div>
-					<form:checkbox path="RACE_WHITE" value="1" /> White	
+					<form:checkbox id="RACE_WHITE1"  path="stdTbDoc.raceWhite" value="1" /> White	
 				</div>
 				<div>
-					<form:checkbox path="RACE_BLACK" value="1" /> African American
+					<form:checkbox id="RACE_BLACK1"  path="stdTbDoc.raceBlack" value="1" /> African American
 				</div>
 				<div>
-					<form:checkbox path="RACE_ASIAN" value="1" /> Asian
+					<form:checkbox id="RACE_ASIAN1"  path="stdTbDoc.raceAsian" value="1" /> Asian
 				</div>
 				<div>
-					<form:checkbox path="RACE_PACIFIC" value="1" /> Pacific
+					<form:checkbox id="RACE_PACIFIC1"  path="stdTbDoc.racePacific" value="1" /> Pacific
 				</div>				
 				<div>
-					<form:checkbox path="RACE_INDIAN" value="1" /> American Indian/ Alaskan Native
+					<form:checkbox id="RACE_INDIAN1"  path="stdTbDoc.raceIndian" value="1" /> American Indian/ Alaskan Native
 				</div>				
 				<div>
-					<form:checkbox path="RACE_OTHER" value="1" /> Other 
+					<form:checkbox id="RACE_OTHER1"  path="stdTbDoc.raceOther" value="1" /> Other 
 				</div>
 				<div>
-					<form:checkbox path="RACE_UNKNOWN" value="1" /> Unknown
+					<form:checkbox id="RACE_UNKNOWN1"  path="stdTbDoc.raceUnknown" value="1" /> Unknown
 				</div>
 			</div>
 			<div style="float:left;  width:35% ; ">
 				<div style="padding-left:10px;">	
 					Ethnicity (Hispanic or Latino)
 					<br>
-					<form:radiobutton path="ETHNICITY" value="01" /> Yes <br>
-					<form:radiobutton path="ETHNICITY" value="02" /> No <br>
-					<form:radiobutton path="ETHNICITY" value="09" /> Unknown	
+					<form:radiobutton id="ETHNICITY1"  path="stdTbDoc.ethnicity" value="01" /> Yes <br>
+					<form:radiobutton id="ETHNICITY2"  path="stdTbDoc.ethnicity" value="02" /> No <br>
+					<form:radiobutton id="ETHNICITY3"  path="stdTbDoc.ethnicity" value="09" /> Unknown	
 				</div>
 								
 				<div style="padding:15px 0 10px 10px; border-top: dotted 1px; border-bottom: dotted 1px"> 
 					<div class=""> Gender </div>
 					<div  class="">
-						<div> <form:radiobutton path="BIRTH_SEX" value="M" /> Male </div>
-						<div> <form:radiobutton path="BIRTH_SEX" value="F" /> Female </div>		
+						<div> <form:radiobutton id="BIRTH_SEX1"  path="stdTbDoc.birthSex" value="M" /> Male </div>
+						<div> <form:radiobutton id="BIRTH_SEX2"  path="stdTbDoc.birthSex" value="F" /> Female </div>		
 					</div>
 				</div>
 				
@@ -208,7 +208,7 @@
 						DIN
 					</div>
 					<div style="float:left">
-						<form:input path="DIN" id="TB_DIN" class="standardInputMedText " title="DIN"   maxlength="7"/>
+						<form:input path="stdTbDoc.din" id="TB_DIN" class="standardInputMedText " title="DIN"   maxlength="7"/>
 					</div>	
 					<div class="v_error TB_DIN "></div>
 				</div>	
@@ -217,7 +217,7 @@
 						Case
 					</div>
 					<div style="float:left">
-						<form:input path="ATYPICAL_MYCO" class="standardInputMedText " title="Case"   maxlength="50"/>
+						<form:input id="ATYPICAL_MYCO"  path="stdTbDoc.atypicalMyco" class="standardInputMedText " title="Case"   maxlength="50"/>
 					</div>
 				</div>				
 				<div class="mT5 container">
@@ -225,7 +225,7 @@
 						Disease
 					</div>
 					<div style="float:left">
-						<form:input path="DISEASE_TYPE" class="standardInputMedText "  title="Disease"  maxlength="50" />
+						<form:input id="DISEASE_TYPE"  path="stdTbDoc.diseaseType" class="standardInputMedText "  title="Disease"  maxlength="50" />
 					</div>
 				</div>			
 				<div class="mT5 container">
@@ -233,8 +233,8 @@
 						Diagnosis Date
 					</div>
 					<div style="float:left">
-						<fmt:formatDate value="${stdTBDocVO.DX_DATE}"  type="date" pattern="MM/dd/yyyy" var="theFormatteddxDate" ></fmt:formatDate>
-						<form:input id="TB_DX_DATE" path="DX_DATE" value="${theFormatteddxDate}" class="dPicker mask standardInputMedText " datevalidations="completeDate" title="Diagnosis Date" maxlength="10" />
+						<fmt:formatDate value="${stdTBDocVO.stdTbDoc.dxDate}"  type="date" pattern="MM/dd/yyyy" var="theFormatteddxDate" ></fmt:formatDate>
+						<form:input id="TB_DX_DATE" path="stdTbDoc.dxDate" value="${theFormatteddxDate}" class="dPicker mask standardInputMedText " datevalidations="completeDate" title="Diagnosis Date" maxlength="10" />
 					</div>
 					<div class="v_error TB_DX_DATE "></div>
 				</div>
@@ -251,21 +251,21 @@
 			<div class="mLRTB pB20 facilityDetails">
 				<div style="float:left;"> 
 					<span class=""> Facility Name </span>
-					<span class="ml10"><form:input path="FACILITY_NAME" class="standardInputMedText mR20 facilityFields" title="Facility Name" maxlength="80"/>	</span>
+					<span class="ml10"><form:input id="FACILITY_NAME"  path="stdTbDoc.facilityName" class="standardInputMedText mR20 facilityFields" title="Facility Name" maxlength="80"/>	</span>
 				</div>
 				<div style="clear:both"></div>
 				<div class="b1" style="margin: 15px 5px 10px 0px">
  	            <div class="personInfo pTRBL10">
  	                <span class="personLabelDoc"> Address </span>
  		                <span> 	                	
-	 	                	<span class="pL10"> <form:input path="FACILITY_ADDRESS" class="standardinputText newAddress widgetAddressFieldsReadonly facilityFields" maxlength="80" title="Address" />  </span>	 	        
+	 	                	<span class="pL10"> <form:input id="FACILITY_ADDRESS"  path="stdTbDoc.facilityAddress" class="standardinputText newAddress widgetAddressFieldsReadonly facilityFields" maxlength="80" title="Address" />  </span>	 	        
 	 	                	            	 	                    
 	 	                    <span class="pL30">City</span>
-	 	                    <span class="pL10"><form:input path="FACILITY_CITY" class="oAdrDlg standardInputSmallText1 newCity widgetAddressFieldsReadonly facilityFields" title="City" maxlength="30" /></span>
+	 	                    <span class="pL10"><form:input id="FACILITY_CITY"  path="stdTbDoc.facilityCity" class="oAdrDlg standardInputSmallText1 newCity widgetAddressFieldsReadonly facilityFields" title="City" maxlength="30" /></span>
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="FACILITY_STATE"  path ="FACILITY_STATE" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly facilityFields" title="State" >
+								<form:select id="FACILITY_STATE"  path="stdTbDoc.facilityState" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly facilityFields" title="State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
@@ -273,12 +273,12 @@
 	 	                    
 	 	                    <span class="pL30">Zip </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="FACILITY_ZIP" class="oAdrDlg nOnly  standardInputSmallText1 newZip widgetAddressFieldsReadonly facilityFields" maxlength="5" title="Zip Code" /> - <form:input path="FACILITY_PLUS4" title="Plus4"  class="oAdrDlg nOnly standardInputSmallText1 providerFields" maxlength="4"/>
+	 	                       <form:input id="FACILITY_ZIP"  path="stdTbDoc.facilityZip" class="oAdrDlg nOnly  standardInputSmallText1 newZip widgetAddressFieldsReadonly facilityFields" maxlength="5" title="Zip Code" /> - <form:input id="FACILITY_PLUS4"  path="stdTbDoc.facilityPlus4" title="Plus4"  class="oAdrDlg nOnly standardInputSmallText1 providerFields" maxlength="4"/>
 	 	                    </span> 
 	 	                    
 	 	                    <span class="pL30">County </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:select id="FACILITY_COUNTY"   path="FACILITY_COUNTY" class="oAdrDlg standardInputSmallText1 newCounty widgetAddressFieldsReadonly facilityFields" title="County" >
+	 	                       <form:select id="FACILITY_COUNTY"   path="stdTbDoc.facilityCounty" class="oAdrDlg standardInputSmallText1 newCounty widgetAddressFieldsReadonly facilityFields" title="County" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.countyMap}"/>
 							    </form:select>
@@ -292,7 +292,7 @@
 	 	              	
 	 	              	<span class="pL30">Phone </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="FACILITY_PHONE" class="standardInputMedText mR20 facilityFields" maxlength="20" title="Phone" />
+	 	                       <form:input id="FACILITY_PHONE"  path="stdTbDoc.facilityPhone" class="standardInputMedText mR20 facilityFields" maxlength="20" title="Phone" />
 	 	                    </span>
 	 	                
 	 	                  <span style="float: right;" class="mr50">
@@ -315,8 +315,8 @@
 			</div>
 			<div class="mLRTB pB20 providerDetails">
 				<div style="float:left;"> 
-					<span class="mL25"> <spring:message code="label.firstname" /></span><span> <form:input path="PROV_FNAME" class="standardInputMedText providerFields" title="First Name" maxlength="48"/> </span> 
-					<span style="margin-left:10px"> <spring:message code="label.lastname" /></span><span> <form:input path="PROV_LNAME" class="standardInputMedText providerFields" title="Last Name"  maxlength="48" /> </span>
+					<span class="mL25"> <spring:message code="label.firstname" /></span><span> <form:input id="PROV_FNAME"  path="stdTbDoc.provFname" class="standardInputMedText providerFields" title="First Name" maxlength="48"/> </span> 
+					<span style="margin-left:10px"> <spring:message code="label.lastname" /></span><span> <form:input id="PROV_LNAME"  path="stdTbDoc.provLname" class="standardInputMedText providerFields" title="Last Name"  maxlength="48" /> </span>
 					</br>
 				</div>
 				<div style="clear:both"></div>
@@ -324,14 +324,14 @@
  	            <div class="personInfo pTRBL10">
  	                <span class="personLabelDoc"> Address </span>
  		                <span> 	                	
-	 	                	<span class="pL10"> <form:input path="PROV_ADDRESS" class="standardinputText newAddress widgetAddressFieldsReadonly providerFields" maxlength="100" title="Address" />  </span>	 	        
+	 	                	<span class="pL10"> <form:input id="PROV_ADDRESS"  path="stdTbDoc.provAddress" class="standardinputText newAddress widgetAddressFieldsReadonly providerFields" maxlength="100" title="Address" />  </span>	 	        
 	 	                	            	 	                    
 	 	                    <span class="pL30">City</span>
-	 	                    <span class="pL10"><form:input path="PROV_CITY" class="oAdrDlg standardInputSmallText1 newCity widgetAddressFieldsReadonly providerFields" title="City" maxlength="60"/></span>
+	 	                    <span class="pL10"><form:input id="PROV_CITY"  path="stdTbDoc.provCity" class="oAdrDlg standardInputSmallText1 newCity widgetAddressFieldsReadonly providerFields" title="City" maxlength="60"/></span>
 	 	                    
 	 	                    <span class="pL30">State </span>
 	 	                    <span  class="pL10">
-								<form:select id="PROV_STATE"  path ="PROV_STATE" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly providerFields" title="State" >
+								<form:select id="PROV_STATE"  path="stdTbDoc.provState" class="oAdrDlg standardInputSmallText1 newState widgetAddressFieldsReadonly providerFields" title="State" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.stateMap}"/>
 							    </form:select>
@@ -339,12 +339,12 @@
 	 	                    
 	 	                    <span class="pL30">Zip </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:input path="PROV_ZIP" class="oAdrDlg nOnly  standardInputSmallText1 newZip widgetAddressFieldsReadonly providerFields" maxlength="5" title="Zip Code" /> - <form:input path="PROV_PLUS4" title="Plus4"  class="oAdrDlg nOnly standardInputSmallText1 providerFields" maxlength="4"/>
+	 	                       <form:input id="PROV_ZIP"  path="stdTbDoc.provZip" class="oAdrDlg nOnly  standardInputSmallText1 newZip widgetAddressFieldsReadonly providerFields" maxlength="5" title="Zip Code" /> - <form:input id="PROV_PLUS4"  path="stdTbDoc.provPlus4" title="Plus4"  class="oAdrDlg nOnly standardInputSmallText1 providerFields" maxlength="4"/>
 	 	                    </span> 
 	 	                    
 	 	                    <span class="pL30">County </span>
 	 	                    <span class="pL10"> 
-	 	                       <form:select id="PROV_COUNTY"   path="PROV_COUNTY" class="oAdrDlg standardInputSmallText1 newCounty widgetAddressFieldsReadonly providerFields" title="County" >
+	 	                       <form:select id="PROV_COUNTY"   path="stdTbDoc.provCounty" class="oAdrDlg standardInputSmallText1 newCounty widgetAddressFieldsReadonly providerFields" title="County" >
 								        <form:option value="" label="--- Select ---" />
 										<form:options items="${sessionScope.countyMap}"/>
 							    </form:select>
@@ -358,7 +358,7 @@
 	 	              	
 	 	              	<span class="pL30">Phone </span>
  	                    <span class="pL10"> 
- 	                       <form:input path="PROV_PHONE" class="standardInputMedText mR20 providerFields" maxlength="16" title="Provider Phone" />
+ 	                       <form:input id="PROV_PHONE"  path="stdTbDoc.provPhone" class="standardInputMedText mR20 providerFields" maxlength="16" title="Provider Phone" />
  	                    </span>  
 	 	                    
 	 	                 <span style="float: right;" class="mr50">
@@ -375,7 +375,7 @@
 		<div class="mT50">&nbsp;&nbsp;&nbsp;</div> <!-- dummy div -->	
 		<div id="button-row" class="button-row documentButtons" align="center">
 		
-			<c:if  test="${userPermissions['99'] != null && stdTBDocVO.STATENO != null && stdTBDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
+			<c:if  test="${userPermissions['99'] != null && stdTBDocVO.stateno != null && stdTBDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}" >
 								<input type="button" id="tButton" class="triggetMsgBtnclick button rounded blue effect-3 displayNone"  value="Trigger Assignment"  onclick="loadSurvAssignmentPopUp()"/>
 				</c:if>
 				
@@ -388,7 +388,7 @@
 						<input type="button" id="dButton" class="deleteBtnclick button rounded blue effect-3"  value="Delete" />
 						<input type="button" id="kButton" class="keepBtnclick button rounded blue effect-3"  value="Keep Document" onclick="keepDocument()"/>
 				</c:when>
-				<c:when test="${stdTBDocVO.STATENO != null && stdTBDocVO.STATENO != '' && nyehmsStatenoDetails.REASON_DESC == null}">
+				<c:when test="${stdTBDocVO.stateno != null && stdTBDocVO.stateno != '' && nyehmsStatenoDetails.REASON_DESC == null}">
 						<c:if test="${userPermissions['90'] != null}" >
 							<input type="button" id="deleteDocument" class="deleteBtnclick button rounded blue effect-3 displayNone"  value="Delete" onclick="confirmDeleteDocumentFromStateno()" />
 						</c:if>
