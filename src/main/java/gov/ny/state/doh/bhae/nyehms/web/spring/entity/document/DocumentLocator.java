@@ -25,4 +25,10 @@ public class DocumentLocator {
 
 	@Column(name = "PARENT_DOCUMENT_ID")
 	private Integer parentDocumentId;
+
+	@Column(name = "DOCUMENT_TYPE_CODE")
+	private String documentTypeCode;
+
+	@Column(name = "TEST_TYPE_CD")
+	private String testTypeCd;
 }
