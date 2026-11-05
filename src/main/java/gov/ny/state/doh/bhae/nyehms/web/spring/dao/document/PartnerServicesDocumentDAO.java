@@ -1,31 +1,298 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.dao.document;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsAssignmentView;
-
 import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Repository;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.partnerService.PsAssignmentView;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jpa.NativeStatements;
+import gov.ny.state.doh.bhae.nyehms.web.spring.jpa.Rows;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CodedSexualBehaviorsRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.repository.document.CodedSexualBehaviorsRepository.SexualBehaviorCode;
+import lombok.RequiredArgsConstructor;
 
 /**
- * This is interface for ADAP document. It is associated with
- * ADAPDocumentDAO.xml for the implementation of this functions.
+ * The legacy partner services (PS) assignment document and the sexual behavior codes of its screen (formerly a MyBatis
+ * mapper with the same name and methods).
+ * <p>
+ * The document is read with its former SQL, unchanged, as a JPA native query: its ~220 columns are not qualified by
+ * table, and how they are split between STD_LEGACY_PS_ASSIGN and STD_LEGACY_PS_ASSIGN_OOC is not known, so no
+ * entities can be mapped for them. Kept as before: the WHERE condition PDA.DISSASSOCIATION_DATE IS NULL is not part of
+ * the outer join, so a document whose only associations are dissociated is not found. The codes are read through a
+ * Spring Data repository.
  *
  * @author Srikar Kummamuri
  */
-public interface PartnerServicesDocumentDAO {
+@Repository
+@RequiredArgsConstructor
+public class PartnerServicesDocumentDAO {
 
-    /**
-     * This will query the database for the given doc id and return data in form
-     * of ADAPDocVO obj.
-     *
-     * @param docId
-     * @return
-     * @throws DataAccessException
-     */
-    public PsAssignmentView getPartnerServicesDocData(long docId) throws DataAccessException;
+	/** The former SQL (native: the column split between the two assignment tables is not known). */
+	private static final String PARTNER_SERVICES_DOC = """
+			SELECT ps_assign.DOCUMENT_ID, pda.STATENO, ps_assign.LEGACY_REPORT_ID,
+			ps_assign.LEGACY_ASSIGNMENT_ID,
+			EVENT_DESC,
+			FNAME, MNAME,
+			LNAME,
+			DOB_TEXT,
+			SSN,
+			DOD_TEXT,
+			WORK_PHONE,
+			CELL_PHONE,
+			PAGER,
+			WEB_ADDRESS_SCREEN,
+			EMAIL,
+			EMERGENCY_NAME,
+			EMERGENCY_PHONE,
+			EMERGENCY_RELATIONSHIP,
+			LIVING_WITH,
+			RESIDENCE_TYPE,
+			TIME_IN_ADDRESS,
+			ADDRESS_TIME_UNIT,
+			TIME_IN_STATE,
+			STATE_TIME_UNIT,
+			TIME_IN_COUNTRY,
+			COUNTRY_TIME_UNIT,
+			CURRENTLY_INSTITUTE_ANS,
+			INSTITUTE_NAME,
+			INSTITUTE_CD,
+			DEMO_COLLECTION_DATE,
+			MARITAL_STATUS,
+			CTR_AIRS_ID,
+			ENGLISH_SPEAKING,
+			PRIMARY_LANGUAGE,
+			EXPANDED_TEST_SITE,
+			EXPANDED_TEST_SITE_AGENCY,
+			PREGNANT_AT_EXAM,
+			NUM_WKS_PREG_AT_EXAM,
+			PREG_AT_INTERVIEW,
+			NUM_WKS_PREG_AT_NUMBER,
+			PREG_IN_LAST_YR,
+			CURR_PRENATAL_CARE,
+			PREGNANCY_OUTCOME,
+			METHOD_CASE_DETECTION,
+			METHOD_CASE_DETECTION_OTHER,
+			ps_assign.INTERVIEWED INTERVIEWED_IX,
+			WHY_NOT_INTERVIEWED,
+			INTERVIEWED_OTHER,
+			INTERVIEWED_PERIOD_MO,
+			INTERVIEWED_LOCATION,
+			INTERVIEWED_LOCATION_OTHER,
+			INTERVIEW_DATE, DIS_ASSIGNED,
+			INTERVIEWED_ASSIGNED_DATE,
+			DIS_CONDUCTED,
+			INTERVIEWED_REASSIGN_DATE,
+			DIS_REASSIGNED,
+			INTERVIEWED_DATE,
+			DIS_CONDUCT_INTERVIEW,
+			ENROLLMENT,
+			SWM,
+			SWF,
+			SEX_W_TRANS,
+			SEX_W_ANONYM,
+			SEX_W_NUMBEROX,
+			EXCHG_DRUGS_FOR_SEX,
+			SEX_PARTNER_MSM,
+			SEX_PARTNER_IDU,
+			SEX_OTHER,
+			INCARCERATED,
+			SHARED_DRUG_EQUIP,
+			IDU,
+			CRACK,
+			COCAINE,
+			HEROIN,
+			METH,
+			NITRATES,
+			ED_MEDS,
+			"NONE",
+			DRUGS_OTHER,
+			RISK_OTHER_TEXT,
+			RISK_COLLECTED_DATE,
+			PLACES_MET_GIVEN,
+			SEX_PLACES_GIVEN,
+			PLACE_MET1,
+			PLACE_MET_NAME1,
+			PLACE_MET2,
+			PLACE_MET_NAME2,
+			PLACE_MET3,
+			PLACE_MET_NAME3,
+			PLACE_MET4,
+			PLACE_MET_NAME4,
+			PLACE_MET5,
+			PLACE_MET_NAME5,
+			PLACE_SEX1,
+			PLACE_SEX_NAME1,
+			PLACE_SEX2,
+			PLACE_SEX_NAME2,
+			PLACE_SEX3,
+			PLACE_SEX_NAME3,
+			PLACE_SEX4,
+			PLACE_SEX_NAME4,
+			PLACE_SEX5,
+			PLACE_SEX_NAME5,
+			CLAIMED_FEM_PART,
+			CLAIMED_NO_FEM_PART,
+			CLAIMED_MALE_PART,
+			CLAIMED_NO_MALE_PART,
+			CLAIMED_TRANS_PART,
+			CLAIMED_NO_TRANS_PART,
+			NAMED_FEM_PART,
+			NAMED_NO_FEM_PART,
+			NAMED_MALE_PART,
+			NAMED_NO_MALE_PART,
+			NAMED_TRANS_PART,
+			NAMED_NO_TRANS_PART,
+			SOCIAL_HIST_COMMENTS,
+			NUMBER_SEX_PARTNERS,
+			NUMBER_NS_PARTNERS,
+			NUMBER_BOTH,
+			PREVIOUS_TEST_RESULTS,
+			CURRENT_TEST_DATE_TEXT,
+			SIGNATURE,
+			INFORMED_DIAG,
+			INFORMED_DIAG_DATE_TEXT,
+			PREVIOUS_TEST_DATE_TEXT,
+			APPT_SCHEDULED,
+			APPT_DATE,
+			APPT_DATE_UNK_REF,
+			APPT_ATTENDED,
+			INV_METHD_CD,
+			SIGNATURE_DATE_TEXT,
+			SUPERVISOR_CLOSE_DATE,
+			WORKER_CLOSE_DATE,
+			SYSTEM_CLOSE_DATE,
+			INDEXCASE_CONTACT_DATE,
+			LETTER_SENT_DATE,
+			PROVIDER_CONTACT_DATE,
+			PROVIDER_CONTACT,
+			INVESTIGATION_STATUS_CD,
+			PROVIDER_CONTACT_UID,
+			INDEXCASE_CONTACT_UID,
+			INFO_SOURCE,
+			INFO_SOURCE_OTHER,
+			AGE,
+			PNAP_REQUESTED,
+			WORKER_COMMENTS,
+			SUPERVISOR_COMMENTS,
+			CREATE_DATE,
+			INV_DUP_STATENO,
+			PROV_COUNTY,
+			PROV_ADDRESS,
+			PROV_CITY,
+			PROV_ZIP,
+			PROV_NAME,
+			PERSON_COUNTY,
+			PERSON_ADDRESS,
+			PERSON_CITY,
+			PERSON_STATE,
+			PERSON_ZIP,
+			REPORT_RECEIVED_DATE,
+			TRIGGER_DOC_TYPE,
+			LAST_WORKER_ASSIGNED_NAME,
+			LAST_WORKER_ASSIGNED_DATE,
+			LAST_WORKER_ASSIGNED_REGION,
+			LAST_SUPERV_ASSIGNED_NAME,
+			LAST_SUPERV_ASSIGNED_DATE,
+			LAST_SUPERV_ASSIGNED_REGION,TRACING_DISPO,
+			TRACING_DISPO_OTHER,
+			MED_CHART_REVIEW,
+			ooc.INTERVIEWED,
+			CHLAMYDIA,
+			GONORRHEA,
+			SYPHILIS,
+			OTHER_STD,
+			SPECIFIED_STD,
+			NUM_NON_MED_REFERRALS,
+			REFERRAL_NAME,
+			REFERRAL_ADDRESS,
+			REFERRAL_CITY,
+			REFERRAL_STATE,
+			REFERRAL_ZIP,
+			REFERRAL_PHONE,
+			MED_APPT_SCHEDULED_DATE,
+			MED_APPT_ATTENDED_DATE,
+			MED_APPT_VERIFIED_DATE,
+			REASON_MED_APPT_NOT_ATTENDED,
+			SPECIFIED_REASON,
+			LINKAGE_DISPO,
+			FELT_HEALTHY,
+			FELT_DEPRESSED,
+			RESPONSIBILITIES,
+			THINKS_NOT_HIV_POS,
+			FAMILY_COMMITMENTS,
+			SUBSTANCE_USE,
+			NO_CHILD_CARE,
+			LACK_STABLE_HOUSING,
+			LANGUAGE_BARRIER,
+			WORK_OBLIGATION,
+			NO_MED_INSURANCE,
+			DONT_TRUST_HEALTH_WRKR,
+			ADVERSE_EFFECT_HIV_MEDS,
+			INCONVENIENT_APPT_TIMES,
+			FORGOT_APPT,
+			DIDNT_FEEL_LIKE_GOING_APPT,
+			TOO_ILL,
+			NOT_WITH_PREFERRED_PROV,
+			LACK_TRANSPORTATION,
+			OTHER_REASON_OOC,
+			SPECIFY_REASON_OOC,
+			PREVENTION_COUNSELING,
+			RISK_ASSESSMENT,
+			MALE_CONDOMS,
+			FEMALE_CONDOMS,
+			NONMED_APPTS_MADE,
+			CASE_MANAGEMENT,
+			NUTRITION,
+			TRANSPORTATION,
+			DENTAL_CARE,
+			HOUSING,
+			MENTAL_HEALTH,
+			ALCOHOL_SUBSTANCE_USE,
+			LEGAL,
+			EDUCATION_EMPLOYMENT,
+			FINANCIAL_ENTITLEMENTS,
+			FAMILY_PARENTING,
+			SYRINGE_EXCHANGE_ESAP,
+			POSITIVE_PATHWAYS
+			FROM STD_LEGACY_PS_ASSIGN ps_assign, person_doc_association pda,
+			STD_LEGACY_PS_ASSIGN_OOC ooc
+			WHERE ps_assign.document_id = pda.document_id (+)
+			and  ooc.legacy_ps_assign_doc_id (+) = ps_assign.document_id
+			ANd PDA.DISSASSOCIATION_DATE IS NULL
+			AND ps_assign.DOCUMENT_ID= ?1
+			
+			""";
 
-	public List<Map<String, String>> getCodedSexualBehaviorsList();
+	private final NativeStatements statements;
+	private final CodedSexualBehaviorsRepository sexualBehaviors;
 
-   
+	/**
+	 * The partner services assignment document, its current person match and its out-of-care details.
+	 *
+	 * @param docId the document id
+	 * @return the document, or null if there is none; more than one row fails, as before
+	 */
+	public PsAssignmentView getPartnerServicesDocData(long docId) throws DataAccessException {
+		return statements.one(PARTNER_SERVICES_DOC, Rows.bean(PsAssignmentView.class), docId);
+	}
+
+	/** The sexual behavior codes: SEXUAL_BEHAVIOR_CODE, SEXUAL_BEHAVIOR_DESC (nulls left out, a row of nulls null). */
+	public List<Map<String, String>> getCodedSexualBehaviorsList() {
+		List<Map<String, String>> codes = new ArrayList<>();
+		for (SexualBehaviorCode code : sexualBehaviors.findAllBy()) {
+			Map<String, String> row = new HashMap<>();
+			if (code.sexualBehaviorCode() != null) {
+				row.put("SEXUAL_BEHAVIOR_CODE", code.sexualBehaviorCode());
+			}
+			if (code.sexualBehaviorDesc() != null) {
+				row.put("SEXUAL_BEHAVIOR_DESC", code.sexualBehaviorDesc());
+			}
+			codes.add(row.isEmpty() ? null : row);
+		}
+		return codes;
+	}
 }
