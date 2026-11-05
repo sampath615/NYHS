@@ -1,12 +1,16 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.administration;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.administration.persistence.NyehmsUserActivity;
+import gov.ny.state.doh.bhae.nyehms.web.spring.administration.persistence.NyehmsUserActivityRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.ActiveStage;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -74,7 +78,9 @@ public class AdministrationService {
 
 	@Autowired
 	AdministrationTransactionHelper administrationTransactionHelper;
-	
+
+	@Autowired
+    NyehmsUserActivityRepository nyehmsUserActivityRepository;
 	
 	/**
 	 * Returns the Map containing Region Code as Key and Region description as values
@@ -515,7 +521,7 @@ public class AdministrationService {
 				inOutParameterMap.put("comments", nyehmsUsersVO.getUserComments());
 				inOutParameterMap.put("activityBy", userObject.getUserId());
 				if(noOfRowsEffected>0) {
-					searchManageProfileDAO.saveUserComments(inOutParameterMap);
+					nyehmsUserActivityRepository.save(NyehmsUserActivity.create(nyehmsUsersVO.getWorkerId(),userObject.getUserId(), nyehmsUsersVO.getUserComments()));
 				}
 			}
 			
@@ -783,8 +789,23 @@ public class AdministrationService {
 		}
 	return userFacilityNames;
 	}
-	
+
+	private static final DateTimeFormatter COMMENT_DATE = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+	@SuppressWarnings("unchecked")
 	public List<JSONObject> getUserCommentsList(String workerId, BindingResult bindingResult, UserObject userObject){
+
+		nyehmsUserActivityRepository.findByWorkerIdOrderByActivityDateDesc(Long.valueOf(workerId))
+				.stream()
+				.map(userActivity -> {
+
+			JSONObject row = new JSONObject();
+					row.put("comments", userActivity.getComments());
+					row.put("activityBy", userActivity.getActivityBy());
+					row.put("activityDate", userActivity.getActivityDate().format(COMMENT_DATE));
+					return row;
+				})
+				.toList();
+
 		return searchManageProfileDAO.getUserCommentsList(workerId);
 	}
 
