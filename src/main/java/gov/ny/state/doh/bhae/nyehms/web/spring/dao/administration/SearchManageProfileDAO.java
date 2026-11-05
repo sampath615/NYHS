@@ -42,9 +42,9 @@ public interface SearchManageProfileDAO {
 
 	public String getRoleNameByWorkerRegionId(long workerRegionId);
 
-	public List<JSONObject> getUserCommentsList(String workerId);
+	//public List<JSONObject> getUserCommentsList(String workerId);
 	
-	public void saveUserComments(Map<Object, Object> inOutParameterMap);
+	//public void saveUserComments(Map<Object, Object> inOutParameterMap);
 
 	public List<JSONObject> getTrainerList();
 

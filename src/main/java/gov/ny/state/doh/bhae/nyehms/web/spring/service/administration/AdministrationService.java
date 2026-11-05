@@ -794,19 +794,17 @@ public class AdministrationService {
 	@SuppressWarnings("unchecked")
 	public List<JSONObject> getUserCommentsList(String workerId, BindingResult bindingResult, UserObject userObject){
 
-		nyehmsUserActivityRepository.findByWorkerIdOrderByActivityDateDesc(Long.valueOf(workerId))
+	return	nyehmsUserActivityRepository.findByWorkerIdOrderByActivityDateDesc(Long.valueOf(workerId))
 				.stream()
 				.map(userActivity -> {
 
-			JSONObject row = new JSONObject();
+					JSONObject row = new JSONObject();
 					row.put("comments", userActivity.getComments());
 					row.put("activityBy", userActivity.getActivityBy());
 					row.put("activityDate", userActivity.getActivityDate().format(COMMENT_DATE));
 					return row;
 				})
 				.toList();
-
-		return searchManageProfileDAO.getUserCommentsList(workerId);
 	}
 
 	public List<JSONObject> getSCReportData(String fromDate, String toDate, BindingResult dummyBindingResult, UserObject userObject) {
