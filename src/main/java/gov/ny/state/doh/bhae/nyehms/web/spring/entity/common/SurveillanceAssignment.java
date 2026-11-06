@@ -77,4 +77,26 @@ public class SurveillanceAssignment {
 
 	@Column(name = "CLOSED_DATE")
 	private Timestamp closedDate;
+
+	// the review and reabstraction columns AssignmentDAO reads and sets
+
+	/** The closed-assignment review the assignment belongs to (e.g. a text containing REFLEX or OOJ). */
+	@Column(name = "REVIEW_CATEGORY")
+	private String reviewCategory;
+
+	/** The worker who reviewed the closed assignment. */
+	@Column(name = "REVIEW_ID")
+	private Long reviewId;
+
+	@Column(name = "REVIEW_DATE")
+	private Timestamp reviewDate;
+
+	@Column(name = "REAB_STATUS_CODE")
+	private String reabStatusCode;
+
+	@Column(name = "REAB_CURRENT_ACTIVITY_TYPE_CODE")
+	private String reabCurrentActivityTypeCode;
+
+	@Column(name = "REAB_COMPLETED_DATE")
+	private Timestamp reabCompletedDate;
 }

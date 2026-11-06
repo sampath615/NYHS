@@ -39,4 +39,19 @@ public class NyehmsWorkerRegionsVw {
 
 	@Column(name = "WR_END_DATE")
 	private Timestamp wrEndDate;
+
+	// the columns the assignment screens read (AssignmentDAO)
+
+	@Column(name = "ROLE_CODE")
+	private Long roleCode;
+
+	@Column(name = "REGION_CODE")
+	private String regionCode;
+
+	@Column(name = "FULL_NAME")
+	private String fullName;
+
+	/** The end date of the worker (the region role's end date is WR_END_DATE). */
+	@Column(name = "END_DATE")
+	private Timestamp endDate;
 }

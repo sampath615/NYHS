@@ -26,4 +26,21 @@ public class CodedActivityType {
 
 	@Column(name = "ACTIVITY_TYPE_DESCRIPTION")
 	private String activityTypeDescription;
+
+	// the columns the assignment closure and reabstraction lists read (AssignmentDAO)
+
+	@Column(name = "ACTIVITY_CATEGORY_CODE")
+	private String activityCategoryCode;
+
+	@Column(name = "ASSIGNMENT_TYPE_CD")
+	private String assignmentTypeCd;
+
+	@Column(name = "ACCESS_LEVEL")
+	private String accessLevel;
+
+	@Column(name = "NEED_ACRF")
+	private String needAcrf;
+
+	@Column(name = "END_DATE")
+	private java.sql.Timestamp endDate;
 }
