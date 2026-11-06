@@ -260,11 +260,12 @@ public class SchedulerJobsDAO {
 				SchedulerJobsSql.checkForLoincAndObservationResultRangeCombinationArgs(inputOutputParamters)));
 	}
 
-	/** The local code map id of a PFI's local code valid on the collection date; more than one fails, as selectOne did. */
+	/** The local code map id of a PFI's local code valid on the collection date; more than one fails, as selectOne did; the
+	 * number is returned as text, as the former resultType String did. */
 	public String getlocalCodeMapIdForPfiLocalCodeMatch(Map<Object, Object> inputOutputParamters) {
 		return jpql.one("""
 				select c.labLocalCdMapId from LabLocalCodes c where c.pfi = ?1 and c.localCd = ?2 and ?3 >= c.startDate
-				and (c.endDate is null or c.endDate >= ?3)""", row -> (String) row.get(0), Values.text(inputOutputParamters.get("pfi")),
+				and (c.endDate is null or c.endDate >= ?3)""", row -> row.get(0) == null ? null : row.get(0).toString(), Values.text(inputOutputParamters.get("pfi")),
 				Values.text(inputOutputParamters.get("localCode")), Values.timestamp(inputOutputParamters.get("collectionDate")));
 	}
 

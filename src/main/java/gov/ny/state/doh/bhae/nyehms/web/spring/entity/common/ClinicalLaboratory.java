@@ -1,21 +1,18 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
-import org.hibernate.annotations.Immutable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
 import lombok.Getter;
 
 /**
- * A clinical laboratory (table CLINICAL_LABORATORY); only its CLIA number, which the eCLRS loaders look up (the table is
- * also used by LabReportsDAO, which may add its columns here).
+ * A CLIA number (table CLINICAL_LABORATORY): the clinical laboratories the physical facilities (LAB_PHYSICAL_FACILITY) belong to; the column LabReportsDAO reads and inserts (the table is also used by SchedulerJobsDAO).
  * <p>
- * Read-only, used in counts only. <b>CLIA as the key is assumed.</b>
+ * Inserted by a JPQL insert, read through projections. <b>CLIA as the key is assumed.</b>
  */
 @Entity
-@Immutable
 @Getter
 @Table(name = "CLINICAL_LABORATORY")
 public class ClinicalLaboratory {

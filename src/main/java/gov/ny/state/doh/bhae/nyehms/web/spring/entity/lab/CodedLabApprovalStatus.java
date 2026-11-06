@@ -25,4 +25,7 @@ public class CodedLabApprovalStatus {
 
 	@Column(name = "APPROVAL_STATUS_DESC")
 	private String approvalStatusDesc;
+
+	@Column(name = "SORT_ORDER")
+	private Long sortOrder;
 }

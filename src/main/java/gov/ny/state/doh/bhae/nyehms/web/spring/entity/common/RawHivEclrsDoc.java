@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
+import java.sql.Timestamp;
+
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
@@ -9,7 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO and LaftDetailsDAO read so far,
+ * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO, LaftDetailsDAO and LabReportsDAO read so far,
  * and the multi-step document details of SchedulerJobsDAO (the table is also used by other mappers, which may add their columns here).
  * <p>
  * Read-only, used in counts and JPQL projections only. <b>DOCUMENT_ID as the key is assumed.</b>
@@ -53,4 +55,7 @@ public class RawHivEclrsDoc {
 
 	@Column(name = "PIDZIPCODE")
 	private String pidzipcode;
+
+	@Column(name = "MSHCREATEDATE")
+	private Timestamp mshcreatedate;
 }
