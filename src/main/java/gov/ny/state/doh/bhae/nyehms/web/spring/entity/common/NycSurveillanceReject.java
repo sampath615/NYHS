@@ -10,7 +10,8 @@ import lombok.Getter;
 
 /**
  * A rejected NYC surveillance record (table NYC_SURVEILLANCE_REJECT); the columns the NYC reject document screen reads
- * and its comment change writes (the table is filled by the NYC reject upload, still in MyBatis).
+ * and its comment change writes (the table is filled by the NYC reject upload,
+ * FileUploadDAO.insertNYCSurvRejectDataRow, with a JPQL insert).
  * <p>
  * Read through projections and changed by bulk updates only, so a key that repeats does not matter. <b>DOCUMENT_ID as
  * the key is assumed.</b> UPDATE_DATE is mapped twice: as text (read with getString, as the screen's VO read it) and as

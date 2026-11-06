@@ -1,6 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
-import org.hibernate.annotations.Immutable;
+import java.sql.Timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,12 +10,13 @@ import lombok.Getter;
 
 /**
  * The files uploaded through the provider portal (table EPRF_PROV_PORTAL_FILE_UPLOAD); the columns the provider portal
- * reports read: who uploaded a file and its file type.
+ * reports read (who uploaded a file and its file type) and the columns the EPRF OOC file review and follow-up read and
+ * write (category, acceptance, inquiry county / facility, director e-mail, client feedback and follow-up dates).
  * <p>
- * Read-only and read through JPQL subqueries only. <b>FILENAME as the key is assumed.</b>
+ * Read through JPQL projections and subqueries and changed by JPQL bulk updates only. <b>FILENAME as the key is
+ * assumed.</b> FILE_ACCEPTED_UID is written with the worker id (an int, as before).
  */
 @Entity
-@Immutable
 @Getter
 @Table(name = "EPRF_PROV_PORTAL_FILE_UPLOAD")
 public class EprfProvPortalFileUpload {
@@ -29,4 +30,31 @@ public class EprfProvPortalFileUpload {
 
 	@Column(name = "FILE_TYPE")
 	private String fileType;
+
+	@Column(name = "FILE_CATEGORY")
+	private String fileCategory;
+
+	@Column(name = "FILE_ACCEPTED_UID")
+	private Integer fileAcceptedUid;
+
+	@Column(name = "FILE_ACCEPTED_DATE")
+	private Timestamp fileAcceptedDate;
+
+	@Column(name = "FILE_CLIENT_FEEDBACK_DATE")
+	private Timestamp fileClientFeedbackDate;
+
+	@Column(name = "FILE_EMAIL_DIRECTOR_DATE")
+	private Timestamp fileEmailDirectorDate;
+
+	@Column(name = "FILE_FOLLOW_UP_COMPLETE_DATE")
+	private Timestamp fileFollowUpCompleteDate;
+
+	@Column(name = "FILE_MATCH_REVIEW_COMPLTE_DATE")
+	private Timestamp fileMatchReviewCompleteDate;
+
+	@Column(name = "INQUIRY_COUNTY_FIPS")
+	private String inquiryCountyFips;
+
+	@Column(name = "INQUIRY_FACILITY_NAME")
+	private String inquiryFacilityName;
 }

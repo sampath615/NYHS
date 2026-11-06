@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,6 +13,8 @@ import lombok.Getter;
  * <p>
  * Read in JPQL; changed only by bulk statements (the test type of a document, the deletion of an active scanned
  * document). <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
+ * The confirmed STD upload also files its staged documents with a JPQL insert-select (DOCUMENT_ID,
+ * DOCUMENT_TYPE_CODE, IS_ACTIVE, RECEIVED_DATE).
  */
 @Entity
 @Getter
@@ -32,4 +36,7 @@ public class DocumentLocator {
 
 	@Column(name = "IS_ACTIVE")
 	private String isActive;
+
+	@Column(name = "RECEIVED_DATE")
+	private Timestamp receivedDate;
 }

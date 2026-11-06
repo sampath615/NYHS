@@ -13,7 +13,8 @@ import lombok.Getter;
 /**
  * The users (HCS ids) who upload for a portal provider (table PORTAL_PROVIDER_USER_MAPPING).
  * <p>
- * Read-only and read through JPQL subqueries only. <b>USER_HCSID as the key is assumed.</b>
+ * Read-only and read through JPQL subqueries and projections only (the user names are the "submitted by" of the EPRF
+ * OOC file lists). <b>USER_HCSID as the key is assumed.</b>
  */
 @Entity
 @Immutable
@@ -27,4 +28,11 @@ public class PortalProviderUserMapping {
 
 	@Column(name = "PORTAL_PROV_ID")
 	private BigDecimal portalProvId;
+
+	/** The user's last name (the "submitted by" of the EPRF OOC file lists). */
+	@Column(name = "USER_LNAME")
+	private String userLname;
+
+	@Column(name = "USER_FNAME")
+	private String userFname;
 }
