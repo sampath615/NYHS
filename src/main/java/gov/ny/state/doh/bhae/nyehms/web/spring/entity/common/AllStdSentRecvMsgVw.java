@@ -13,7 +13,7 @@ import lombok.Getter;
 
 /**
  * The partner services messages sent and received (view ALL_STD_SENT_RECV_MSG_VW), read-only. The columns the former
- * AHI statement used.
+ * AHI statement and the cluster PS message list used.
  * <p>
  * <b>The view has no known key</b>: CURRENT_STATENO is declared as the id, but it repeats; the view is read through
  * projections only.
@@ -42,4 +42,13 @@ public class AllStdSentRecvMsgVw {
 
 	@Column(name = "PROCESS_IND")
 	private String processInd;
+
+	@Column(name = "RETURN_DISPOSITION_DESC")
+	private String returnDispositionDesc;
+
+	@Column(name = "DOCUMENT_ID")
+	private Long documentId;
+
+	@Column(name = "TRIGGER_DOC_ID")
+	private Long triggerDocId;
 }

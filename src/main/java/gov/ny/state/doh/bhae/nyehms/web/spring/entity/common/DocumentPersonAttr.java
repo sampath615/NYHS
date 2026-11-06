@@ -18,6 +18,9 @@ import lombok.NoArgsConstructor;
  * <p>
  * <b>DOCUMENT_ID as the key is assumed.</b> Inserted as a new row (no other column written, as before) and deleted by
  * a bulk statement.
+ * <p>
+ * Also the name, birth date text and address columns the cluster screens read (through projections) and the cluster
+ * partner address change writes (JPQL bulk update); they are not written by the insert (database defaults stay).
  */
 @Entity
 @Getter
@@ -30,6 +33,30 @@ public class DocumentPersonAttr implements Persistable<Integer> {
 	@Id
 	@Column(name = "DOCUMENT_ID")
 	private Integer documentId;
+
+	@Column(name = "FIRST_NAME", insertable = false)
+	private String firstName;
+
+	@Column(name = "LAST_NAME", insertable = false)
+	private String lastName;
+
+	@Column(name = "DOB_TEXT", insertable = false)
+	private String dobText;
+
+	@Column(name = "ADDRESS", insertable = false)
+	private String address;
+
+	@Column(name = "ADDRESS_CITY", insertable = false)
+	private String addressCity;
+
+	@Column(name = "COUNTY_FIPS", insertable = false)
+	private String countyFips;
+
+	@Column(name = "ADDRESS_STATE", insertable = false)
+	private String addressState;
+
+	@Column(name = "ADDRESS_ZIPCODE", insertable = false)
+	private String addressZipcode;
 
 	@Override
 	public Integer getId() {
