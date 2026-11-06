@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * The workers' view (NYEHMS_USERS_VW): short name, lock flag and end date.
+ * The workers' view (NYEHMS_USERS_VW): short name, lock flag, end date, full name and e-mail address.
  * <p>
  * Read-only and read through projections only (a key that repeats does not matter then; a worker can have several
  * rows). <b>WORKER_ID as the key is assumed.</b>
@@ -38,4 +38,7 @@ public class NyehmsUsersVw {
 	/** The worker's full name, as the view builds it (AHIDocumentDAO.getAhiAlertDetails). */
 	@Column(name = "FULL_NAME")
 	private String fullName;
+
+	@Column(name = "EMAIL_ADDR")
+	private String emailAddr;
 }

@@ -9,10 +9,10 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO reads so far
+ * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO and LaftDetailsDAO read so far
  * (the table is also used by other mappers, which may add their columns here).
  * <p>
- * Read-only, used in counts only. <b>DOCUMENT_ID as the key is assumed.</b>
+ * Read-only, used in counts and JPQL projections only. <b>DOCUMENT_ID as the key is assumed.</b>
  */
 @Entity
 @Immutable
@@ -29,4 +29,7 @@ public class RawHivEclrsDoc {
 
 	@Column(name = "OBXLOINCCODE")
 	private String obxloinccode;
+
+	@Column(name = "MSHSENDINGFACILITYCLIA")
+	private String mshsendingfacilityclia;
 }

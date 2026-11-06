@@ -40,4 +40,7 @@ public class PersonDocAssociation {
 
 	@Column(name = "DISSASSOCIATION_DATE")
 	private Date dissassociationDate;
+
+	@Column(name = "ASSOCIATION_STATUS_CODE")
+	private String associationStatusCode;
 }
