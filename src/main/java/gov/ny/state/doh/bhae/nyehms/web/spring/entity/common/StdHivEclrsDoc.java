@@ -12,7 +12,7 @@ import lombok.Getter;
 
 /**
  * An HIV lab report from ECLRS, standardized (table STD_HIV_ECLRS_DOC): only the columns the migrated statements read
- * so far (LaftDetailsDAO, RASDocumentDAO.getSierraResponseData). The table is wide and also used by other mappers,
+ * so far (LaftDetailsDAO, RASDocumentDAO.getSierraResponseData, SchedulerJobsDAO.getMultiStepDocumentDetails). The table is wide and also used by other mappers,
  * which may add their columns here.
  * <p>
  * Read-only, used in JPQL projections only. <b>DOCUMENT_ID as the key is assumed</b>.
@@ -44,4 +44,7 @@ public class StdHivEclrsDoc {
 
 	@Column(name = "CALC_COLLECTION_DATE")
 	private Timestamp calcCollectionDate;
+
+	@Column(name = "FLUX_MATCH_CD")
+	private String fluxMatchCd;
 }

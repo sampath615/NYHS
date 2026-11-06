@@ -9,8 +9,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO and LaftDetailsDAO read so far
- * (the table is also used by other mappers, which may add their columns here).
+ * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO and LaftDetailsDAO read so far,
+ * and the multi-step document details of SchedulerJobsDAO (the table is also used by other mappers, which may add their columns here).
  * <p>
  * Read-only, used in counts and JPQL projections only. <b>DOCUMENT_ID as the key is assumed.</b>
  */
@@ -32,4 +32,25 @@ public class RawHivEclrsDoc {
 
 	@Column(name = "MSHSENDINGFACILITYCLIA")
 	private String mshsendingfacilityclia;
+
+	@Column(name = "OBXOBSERVATIONRESULTKEY")
+	private Long obxobservationresultkey;
+
+	@Column(name = "CURRENT_PROCESS_STATUS")
+	private Long currentProcessStatus;
+
+	@Column(name = "PIDADDRESSLINE1")
+	private String pidaddressline1;
+
+	@Column(name = "PIDADDRESSLINE2")
+	private String pidaddressline2;
+
+	@Column(name = "PIDCITY")
+	private String pidcity;
+
+	@Column(name = "PIDSTATE")
+	private String pidstate;
+
+	@Column(name = "PIDZIPCODE")
+	private String pidzipcode;
 }
