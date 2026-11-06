@@ -12,7 +12,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * The results each ACRF test type can have (table CODED_ACRF_TEST_RESULT); the columns the ICCR screens read.
+ * The results each ACRF test type can have (table CODED_ACRF_TEST_RESULT); the columns the ICCR screens and the case
+ * report form labs (AcrfDocLabsDAO) read.
  * <p>
  * Read-only and used in JPQL projections only. <b>The key (ACRF_TEST_CODE, ACRF_RESULT_CODE) is assumed.</b>
  */
@@ -37,4 +38,15 @@ public class CodedAcrfTestResult {
 	/** Null while the result is in use. */
 	@Column(name = "END_DATE")
 	private Timestamp endDate;
+
+	@Column(name = "PARENT_TEST_TYPE")
+	private String parentTestType;
+
+	/** The form revisions the result belongs to (text containing the revision year), null for all. */
+	@Column(name = "ACRF_REVISION")
+	private String acrfRevision;
+
+	/** Only ordered by (its column type is not known). */
+	@Column(name = "SORT_ORDER")
+	private String sortOrder;
 }
