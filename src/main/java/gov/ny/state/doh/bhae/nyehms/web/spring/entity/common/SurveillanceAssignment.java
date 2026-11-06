@@ -10,7 +10,7 @@ import lombok.Getter;
 
 /**
  * The surveillance assignments (table SURVEILLANCE_ASSIGNMENT); the columns the AHI assignment report reads and the
- * case report form ids AcrfDocLabsDAO sets.
+ * case report form ids AcrfDocLabsDAO sets, and the columns the AHI document statements (AHIDocumentDAO) use.
  * <p>
  * Read through JPQL projections and changed by JPQL bulk updates only (no entity is loaded or saved).
  * <b>DOCUMENT_ID as the key is assumed.</b> AHI_UPDATE_UID and LAST_UPDATED_BY are text (their column types are not
@@ -70,4 +70,11 @@ public class SurveillanceAssignment {
 
 	@Column(name = "LAST_UPDATED_DATE")
 	private Timestamp lastUpdatedDate;
+
+	/** The AHI form (STD_AHI_DOC) whose screen shows this assignment's AHI flag (AHIDocumentDAO). */
+	@Column(name = "AHI_DOC_ID")
+	private Long ahiDocId;
+
+	@Column(name = "CLOSED_DATE")
+	private Timestamp closedDate;
 }

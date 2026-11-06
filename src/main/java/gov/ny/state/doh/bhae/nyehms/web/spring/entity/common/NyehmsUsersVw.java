@@ -34,4 +34,8 @@ public class NyehmsUsersVw {
 
 	@Column(name = "END_DATE")
 	private Timestamp endDate;
+
+	/** The worker's full name, as the view builds it (AHIDocumentDAO.getAhiAlertDetails). */
+	@Column(name = "FULL_NAME")
+	private String fullName;
 }

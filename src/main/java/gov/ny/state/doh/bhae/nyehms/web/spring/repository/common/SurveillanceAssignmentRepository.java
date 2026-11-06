@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -41,4 +42,9 @@ public interface SurveillanceAssignmentRepository extends JpaRepository<Surveill
 			""")
 	List<AhiAssignmentRow> findRecentAhiAssignments(@Param("documentType") String documentType, @Param("regionId") String regionId,
 			@Param("assignmentStatus") String assignmentStatus, @Param("createdAfter") Timestamp createdAfter);
+
+	/** Sets the AHI flag of an open assignment, by a worker, now (the database's SYSDATE). */
+	@Modifying
+	@Query("update SurveillanceAssignment s set s.ahiFlag = ?1, s.ahiUpdateUid = ?2, s.ahiUpdateDate = sysdate where s.documentId = ?3 and s.closedDate is null")
+	int changeAhiFlag(String ahiFlag, String workerId, Long assignmentId);
 }

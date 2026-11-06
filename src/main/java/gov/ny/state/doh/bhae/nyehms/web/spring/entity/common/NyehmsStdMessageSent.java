@@ -37,6 +37,10 @@ public class NyehmsStdMessageSent {
 	@Column(name = "PROCESS_IND")
 	private String processInd;
 
+	/** The person the message is about (read only: the AHI alert list checks whether a message was sent). */
+	@Column(name = "STATENO", insertable = false, updatable = false)
+	private String stateno;
+
 	@Column(name = "DELETE_IND")
 	private String deleteInd;
 

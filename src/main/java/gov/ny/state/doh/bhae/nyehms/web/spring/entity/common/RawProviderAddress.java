@@ -86,6 +86,10 @@ public class RawProviderAddress {
 	@Column(name = "LAST_UPDATED_BY", insertable = false)
 	private String lastUpdatedBy;
 
+	/** Set when the provider was flipped to a facility (read only: ADAPDocumentDAO skips those addresses). */
+	@Column(name = "FLIPPED_TO_FACILITY_DATE", insertable = false, updatable = false)
+	private Timestamp flippedToFacilityDate;
+
 	/** Marks the raw address as "unable to standardize": linked to the sub provider address 0. */
 	public void unableToStandardize(Timestamp lastUpdatedDate, String lastUpdatedBy) {
 		this.subProviderAddressId = 0L;
