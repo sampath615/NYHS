@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
+import java.sql.Timestamp;
+
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
@@ -9,10 +11,11 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * A standardized eCLRS HIV lab document (table STD_HIV_ECLRS_DOC); only the columns LaftDetailsDAO reads so far (the
- * table is also used by other mappers, which may add their columns here).
+ * An HIV lab report from ECLRS, standardized (table STD_HIV_ECLRS_DOC): only the columns the migrated statements read
+ * so far (LaftDetailsDAO, RASDocumentDAO.getSierraResponseData). The table is wide and also used by other mappers,
+ * which may add their columns here.
  * <p>
- * Read-only, used in JPQL projections only. <b>DOCUMENT_ID as the key is assumed.</b>
+ * Read-only, used in JPQL projections only. <b>DOCUMENT_ID as the key is assumed</b>.
  */
 @Entity
 @Immutable
@@ -26,4 +29,19 @@ public class StdHivEclrsDoc {
 
 	@Column(name = "CURRENT_PROCESS_STATUS")
 	private Long currentProcessStatus;
+
+	@Column(name = "FNAME")
+	private String fname;
+
+	@Column(name = "MNAME")
+	private String mname;
+
+	@Column(name = "LNAME")
+	private String lname;
+
+	@Column(name = "DOB_TEXT")
+	private String dobText;
+
+	@Column(name = "CALC_COLLECTION_DATE")
+	private Timestamp calcCollectionDate;
 }
