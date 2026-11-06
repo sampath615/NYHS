@@ -1,7 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import org.hibernate.annotations.Immutable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -9,12 +7,12 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 
 /**
- * Ahere a document is filed (table DOCUMENT_LOCATOR); only the columns the application reads.
+ * Where a document is filed (table DOCUMENT_LOCATOR); only the columns the application reads and changes.
  * <p>
- * Read-only. <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
+ * Read in JPQL; changed only by bulk statements (the test type of a document, the deletion of an active scanned
+ * document). <b>DOCUMENT_ID as the key is assumed</b> (one row per document).
  */
 @Entity
-@Immutable
 @Getter
 @Table(name = "DOCUMENT_LOCATOR")
 public class DocumentLocator {
@@ -31,4 +29,7 @@ public class DocumentLocator {
 
 	@Column(name = "TEST_TYPE_CD")
 	private String testTypeCd;
+
+	@Column(name = "IS_ACTIVE")
+	private String isActive;
 }

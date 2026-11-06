@@ -1,12 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
+import java.sql.Timestamp;
+
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import lombok.Getter;
 
 /**
@@ -28,4 +29,7 @@ public class EharsPersonNyc {
 
 	@Column(name = "CITYNO")
 	private String cityno;
+
+	@Column(name = "HIV_AIDS_DX_DT")
+	private Timestamp hivAidsDxDt;
 }

@@ -19,7 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * A row of an uploaded CDC RIDR file (table CDC_RIDR_INFO). Written by the upload, never updated.
+ * A row of an uploaded CDC RIDR file (table CDC_RIDR_INFO). Written by the upload, never updated; read by the RIDR search screen (DocumentDAO).
  * <p>
  * The file's values are stored as text, as the upload always bound them (Oracle converts the date columns). The key
  * comes from CDC_RIDR_INFO_SEQ and CREATED_DT from the database clock, as before.
@@ -135,6 +135,22 @@ public class CdcRidrInfo implements Persistable<Long> {
 
 	@Column(name = "FILE_NAME")
 	private String fileName;
+
+	/** Read only (the RIDR search screen); not written by the upload. */
+	@Column(name = "PARENT_DOC_CREATE_DT", insertable = false, updatable = false)
+	private Timestamp parentDocCreateDt;
+
+	/** Read only (the RIDR search screen); not written by the upload. */
+	@Column(name = "PARENT_DOC_EXISTS", insertable = false, updatable = false)
+	private String parentDocExists;
+
+	/** Read only (the RIDR search screen); not written by the upload. */
+	@Column(name = "RESOLVED_DOC_ID", insertable = false, updatable = false)
+	private Long resolvedDocId;
+
+	/** Read only (the RIDR search screen); not written by the upload. */
+	@Column(name = "DISCARD_DATE", insertable = false, updatable = false)
+	private Timestamp discardDate;
 
 	@Override
 	public Long getId() {

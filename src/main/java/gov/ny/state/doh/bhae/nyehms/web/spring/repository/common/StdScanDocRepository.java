@@ -3,10 +3,12 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.repository.common;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.common.StdScanDoc;
+import gov.ny.state.doh.bhae.nyehms.web.spring.record.ScanDocInfoRow;
 import gov.ny.state.doh.bhae.nyehms.web.spring.record.ScanningCountRow;
 
 /** The scanned documents (table STD_SCAN_DOC). */
@@ -28,4 +30,24 @@ public interface StdScanDocRepository extends JpaRepository<StdScanDoc, Long> {
 			order by to_date(x.createDate, 'mm/dd/yyyy')
 			""")
 	List<ScanningCountRow> findScanningCounts(@Param("fromDate") String fromDate, @Param("toDate") String toDate);
+
+	/**
+	 * The file name of a scanned document and the person it is currently matched to (if any).
+	 */
+	@Query("""
+			select new gov.ny.state.doh.bhae.nyehms.web.spring.record.ScanDocInfoRow(s.fileName, p.stateno)
+			from StdScanDoc s
+			left join PersonDocAssociation p on s.documentId = p.documentId and p.dissassociationDate is null
+			where s.documentId = ?1
+			""")
+	List<ScanDocInfoRow> findScanDocInfo(Long documentId);
+
+	/**
+	 * Marks a scanned document deleted: DELETED_BY, DELETED_DATE (the database's SYSDATE) and COMMENTS.
+	 *
+	 * @return the number of rows changed
+	 */
+	@Modifying
+	@Query("update StdScanDoc s set s.deletedBy = ?1, s.deletedDate = sysdate, s.comments = ?2 where s.documentId = ?3")
+	int markDeleted(Long deletedBy, String comments, Long documentId);
 }
