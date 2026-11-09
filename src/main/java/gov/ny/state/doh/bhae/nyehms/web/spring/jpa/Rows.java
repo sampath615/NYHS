@@ -11,10 +11,14 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -33,6 +37,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.jpa.NativeStatements.TypedRowMapp
  * <li>{@link #map}, {@link #json}: {@code java.util.Map} / {@code JSONObject} — one entry per column label (the first
  * of a repeated label), null values left out, a row of nulls null.</li>
  * <li>{@link #scalar}: {@code String}, {@code Integer}, ... — the first column, converted.</li>
+ * <li>{@link #resultMap}: a {@code resultMap} without nested mappings — named columns to their properties, the other
+ * columns auto-mapped as {@link #bean} does.</li>
  * </ul>
  */
 public final class Rows {
@@ -103,6 +109,50 @@ public final class Rows {
 			public T map(Row row) {
 				return (T) convert(row.get(0), type);
 			}
+		};
+	}
+
+	/**
+	 * Rows as a MyBatis {@code resultMap} without nested mappings (default settings) mapped them: first the columns the
+	 * result map does not name are auto-mapped to the property of the same name (ignoring case), unless the result map
+	 * maps that property itself; then each named column is set on its property. A null value is not set, each value is
+	 * converted to its property's type, a row that sets nothing is null, a named column the row does not have is
+	 * skipped, and a named property the class does not have is ignored (MyBatis failed on a non-null value for it).
+	 *
+	 * @param columnsAndProperties pairs: a column label, then the property it is set on
+	 */
+	public static <T> RowMapper<T> resultMap(Class<T> type, String... columnsAndProperties) {
+		if (columnsAndProperties.length % 2 != 0) {
+			throw new IllegalArgumentException("Column and property pairs expected: " + String.join(", ", columnsAndProperties));
+		}
+		BeanProperties properties = BeanProperties.of(type);
+		List<String[]> mappings = new ArrayList<>();
+		Set<String> mappedColumns = new HashSet<>();
+		Set<String> mappedProperties = new HashSet<>();
+		for (int i = 0; i < columnsAndProperties.length; i += 2) {
+			mappings.add(new String[] {columnsAndProperties[i], columnsAndProperties[i + 1]});
+			mappedColumns.add(columnsAndProperties[i].toUpperCase(Locale.ENGLISH));
+			mappedProperties.add(columnsAndProperties[i + 1].toUpperCase(Locale.ENGLISH));
+		}
+		return row -> {
+			Map<String, Object> values = new LinkedHashMap<>();                 // property (upper case) -> value
+			for (int i = 0; i < row.size(); i++) {
+				String label = row.labels().get(i);
+				if (row.indexOf(label) != i) {
+					continue;                                                   // a repeated label: the first column counts
+				}
+				String key = label.toUpperCase(Locale.ENGLISH);
+				if (!mappedColumns.contains(key) && !mappedProperties.contains(key) && row.get(i) != null) {
+					values.put(key, row.get(i));
+				}
+			}
+			for (String[] mapping : mappings) {
+				int index = row.indexOf(mapping[0]);
+				if (index >= 0 && row.get(index) != null) {
+					values.put(mapping[1].toUpperCase(Locale.ENGLISH), row.get(index));
+				}
+			}
+			return fillBean(properties, new Row(new ArrayList<>(values.keySet()), new ArrayList<>(values.values())));
 		};
 	}
 

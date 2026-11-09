@@ -242,9 +242,17 @@ public class NativeStatements {
 		return new CallParam(ParameterMode.INOUT, type, value, null);
 	}
 
-	/** An OUT cursor (SYS_REFCURSOR); {@link #call} returns its rows, mapped. */
+	/** An OUT cursor (SYS_REFCURSOR); {@link #call} returns its rows, mapped; the values are read with getObject. */
 	public static CallParam cursor(RowMapper<?> rows) {
 		return new CallParam(ParameterMode.REF_CURSOR, null, null, rows);
+	}
+
+	/**
+	 * An OUT cursor whose columns are all read as text (getString, as MyBatis read every column of a result map into
+	 * String properties: dates and ROWIDs in the driver's text form); {@link #call} returns its rows, mapped.
+	 */
+	public static CallParam textCursor(RowMapper<?> rows) {
+		return new CallParam(ParameterMode.REF_CURSOR, String.class, null, rows);
 	}
 
 	/**
@@ -309,7 +317,8 @@ public class NativeStatements {
 				for (int i = 0; i < parameters.length; i++) {
 					CallParam parameter = parameters[i];
 					switch (parameter.mode()) {
-						case REF_CURSOR -> results.add(cursorRows(statement.getObject(i + 1, ResultSet.class), parameter.cursorRows()));
+						case REF_CURSOR -> results.add(cursorRows(statement.getObject(i + 1, ResultSet.class), parameter.cursorRows(),
+								parameter.type() == String.class));
 						case OUT, INOUT -> results.add(Rows.convert(statement.getObject(i + 1), parameter.type()));
 						default -> results.add(null);
 					}
@@ -319,7 +328,8 @@ public class NativeStatements {
 		});
 	}
 
-	private static List<Object> cursorRows(ResultSet resultSet, RowMapper<?> mapper) throws SQLException {
+	/** The rows of a cursor, mapped; the values read with getString ({@code text}) or getObject. A null cursor has no rows. */
+	private static List<Object> cursorRows(ResultSet resultSet, RowMapper<?> mapper, boolean text) throws SQLException {
 		List<Object> rows = new ArrayList<>();
 		if (resultSet == null) {
 			return rows;
@@ -333,6 +343,10 @@ public class NativeStatements {
 			while (resultSet.next()) {
 				List<Object> values = new ArrayList<>(labels.size());
 				for (int column = 1; column <= labels.size(); column++) {
+					if (text) {
+						values.add(resultSet.getString(column));
+						continue;
+					}
 					Object value = resultSet.getObject(column);
 					values.add(value instanceof java.sql.Clob clob ? clob.getSubString(1, (int) clob.length()) : value);
 				}
@@ -349,6 +363,9 @@ public class NativeStatements {
 		}
 		if (Number.class.isAssignableFrom(type) || type.isPrimitive()) {
 			return Types.NUMERIC;
+		}
+		if (type == java.sql.Date.class) {
+			return Types.DATE;                                       // #{x,jdbcType=DATE}: a null is a DATE null
 		}
 		if (java.util.Date.class.isAssignableFrom(type)) {
 			return Types.TIMESTAMP;
