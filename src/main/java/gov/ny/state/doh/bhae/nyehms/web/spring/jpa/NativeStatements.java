@@ -1,24 +1,27 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.jpa;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.Session;
-import org.hibernate.metamodel.model.domain.BasicDomainType;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.TypedParameterValue;
 import org.hibernate.type.BasicTypeReference;
-import org.hibernate.type.JavaObjectType;
 import org.hibernate.type.StandardBasicTypes;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Component;
@@ -29,21 +32,24 @@ import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.StoredProcedureQuery;
-import jakarta.persistence.Tuple;
-import jakarta.persistence.TupleElement;
 
 /**
- * Runs SQL statements of the main database (appDS) as JPA native queries: the replacement of the former MyBatis
- * mappers whose SQL is kept as it was (Oracle syntax, sequences, SYSDATE, triggers).
+ * Runs SQL statements of the main database (appDS) through the JPA persistence context: the replacement of the former
+ * MyBatis mappers whose SQL is kept as it was (Oracle syntax, sequences, SYSDATE, triggers).
  * <p>
  * Parameters are positional ({@code ?1}, {@code ?2}, ...) and always bound, never pasted into the SQL; a value that
  * may be null is passed as {@link #param(Object, BasicTypeReference)} (or {@link #text}, {@link #number},
  * {@link #timestamp}) so it is bound with its type, as MyBatis bound {@code #{x,jdbcType=...}}. Result rows are
- * turned into objects by a {@link RowMapper} ({@link Rows} has the MyBatis rules). The values come typed as JDBC
- * {@code getObject} types them (see {@link GetObjectTypes}).
+ * turned into objects by a {@link RowMapper} ({@link Rows} has the MyBatis rules).
  * <p>
- * Reads join the caller's transaction or run read-only on their own; writes join the caller's transaction or run in
- * their own (committed at once, as a MyBatis statement outside a transaction was).
+ * Queries run as JDBC statements on the persistence context's connection and their columns are read by position, as
+ * MyBatis read them: typed as plain JDBC {@code getObject} types them (any NUMBER a {@code BigDecimal}, text and CLOBs
+ * a {@code String}, DATE / TIMESTAMP a {@code Timestamp}, see also {@link GetObjectTypes}) or, for a
+ * {@link TypedRowMapper}, with the getter of each property's type (getString, getInt, ...). Of two columns with the
+ * same label the first is the one a mapper reads ({@link Row#get(String)}); Hibernate's own native result mapping
+ * refuses a repeated label, which the former mappers' SQL has. Writes run as JPA native queries. Reads join the
+ * caller's transaction or run read-only on their own; writes join the caller's transaction or run in their own
+ * (committed at once, as a MyBatis statement outside a transaction was).
  */
 @Component
 public class NativeStatements {
@@ -52,6 +58,16 @@ public class NativeStatements {
 	@FunctionalInterface
 	public interface RowMapper<T> {
 		T map(Row row);
+	}
+
+	/**
+	 * A row mapper that reads each column it uses with its target type, as a MyBatis type handler did (getString for
+	 * a String property, getInt for an int, ...): {@link Rows#bean} and {@link Rows#scalar}.
+	 */
+	public interface TypedRowMapper<T> extends RowMapper<T> {
+
+		/** The type a column is read as, or null if the column is not used. */
+		Class<?> typeOf(String label, int index);
 	}
 
 	/** A parameter bound with its type (for null values). */
@@ -90,111 +106,13 @@ public class NativeStatements {
 	 */
 	@Transactional(readOnly = true)
 	public <T> List<T> list(String sql, RowMapper<T> mapper, Object... parameters) {
-		if (mapper instanceof TypedRowMapper<T> typed) {
-			List<String> labels = LABELS.get(sql);
-			if (labels == null) {
-				// the first run of this SQL text: learn its column labels (they do not change for one text)
-				List<Row> rows = tuples(sql, parameters);
-				if (rows.isEmpty()) {
-					return new ArrayList<>();
-				}
-				labels = rows.get(0).labels();
-				LABELS.put(sql, labels);
-			}
-			return typed(sql, labels, typed, parameters);
-		}
+		TypedRowMapper<?> typed = mapper instanceof TypedRowMapper<T> typedMapper ? typedMapper : null;
 		List<T> results = new ArrayList<>();
-		for (Row row : tuples(sql, parameters)) {
+		for (Row row : rows(sql, parameters, typed)) {
 			results.add(mapper.map(row));
 		}
 		return results;
 	}
-
-	/**
-	 * A row mapper that reads each column it uses with its target type, as a MyBatis type handler did (getString for
-	 * a String property, getInt for an int, ...): {@link Rows#bean} and {@link Rows#scalar}.
-	 */
-	public interface TypedRowMapper<T> extends RowMapper<T> {
-
-		/** The type a column is read as, or null if the column is not used. */
-		Class<?> typeOf(String label, int index);
-	}
-
-	/** The column labels of each SQL text run with a typed mapper. */
-	private static final Map<String, List<String>> LABELS = new ConcurrentHashMap<>();
-
-	private List<Row> tuples(String sql, Object[] parameters) {
-		Query query = entityManager.createNativeQuery(sql, Tuple.class);
-		bind(query, parameters);
-		List<Row> rows = new ArrayList<>();
-		for (Object result : query.getResultList()) {
-			rows.add(row((Tuple) result));
-		}
-		return rows;
-	}
-
-	private <T> List<T> typed(String sql, List<String> labels, TypedRowMapper<T> mapper, Object[] parameters) {
-		// the columns read: the first of each label that the mapper uses
-		List<Integer> read = new ArrayList<>();
-		Set<String> seen = new HashSet<>();
-		for (int i = 0; i < labels.size(); i++) {
-			String key = labels.get(i).toUpperCase(Locale.ENGLISH);
-			if (seen.add(key) && mapper.typeOf(labels.get(i), i) != null) {
-				read.add(i);
-			}
-		}
-		if (read.isEmpty()) {
-			// no column is used: each row maps to nothing (null), as MyBatis returned it
-			List<T> results = new ArrayList<>();
-			for (Row row : tuples(sql, parameters)) {
-				results.add(mapper.map(new Row(row.labels(), java.util.Collections.nCopies(row.size(), null))));
-			}
-			return results;
-		}
-		Query query = entityManager.createNativeQuery(sql);
-		NativeQuery<?> nativeQuery = query.unwrap(NativeQuery.class);
-		for (int index : read) {
-			addScalar(nativeQuery, labels.get(index), mapper.typeOf(labels.get(index), index));
-		}
-		bind(query, parameters);
-		List<T> results = new ArrayList<>();
-		for (Object result : query.getResultList()) {
-			Object[] values = read.size() == 1 ? new Object[] {result} : (Object[]) result;
-			List<Object> rowValues = new ArrayList<>(java.util.Collections.nCopies(labels.size(), null));
-			for (int k = 0; k < read.size(); k++) {
-				rowValues.set(read.get(k), values[k]);
-			}
-			results.add(mapper.map(new Row(labels, rowValues)));
-		}
-		return results;
-	}
-
-	/** Declares a column read with the type handler MyBatis used for this Java type. */
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private static void addScalar(NativeQuery<?> query, String label, Class<?> type) {
-		BasicTypeReference reference = SCALAR_TYPES.get(type);
-		if (reference != null) {
-			query.addScalar(label, reference);
-		} else {
-			query.addScalar(label, (BasicDomainType) JavaObjectType.INSTANCE);
-		}
-	}
-
-	private static final Map<Class<?>, BasicTypeReference<?>> SCALAR_TYPES = Map.ofEntries(
-			Map.entry(String.class, StandardBasicTypes.STRING),
-			Map.entry(char.class, StandardBasicTypes.STRING), Map.entry(Character.class, StandardBasicTypes.STRING),
-			Map.entry(int.class, StandardBasicTypes.INTEGER), Map.entry(Integer.class, StandardBasicTypes.INTEGER),
-			Map.entry(long.class, StandardBasicTypes.LONG), Map.entry(Long.class, StandardBasicTypes.LONG),
-			Map.entry(short.class, StandardBasicTypes.SHORT), Map.entry(Short.class, StandardBasicTypes.SHORT),
-			Map.entry(byte.class, StandardBasicTypes.BYTE), Map.entry(Byte.class, StandardBasicTypes.BYTE),
-			Map.entry(double.class, StandardBasicTypes.DOUBLE), Map.entry(Double.class, StandardBasicTypes.DOUBLE),
-			Map.entry(float.class, StandardBasicTypes.FLOAT), Map.entry(Float.class, StandardBasicTypes.FLOAT),
-			Map.entry(boolean.class, StandardBasicTypes.BOOLEAN), Map.entry(Boolean.class, StandardBasicTypes.BOOLEAN),
-			Map.entry(java.math.BigDecimal.class, StandardBasicTypes.BIG_DECIMAL),
-			Map.entry(java.math.BigInteger.class, StandardBasicTypes.BIG_INTEGER),
-			Map.entry(java.util.Date.class, StandardBasicTypes.TIMESTAMP),
-			Map.entry(java.sql.Timestamp.class, StandardBasicTypes.TIMESTAMP),
-			Map.entry(java.sql.Date.class, StandardBasicTypes.DATE));
 
 	/**
 	 * The row of a query that returns at most one row (as MyBatis selectOne).
@@ -222,6 +140,165 @@ public class NativeStatements {
 		bind(query, parameters);
 		return query.executeUpdate();
 	}
+
+	// ---- reads: JDBC on the persistence context's connection -----------------------------------------------------
+
+	private static final Pattern POSITIONAL = Pattern.compile("\\?(\\d+)");
+
+	/** The rows of a query, every column read by position (a typed mapper's unused columns, and repeated labels, left null). */
+	private List<Row> rows(String sql, Object[] parameters, TypedRowMapper<?> typed) {
+		List<Integer> positions = new ArrayList<>();           // the parameter of each '?' of the JDBC text, in order
+		Matcher matcher = POSITIONAL.matcher(sql);
+		StringBuilder jdbcSql = new StringBuilder();
+		while (matcher.find()) {
+			positions.add(Integer.parseInt(matcher.group(1)));
+			matcher.appendReplacement(jdbcSql, "?");
+		}
+		matcher.appendTail(jdbcSql);
+		return entityManager.unwrap(Session.class).doReturningWork(connection -> {
+			try (PreparedStatement statement = connection.prepareStatement(jdbcSql.toString())) {
+				for (int i = 0; i < positions.size(); i++) {
+					int index = positions.get(i);
+					if (index < 1 || index > parameters.length) {
+						throw new IllegalArgumentException("No value for ?" + index + " in: " + sql);
+					}
+					bindJdbc(statement, i + 1, parameters[index - 1]);
+				}
+				try (ResultSet resultSet = statement.executeQuery()) {
+					ResultSetMetaData metaData = resultSet.getMetaData();
+					int count = metaData.getColumnCount();
+					List<String> labels = new ArrayList<>(count);
+					int[] jdbcTypes = new int[count];
+					Class<?>[] readAs = new Class<?>[count];
+					boolean[] read = new boolean[count];
+					Set<String> seen = new HashSet<>();
+					for (int c = 0; c < count; c++) {
+						String label = metaData.getColumnLabel(c + 1);
+						labels.add(label);
+						jdbcTypes[c] = metaData.getColumnType(c + 1);
+						boolean first = seen.add(label.toUpperCase(Locale.ENGLISH));
+						readAs[c] = typed == null ? null : typed.typeOf(label, c);
+						read[c] = first && (typed == null || readAs[c] != null);
+					}
+					List<Row> rows = new ArrayList<>();
+					while (resultSet.next()) {
+						List<Object> values = new ArrayList<>(count);
+						for (int c = 0; c < count; c++) {
+							values.add(read[c] ? read(resultSet, c + 1, jdbcTypes[c], readAs[c]) : null);
+						}
+						rows.add(new Row(List.copyOf(labels), values));
+					}
+					return rows;
+				}
+			}
+		});
+	}
+
+	/** Binds a value as MyBatis bound it by its Java type; a {@link Param} that is null as a null of its type, a plain null as OTHER. */
+	private static void bindJdbc(PreparedStatement statement, int index, Object value) throws SQLException {
+		if (value instanceof Param param) {
+			if (param.value() == null) {
+				statement.setNull(index, param.type().getSqlTypeCode());
+				return;
+			}
+			value = param.value();
+		}
+		if (value == null) {
+			statement.setNull(index, Types.OTHER);
+		} else if (value instanceof Timestamp || value instanceof java.sql.Date || value instanceof java.sql.Time) {
+			statement.setObject(index, value);
+		} else if (value instanceof java.util.Date date) {
+			statement.setTimestamp(index, new Timestamp(date.getTime()));
+		} else if (value instanceof Character character) {
+			statement.setString(index, character.toString());
+		} else if (value instanceof BigInteger number) {
+			statement.setBigDecimal(index, new BigDecimal(number));
+		} else if (value instanceof Enum<?> constant) {
+			statement.setString(index, constant.name());
+		} else {
+			statement.setObject(index, value);
+		}
+	}
+
+	/**
+	 * A column's value: with the getter of the type a mapper reads it as (MyBatis' type handler for that property
+	 * type), or as getObject types it when the mapper has no type (any NUMBER a BigDecimal, text and CLOBs a String,
+	 * DATE / TIMESTAMP a Timestamp or Date, anything else as the driver gives it).
+	 */
+	private static Object read(ResultSet resultSet, int column, int jdbcType, Class<?> as) throws SQLException {
+		if (as == null) {
+			return switch (jdbcType) {
+				case Types.NUMERIC, Types.DECIMAL -> resultSet.getBigDecimal(column);
+				case Types.CHAR, Types.VARCHAR, Types.NCHAR, Types.NVARCHAR, Types.LONGVARCHAR, Types.LONGNVARCHAR, Types.CLOB, Types.NCLOB ->
+					resultSet.getString(column);
+				case Types.TIMESTAMP, Types.TIMESTAMP_WITH_TIMEZONE -> resultSet.getTimestamp(column);
+				case Types.DATE -> resultSet.getDate(column);
+				case Types.TIME -> resultSet.getTime(column);
+				default -> object(resultSet, column);
+			};
+		}
+		if (as == String.class || as == char.class || as == Character.class) {
+			return resultSet.getString(column);
+		}
+		if (as == int.class || as == Integer.class) {
+			int value = resultSet.getInt(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == long.class || as == Long.class) {
+			long value = resultSet.getLong(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == short.class || as == Short.class) {
+			short value = resultSet.getShort(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == byte.class || as == Byte.class) {
+			byte value = resultSet.getByte(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == double.class || as == Double.class) {
+			double value = resultSet.getDouble(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == float.class || as == Float.class) {
+			float value = resultSet.getFloat(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == boolean.class || as == Boolean.class) {
+			boolean value = resultSet.getBoolean(column);
+			return resultSet.wasNull() ? null : value;
+		}
+		if (as == BigDecimal.class) {
+			return resultSet.getBigDecimal(column);
+		}
+		if (as == BigInteger.class) {
+			BigDecimal value = resultSet.getBigDecimal(column);
+			return value == null ? null : value.toBigInteger();
+		}
+		if (as == java.sql.Date.class) {
+			return resultSet.getDate(column);
+		}
+		if (as == Timestamp.class || as == java.util.Date.class) {
+			return resultSet.getTimestamp(column);
+		}
+		if (as == LocalDate.class) {
+			java.sql.Date value = resultSet.getDate(column);
+			return value == null ? null : value.toLocalDate();
+		}
+		if (as == LocalDateTime.class) {
+			Timestamp value = resultSet.getTimestamp(column);
+			return value == null ? null : value.toLocalDateTime();
+		}
+		return object(resultSet, column);
+	}
+
+	/** getObject, a CLOB as its text. */
+	private static Object object(ResultSet resultSet, int column) throws SQLException {
+		Object value = resultSet.getObject(column);
+		return value instanceof java.sql.Clob clob ? clob.getSubString(1, (int) clob.length()) : value;
+	}
+
+	// ---- stored procedures -------------------------------------------------------------------------------------------
 
 	/** A parameter of a stored procedure call. */
 	public record CallParam(ParameterMode mode, Class<?> type, Object value, RowMapper<?> cursorRows) {
@@ -347,8 +424,7 @@ public class NativeStatements {
 						values.add(resultSet.getString(column));
 						continue;
 					}
-					Object value = resultSet.getObject(column);
-					values.add(value instanceof java.sql.Clob clob ? clob.getSubString(1, (int) clob.length()) : value);
+					values.add(object(resultSet, column));
 				}
 				rows.add(mapper.map(new Row(labels, values)));
 			}
@@ -386,16 +462,5 @@ public class NativeStatements {
 				query.setParameter(i + 1, value);
 			}
 		}
-	}
-
-	private static Row row(Tuple tuple) {
-		List<TupleElement<?>> elements = tuple.getElements();
-		List<String> labels = new ArrayList<>(elements.size());
-		List<Object> values = new ArrayList<>(elements.size());
-		for (int i = 0; i < elements.size(); i++) {
-			labels.add(elements.get(i).getAlias());
-			values.add(tuple.get(i));
-		}
-		return new Row(labels, values);
 	}
 }

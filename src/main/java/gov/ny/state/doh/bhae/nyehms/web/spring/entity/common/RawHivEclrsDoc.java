@@ -2,8 +2,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.entity.common;
 
 import java.sql.Timestamp;
 
-import org.hibernate.annotations.Immutable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,12 +10,13 @@ import lombok.Getter;
 
 /**
  * A raw eCLRS HIV lab document (table RAW_HIV_ECLRS_DOC); only the columns LoincResultDomainMappingDAO, LaftDetailsDAO and LabReportsDAO read so far,
- * and the multi-step document details of SchedulerJobsDAO (the table is also used by other mappers, which may add their columns here).
+ * the multi-step document details of SchedulerJobsDAO and the process status LabDocumentDAO sets (the table is also used by other mappers, which may
+ * add their columns here).
  * <p>
- * Read-only, used in counts and JPQL projections only. <b>DOCUMENT_ID as the key is assumed.</b>
+ * Used in counts and JPQL projections, and changed by one bulk JPQL update (the process status and date of the documents
+ * grouped into a multi-spot document); never loaded or saved as an entity. <b>DOCUMENT_ID as the key is assumed.</b>
  */
 @Entity
-@Immutable
 @Getter
 @Table(name = "RAW_HIV_ECLRS_DOC")
 public class RawHivEclrsDoc {
@@ -58,4 +57,7 @@ public class RawHivEclrsDoc {
 
 	@Column(name = "MSHCREATEDATE")
 	private Timestamp mshcreatedate;
+
+	@Column(name = "PROCESS_DATE")
+	private Timestamp processDate;
 }
