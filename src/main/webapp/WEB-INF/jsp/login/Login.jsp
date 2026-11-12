@@ -18,7 +18,7 @@
     </div>
 
 
-    <form method=post action="/doh2/applinks/nyehms/web/login"> 
+    <form method=post action="/doh7/applinks/nyehms/hims/web/login">
     <div id="loginPage">
         <div class="standardInputDiv">
             <div class="label110mrg">

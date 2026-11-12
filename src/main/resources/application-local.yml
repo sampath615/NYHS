@@ -25,7 +25,7 @@ nyehms:
     hiv-document-update-date-to: sampath.anumolu@health.ny.gov
   app:
     login-page: 'login/Login'
-    logout-url: '/doh2/applinks/nyehms/web/login'
+    logout-url: '/doh7/applinks/nyehms/hims/web/login'
     by-pass: true
     load-schedulers: false
     load-schedulers-data-from-property: true

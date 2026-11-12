@@ -18,7 +18,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<form method="post" id="assignmentDocumentMatrix" action="/doh2/applinks/nyehms/web/getAssignmentDocumentsByStatusByDocumentByCategory.pdf" target="blank" name="Assignments.pdf">
+	<form method="post" id="assignmentDocumentMatrix" action="/doh7/applinks/nyehms/hims/web/getAssignmentDocumentsByStatusByDocumentByCategory.pdf" target="blank" name="Assignments.pdf">
 		<input type="hidden" id="assignmentStatus" name="assignmentStatus" value=""/>
 		<input type="hidden" id="assignmentStatusDisplayName" name="assignmentStatusDisplayName"  value=""/>
 		<input type="hidden" id="documentType" name="documentType"  value=""/>
