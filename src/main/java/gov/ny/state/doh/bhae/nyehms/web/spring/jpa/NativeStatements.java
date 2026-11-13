@@ -405,6 +405,37 @@ public class NativeStatements {
 		});
 	}
 
+	/**
+	 * Calls a stored function ({@code { ? = call f(?, ...) }}, formerly a MyBatis CALLABLE statement with an OUT
+	 * parameter first) on the persistence context's connection and returns its result.
+	 *
+	 * @param function the function's name, e.g. {@code pkg_standardization.fn_improve_std_address}
+	 * @param resultType the type the result is read as (registered as the matching JDBC type)
+	 * @param parameters the function's IN parameters, in order
+	 */
+	@Transactional
+	public Object callFunction(String function, Class<?> resultType, CallParam... parameters) {
+		String sql = "{? = call " + function + "(" + String.join(",", java.util.Collections.nCopies(parameters.length, "?")) + ")}";
+		return entityManager.unwrap(Session.class).doReturningWork(connection -> {
+			try (CallableStatement statement = connection.prepareCall(sql)) {
+				statement.registerOutParameter(1, sqlType(resultType));
+				for (int i = 0; i < parameters.length; i++) {
+					CallParam parameter = parameters[i];
+					if (parameter.mode() != ParameterMode.IN) {
+						throw new IllegalArgumentException("Only IN parameters for a function: " + parameter);
+					}
+					if (parameter.value() == null) {
+						statement.setNull(i + 2, sqlType(parameter.type()));
+					} else {
+						statement.setObject(i + 2, parameter.value());
+					}
+				}
+				statement.execute();
+				return Rows.convert(statement.getObject(1), resultType);
+			}
+		});
+	}
+
 	/** The rows of a cursor, mapped; the values read with getString ({@code text}) or getObject. A null cursor has no rows. */
 	private static List<Object> cursorRows(ResultSet resultSet, RowMapper<?> mapper, boolean text) throws SQLException {
 		List<Object> rows = new ArrayList<>();

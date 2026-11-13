@@ -29,6 +29,19 @@ public class NyehmsUsersVw {
 	@Column(name = "LEGACY_UID")
 	private String legacyUid;
 
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+
+	@Column(name = "LAST_NAME")
+	private String lastName;
+
+	/** The last login as text (the login reads it into a text property with getString, as before). */
+	@Column(name = "LAST_LOGIN_DATE")
+	private String lastLoginDate;
+
+	@Column(name = "LAST_CONF_SECURITY_TRNG_DATE")
+	private Timestamp lastConfSecurityTrngDate;
+
 	@Column(name = "IS_LOCKED")
 	private String isLocked;
 

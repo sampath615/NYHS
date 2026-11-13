@@ -31,4 +31,10 @@ public class CodedPsMsgType {
 
 	@Column(name = "END_DATE")
 	private Timestamp endDate;
+
+	@Column(name = "DOCUMENT_TYPE_CODE")
+	private String documentTypeCode;
+
+	@Column(name = "SORT_ORDER")
+	private Long sortOrder;
 }

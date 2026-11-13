@@ -64,9 +64,9 @@ public class SearchManageProfileDAO {
 
 	/**
 	 * The e-mail notification columns of NYEHMS_USERS the notification screen offers (systemNotifications.jsp), with
-	 * their NyehmsUsers attributes.
+	 * their NyehmsUsers attributes (also the allow-list of CommonDAO.getNotificationList).
 	 */
-	static final Map<String, String> NOTIFICATION_COLUMNS = notificationColumns("ACRF_RISK", "acrfRisk", "AHI", "ahi",
+	public static final Map<String, String> NOTIFICATION_COLUMNS = notificationColumns("ACRF_RISK", "acrfRisk", "AHI", "ahi",
 			"AHI_NOTIFICATION", "ahiNotification", "AIRS_AGENCY", "airsAgency", "AIRS_UPLOAD_ERR", "airsUploadErr", "ASSIGNMENT", "assignment",
 			"ASSIGNMENT_AHI", "assignmentAhi", "COMATCH", "comatch", "EHARS_NOTIFICATION", "eharsNotification", "EPRF_OOC_SUMMARY", "eprfOocSummary",
 			"FILE_REMINDER", "fileReminder", "HIT_NOTIFICATION", "hitNotification", "MONTHLY_LOINC", "monthlyLoinc", "NIGHTLY_JOB", "nightlyJob",

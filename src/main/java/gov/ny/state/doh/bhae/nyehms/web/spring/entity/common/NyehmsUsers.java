@@ -55,6 +55,10 @@ public class NyehmsUsers {
 	@Column(name = "LAST_UPDATED_DATE")
 	private Timestamp lastUpdatedDate;
 
+	/** Set at each login (CommonDAO.setLoginTimeStamp, a bulk update). */
+	@Column(name = "LAST_LOGIN_DATE")
+	private Timestamp lastLoginDate;
+
 	@Column(name = "LAST_UPDATED_BY")
 	private Long lastUpdatedBy;
 
