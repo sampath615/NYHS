@@ -48,4 +48,10 @@ public class NyehmsEharsStatenoMap {
 
 	@Column(name = "HIV_AIDS_DX_DT")
 	private Timestamp hivAidsDxDt;
+
+	@Column(name = "STAGE_ZERO_DX")
+	private String stageZeroDx;
+
+	@Column(name = "STAGE_CD4_OI_DX")
+	private String stageCd4OiDx;
 }

@@ -121,38 +121,91 @@ public final class Rows {
 	 *
 	 * @param columnsAndProperties pairs: a column label, then the property it is set on
 	 */
-	public static <T> RowMapper<T> resultMap(Class<T> type, String... columnsAndProperties) {
+	public static <T> TypedRowMapper<T> resultMap(Class<T> type, String... columnsAndProperties) {
 		if (columnsAndProperties.length % 2 != 0) {
 			throw new IllegalArgumentException("Column and property pairs expected: " + String.join(", ", columnsAndProperties));
 		}
 		BeanProperties properties = BeanProperties.of(type);
 		List<String[]> mappings = new ArrayList<>();
-		Set<String> mappedColumns = new HashSet<>();
+		Map<String, String> columnToProperty = new HashMap<>();                 // column (upper case) -> property
 		Set<String> mappedProperties = new HashSet<>();
 		for (int i = 0; i < columnsAndProperties.length; i += 2) {
 			mappings.add(new String[] {columnsAndProperties[i], columnsAndProperties[i + 1]});
-			mappedColumns.add(columnsAndProperties[i].toUpperCase(Locale.ENGLISH));
+			columnToProperty.putIfAbsent(columnsAndProperties[i].toUpperCase(Locale.ENGLISH), columnsAndProperties[i + 1]);
 			mappedProperties.add(columnsAndProperties[i + 1].toUpperCase(Locale.ENGLISH));
 		}
-		return row -> {
-			Map<String, Object> values = new LinkedHashMap<>();                 // property (upper case) -> value
-			for (int i = 0; i < row.size(); i++) {
-				String label = row.labels().get(i);
-				if (row.indexOf(label) != i) {
-					continue;                                                   // a repeated label: the first column counts
-				}
+		return new TypedRowMapper<T>() {
+			@Override
+			public Class<?> typeOf(String label, int index) {
+				// the property a column is set on (its type is how the column is read), or null for a column not used
 				String key = label.toUpperCase(Locale.ENGLISH);
-				if (!mappedColumns.contains(key) && !mappedProperties.contains(key) && row.get(i) != null) {
-					values.put(key, row.get(i));
+				String property = columnToProperty.get(key);
+				if (property == null) {
+					if (mappedProperties.contains(key)) {
+						return null;
+					}
+					property = label;
 				}
+				BeanProperty found = properties.find(property);
+				return found == null ? null : found.type();
 			}
-			for (String[] mapping : mappings) {
-				int index = row.indexOf(mapping[0]);
-				if (index >= 0 && row.get(index) != null) {
-					values.put(mapping[1].toUpperCase(Locale.ENGLISH), row.get(index));
+
+			@Override
+			public T map(Row row) {
+				Map<String, Object> values = new LinkedHashMap<>();             // property (upper case) -> value
+				for (int i = 0; i < row.size(); i++) {
+					String label = row.labels().get(i);
+					if (row.indexOf(label) != i) {
+						continue;                                               // a repeated label: the first column counts
+					}
+					String key = label.toUpperCase(Locale.ENGLISH);
+					if (!columnToProperty.containsKey(key) && !mappedProperties.contains(key) && row.get(i) != null) {
+						values.put(key, row.get(i));
+					}
 				}
+				for (String[] mapping : mappings) {
+					int index = row.indexOf(mapping[0]);
+					if (index >= 0 && row.get(index) != null) {
+						values.put(mapping[1].toUpperCase(Locale.ENGLISH), row.get(index));
+					}
+				}
+				return fillBean(properties, new Row(new ArrayList<>(values.keySet()), new ArrayList<>(values.values())));
 			}
-			return fillBean(properties, new Row(new ArrayList<>(values.keySet()), new ArrayList<>(values.values())));
+		};
+	}
+
+	/**
+	 * Rows as a MyBatis {@code resultMap} of type {@code java.util.Map} with {@code javaType="String"} results mapped
+	 * them: each named column, read as text (getString), put under its key; a null value is not put; a column the row
+	 * does not have is skipped; a row that puts nothing is null.
+	 *
+	 * @param columnsAndKeys pairs: a column label, then the key it is put under
+	 */
+	public static TypedRowMapper<Map<String, String>> textMap(String... columnsAndKeys) {
+		if (columnsAndKeys.length % 2 != 0) {
+			throw new IllegalArgumentException("Column and key pairs expected: " + String.join(", ", columnsAndKeys));
+		}
+		Map<String, String> columnToKey = new LinkedHashMap<>();
+		for (int i = 0; i < columnsAndKeys.length; i += 2) {
+			columnToKey.put(columnsAndKeys[i].toUpperCase(Locale.ENGLISH), columnsAndKeys[i + 1]);
+		}
+		return new TypedRowMapper<Map<String, String>>() {
+			@Override
+			public Class<?> typeOf(String label, int index) {
+				return columnToKey.containsKey(label.toUpperCase(Locale.ENGLISH)) ? String.class : null;
+			}
+
+			@Override
+			public Map<String, String> map(Row row) {
+				Map<String, String> values = new HashMap<>();
+				columnToKey.forEach((column, key) -> {
+					int index = row.indexOf(column);
+					if (index >= 0 && row.get(index) != null) {
+						values.put(key, (String) convert(row.get(index), String.class));
+					}
+				});
+				return values.isEmpty() ? null : values;
+			}
 		};
 	}
 
