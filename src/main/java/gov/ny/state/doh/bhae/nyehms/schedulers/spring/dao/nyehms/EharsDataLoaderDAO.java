@@ -1,17 +1,22 @@
 package gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms;
 
+import org.springframework.stereotype.Repository;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.jpa.JpqlStatements;
+import lombok.RequiredArgsConstructor;
+
 /**
- * This DAO is used to load the NYEHMS table with eHars Data
- * @author ska03
- *
+ * The eHARS data loader's table maintenance (formerly a MyBatis mapper with the same name and method; the caller is
+ * unchanged): a bulk JPQL delete over EharsRidr.
  */
-public interface EharsDataLoaderDAO {
-	
+@Repository
+@RequiredArgsConstructor
+public class EharsDataLoaderDAO {
 
-	public void deleteRIDREharsData();
-	
+	private final JpqlStatements jpql;
 
+	/** Empties EHARS_RIDR before a reload. */
+	public void deleteRIDREharsData() {
+		jpql.update("delete from EharsRidr r");
+	}
 }
-
-
-

@@ -4,12 +4,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Finds the JPA DAO classes of the scheduler package {@code schedulers.spring.dao.nyehms} (e.g. SchedulerJobsDAO, a
- * {@code @Repository} class since it moved from MyBatis to JPA), which lies outside the {@code web.spring} packages the
- * application scans. The MyBatis mapper interfaces left in that package (EharsDataLoaderDAO) are still registered by
- * MyBatisConfig's {@code @MapperScan}; a component scan does not pick up interfaces.
+ * Finds the DAO classes of the scheduler packages {@code schedulers.spring.dao.*} (SchedulerJobsDAO,
+ * EharsDataLoaderDAO, EcrlsDataDAO, AIDADataDAO — {@code @Repository} classes since they moved from MyBatis), which lie
+ * outside the {@code web.spring} packages the application scans.
  */
 @Configuration
-@ComponentScan(basePackages = "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms")
+@ComponentScan(basePackages = "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao")
 public class SchedulerDaoConfig {
 }
