@@ -62,6 +62,18 @@ public class NyehmsStdMessageSent {
 	@Column(name = "LAFT_REVIEW_DATE")
 	private Timestamp laftReviewDate;
 
+	/** The message type that was triggered (the person screen lists the types of a document; never changed here). */
+	@Column(name = "TRIGGER_MSG_TYPE")
+	private String triggerMsgType;
+
+	/** Set by the bulk JPQL update that retires the pending messages of a deleted document (PersonDAO). */
+	@Column(name = "REVIEW_COMMENTS")
+	private String reviewComments;
+
+	/** 'Y' once the follow-up document was replaced by an edited copy (CommonDocLabsDAO, a bulk update). */
+	@Column(name = "EDITED_FLAG")
+	private String editedFlag;
+
 	/** Deletes the open message: PROCESS_IND 'R_X', DELETE_IND 'D', reviewed by the worker at the time. */
 	public void delete(String reviewUid, Timestamp reviewDate) {
 		this.processInd = "R_X";

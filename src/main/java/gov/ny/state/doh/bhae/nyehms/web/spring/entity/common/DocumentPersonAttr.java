@@ -58,6 +58,17 @@ public class DocumentPersonAttr implements Persistable<Integer> {
 	@Column(name = "ADDRESS_ZIPCODE", insertable = false)
 	private String addressZipcode;
 
+	/** Read by the partner services upload (PersonDAO: documents with a date of death); not written. */
+	@Column(name = "DATE_OF_DEATH", insertable = false, updatable = false)
+	private java.sql.Timestamp dateOfDeath;
+
+	/** The provider and facility address ids an edited copy's assignments are compared with (CommonDocLabsDAO); not written. */
+	@Column(name = "PROVIDER_ID", insertable = false, updatable = false)
+	private Long providerId;
+
+	@Column(name = "FACILITY_ID", insertable = false, updatable = false)
+	private Long facilityId;
+
 	@Override
 	public Integer getId() {
 		return documentId;

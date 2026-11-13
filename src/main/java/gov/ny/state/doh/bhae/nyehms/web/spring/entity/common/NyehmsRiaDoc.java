@@ -523,4 +523,8 @@ public class NyehmsRiaDoc {
 	@Column(name = "STATENO_DELETED")
 	private String statenoDeleted;
 
+	/** Set by the bulk update that closes the pending RIA document of a deleted lab document (PersonDAO). */
+	@Column(name = "COMMENTS")
+	private String comments;
+
 }
