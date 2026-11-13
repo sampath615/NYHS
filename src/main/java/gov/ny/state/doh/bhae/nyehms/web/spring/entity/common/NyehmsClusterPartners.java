@@ -43,6 +43,9 @@ public class NyehmsClusterPartners {
 	@Column(name = "FLUX_MATCH_CD")
 	private String fluxMatchCd;
 
+	@Column(name = "FLUX_POT_STATENO")
+	private String fluxPotStateno;
+
 	@Column(name = "DISCARD_DATE")
 	private Timestamp discardDate;
 
