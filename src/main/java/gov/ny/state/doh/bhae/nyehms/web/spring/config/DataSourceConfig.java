@@ -32,8 +32,8 @@ public class DataSourceConfig {
 
     /**
      * Oracle: main NYEHMS database (was WebLogic data source BHAE_NYEHMS_DS_ONE_GL).
-     * Used by the main JPA unit (JpaConfig), the MyBatis session factories and the
-     * plain JDBC connections of JpaConnections.
+     * Used by the main JPA unit (JpaConfig) and the plain JDBC connections of
+     * JpaConnections.
      */
     @Bean(destroyMethod = "")
     @Primary
@@ -42,7 +42,7 @@ public class DataSourceConfig {
     }
 
     /**
-     * Oracle: URS database (was WebLogic data source BHAE_NYEHMS_URS); ursSessionFactory.
+     * URS database (was WebLogic data source BHAE_NYEHMS_URS); read by the JdbcTemplate of AIDADataDAO.
      */
     @Bean(destroyMethod = "")
     public DataSource ursDS() {

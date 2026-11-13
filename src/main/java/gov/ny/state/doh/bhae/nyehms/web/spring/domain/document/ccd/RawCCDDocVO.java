@@ -3,8 +3,6 @@ package gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.ccd;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-
 
 public class RawCCDDocVO {
 	
@@ -159,63 +157,4 @@ public class RawCCDDocVO {
 	public void setPayloadName(String payloadName) {
 		this.payloadName = payloadName;
 	}
-	
-	
-	
-
-	public static void storeCCD (RawCCDDocVO theCCD, int ccddocId,
-			SqlSession theSession) {
-		RawCCDPersonDocVO thePerson = theCCD.getThePerson();
-		thePerson.setDOCUMENT_ID(ccddocId);
-		theSession.insert("insertRawCcdDocData", thePerson);
-		//Get the addresses
-		List<RawCCDPersonAddressVO> theAddresses = theCCD.getTheAddressList();
-		for(int i = 0; i < theAddresses.size(); i++) {
-			RawCCDPersonAddressVO theAddressVO = theAddresses.get(i);
-			theAddressVO.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdPersonAddress", theAddressVO);
-		}
-		//Get the providers
-		List<RawCCDProviderVO> theProviders = theCCD.getTheProviderList();
-		System.out.println("Number of providers: " + theProviders.size());
-		for (int i = 0; i < theProviders.size(); i++) {
-			RawCCDProviderVO theProvider = theProviders.get(i);
-			theProvider.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdProvider", theProvider);
-		}
-		//Get the payers
-		List<RawCCDPayerVO> thePayers = theCCD.getThePayerList();
-		System.out.println("Number of payers: " + thePayers.size());
-		for (int i = 0; i < thePayers.size(); i++) {
-			RawCCDPayerVO thePayer = thePayers.get(i);
-			thePayer.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdPayer", thePayer);
-		}
-		//Get the labs
-		List<RawCCDLabTestVO> theLabTests = theCCD.getTheLabTestList();
-		System.out.println("Number of labs: " + theLabTests.size());
-		for (int i = 0; i < theLabTests.size(); i++) {
-			RawCCDLabTestVO theLabTest = theLabTests.get(i);
-			theLabTest.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdLabTest", theLabTest);
-		}
-		//Get the encounters
-		List<RawCCDEncounterVO> theEncounters = theCCD.getTheEncounterList();
-		System.out.println("Number of encounters: " + theEncounters.size());
-		for (int i = 0; i < theEncounters.size(); i++) {
-			RawCCDEncounterVO theEncounter = theEncounters.get(i);
-			theEncounter.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdEncounter", theEncounter);
-		}
-		//Get the meds
-		List<RawCCDMedVO> theMeds = theCCD.getTheMedList();
-		System.out.println("Number of meds " + theMeds.size());
-		for (int i = 0; i < theMeds.size(); i++) {
-			RawCCDMedVO theMed = theMeds.get(i);
-			theMed.setCcdDocID(ccddocId);
-			theSession.insert("insertRawCcdMed", theMed);
-		}
-		theSession.commit();
-	}
-
 }

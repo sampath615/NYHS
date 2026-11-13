@@ -48,7 +48,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- JPA / Hibernate. Brings spring-data-jpa, hibernate-core, spring-orm, spring-jdbc and spring-tx
-                    (spring-jdbc/spring-tx are also what mybatis-spring needs).
+                    (spring-jdbc is also what the JdbcTemplate of AIDADataDAO needs).
                     DataSources come from Tomcat JNDI (DataSourceConfig), so the HikariCP pool is not needed. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -133,17 +133,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
-		</dependency>
-		<!-- ===== Persistence: MyBatis (existing DAOs, being migrated to JPA) ===== -->
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis</artifactId>
-			<version>3.5.19</version>
 		</dependency>
 		<!-- The container pool loads the driver: copy ojdbc11.jar to $CATALINA_HOME/lib -->
 		<dependency>
