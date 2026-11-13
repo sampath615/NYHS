@@ -10,12 +10,12 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan(basePackages = {"gov.ny.state.doh.bhae.nyehms.web.spring.dao", "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms"}, sqlSessionFactoryRef = "sqlSessionFactory")
+@MapperScan(basePackages = "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.nyehms", sqlSessionFactoryRef = "sqlSessionFactory")   // web.spring.dao has no MyBatis mapper left
 @MapperScan(basePackages = "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ecrls", sqlSessionFactoryRef = "elrlsSessionFactory")
 @MapperScan(basePackages = "gov.ny.state.doh.bhae.nyehms.schedulers.spring.dao.ursdb", sqlSessionFactoryRef = "ursSessionFactory")
 public class MyBatisConfig {
 
-    /** Main NYEHMS database: web DAOs and the scheduler "nyehms" DAOs. */
+    /** Main NYEHMS database: the scheduler "nyehms" DAO (EharsDataLoaderDAO); the web DAOs are JPA now. */
     @Bean
     public SqlSessionFactory  sqlSessionFactory(@Qualifier("appDS") DataSource appDS) throws Exception {
         return sessionFactory(appDS, "gov.ny.state.doh.bhae.nyehms.web.spring.domain");

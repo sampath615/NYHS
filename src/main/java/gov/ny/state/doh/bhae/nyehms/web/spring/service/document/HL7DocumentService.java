@@ -2427,9 +2427,10 @@ public class HL7DocumentService {
 		return hl7DocumentDAO.getHL7Encounter(inputOutputParameterMap);
 	}
 
-	public List<PersonFieldVO> getHL7DemogrphicFieldMultiValues(int docId, String startDate, String endDate,
+	/** The distinct values of a STD_HL7_DOC column of the HL7 messages of a CCD document, each as a map with the key FIELD (what the former mapper returned). */
+	public List<Map<String, Object>> getHL7DemogrphicFieldMultiValues(int docId, String startDate, String endDate,
 			String colsName) {
-		List<PersonFieldVO> list = new ArrayList<>();
+		List<Map<String, Object>> list = new ArrayList<>();
 		Map<Object, Object> inputOutputParameterMap = new HashMap<>();
 		inputOutputParameterMap.put("docId", docId);
 		inputOutputParameterMap.put("startDate", startDate);
