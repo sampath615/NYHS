@@ -26,4 +26,8 @@ public class CodedEharsRace {
 
 	@Column(name = "EHARS_RACE_DESC")
 	private String eharsRaceDesc;
+
+	/** 'Y' for the races of the expanded race list (CommonDocLabsDAO). */
+	@Column(name = "EXPANDED_RACE")
+	private String expandedRace;
 }

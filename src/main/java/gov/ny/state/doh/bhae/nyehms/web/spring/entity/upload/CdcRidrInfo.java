@@ -144,9 +144,18 @@ public class CdcRidrInfo implements Persistable<Long> {
 	@Column(name = "PARENT_DOC_EXISTS", insertable = false, updatable = false)
 	private String parentDocExists;
 
-	/** Read only (the RIDR search screen); not written by the upload. */
-	@Column(name = "RESOLVED_DOC_ID", insertable = false, updatable = false)
+	/** Not written by the upload; set with the ACRF that resolves the record (CommonDocLabsDAO, a bulk update). */
+	@Column(name = "RESOLVED_DOC_ID", insertable = false)
 	private Long resolvedDocId;
+
+	@Column(name = "RESOLVED_DATE", insertable = false)
+	private Timestamp resolvedDate;
+
+	@Column(name = "RESOLVED_UID", insertable = false)
+	private String resolvedUid;
+
+	@Column(name = "RESOLVED_DOC_TYPE", insertable = false)
+	private String resolvedDocType;
 
 	/** Read only (the RIDR search screen); not written by the upload. */
 	@Column(name = "DISCARD_DATE", insertable = false, updatable = false)

@@ -26,6 +26,9 @@ public class CodedGender {
 	@Column(name = "GENDER_CODE")
 	private String genderCode;
 
+	@Column(name = "GENDER_DESCRIPTION")
+	private String genderDescription;
+
 	@Column(name = "END_DATE")
 	private Timestamp endDate;
 }

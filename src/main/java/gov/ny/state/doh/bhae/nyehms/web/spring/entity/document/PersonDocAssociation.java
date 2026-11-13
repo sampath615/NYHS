@@ -1,6 +1,5 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.entity.document;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.ColumnTransformer;
@@ -64,10 +63,19 @@ public class PersonDocAssociation {
 	@Column(name = "DISCARD_STATUS", insertable = false)
 	private String discardStatus;
 
+	/** Set with its time (formerly SYSDATE) when an association ends (CommonDocLabsDAO, bulk updates); not written on insert. */
 	@Column(name = "DISSASSOCIATION_DATE", insertable = false)
-	private Date dissassociationDate;
+	private Timestamp dissassociationDate;
 
 
 	@Column(name = "SURV_ASSESS_STATUS")
 	private Integer survAssessStatus;
+
+	/** Set with the assignment of an edited document's copy (DocumentEditLabsDAO, a bulk update); not written on insert. */
+	@Column(name = "PS_ASSESS_STATUS", insertable = false)
+	private Integer psAssessStatus;
+
+	/** Set with the assignment of an edited document's copy (DocumentEditLabsDAO, a bulk update); not written on insert. */
+	@Column(name = "SURV_ASSIGNMENT_ID", insertable = false)
+	private Long survAssignmentId;
 }
