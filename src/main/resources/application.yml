@@ -40,7 +40,7 @@ spring:
           fetch_size: '100'
 logging:
   file:
-    name: '/ctrlacc/logs/Applications/nyehms/application_devtcapp9.log'
+    name: '/ctrlacc/logs/Applications/nyehms/application_capp9.log'
   level:
     root: 'INFO'
   logback:
