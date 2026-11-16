@@ -15,6 +15,9 @@ public record AppProperties(
         String logoutUrl,
         /* local only: skip the HCS/crypto login and trust the ?user= parameter */
         boolean byPass,
+        /* local only. userId used when there is no HCS cookies (InitializeUtil)*/
+        String localTestUser,
+
         /* false on local so Quartz jobs don't run against shared databases */
         boolean loadSchedulers,
         /* local only: read scheduler metadata from properties instead of LAB_SCHEDULER_PARAMETERS */

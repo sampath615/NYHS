@@ -59,10 +59,13 @@ public class InitializeController {
     @Autowired
     DateUtil dateUtil;
 
+    @Autowired
+    InitializeUtil initializeUtil;
+
     Map<String, String> targetMap = new HashMap<>();
     BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-    InitializeUtil initializeUtil = new InitializeUtil();
+
     
     String browserName = "";
 

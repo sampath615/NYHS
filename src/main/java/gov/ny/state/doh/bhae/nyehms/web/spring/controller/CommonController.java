@@ -16,6 +16,8 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
@@ -39,7 +41,7 @@ public class CommonController {
 
 	@Autowired
 	private AppProperties appProperties;
-	
+	@Autowired private Environment environment;
 	@Autowired UserAuthorization userAuthorization;
 	@Autowired GetGridObject     getGridObject;
 	@Autowired CommonService     commonService;
@@ -51,6 +53,7 @@ public class CommonController {
 	UserObject userObject=null;
 	
 	/**
+	 * Author rzp05
 	 * login method is used to check the "userObject" in the session, if the object is not available will redirect to Crypto Card/Login page
 	 * If the object is available will load the initialize parameters and validating the User training date and User Initial Object 
 	 * 
@@ -62,79 +65,83 @@ public class CommonController {
 	 * via HTTP POST method
 	 * @param map java.util.Map reference 
 	 * @param request HTTP request reference
-	 * @param response HTTP response reference
+	 *
 	 */
 	
 	@RequestMapping("/login")
-	public String login(Map<String, Object> map, HttpServletRequest request, HttpServletResponse response)
-	{	
-		HttpSession session = ((HttpServletRequest)request).getSession(true);
-		String returnString="";
-		String user=request.getParameter("user");
-		log.debug(nyehmsLog+"-- User from request :: {}",user);
-		
-		//Checking the User parameter from the request
-		if(user==null || user.equalsIgnoreCase("null")){
-			//checking the UserObject from the session
-			if(session.getAttribute("UserObj") != null){
-				userObject = (UserObject)session.getAttribute("UserObj");
-			}else{
-				userObject = null;
-			}
-		}else{		
-			//If the request Parameter is coming from the request then loading the User Object from the backend
-			userObject=userAuthorization.getUserObject(user);
+	public String login(Map<String, Object> map, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(true);
+
+		if(!loginPageAllowed(session)){
+			return "redirect:appInitialize";
 		}
-		log.debug(nyehmsLog+" User Object ::: {}",userObject);
-		//Validate the user against DB		
-		if(userObject!=null && appProperties.byPass()){
-			session.setAttribute("UserObj", userObject);
-			//If the User initialize object is not loaded loading the method to validate the USer details  
-			Map<String, String> targetMap= new HashMap<>();
-			BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-			//set the User login date in the Date base to show the current logged in date for the next log in
-			commonService.setLoginDate(userObject.getWorkerId(), bindingResult);
-			//Checking the User training date
-			int statusCode = commonService.getTrainingDate(userObject.getUserId(), bindingResult);
-			if(statusCode < 0){
-				//If the training date is already expired
-				map.put("ErrorMessage", targetMap.get("TRANSACTION_MESSAGE"));
-				return "initialize/InitializeError";
-			}else{
-				//If the training date is expiring less than 45 days.
-				if(targetMap.get("TRANSACTION_MESSAGE") != null)
-					session.setAttribute("confidentialityAndSecurityTrainingDateStatusMessage", targetMap.get("TRANSACTION_MESSAGE"));
+
+
+		String user = request.getParameter("user");
+		log.debug(nyehmsLog + "-- User from request :: {}", user);
+		UserObject userObject = (user == null || "null".equalsIgnoreCase(user))
+				? (UserObject) session.getAttribute("userObj") : userAuthorization.getUserObject(user);
+
+
+		log.debug(nyehmsLog + " User Object ::: {}", userObject);
+
+		if (userObject == null) {
+			if (user != null) {
+				map.put("TRANSACTION_MESSAGE", "User not available");
 			}
-			log.debug(nyehmsLog+" User Worker ID ::: {}",userObject.getWorkerId());
-			//Loading the States map from database
-			Map<String, String> stateMap = commonService.getStateCodes(bindingResult, userObject, request.getSession().getId());
-			//Loading the County map from database
-			Map<String, String> countyMap = commonService.getCountyCodes(bindingResult, userObject, request.getSession().getId());
-			session.setAttribute("stateMap", stateMap);
-			Map<String, String> countryMap = commonService.getCountryCodes(bindingResult, userObject, request.getSession().getId());
-			session.setAttribute("countryMap", countryMap);
-			session.setAttribute("countyMap", countyMap);
-			JSONObject userPermissionsList = commonService.getUserPermissions(userObject.getWorkerId(), null, bindingResult);
-			session.setAttribute("userPermissions", userPermissionsList);
-			if(userPermissionsList.get("98") != null){
-				List<JSONObject> psMessageTypes = commonService.getPsMessageTypes();
-				session.setAttribute("psMessageTypes", psMessageTypes);
-			}
-			if(userPermissionsList.get("214") != null){
-				JSONObject crfNeededActivities = commonService.getCRFReqActivityList();
-				session.setAttribute("crfNeededActivities", crfNeededActivities);
-			}
-			session.setAttribute("staticPath", "/hpn/ctrldocs/nyehms");
-			return "redirect:getAssignmentsTally";
-		}else{
-			if(user != null){
-				map.put("TRANSACTION_MESSAGE","User not available");
-			}
-			returnString = appProperties.loginPage();
-			//returnString = "login/Login";
+			return appProperties.loginPage();
 		}
-		return returnString;
+		session.setAttribute("UserObj", userObject);
+		return loadUserSession(userObject, session, map);
 	}
+
+	/**
+	 * Login page (?user=) is local-only:
+	 *  - by-pass true  -> open directly, no crypto
+	 *  - by-pass false -> open only after crypto passed in this session
+	 * Never open on dev/eval/prod.
+	 */
+	private boolean loginPageAllowed(HttpSession session) {
+		if (!environment.acceptsProfiles(Profiles.of("local"))) {
+			return false;
+		}
+		if (appProperties.byPass()) {
+			return true;
+		}
+		UserInitObject initObj = (UserInitObject) session.getAttribute("userInitObj");
+		return initObj != null && initObj.isCryptoCardAuthenticationSuccess();
+	}
+
+	/** Shared by login (bypass) and agreeNYEHMSTANDC (real flow). */
+	private String loadUserSession(UserObject userObject, HttpSession session, Map<String, Object> map) {
+		Map<String, String> targetMap = new HashMap<>();
+		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
+		String sessionId = session.getId();
+		commonService.setLoginDate(userObject.getWorkerId(), bindingResult);
+		if (commonService.getTrainingDate(userObject.getUserId(), bindingResult) < 0) {
+			map.put("ErrorMessage", targetMap.get("TRANSACTION_MESSAGE"));
+			return "initialize/InitializeError";
+		}
+		if (targetMap.get("TRANSACTION_MESSAGE") != null) {
+			session.setAttribute("confidentialityAndSecurityTrainingDateStatusMessage", targetMap.get("TRANSACTION_MESSAGE"));
+		}
+		session.setAttribute("stateMap", commonService.getStateCodes(bindingResult, userObject, sessionId));
+		session.setAttribute("countyMap", commonService.getCountyCodes(bindingResult, userObject, sessionId));
+		session.setAttribute("countryMap", commonService.getCountryCodes(bindingResult, userObject, sessionId));
+		JSONObject permissions = commonService.getUserPermissions(userObject.getWorkerId(), null, bindingResult);
+		session.setAttribute("userPermissions", permissions);
+		if (permissions.get("98") != null) {
+			session.setAttribute("psMessageTypes", commonService.getPsMessageTypes());
+		}
+		if (permissions.get("214") != null) {
+			session.setAttribute("crfNeededActivities", commonService.getCRFReqActivityList());
+		}
+		session.setAttribute("staticPath", "/hpn/ctrldocs/nyehms");
+		return "redirect:getAssignmentsTally";
+	}
+
+
 
 	/**
 	 *  Ends the user's session and redirects to the configured logout page (HCS portal).
@@ -247,11 +254,26 @@ public class CommonController {
 		String current_stateno = commonService.getCurrentActiveStateNo(stateno);
 		return current_stateno;
 	}
+
+
+	@RequestMapping(value = "/agreeNYEHMSTANDC")
+	public String agreeNYEHMSTANDC(HttpServletRequest request, Map<String, Object> map) {
+		HttpSession session = request.getSession(true);
+		UserObject userObject = (UserObject) session.getAttribute("UserObj");
+		UserInitObject userInitObj = (UserInitObject) session.getAttribute("userInitObj");
+		// Only a user who passed HCS + crypto in this session may continue
+		if (userObject == null || userInitObj == null || !userInitObj.isCryptoCardAuthenticationSuccess()) {
+			map.put("ErrorMessage", "User not available or not authenticated");
+			return "initialize/InitializeError";
+		}
+		if (commonService.insertNyehmsAgreedTime(userObject) <= 0) {
+			map.put("ErrorMessage", "Currently facing few difficulties to login into NYEHMS, Please contact helpline.");
+			return "initialize/InitializeError";
+		}
+		return loadUserSession(userObject, session, map);
+	}
 	
-	
-	
-	
-	@RequestMapping(value="/agreeNYEHMSTANDC")
+	/*@RequestMapping(value="/agreeNYEHMSTANDC")
 	public String agreeNYEHMSTANDC(
 			HttpServletRequest request, Map<String, Object> map)
 	{		
@@ -331,7 +353,7 @@ public class CommonController {
 		}
         
         
-	}
+	}*/
 	
     
     @RequestMapping(value="/getPsMessageTypes.html",
