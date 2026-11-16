@@ -52,6 +52,8 @@ logging:
     console: '%d{"dd/MMM/yyyy HH:mm:ss,SSS"} %5p %c{0}:%L:%M - %m%n'
 
 nyehms:
+  safenet:
+    ini-path: '/usr/local/Thales/javasdk/ini/JCryptoWrapper.ini'
   mail:
     help-line:
       from: ''
