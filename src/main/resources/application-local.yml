@@ -1,6 +1,8 @@
 # LOCAL environment only. Shared values are in application.yml.
 
 nyehms:
+  safenet:
+    ini-path: 'C:/Program Files/Thales/JavaSDK/ini/JCryptoWrapperWin.ini'
   mail:
     help-line:
       from: rahul.poddar@health.ny.gov
@@ -27,6 +29,7 @@ nyehms:
     login-page: 'login/Login'
     logout-url: '/doh7/applinks/nyehms/hims/web/login'
     by-pass: true
+    local-test-user: 'RZP05'
     load-schedulers: false
     load-schedulers-data-from-property: true
     environment-name: 'local WLS'

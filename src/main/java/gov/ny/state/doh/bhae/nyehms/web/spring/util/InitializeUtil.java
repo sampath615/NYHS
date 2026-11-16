@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
@@ -12,17 +13,25 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class InitializeUtil {
-	
-	private static Logger log = LoggerFactory.getLogger(InitializeUtil.class);
-	private String nyehmsDebugLog = AppConstants.nyehmLogDebugString.getName();
-	
-	HttpSession session = null;
+
+		private final AppProperties appProperties;
+		private final Environment environment;   // org.springframework.core.env.Environment
+
+	public InitializeUtil(AppProperties appProperties, Environment environment) {
+		this.appProperties = appProperties;
+		this.environment = environment;
+	}
+
+	private final String nyehmsDebugLog = AppConstants.nyehmLogDebugString.getName();
+
 	
 	public boolean readCookies(HttpServletRequest request, UserInitObject userInitObj) {
 		
@@ -35,23 +44,24 @@ public class InitializeUtil {
 		Cookie[] cookies = request.getCookies();
 		Cookie thisCookie = null;
 		String token;
-		session = request.getSession();
+		HttpSession session = request.getSession();
 		
 		log.debug("Start reading the cookies of the environment : {}", serverName);
-		
-		if (serverName.equals("aids170043") || serverName.equals("10.50.77.143") || serverName.equals("127.0.0.1") || serverName.equals("localhost") ) {
-			userId = "SKA03";
+		boolean localProfile = environment.acceptsProfiles(Profiles.of("local"));  // org.springframework.core.env.Profiles
+
+		if (localProfile && CommonUtil.isNotNullAndEmpty(appProperties.localTestUser())) {
+			log.warn("Local profile: no HCS cookies, using local test user [{}]", appProperties.localTestUser());
+			userId = appProperties.localTestUser();
 			userEnvStage = "localhost";
 			userPermission = true;
-		} 
-		else {
+		}else if(cookies != null){
 			for(int i=0; i <cookies.length; i++) {
-				
+
 				thisCookie = cookies[i];
 				if (thisCookie.getName().equalsIgnoreCase("PermCookie")) {
-					
+
 					StringTokenizer st = new StringTokenizer(thisCookie.getValue(), "|");
-					
+
 					while(st.hasMoreTokens()) {
 						token = st.nextToken();
 						if (token.startsWith("HINUSER")) {
@@ -64,7 +74,7 @@ public class InitializeUtil {
 						}
 						if (token.startsWith("HINPERM1")) {
 							int start = token.indexOf(":");
-							
+
 							hinRole = token.substring(start+1, token.length());
 							if (hinRole.endsWith("ehmsuser")) {
 								userPermission = true;
@@ -72,9 +82,9 @@ public class InitializeUtil {
 							}
 						}
 					}
-					
+
 				}
-				
+
 				// code for WaarpCookie
 				String fullname = null;
 				if (thisCookie.getName().equalsIgnoreCase("WaarpCookie")) {
@@ -83,17 +93,17 @@ public class InitializeUtil {
 					WaarpCookie = WaarpCookie.replaceAll("%3A", ":");
 					WaarpCookie = WaarpCookie.replaceAll("%20", " ");
 					WaarpCookie = WaarpCookie.replaceAll("%40", "@");
-					
+
 					StringTokenizer st = new StringTokenizer(WaarpCookie, "|");
 					int start;
-					while (st.hasMoreTokens()) {                 
+					while (st.hasMoreTokens()) {
 						token=st.nextToken();
-						
+
 						if(token.startsWith("FULLNAME")){
 							start = token.indexOf(":");
 							fullname = token.substring(start+1, token.length());
 							String[] names = fullname.split(" ");
-							
+
 							if(names.length == 3){
 								userInitObj.setUserFirstName(names[0]);
 								userInitObj.setUserMiddleName(names[1]);
@@ -103,10 +113,10 @@ public class InitializeUtil {
 								userInitObj.setUserMiddleName("");
 								userInitObj.setUserLastName(names[1]);
 							}
-							
+
 						}
 					}
-				} 
+				}
 			} // end for loop
 		}
 		

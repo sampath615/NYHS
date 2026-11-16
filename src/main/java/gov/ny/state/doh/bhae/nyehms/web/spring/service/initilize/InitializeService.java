@@ -30,7 +30,9 @@ public class InitializeService {
 	private static Logger log = LoggerFactory.getLogger(InitializeService.class);
 
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
-	InitializeUtil initializeUtil = new InitializeUtil();
+
+	@Autowired
+	InitializeUtil initializeUtil;
 	
 	@Autowired
 	InitializeDAO initializeDAO;
