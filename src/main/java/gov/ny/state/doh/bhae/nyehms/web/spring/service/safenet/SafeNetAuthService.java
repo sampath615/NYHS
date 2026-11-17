@@ -38,6 +38,10 @@ public class SafeNetAuthService {
     private static final int IDX_ERROR_MESSAGE = 9;
     private static final int ARR_SIZE = 12;  //[10] client IP, [11] resource name: optional, left blan
 
+    // JDK's built-in XSLT TransformerFactory (docx4j's old Xalan rejects accessExternalDTD)
+    private static final String TF_PROP = "javax.xml.transform.TransformerFactory";
+    private static final String JDK_TF = "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl";
+
     private final SafeNetProperties  safeNetProperties;
 
     private CRYPTOCardAPI api;
@@ -55,16 +59,25 @@ public class SafeNetAuthService {
             log.error("SafeNet INI file not found or not readable at [{}]. Crypto card login will be unavailable.", iniPath);
             return;
         }
-        try{
+        // docx4j ships an old Xalan (xalan-interpretive) that registers itself as the default
+        // TransformerFactory and rejects JAXP 1.5 settings (accessExternalDTD) used by the SDK.
+        // Use the JDK's built-in TransformerFactory only while the SDK initializes, then restore.
+        String previousTf = System.getProperty(TF_PROP);
+        System.setProperty(TF_PROP, JDK_TF);
+        try {
             api = CRYPTOCardAPI.getInstance();
             api.setINIPath(iniPath);
             api.LoadJNILibrary(); // SDK 2.x : reads the INI and initializes; name kept for backward compatibility
-
             initialized = true;
             log.info("SafeNet SDK initialized using INI [{}]", iniPath);
-
         } catch (Exception | LinkageError ex) {
             log.error("SafeNet SDK initialization failed using INI [{}]", iniPath, ex);
+        } finally {
+            if (previousTf == null) {
+                System.clearProperty(TF_PROP);
+            } else {
+                System.setProperty(TF_PROP, previousTf);
+            }
         }
     }
 
