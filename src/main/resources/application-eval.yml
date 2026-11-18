@@ -1,0 +1,42 @@
+# EVAL environment only. Shared values are in application.yml.
+nyehms:
+  mail:
+    help-line:
+      from: 'nyehms@health.ny.gov'
+      to: 'nyehms@health.ny.gov'
+    acrf:
+      to: 'jyothsna.katari@health.ny.gov'
+      cc: 'sampath.anumolu@health.ny.gov'
+    bureau-director:
+      to: 'sampath.anumolu@health.ny.gov,jyothsna.katari@health.ny.gov'
+      cc: 'sampath.anumolu@health.ny.gov'
+    ahi-document:
+      to: 'sampath.anumolu@health.ny.gov'
+      cc: 'jyothsna.katari@health.ny.gov'
+    ps-message:
+      dod-to: 'sampath.anumolu@health.ny.gov,jyothsna.katari@health.ny.gov'
+      dod-cc: 'sampath.anumolu@health.ny.gov'
+      upload-cc: 'sampath.anumolu@health.ny.gov,jyothsna.katari@health.ny.gov'
+    ehars-loader-to: 'sampath.anumolu@health.ny.gov,jyothsna.katari@health.ny.gov'
+    record-search-upload-cc: 'sampath.anumolu@health.ny.gov'
+    error-notifications-to: 'sampath.anumolu@health.ny.gov'
+    hiv-document-update-date-to: 'sampath.anumolu@health.ny.gov,joyce.chicoine@health.ny.gov'
+  app:
+    login-page: 'index'
+    logout-url: '/hcs/index.html'
+    by-pass: false
+    load-schedulers: true
+    environment-name: 'Evalcommerce'
+  # expected column layouts of uploaded files (UploadProperties)
+  upload:
+    cdc-return-column-names: 'stateno,cityno,last_name_sndx,dob,sex,report_state_cd,stateno_x,cityno_x,last_name_sndx_x,dob_x,sex_x,trans_categ,hiv_categ,hiv_dx_dt,rsh_state_cd,aids_categ,aids_dx_dt,rsa_state_cd,dod,rad_state_cd,death_state_cd,cur_state_cd,cur_address_dt,cd4cntpct_vl_recent_dt,care_nolab_dt,duplicate_status_warning'
+  # scanned-document SFTP storage (ScanProperties)
+  scan:
+    encrypt-location: '/H:/Images/SCAN_DOCS/PROD/encrypt/'
+    # --- not read by any code yet: kept commented out for review (old key in brackets) ---
+    # location: '/K:/Images/SCAN_DOCS/EVAL/'    # [SCANNED_FILES_LOCATION]
+    # encrypt-backup-location: '/K:/Images/SCAN_DOCS/EVAL/encrypt_backup/'    # [ENCRYPT_BACKUP_LOCATION]
+    # decrypt-backup-location: '/K:/Images/SCAN_DOCS/EVAL/'    # [DECRYPT_BACKUP_LOCATION]
+    # discard-location: '/K:/Images/SCAN_DOCS/EVAL/deleted/'    # [DISCARD_SCAN_FILE_LOCATION]
+    # kex-algorithm: 'diffie-hellman-group14-sha1'    # [KexAlgorithm]
+

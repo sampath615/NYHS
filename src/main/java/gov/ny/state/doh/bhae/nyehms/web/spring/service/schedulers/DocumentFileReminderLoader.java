@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -11,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +24,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class DocumentFileReminderLoader{
+
+	@Autowired
+	private AppProperties appProperties;
 	
 	/*
 	 * Reference to Log
@@ -48,10 +51,10 @@ public class DocumentFileReminderLoader{
 		
 		synchronized(this){
 			
-			log.error("Checking before properties   {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties   {}",appProperties.loadSchedulers());
 			
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(appProperties.loadSchedulers()){
 											
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table). Most of the Scheduler input parameters will be inputed from Metadata table
 				Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();

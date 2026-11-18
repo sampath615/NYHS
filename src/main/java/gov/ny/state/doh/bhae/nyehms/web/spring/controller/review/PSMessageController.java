@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.review;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +25,15 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.CommonDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.PSMessageReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 /*
  * Spring controller class for system message
  */
 @RequiredArgsConstructor
 @Controller
 public class PSMessageController {
+
+	@Autowired
+	private ReportProperties reportProperties;
 	
 	private final PSMessageReviewService psMessageReviewService;
 	
@@ -127,7 +130,7 @@ public class PSMessageController {
 		
 		map.put("REPORT_TYPE", reportType);
 		
-		map.put("REPORT_NAME", EnvironmentProperties.envProperties.getProperty(reportType+"_report"));
+		map.put("REPORT_NAME", reportProperties.names().get(reportType));
 
 		return "reports/psDispositionReport";
 	

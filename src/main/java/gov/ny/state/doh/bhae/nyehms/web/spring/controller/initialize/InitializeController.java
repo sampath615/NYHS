@@ -56,10 +56,13 @@ public class InitializeController {
 
     private final DateUtil dateUtil;
 
+    @Autowired
+    InitializeUtil initializeUtil;
+
     Map<String, String> targetMap = new HashMap<>();
     BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-    InitializeUtil initializeUtil = new InitializeUtil();
+
     
     String browserName = "";
 
@@ -90,6 +93,16 @@ public class InitializeController {
             log.debug(nyehmsDebugLog + " App Initialization is starting...........................");
         }
         session = request.getSession();
+
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        if (ipAddress == null || ipAddress.isEmpty() || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getRemoteAddr();
+        } else {
+            // X-Forwarded-For can contain multiple comma-separated IPs; the first is the original client
+            ipAddress = ipAddress.split(",")[0].trim();
+        }
+        log.info("appInitialize client IP [{}]", ipAddress);
+
         Object linkClickTime = new Timestamp(new Date().getTime());
         userInitObj.setLinkClickTime(linkClickTime);
 

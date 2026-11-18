@@ -4,13 +4,6 @@
 	xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
 	id="WebApp_ID" version="6.1" metadata-complete="false">
 
-	
-	<listener>
-		<listener-class>
-             gov.ny.state.doh.bhae.nyehms.web.spring.listener.NYEHMSAppServletContextListener 
-        </listener-class>
-   </listener>
- 
 
 	<!-- was weblogic.xml <timeout-secs>1800</timeout-secs> -->
 	<session-config>

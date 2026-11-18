@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -13,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QualityStageLoader{
 
+    private final AppProperties appProperties;
 	private static final Logger log = LoggerFactory.getLogger(QualityStageLoader.class);
 
 	private final SendEmail sendEmail;
@@ -60,7 +61,7 @@ public class QualityStageLoader{
 			}
 			//To avoid local environment scheduler calls, for local environment
 			//this property will be set it to "N"			
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(appProperties.loadSchedulers()){
 				//schedulerStatusObject : is used to track the complete job status (SUCCESS/FAILURE)				
 				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table).

@@ -1,27 +1,23 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
-import java.util.Map;
-import java.util.Properties;
-
-import javax.mail.BodyPart;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
+
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMultipart;
+import java.util.Map;
 
 /**
  * This class is used to send the Emails in different formats
@@ -29,17 +25,32 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
  * @author ska03
  */
 @Component
+@Slf4j
+@RequiredArgsConstructor
 public class SendEmail {
 
-	private static final String SMTP_HOST_NAME = "mailhost.health.state.ny.us";
 	private static final String emailSubjectTxt = "Error in NYEHMS Run Time";
 	private static final String emailFromAddress = "hinweb@health.state.ny.gov";
 	
-	@Autowired CommonService commonService;
-	
-	private static final Logger log = LoggerFactory.getLogger(SendEmail.class);
+	@Autowired private CommonService commonService;
+	private final MailProperties mailProperties;
+	private final Environment environment;
+	/** Spring Boot's mail sender, SMTP host from spring.mail.host in application.yml. */
+	private final JavaMailSender mailSender;
+	//private static Logger log = LoggerFactory.getLogger(SendEmail.class);
 
-	
+	@jakarta.annotation.PostConstruct
+	void logMailConfig() {
+		log.info("MAIL CHECK -> stage={}, mail={}", stage(), mailProperties);
+	}
+
+	/** LOCAL / DEV / EVAL / PROD, from spring.profiles.active (replaces System.getProperty("stage")). */
+	private String stage() {
+		return String.join(",", environment.getActiveProfiles()).toUpperCase();
+	}
+
+
+
 	/**
 	 * This method is used to send an Email with a default subject, default
 	 * from address, default email host, and a list of recipients taken
@@ -52,18 +63,17 @@ public class SendEmail {
 	public void sendDefaultEMail(String emailBody)
 	{
 		try {
-			String[] sendTo = EnvironmentProperties.envProperties.getProperty("error_email_notifications_to").split(",");
-			new SendEmail().sendSSLMessage(sendTo, System.getProperty("stage")+" : "+emailSubjectTxt, emailBody,
+			String[] sendTo = mailProperties.errorNotificationsTo().split(",");
+			this.sendSSLMessage(sendTo, stage() +" : "+emailSubjectTxt, emailBody,
 					emailFromAddress, null, null,
 					CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 		} catch (Exception e) {
-			log.error("Email Sent failed.");
+			log.error("Email Sent failed.", e);
 		}
 	}
 
 	/**
-	 * This method is used to send a fully customized email, although
-	 * the SMTP_HOST_NAME is still hard-coded.
+	 * This method is used to send a fully customized email.
 	 * 
 	 * @param recipients An array of email address Strings
 	 * @param subject Email subject
@@ -78,13 +88,7 @@ public class SendEmail {
 			String message, String from, String cc[],  String bcc[],  String messageType)
 			throws MessagingException 
 	{
-		boolean debug = true;
-		Properties props = new Properties();
-		
-		props.put("mail.smtp.host", SMTP_HOST_NAME);
-		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(debug);
-		Message msg = new MimeMessage(session);
+		MimeMessage msg = mailSender.createMimeMessage();
 		InternetAddress addressFrom = new InternetAddress(from);
 		msg.setFrom(addressFrom);
 		
@@ -119,7 +123,7 @@ public class SendEmail {
 		
 		msg.setSubject(subject);
 		msg.setContent(message, messageType);
-		Transport.send(msg);
+		send(msg);
 	}
 
 	/**
@@ -132,23 +136,16 @@ public class SendEmail {
 	public void sendHTMLMessage(Map<Object, Object> messageParametersAndValues)
 			throws MessagingException
 	{
-		boolean debug = true;
-
-		Properties props = new Properties();
-		props.put("mail.smtp.host", SMTP_HOST_NAME);
-		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(debug);
-		Message msg = new MimeMessage(session);
+		MimeMessage msg = mailSender.createMimeMessage();
 		InternetAddress addressFrom = new InternetAddress(emailFromAddress);
 		msg.setFrom(addressFrom);
-		String[] sendTo = EnvironmentProperties.envProperties.getProperty("error_email_notifications_to").split(",");
+		String[] sendTo = mailProperties.errorNotificationsTo().split(",");
 		InternetAddress[] addressTo = new InternetAddress[sendTo.length];
 		for (int i = 0; i < sendTo.length; i++) {
 			addressTo[i] = new InternetAddress(sendTo[i]);
 		}
 		msg.setRecipients(Message.RecipientType.TO, addressTo);
-		String stage = System.getProperty("stage");
-		msg.setSubject(stage+" : "+emailSubjectTxt);
+		msg.setSubject(stage() + " : " + emailSubjectTxt);
 		String[] exceptionMessagestack = (String[]) messageParametersAndValues
 				.get("logStackFrames");
 		StringBuilder stringBuilder = new StringBuilder("<HTML><BODY>");
@@ -167,7 +164,7 @@ public class SendEmail {
 				+ messageParametersAndValues.get("appLogId") + "</TD></TR>");
 		stringBuilder.append("</TABLE></BODY></HTML>");
 		msg.setContent(stringBuilder.toString(), "text/html");
-		Transport.send(msg);
+		send(msg);
 	}
 
 	public void processEmail(String userEmailAddress, String subject, String message, String NotificationIdentifier,
@@ -200,15 +197,15 @@ public class SendEmail {
 		if ((recipientEmailAddressesTo != null && recipientEmailAddressesTo.length > 0)
 				|| (recipientEmailAddressesCC != null && recipientEmailAddressesCC.length > 0)) {
 			sendSSLMessage(recipientEmailAddressesTo, subject, message,
-					EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC, null,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
 					messageType);
 		} else {
 			log.error("Didn't find Email Notification list, sent to Nyehms helpline");
 
 			log.error(message);
 
-			sendSSLMessage(EnvironmentProperties.envProperties.getProperty("helpLineTo").split(","), subject, message,
-					EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC, null,
+			sendSSLMessage(mailProperties.helpLine().to().split(","), subject, message,
+					mailProperties.helpLine().from(), recipientEmailAddressesCC, null,
 					messageType);
 
 		}
@@ -219,14 +216,8 @@ public class SendEmail {
 			String message, String messageType, String NotificationIdentifier, MimeBodyPart attachPart)
 			throws MessagingException 
 	{
-		boolean debug = true;
-		Properties props = new Properties();
-		
-		props.put("mail.smtp.host", SMTP_HOST_NAME);
-		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(debug);
-		Message msg = new MimeMessage(session);
-		InternetAddress addressFrom = new InternetAddress(EnvironmentProperties.envProperties.getProperty("helpLineFrom"));
+		MimeMessage msg = mailSender.createMimeMessage();
+		InternetAddress addressFrom = new InternetAddress(mailProperties.helpLine().from());
 		msg.setFrom(addressFrom);
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
 		messageBodyPart.setContent(message, "text/html");
@@ -281,7 +272,7 @@ public class SendEmail {
 	    
 		msg.setSubject(subject);
 		msg.setContent(multipart);
-		Transport.send(msg);
+		send(msg);
 	}
 	
 	
@@ -289,13 +280,7 @@ public class SendEmail {
 			String message, String from, String cc[],  String messageType, MimeBodyPart attachPart)
 			throws MessagingException 
 	{
-		boolean debug = true;
-		Properties props = new Properties();
-		
-		props.put("mail.smtp.host", SMTP_HOST_NAME);
-		Session session = Session.getDefaultInstance(props, null);
-		session.setDebug(debug);
-		Message msg = new MimeMessage(session);
+		MimeMessage msg = mailSender.createMimeMessage();
 		InternetAddress addressFrom = new InternetAddress(from);
 		msg.setFrom(addressFrom);
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
@@ -333,7 +318,19 @@ public class SendEmail {
 	    
 		msg.setSubject(subject);
 		msg.setContent(multipart);
-		Transport.send(msg);
+		send(msg);
+	}
+
+	/**
+	 * Sends through Spring's JavaMailSender. Its failures are MailException (unchecked);
+	 * they are turned back into MessagingException because callers catch that, as with Transport.send.
+	 */
+	private void send(MimeMessage msg) throws MessagingException {
+		try {
+			mailSender.send(msg);
+		} catch (MailException e) {
+			throw new MessagingException(e.getMessage(), e);
+		}
 	}
 
 }

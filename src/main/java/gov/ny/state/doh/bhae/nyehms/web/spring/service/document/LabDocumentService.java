@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.LabProperties;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,12 +31,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.QuartzSchedulerTransactionHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Service
 public class LabDocumentService {
 
-	private static final Logger log = LoggerFactory.getLogger(LabDocumentService.class);
+	@Autowired
+	private LabProperties labProperties;
+
+	private static Logger log = LoggerFactory.getLogger(LabDocumentService.class);
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
 	@Autowired
@@ -60,7 +63,7 @@ public class LabDocumentService {
 	
 	private final String OOS_CLIA = "33DHIVMAIL";
 
-	
+
 	public StdEcrlsLabDocVO getLabDoc(int docId, String documentType, 
 									BindingResult result, 
 									UserObject userObject, 
@@ -96,13 +99,13 @@ public class LabDocumentService {
 				String rawTestResult = stdLabDocVO.getRAW_OBXOBSERVATIONRESULTTEXT();
 				String obxNote = stdLabDocVO.getRAW_OBXNOTE();
 				
-				if((EnvironmentProperties.envProperties.getProperty("QUEST_CLIAS").indexOf(clia) != -1 && 
-						EnvironmentProperties.envProperties.getProperty("QUEST_TEST_RESULT").indexOf(rawTestResult) != -1 && 
-							EnvironmentProperties.envProperties.getProperty("QUEST_LOINC_CODES").indexOf(loinc) != -1) 
+				if((labProperties.quest().clias().indexOf(clia) != -1 &&
+						labProperties.quest().testResults().indexOf(rawTestResult) != -1 &&
+							labProperties.quest().loincCodes().indexOf(loinc) != -1)
 						|| 
-							(EnvironmentProperties.envProperties.getProperty("LABCORP_CLIAS").indexOf(clia) != -1 && 
-						EnvironmentProperties.envProperties.getProperty("LABCORP_TEST_RESULT").indexOf(rawTestResult) != -1 && 
-							EnvironmentProperties.envProperties.getProperty("LABCORP_LOINC_CODES").indexOf(loinc) != -1) ) {
+							(labProperties.labcorp().clias().indexOf(clia) != -1 &&
+						labProperties.labcorp().testResults().indexOf(rawTestResult) != -1 &&
+							labProperties.labcorp().loincCodes().indexOf(loinc) != -1) ) {
 					
 					
 					if(CommonUtil.isNotNullAndEmpty(obxNote) && obxNote.replaceAll("\\s+", " ").toUpperCase().contains(CommonConstants.NOT_DETECTED)) {

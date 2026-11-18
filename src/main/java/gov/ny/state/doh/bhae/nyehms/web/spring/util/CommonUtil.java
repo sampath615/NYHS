@@ -174,7 +174,7 @@ public class CommonUtil {
 				_inputZip = _inputZip.substring(0, 5);
 			}
 
-			if (ZIP_ZEROS.equals(_inputZip.trim()) && ZIP_NINES.equals(_inputZip.trim())) {
+			if (ZIP_ZEROS.equals(_inputZip.trim()) || ZIP_NINES.equals(_inputZip.trim())) {
 				_inputZip = "";
 			}
 		}

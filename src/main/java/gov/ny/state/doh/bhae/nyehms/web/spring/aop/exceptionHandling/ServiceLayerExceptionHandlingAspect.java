@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -72,7 +72,7 @@ public class ServiceLayerExceptionHandlingAspect {
 	 * @param joinPoint the JoinPoint reference
 	 * @param throwable the Throwable reference
 	 */
-	@AfterThrowing(pointcut="execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.administration..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.person..*.*(..))  || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.reports..*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.lab..*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.scan..*.*(..))",
+	@AfterThrowing(pointcut="execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.administration..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.person..*.*(..))  || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.reports..*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.lab..*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.service.scan..*.*(..)) || execution(public * gov.ny.state.doh.bhae.nyehms.web.spring.administration..service..*.*(..))",
 			throwing="throwable")
 	public void readMethodExceptionHandlingAdvice(JoinPoint joinPoint,Throwable throwable){
 		Object[] arguments=joinPoint.getArgs();
@@ -80,7 +80,9 @@ public class ServiceLayerExceptionHandlingAspect {
 		UserObject userObject=null;
 		String sessionId=null;
 		for(int i=0;i<arguments.length;i++){
-			if(arguments[i].getClass()==MapBindingResult.class){
+			if(arguments[i] == null){
+				continue;
+			}else if(arguments[i].getClass()==MapBindingResult.class){
 				mapBindingResult=(MapBindingResult)arguments[i];
 			}else if(arguments[i].getClass()==UserObject.class){
 				userObject=(UserObject)arguments[i];

@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.review;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +16,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 
 @Component("generateADAPNYCDataFile")
 public class GenerateADAPNYCDataSpreadsheet extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 
     	
@@ -64,8 +68,8 @@ public class GenerateADAPNYCDataSpreadsheet extends AbstractExcelReportView{
         commonStyles.setFont(commonFont);//set it to bold
         
         
-        String[] ADAP_NYC_DATA_SPREAD_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_DATA_SPREAD_SHEET_COLUMNS").split(",");
-	    String[] ADAP_NYC_DATA_DB_COLUMNS = EnvironmentProperties.envProperties.getProperty("ADAP_NYC_DATA_DB_COLUMNS").split(",");
+        String[] ADAP_NYC_DATA_SPREAD_SHEET_COLUMNS = spreadsheetProperties.adapNycData().columns().split(",");
+	    String[] ADAP_NYC_DATA_DB_COLUMNS = spreadsheetProperties.adapNycData().dbColumns().split(",");
 	    
 	    
 		

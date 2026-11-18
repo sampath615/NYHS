@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.lab;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
@@ -31,10 +32,12 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 @Service
 public class ClepAuditResultsService {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 
 	@Autowired 
 	ClepAuditResultsDAO clepAuditResultsDAO;
@@ -345,7 +348,7 @@ public class ClepAuditResultsService {
 				List<String[]> rowLists = csvread.readAll();
 				
 				String[] columnHeader = rowLists.get(0);
-				String[] UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES").split(",");
+				String[] UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES = uploadProperties.clepHivSurveyColumnNames().split(",");
 				int UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES_LENGTH = UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES.length;
 				
 				for(int columnIndex = 0; columnIndex < UPLOAD_CLEP_HIV_SURVEY_COLUMN_NAMES_LENGTH; columnIndex++){

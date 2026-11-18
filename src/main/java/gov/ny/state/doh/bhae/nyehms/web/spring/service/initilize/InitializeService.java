@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.repository.InitFailureReasonRepository;
+import gov.ny.state.doh.bhae.nyehms.web.spring.initialize.persistence.InitFailureReasonRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -31,7 +31,9 @@ public class InitializeService {
 	private static final Logger log = LoggerFactory.getLogger(InitializeService.class);
 
 	private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();
-	InitializeUtil initializeUtil = new InitializeUtil();
+
+	@Autowired
+	InitializeUtil initializeUtil;
 	
 	private final InitializeDAO initializeDAO;
 

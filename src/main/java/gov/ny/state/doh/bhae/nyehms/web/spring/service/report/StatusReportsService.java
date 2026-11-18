@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.report;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,9 +21,9 @@ import java.util.Set;
 import java.util.TreeMap;
 import lombok.RequiredArgsConstructor;
 
-import javax.activation.DataHandler;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.activation.DataHandler;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.util.ByteArrayDataSource;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -53,7 +54,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.dao.report.StatusLabReportsDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.lab.LabReportsCountVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 
@@ -67,14 +67,16 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 @Service
 public class StatusReportsService {
 
-	private final StatusLabReportsDAO statusLabReportsDAO;	
+    private finalReportProperties reportProperties;
+
+	private final StatusLabReportsDAO statusLabReportsDAO;
 
 	private final RemoteServerUtil remoteServer;
 	
 	private final SendEmail sendEmail;
 	
 	
-	private static final Logger log = LoggerFactory.getLogger(StatusReportsService.class);	
+	private static final Logger log = LoggerFactory.getLogger(StatusReportsService.class);
 
 	
 	public void generateLabReportCount(String sqlQuery){
@@ -116,14 +118,14 @@ public class StatusReportsService {
 		//labReportData.put("currentYearPercentageMap", currentYearPercentageMap);
 		
 		Map<String, String> headerNotes = new HashMap<>();
-		headerNotes.put("1", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET1"));
-		headerNotes.put("2", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET2"));
-		headerNotes.put("3", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET3"));
-		headerNotes.put("4", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_DATA_SET4"));
+		headerNotes.put("1", reportProperties.labCount().dataSet1());
+		headerNotes.put("2", reportProperties.labCount().dataSet2());
+		headerNotes.put("3", reportProperties.labCount().dataSet3());
+		headerNotes.put("4", reportProperties.labCount().dataSet4());
         
 		labReportData.put("headerNotes", headerNotes);
 		
-		labReportData.put("footerNote", EnvironmentProperties.envProperties.getProperty("LAB_REPORT_COUNT_NOTES"));
+		labReportData.put("footerNote", reportProperties.labCount().notes());
         try {
         	
         	
@@ -141,8 +143,8 @@ public class StatusReportsService {
             template.process(labReportData, responseContent);
             
 			         
-	        String filePath = EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME");
-	        String fileName = (new StringBuilder(formatedDate).append("_").append(EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_FILE_NAME")).toString());
+	        String filePath = reportProperties.outputPath();
+	        String fileName = (new StringBuilder(formatedDate).append("_").append(reportProperties.labCount().fileName()).toString());
             writer= new PdfWriter(obj_SFTPChannel.put(filePath+fileName));
             pdfDocument = new PdfDocument(writer);
  	        HtmlConverter.convertToPdf(responseContent.toString(), pdfDocument, converterProperties);
@@ -306,12 +308,12 @@ public class StatusReportsService {
 		int rownum = 0;
 		
 		if("byRegion".equals(reportType)) {
-			initialColumns = EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_BYREGION_COLUMNS1").split(",");
+			initialColumns = reportProperties.loincMonthly().byRegionColumns1().split(",");
 			statusLabReportsDAO.monthlyLabReportByRegion(inputParameterMap);
 			sheetName = "Lab Report by region";
 			rownum = 4;
 		}else {
-			initialColumns = EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_COLUMNS1").split(",");
+			initialColumns = reportProperties.loincMonthly().columns1().split(",");
 			statusLabReportsDAO.monthlyLoincTestReport(inputParameterMap);
 			sheetName = "Lab Report";
 		}
@@ -322,12 +324,12 @@ public class StatusReportsService {
 
 		List<String> columns = new ArrayList<>(reportColumns);
 		
-		String[] endingColumns = EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_COLUMNS2").split(",");
+		String[] endingColumns = reportProperties.loincMonthly().columns2().split(",");
 		
 		columns.removeAll(Arrays.asList(initialColumns));
 		columns.removeAll(Arrays.asList(endingColumns));
 		
-		DateFormat columnDateFormat = new SimpleDateFormat(EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_DATEFORMAT"));
+		DateFormat columnDateFormat = new SimpleDateFormat(reportProperties.loincMonthly().dateFormat());
 		columns.sort((o1, o2) -> {
 			try {
 				return columnDateFormat.parse(o1).compareTo(columnDateFormat.parse(o2));
@@ -579,13 +581,13 @@ public class StatusReportsService {
 			String slashedFormatedDate = CommonUtil.convertDateToStringFormat(new Date(), "MM/dd/YYYY");
 			
         	
-        	String filePath = EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_PATH_NAME");
+        	String filePath = reportProperties.loincMonthly().pathName();
 	        String fileName = null;
 	        
 	        if("byRegion".equals(reportType)) {
-	        	fileName = (new StringBuilder(formatedDate).append("_").append(EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_PATH_FILE_NAME_BY_REGION")).toString());
+	        	fileName = (new StringBuilder(formatedDate).append("_").append(reportProperties.loincMonthly().fileNameByRegion()).toString());
 	        }else {
-	        	fileName = (new StringBuilder(formatedDate).append("_").append(EnvironmentProperties.envProperties.getProperty("LOINC_MONTHLY_REPORT_PATH_FILE_NAME")).toString());
+	        	fileName = (new StringBuilder(formatedDate).append("_").append(reportProperties.loincMonthly().fileName()).toString());
 	        }
         	
         	 OutputStream outStream = obj_SFTPChannel.put(filePath+fileName);

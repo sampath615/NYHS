@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
@@ -20,7 +21,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.HITCommonDocumen
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.document.LabDocumentService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.helpers.PreMatchHITSchedulerHelper;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +39,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class RawRecordsCleaner {
 
+    private final AppProperties appProperties;
 	private static final Logger log = LoggerFactory.getLogger(RawRecordsCleaner.class);
 	private final QuartzSchedulerTransactionHelper quartzSchedulerTransactionHelper;
 	private final ManualQuartzJobService manualQuartzJobService;
@@ -114,7 +115,7 @@ public class RawRecordsCleaner {
 			}
 			// To avoid local environment scheduler calls, for local environment
 			// this property will be set it to "N"
-			if ("N".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))) {
+			if (!appProperties.loadSchedulers()) {
 				log.error("You are running locally with a loadSchedulers property of N");
 			} else {
 				// schedulerStatusObject : is used to track the complete job
@@ -186,7 +187,7 @@ public class RawRecordsCleaner {
 					schedulerNotificationObj.clear();
 					
 					StringBuilder statusMailSubject = new StringBuilder("PRE-MATCH ON ");
-					statusMailSubject.append(EnvironmentProperties.envProperties.getProperty("environmentName"));
+					statusMailSubject.append(appProperties.environmentName());
 					statusMailSubject.append(" BY ");
 					if (CommonUtil.isNullOrEmpty(initiator)) {
 						statusMailSubject.append("QUARTZ");

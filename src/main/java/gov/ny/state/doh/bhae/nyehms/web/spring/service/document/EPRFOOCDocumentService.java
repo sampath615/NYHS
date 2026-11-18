@@ -1,12 +1,13 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.domain.document.eprf.FileByConclu
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -38,6 +38,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
  */
 @Service
 public class EPRFOOCDocumentService {
+
+	@Autowired
+	private MailProperties mailProperties;
 
 	
 	@Autowired
@@ -447,7 +450,7 @@ public class EPRFOOCDocumentService {
 			
 			if(resultCount > 0){
 				
-				String subject = EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_SUBJECT");
+				String subject = mailProperties.bureauDirector().subject();
 				
 				//String address_to = EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_TO");
 				

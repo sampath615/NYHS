@@ -13,7 +13,7 @@
 	<groupId>nyehms</groupId>
 	<artifactId>nyehms</artifactId>
 	<packaging>war</packaging>
-	<version>2.5.66</version>
+	<version>3.0.0</version>
 	<description>New york electronic HIV management System</description>
 	<properties>
 		<java.version>21</java.version>
@@ -33,13 +33,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
-			<exclusions>
-				<!-- Jackson 2 only for now; Jackson 3 migration is a later step -->
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-jackson</artifactId>
-				</exclusion>
-			</exclusions>
+			<!-- includes spring-boot-starter-jackson: Jackson 3 (tools.jackson), configured under spring.jackson.* -->
 		</dependency>
 		<!-- External Tomcat 11 provides the servlet container: do not package embedded Tomcat -->
 		<dependency>
@@ -48,17 +42,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!-- JPA / Hibernate. Brings spring-data-jpa, hibernate-core, spring-orm, spring-jdbc and spring-tx
-                    (spring-jdbc is also what the JdbcTemplate of AIDADataDAO needs).
+                    (spring-jdbc/spring-tx are also what mybatis-spring needs).
                     DataSources come from Tomcat JNDI (DataSourceConfig), so the HikariCP pool is not needed. -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.zaxxer</groupId>
-					<artifactId>HikariCP</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!-- ===== Spring Framework modules not brought in by the starters above ===== -->
 		<!-- Quartz integration (SchedulerFactoryBean, JobDetailFactoryBean, CronTriggerFactoryBean), mail, FreeMarker -->
@@ -128,37 +116,33 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
-		<!-- ===== Logging (Spring Boot default: SLF4J + Logback, configured in application.properties) ===== -->
-		<!-- Routes old log4j 1.x API calls (org.apache.log4j) to SLF4J -> Logback -->
+
+		<!-- ===== Persistence: MyBatis (existing DAOs, being migrated to JPA) =====
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>4.0.0</version>
 		</dependency>
-		<!-- The container pool loads the driver: copy ojdbc11.jar to $CATALINA_HOME/lib -->
 		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc11</artifactId>
-			<version>23.5.0.24.07</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- eHARS (SQL Server); the container pool loads the driver: copy mssql-jdbc-12.8.1.jre11.jar to $CATALINA_HOME/lib
-		     and remove any old sqljdbc4.jar there (it needs javax.xml.bind, which Java 11+ no longer has) -->
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<version>12.8.1.jre11</version>
-			<scope>provided</scope>
-		</dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.19</version>
+		</dependency>-->
+		<!-- ===== JDBC drivers: packaged in the WAR (the app builds its own Hikari pools in DataSourceConfig) ===== -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc11</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
 		<!-- ===== JSON / HTTP ===== -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>2.22.3</version>
-		</dependency>
+		<!-- Jackson comes from spring-boot-starter-webmvc (Jackson 3). Do not add com.fasterxml.jackson.core:jackson-databind (Jackson 2). -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
@@ -170,24 +154,13 @@
 			<version>2.2.2</version>
 		</dependency>
 		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.17.0-rc</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-jackson2</artifactId>
-			<version>1.11.0-beta</version>
-		</dependency>
-		<dependency>
 			<groupId>io.projectreactor.netty</groupId>
 			<artifactId>reactor-netty-http</artifactId>
 		</dependency>
-		<!-- ===== Mail (plain library, not provided by Tomcat) ===== -->
+		<!-- ===== Mail: Jakarta Mail (Angus) + Spring JavaMailSender, configured by spring.mail.* ===== -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.5</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 		<!-- ===== NYS DOH internal libraries (from the internal repository) ===== -->
 		<dependency>
@@ -195,10 +168,26 @@
 			<artifactId>endec</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- SafeNet (Thales) Java Authentication SDK 2.1.1, FIPS mode -->
 		<dependency>
 			<groupId>doh.bhae.nyehms</groupId>
 			<artifactId>BSIDJavaAPI</artifactId>
-			<version>1.03</version>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>doh.bhae.nyehms</groupId>
+			<artifactId>FipsProvider</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bc-fips</artifactId>
+			<version>1.0.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ini4j</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>0.5.4</version>
 		</dependency>
 		<dependency>
 			<groupId>com.symantec</groupId>
@@ -309,7 +298,7 @@
 	</dependencies>
 	<build>
 		<directory>${project.build.directory}</directory>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>doh7#applinks#nyehms#hims</finalName>
 		<plugins>
 			<!-- war plugin and compiler plugin (release 21, -parameters) are configured by the Boot parent -->
 			<plugin>

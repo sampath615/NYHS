@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.UploadProperties;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -69,7 +71,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.repository.upload.CdcRidrInfoRepo
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.DateUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
@@ -83,6 +84,9 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 */
 @Service
 public class FileUploadService {
+
+	@Autowired
+	private UploadProperties uploadProperties;
 	
 	@Autowired
 	FileUploadTransactionHelper fileUploadTransactionHelper;
@@ -112,6 +116,8 @@ public class FileUploadService {
 	@Autowired JpaConnections jpaConnections;
 	
 	@Autowired SendEmail sendEmail;
+
+	@Autowired MailProperties mailProperties;
 	
 	@Autowired ClusterDocumentService clusterDocumentService;
 	
@@ -196,9 +202,9 @@ public class FileUploadService {
 				int index = 0; 
 				
 				
-				String[] RIDR_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("RIDR_COLUMN_NAMES").split(",");
+				String[] RIDR_COLUMN_NAMES = uploadProperties.ridrColumnNames().split(",");
 				
-				String[] RIDR_DB_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("RIDR_DB_COLUMN_NAMES").split(",");
+				String[] RIDR_DB_COLUMN_NAMES = uploadProperties.ridrDbColumnNames().split(",");
 				
 				
 				
@@ -531,8 +537,8 @@ public class FileUploadService {
 				String[] CLUSTER_COLUMN_NAMES = null;
 				String[] CLUSTER_DB_COLUMN_NAMES = null;
 				
-				CLUSTER_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("CLUSTER_BHAE_COLUMN_NAMES").split(",");
-				CLUSTER_DB_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("CLUSTER_BHAE_DB_COLUMN_NAMES").split(",");
+				CLUSTER_COLUMN_NAMES = uploadProperties.clusterBhaeColumnNames().split(",");
+				CLUSTER_DB_COLUMN_NAMES = uploadProperties.clusterBhaeDbColumnNames().split(",");
 				
 				int CLUSTER_COLUMN_NAMES_LENGTH = CLUSTER_COLUMN_NAMES.length;
 				
@@ -724,7 +730,7 @@ public class FileUploadService {
 				int index = 0; 
 				
 				
-				String[] UPLOAD_RECORD_SEARCH_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_RECORD_SEARCH_COLUMN_NAMES").split(",");
+				String[] UPLOAD_RECORD_SEARCH_COLUMN_NAMES = uploadProperties.recordSearchColumnNames().split(",");
 				
 				
 				int UPLOAD_RECORD_SEARCH_COLUMN_NAMES_LENGTH = UPLOAD_RECORD_SEARCH_COLUMN_NAMES.length;
@@ -934,7 +940,7 @@ public class FileUploadService {
 				int index = 0; 
 				
 				
-				String[] UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAME").split(",");
+				String[] UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES = uploadProperties.statenoHistoryColumnName().split(",");
 				
 				
 				int UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES_LENGTH = UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES.length;
@@ -1124,7 +1130,7 @@ public class FileUploadService {
 				int index = 0; 
 				
 				
-				String[] UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAME").split(",");
+				String[] UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES = uploadProperties.statenoHistoryColumnName().split(",");
 				
 				
 				int UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES_LENGTH = UPLOAD_UTILITY_STATENO_HISTORY_COLUMN_NAMES.length;
@@ -1526,9 +1532,9 @@ public class FileUploadService {
 				
 				
 				sendEmail.sendSSLMessage(
-						EnvironmentProperties.envProperties.getProperty("HIV_DOCUMENT_UPDATE_DATE_TO").split(","),
+						mailProperties.hivDocumentUpdateDateTo().split(","),
 						"Updating HIV Data status", mailContent.toString(),
-						 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), userObject.getEmailAddress().split(","), null,
+						mailProperties.helpLine().from(), userObject.getEmailAddress().split(","), null,
 						CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 				
 				
@@ -1630,7 +1636,7 @@ public class FileUploadService {
 				List<String[]> rowLists = csvread.readAll();
 				
 				String[] columnHeader = rowLists.get(0);
-				String[] UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES").split(",");
+				String[] UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES = uploadProperties.psConfirmedStdColumnNames().split(",");
 				int UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES_LENGTH = UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES.length;
 				
 				for(int columnIndex = 0; columnIndex < UPLOAD_PS_CONFIRMED_STD_COLUMN_NAMES_LENGTH; columnIndex++){
@@ -2170,7 +2176,7 @@ public class FileUploadService {
 				
 				int index = 0; 
 				
-				String[] UPLOAD_NYC_SURV_REJECT_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("UPLOAD_NYC_SURV_REJECT_COLUMN_NAMES").split(",");
+				String[] UPLOAD_NYC_SURV_REJECT_COLUMN_NAMES = uploadProperties.nycSurvRejectColumnNames().split(",");
 				
 				int UPLOAD_NYC_SURV_REJECT_COLUMN_NAMES_LENGTH = UPLOAD_NYC_SURV_REJECT_COLUMN_NAMES.length;
 				

@@ -1,5 +1,7 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.view.review;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.SpreadsheetProperties;
 import java.util.List;
 import java.util.Map;
 
@@ -15,13 +17,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.view.AbstractExcelReportView;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class GenerateStatenoHistoryData extends AbstractExcelReportView{
+
+	@Autowired
+	private SpreadsheetProperties spreadsheetProperties;
 
 
     	
@@ -58,7 +62,7 @@ public class GenerateStatenoHistoryData extends AbstractExcelReportView{
         commonStyles.setFont(commonFont);//set it to bold
         
         
-        String[] STATENO_HISTORY_SPREAD_SHEET_COLUMNS = EnvironmentProperties.envProperties.getProperty("STATENO_HISTORY_SPREAD_SHEET_COLUMNS").split(",");
+        String[] STATENO_HISTORY_SPREAD_SHEET_COLUMNS = spreadsheetProperties.statenoHistoryColumns().split(",");
         
         
         CellStyle boldStyle = workbook.createCellStyle();

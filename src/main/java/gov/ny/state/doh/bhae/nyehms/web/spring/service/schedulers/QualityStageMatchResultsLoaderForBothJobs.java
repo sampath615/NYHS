@@ -1,9 +1,9 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.SchedulerNotificationVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +25,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class QualityStageMatchResultsLoaderForBothJobs{
+
+	@Autowired
+	private AppProperties appProperties;
 	
 	private static final Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);
 	private final SendEmail sendEmail;
@@ -57,7 +60,7 @@ public class QualityStageMatchResultsLoaderForBothJobs{
 				log.error("Unable to get the Server Ip Address");
 			}
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"			
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(appProperties.loadSchedulers()){
 				//schedulerStatusObject : is used to track the complete job status (SUCCESS/FAILURE)				
 				List<JSONObject> schedulerStatusObject = new ArrayList<>();
 				//This metadata is loaded from LAB_SCHEDULER_PARAMETERS(Metadata table).
@@ -87,7 +90,7 @@ public class QualityStageMatchResultsLoaderForBothJobs{
 					
 					
 						StringBuilder statusMailSubject = new StringBuilder("POST-MATCH ");
-						statusMailSubject.append(EnvironmentProperties.envProperties.getProperty("environmentName"));
+						statusMailSubject.append(appProperties.environmentName());
 						statusMailSubject.append(" BY ");
 						if(CommonUtil.isNullOrEmpty(initiator)){
 							statusMailSubject.append("QUARTZ");

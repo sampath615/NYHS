@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.lab;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,14 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.ViralLoadReportsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RiaReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 
 
 @RequiredArgsConstructor
 @Controller
 public class ViralLoadReportsController {
+
+	@Autowired
+	private ReportProperties reportProperties;
 
 
 	
@@ -56,7 +59,7 @@ public class ViralLoadReportsController {
 		
 		map.put("riaDropDownList", riaDropDownList);
 		
-		map.put("REPORT_NAME", EnvironmentProperties.envProperties.getProperty("RIA_REVIEW"));
+		map.put("REPORT_NAME", reportProperties.riaReviewName());
 		
 		
 		return "reports/lab/ndvlReport";

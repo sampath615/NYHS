@@ -379,7 +379,7 @@ Based on the controller/service/dao/JSP groupings observed throughout this docum
 - **standardization** — facility & provider name/address standardization, `standardization/**`
 - **reporting** — cross-cutting report generation (PDF/Excel/FreeMarker), `report(s)/**`, `web/spring/view/**`
 - **scheduling / batch** — Quartz jobs, `service/schedulers/**`, `schedulers/spring/dao/**`
-- **messaging / notifications** — internal message box, email notification, `messageBox/**`
+- **messaging / notifications** — email notification, help line, `helpLine/**` (internal message box removed: feature no longer used)
 - **uploads / scanning** — file upload and document scanning intake, `uploads/**`, `scan/**`
 - **search** — global/cross-entity search, `search/**`
 - **integrations** — Sierra, HCS/OAuth webservice client, partner-service feeds — `sierra/**`, `webservice/**`, `partnerService/**`
