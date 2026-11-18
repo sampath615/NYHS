@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.StatusEmailProperties;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,7 +21,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import jakarta.annotation.PostConstruct;
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -44,7 +45,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @Service
@@ -771,8 +771,8 @@ private static String getINIPath() {
 		
 	}
 	
-	public void sendStatusSummary(List<Map<String, Object>> assignmentList, String headers, String columnNames,
-			String emailIdentifier, String subject, String bodyMessage, String noDataMsg) {
+	public void sendStatusSummary(List<Map<String, Object>> assignmentList, StatusEmailProperties.Summary layout,
+			String emailIdentifier, String subject, String bodyMessage) {
 		
 		StringBuilder mailContent = new StringBuilder("");
 		
@@ -783,8 +783,8 @@ private static String getINIPath() {
 		if(assignmentList != null && assignmentList.size() > 0) {
 	
 			
-			String[] headerNamesList = EnvironmentProperties.envProperties.getProperty(headers).split(",");
-			String[] columnNamesList = EnvironmentProperties.envProperties.getProperty(columnNames).split(",");
+			String[] headerNamesList = layout.headers().split(",");
+			String[] columnNamesList = layout.columns().split(",");
 			
 			mailContent.append("<span style='font-weight:bold'>"+subject+" ("+todayDate+")</span><br/><br/>");
 			
@@ -817,7 +817,7 @@ private static String getINIPath() {
 			//subject = "Today's "+subject;
 			
 		}else {
-			subject = EnvironmentProperties.envProperties.getProperty(noDataMsg);
+			subject = layout.noData();
 			
 			mailContent.append(subject);
 			
@@ -840,24 +840,6 @@ private static String getINIPath() {
 	}
 	
 
-    @Autowired
-    public List<JSONObject> getReciepientDetails(){
-    	
-    	List<JSONObject> reciepientDetailsList = null;
-		
-    	try {
-		
-    		reciepientDetailsList = commonDAO.getReciepientDetails();
-    			
-    	}catch (DataAccessException e) {
-            log.error( e.getMessage());
-        }
-		
-		
-		return reciepientDetailsList;
-	
-	}
-    
 	public JSONObject getCRFReqActivityList()  {
 		
 		List<Map<String, String>> crfReqActivityList = commonDAO.getCRFReqActivityList();

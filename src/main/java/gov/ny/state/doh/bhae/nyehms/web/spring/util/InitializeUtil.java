@@ -1,7 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.util;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.InitFailureReasonsVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
@@ -231,29 +230,6 @@ public class InitializeUtil {
 	}
 	
 
-	
-	public boolean checkValidityOfFirefox(List<FirefoxVersionVO> firefoxVersions, UserInitObject userInitObj) {
-		
-		boolean isValidFirefox = false;
-		String userFirefoxVer = userInitObj.getBrowserVer();
-		String dbFirefoxVer = "";
-		String dbFirefoxRejectFlag="";
-		
-		for (int i=0; i<firefoxVersions.size(); i++) {
-			
-			dbFirefoxVer = firefoxVersions.get(i).getFirefoxVersionNo() != null ? firefoxVersions.get(i).getFirefoxVersionNo().trim() : "";
-			dbFirefoxRejectFlag = firefoxVersions.get(i).getRejectFlag() != null ? firefoxVersions.get(i).getRejectFlag().trim() : "";
-			
-			if (userFirefoxVer.equalsIgnoreCase(dbFirefoxVer) && dbFirefoxRejectFlag.equals("Y")) {
-				isValidFirefox = false;
-				break;
-			}else if(userFirefoxVer.startsWith(dbFirefoxVer) && !dbFirefoxRejectFlag.equals("Y")) {
-				isValidFirefox = true;
-			}
-		}
-		
-		return isValidFirefox;
-	}
 	
 	public String booleanToChar(boolean boolValue) {
 		

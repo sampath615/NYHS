@@ -56,8 +56,7 @@ public class InitializeController {
 
     private final DateUtil dateUtil;
 
-    @Autowired
-    InitializeUtil initializeUtil;
+    private final InitializeUtil initializeUtil;
 
     Map<String, String> targetMap = new HashMap<>();
     BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
@@ -269,17 +268,17 @@ public class InitializeController {
             userInitObj.setInitializeFailReasonsDescrption(failReasonDescription.toString());
         }
         //if (hasValidBrowser && !isValidFirefoxVer) {
-        if (hasValidBrowser) {
-
-            initializeUtil.initFailReasonConcat(failReasons, failReasonDescription, initFailReasons.get(6 - 1));
-
-            String latestFireFoxVersionNumber = initializeService.getLatestFirefoxVersion(bindingResult, userInitObj, request.getSession().getId());
-            if (latestFireFoxVersionNumber != null) {
-                failReasonDescription.append(" ").append(latestFireFoxVersionNumber);
-            }
-            userInitObj.setInitializeFailReasons(failReasons.toString());
-            userInitObj.setInitializeFailReasonsDescrption(failReasonDescription.toString());
-        }
+//        if (hasValidBrowser) {
+//
+//            initializeUtil.initFailReasonConcat(failReasons, failReasonDescription, initFailReasons.get(6 - 1));
+//
+//            String latestFireFoxVersionNumber = initializeService.getLatestFirefoxVersion(bindingResult, userInitObj, request.getSession().getId());
+//            if (latestFireFoxVersionNumber != null) {
+//                failReasonDescription.append(" ").append(latestFireFoxVersionNumber);
+//            }
+//            userInitObj.setInitializeFailReasons(failReasons.toString());
+//            userInitObj.setInitializeFailReasonsDescrption(failReasonDescription.toString());
+//        }
         
         
 

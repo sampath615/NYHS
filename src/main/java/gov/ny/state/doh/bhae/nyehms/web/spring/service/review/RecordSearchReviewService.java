@@ -38,10 +38,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 @Service
 public class RecordSearchReviewService {
 
-	@Autowired
-	private UploadProperties uploadProperties;
-	
-	
+	private final UploadProperties uploadProperties;
+
 	private static final Logger log = LoggerFactory.getLogger(RecordSearchReviewService.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
@@ -717,14 +715,6 @@ public class RecordSearchReviewService {
 				if(hasData == 0) {
 					
 					try {
-						
-						//String[] recipientEmailAddressesTo = EnvironmentProperties.envProperties.getProperty("EHARS_LOADER_NOTIFICATIONS_TO").split(",");
-						
-						//sendEmail.sendSSLMessage(
-						//		recipientEmailAddressesTo,
-						//		"Failed : Resolving records in feedback that are already known as 'Same As' in EHARS", "There is no data in EHARS_RIDR table" ,
-						//		EnvironmentProperties.envProperties.getProperty("helpLineFrom"), null,
-						//		CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 						sendEmail.processEmail(
 								null,
 								"Failed : Resolving records in feedback that are already known as 'Same As' in EHARS", "There is no data in EHARS_RIDR table" ,

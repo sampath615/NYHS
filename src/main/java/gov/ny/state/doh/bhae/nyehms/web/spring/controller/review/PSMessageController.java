@@ -32,8 +32,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 @Controller
 public class PSMessageController {
 
-	@Autowired
-	private ReportProperties reportProperties;
+	private final ReportProperties reportProperties;
 	
 	private final PSMessageReviewService psMessageReviewService;
 	

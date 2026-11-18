@@ -27,15 +27,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class NyehmsTrainingReminderLoader{
 
-	@Autowired
-	private AppProperties appProperties;
+	private final AppProperties appProperties;
 	
-	/*
-	 * Reference to Log
-	 */
 	private static final Logger log = LoggerFactory.getLogger(NyehmsTrainingReminderLoader.class);
 
-	
 	private final CommonService commonService;
 	
 	private final ManualQuartzJobService manualQuartzJobService;
@@ -43,8 +38,7 @@ public class NyehmsTrainingReminderLoader{
 	
 	private final SendEmail sendEmail;
 
-	@Autowired
-    MailProperties mailProperties;
+    private final MailProperties mailProperties;
 
 	public void sendNyehmsTrainingReminderEmail(){
 		

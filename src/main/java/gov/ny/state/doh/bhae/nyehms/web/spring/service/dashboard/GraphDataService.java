@@ -24,9 +24,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class GraphDataService {
-//
-//    @Autowired
-//    private ConnectionDAO connectionDAO;
+
+    private final AppProperties appProperties;
 	
 	private final GraphDataDAO graphDataDAO;
 

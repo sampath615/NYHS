@@ -1303,18 +1303,6 @@ public class FileUploadService {
 				 
 				int index = 0; 
 				
-				
-				//String[] RIDR_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("RIDR_COLUMN_NAMES").split(",");
-				
-				//String[] RIDR_DB_COLUMN_NAMES = EnvironmentProperties.envProperties.getProperty("RIDR_DB_COLUMN_NAMES").split(",");
-				
-				
-				
-				//int RIDR_COLUMN_NAMES_LENGTH = RIDR_COLUMN_NAMES.length;
-				
-				//int workerId = userObject.getWorkerId();
-				
-
 				int columnIndex = 0;
 				
 				while (index <= worksheet.getLastRowNum()) {

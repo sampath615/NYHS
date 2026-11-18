@@ -119,7 +119,7 @@ public class LabDocumentService {
 				
 					String testResults = stdLabDocVO.getTEST_RESULT();
 					
-					String formatedTestResults = EnvironmentProperties.envProperties.getProperty(testResults);
+					String formatedTestResults = labProperties.testResultLabels().get(testResults);
 					
 					if(CommonUtil.isNotNullAndEmpty(formatedTestResults)) {
 						

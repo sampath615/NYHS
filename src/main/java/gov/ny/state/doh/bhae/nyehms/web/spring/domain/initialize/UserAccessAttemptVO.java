@@ -8,16 +8,12 @@ public class UserAccessAttemptVO {
 	String userId = "";
 	String hcsRole = "";
 	Object linkClickTime = "";
-	String activeMACAddresses = "";
 	String activeNyehmsRole = "";
 	String userLocked = "";
-	String attempMACAddress = "";
 	String browserName = "";
 	String browserVersion ="";
 	String XPIPlugin = "";
 	String XPIVersion = "";
-	String OSName = "";
-	String JREVersion = "";
 	String attemptFailedReasons = "";
 	Object recordInsertTime = "";
 	
@@ -39,12 +35,6 @@ public class UserAccessAttemptVO {
 	public void setLinkClickTime(Object linkClickTime) {
 		this.linkClickTime = linkClickTime;
 	}
-	public String getActiveMACAddresses() {
-		return activeMACAddresses;
-	}
-	public void setActiveMACAddresses(String activeMACAddresses) {
-		this.activeMACAddresses = activeMACAddresses;
-	}
 	public String getActiveNyehmsRole() {
 		return activeNyehmsRole;
 	}
@@ -56,12 +46,6 @@ public class UserAccessAttemptVO {
 	}
 	public void setUserLocked(String userLocked) {
 		this.userLocked = userLocked;
-	}
-	public String getAttempMACAddress() {
-		return attempMACAddress;
-	}
-	public void setAttempMACAddress(String attempMACAddress) {
-		this.attempMACAddress = attempMACAddress;
 	}
 	public String getBrowserName() {
 		return browserName;
@@ -86,18 +70,6 @@ public class UserAccessAttemptVO {
 	}
 	public void setXPIVersion(String xPIVersion) {
 		XPIVersion = xPIVersion;
-	}
-	public String getOSName() {
-		return OSName;
-	}
-	public void setOSName(String oSName) {
-		OSName = oSName;
-	}
-	public String getJREVersion() {
-		return JREVersion;
-	}
-	public void setJREVersion(String jREVersion) {
-		JREVersion = jREVersion;
 	}
 	public String getAttemptFailedReasons() {
 		return attemptFailedReasons;

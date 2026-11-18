@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller.person;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AidaProperties;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -119,7 +120,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.DocumentValidator;
 
@@ -136,6 +136,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.validation.document.DocumentValid
 @Controller
 public class DocumentController {
 
+	private final AidaProperties aidaProperties;
 	private static final Logger log = LoggerFactory.getLogger(DocumentController.class);
 	private String nyehmsLog = AppConstants.nyehmLogDebugString.getName();
 
@@ -1629,7 +1630,7 @@ public class DocumentController {
 		
 		List<Map<String, String>> aidaData = aIRSDocumentService.loadAirsAIDAData(tc_id, parameterName, userObject);
 		
-		String dataHeader = EnvironmentProperties.envProperties.getProperty(parameterName+"_HEADERS");
+		String dataHeader = aidaProperties.view(parameterName).headers();
 		
 		
 		map.put("aidaData", aidaData);

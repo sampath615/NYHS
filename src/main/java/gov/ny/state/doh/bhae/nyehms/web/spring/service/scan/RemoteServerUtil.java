@@ -91,8 +91,6 @@ public class RemoteServerUtil {
 
 			log.error("Preparing the Session");
 
-			//config.put("kex", EnvironmentProperties.envProperties.getProperty("KexAlgorithm"));
-			
 			config.put("StrictHostKeyChecking", "no");
 			config.setProperty("PreferredAuthentications", "password");
 			

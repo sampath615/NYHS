@@ -1,6 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.EharsProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.sql.Clob;
 import java.sql.Date;
@@ -45,7 +47,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.facility.
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.standardization.provider.ProviderService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonExceptionHandler;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 
 /**
@@ -56,6 +57,11 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 @Component
 public class DocumentTransactionHelper {
 
+	@Autowired
+	private EharsProperties eharsProperties;
+
+	@Autowired
+	private MailProperties mailProperties;
 	private static final Logger log = LoggerFactory.getLogger(DocumentTransactionHelper.class);
 	//private String nyehmsLog=AppConstants.nyehmLogDebugString.getName();	
 	
@@ -290,17 +296,17 @@ public class DocumentTransactionHelper {
 			
 			if(eharsPesonDetails != null) {
 				
-				statenoDetails.put("NYS_STAGE_ZERO_DX", EnvironmentProperties.envProperties.getProperty("STAGE_ZERO_DX-"+eharsPesonDetails.get("STAGE_ZERO_DX")));
-				statenoDetails.put("NYS_STAGE_CD4_OI_DX", EnvironmentProperties.envProperties.getProperty("STAGE_CD4_OI_DX-"+eharsPesonDetails.get("STAGE_CD4_OI_DX")));
-				
+				statenoDetails.put("NYS_STAGE_ZERO_DX", eharsProperties.stageZeroDx().get(String.valueOf(eharsPesonDetails.get("STAGE_ZERO_DX"))));
+				statenoDetails.put("NYS_STAGE_CD4_OI_DX", eharsProperties.stageCd4OiDx().get(String.valueOf(eharsPesonDetails.get("STAGE_CD4_OI_DX"))));
+	
 			}
 			
 			Map<String, String> nycEharsPesonDetails = personService.getNYCEharsDxDetails(stateno);
 			
 			if(nycEharsPesonDetails != null) {
 				
-				statenoDetails.put("NYC_STAGE_ZERO_DX", EnvironmentProperties.envProperties.getProperty("STAGE_ZERO_DX-"+nycEharsPesonDetails.get("STAGE_ZERO_DX")));
-				statenoDetails.put("NYC_STAGE_CD4_OI_DX", EnvironmentProperties.envProperties.getProperty("STAGE_CD4_OI_DX-"+nycEharsPesonDetails.get("STAGE_CD4_OI_DX")));
+statenoDetails.put("NYC_STAGE_ZERO_DX", eharsProperties.stageZeroDx().get(String.valueOf(nycEharsPesonDetails.get("STAGE_ZERO_DX"))));
+statenoDetails.put("NYC_STAGE_CD4_OI_DX", eharsProperties.stageCd4OiDx().get(String.valueOf(nycEharsPesonDetails.get("STAGE_CD4_OI_DX"))));
 				
 			}
 		}
@@ -1298,7 +1304,7 @@ public class DocumentTransactionHelper {
 					" " + userObject.getUserLastName() + " " + new SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date());
 		}
 		
-		ahiDocumentService.sendEmailNotificationToAHIUsers(userObject, EnvironmentProperties.envProperties.getProperty("EMAIL_AHI_DOCUMENT_SUBJECT"), emailContent);
+		ahiDocumentService.sendEmailNotificationToAHIUsers(userObject, mailProperties.ahiDocument().subject(), emailContent);
 		
 		
 	}

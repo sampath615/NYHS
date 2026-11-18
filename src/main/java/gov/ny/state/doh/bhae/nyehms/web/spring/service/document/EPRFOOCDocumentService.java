@@ -452,16 +452,6 @@ public class EPRFOOCDocumentService {
 				
 				String subject = mailProperties.bureauDirector().subject();
 				
-				//String address_to = EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_TO");
-				
-				//String address_cc = EnvironmentProperties.envProperties.getProperty("EMAIL_BUREAU_DIRECTOR_CC");
-				
-				
-				//String[] recipientEmailAddresses = address_to.split(",");
-				
-			
-				//sendEmail.sendSSLMessage(recipientEmailAddresses, subject, message,
-				//			userObject.getEmailAddress(), address_cc.split(","), CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 				sendEmail.processEmail(null, subject, message, "EPRF_OOC_SUMMARY", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 			}else{
 				

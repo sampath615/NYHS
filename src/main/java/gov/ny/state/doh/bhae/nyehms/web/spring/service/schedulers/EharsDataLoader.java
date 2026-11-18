@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -7,13 +8,13 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Component
 public class EharsDataLoader{
+	private final AppProperties appProperties;
 	
 	/*
 	 * Reference to Log
@@ -37,6 +39,7 @@ public class EharsDataLoader{
 	private final ManualQuartzJobService manualQuartzJobService;
 	
 	private final SendEmail sendEmail;
+	private final MailProperties mailProperties;
 	
 	public void loadEharsDataInToNyehmsTables(String initiator){
 		
@@ -50,10 +53,10 @@ public class EharsDataLoader{
 		
 		synchronized(this){
 			
-			log.error("Checking before properties   {}",EnvironmentProperties.envProperties.getProperty("loadSchedulers"));
+			log.error("Checking before properties   {}",appProperties.loadSchedulers());
 			
 			//To avoid local environment scheduler calls, for local environment this property will be set it to "N"
-			if("Y".equals(EnvironmentProperties.envProperties.getProperty("loadSchedulers"))){
+			if(appProperties.loadSchedulers()){
 				
 				Map<String, String> schedulerMetaData = manualQuartzJobService.getSchedulerMetaData();
 				
@@ -83,9 +86,9 @@ public class EharsDataLoader{
 						if(isErroredOut) {
 							subject = "Failed to load EHARS data into NYEHMS tables";
 						}
-						
-						
-						String[] recipientEmailAddressesTo = EnvironmentProperties.envProperties.getProperty("EHARS_LOADER_NOTIFICATIONS_TO").split(",");
+
+
+					String[] recipientEmailAddressesTo = mailProperties.eharsLoaderTo().split(",");
 						
 		
 						StringBuilder mailContent = new StringBuilder("");
@@ -103,15 +106,10 @@ public class EharsDataLoader{
 						mailContent.append("</table><br/><br/><br/>");
 						
 						try {
-//							sendEmail.sendSSLMessage(
-//									recipientEmailAddressesTo,
-//									EnvironmentProperties.envProperties.getProperty("environmentName")+": "+subject, mailContent.toString() ,
-//									EnvironmentProperties.envProperties.getProperty("helpLineFrom"), null,
-//									CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-							
+
 							sendEmail.processEmail(
 									null,
-									EnvironmentProperties.envProperties.getProperty("environmentName")+": "+subject, mailContent.toString(), 
+									appProperties.environmentName()+": "+subject, mailContent.toString(), 
 									"EHARS_NOTIFICATION",
 									CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 							

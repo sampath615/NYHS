@@ -227,11 +227,6 @@ public class AHIDocumentService {
 			
 			sendEmail.processEmail(null, subject, content, "ASSIGNMENT_AHI", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 			
-			
-//				sendEmail.sendSSLMessage(
-//						recipientEmailAddressesTo,
-//						subject, content,
-//						 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
 		} catch (MessagingException messagingException) {
 			
 			log.error(nyehmsLog + "   Failed to send the Email notification to AHI Users   ");

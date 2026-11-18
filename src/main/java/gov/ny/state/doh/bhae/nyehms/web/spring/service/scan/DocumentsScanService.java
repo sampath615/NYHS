@@ -289,10 +289,6 @@ public class DocumentsScanService {
                   // Writing the Standard data to stdData object
                   obj_InputStream = new ByteArrayInputStream(file.getBytes());
                   
-                  //obj_SFTPChannel.cd(EnvironmentProperties.envProperties.getProperty(inputLocation));
-                  
-                  //obj_InputStream = obj_SFTPChannel.get(inputFileName);
-                  
                   byte k[] = "R1D0fPa!".getBytes();
                   
                   SecretKeySpec key = new SecretKeySpec(k, "DES");  
@@ -307,10 +303,7 @@ public class DocumentsScanService {
                   
                   cos.write(IOUtils.toByteArray(obj_InputStream));
                   
-                  
-           //obj_SFTPChannel.rm(EnvironmentProperties.envProperties.getProperty(inputLocation)+inputFileName);
-                  
-                                   
+
            } catch(SftpException sftpException){
                   isError = true;
                   transactionMessage = sftpException.getMessage();

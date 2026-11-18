@@ -44,8 +44,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
 @Service
 public class DatafluxUploadServiceImpl {
 
-	@Autowired
-	private UploadProperties uploadProperties;
+	private final UploadProperties uploadProperties;
 	
 	private final CommonExceptionHandler commonExceptionHandler;
 	
@@ -54,9 +53,7 @@ public class DatafluxUploadServiceImpl {
 	private final CommonDAO commonDAO;
 	
 	private final JpaConnections jpaConnections;
-	
 
-	
 	private static final Logger log = LoggerFactory.getLogger(DatafluxUploadServiceImpl.class);
 	
 	

@@ -28,8 +28,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.uploads.DatafluxUploadSer
 @Controller
 public class DatafluxUploadController {
 
-	@Autowired
-	private UploadProperties uploadProperties;
+	private final UploadProperties uploadProperties;
 	
 	
 	private final DatafluxUploadServiceImpl datafluxUploadServiceImpl;

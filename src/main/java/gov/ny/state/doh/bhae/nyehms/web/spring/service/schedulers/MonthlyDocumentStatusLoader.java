@@ -24,12 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class MonthlyDocumentStatusLoader{
 
-	@Autowired
-	private AppProperties appProperties;
-	
-	/*
-	 * Reference to Log
-	 */
+	private final AppProperties appProperties;
+
 	private static final Logger log = LoggerFactory.getLogger(MonthlyDocumentStatusLoader.class);
 	
 	private final ManualQuartzJobService manualQuartzJobService;

@@ -1,5 +1,8 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.document;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.StatusEmailProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AidaProperties;
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
@@ -28,7 +31,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftDetailsService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.schedulers.RawRecordStatusService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.scheduler.LabCommonUtils;
 import lombok.RequiredArgsConstructor;
 
@@ -42,8 +44,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AIRSDocumentService {
 
-	private static final Logger log = LoggerFactory.getLogger(AIRSDocumentService.class);
-
+	private static Logger log = LoggerFactory.getLogger(AIRSDocumentService.class);
+	private final StatusEmailProperties statusEmailProperties;
+	private final AidaProperties aidaProperties;
+	private final MailProperties mailProperties;
 	private static final String DOCUMENT_TYPE = "AIRS";
 	/** The worker id of the scheduler. */
 	private static final int SCHEDULER_WORKER_ID = 900;
@@ -327,9 +331,12 @@ public class AIRSDocumentService {
 	 */
 	public List<Map<String, String>> loadAirsAIDAData(String tcId, String parameterName, UserObject userObject) {
 		try {
+			AidaProperties.View aidaView = aidaProperties.view(parameterName);
+			String tableName = aidaView.table();
+			String columns = aidaView.columns();
 			Map<String, String> inputParameterMap = new HashMap<>();
-			inputParameterMap.put("tableName", EnvironmentProperties.envProperties.getProperty(parameterName + "_TABLE"));
-			inputParameterMap.put("columns", EnvironmentProperties.envProperties.getProperty(parameterName + "_COLUMNS"));
+			inputParameterMap.put("tableName", tableName);
+			inputParameterMap.put("columns", columns);
 			inputParameterMap.put("tc_id", tcId);
 			return aIDADataDAO.loadAirsAIDAData(inputParameterMap);
 		} catch (RuntimeException | Error e) {
@@ -344,9 +351,7 @@ public class AIRSDocumentService {
 		inputParameterMap.put("checkForToday", checkForToday);
 		List<Map<String, Object>> errorList = airsDocumentDAO.checkForActiveErrors(inputParameterMap);
 		if (!errorList.isEmpty()) {
-			commonService.sendStatusSummary(errorList, "AIRS_AGENCY_STATUS_EMAIL_HEADERS", "AIRS_AGENCY_STATUS_EMAIL_COLUMNS", "AIRS_AGENCY",
-					EnvironmentProperties.envProperties.getProperty("AIRS_AGENCY_EMAIL_SUBJECT"),
-					EnvironmentProperties.envProperties.getProperty("AIRS_AGENCY_EMAIL_BODY_MSG"), null);
+			commonService.sendStatusSummary(errorList, statusEmailProperties.airsAgency(), "AIRS_AGENCY", mailProperties.airsAgency().subject(), mailProperties.airsAgency().bodyMsg());
 		}
 	}
 

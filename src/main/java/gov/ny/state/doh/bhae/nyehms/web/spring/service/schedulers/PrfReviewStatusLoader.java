@@ -24,12 +24,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class PrfReviewStatusLoader{
 
-	@Autowired
-	private AppProperties appProperties;
+	private final AppProperties appProperties;
 	
-	/*
-	 * Reference to Log
-	 */
 	private static final Logger log = LoggerFactory.getLogger(PrfReviewStatusLoader.class);
 	
 	private final PRFDocumentService pRFDocumentService;

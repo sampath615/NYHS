@@ -25,12 +25,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DocumentFileReminderLoader{
 
-	@Autowired
-	private AppProperties appProperties;
+	private final AppProperties appProperties;
 	
-	/*
-	 * Reference to Log
-	 */
 	private static final Logger log = LoggerFactory.getLogger(DocumentFileReminderLoader.class);
 	
 	private final CommonService commonService;

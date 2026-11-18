@@ -153,6 +153,12 @@
 							class="standardInputSmallText" maxlength="15" />
 				</span>
 				</span>
+				<span class="fieldHolder25 "> <span class="fLW35">
+						SSN</span> <span class="fLW60"> <form:input
+							id="SSN" path="stdNycDeathDoc.ssn"
+							class="standardInputSmallText" maxlength="15" />
+				</span>
+				</span>
 			</div>
 
 			<!--  Race details -->

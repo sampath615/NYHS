@@ -122,7 +122,11 @@
 				
 				<span class="fieldHolder25 ">
 					<span class="fLW35"> Delivery Date</span>
-					<span class="fLW60"> <form:input id="ddValidation"  path="stdDeathDoc.deliveryDateText" class="standardInputSmallText" maxlength="15"/>  </span>
+					<span class="fLW60"> <form:input id="ddValidation" path="stdDeathDoc.deliveryDateText" class="standardInputSmallText" maxlength="15"/>  </span>
+				</span>
+				<span class="fieldHolder25 ">
+					<span class="fLW35"> SSN</span>
+					<span class="fLW60"> <form:input id="SSN" path="stdDeathDoc.ssn" class="standardInputSmallText" maxlength="15"/>  </span>
 				</span>					
 			</div>
 

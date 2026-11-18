@@ -33,7 +33,8 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.service.lab.LaftFollowupDocumentS
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.review.RiaReviewService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.BindingResults;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
+
+@RequiredArgsConstructor
 @Controller
 public class RiaController {
 

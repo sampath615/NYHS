@@ -1,26 +1,34 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
+import gov.ny.state.doh.bhae.nyehms.web.ajax.json.JsonObject;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
+import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
+import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
+import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
+import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import lombok.RequiredArgsConstructor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
 Author : Srikar Kummamuri
@@ -29,20 +37,12 @@ Description : This class is used to for all common implementations across the ap
 Ex: Login, logout, errorpage etc..
 */
 
-import gov.ny.state.doh.bhae.nyehms.web.ajax.json.JsonObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.common.AddressFieldVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserInitObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.enums.AppConstants;
-import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserAuthorization;
-import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.CommonService;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 
 
 @RequiredArgsConstructor
 @Controller
 public class CommonController {	
+	private final AppProperties appProperties;
 	
 	private final UserAuthorization userAuthorization;
 	private final GetGridObject getGridObject;
@@ -91,7 +91,7 @@ public class CommonController {
 		}
 		log.debug(nyehmsLog+" User Object ::: {}",userObject);
 		//Validate the user against DB		
-		if(userObject!=null && "Y".equals(EnvironmentProperties.envProperties.getProperty("byPass"))){
+		if(userObject!=null && appProperties.byPass()){
 			session.setAttribute("UserObj", userObject);
 			//If the User initialize object is not loaded loading the method to validate the USer details  
 			Map<String, String> targetMap= new HashMap<>();
@@ -134,38 +134,30 @@ public class CommonController {
 			if(user != null){
 				map.put("TRANSACTION_MESSAGE","User not available");
 			}
-			returnString = EnvironmentProperties.envProperties.getProperty("loginPage");
+			returnString = appProperties.loginPage();
 			//returnString = "login/Login";
 		}
 		return returnString;
 	}
 
 	/**
-	 * Handler method for moving provider data to facility. Accepts json request 
+	 *  Ends the user's session and redirects to the configured logout page (HCS portal).
 	 * via HTTP POST method
 	 * @param request HTTP request reference
 	 * @return result after the transaction   
 	 */
 	@RequestMapping("/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response)
-	{	
-		HttpSession session = ((HttpServletRequest)request).getSession(true);
-		if(session != null){
-			session.removeAttribute("UserObj");
+	public RedirectView logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if (session != null) {
+			session.invalidate();
 		}
-		if(log.isDebugEnabled()) {
-			log.debug("Removed the user object from session");
+		String logoutUrl = appProperties.logoutUrl();
+		log.debug("User logged out, redirecting to {}", logoutUrl);
+		if (logoutUrl == null || logoutUrl.isBlank()) {
+			return new RedirectView("/", true);       // app root ? appInitialize
 		}
-		try {
-			if(log.isDebugEnabled()) {
-				log.debug("Redirecting the page to HCL Application page");
-			}
-			response.sendRedirect(EnvironmentProperties.envProperties.getProperty("loggout_url"));
-			return "";
-		} catch (IOException e) {
-			log.error("Unable to rediect the page to HCS home page while logout  {}",e.getMessage());
-		}
-		return EnvironmentProperties.envProperties.getProperty("initialLoadPage");
+		return new RedirectView(logoutUrl, false);    // use the URL exactly as configured
 	}
 
 	/**
@@ -345,14 +337,6 @@ public class CommonController {
         
 	}
 	
-    
-    @RequestMapping(value = "/getReciepientDetails.json",  method = RequestMethod.POST, produces = "application/json")
-    	public @ResponseBody List<JSONObject> getReciepientDetails(HttpServletRequest request) {
-            
-            List<JSONObject> reciepientDetails = commonService.getReciepientDetails();            
-            return reciepientDetails;
-        
-    }
     
     @RequestMapping(value="/getPsMessageTypes.html",
 			method = RequestMethod.POST,

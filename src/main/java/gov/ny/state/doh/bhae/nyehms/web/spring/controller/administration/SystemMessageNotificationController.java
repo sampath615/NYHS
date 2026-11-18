@@ -4,7 +4,7 @@ import gov.ny.state.doh.bhae.nyehms.web.ajax.json.GridObject;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.PortalSystemMessage;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.administration.SystemMessage;
 import gov.ny.state.doh.bhae.nyehms.web.spring.security.UserObject;
-import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageService;
+import gov.ny.state.doh.bhae.nyehms.web.spring.service.administration.SystemMessageNotificationService;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.GetGridObject;
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @RequiredArgsConstructor
 @Controller
-public class SystemMessageController {
+public class SystemMessageNotificationController {
 	/*
 	 * Reference to GetGridObject
 	 */
@@ -33,7 +33,7 @@ public class SystemMessageController {
 	/*
 	 * Reference to SystemMessageService 
 	 */
-	private final SystemMessageService systemMessageService;
+	private final SystemMessageNotificationService systemMessageNotificationService;
 	
 	/*
 	 * Redirect to system message manage page
@@ -56,7 +56,7 @@ public class SystemMessageController {
 	public @ResponseBody GridObject getSystemMessages(String statusFlag, HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getSystemMessages(statusFlag, bindingResult, userObject));
+		GridObject jsonResponse = getGridObject.GetGrid(systemMessageNotificationService.getSystemMessages(statusFlag, bindingResult, userObject));
 		
 		
 		return jsonResponse;
@@ -75,7 +75,7 @@ public class SystemMessageController {
 	public @ResponseBody GridObject getSystemMessageArchives(@ModelAttribute("SystemMessage") SystemMessage systemMessage, HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getSystemMessageArchives(systemMessage, bindingResult, userObject));
+		GridObject jsonResponse = getGridObject.GetGrid(systemMessageNotificationService.getSystemMessageArchives(systemMessage, bindingResult, userObject));
 		return jsonResponse;
 	}
 	
@@ -91,7 +91,7 @@ public class SystemMessageController {
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-		systemMessageService.saveSystemMessageDetails(systemMessage , bindingResult, userObject);
+        systemMessageNotificationService.saveSystemMessageDetails(systemMessage , bindingResult, userObject);
 		
 		return targetMap;
 	}
@@ -115,7 +115,7 @@ public class SystemMessageController {
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-		systemMessageService.updateSystemMessageDetails(systemMessage , bindingResult, userObject);
+        systemMessageNotificationService.updateSystemMessageDetails(systemMessage , bindingResult, userObject);
 		
 		return targetMap;
 	}
@@ -138,8 +138,8 @@ public class SystemMessageController {
 		
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		
-		systemMessageService.getInProgressActiveSystemMessages(request, bindingResult);
+
+        systemMessageNotificationService.getInProgressActiveSystemMessages(request, bindingResult);
 		
 		return targetMap;
 	}
@@ -149,7 +149,7 @@ public class SystemMessageController {
 	@RequestMapping("/getPortalSystemMessagePage")
 	public String getPortalSystemMessagePage(Map<String, Object> map, HttpServletRequest request) {	
 		
-		map.put("moduleNames", systemMessageService.getPortalModuleNames());
+		map.put("moduleNames", systemMessageNotificationService.getPortalModuleNames());
 		return "administration/PortalSystemMessage";
 	}
 	
@@ -157,7 +157,7 @@ public class SystemMessageController {
 	public @ResponseBody GridObject getPortalSystemMessages(String statusFlag, HttpServletRequest request, UserObject userObject){
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
-		GridObject jsonResponse = getGridObject.GetGrid(systemMessageService.getPortalSystemMessages(statusFlag, bindingResult, userObject));
+		GridObject jsonResponse = getGridObject.GetGrid(systemMessageNotificationService.getPortalSystemMessages(statusFlag, bindingResult, userObject));
 		
 		
 		return jsonResponse;
@@ -168,7 +168,7 @@ public class SystemMessageController {
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-		systemMessageService.savePortalSystemMessageDetails(systemMessage , bindingResult, userObject);
+        systemMessageNotificationService.savePortalSystemMessageDetails(systemMessage , bindingResult, userObject);
 		
 		return targetMap;
 	}
@@ -178,7 +178,7 @@ public class SystemMessageController {
 		Map<Object, Object> targetMap= new HashMap<>();
 		BindingResult bindingResult = new MapBindingResult(targetMap, "targetMap");
 
-		systemMessageService.updatePortalSystemMessageDetails(systemMessage , bindingResult, userObject);
+        systemMessageNotificationService.updatePortalSystemMessageDetails(systemMessage , bindingResult, userObject);
 		
 		return targetMap;
 	}

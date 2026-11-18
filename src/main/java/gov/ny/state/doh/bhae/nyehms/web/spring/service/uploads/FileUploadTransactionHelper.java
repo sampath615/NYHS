@@ -64,15 +64,6 @@ public class FileUploadTransactionHelper {
 	private void sendEmailToPsMessageTeam(String subject, String mailContent, String userAddress, String columnName){
 		
 		try {
-			
-			//String ccList = ccAddressList;
-			
-			
-			//if (recipientEmailAddressesTo.length > 0) {
-			//	sendEmail.sendSSLMessage(
-			//			recipientEmailAddressesTo,
-			//			subject, mailContent,
-			//			 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
 			sendEmail.processEmail(userAddress, subject, mailContent, columnName, CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
 		} catch (MessagingException messagingException) {
 			

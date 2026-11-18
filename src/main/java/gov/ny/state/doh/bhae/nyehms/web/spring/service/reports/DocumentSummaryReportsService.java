@@ -1,5 +1,6 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.service.reports;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.ReportProperties;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +15,12 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
-import javax.activation.DataHandler;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.util.ByteArrayDataSource;
+import jakarta.activation.DataHandler;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.util.ByteArrayDataSource;
 
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.MailProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.simple.JSONArray;
@@ -45,7 +47,6 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.constants.CommonConstants;
 import gov.ny.state.doh.bhae.nyehms.web.spring.dao.reports.DocumentSummaryReportDAO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.service.scan.RemoteServerUtil;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.CommonUtil;
-import gov.ny.state.doh.bhae.nyehms.web.spring.util.EnvironmentProperties;
 import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 
 @RequiredArgsConstructor
@@ -58,6 +59,8 @@ public class DocumentSummaryReportsService {
 	private final RemoteServerUtil remoteServer;
 	private final SendEmail sendEmail;
 
+	private final MailProperties mailProperties;
+	private final ReportProperties reportProperties;
 	private final DocumentSummaryReportDAO documentSummaryReportDAO;
 	
 	private static Configuration prepareConfiguration() {
@@ -95,7 +98,7 @@ public class DocumentSummaryReportsService {
         
 		StringBuilder sqlString = new StringBuilder("");
         
-        InputStream stream = obj_SFTPChannel.get(EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME")+"DOCUMENT_REPORT/"+"sql.json");
+        InputStream stream = obj_SFTPChannel.get(reportProperties.outputPath()+"DOCUMENT_REPORT/"+"sql.json");
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(stream));
             String line;
@@ -204,7 +207,7 @@ public class DocumentSummaryReportsService {
 		
         template.process(inputData, responseContent);
 		try {
-        String filePath = EnvironmentProperties.envProperties.getProperty("LAB_REPORT_PATH_NAME");
+        String filePath = reportProperties.outputPath();
         
         
         String fileName = (new StringBuilder(formatedDate).append("_").append("DOCUMENT_STATUS_REPORT.pdf").toString());
@@ -219,11 +222,11 @@ public class DocumentSummaryReportsService {
  	        byteArrayDataSource = new ByteArrayDataSource(obj_InputStream, "application/pdf"); 
  	        messageBodyPart2 = new MimeBodyPart();
  	        messageBodyPart2.setDataHandler(new DataHandler(byteArrayDataSource));
- 	        messageBodyPart2.setFileName(fileName);  
-	     	        
- 	       String[] emailTo = EnvironmentProperties.envProperties.getProperty("DOCUMENT_STATUS_REPORT_TO").split(",");
+ 	        messageBodyPart2.setFileName(fileName);
+
+			String[] emailTo = mailProperties.documentStatusReportTo().split(",");
      	   String[] emailCC = {};
-           sendEmail.sendemailAttachments(emailTo, "Document Status Report "+slashedFormatedDate, "Please see attached document status report.", EnvironmentProperties.envProperties.getProperty("helpLineFrom"), emailCC, CommonConstants.RESPONSE_CONTENT_TYPE_HTML, messageBodyPart2);
+           sendEmail.sendemailAttachments(emailTo, "Document Status Report "+slashedFormatedDate, "Please see attached document status report.", mailProperties.helpLine().from(), emailCC, CommonConstants.RESPONSE_CONTENT_TYPE_HTML, messageBodyPart2);
      	        
      	      
      	        

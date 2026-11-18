@@ -26,7 +26,7 @@ import org.springframework.validation.BindingResult;
  */
 @RequiredArgsConstructor
 @Service
-public class SystemMessageService {
+public class SystemMessageNotificationService {
 	/*
 	 * Reference to SystemMessageDAO
 	 */

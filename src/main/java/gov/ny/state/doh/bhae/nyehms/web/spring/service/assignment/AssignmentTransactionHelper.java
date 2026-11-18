@@ -275,15 +275,7 @@ public class AssignmentTransactionHelper {
 			try {
 			
 				sendEmail.processEmail(null, "Potential COPHI", userObject.getUserFullName() +"has selected the following risk for stateno: "+acrfDoc.getStateno()+" "+riskSelected.toString(), "ACRF_RISK", CommonConstants.RESPONSE_CONTENT_TYPE_HTML);
-				
-				//String ccList = EnvironmentProperties.envProperties.getProperty("acrfNotificationEmailCC");
-				
-				
-				//if (recipientEmailAddressesTo.length > 0) {
-					//sendEmail.sendSSLMessage(
-					//		recipientEmailAddressesTo,
-					//		 "Potential COPHI", userObject.getUserFullName() +"has selected the following risk for stateno: "+acrfDoc.getStateno()+" "+riskSelected.toString(),
-					//		 EnvironmentProperties.envProperties.getProperty("helpLineFrom"), recipientEmailAddressesCC,
+
 			} catch (MessagingException messagingException) {
 				
 				log.error(nyehmsLog + "   Failed to send the Risk notification    ");

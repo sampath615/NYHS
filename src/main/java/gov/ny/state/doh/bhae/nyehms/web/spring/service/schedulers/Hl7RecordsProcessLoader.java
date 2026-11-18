@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import gov.ny.state.doh.bhae.nyehms.web.spring.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 
 import org.json.simple.JSONObject;
@@ -30,6 +32,8 @@ public class Hl7RecordsProcessLoader {
 	private final RawRecordsCleaner rawRecordsCleaner;
 	
 	private final CommonSchedulerHelper commonSchedulerHelper;
+
+    private final AppProperties appProperties;
 	
 	private static final Logger log = LoggerFactory.getLogger(Hl7RecordsProcessLoader.class);
 	

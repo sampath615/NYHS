@@ -3,7 +3,7 @@
 
 <div class="standardInputDiv"><span> <strong>PERMISSIONS</strong></span></div>
 <div class="permissionDetailsDiv">
-			
+	<input type="hidden" id="authorRole" value="${isUserCoordinator}"/>
 	<div id="userPermissions" class="floatLeft">
 		<c:forEach items="${moduleAndPermissionsList}" var="moduleVO">
 			

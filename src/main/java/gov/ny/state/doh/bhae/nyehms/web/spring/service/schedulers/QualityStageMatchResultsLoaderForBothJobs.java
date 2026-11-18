@@ -26,9 +26,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QualityStageMatchResultsLoaderForBothJobs{
 
-	@Autowired
-	private AppProperties appProperties;
-	
+	private final AppProperties appProperties;
 	private static final Logger log = LoggerFactory.getLogger(QualityStageMatchResultsLoaderForBothJobs.class);
 	private final SendEmail sendEmail;
 	private final ManualQuartzJobService manualQuartzJobService;

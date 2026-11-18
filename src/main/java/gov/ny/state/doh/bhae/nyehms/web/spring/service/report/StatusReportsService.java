@@ -67,7 +67,7 @@ import gov.ny.state.doh.bhae.nyehms.web.spring.util.SendEmail;
 @Service
 public class StatusReportsService {
 
-    private finalReportProperties reportProperties;
+    private final ReportProperties reportProperties;
 
 	private final StatusLabReportsDAO statusLabReportsDAO;
 

@@ -13,17 +13,12 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.FirefoxVersionVO;
-import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.JREVersionVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.domain.initialize.UserAccessAttemptVO;
 import gov.ny.state.doh.bhae.nyehms.web.spring.entity.initialize.UserAccessAttempts;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.NyehmsParameterRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.NyehmsUsersVwRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.common.UserRegionRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.repository.initialize.NyehmsFirefoxVersionsRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.repository.initialize.NyehmsJreVersionsRepository;
 import gov.ny.state.doh.bhae.nyehms.web.spring.repository.initialize.UserAccessAttemptsRepository;
-import gov.ny.state.doh.bhae.nyehms.web.spring.repository.initialize.UserMacAssociationRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -38,18 +33,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InitializeDAO {
 
-	private final UserMacAssociationRepository macAddresses;
 	private final NyehmsUsersVwRepository users;
 	private final UserRegionRepository userRegions;
-	private final NyehmsJreVersionsRepository jreVersions;
-	private final NyehmsFirefoxVersionsRepository firefoxVersions;
 	private final NyehmsParameterRepository parameters;
 	private final UserAccessAttemptsRepository accessAttempts;
 
-	/** The MAC addresses in effect of the current worker with this short name. */
-	public List<String> getActiveMACAddressesList(String userId) throws DataAccessException {
-		return new ArrayList<>(macAddresses.findActiveMacAddresses(userId, now()));
-	}
 
 	/**
 	 * The lock flag of the current worker with this short name.
@@ -69,53 +57,12 @@ public class InitializeDAO {
 		return (int) userRegions.countActiveRoles(userId, now());
 	}
 
-	/** The Java versions in effect (a row without values was null, as before). */
-	public List<JREVersionVO> getActiveJREs() throws DataAccessException {
-		Timestamp now = now();
-		return jreVersions
-				.findByEffectiveStartDateLessThanEqualAndEffectiveEndDateIsNullOrEffectiveStartDateLessThanEqualAndEffectiveEndDateAfter(now, now, now)
-				.stream().map(version -> {
-					if (version.jreVersion() == null && version.rejectFlag() == null) {
-						return null;
-					}
-					JREVersionVO vo = new JREVersionVO();
-					vo.setJREVersionNo(version.jreVersion());
-					vo.setRejectFlag(version.rejectFlag());
-					return vo;
-				}).collect(Collectors.toCollection(ArrayList::new));
-	}
-
 	/** The operating systems in effect (parameter VALID_OS). */
 	public List<String> getActiveOSs() throws DataAccessException {
 		Timestamp now = now();
 		return parameters.findByParamNameAndEffectiveStartDateLessThanEqualAndEffectiveEndDateIsNullOrParamNameAndEffectiveStartDateLessThanEqualAndEffectiveEndDateAfter(
 				"VALID_OS", now, "VALID_OS", now, now).stream().map(NyehmsParameterRepository.ParamValue::paramValue)
 				.collect(Collectors.toCollection(ArrayList::new));
-	}
-
-	/** The Firefox versions in effect (a row without values was null, as before). */
-	public List<FirefoxVersionVO> getValidFirefoxVer() throws DataAccessException {
-		Timestamp now = now();
-		return firefoxVersions
-				.findByEffectiveStartDateLessThanEqualAndEffectiveEndDateIsNullOrEffectiveStartDateLessThanEqualAndEffectiveEndDateAfter(now, now, now)
-				.stream().map(version -> {
-					if (version.version() == null && version.rejectFlag() == null) {
-						return null;
-					}
-					FirefoxVersionVO vo = new FirefoxVersionVO();
-					vo.setFirefoxVersionNo(version.version());
-					vo.setRejectFlag(version.rejectFlag());
-					return vo;
-				}).collect(Collectors.toCollection(ArrayList::new));
-	}
-
-	/**
-	 * The Firefox version with the latest start date.
-	 *
-	 * @throws IncorrectResultSizeDataAccessException if several versions have that date (as before)
-	 */
-	public String getLatestFirefoxVersion() throws DataAccessException {
-		return one(firefoxVersions.findLatestVersions());
 	}
 
 	/** Inserts a login attempt (its key from USER_ACCESS_ATTEMPTS_SEQ; an empty text or time is stored as NULL). */
@@ -125,28 +72,13 @@ public class InitializeDAO {
 				.userId(emptyAsNull(attempt.getUserId()))
 				.hcsRole(emptyAsNull(attempt.getHcsRole()))
 				.linkClickTime(timestamp(attempt.getLinkClickTime()))
-				.activeMacAddressList(emptyAsNull(attempt.getActiveMACAddresses()))
 				.hasNyehmsAccess(emptyAsNull(attempt.getActiveNyehmsRole()))
 				.userLocked(emptyAsNull(attempt.getUserLocked()))
-				.attemptMacAddress(emptyAsNull(attempt.getAttempMACAddress()))
 				.browserUsed(emptyAsNull(attempt.getBrowserName()))
-				.browserVersion(emptyAsNull(attempt.getBrowserVersion()))
 				.hasXpiPlugin(emptyAsNull(attempt.getXPIPlugin()))
-				.xpiVersion(emptyAsNull(attempt.getXPIVersion()))
-				.osUsed(emptyAsNull(attempt.getOSName()))
-				.jreVersion(emptyAsNull(attempt.getJREVersion()))
 				.recordCreatedDate(timestamp(attempt.getRecordInsertTime()))
 				.reasonsAttemptFailed(emptyAsNull(attempt.getAttemptFailedReasons()))
 				.build());
-	}
-
-	/**
-	 * The Java version with the latest start date.
-	 *
-	 * @throws IncorrectResultSizeDataAccessException if several versions have that date (as before)
-	 */
-	public String getLatestJavaVersionNumber() throws DataAccessException {
-		return one(jreVersions.findLatestVersions());
 	}
 
 	/** The single result of a former selectOne: null for none, an error for several. */
