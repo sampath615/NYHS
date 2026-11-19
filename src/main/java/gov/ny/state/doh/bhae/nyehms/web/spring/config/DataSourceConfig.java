@@ -1,21 +1,19 @@
 package gov.ny.state.doh.bhae.nyehms.web.spring.config;
 
-import gov.ny.state.doh.bhae.nyehms.web.spring.jdbc.impl.JdbcConnectionDAO;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
 /**
- * Data sources, transaction management and the raw JDBC connection DAO.
+ * Data sources and transaction management.
  * <p>
- * Replaces spring-datasource.xml and the transactionManager, tx:annotation-driven
- * and connectionDAO entries of spring-config.xml.
+ * Replaces spring-datasource.xml and the transactionManager and tx:annotation-driven
+ * entries of spring-config.xml. The transaction manager itself is the JPA one
+ * (JpaConfig); plain JDBC connections come from JpaConnections.
  * <p>
  * The three pools are container managed: Tomcat defines them in
  * META-INF/context.xml and the connection settings come from catalina.properties
@@ -33,8 +31,8 @@ public class DataSourceConfig {
 
     /**
      * Oracle: main NYEHMS database (was WebLogic data source BHAE_NYEHMS_DS_ONE_GL).
-     * Used by the MyBatis session factories, the transaction manager and raw JDBC
-     * (ConnectionDAO).
+     * Used by the main JPA unit (JpaConfig) and the plain JDBC connections of
+     * JpaConnections.
      */
     @Bean(destroyMethod = "")
     @Primary
@@ -43,7 +41,7 @@ public class DataSourceConfig {
     }
 
     /**
-     * Oracle: URS database (was WebLogic data source BHAE_NYEHMS_URS); ursSessionFactory.
+     * URS database (was WebLogic data source BHAE_NYEHMS_URS); read by the JdbcTemplate of AIDADataDAO.
      */
     @Bean(destroyMethod = "")
     public DataSource ursDS() {
@@ -51,30 +49,12 @@ public class DataSourceConfig {
     }
 
     /**
-     * eHARS database (was WebLogic data source BHAE_EHARS_DS_ONE); raw JDBC via
-     * ConnectionDAO.getSqlServerConnectionObj().
+     * eHARS database, SQL Server (was WebLogic data source BHAE_EHARS_DS_ONE); used by
+     * the eHARS JPA unit (EharsJpaConfig) and JpaConnections.eharsConnection().
      */
     @Bean(destroyMethod = "")
     public DataSource eharsDS() {
         return jndiDataSource("jdbc/BHAE_EHARS_DS_ONE");
-    }
-
-    /**
-     * The only transaction manager: @Transactional always means the main NYEHMS
-     * database (appDS), exactly as before.
-     */
-/*    @Bean
-    public DataSourceTransactionManager transactionManager(@Qualifier("appDS") DataSource appDS) {
-        return new DataSourceTransactionManager(appDS);
-    }*/
-
-    @Bean
-    public JdbcConnectionDAO connectionDAO(@Qualifier("appDS") DataSource appDS,
-                                           @Qualifier("eharsDS") DataSource eharsDS) {
-        JdbcConnectionDAO connectionDAO = new JdbcConnectionDAO();
-        connectionDAO.setDataSource(appDS);
-        connectionDAO.setSqlDataSource(eharsDS);
-        return connectionDAO;
     }
 
     /*
